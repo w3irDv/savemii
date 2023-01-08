@@ -262,14 +262,6 @@ void consolePrintPos(int x, int y, const char *format, ...) { // Source: ftpiiu
         free(tmp);
 }
 
-std::pair<std::string, std::string> splitString(const std::string &str, char c) {
-    size_t pos = str.rfind(c);
-    if (pos == std::string::npos) {
-        return {str, ""};
-    }
-    return {str.substr(0, pos), str.substr(pos + 1)};
-}
-
 void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     std::string tmp;
 
