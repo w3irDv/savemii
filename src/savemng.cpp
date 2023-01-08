@@ -41,11 +41,11 @@ extern "C" FSClient *__wut_devoptab_fs_client;
 std::string newlibtoFSA(std::string path) {
     if (path.rfind("storage_slccmpt01:", 0) == 0) {
         replace(path, "storage_slccmpt01:", "/vol/storage_slccmpt01");
-    } else if(path.rfind("storage_mlc01:", 0) == 0) {
+    } else if (path.rfind("storage_mlc01:", 0) == 0) {
         replace(path, "storage_mlc01:", "/vol/storage_mlc01");
-    } else if(path.rfind("storage_usb01:", 0) == 0) {
+    } else if (path.rfind("storage_usb01:", 0) == 0) {
         replace(path, "storage_usb01:", "/vol/storage_usb01");
-    } else if(path.rfind("storage_usb02:", 0) == 0) {
+    } else if (path.rfind("storage_usb02:", 0) == 0) {
         replace(path, "storage_usb02:", "/vol/storage_usb02");
     }
     return path;
@@ -101,8 +101,8 @@ std::string getUSB() {
 
 static void showFileOperation(std::string file_name, std::string file_src, std::string file_dest) {
     consolePrintPos(-2, 0, gettext("Copying file: %s"), file_name.c_str());
-    consolePrintPosMultiline(-2, 2, '/', gettext("From: %s"), file_src.c_str());
-    consolePrintPosMultiline(-2, 8, '/', gettext("To: %s"), file_dest.c_str());
+    consolePrintPosMultiline(-2, 2, gettext("From: %s"), file_src.c_str());
+    consolePrintPosMultiline(-2, 8, gettext("To: %s"), file_dest.c_str());
 }
 
 int32_t loadFile(const char *fPath, uint8_t **buf) {
@@ -224,6 +224,7 @@ static bool createFolder(const char *fPath) { //Adapted from mkdir_p made by Jon
 void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) {
     char *tmp = NULL;
     int x = 0;
+    y += Y_OFF;
 
     va_list va;
     va_start(va, format);
@@ -233,16 +234,16 @@ void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *f
                 x = (offset * 12);
                 break;
             case 1:
-                x = (853 - ttfStringWidth((char *) tmp, -2)) / 2;
+                x = (853 - DrawUtils::getTextWidth((char *) tmp)) / 2;
                 break;
             case 2:
-                x = 853 - (offset * 12) - ttfStringWidth((char *) tmp, 0);
+                x = 853 - (offset * 12) - DrawUtils::getTextWidth((char *) tmp);
                 break;
             default:
-                x = (853 - ttfStringWidth((char *) tmp, -2)) / 2;
+                x = (853 - DrawUtils::getTextWidth((char *) tmp)) / 2;
                 break;
         }
-        ttfPrintString(x, (y + 1) * 24, (char *) tmp, false, false);
+        DrawUtils::print(x, (y + 1) * 24, (char *) tmp);
     }
     va_end(va);
     if (tmp) free(tmp);
@@ -250,61 +251,61 @@ void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *f
 
 void consolePrintPos(int x, int y, const char *format, ...) { // Source: ftpiiu
     char *tmp = nullptr;
+    y += Y_OFF;
 
     va_list va;
     va_start(va, format);
     if ((vasprintf(&tmp, format, va) >= 0) && (tmp != nullptr))
-        ttfPrintString((x + 4) * 12, (y + 1) * 24, tmp, false, true);
+        DrawUtils::print((x + 4) * 12, (y + 1) * 24, tmp);
     va_end(va);
     if (tmp != nullptr)
         free(tmp);
 }
 
-void consolePrintPosMultiline(int x, int y, char cdiv, const char *format, ...) { // Source: ftpiiu
-    char *tmp = nullptr;
-    uint32_t len = (66 - x);
+std::pair<std::string, std::string> splitString(const std::string &str, char c) {
+    size_t pos = str.rfind(c);
+    if (pos == std::string::npos) {
+        return {str, ""};
+    }
+    return {str.substr(0, pos), str.substr(pos + 1)};
+}
+
+void consolePrintPosMultiline(int x, int y, const char *format, ...) {
+    std::string tmp;
 
     va_list va;
     va_start(va, format);
-    if ((vasprintf(&tmp, format, va) >= 0) && (tmp != nullptr)) {
-        if ((uint32_t) (ttfStringWidth(tmp, -1) / 12) > len) {
-            char *p = tmp;
-            if (strrchr(p, '\n') != nullptr)
-                p = strrchr(p, '\n') + 1;
-            while ((uint32_t) (ttfStringWidth(p, -1) / 12) > len) {
-                char *q = p;
-                int l1 = strlen(q);
-                for (int i = l1; i > 0; i--) {
-                    char o = q[l1];
-                    q[l1] = '\0';
-                    if ((uint32_t) (ttfStringWidth(p, -1) / 12) <= len) {
-                        if (strrchr(p, cdiv) != nullptr)
-                            p = strrchr(p, cdiv) + 1;
-                        else
-                            p = q + l1;
-                        q[l1] = o;
-                        break;
-                    }
-                    q[l1] = o;
-                    l1--;
-                }
-                std::string buf;
-                buf.assign(p);
-                p = (char *) stringFormat("\n%s", buf.c_str()).c_str();
-                p++;
-                len = 69;
-            }
-        }
-        ttfPrintString((x + 4) * 12, (y + 1) * 24, tmp, true, true);
-    }
+
+    char buffer[256];
+    vsnprintf(buffer, sizeof(buffer), format, va);
+    tmp = buffer;
     va_end(va);
-    if (tmp != nullptr)
-        free(tmp);
+
+    y += Y_OFF;
+
+    uint32_t maxLineLength = (66 - x);
+
+    std::string currentLine;
+    std::istringstream iss(tmp);
+    while (std::getline(iss, currentLine)) {
+        while (DrawUtils::getTextWidth(currentLine.c_str()) / 12 > maxLineLength) {
+            std::size_t spacePos = currentLine.find_last_of(' ', maxLineLength);
+            if (spacePos == std::string::npos) {
+                spacePos = maxLineLength;
+            }
+            DrawUtils::print((x + 4) * 12, (y + 1) * 24, currentLine.substr(0, spacePos).c_str());
+            currentLine = currentLine.substr(spacePos + 1);
+            y++;
+        }
+        DrawUtils::print((x + 4) * 12, (y + 1) * 24, currentLine.c_str());
+        y++;
+    }
 }
 
 bool promptConfirm(Style st, std::string question) {
-    clearBuffers();
-    WHBLogFreetypeDraw();
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    DrawUtils::setFontColor(COLOR_TEXT);
     const std::string msg1 = gettext("\ue000 Yes - \ue001 No");
     const std::string msg2 = gettext("\ue000 Confirm - \ue001 Cancel");
     std::string msg;
@@ -319,23 +320,19 @@ bool promptConfirm(Style st, std::string question) {
             msg = msg2;
     }
     if (st & ST_WARNING) {
-        OSScreenClearBufferEx(SCREEN_TV, 0x7F7F0000);
-        OSScreenClearBufferEx(SCREEN_DRC, 0x7F7F0000);
+        DrawUtils::clear(Color(0x7F7F0000));
     } else if (st & ST_ERROR) {
-        OSScreenClearBufferEx(SCREEN_TV, 0x7F000000);
-        OSScreenClearBufferEx(SCREEN_DRC, 0x7F000000);
+        DrawUtils::clear(Color(0x7F000000));
     } else {
-        OSScreenClearBufferEx(SCREEN_TV, 0x007F0000);
-        OSScreenClearBufferEx(SCREEN_DRC, 0x007F0000);
+        DrawUtils::clear(Color(0x007F0000));
     }
     if (!(st & ST_MULTILINE)) {
-        consolePrintPos(31 - (ttfStringWidth((char *) question.c_str(), 0) / 24), 7, question.c_str());
-        consolePrintPos(31 - (ttfStringWidth((char *) msg.c_str(), -1) / 24), 9, msg.c_str());
+        consolePrintPos(31 - (DrawUtils::getTextWidth((char *) question.c_str()) / 24), 7, question.c_str());
+        consolePrintPos(31 - (DrawUtils::getTextWidth((char *) msg.c_str()) / 24), 9, msg.c_str());
     }
 
     int ret = 0;
-    flipBuffers();
-    WHBLogFreetypeDraw();
+    DrawUtils::endDraw();
     Input input;
     while (true) {
         input.read();
@@ -352,22 +349,20 @@ bool promptConfirm(Style st, std::string question) {
 }
 
 void promptError(const char *message, ...) {
-    clearBuffers();
-    WHBLogFreetypeDraw();
+    DrawUtils::beginDraw();
+    DrawUtils::clear(static_cast<Color>(0x7F000000));
     va_list va;
     va_start(va, message);
-    clearBuffersEx();
     char *tmp = nullptr;
     if ((vasprintf(&tmp, message, va) >= 0) && (tmp != nullptr)) {
-        int x = 31 - (ttfStringWidth(tmp, -2) / 24);
+        int x = 31 - (DrawUtils::getTextWidth(tmp) / 24);
         int y = 8;
         x = (x < -4 ? -4 : x);
-        ttfPrintString((x + 4) * 12, (y + 1) * 24, tmp, true, false);
+        DrawUtils::print((x + 4) * 12, (y + 1) * 24, tmp);
     }
     if (tmp != nullptr)
         free(tmp);
-    flipBuffers();
-    WHBLogFreetypeDraw();
+    DrawUtils::endDraw();
     va_end(va);
     sleep(2);
 }
@@ -498,11 +493,11 @@ static bool copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, std
         passedMs = (uint32_t) OSTicksToMilliseconds(OSGetTime() - startTime);
         if (passedMs == 0)
             passedMs = 1; // avoid 0 div
-        clearBuffersEx();
+        DrawUtils::beginDraw();
+        DrawUtils::clear(COLOR_BLACK);
         showFileOperation(basename(pPath.c_str()), pPath, oPath);
         consolePrintPos(-2, 15, "Bytes Copied: %d of %d (%i kB/s)", written, totalSize, (uint32_t) (((uint64_t) written * 1000) / ((uint64_t) 1024 * passedMs)));
-        flipBuffers();
-        WHBLogFreetypeDraw();
+        DrawUtils::endDraw();
     } while (std::future_status::ready != writeFut.wait_until(oneSecond));
     bool success = readFut.get() && writeFut.get();
     return success;
@@ -550,7 +545,8 @@ static int copyDir(std::string pPath, std::string tPath) { // Source: ft2sd
     auto *data = (dirent *) malloc(sizeof(dirent));
 
     while ((data = readdir(dir)) != nullptr) {
-        clearBuffersEx();
+        DrawUtils::beginDraw();
+        DrawUtils::clear(COLOR_BLACK);
 
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
             continue;
@@ -588,7 +584,8 @@ static bool removeDir(char *pPath) {
     struct dirent *data;
 
     while ((data = readdir(dir)) != NULL) {
-        clearBuffersEx();
+        DrawUtils::beginDraw();
+        DrawUtils::clear(COLOR_BLACK);
 
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0) continue;
 
@@ -600,19 +597,19 @@ static bool removeDir(char *pPath) {
             sprintf(origPath, "%s", pPath);
             removeDir(pPath);
 
-            clearBuffersEx();
+            DrawUtils::beginDraw();
+            DrawUtils::clear(COLOR_BLACK);
 
             consolePrintPos(-2, 0, gettext("Deleting folder %s"), data->d_name);
-            consolePrintPosMultiline(-2, 2, '/', gettext("From: \n%s"), origPath);
+            consolePrintPosMultiline(-2, 2, gettext("From: \n%s"), origPath);
             if (unlink(origPath) == -1) promptError(gettext("Failed to delete folder %s\n%s"), origPath, strerror(errno));
         } else {
             consolePrintPos(-2, 0, gettext("Deleting file %s"), data->d_name);
-            consolePrintPosMultiline(-2, 2, '/', gettext("From: \n%s"), pPath);
+            consolePrintPosMultiline(-2, 2, gettext("From: \n%s"), pPath);
             if (unlink(pPath) == -1) promptError(gettext("Failed to delete file %s\n%s"), pPath, strerror(errno));
         }
 
-        flipBuffers();
-        WHBLogFreetypeDraw();
+        DrawUtils::endDraw();
         pPath[len] = 0;
     }
 
