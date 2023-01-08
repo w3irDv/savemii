@@ -22,7 +22,8 @@
 
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 5
-#define VERSION_MICRO 3
+#define VERSION_MICRO 4
+
 #define M_OFF         1
 #define Y_OFF         1
 
