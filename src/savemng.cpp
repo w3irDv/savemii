@@ -268,9 +268,10 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     va_list va;
     va_start(va, format);
 
-    char buffer[256];
-    vsnprintf(buffer, sizeof(buffer), format, va);
-    tmp = buffer;
+    std::vector<char> buffer(1024);
+    vsprintf(buffer.data(), format, va);
+    buffer.shrink_to_fit();
+    tmp.assign(buffer.data());
     va_end(va);
 
     y += Y_OFF;
@@ -292,6 +293,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
         DrawUtils::print((x + 4) * 12, (y + 1) * 24, currentLine.c_str());
         y++;
     }
+    buffer.clear();
 }
 
 bool promptConfirm(Style st, std::string question) {
