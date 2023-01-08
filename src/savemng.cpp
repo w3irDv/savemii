@@ -268,10 +268,10 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     va_list va;
     va_start(va, format);
 
-    std::vector<char> buffer(1024);
+    std::vector<char> buffer(2048);
     vsprintf(buffer.data(), format, va);
-    buffer.shrink_to_fit();
     tmp.assign(buffer.data());
+    buffer.clear();
     va_end(va);
 
     y += Y_OFF;
@@ -281,7 +281,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     std::string currentLine;
     std::istringstream iss(tmp);
     while (std::getline(iss, currentLine)) {
-        while (DrawUtils::getTextWidth(currentLine.c_str()) / 12 > maxLineLength) {
+        while ((DrawUtils::getTextWidth(currentLine.c_str()) / 12) > maxLineLength) {
             std::size_t spacePos = currentLine.find_last_of(' ', maxLineLength);
             if (spacePos == std::string::npos) {
                 spacePos = maxLineLength;
@@ -293,7 +293,6 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
         DrawUtils::print((x + 4) * 12, (y + 1) * 24, currentLine.c_str());
         y++;
     }
-    buffer.clear();
 }
 
 bool promptConfirm(Style st, std::string question) {
