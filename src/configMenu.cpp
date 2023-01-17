@@ -25,7 +25,7 @@ static void drawConfigMenuFrame() {
 void configMenu() {
     Input input;
     language = getLoadedLanguage();
-    while (AppRunning()) {
+    while (State::AppRunning()) {
         input.read();
         if (input.get(TRIGGER, PAD_BUTTON_ANY))
             redraw = true;

@@ -3,13 +3,15 @@
 #include <input.h>
 #include <json.h>
 #include <language.h>
-#include <coreinit/debug.h>
-#include <utils/DrawUtils.h>
 #include <main.h>
 #include <savemng.h>
-#include <sndcore2/core.h>
 #include <state.h>
 #include <string.hpp>
+#include <utils/DrawUtils.h>
+
+#include <coreinit/debug.h>
+#include <proc_ui/procui.h>
+#include <sndcore2/core.h>
 
 static uint8_t slot = 0;
 static int8_t allusers = -1, allusers_d = -1, sdusers = -1;
@@ -414,7 +416,6 @@ static void unloadTitles(Title *titles, int count) {
 int main() {
     AXInit();
     AXQuit();
-    WHBProcInit();
     OSScreenInit();
 
     uint32_t tvBufferSize  = OSScreenGetBufferSizeEx(SCREEN_TV);
@@ -442,13 +443,13 @@ int main() {
     KPADInit();
     WPADEnableURCC(1);
     loadWiiUTitles(0);
-    initState();
+    State::init();
 
     int res = romfsInit();
     if (res) {
         promptError("Failed to init romfs: %d", res);
         DrawUtils::endDraw();
-        WHBProcShutdown();
+        State::shutdown();
         return 0;
     }
 
@@ -460,7 +461,7 @@ int main() {
     if (!initFS()) {
         promptError(gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
-        WHBProcShutdown();
+        State::shutdown();
         return 0;
     }
 
@@ -478,7 +479,7 @@ int main() {
     bool redraw = true;
     int entrycount = 0;
     Input input;
-    while (AppRunning()) {
+    while (State::AppRunning()) {
         Title *titles = mode != WiiU ? wiititles : wiiutitles;
         int count = mode != WiiU ? vWiiTitlesCount : wiiuTitlesCount;
 
@@ -1093,8 +1094,6 @@ int main() {
     romfsExit();
 
     DrawUtils::deinitFont();
-    shutdownState();
-    WHBProcShutdown();
-    ProcUIShutdown();
+    State::shutdown();
     return 0;
 }
