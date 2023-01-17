@@ -1,6 +1,6 @@
-#include <string.hpp>
+#include <utils/StringUtils.h>
 
-bool replace(std::string &str, const std::string &from, const std::string &to) {
+bool StringUtils::replace(std::string &str, const std::string &from, const std::string &to) {
     size_t start_pos = str.find(from);
     if (start_pos == std::string::npos)
         return false;
@@ -8,7 +8,7 @@ bool replace(std::string &str, const std::string &from, const std::string &to) {
     return true;
 }
 
-std::string decodeXMLEscapeLine(std::string xmlString) {
+std::string StringUtils::decodeXMLEscapeLine(std::string xmlString) {
     replace(xmlString, "&quot;", "\"");
     replace(xmlString, "&apos;", "'");
     replace(xmlString, "&lt;", "<");
