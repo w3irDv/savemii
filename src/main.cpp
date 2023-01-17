@@ -245,7 +245,7 @@ static Title *loadWiiUTitles(int run) {
         DrawUtils::beginDraw();
         DrawUtils::clear(COLOR_BLACK);
         disclaimer();
-        drawTGA(298, 144, 1, icon_tga);
+        DrawUtils::drawTGA(298, 144, 1, icon_tga);
         consolePrintPosAligned(10, 0, 1, gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
         DrawUtils::endDraw();
     }
@@ -391,7 +391,7 @@ static Title *loadWiiTitles() {
                 DrawUtils::beginDraw();
                 DrawUtils::clear(COLOR_BLACK);
                 disclaimer();
-                drawTGA(298, 144, 1, icon_tga);
+                DrawUtils::drawTGA(298, 144, 1, icon_tga);
                 consolePrintPosAligned(10, 0, 1, gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
                 consolePrintPosAligned(11, 0, 1, gettext("Loaded %i Wii titles."), i);
                 DrawUtils::endDraw();
@@ -487,7 +487,7 @@ int main() {
             DrawUtils::clear(COLOR_BACKGROUND);
 
             consolePrintPos(0, 0, "SaveMii v%u.%u.%u", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
-            drawRectFilled(48, 49, 526, 51, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+            DrawUtils::drawRectFilled(48, 49, 526, 51, COLOR_WHITE);
 
             switch (menu) {
                 case mainMenu: {
@@ -534,11 +534,11 @@ int main() {
                             DrawUtils::setFontColor(COLOR_TEXT);
                             if (mode == WiiU) {
                                 if (titles[i + scroll].iconBuf != nullptr) {
-                                    drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, titles[i + scroll].iconBuf);
+                                    DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, titles[i + scroll].iconBuf);
                                 }
                             } else if (mode == vWii) {
                                 if (titles[i + scroll].iconBuf != nullptr) {
-                                    drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
+                                    DrawUtils::drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
                                                titles[i + scroll].iconBuf);
                                 }
                             }
@@ -565,10 +565,10 @@ int main() {
                             consolePrintPos(M_OFF, 10, gettext("   Copy Savedata to Title in %s"),
                                             titles[targ].isTitleOnUSB ? "NAND" : "USB");
                         if (titles[targ].iconBuf != nullptr)
-                            drawTGA(660, 80, 1, titles[targ].iconBuf);
+                            DrawUtils::drawTGA(660, 80, 1, titles[targ].iconBuf);
                     } else if (mode == vWii)
                         if (titles[targ].iconBuf != nullptr)
-                            drawRGB5A3(645, 80, 1, titles[targ].iconBuf);
+                            DrawUtils::drawRGB5A3(645, 80, 1, titles[targ].iconBuf);
                     consolePrintPos(M_OFF, 2 + 3 + cursor, "\u2192");
                     consolePrintPosAligned(17, 4, 2, gettext("\ue000: Select Task  \ue001: Back"));
                 } break;
@@ -704,11 +704,11 @@ int main() {
 
                         consolePrintPos(M_OFF, 5 + cursor * 3, "\u2192");
                         if (titles[targ].iconBuf != nullptr)
-                            drawTGA(660, 100, 1, titles[targ].iconBuf);
+                            DrawUtils::drawTGA(660, 100, 1, titles[targ].iconBuf);
                     } else if (mode == vWii) {
                         entrycount = 1;
                         if (titles[targ].iconBuf != nullptr)
-                            drawRGB5A3(650, 100, 1, titles[targ].iconBuf);
+                            DrawUtils::drawRGB5A3(650, 100, 1, titles[targ].iconBuf);
                         if (!isSlotEmpty(titles[targ].highID, titles[targ].lowID, slot)) {
                             Date *dateObj = new Date(titles[targ].highID, titles[targ].lowID, slot);
                             consolePrintPos(M_OFF, 15, gettext("Date: %s"),
@@ -739,7 +739,7 @@ int main() {
                     }
                 } break;
             }
-            drawRectFilled(48, 406, 526, 408, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+            DrawUtils::drawRectFilled(48, 406, 526, 408, COLOR_WHITE);
             consolePrintPos(0, 17, gettext("Press \ue044 to exit."));
 
             DrawUtils::endDraw();

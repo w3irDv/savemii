@@ -1,6 +1,5 @@
 #include <configMenu.h>
 #include <cstring>
-#include <draw.h>
 #include <input.h>
 #include <language.h>
 #include <savemng.h>
@@ -15,10 +14,10 @@ static void drawConfigMenuFrame() {
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BACKGROUND);
     consolePrintPos(0, 0, "SaveMii v%u.%u.%u", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
-    drawRectFilled(48, 49, 526, 51, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+    DrawUtils::drawRectFilled(48, 49, 526, 51, COLOR_WHITE);
     consolePrintPos(M_OFF, 2, gettext("   Language: %s"), language.c_str());
     consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
-    drawRectFilled(48, 406, 526, 408, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+    DrawUtils::drawRectFilled(48, 406, 526, 408, COLOR_WHITE);
     consolePrintPos(0, 17, gettext("Press \ue044 to exit."));
     DrawUtils::endDraw();
 }

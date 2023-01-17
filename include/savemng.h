@@ -8,7 +8,6 @@
 #include <coreinit/thread.h>
 #include <cstdio>
 #include <dirent.h>
-#include <draw.h>
 #include <fcntl.h>
 #include <input.h>
 #include <utils/DrawUtils.h>

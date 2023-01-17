@@ -44,9 +44,15 @@ public:
 
     static void drawPixel(uint32_t x, uint32_t y, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-    static void drawRectFilled(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Color col);
+    static void drawRectFilled(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+    static void drawRectFilled(int x1, int y1, int x2, int y2, Color col) { drawRectFilled(x1, y1, x2, y2, col.r, col.g, col.b, col.a); }
 
     static void drawRect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t borderSize, Color col);
+
+    static void drawRect(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+    static void drawRect(int x1, int y1, int x2, int y2, Color col) { drawRect(x1, y1, x2, y2, col.r, col.g, col.b, col.a); }
 
     static void drawBitmap(uint32_t x, uint32_t y, uint32_t target_width, uint32_t target_height, const uint8_t *data);
 
@@ -67,6 +73,16 @@ public:
     static uint32_t getTextWidth(const char *string);
 
     static uint32_t getTextWidth(const wchar_t *string);
+
+    static void drawLine(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+    static void drawLine(int x1, int y1, int x2, int y2, Color col) { drawLine(x1, y1, x2, y2, col.r, col.g, col.b, col.a); }
+
+    static void drawPic(int x, int y, uint32_t w, uint32_t h, float scale, uint32_t *pixels);
+
+    static void drawTGA(int x, int y, float scale, uint8_t *fileContent);
+
+    static void drawRGB5A3(int x, int y, float scale, uint8_t *fileContent);
 
 private:
     static bool isBackBuffer;
