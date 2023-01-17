@@ -263,14 +263,12 @@ void consolePrintPos(int x, int y, const char *format, ...) { // Source: ftpiiu
 }
 
 void consolePrintPosMultiline(int x, int y, const char *format, ...) {
-    std::string tmp;
-
     va_list va;
     va_start(va, format);
 
-    std::vector<char> buffer(2048);
+    std::vector<char> buffer(2048) = {0};
     vsprintf(buffer.data(), format, va);
-    tmp.assign(buffer.data());
+    std::string tmp(buffer.begin(), buffer.end());
     buffer.clear();
     va_end(va);
 
@@ -286,13 +284,12 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
             if (spacePos == std::string::npos) {
                 spacePos = maxLineLength;
             }
-            DrawUtils::print((x + 4) * 12, (y + 1) * 24, currentLine.substr(0, spacePos).c_str());
+            DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.substr(0, spacePos).c_str());
             currentLine = currentLine.substr(spacePos + 1);
-            y++;
         }
-        DrawUtils::print((x + 4) * 12, (y + 1) * 24, currentLine.c_str());
-        y++;
+        DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.c_str());
     }
+    tmp.clear();
 }
 
 bool promptConfirm(Style st, std::string question) {
