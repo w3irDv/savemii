@@ -8,7 +8,6 @@
 
 bool replace(std::string &str, const std::string &from, const std::string &to);
 std::string decodeXMLEscapeLine(std::string xmlString);
-std::string vformat(const char *format, va_list args);
 
 template<typename... Args>
 std::string stringFormat(const std::string &format, Args... args) {
