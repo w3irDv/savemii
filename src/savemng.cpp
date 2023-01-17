@@ -266,7 +266,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     va_list va;
     va_start(va, format);
 
-    std::vector<char> buffer(2048) = {0};
+    std::vector<char> buffer(2048);
     vsprintf(buffer.data(), format, va);
     std::string tmp(buffer.begin(), buffer.end());
     buffer.clear();
@@ -290,6 +290,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
         DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.c_str());
     }
     tmp.clear();
+    tmp.shrink_to_fit();
 }
 
 bool promptConfirm(Style st, std::string question) {
