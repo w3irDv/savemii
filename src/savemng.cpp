@@ -265,7 +265,7 @@ void consolePrintPos(int x, int y, const char *format, ...) { // Source: ftpiiu
 void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     va_list va;
     va_start(va, format);
-    std::string tmp = vformat(format, va);
+    vformat(format, va);
     va_end(va);
 
     y += Y_OFF;
