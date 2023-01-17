@@ -265,11 +265,7 @@ void consolePrintPos(int x, int y, const char *format, ...) { // Source: ftpiiu
 void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     va_list va;
     va_start(va, format);
-
-    std::vector<char> buffer(2048);
-    vsprintf(buffer.data(), format, va);
-    std::string tmp(buffer.begin(), buffer.end());
-    buffer.clear();
+    vformat(format, va);
     va_end(va);
 
     y += Y_OFF;
