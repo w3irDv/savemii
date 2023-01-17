@@ -1,4 +1,4 @@
-#include <state.h>
+#include <utils/StateUtils.h>
 
 #include <coreinit/core.h>
 #include <coreinit/dynload.h>

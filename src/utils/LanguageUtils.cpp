@@ -1,30 +1,19 @@
-#include <utils/DrawUtils.h>
 #include <cstdio>
-#include <language.h>
 #include <savemng.h>
+#include <utils/DrawUtils.h>
+#include <utils/LanguageUtils.h>
 
 #include <jansson.h>
 
 #include <coreinit/memdefaultheap.h>
 #include <coreinit/memory.h>
 
-struct MSG;
-typedef struct MSG MSG;
-struct MSG {
-    uint32_t id;
-    const char *msgstr;
-    MSG *next;
-};
+MSG *LanguageUtils::baseMSG = nullptr;
 
-static MSG *baseMSG = NULL;
+Swkbd_LanguageType LanguageUtils::sysLang;
+Swkbd_LanguageType LanguageUtils::loadedLang;
 
-#define HASHMULTIPLIER 31 // or 37
-
-Swkbd_LanguageType sysLang;
-
-Swkbd_LanguageType loadedLang;
-
-void loadLanguage(Swkbd_LanguageType language) {
+void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
     loadedLang = language;
     switch (language) {
         case Swkbd_LanguageType__Japanese:
@@ -79,7 +68,7 @@ void loadLanguage(Swkbd_LanguageType language) {
     }
 }
 
-std::string getLoadedLanguage() {
+std::string LanguageUtils::getLoadedLanguage() {
     switch (loadedLang) {
         case Swkbd_LanguageType__Japanese:
             return gettext("Japanese");
@@ -124,7 +113,7 @@ std::string getLoadedLanguage() {
     }
 }
 
-Swkbd_LanguageType getSystemLanguage() {
+Swkbd_LanguageType LanguageUtils::getSystemLanguage() {
     UCHandle handle = UCOpen();
     if (handle < 1)
         sysLang = Swkbd_LanguageType__English;
@@ -151,16 +140,16 @@ Swkbd_LanguageType getSystemLanguage() {
 }
 
 // Hashing function from https://stackoverflow.com/a/2351171
-static inline uint32_t hash_string(const char *str_param) {
+uint32_t LanguageUtils::hash_string(const char *str_param) {
     uint32_t hash = 0;
 
     while (*str_param != '\0')
-        hash = HASHMULTIPLIER * hash + *str_param++;
+        hash = hashMultiplier * hash + *str_param++;
 
     return hash;
 }
 
-static inline MSG *findMSG(uint32_t id) {
+MSG *LanguageUtils::findMSG(uint32_t id) {
     for (MSG *msg = baseMSG; msg; msg = msg->next)
         if (msg->id == id)
             return msg;
@@ -168,7 +157,7 @@ static inline MSG *findMSG(uint32_t id) {
     return NULL;
 }
 
-static void setMSG(const char *msgid, const char *msgstr) {
+void LanguageUtils::setMSG(const char *msgid, const char *msgstr) {
     if (!msgstr)
         return;
 
@@ -181,7 +170,7 @@ static void setMSG(const char *msgid, const char *msgstr) {
     return;
 }
 
-void gettextCleanUp() {
+void LanguageUtils::gettextCleanUp() {
     while (baseMSG) {
         MSG *nextMsg = baseMSG->next;
         MEMFreeToDefaultHeap((void *) (baseMSG->msgstr));
@@ -190,7 +179,7 @@ void gettextCleanUp() {
     }
 }
 
-bool gettextLoadLanguage(const char *langFile) {
+bool LanguageUtils::gettextLoadLanguage(const char *langFile) {
     uint8_t *buffer;
     int32_t size = loadFile(langFile, &buffer);
     if (buffer == nullptr)
@@ -218,7 +207,7 @@ bool gettextLoadLanguage(const char *langFile) {
     return ret;
 }
 
-const char *gettext(const char *msgid) {
+const char *LanguageUtils::gettext(const char *msgid) {
     MSG *msg = findMSG(hash_string(msgid));
     return msg ? msg->msgstr : msgid;
 }

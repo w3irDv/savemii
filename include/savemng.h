@@ -36,7 +36,7 @@
 #define COLOR_BORDER             Color(204, 204, 204, 255)
 #define COLOR_BORDER_HIGHLIGHTED Color(0x3478e4ff)
 
-typedef struct {
+struct Title {
     uint32_t highID;
     uint32_t lowID;
     uint16_t listID;
@@ -48,29 +48,29 @@ typedef struct {
     bool isTitleDupe;
     uint16_t dupeID;
     uint8_t *iconBuf;
-} Title;
+};
 
-typedef struct {
+struct Saves {
     uint32_t highID;
     uint32_t lowID;
     uint8_t dev;
     bool found;
-} Saves;
+};
 
-typedef struct {
+struct Account {
     char persistentID[9];
     uint32_t pID;
     char miiName[50];
     uint8_t slot;
-} Account;
+};
 
-typedef enum {
+enum Style {
     ST_YES_NO = 1,
     ST_CONFIRM_CANCEL = 2,
     ST_MULTILINE = 16,
     ST_WARNING = 32,
     ST_ERROR = 64
-} Style;
+};
 
 extern Account *wiiuacc;
 extern Account *sdacc;
