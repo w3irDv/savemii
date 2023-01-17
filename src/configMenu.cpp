@@ -1,6 +1,6 @@
 #include <configMenu.h>
 #include <cstring>
-#include <input.h>
+#include <utils/InputUtils.h>
 #include <language.h>
 #include <savemng.h>
 #include <state.h>

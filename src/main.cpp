@@ -1,13 +1,13 @@
 #include <configMenu.h>
 #include <icon.h>
-#include <input.h>
 #include <json.h>
 #include <language.h>
 #include <main.h>
 #include <savemng.h>
 #include <state.h>
-#include <utils/StringUtils.h>
 #include <utils/DrawUtils.h>
+#include <utils/StringUtils.h>
+#include <utils/InputUtils.h>
 
 #include <coreinit/debug.h>
 #include <proc_ui/procui.h>

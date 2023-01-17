@@ -1,4 +1,4 @@
-#include <input.h>
+#include <utils/InputUtils.h>
 
 void Input::read() {
     VPADRead(VPAD_CHAN_0, &vpad_status, 1, &vpad_error);
