@@ -487,7 +487,7 @@ int main() {
             DrawUtils::clear(COLOR_BACKGROUND);
 
             consolePrintPos(0, 0, "SaveMii v%u.%u.%u", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
-            consolePrintPos(0, 1, "----------------------------------------------------------------------------");
+            drawRectFilled(48, 49, 526, 51, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
 
             switch (menu) {
                 case mainMenu: {
@@ -739,7 +739,7 @@ int main() {
                     }
                 } break;
             }
-            consolePrintPos(0, 16, "----------------------------------------------------------------------------");
+            drawRectFilled(48, 406, 526, 408, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
             consolePrintPos(0, 17, gettext("Press \ue044 to exit."));
 
             DrawUtils::endDraw();
