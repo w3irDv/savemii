@@ -581,7 +581,7 @@ static bool removeDir(char *pPath) {
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0) continue;
 
         int len = strlen(pPath);
-        snprintf(pPath + len, PATH_MAX - len, "/%s", data->d_name);
+        snprintf(pPath + len, PATH_SIZE - len, "/%s", data->d_name);
 
         if (data->d_type & DT_DIR) {
             char origPath[PATH_SIZE];
