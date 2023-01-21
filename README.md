@@ -1,4 +1,4 @@
-# SaveMii Wut Port
+# SaveMii WUT Port
 
 Original by Ryuzaki-MrL WUT Port by me
 
@@ -23,7 +23,7 @@ Reasons to use this over original mod:
 Credits:
 
 - Bruno Vinicius, for the icon
-- Maschell, for libmocha
-- Crementif for help with freetype
+- Maschell, for libmocha and countless help
+- Crementif for helping with freetype
 - V10lator for helping with a lot of stuff
 - Vague Rant for testing

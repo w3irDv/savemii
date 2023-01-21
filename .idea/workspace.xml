@@ -20,9 +20,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Reorder imports">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Bump version on meta.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/meta/hbl/meta.xml" beforeDir="false" afterPath="$PROJECT_DIR$/meta/hbl/meta.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +119,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Makefile Application.release">
+  <component name="RunManager" selected="Makefile Application.build">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -160,7 +160,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1674302678421</updated>
-      <workItem from="1674302684584" duration="6813000" />
+      <workItem from="1674302684584" duration="7543000" />
     </task>
     <task id="LOCAL-00001" summary="Fix CLion">
       <created>1674303670718</created>
@@ -232,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674315333125</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Bump version on meta.xml">
+      <created>1674315528965</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1674315528966</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,7 +267,8 @@
     <MESSAGE value="Error handling and more" />
     <MESSAGE value="Remove unused functions" />
     <MESSAGE value="Reorder imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reorder imports" />
+    <MESSAGE value="Bump version on meta.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bump version on meta.xml" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
