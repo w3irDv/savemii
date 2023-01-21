@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <coreinit/debug.h>
 #include <cstring>
 #include <menu/TitleTaskState.h>

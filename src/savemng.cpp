@@ -47,7 +47,7 @@ std::string newlibtoFSA(std::string path) {
 }
 
 int checkEntry(const char *fPath) {
-    struct stat st;
+    struct stat st {};
     if (stat(fPath, &st) == -1)
         return 0;
 
@@ -104,7 +104,7 @@ int32_t loadFile(const char *fPath, uint8_t **buf) {
     int ret = 0;
     FILE *file = fopen(fPath, "rb");
     if (file != nullptr) {
-        struct stat st;
+        struct stat st {};
         stat(fPath, &st);
         int size = st.st_size;
 
@@ -124,7 +124,7 @@ static int32_t loadFilePart(const char *fPath, uint32_t start, uint32_t size, ui
     int ret = 0;
     FILE *file = fopen(fPath, "rb");
     if (file != nullptr) {
-        struct stat st;
+        struct stat st {};
         stat(fPath, &st);
         if ((start + size) > st.st_size) {
             fclose(file);
@@ -304,7 +304,7 @@ bool promptConfirm(Style st, const std::string &question) {
 
     int ret = 0;
     DrawUtils::endDraw();
-    Input input;
+    Input input{};
     while (true) {
         input.read();
         if (input.get(TRIGGER, PAD_BUTTON_A)) {
@@ -413,7 +413,7 @@ void getAccountsSD(Title *title, uint8_t slot) {
 }
 
 static bool readThread(FILE *srcFile, LockingQueue<file_buffer> *ready, LockingQueue<file_buffer> *done) {
-    file_buffer currentBuffer;
+    file_buffer currentBuffer{};
     ready->waitAndPop(currentBuffer);
     while ((currentBuffer.len = fread(currentBuffer.buf, 1, currentBuffer.buf_size, srcFile)) > 0) {
         done->push(currentBuffer);
@@ -425,7 +425,7 @@ static bool readThread(FILE *srcFile, LockingQueue<file_buffer> *ready, LockingQ
 
 static bool writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, LockingQueue<file_buffer> *done, size_t totalSize) {
     uint bytes_written;
-    file_buffer currentBuffer;
+    file_buffer currentBuffer{};
     ready->waitAndPop(currentBuffer);
     written = 0;
     while (currentBuffer.len > 0 && (bytes_written = fwrite(currentBuffer.buf, 1, currentBuffer.len, dstFile)) == currentBuffer.len) {

@@ -20,9 +20,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Rework title loading">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Optimizations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/WiiUTitleListState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/WiiUTitleListState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/vWiiTitleListState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/vWiiTitleListState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674328516680</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Optimizations">
+      <created>1674329364539</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1674329364539</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +294,8 @@
     <MESSAGE value="Bump version on meta.xml" />
     <MESSAGE value="Reduce duplicate code and make some functions return a bool" />
     <MESSAGE value="Rework title loading" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rework title loading" />
+    <MESSAGE value="Optimizations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimizations" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

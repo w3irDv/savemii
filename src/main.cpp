@@ -453,7 +453,7 @@ int main() {
     sortTitle(wiiutitles, wiiutitles + wiiuTitlesCount, 1, true);
     sortTitle(wiititles, wiititles + vWiiTitlesCount, 1, true);
 
-    Input input;
+    Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,
                                                                            vWiiTitlesCount);
     while (State::AppRunning()) {
