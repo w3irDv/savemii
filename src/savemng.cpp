@@ -564,8 +564,8 @@ static int copyDir(std::string pPath, std::string tPath) { // Source: ft2sd
     return 0;
 }
 
-static bool removeDir(char *pPath) {
-    DIR *dir = opendir(pPath);
+static bool removeDir(std::string &pPath) {
+    DIR *dir = opendir(pPath.c_str());
     if (dir == nullptr)
         return false;
 
@@ -577,28 +577,25 @@ static bool removeDir(char *pPath) {
 
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0) continue;
 
-        int len = strlen(pPath);
-        snprintf(pPath + len, PATH_SIZE - len, "/%s", data->d_name);
+        std::string tempPath = pPath + "/" + data->d_name;
 
         if (data->d_type & DT_DIR) {
-            char origPath[PATH_SIZE];
-            sprintf(origPath, "%s", pPath);
-            removeDir(pPath);
+            std::string origPath = tempPath;
+            removeDir(tempPath);
 
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BLACK);
 
             consolePrintPos(-2, 0, LanguageUtils::gettext("Deleting folder %s"), data->d_name);
-            consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), origPath);
-            if (unlink(origPath) == -1) promptError(LanguageUtils::gettext("Failed to delete folder %s\n%s"), origPath, strerror(errno));
+            consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), origPath.c_str());
+            if (unlink(origPath.c_str()) == -1) promptError(LanguageUtils::gettext("Failed to delete folder %s\n%s"), origPath.c_str(), strerror(errno));
         } else {
             consolePrintPos(-2, 0, LanguageUtils::gettext("Deleting file %s"), data->d_name);
-            consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), pPath);
-            if (unlink(pPath) == -1) promptError(LanguageUtils::gettext("Failed to delete file %s\n%s"), pPath, strerror(errno));
+            consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), tempPath.c_str());
+            if (unlink(tempPath.c_str()) == -1) promptError(LanguageUtils::gettext("Failed to delete file %s\n%s"), tempPath.c_str(), strerror(errno));
         }
 
         DrawUtils::endDraw();
-        pPath[len] = 0;
     }
 
     closedir(dir);
@@ -964,40 +961,41 @@ void wipeSavedata(Title *title, int8_t allusers, bool common) {
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
     bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
-    char srcPath[PATH_SIZE];
-    char origPath[PATH_SIZE];
-    char path[PATH_SIZE];
-    strcpy(path, (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save")));
-    sprintf(srcPath, "%s/%08x/%08x/%s", path, highID, lowID, isWii ? "data" : "user");
+    std::string srcPath;
+    std::string origPath;
+    std::string path;
+    path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save") : "storage_mlc01:/usr/save"));
+    srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     if ((allusers > -1) && !isWii) {
-        uint32_t offset = strlen(srcPath);
         if (common) {
-            strcpy(srcPath + offset, "/common");
-            sprintf(origPath, "%s", srcPath);
+            srcPath += "/common";
+            origPath = srcPath;
             if (!removeDir(srcPath))
                 promptError(LanguageUtils::gettext("Common save not found."));
-            if (unlink(origPath) == -1)
+            if (unlink(origPath.c_str()) == -1)
                 promptError(LanguageUtils::gettext("Failed to delete common folder.\n%s"), strerror(errno));
         }
-        sprintf(srcPath + offset, "/%s", wiiuacc[allusers].persistentID);
-        sprintf(origPath, "%s", srcPath);
+        srcPath += "/" + std::string(wiiuacc[allusers].persistentID);
+        origPath = srcPath;
     }
 
     if (!removeDir(srcPath))
         promptError(LanguageUtils::gettext("Failed to delete savefile."));
     if ((allusers > -1) && !isWii) {
-        if (unlink(origPath) == -1)
+        if (unlink(origPath.c_str()) == -1)
             promptError(LanguageUtils::gettext("Failed to delete user folder.\n%s"), strerror(errno));
     }
-    if (strncmp(strchr(srcPath, '_'), "_usb01", 6) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb01");
-    } else if (strncmp(strchr(srcPath, '_'), "_usb02", 6) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb02");
-    } else if (strncmp(strchr(srcPath, '_'), "_mlc", 4) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_mlc01");
-    } else if (strncmp(strchr(srcPath, '_'), "_slccmpt", 8) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
+    std::string volPath = "";
+    if (srcPath.find("_usb01") != std::string::npos) {
+        volPath = "/vol/storage_usb01";
+    } else if (srcPath.find("_usb02") != std::string::npos) {
+        volPath = "/vol/storage_usb02";
+    } else if (srcPath.find("_mlc") != std::string::npos) {
+        volPath = "/vol/storage_mlc01";
+    } else if (srcPath.find("_slccmpt") != std::string::npos) {
+        volPath = "/vol/storage_slccmpt01";
     }
+    FSAFlushVolume(handle, volPath.c_str());
 }
 
 void importFromLoadiine(Title *title, bool common, int version) {
