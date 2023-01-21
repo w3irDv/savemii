@@ -18,16 +18,6 @@
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 
-template<typename T, std::size_t N>
-static bool contains(const T (&array)[N], const T &value) {
-    for (const T &element : array) {
-        if (element == value) {
-            return true;
-        }
-    }
-    return false;
-}
-
 static void disclaimer() {
     consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
@@ -62,7 +52,8 @@ static Title *loadWiiUTitles(int run) {
     for (uint32_t i = 0; i < receivedCount; i++) {
         char *element = tList + (i * 0x61);
         savesl[j].highID = *(uint32_t *) (element);
-        if (contains(highIDs, savesl[j].highID)) {
+        uint32_t currentHighID = savesl[j].highID;
+        if (std::ranges::any_of(highIDs, [&currentHighID](uint32_t i) { return i == currentHighID; })) {
             usable--;
             continue;
         }
@@ -81,9 +72,9 @@ static Title *loadWiiUTitles(int run) {
     int pos = 0;
     auto tNoSave = usable;
     for (int i = 0; i <= 1; i++) {
-        for (uint8_t a = 0; a < 2; a++) {
+        for (unsigned int highID : highIDs) {
             std::string path = StringUtils::stringFormat("%s/usr/save/%08x",
-                                                         (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a]);
+                                                         (i == 0) ? getUSB().c_str() : "storage_mlc01:", highID);
             DIR *dir = opendir(path.c_str());
             if (dir != nullptr) {
                 struct dirent *data;
@@ -92,15 +83,16 @@ static Title *loadWiiUTitles(int run) {
                         continue;
 
                     path = StringUtils::stringFormat("%s/usr/save/%08x/%s/user",
-                                                     (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a],
+                                                     (i == 0) ? getUSB().c_str() : "storage_mlc01:", highID,
                                                      data->d_name);
                     if (checkEntry(path.c_str()) == 2) {
                         path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml",
-                                                         (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a],
+                                                         (i == 0) ? getUSB().c_str() : "storage_mlc01:", highID,
                                                          data->d_name);
                         if (checkEntry(path.c_str()) == 1) {
                             for (unsigned int i = 0; i < usable; i++) {
-                                if (contains(highIDs, savesl[i].highID) &&
+                                uint32_t currentHighID = savesl[i].highID;
+                                if (std::ranges::any_of(highIDs, [&currentHighID](uint32_t i) { return i == currentHighID; }) &&
                                     (strtoul(data->d_name, nullptr, 16) == savesl[i].lowID)) {
                                     savesl[i].found = true;
                                     tNoSave--;
@@ -123,10 +115,10 @@ static Title *loadWiiUTitles(int run) {
         return nullptr;
     }
 
-    for (uint8_t a = 0; a < 2; a++) {
+    for (unsigned int highID : highIDs) {
         for (int i = 0; i <= 1; i++) {
             std::string path = StringUtils::stringFormat("%s/usr/save/%08x",
-                                                         (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a]);
+                                                         (i == 0) ? getUSB().c_str() : "storage_mlc01:", highID);
             DIR *dir = opendir(path.c_str());
             if (dir != nullptr) {
                 struct dirent *data;
@@ -135,10 +127,10 @@ static Title *loadWiiUTitles(int run) {
                         continue;
 
                     path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml",
-                                                     (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a],
+                                                     (i == 0) ? getUSB().c_str() : "storage_mlc01:", highID,
                                                      data->d_name);
                     if (checkEntry(path.c_str()) == 1) {
-                        saves[pos].highID = highIDs[a];
+                        saves[pos].highID = highID;
                         saves[pos].lowID = strtoul(data->d_name, nullptr, 16);
                         saves[pos].dev = i;
                         saves[pos].found = false;
@@ -177,40 +169,40 @@ static Title *loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].saveInit = !saves[i].found;
 
         std::string xmlBuf;
-        uint8_t *xmlBufData = reinterpret_cast<uint8_t *>(xmlBuf.data());
+        auto *xmlBufData = reinterpret_cast<uint8_t *>(xmlBuf.data());
         if (loadFile(path.c_str(), &xmlBufData)) {
             size_t productCodeStart = xmlBuf.find("product_code");
             if (productCodeStart != std::string::npos) {
-                productCodeStart = xmlBuf.find(">", productCodeStart) + 1;
-                size_t productCodeEnd = xmlBuf.find("<", productCodeStart);
-                snprintf(titles[wiiuTitlesCount].productCode, 5, xmlBuf.substr(productCodeStart, productCodeEnd - productCodeStart).c_str());
+                productCodeStart = xmlBuf.find('>', productCodeStart) + 1;
+                size_t productCodeEnd = xmlBuf.find('<', productCodeStart);
+                snprintf(titles[wiiuTitlesCount].productCode, 5, "%s", xmlBuf.substr(productCodeStart, productCodeEnd - productCodeStart).c_str());
             }
 
             std::size_t shortNameStart = xmlBuf.find("shortname_en");
             if (shortNameStart != std::string::npos) {
-                shortNameStart = xmlBuf.find(">", shortNameStart) + 1;
-                size_t shortNameEnd = xmlBuf.find("<", shortNameStart);
-                snprintf(titles[wiiuTitlesCount].shortName, 256, StringUtils::decodeXMLEscapeLine(xmlBuf.substr(shortNameStart, shortNameEnd - shortNameStart)).c_str());
+                shortNameStart = xmlBuf.find('>', shortNameStart) + 1;
+                size_t shortNameEnd = xmlBuf.find('<', shortNameStart);
+                snprintf(titles[wiiuTitlesCount].shortName, 256, "%s", StringUtils::decodeXMLEscapeLine(xmlBuf.substr(shortNameStart, shortNameEnd - shortNameStart)).c_str());
             } else {
                 shortNameStart = xmlBuf.find("shortname_ja");
                 if (shortNameStart != std::string::npos) {
-                    shortNameStart = xmlBuf.find(">", shortNameStart) + 1;
-                    size_t shortNameEnd = xmlBuf.find("<", shortNameStart);
-                    snprintf(titles[wiiuTitlesCount].shortName, 256, StringUtils::decodeXMLEscapeLine(xmlBuf.substr(shortNameStart, shortNameEnd - shortNameStart)).c_str());
+                    shortNameStart = xmlBuf.find('>', shortNameStart) + 1;
+                    size_t shortNameEnd = xmlBuf.find('<', shortNameStart);
+                    snprintf(titles[wiiuTitlesCount].shortName, 256, "%s", StringUtils::decodeXMLEscapeLine(xmlBuf.substr(shortNameStart, shortNameEnd - shortNameStart)).c_str());
                 }
             }
 
             std::size_t longNameStart = xmlBuf.find("longname_en");
             if (longNameStart != std::string::npos) {
-                longNameStart = xmlBuf.find(">", longNameStart) + 1;
-                size_t longNameEnd = xmlBuf.find("<", longNameStart);
-                snprintf(titles[wiiuTitlesCount].longName, 512, StringUtils::decodeXMLEscapeLine(xmlBuf.substr(longNameStart, longNameEnd - longNameStart)).c_str());
+                longNameStart = xmlBuf.find('>', longNameStart) + 1;
+                size_t longNameEnd = xmlBuf.find('<', longNameStart);
+                snprintf(titles[wiiuTitlesCount].longName, 512, "%s", StringUtils::decodeXMLEscapeLine(xmlBuf.substr(longNameStart, longNameEnd - longNameStart)).c_str());
             } else {
                 longNameStart = xmlBuf.find("longname_ja");
                 if (longNameStart != std::string::npos) {
-                    longNameStart = xmlBuf.find(">", longNameStart) + 1;
-                    size_t longNameEnd = xmlBuf.find("<", longNameStart);
-                    snprintf(titles[wiiuTitlesCount].longName, 512, StringUtils::decodeXMLEscapeLine(xmlBuf.substr(longNameStart, longNameEnd - longNameStart)).c_str());
+                    longNameStart = xmlBuf.find('>', longNameStart) + 1;
+                    size_t longNameEnd = xmlBuf.find('<', longNameStart);
+                    snprintf(titles[wiiuTitlesCount].longName, 512, "%s", StringUtils::decodeXMLEscapeLine(xmlBuf.substr(longNameStart, longNameEnd - longNameStart)).c_str());
                 }
             }
         }
@@ -256,14 +248,14 @@ static Title *loadWiiTitles() {
     uint32_t blacklist[7][2] = {{0x00010000, 0x00555044}, {0x00010000, 0x00555045}, {0x00010000, 0x0055504A}, {0x00010000, 0x524F4E45}, {0x00010000, 0x52543445}, {0x00010001, 0x48424344}, {0x00010001, 0x554E454F}};
 
     std::string pathW;
-    for (int k = 0; k < 3; k++) {
-        pathW = StringUtils::stringFormat("storage_slccmpt01:/title/%s", highIDs[k]);
+    for (auto &highID : highIDs) {
+        pathW = StringUtils::stringFormat("storage_slccmpt01:/title/%s", highID);
         DIR *dir = opendir(pathW.c_str());
         if (dir != nullptr) {
             struct dirent *data;
             while ((data = readdir(dir)) != nullptr) {
                 for (auto blacklistedID : blacklist) {
-                    if (blacklistedID[0] == strtoul(highIDs[k], nullptr, 16)) {
+                    if (blacklistedID[0] == strtoul(highID, nullptr, 16)) {
                         if (blacklistedID[1] == strtoul(data->d_name, nullptr, 16)) {
                             found = true;
                             break;
@@ -290,15 +282,15 @@ static Title *loadWiiTitles() {
     }
 
     int i = 0;
-    for (int k = 0; k < 3; k++) {
-        pathW = StringUtils::stringFormat("storage_slccmpt01:/title/%s", highIDs[k]);
+    for (auto &highID : highIDs) {
+        pathW = StringUtils::stringFormat("storage_slccmpt01:/title/%s", highID);
         DIR *dir = opendir(pathW.c_str());
         if (dir != nullptr) {
             struct dirent *data;
             while ((data = readdir(dir)) != nullptr) {
-                for (int ii = 0; ii < 7; ii++) {
-                    if (blacklist[ii][0] == strtoul(highIDs[k], nullptr, 16)) {
-                        if (blacklist[ii][1] == strtoul(data->d_name, nullptr, 16)) {
+                for (auto &blacklistedID : blacklist) {
+                    if (blacklistedID[0] == strtoul(highID, nullptr, 16)) {
+                        if (blacklistedID[1] == strtoul(data->d_name, nullptr, 16)) {
                             found = true;
                             break;
                         }
@@ -310,7 +302,7 @@ static Title *loadWiiTitles() {
                 }
 
                 const std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%s/%s/data/banner.bin",
-                                                                   highIDs[k], data->d_name);
+                                                                   highID, data->d_name);
                 FILE *file = fopen(path.c_str(), "rb");
                 if (file != nullptr) {
                     fseek(file, 0x20, SEEK_SET);
@@ -356,13 +348,13 @@ static Title *loadWiiTitles() {
                     }
                     fclose(file);
                 } else {
-                    sprintf(titles[i].shortName, LanguageUtils::gettext("%s%s (No banner.bin)"), highIDs[k],
+                    sprintf(titles[i].shortName, LanguageUtils::gettext("%s%s (No banner.bin)"), highID,
                             data->d_name);
                     memset(titles[i].longName, 0, sizeof(titles[i].longName));
                     titles[i].saveInit = false;
                 }
 
-                titles[i].highID = strtoul(highIDs[k], nullptr, 16);
+                titles[i].highID = strtoul(highID, nullptr, 16);
                 titles[i].lowID = strtoul(data->d_name, nullptr, 16);
 
                 titles[i].listID = i;

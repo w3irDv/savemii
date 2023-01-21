@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Reduce duplicate code and make some functions return a bool">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Rework title loading">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
@@ -246,7 +246,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674324548286</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Rework title loading">
+      <created>1674328516680</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1674328516680</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,7 +283,8 @@
     <MESSAGE value="Reorder imports" />
     <MESSAGE value="Bump version on meta.xml" />
     <MESSAGE value="Reduce duplicate code and make some functions return a bool" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reduce duplicate code and make some functions return a bool" />
+    <MESSAGE value="Rework title loading" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rework title loading" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
