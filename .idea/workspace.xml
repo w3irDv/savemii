@@ -20,28 +20,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Remove unused functions">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Reorder imports">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/menu/BatchBackupState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/BatchBackupState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/menu/ConfigMenuState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/ConfigMenuState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/menu/MainMenuState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/MainMenuState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/menu/TitleOptionsState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/TitleOptionsState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/menu/TitleTaskState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/TitleTaskState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/menu/WiiUTitleListState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/WiiUTitleListState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/menu/vWiiTitleListState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/vWiiTitleListState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/savemng.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/savemng.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/utils/DrawUtils.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils/DrawUtils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/utils/LanguageUtils.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils/LanguageUtils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/BatchBackupState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/BatchBackupState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/MainMenuState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MainMenuState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/WiiUTitleListState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/WiiUTitleListState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/vWiiTitleListState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/vWiiTitleListState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/DrawUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/DrawUtils.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/LanguageUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/LanguageUtils.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/StateUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/StateUtils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/meta/hbl/meta.xml" beforeDir="false" afterPath="$PROJECT_DIR$/meta/hbl/meta.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +119,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Makefile Application.build">
+  <component name="RunManager" selected="Makefile Application.release">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -179,7 +160,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1674302678421</updated>
-      <workItem from="1674302684584" duration="6628000" />
+      <workItem from="1674302684584" duration="6813000" />
     </task>
     <task id="LOCAL-00001" summary="Fix CLion">
       <created>1674303670718</created>
@@ -244,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674314783679</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Reorder imports">
+      <created>1674315333125</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1674315333125</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -271,7 +259,8 @@
     <MESSAGE value="Make some arguments const" />
     <MESSAGE value="Error handling and more" />
     <MESSAGE value="Remove unused functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove unused functions" />
+    <MESSAGE value="Reorder imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reorder imports" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
