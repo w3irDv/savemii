@@ -5,10 +5,10 @@
 #include <LockingQueue.h>
 #include <chrono>
 #include <future>
-#include <utils/LanguageUtils.h>
-#include <utils/StringUtils.h>
 #include <savemng.h>
 #include <sys/stat.h>
+#include <utils/LanguageUtils.h>
+#include <utils/StringUtils.h>
 
 #include "fatfs/extusb_devoptab/extusb_devoptab.h"
 
@@ -19,7 +19,6 @@ Account *wiiuacc;
 Account *sdacc;
 uint8_t wiiuaccn = 0, sdaccn = 5;
 
-std::chrono::system_clock::time_point oneSecond = std::chrono::system_clock::now() + std::chrono::seconds(1);
 static size_t written = 0;
 
 static FSAClientHandle handle;
@@ -35,8 +34,6 @@ struct file_buffer {
 static file_buffer buffers[16];
 static char *fileBuf[2];
 static bool buffersInitialized = false;
-
-extern "C" FSClient *__wut_devoptab_fs_client;
 
 std::string newlibtoFSA(std::string path) {
     if (path.rfind("storage_slccmpt01:", 0) == 0) {
@@ -99,7 +96,7 @@ std::string getUSB() {
     return usb;
 }
 
-static void showFileOperation(std::string file_name, std::string file_src, std::string file_dest) {
+static void showFileOperation(const std::string &file_name, const std::string &file_src, const std::string &file_dest) {
     consolePrintPos(-2, 0, LanguageUtils::gettext("Copying file: %s"), file_name.c_str());
     consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: %s"), file_src.c_str());
     consolePrintPosMultiline(-2, 8, LanguageUtils::gettext("To: %s"), file_dest.c_str());
@@ -187,7 +184,7 @@ static bool folderEmpty(const char *fPath) {
             break;
 
     closedir(dir);
-    return c < 3 ? true : false;
+    return c < 3;
 }
 
 static bool createFolder(const char *fPath) { //Adapted from mkdir_p made by JonathonReinhart
@@ -222,7 +219,7 @@ static bool createFolder(const char *fPath) { //Adapted from mkdir_p made by Jon
 }
 
 void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) {
-    char *tmp = NULL;
+    char *tmp = nullptr;
     int x = 0;
     y += Y_OFF;
 
@@ -293,7 +290,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     tmp.shrink_to_fit();
 }
 
-bool promptConfirm(Style st, std::string question) {
+bool promptConfirm(Style st, const std::string &question) {
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     DrawUtils::setFontColor(COLOR_TEXT);
@@ -489,7 +486,7 @@ static bool copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, std
         showFileOperation(basename(pPath.c_str()), pPath, oPath);
         consolePrintPos(-2, 15, "Bytes Copied: %d of %d (%i kB/s)", written, totalSize, (uint32_t) (((uint64_t) written * 1000) / ((uint64_t) 1024 * passedMs)));
         DrawUtils::endDraw();
-    } while (std::future_status::ready != writeFut.wait_until(oneSecond));
+    } while (std::future_status::ready != writeFut.wait_for(std::chrono::milliseconds(0)));
     bool success = readFut.get() && writeFut.get();
     return success;
 }
@@ -569,12 +566,12 @@ static int copyDir(std::string pPath, std::string tPath) { // Source: ft2sd
 
 static bool removeDir(char *pPath) {
     DIR *dir = opendir(pPath);
-    if (dir == NULL)
+    if (dir == nullptr)
         return false;
 
     struct dirent *data;
 
-    while ((data = readdir(dir)) != NULL) {
+    while ((data = readdir(dir)) != nullptr) {
         DrawUtils::beginDraw();
         DrawUtils::clear(COLOR_BLACK);
 
@@ -839,7 +836,7 @@ void backupAllSave(Title *titles, int count, OSCalendarTime *date) {
     }
 
     std::string datetime = StringUtils::stringFormat("%04d-%02d-%02dT%02d%02d%02d", dateTime.tm_year, dateTime.tm_mon, dateTime.tm_mday,
-                                        dateTime.tm_hour, dateTime.tm_min, dateTime.tm_sec);
+                                                     dateTime.tm_hour, dateTime.tm_min, dateTime.tm_sec);
     for (int i = 0; i < count; i++) {
         if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
             continue;
