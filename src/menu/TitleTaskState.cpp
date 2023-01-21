@@ -1,11 +1,10 @@
+#include <coreinit/debug.h>
 #include <cstring>
 #include <menu/TitleOptionsState.h>
 #include <menu/TitleTaskState.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-
-#include <coreinit/debug.h>
 
 static int cursorPos = 0;
 static int entrycount;

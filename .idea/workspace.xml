@@ -20,18 +20,28 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Make some arguments const">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Remove unused functions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/menu/BatchBackupState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/BatchBackupState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/menu/ConfigMenuState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/ConfigMenuState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/menu/MainMenuState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/MainMenuState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/menu/TitleOptionsState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/TitleOptionsState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/menu/TitleTaskState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/TitleTaskState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/menu/WiiUTitleListState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/WiiUTitleListState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/menu/vWiiTitleListState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/menu/vWiiTitleListState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/savemng.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/savemng.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/utils/DrawUtils.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils/DrawUtils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/date.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/date.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/utils/LanguageUtils.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils/LanguageUtils.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/TitleOptionsState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TitleOptionsState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/BatchBackupState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/BatchBackupState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/MainMenuState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MainMenuState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/menu/WiiUTitleListState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/WiiUTitleListState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/menu/vWiiTitleListState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/vWiiTitleListState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/DrawUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/DrawUtils.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/LanguageUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/LanguageUtils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/StateUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/StateUtils.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +52,9 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
@@ -94,6 +107,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2023" />
@@ -117,7 +133,8 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "MakefileSettings",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "actions.on.save",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -162,7 +179,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1674302678421</updated>
-      <workItem from="1674302684584" duration="5796000" />
+      <workItem from="1674302684584" duration="6628000" />
     </task>
     <task id="LOCAL-00001" summary="Fix CLion">
       <created>1674303670718</created>
@@ -213,7 +230,21 @@
       <option name="project" value="LOCAL" />
       <updated>1674313654181</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Error handling and more">
+      <created>1674314560939</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1674314560939</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Remove unused functions">
+      <created>1674314783679</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1674314783679</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,7 +269,9 @@
     <MESSAGE value="Remove useless cast" />
     <MESSAGE value="Forgot one" />
     <MESSAGE value="Make some arguments const" />
-    <option name="LAST_COMMIT_MESSAGE" value="Make some arguments const" />
+    <MESSAGE value="Error handling and more" />
+    <MESSAGE value="Remove unused functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove unused functions" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

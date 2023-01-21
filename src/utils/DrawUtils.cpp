@@ -1,12 +1,10 @@
-#include <tga_reader.h>
-#include <utils/DrawUtils.h>
-
 #include <coreinit/cache.h>
 #include <coreinit/screen.h>
 #include <cstdlib>
-#include <memory>
-
 #include <cstring>
+#include <memory>
+#include <tga_reader.h>
+#include <utils/DrawUtils.h>
 
 
 // buffer width

@@ -1,12 +1,10 @@
 #pragma once
 
 #include <ApplicationState.h>
+#include <memory>
+#include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-
-#include <savemng.h>
-
-#include <memory>
 #include <vector>
 
 class WiiUTitleListState : public ApplicationState {

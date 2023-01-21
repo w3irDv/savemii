@@ -1,14 +1,12 @@
+#include <coreinit/debug.h>
 #include <menu/BatchBackupState.h>
 #include <menu/ConfigMenuState.h>
 #include <menu/MainMenuState.h>
 #include <menu/WiiUTitleListState.h>
 #include <menu/vWiiTitleListState.h>
-
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-
-#include <coreinit/debug.h>
 
 #define ENTRYCOUNT 3
 

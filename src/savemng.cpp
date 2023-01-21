@@ -1,16 +1,14 @@
-#include <cstring>
-#include <date.h>
-#include <nn/act/client_cpp.h>
-
+#include "fatfs/extusb_devoptab/extusb_devoptab.h"
 #include <LockingQueue.h>
 #include <chrono>
+#include <cstring>
+#include <date.h>
 #include <future>
+#include <nn/act/client_cpp.h>
 #include <savemng.h>
 #include <sys/stat.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
-
-#include "fatfs/extusb_devoptab/extusb_devoptab.h"
 
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
 
@@ -225,7 +223,7 @@ void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *f
                 x = (853 - DrawUtils::getTextWidth(tmp)) / 2;
                 break;
         }
-        DrawUtils::print(x, (y + 1) * 24,tmp);
+        DrawUtils::print(x, (y + 1) * 24, tmp);
     }
     va_end(va);
     if (tmp) free(tmp);
@@ -439,7 +437,7 @@ static bool writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, Locking
     return ferror(dstFile) == 0;
 }
 
-static bool copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, const std::string& pPath, const std::string& oPath) {
+static bool copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, const std::string &pPath, const std::string &oPath) {
     LockingQueue<file_buffer> read;
     LockingQueue<file_buffer> write;
     for (auto &buffer : buffers) {
@@ -483,7 +481,7 @@ static inline size_t getFilesize(FILE *fp) {
     return fsize;
 }
 
-static bool copyFile(const std::string& pPath, const std::string& oPath) {
+static bool copyFile(const std::string &pPath, const std::string &oPath) {
     if (pPath.find("savemiiMeta.json") != std::string::npos)
         return true;
     FILE *source = fopen(pPath.c_str(), "rb");
@@ -508,7 +506,7 @@ static bool copyFile(const std::string& pPath, const std::string& oPath) {
     return true;
 }
 
-static int copyDir(const std::string& pPath, const std::string& tPath) { // Source: ft2sd
+static int copyDir(const std::string &pPath, const std::string &tPath) { // Source: ft2sd
     DIR *dir = opendir(pPath.c_str());
     if (dir == nullptr)
         return -1;
@@ -565,7 +563,7 @@ static bool removeDir(const std::string &pPath) {
         std::string tempPath = pPath + "/" + data->d_name;
 
         if (data->d_type & DT_DIR) {
-            const std::string& origPath = tempPath;
+            const std::string &origPath = tempPath;
             removeDir(tempPath);
 
             DrawUtils::beginDraw();

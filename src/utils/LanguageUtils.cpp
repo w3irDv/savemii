@@ -1,10 +1,8 @@
+#include <coreinit/memdefaultheap.h>
+#include <jansson.h>
 #include <savemng.h>
 #include <utils/DrawUtils.h>
 #include <utils/LanguageUtils.h>
-
-#include <jansson.h>
-
-#include <coreinit/memdefaultheap.h>
 
 MSG *LanguageUtils::baseMSG = nullptr;
 

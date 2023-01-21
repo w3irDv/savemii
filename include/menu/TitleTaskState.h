@@ -1,11 +1,9 @@
 #pragma once
 
 #include <ApplicationState.h>
-#include <utils/InputUtils.h>
-
-#include <savemng.h>
-
 #include <memory>
+#include <savemng.h>
+#include <utils/InputUtils.h>
 
 class TitleTaskState : public ApplicationState {
 public:

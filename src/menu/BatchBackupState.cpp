@@ -1,9 +1,8 @@
+#include <coreinit/time.h>
 #include <menu/BatchBackupState.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-
-#include <coreinit/time.h>
 
 #define ENTRYCOUNT 3
 

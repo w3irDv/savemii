@@ -1,14 +1,12 @@
 #pragma once
 
-#include <romfs-wiiu.h>
-#include <string>
-#include <wut_types.h>
-
 #include <coreinit/memdefaultheap.h>
 #include <coreinit/time.h>
 #include <coreinit/userconfig.h>
-
 #include <cstring>
+#include <romfs-wiiu.h>
+#include <string>
+#include <wut_types.h>
 
 typedef enum {
     Swkbd_LanguageType__Japanese = 0,

@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <coreinit/debug.h>
 #include <cstring>
 #include <menu/TitleTaskState.h>
 #include <menu/WiiUTitleListState.h>
@@ -5,10 +7,6 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
-
-#include <algorithm>
-
-#include <coreinit/debug.h>
 
 #define MAX_TITLE_SHOW 14
 static int cursorPos = 0;

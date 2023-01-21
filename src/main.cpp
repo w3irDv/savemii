@@ -1,26 +1,22 @@
-#include <cstdlib>
-#include <cstring>
-#include <malloc.h>
-
 #include <algorithm>
 #include <array>
-
+#include <coreinit/debug.h>
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
-#include <padscore/kpad.h>
-
+#include <cstdlib>
+#include <cstring>
 #include <icon.h>
+#include <malloc.h>
 #include <menu/MainMenuState.h>
+#include <padscore/kpad.h>
 #include <savemng.h>
+#include <sndcore2/core.h>
 #include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
 #include <utils/StringUtils.h>
 #include <version.h>
-
-#include <coreinit/debug.h>
-#include <sndcore2/core.h>
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 

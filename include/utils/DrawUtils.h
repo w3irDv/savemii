@@ -1,8 +1,7 @@
 #pragma once
 
-#include <coreinit/memory.h>
-
 #include "schrift.h"
+#include <coreinit/memory.h>
 #include <cstdint>
 
 // visible screen sizes

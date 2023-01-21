@@ -1,9 +1,8 @@
 #pragma once
 
 #include <ApplicationState.h>
-#include <utils/InputUtils.h>
-
 #include <memory>
+#include <utils/InputUtils.h>
 
 class ConfigMenuState : public ApplicationState {
 public:

@@ -1,9 +1,8 @@
-#include <utils/StateUtils.h>
-
 #include <coreinit/core.h>
 #include <coreinit/dynload.h>
 #include <coreinit/foreground.h>
 #include <proc_ui/procui.h>
+#include <utils/StateUtils.h>
 #include <whb/proc.h>
 
 bool State::aroma = false;

@@ -1,13 +1,11 @@
+#include <algorithm>
+#include <coreinit/debug.h>
 #include <cstring>
 #include <menu/TitleTaskState.h>
 #include <menu/vWiiTitleListState.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-
-#include <algorithm>
-
-#include <coreinit/debug.h>
 
 #define MAX_TITLE_SHOW 14
 static int cursorPos = 0;
