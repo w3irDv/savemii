@@ -2,6 +2,7 @@
 
 #define __STDC_WANT_LIB_EXT2__ 1
 
+#include <algorithm>
 #include <coreinit/filesystem_fsa.h>
 #include <coreinit/mcp.h>
 #include <coreinit/memdefaultheap.h>
@@ -12,6 +13,7 @@
 #include <mocha/mocha.h>
 #include <string>
 #include <sys/stat.h>
+#include <tuple>
 #include <unistd.h>
 #include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
@@ -66,8 +68,49 @@ extern Account *wiiuacc;
 extern Account *sdacc;
 extern uint8_t wiiuaccn, sdaccn;
 
+template<class It>
+void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
+    switch (tsort) {
+        case 0:
+            std::ranges::sort(titles, last, std::ranges::less{}, &Title::listID);
+            break;
+        case 1: {
+            const auto proj = [](const Title &title) {
+                return std::string_view(title.shortName);
+            };
+            if (sortAscending) {
+                std::ranges::sort(titles, last, std::ranges::less{}, proj);
+            } else {
+                std::ranges::sort(titles, last, std::ranges::greater{}, proj);
+            }
+            break;
+        }
+        case 2:
+            if (sortAscending) {
+                std::ranges::sort(titles, last, std::ranges::less{}, &Title::isTitleOnUSB);
+            } else {
+                std::ranges::sort(titles, last, std::ranges::greater{}, &Title::isTitleOnUSB);
+            }
+            break;
+        case 3: {
+            const auto proj = [](const Title &title) {
+                return std::make_tuple(title.isTitleOnUSB,
+                                       std::string_view(title.shortName));
+            };
+            if (sortAscending) {
+                std::ranges::sort(titles, last, std::ranges::less{}, proj);
+            } else {
+                std::ranges::sort(titles, last, std::ranges::greater{}, proj);
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 bool initFS() __attribute__((__cold__));
-void deinitFS() __attribute__((__cold__));
+void shutdownFS() __attribute__((__cold__));
 std::string getUSB();
 void consolePrintPos(int x, int y, const char *format, ...) __attribute__((hot));
 bool promptConfirm(Style st, const std::string &question);
@@ -75,7 +118,7 @@ void promptError(const char *message, ...);
 void getAccountsWiiU();
 void getAccountsSD(Title *title, uint8_t slot);
 bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version);
-int getLoadiineGameSaveDir(char *out, const char *productCode, const char *longName, const uint32_t highID, const uint32_t lowID);
+bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *longName, const uint32_t highID, const uint32_t lowID);
 bool getLoadiineSaveVersionList(int *out, const char *gamePath);
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot);
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version);

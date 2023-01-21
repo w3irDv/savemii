@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <array>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
@@ -19,47 +18,6 @@
 #include <version.h>
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
-
-template<class It>
-static void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
-    switch (tsort) {
-        case 0:
-            std::ranges::sort(titles, last, std::ranges::less{}, &Title::listID);
-            break;
-        case 1: {
-            const auto proj = [](const Title &title) {
-                return std::string_view(title.shortName);
-            };
-            if (sortAscending) {
-                std::ranges::sort(titles, last, std::ranges::less{}, proj);
-            } else {
-                std::ranges::sort(titles, last, std::ranges::greater{}, proj);
-            }
-            break;
-        }
-        case 2:
-            if (sortAscending) {
-                std::ranges::sort(titles, last, std::ranges::less{}, &Title::isTitleOnUSB);
-            } else {
-                std::ranges::sort(titles, last, std::ranges::greater{}, &Title::isTitleOnUSB);
-            }
-            break;
-        case 3: {
-            const auto proj = [](const Title &title) {
-                return std::make_tuple(title.isTitleOnUSB,
-                                       std::string_view(title.shortName));
-            };
-            if (sortAscending) {
-                std::ranges::sort(titles, last, std::ranges::less{}, proj);
-            } else {
-                std::ranges::sort(titles, last, std::ranges::greater{}, proj);
-            }
-            break;
-        }
-        default:
-            break;
-    }
-}
 
 static void disclaimer() {
     consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
@@ -516,7 +474,7 @@ int main() {
     unloadTitles(wiiutitles, wiiuTitlesCount);
     unloadTitles(wiititles, vWiiTitlesCount);
 
-    deinitFS();
+    shutdownFS();
     LanguageUtils::gettextCleanUp();
     romfsExit();
 

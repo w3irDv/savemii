@@ -79,7 +79,7 @@ bool initFS() {
     return false;
 }
 
-void deinitFS() {
+void shutdownFS() {
     fini_extusb_devoptab();
     Mocha_UnmountFS("storage_slccmpt01");
     Mocha_UnmountFS("storage_mlc01");
@@ -506,10 +506,10 @@ static bool copyFile(const std::string &pPath, const std::string &oPath) {
     return true;
 }
 
-static int copyDir(const std::string &pPath, const std::string &tPath) { // Source: ft2sd
+static bool copyDir(const std::string &pPath, const std::string &tPath) { // Source: ft2sd
     DIR *dir = opendir(pPath.c_str());
     if (dir == nullptr)
-        return -1;
+        return false;
 
     mkdir(tPath.c_str(), 0x666);
     FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
@@ -527,9 +527,9 @@ static int copyDir(const std::string &pPath, const std::string &tPath) { // Sour
         if ((data->d_type & DT_DIR) != 0) {
             mkdir(targetPath.c_str(), 0x666);
             FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x666);
-            if (copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath) != 0) {
+            if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 closedir(dir);
-                return -2;
+                return false;
             }
         } else {
             p1 = data->d_name;
@@ -537,14 +537,14 @@ static int copyDir(const std::string &pPath, const std::string &tPath) { // Sour
 
             if (!copyFile(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 closedir(dir);
-                return -3;
+                return false;
             }
         }
     }
 
     closedir(dir);
 
-    return 0;
+    return true;
 }
 
 static bool removeDir(const std::string &pPath) {
@@ -596,24 +596,24 @@ static std::string getUserID() { // Source: loadiine_gx2
     return out;
 }
 
-int getLoadiineGameSaveDir(char *out, const char *productCode, const char *longName, const uint32_t highID, const uint32_t lowID) {
+bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *longName, const uint32_t highID, const uint32_t lowID) {
     DIR *dir = opendir("sd:/wiiu/saves");
 
     if (dir == nullptr)
-        return -1;
+        return false;
 
     struct dirent *data;
     while ((data = readdir(dir)) != nullptr) {
         if (((data->d_type & DT_DIR) != 0) && ((strstr(data->d_name, productCode) != nullptr) || (strstr(data->d_name, StringUtils::stringFormat("%s [%08x%08x]", longName, highID, lowID).c_str()) != nullptr))) {
             sprintf(out, "sd:/wiiu/saves/%s", data->d_name);
             closedir(dir);
-            return 0;
+            return true;
         }
     }
 
     promptError(LanguageUtils::gettext("Loadiine game folder not found."));
     closedir(dir);
-    return -2;
+    return false;
 }
 
 bool getLoadiineSaveVersionList(int *out, const char *gamePath) {
@@ -699,7 +699,7 @@ bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
             if (!iine) {
                 sprintf(srcPath, "sd:/wiiu/backups/%08x%08x/%u/%08X", highID, lowID, slot, user);
             } else {
-                if (getLoadiineGameSaveDir(srcPath, title->productCode, title->longName, title->highID, title->lowID) != 0) {
+                if (!getLoadiineGameSaveDir(srcPath, title->productCode, title->longName, title->highID, title->lowID)) {
                     return false;
                 }
                 if (version != 0) {
@@ -747,7 +747,7 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
         if (!iine) {
             srcPath = StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u/common", highID, lowID, slot);
         } else {
-            if (getLoadiineGameSaveDir(srcPath.data(), title->productCode, title->longName, title->highID, title->lowID) != 0)
+            if (!getLoadiineGameSaveDir(srcPath.data(), title->productCode, title->longName, title->highID, title->lowID))
                 return false;
             if (version != 0)
                 srcPath.append(StringUtils::stringFormat("/v%u", version));
@@ -784,11 +784,11 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
 
     if (allusers > -1)
         if (common)
-            if (copyDir(srcPath + "/common", dstPath + "/common") != 0)
+            if (!copyDir(srcPath + "/common", dstPath + "/common"))
                 promptError(LanguageUtils::gettext("Common save not found."));
 
-    if (copyDir(srcPath + StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID),
-                dstPath + StringUtils::stringFormat("/%s", wiiuacc[allusers_d].persistentID)) != 0)
+    if (!copyDir(srcPath + StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID),
+                 dstPath + StringUtils::stringFormat("/%s", wiiuacc[allusers_d].persistentID)))
         promptError(LanguageUtils::gettext("Copy failed."));
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
@@ -830,7 +830,7 @@ void backupAllSave(Title *titles, int count, OSCalendarTime *date) {
         std::string dstPath = StringUtils::stringFormat("sd:/wiiu/backups/batch/%s/0/%08x%08x", datetime.c_str(), highID, lowID);
 
         createFolder(dstPath.c_str());
-        if (copyDir(srcPath, dstPath) != 0)
+        if (!copyDir(srcPath, dstPath))
             promptError(LanguageUtils::gettext("Backup failed."));
     }
 }
@@ -857,7 +857,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
         if (common) {
             srcPath.append("/common");
             dstPath.append("/common");
-            if (copyDir(srcPath, dstPath) != 0)
+            if (!copyDir(srcPath, dstPath))
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
@@ -867,7 +867,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
             return;
         }
     }
-    if (copyDir(srcPath, dstPath) != 0)
+    if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
     OSCalendarTime now;
     OSTicksToCalendarTime(OSGetTime(), &now);
@@ -913,14 +913,14 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         if (common) {
             srcPath.append("/common");
             dstPath.append("/common");
-            if (copyDir(srcPath, dstPath) != 0)
+            if (!copyDir(srcPath, dstPath))
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", sdacc[sdusers].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
     }
 
-    if (copyDir(srcPath, dstPath) != 0)
+    if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
@@ -992,7 +992,7 @@ void importFromLoadiine(Title *title, bool common, int version) {
     bool isUSB = title->isTitleOnUSB;
     char srcPath[PATH_SIZE];
     char dstPath[PATH_SIZE];
-    if (getLoadiineGameSaveDir(srcPath, title->productCode, title->longName, title->highID, title->lowID) != 0)
+    if (!getLoadiineGameSaveDir(srcPath, title->productCode, title->longName, title->highID, title->lowID))
         return;
     if (version != 0)
         sprintf(srcPath + strlen(srcPath), "/v%i", version);
@@ -1003,12 +1003,12 @@ void importFromLoadiine(Title *title, bool common, int version) {
     createFolder(dstPath);
     uint32_t dstOffset = strlen(dstPath);
     sprintf(dstPath + dstOffset, "/%s", usrPath);
-    if (copyDir(srcPath, dstPath) != 0)
+    if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Failed to import savedata from loadiine."));
     if (common) {
         strcpy(srcPath + srcOffset, "/c\0");
         strcpy(dstPath + dstOffset, "/common\0");
-        if (copyDir(srcPath, dstPath) != 0)
+        if (!copyDir(srcPath, dstPath))
             promptError(LanguageUtils::gettext("Common save not found."));
     }
 }
@@ -1021,7 +1021,7 @@ void exportToLoadiine(Title *title, bool common, int version) {
     bool isUSB = title->isTitleOnUSB;
     char srcPath[PATH_SIZE];
     char dstPath[PATH_SIZE];
-    if (getLoadiineGameSaveDir(dstPath, title->productCode, title->longName, title->highID, title->lowID) != 0)
+    if (!getLoadiineGameSaveDir(dstPath, title->productCode, title->longName, title->highID, title->lowID))
         return;
     if (version != 0)
         sprintf(dstPath + strlen(dstPath), "/v%u", version);
@@ -1032,12 +1032,12 @@ void exportToLoadiine(Title *title, bool common, int version) {
     uint32_t srcOffset = strlen(srcPath);
     sprintf(srcPath + srcOffset, "/%s", usrPath);
     createFolder(dstPath);
-    if (copyDir(srcPath, dstPath) != 0)
+    if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Failed to export savedata to loadiine."));
     if (common) {
         strcpy(dstPath + dstOffset, "/c\0");
         strcpy(srcPath + srcOffset, "/common\0");
-        if (copyDir(srcPath, dstPath) != 0)
+        if (!copyDir(srcPath, dstPath))
             promptError(LanguageUtils::gettext("Common save not found."));
     }
 }
