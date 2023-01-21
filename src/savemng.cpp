@@ -191,7 +191,7 @@ static bool createFolder(const char *path) {
     std::string strPath(path);
     size_t pos = 0;
     std::string dir;
-    while ((pos = strPath.find("/", pos + 1)) != std::string::npos) {
+    while ((pos = strPath.find('/', pos + 1)) != std::string::npos) {
         dir = strPath.substr(0, pos);
         if (mkdir(dir.c_str(), 0x666) != 0 && errno != EEXIST)
             return false;
@@ -439,7 +439,7 @@ static bool writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, Locking
     return ferror(dstFile) == 0;
 }
 
-static bool copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, std::string pPath, std::string oPath) {
+static bool copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, const std::string& pPath, const std::string& oPath) {
     LockingQueue<file_buffer> read;
     LockingQueue<file_buffer> write;
     for (auto &buffer : buffers) {
@@ -565,7 +565,7 @@ static bool removeDir(const std::string &pPath) {
         std::string tempPath = pPath + "/" + data->d_name;
 
         if (data->d_type & DT_DIR) {
-            std::string origPath = tempPath;
+            const std::string& origPath = tempPath;
             removeDir(tempPath);
 
             DrawUtils::beginDraw();
@@ -970,7 +970,7 @@ void wipeSavedata(Title *title, int8_t allusers, bool common) {
         if (unlink(origPath.c_str()) == -1)
             promptError(LanguageUtils::gettext("Failed to delete user folder.\n%s"), strerror(errno));
     }
-    std::string volPath = "";
+    std::string volPath;
     if (srcPath.find("_usb01") != std::string::npos) {
         volPath = "/vol/storage_usb01";
     } else if (srcPath.find("_usb02") != std::string::npos) {

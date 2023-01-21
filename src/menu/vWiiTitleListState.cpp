@@ -67,7 +67,7 @@ void vWiiTitleListState::render() {
             this->noTitles = true;
         }
         consolePrintPos(39, 0, LanguageUtils::gettext("%s Sort: %s \ue084"),
-                        (titleSort > 0) ? ((sortAscending == true) ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
+                        (titleSort > 0) ? (sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         for (int i = 0; i < 14; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= this->titlesCount)
                 break;

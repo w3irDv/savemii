@@ -195,6 +195,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case 3:
                     common ^= 1;
                     break;
+                default:
+                    break;
             }
         } else if (this->task == restore) {
             switch (cursorPos) {
@@ -213,6 +215,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case 3:
                     common ^= 1;
                     break;
+                default:
+                    break;
             }
         } else if (this->task == wipe) {
             switch (cursorPos) {
@@ -224,6 +228,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case 2:
                     common ^= 1;
                     break;
+                default:
+                    break;
             }
         } else if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
             switch (cursorPos) {
@@ -232,6 +238,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 case 1:
                     common ^= 1;
+                    break;
+                default:
                     break;
             }
         } else {
@@ -244,6 +252,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 case 2:
                     common ^= 1;
+                    break;
+                default:
                     break;
             }
         }
@@ -264,6 +274,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case 3:
                     common ^= 1;
                     break;
+                default:
+                    break;
             }
         } else if (this->task == restore) {
             switch (cursorPos) {
@@ -282,6 +294,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case 3:
                     common ^= 1;
                     break;
+                default:
+                    break;
             }
         } else if (this->task == wipe) {
             switch (cursorPos) {
@@ -293,6 +307,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case 2:
                     common ^= 1;
                     break;
+                default:
+                    break;
             }
         } else if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
             switch (cursorPos) {
@@ -301,6 +317,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 case 1:
                     common ^= 1;
+                    break;
+                default:
                     break;
             }
         } else {
@@ -313,6 +331,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 case 2:
                     common ^= 1;
+                    break;
+                default:
                     break;
             }
         }

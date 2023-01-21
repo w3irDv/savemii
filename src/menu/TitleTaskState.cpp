@@ -78,7 +78,6 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 char gamePath[PATH_SIZE];
                 memset(versionList, 0, 0x100 * sizeof(int));
                 if (getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.longName, this->title.highID, this->title.lowID) != 0) {
-                    noError = false;
                     return SUBSTATE_RUNNING;
                 }
                 getLoadiineSaveVersionList(versionList, gamePath);

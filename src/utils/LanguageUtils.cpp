@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <savemng.h>
 #include <utils/DrawUtils.h>
 #include <utils/LanguageUtils.h>
@@ -6,7 +5,6 @@
 #include <jansson.h>
 
 #include <coreinit/memdefaultheap.h>
-#include <coreinit/memory.h>
 
 MSG *LanguageUtils::baseMSG = nullptr;
 
@@ -104,7 +102,7 @@ Swkbd_LanguageType LanguageUtils::getSystemLanguage() {
     if (handle < 1)
         sysLang = Swkbd_LanguageType__English;
 
-    UCSysConfig *settings = (UCSysConfig *) MEMAllocFromDefaultHeapEx(sizeof(UCSysConfig), 0x40);
+    auto *settings = (UCSysConfig *) MEMAllocFromDefaultHeapEx(sizeof(UCSysConfig), 0x40);
     if (settings == nullptr) {
         UCClose(handle);
         sysLang = Swkbd_LanguageType__English;
@@ -153,7 +151,6 @@ void LanguageUtils::setMSG(const char *msgid, const char *msgstr) {
     msg->msgstr = strdup(msgstr);
     msg->next = baseMSG;
     baseMSG = msg;
-    return;
 }
 
 void LanguageUtils::gettextCleanUp() {

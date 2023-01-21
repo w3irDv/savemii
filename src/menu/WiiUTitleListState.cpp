@@ -9,7 +9,6 @@
 #include <algorithm>
 
 #include <coreinit/debug.h>
-#include <coreinit/time.h>
 
 #define MAX_TITLE_SHOW 14
 static int cursorPos = 0;

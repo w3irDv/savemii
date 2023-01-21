@@ -25,19 +25,9 @@ static Color font_col(0xFFFFFFFF);
 
 bool DrawUtils::redraw = true;
 
-template<class T, class... Args>
-std::unique_ptr<T> make_unique_nothrow(Args &&...args) noexcept(noexcept(T(std::forward<Args>(args)...))) {
-    return std::unique_ptr<T>(new (std::nothrow) T(std::forward<Args>(args)...));
-}
-
 template<typename T>
 inline typename std::unique_ptr<T> make_unique_nothrow(size_t num) noexcept {
     return std::unique_ptr<T>(new (std::nothrow) std::remove_extent_t<T>[num]());
-}
-
-template<class T, class... Args>
-std::shared_ptr<T> make_shared_nothrow(Args &&...args) noexcept(noexcept(T(std::forward<Args>(args)...))) {
-    return std::shared_ptr<T>(new (std::nothrow) T(std::forward<Args>(args)...));
 }
 
 void DrawUtils::setRedraw(bool value) {
@@ -138,44 +128,11 @@ void DrawUtils::drawRectFilled(int x1, int y1, int x2, int y2, uint8_t r, uint8_
     }
 }
 
-void DrawUtils::drawRect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t borderSize, Color col) {
-    drawRectFilled(x, y, w, borderSize, col);
-    drawRectFilled(x, y + h - borderSize, w, borderSize, col);
-    drawRectFilled(x, y, borderSize, h, col);
-    drawRectFilled(x + w - borderSize, y, borderSize, h, col);
-}
-
 void DrawUtils::drawRect(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     drawLine(x1, y1, x2, y1, r, g, b, a);
     drawLine(x2, y1, x2, y2, r, g, b, a);
     drawLine(x1, y2, x2, y2, r, g, b, a);
     drawLine(x1, y1, x1, y2, r, g, b, a);
-}
-
-void DrawUtils::drawBitmap(uint32_t x, uint32_t y, uint32_t target_width, uint32_t target_height, const uint8_t *data) {
-    if (data[0] != 'B' || data[1] != 'M') {
-        // invalid header
-        return;
-    }
-
-    uint32_t dataPos = __builtin_bswap32(*(uint32_t *) &(data[0x0A]));
-    uint32_t width = __builtin_bswap32(*(uint32_t *) &(data[0x12]));
-    uint32_t height = __builtin_bswap32(*(uint32_t *) &(data[0x16]));
-
-    if (dataPos == 0) {
-        dataPos = 54;
-    }
-
-    data += dataPos;
-
-    // TODO flip image since bitmaps are stored upside down
-
-    for (uint32_t yy = y; yy < y + target_height; yy++) {
-        for (uint32_t xx = x; xx < x + target_width; xx++) {
-            uint32_t i = (((xx - x) * width / target_width) + ((yy - y) * height / target_height) * width) * 3;
-            drawPixel(xx, yy, data[i + 2], data[i + 1], data[i], 0xFF);
-        }
-    }
 }
 
 bool DrawUtils::initFont() {
@@ -220,13 +177,6 @@ void DrawUtils::deinitFont() {
     sft_freefont(pFont.font);
     pFont.font = nullptr;
     pFont = {};
-}
-
-void DrawUtils::setFontSize(uint32_t size) {
-    pFont.xScale = size;
-    pFont.yScale = size;
-    SFT_LMetrics metrics;
-    sft_lmetrics(&pFont, &metrics);
 }
 
 void DrawUtils::setFontColor(Color col) {
@@ -376,7 +326,7 @@ void DrawUtils::drawLine(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, u
     }
 }
 
-void DrawUtils::drawPic(int x, int y, uint32_t w, uint32_t h, float scale, uint32_t *pixels) {
+void DrawUtils::drawPic(int x, int y, uint32_t w, uint32_t h, float scale, const uint32_t *pixels) {
     uint32_t nw = w, nh = h;
     Color color(0xFFFFFFFF);
     if (scale <= 0) scale = 1;

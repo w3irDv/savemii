@@ -20,9 +20,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Forgot one">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Make some arguments const">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/utils/DrawUtils.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils/DrawUtils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/date.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/date.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/TitleOptionsState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TitleOptionsState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/WiiUTitleListState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/WiiUTitleListState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/vWiiTitleListState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/vWiiTitleListState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/DrawUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/DrawUtils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/LanguageUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/LanguageUtils.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +162,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1674302678421</updated>
-      <workItem from="1674302684584" duration="4921000" />
+      <workItem from="1674302684584" duration="5796000" />
     </task>
     <task id="LOCAL-00001" summary="Fix CLion">
       <created>1674303670718</created>
@@ -197,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674313502129</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Make some arguments const">
+      <created>1674313654181</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1674313654181</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -221,7 +237,8 @@
     <MESSAGE value="Rework createFolder function" />
     <MESSAGE value="Remove useless cast" />
     <MESSAGE value="Forgot one" />
-    <option name="LAST_COMMIT_MESSAGE" value="Forgot one" />
+    <MESSAGE value="Make some arguments const" />
+    <option name="LAST_COMMIT_MESSAGE" value="Make some arguments const" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

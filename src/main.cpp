@@ -109,6 +109,10 @@ static Title *loadWiiUTitles(int run) {
         j++;
     }
     savesl = (Saves *) realloc(savesl, usable * sizeof(Saves));
+    if (savesl == nullptr) {
+        promptError(LanguageUtils::gettext("Out of memory."));
+        return nullptr;
+    }
 
     int foundCount = 0;
     int pos = 0;

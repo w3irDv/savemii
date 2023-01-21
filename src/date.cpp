@@ -4,14 +4,9 @@
 
 std::string Date::get() {
     if (checkEntry(path.c_str()) != 0) {
-        FILE *f = nullptr;
-        long len = 0;
-
-        /* open in read binary mode */
-        f = fopen(path.c_str(), "rb");
-        /* get the length */
+        FILE *f = fopen(path.c_str(), "rb");
         fseek(f, 0, SEEK_END);
-        len = ftell(f);
+        long len = ftell(f);
         fseek(f, 0, SEEK_SET);
 
         char *data = (char *) aligned_alloc(0x40, FS_ALIGN(len + 1));
@@ -20,16 +15,13 @@ std::string Date::get() {
         data[len] = '\0';
         fclose(f);
 
-        char *out = nullptr;
         json_t *root;
         json_error_t error;
 
         root = json_loads(data, 0, &error);
 
         if (root) {
-            out = (char *) json_string_value(json_object_get(root, "Date"));
-            std::string buf;
-            buf.assign(out);
+            std::string buf(json_string_value(json_object_get(root, "Date")));
             json_decref(root);
 
             free(data);
