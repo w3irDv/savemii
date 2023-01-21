@@ -119,15 +119,6 @@ void DrawUtils::drawPixel(uint32_t x, uint32_t y, uint8_t r, uint8_t g, uint8_t 
     }
 }
 
-void DrawUtils::drawRectFilled(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    int x, y;
-    for (x = x1; x <= x2; x++) {
-        for (y = y1; y <= y2; y++) {
-            DrawUtils::drawPixel(x, y, r, g, b, a);
-        }
-    }
-}
-
 void DrawUtils::drawRect(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     drawLine(x1, y1, x2, y1, r, g, b, a);
     drawLine(x2, y1, x2, y2, r, g, b, a);
