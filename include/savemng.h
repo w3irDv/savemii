@@ -9,22 +9,22 @@
 #include <cstdio>
 #include <dirent.h>
 #include <fcntl.h>
-#include <utils/InputUtils.h>
-#include <utils/DrawUtils.h>
 #include <string>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <utils/DrawUtils.h>
+#include <utils/InputUtils.h>
 
 #include <mocha/mocha.h>
 
-#define PATH_SIZE     0x400
+#define PATH_SIZE                0x400
 
-#define VERSION_MAJOR 1
-#define VERSION_MINOR 5
-#define VERSION_MICRO 5
+#define VERSION_MAJOR            1
+#define VERSION_MINOR            5
+#define VERSION_MICRO            5
 
-#define M_OFF         1
-#define Y_OFF         1
+#define M_OFF                    1
+#define Y_OFF                    1
 
 #define COLOR_WHITE              Color(0xffffffff)
 #define COLOR_BLACK              Color(0, 0, 0, 255)
@@ -80,7 +80,7 @@ bool initFS() __attribute__((__cold__));
 void deinitFS() __attribute__((__cold__));
 std::string getUSB();
 void consolePrintPos(int x, int y, const char *format, ...) __attribute__((hot));
-bool promptConfirm(Style st, std::string question);
+bool promptConfirm(Style st, const std::string &question);
 void promptError(const char *message, ...);
 void getAccountsWiiU();
 void getAccountsSD(Title *title, uint8_t slot);
