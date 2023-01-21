@@ -1,4 +1,3 @@
-#include <array>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
@@ -19,6 +18,16 @@
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 
+template<typename T, std::size_t N>
+static bool contains(const T (&array)[N], const T &value) {
+    for (const T &element : array) {
+        if (element == value) {
+            return true;
+        }
+    }
+    return false;
+}
+
 static void disclaimer() {
     consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
@@ -29,7 +38,7 @@ static void disclaimer() {
 static Title *loadWiiUTitles(int run) {
     char *tList = nullptr;
     uint32_t receivedCount = 0;
-    const std::array<const uint32_t, 2> highIDs = {0x00050000, 0x00050002};
+    const uint32_t highIDs[2] = {0x00050000, 0x00050002};
     // Source: haxchi installer
     if (run == 0) {
         int mcp_handle = MCP_Open();
@@ -53,7 +62,7 @@ static Title *loadWiiUTitles(int run) {
     for (uint32_t i = 0; i < receivedCount; i++) {
         char *element = tList + (i * 0x61);
         savesl[j].highID = *(uint32_t *) (element);
-        if (savesl[j].highID != (0x00050000 | 0x00050002)) {
+        if (contains(highIDs, savesl[j].highID)) {
             usable--;
             continue;
         }
@@ -91,7 +100,7 @@ static Title *loadWiiUTitles(int run) {
                                                          data->d_name);
                         if (checkEntry(path.c_str()) == 1) {
                             for (unsigned int i = 0; i < usable; i++) {
-                                if ((savesl[i].highID == (0x00050000 | 0x00050002)) &&
+                                if (contains(highIDs, savesl[i].highID) &&
                                     (strtoul(data->d_name, nullptr, 16) == savesl[i].lowID)) {
                                     savesl[i].found = true;
                                     tNoSave--;
@@ -167,31 +176,46 @@ static Title *loadWiiUTitles(int run) {
                                                            saves[i].found ? "title" : "save", highID, lowID);
         titles[wiiuTitlesCount].saveInit = !saves[i].found;
 
-        char *xmlBuf = nullptr;
-        if (loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
-            char *cptr = strchr(strstr(xmlBuf, "product_code"), '>') + 7;
-            memset(titles[wiiuTitlesCount].productCode, 0, sizeof(titles[wiiuTitlesCount].productCode));
-            strlcpy(titles[wiiuTitlesCount].productCode, cptr, strcspn(cptr, "<") + 1);
+        std::string xmlBuf;
+        uint8_t *xmlBufData = reinterpret_cast<uint8_t *>(xmlBuf.data());
+        if (loadFile(path.c_str(), &xmlBufData)) {
+            size_t productCodeStart = xmlBuf.find("product_code");
+            if (productCodeStart != std::string::npos) {
+                productCodeStart = xmlBuf.find(">", productCodeStart) + 1;
+                size_t productCodeEnd = xmlBuf.find("<", productCodeStart);
+                snprintf(titles[wiiuTitlesCount].productCode, 5, xmlBuf.substr(productCodeStart, productCodeEnd - productCodeStart).c_str());
+            }
 
-            cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
-            memset(titles[wiiuTitlesCount].shortName, 0, sizeof(titles[wiiuTitlesCount].shortName));
-            if (strcspn(cptr, "<") == 0)
-                cptr = strchr(strstr(xmlBuf, "shortname_ja"), '>') + 1;
+            std::size_t shortNameStart = xmlBuf.find("shortname_en");
+            if (shortNameStart != std::string::npos) {
+                shortNameStart = xmlBuf.find(">", shortNameStart) + 1;
+                size_t shortNameEnd = xmlBuf.find("<", shortNameStart);
+                snprintf(titles[wiiuTitlesCount].shortName, 256, StringUtils::decodeXMLEscapeLine(xmlBuf.substr(shortNameStart, shortNameEnd - shortNameStart)).c_str());
+            } else {
+                shortNameStart = xmlBuf.find("shortname_ja");
+                if (shortNameStart != std::string::npos) {
+                    shortNameStart = xmlBuf.find(">", shortNameStart) + 1;
+                    size_t shortNameEnd = xmlBuf.find("<", shortNameStart);
+                    snprintf(titles[wiiuTitlesCount].shortName, 256, StringUtils::decodeXMLEscapeLine(xmlBuf.substr(shortNameStart, shortNameEnd - shortNameStart)).c_str());
+                }
+            }
 
-            StringUtils::decodeXMLEscapeLine(std::string(cptr));
-            strlcpy(titles[wiiuTitlesCount].shortName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(),
-                    strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
-
-            cptr = strchr(strstr(xmlBuf, "longname_en"), '>') + 1;
-            memset(titles[i].longName, 0, sizeof(titles[i].longName));
-            if (strcspn(cptr, "<") == 0)
-                cptr = strchr(strstr(xmlBuf, "longname_ja"), '>') + 1;
-
-            strlcpy(titles[wiiuTitlesCount].longName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(),
-                    strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
-
-            free(xmlBuf);
+            std::size_t longNameStart = xmlBuf.find("longname_en");
+            if (longNameStart != std::string::npos) {
+                longNameStart = xmlBuf.find(">", longNameStart) + 1;
+                size_t longNameEnd = xmlBuf.find("<", longNameStart);
+                snprintf(titles[wiiuTitlesCount].longName, 512, StringUtils::decodeXMLEscapeLine(xmlBuf.substr(longNameStart, longNameEnd - longNameStart)).c_str());
+            } else {
+                longNameStart = xmlBuf.find("longname_ja");
+                if (longNameStart != std::string::npos) {
+                    longNameStart = xmlBuf.find(">", longNameStart) + 1;
+                    size_t longNameEnd = xmlBuf.find("<", longNameStart);
+                    snprintf(titles[wiiuTitlesCount].longName, 512, StringUtils::decodeXMLEscapeLine(xmlBuf.substr(longNameStart, longNameEnd - longNameStart)).c_str());
+                }
+            }
         }
+        xmlBuf.clear();
+        xmlBuf.shrink_to_fit();
 
         titles[wiiuTitlesCount].isTitleDupe = false;
         for (int i = 0; i < wiiuTitlesCount; i++) {
@@ -227,15 +251,9 @@ static Title *loadWiiUTitles(int run) {
 }
 
 static Title *loadWiiTitles() {
-    std::array<const char *, 3> highIDs = {"00010000", "00010001", "00010004"};
+    const char *highIDs[3] = {"00010000", "00010001", "00010004"};
     bool found = false;
-    const std::array<std::array<const uint32_t, 2>, 7> blacklist = {{{0x00010000, 0x00555044},
-                                                                     {0x00010000, 0x00555045},
-                                                                     {0x00010000, 0x0055504A},
-                                                                     {0x00010000, 0x524F4E45},
-                                                                     {0x00010000, 0x52543445},
-                                                                     {0x00010001, 0x48424344},
-                                                                     {0x00010001, 0x554E454F}}};
+    uint32_t blacklist[7][2] = {{0x00010000, 0x00555044}, {0x00010000, 0x00555045}, {0x00010000, 0x0055504A}, {0x00010000, 0x524F4E45}, {0x00010000, 0x52543445}, {0x00010001, 0x48424344}, {0x00010001, 0x554E454F}};
 
     std::string pathW;
     for (int k = 0; k < 3; k++) {
@@ -244,9 +262,9 @@ static Title *loadWiiTitles() {
         if (dir != nullptr) {
             struct dirent *data;
             while ((data = readdir(dir)) != nullptr) {
-                for (int ii = 0; ii < 7; ii++) {
-                    if (blacklist[ii][0] == strtoul(highIDs[k], nullptr, 16)) {
-                        if (blacklist[ii][1] == strtoul(data->d_name, nullptr, 16)) {
+                for (auto blacklistedID : blacklist) {
+                    if (blacklistedID[0] == strtoul(highIDs[k], nullptr, 16)) {
+                        if (blacklistedID[1] == strtoul(data->d_name, nullptr, 16)) {
                             found = true;
                             break;
                         }
