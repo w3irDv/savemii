@@ -219,7 +219,7 @@ void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *f
                 x = (853 - DrawUtils::getTextWidth(tmp)) / 2;
                 break;
             case 2:
-                x = 853 - (offset * 12) - DrawUtils::getTextWidth((char *) tmp);
+                x = 853 - (offset * 12) - DrawUtils::getTextWidth(tmp);
                 break;
             default:
                 x = (853 - DrawUtils::getTextWidth(tmp)) / 2;
