@@ -483,7 +483,7 @@ static inline size_t getFilesize(FILE *fp) {
     return fsize;
 }
 
-static bool copyFile(std::string pPath, std::string oPath) {
+static bool copyFile(const std::string& pPath, const std::string& oPath) {
     if (pPath.find("savemiiMeta.json") != std::string::npos)
         return true;
     FILE *source = fopen(pPath.c_str(), "rb");
@@ -508,7 +508,7 @@ static bool copyFile(std::string pPath, std::string oPath) {
     return true;
 }
 
-static int copyDir(std::string pPath, std::string tPath) { // Source: ft2sd
+static int copyDir(const std::string& pPath, const std::string& tPath) { // Source: ft2sd
     DIR *dir = opendir(pPath.c_str());
     if (dir == nullptr)
         return -1;
@@ -549,7 +549,7 @@ static int copyDir(std::string pPath, std::string tPath) { // Source: ft2sd
     return 0;
 }
 
-static bool removeDir(std::string &pPath) {
+static bool removeDir(const std::string &pPath) {
     DIR *dir = opendir(pPath.c_str());
     if (dir == nullptr)
         return false;
