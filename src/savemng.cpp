@@ -187,34 +187,19 @@ static bool folderEmpty(const char *fPath) {
     return c < 3;
 }
 
-static bool createFolder(const char *fPath) { //Adapted from mkdir_p made by JonathonReinhart
-    std::string _path;
-    char *p;
-    int found = 0;
-
-    _path.assign(fPath);
-
-    for (p = (char *) _path.c_str() + 1; *p != 0; p++) {
-        if (*p == '/') {
-            found++;
-            if (found > 2) {
-                *p = '\0';
-                if (checkEntry(_path.c_str()) == 0) {
-                    if (mkdir(_path.c_str(), 0x666) == -1)
-                        return false;
-                    FSAChangeMode(handle, newlibtoFSA(_path).c_str(), (FSMode) 0x666);
-                }
-
-                *p = '/';
-            }
-        }
-    }
-
-    if (checkEntry(_path.c_str()) == 0)
-        if (mkdir(_path.c_str(), 0x666) == -1)
+static bool createFolder(const char *path) {
+    std::string strPath(path);
+    size_t pos = 0;
+    std::string dir;
+    while ((pos = strPath.find("/", pos + 1)) != std::string::npos) {
+        dir = strPath.substr(0, pos);
+        if (mkdir(dir.c_str(), 0x666) != 0 && errno != EEXIST)
             return false;
-    FSAChangeMode(handle, newlibtoFSA(_path).c_str(), (FSMode) 0x666);
-
+        FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
+    }
+    if (mkdir(strPath.c_str(), 0x666) != 0 && errno != EEXIST)
+        return false;
+    FSAChangeMode(handle, newlibtoFSA(strPath).c_str(), (FSMode) 0x666);
     return true;
 }
 
