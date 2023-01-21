@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Port wipeSavedata and removeDir to std::string">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Rework createFolder function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
@@ -153,7 +153,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1674302678421</updated>
-      <workItem from="1674302684584" duration="4342000" />
+      <workItem from="1674302684584" duration="4599000" />
     </task>
     <task id="LOCAL-00001" summary="Fix CLion">
       <created>1674303670718</created>
@@ -176,7 +176,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674311918219</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Rework createFolder function">
+      <created>1674312469129</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1674312469129</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +204,8 @@
     <MESSAGE value="Fix CLion" />
     <MESSAGE value="Cleanup and bump version" />
     <MESSAGE value="Port wipeSavedata and removeDir to std::string" />
-    <option name="LAST_COMMIT_MESSAGE" value="Port wipeSavedata and removeDir to std::string" />
+    <MESSAGE value="Rework createFolder function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rework createFolder function" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
