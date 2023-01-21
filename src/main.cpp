@@ -1,4 +1,3 @@
-#include <cstdarg>
 #include <cstdlib>
 #include <cstring>
 #include <malloc.h>
@@ -6,19 +5,10 @@
 #include <algorithm>
 #include <array>
 
-#include <coreinit/ios.h>
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
-#include <coreinit/thread.h>
-#include <coreinit/time.h>
 #include <padscore/kpad.h>
-#include <sysapp/launch.h>
-#include <sysapp/title.h>
-#include <vpad/input.h>
-#include <whb/proc.h>
 
-#include <ApplicationState.h>
-#include <date.h>
 #include <icon.h>
 #include <menu/MainMenuState.h>
 #include <savemng.h>
@@ -27,9 +17,9 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
 #include <utils/StringUtils.h>
+#include <version.h>
 
 #include <coreinit/debug.h>
-#include <proc_ui/procui.h>
 #include <sndcore2/core.h>
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
@@ -83,7 +73,7 @@ static void disclaimer() {
 }
 
 static Title *loadWiiUTitles(int run) {
-    char *tList;
+    char *tList = nullptr;
     uint32_t receivedCount = 0;
     const std::array<const uint32_t, 2> highIDs = {0x00050000, 0x00050002};
     // Source: haxchi installer
