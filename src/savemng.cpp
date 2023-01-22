@@ -13,8 +13,6 @@
 #define __FSAShimSend      ((FSError(*)(FSAShimBuffer *, uint32_t))(0x101C400 + 0x042d90))
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
 
-extern "C" FSClient *__wut_devoptab_fs_client;
-
 static char *p1;
 Account *wiiuacc;
 Account *sdacc;
@@ -61,14 +59,12 @@ int checkEntry(const char *fPath) {
 }
 
 bool initFS() {
-    FSInit();
     FSAInit();
     handle = FSAAddClient(nullptr);
     bool ret = Mocha_InitLibrary() == MOCHA_RESULT_SUCCESS;
     if (ret)
         ret = Mocha_UnlockFSClientEx(handle) == MOCHA_RESULT_SUCCESS;
     if (ret) {
-        Mocha_UnlockFSClient(__wut_devoptab_fs_client);
         Mocha_MountFS("storage_slccmpt01", nullptr, "/vol/storage_slccmpt01");
         Mocha_MountFS("storage_slccmpt01", "/dev/slccmpt01", "/vol/storage_slccmpt01");
         Mocha_MountFS("storage_mlc01", nullptr, "/vol/storage_mlc01");
@@ -93,7 +89,6 @@ void shutdownFS() {
     Mocha_DeInitLibrary();
     FSADelClient(handle);
     FSAShutdown();
-    FSShutdown();
 }
 
 std::string getUSB() {
@@ -204,6 +199,24 @@ static bool createFolder(const char *path) {
     if (mkdir(strPath.c_str(), 0x666) != 0 && errno != EEXIST)
         return false;
     FSAChangeMode(handle, newlibtoFSA(strPath).c_str(), (FSMode) 0x666);
+    return true;
+}
+
+static bool createFolderUnlocked(const std::string &path) {
+    std::string _path = newlibtoFSA(path);
+    size_t pos = 0;
+    std::string dir;
+    while ((pos = _path.find('/', pos + 1)) != std::string::npos) {
+        dir = _path.substr(0, pos);
+        if ((dir == "/vol") || (dir == "/vol/storage_mlc01" || (dir == newlibtoFSA(getUSB()))))
+            continue;
+        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+        if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK))
+            return false;
+    }
+    FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+    if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK))
+        return false;
     return true;
 }
 
@@ -913,7 +926,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     else
         srcPath = StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u", highID, lowID, slot);
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    createFolder(dstPath.c_str());
+    createFolderUnlocked(dstPath);
 
     if ((sdusers > -1) && !isWii) {
         if (common) {
@@ -952,7 +965,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
                                                                title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                highID, lowID);
         // TODO: Figure out why the meta folder isn't created
-        createFolder(metaPath.c_str());
+        createFolderUnlocked(metaPath);
         copyFile(titlePath + "/meta.xml", metaPath + "/meta.xml");
         copyFile(titlePath + "/iconTex.tga", metaPath + "/iconTex.tga");
     }
