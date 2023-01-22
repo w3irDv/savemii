@@ -168,46 +168,31 @@ static Title *loadWiiUTitles(int run) {
                                                            saves[i].found ? "title" : "save", highID, lowID);
         titles[wiiuTitlesCount].saveInit = !saves[i].found;
 
-        std::string xmlBuf;
-        auto *xmlBufData = reinterpret_cast<uint8_t *>(const_cast<char *>(xmlBuf.data()));
-        if (loadFile(path.c_str(), &xmlBufData)) {
-            size_t productCodeStart = xmlBuf.find("product_code");
-            if (productCodeStart != std::string::npos) {
-                productCodeStart = xmlBuf.find('>', productCodeStart) + 1;
-                size_t productCodeEnd = xmlBuf.find('<', productCodeStart);
-                snprintf(titles[wiiuTitlesCount].productCode, 5, "%s", xmlBuf.substr(productCodeStart, productCodeEnd - productCodeStart).c_str());
-            }
+        char *xmlBuf = nullptr;
+        if (loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
+            char *cptr = strchr(strstr(xmlBuf, "product_code"), '>') + 7;
+            memset(titles[wiiuTitlesCount].productCode, 0, sizeof(titles[wiiuTitlesCount].productCode));
+            strlcpy(titles[wiiuTitlesCount].productCode, cptr, strcspn(cptr, "<") + 1);
 
-            std::size_t shortNameStart = xmlBuf.find("shortname_en");
-            if (shortNameStart != std::string::npos) {
-                shortNameStart = xmlBuf.find('>', shortNameStart) + 1;
-                size_t shortNameEnd = xmlBuf.find('<', shortNameStart);
-                snprintf(titles[wiiuTitlesCount].shortName, 256, "%s", StringUtils::decodeXMLEscapeLine(xmlBuf.substr(shortNameStart, shortNameEnd - shortNameStart)).c_str());
-            } else {
-                shortNameStart = xmlBuf.find("shortname_ja");
-                if (shortNameStart != std::string::npos) {
-                    shortNameStart = xmlBuf.find('>', shortNameStart) + 1;
-                    size_t shortNameEnd = xmlBuf.find('<', shortNameStart);
-                    snprintf(titles[wiiuTitlesCount].shortName, 256, "%s", StringUtils::decodeXMLEscapeLine(xmlBuf.substr(shortNameStart, shortNameEnd - shortNameStart)).c_str());
-                }
-            }
+            cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
+            memset(titles[wiiuTitlesCount].shortName, 0, sizeof(titles[wiiuTitlesCount].shortName));
+            if (strcspn(cptr, "<") == 0)
+                cptr = strchr(strstr(xmlBuf, "shortname_ja"), '>') + 1;
 
-            std::size_t longNameStart = xmlBuf.find("longname_en");
-            if (longNameStart != std::string::npos) {
-                longNameStart = xmlBuf.find('>', longNameStart) + 1;
-                size_t longNameEnd = xmlBuf.find('<', longNameStart);
-                snprintf(titles[wiiuTitlesCount].longName, 512, "%s", StringUtils::decodeXMLEscapeLine(xmlBuf.substr(longNameStart, longNameEnd - longNameStart)).c_str());
-            } else {
-                longNameStart = xmlBuf.find("longname_ja");
-                if (longNameStart != std::string::npos) {
-                    longNameStart = xmlBuf.find('>', longNameStart) + 1;
-                    size_t longNameEnd = xmlBuf.find('<', longNameStart);
-                    snprintf(titles[wiiuTitlesCount].longName, 512, "%s", StringUtils::decodeXMLEscapeLine(xmlBuf.substr(longNameStart, longNameEnd - longNameStart)).c_str());
-                }
-            }
+            StringUtils::decodeXMLEscapeLine(std::string(cptr));
+            strlcpy(titles[wiiuTitlesCount].shortName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(),
+                    strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
+
+            cptr = strchr(strstr(xmlBuf, "longname_en"), '>') + 1;
+            memset(titles[i].longName, 0, sizeof(titles[i].longName));
+            if (strcspn(cptr, "<") == 0)
+                cptr = strchr(strstr(xmlBuf, "longname_ja"), '>') + 1;
+
+            strlcpy(titles[wiiuTitlesCount].longName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(),
+                    strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
+
+            free(xmlBuf);
         }
-        xmlBuf.clear();
-        xmlBuf.shrink_to_fit();
 
         titles[wiiuTitlesCount].isTitleDupe = false;
         for (int i = 0; i < wiiuTitlesCount; i++) {

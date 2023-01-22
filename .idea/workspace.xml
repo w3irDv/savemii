@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Optimizations">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Add const_cast">
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -259,7 +259,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674329364539</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Add const_cast">
+      <created>1674386292449</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1674386292449</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -291,7 +298,8 @@
     <MESSAGE value="Reduce duplicate code and make some functions return a bool" />
     <MESSAGE value="Rework title loading" />
     <MESSAGE value="Optimizations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Optimizations" />
+    <MESSAGE value="Add const_cast" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add const_cast" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
