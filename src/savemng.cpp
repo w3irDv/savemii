@@ -932,13 +932,11 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         shim->clientHandle = handle;
         shim->command = FSA_COMMAND_CHANGE_OWNER;
         shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        shim->request.changeOwner = (FSARequestChangeOwner){
-                .path = dstPath.c_str(),
-                .owner = title->lowID,
-                .group = title->groupID,
-        };
+        strcpy(shim->request.changeOwner.path, dstPath.c_str());
+        shim->request.changeOwner.owner = title->lowID;
+        shim->request.changeOwner.group = title->groupID;
 
-        FSError ret = __FSAShimSend(shim, 0);
+        __FSAShimSend(shim, 0);
         free(shim);
     }
 
