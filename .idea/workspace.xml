@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Fix more issues">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Try to fix meta folder creation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
@@ -374,7 +374,8 @@
     <MESSAGE value="Minimal changes" />
     <MESSAGE value="Fix folders not being created" />
     <MESSAGE value="Fix issues" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix issues" />
+    <MESSAGE value="Try to fix meta folder creation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Try to fix meta folder creation" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

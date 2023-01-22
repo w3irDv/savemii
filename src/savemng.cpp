@@ -210,13 +210,17 @@ static bool createFolderUnlocked(const std::string &path) {
         dir = _path.substr(0, pos);
         if ((dir == "/vol") || (dir == "/vol/storage_mlc01" || (dir == newlibtoFSA(getUSB()))))
             continue;
-        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
-        if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK))
+        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0666);
+        if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
+            promptError("Error while creating folder: %lx", createdDir);
             return false;
+        }
     }
-    FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
-    if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK))
+    FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0666);
+    if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
+        promptError("Error while creating final folder: %lx", createdDir);
         return false;
+    }
     return true;
 }
 
@@ -942,7 +946,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
     if (!title->saveInit && !isWii) {
-        FSAMakeQuota(handle, dstPath.c_str(), 0x660, title->accountSaveSize);
+        FSAMakeQuota(handle, dstPath.c_str(), 666, title->accountSaveSize);
 
         FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
         if (!shim) {
