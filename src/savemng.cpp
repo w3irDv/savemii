@@ -923,11 +923,13 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
 
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
-    if (!title->saveInit && !isWii && title->accountSaveSize) {
+    if (!title->saveInit && !isWii) {
         FSAMakeQuota(handle, dstPath.c_str(), 0x660, title->accountSaveSize);
 
         FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
-        if (!shim) return;
+        if (!shim) {
+            return;
+        }
 
         shim->clientHandle = handle;
         shim->command = FSA_COMMAND_CHANGE_OWNER;
@@ -938,12 +940,13 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
 
         __FSAShimSend(shim, 0);
         free(shim);
-        const std::string titlePath = StringUtils::stringFormat("%s/usr/%s/%08x/%08x/meta",
+        // TODO: Figure out why the meta directory isn't created, and thus the files not copied, over FTP works, maybe permission issue?
+        const std::string titlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                 title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
-                                                                "title", highID, lowID);
-        const std::string metaPath = StringUtils::stringFormat("%s/usr/%s/%08x/%08x/meta",
+                                                                highID, lowID);
+        const std::string metaPath = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta",
                                                                title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
-                                                               "save", highID, lowID);
+                                                               highID, lowID);
         createFolder(metaPath.c_str());
         copyFile(titlePath + "/meta.xml", metaPath + "/meta.xml");
         copyFile(titlePath + "/iconTex.tga", metaPath + "/iconTex.tga");
