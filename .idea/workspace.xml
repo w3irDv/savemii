@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Fix folders not being created">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Fix more issues">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
@@ -162,7 +162,7 @@
       <updated>1674302678421</updated>
       <workItem from="1674302684584" duration="7543000" />
       <workItem from="1674397019373" duration="9173000" />
-      <workItem from="1674407070608" duration="942000" />
+      <workItem from="1674407070608" duration="3073000" />
     </task>
     <task id="LOCAL-00001" summary="Fix CLion">
       <created>1674303670718</created>
@@ -325,7 +325,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674404759825</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Fix issues">
+      <created>1674408105756</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1674408105756</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -366,7 +373,8 @@
     <MESSAGE value="Fix display of uninited titles" />
     <MESSAGE value="Minimal changes" />
     <MESSAGE value="Fix folders not being created" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix folders not being created" />
+    <MESSAGE value="Fix issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix issues" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

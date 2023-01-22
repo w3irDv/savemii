@@ -961,13 +961,13 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         const std::string titlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                 title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                 highID, lowID);
-        const std::string savePath = StringUtils::stringFormat("%s/usr/save/%08x/%08x",
+        const std::string metaPath = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta",
                                                                title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                highID, lowID);
-        createFolderUnlocked(savePath + "/meta");
-        createFolderUnlocked(savePath + "/user");
-        copyFile(titlePath + "/meta.xml", savePath + "/meta/meta.xml");
-        copyFile(titlePath + "/iconTex.tga", savePath + "/meta/iconTex.tga");
+        // TODO: Figure out why the meta folder isn't created
+        createFolderUnlocked(metaPath);
+        copyFile(titlePath + "/meta.xml", metaPath + "/meta.xml");
+        copyFile(titlePath + "/iconTex.tga", metaPath + "/iconTex.tga");
     }
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
