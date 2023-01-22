@@ -1,4 +1,3 @@
-#include <array>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
@@ -19,6 +18,16 @@
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 
+template<typename T, size_t N>
+static bool contains(const T (&arr)[N], const T &element) {
+    for (const auto &elem : arr) {
+        if (elem == element) {
+            return true;
+        }
+    }
+    return false;
+}
+
 static void disclaimer() {
     consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
@@ -29,7 +38,7 @@ static void disclaimer() {
 static Title *loadWiiUTitles(int run) {
     static char *tList;
     static uint32_t receivedCount;
-    const std::array<const uint32_t, 2> highIDs = {0x00050000, 0x00050002};
+    const uint32_t highIDs[2] = {0x00050000, 0x00050002};
     // Source: haxchi installer
     if (run == 0) {
         int mcp_handle = MCP_Open();
@@ -53,12 +62,12 @@ static Title *loadWiiUTitles(int run) {
     for (uint32_t i = 0; i < receivedCount; i++) {
         char *element = tList + (i * 0x61);
         savesl[j].highID = *(uint32_t *) (element);
-        if (savesl[j].highID != (0x00050000 | 0x00050002)) {
+        if (!contains(highIDs, savesl[j].highID)) {
             usable--;
             continue;
         }
         savesl[j].lowID = *(uint32_t *) (element + 4);
-        savesl[j].dev = static_cast<uint8_t>(!(memcmp(element + 0x56, "usb", 4) == 0));
+        savesl[j].dev = static_cast<uint8_t>((memcmp(element + 0x56, "usb", 4) != 0));
         savesl[j].found = false;
         j++;
     }
@@ -83,7 +92,7 @@ static Title *loadWiiUTitles(int run) {
                                                          data->d_name);
                         if (checkEntry(path.c_str()) == 1) {
                             for (int i = 0; i < usable; i++) {
-                                if ((savesl[i].highID == (0x00050000 | 0x00050002)) &&
+                                if (contains(highIDs, savesl[i].highID) &&
                                     (strtoul(data->d_name, nullptr, 16) == savesl[i].lowID)) {
                                     savesl[i].found = true;
                                     tNoSave--;
@@ -171,7 +180,7 @@ static Title *loadWiiUTitles(int run) {
             char groupID[255];
             strlcpy(groupID, cptr, strcspn(cptr, "<") + 1);
             titles[wiiuTitlesCount].groupID = strtoul(groupID, nullptr, 16);
-            
+
             cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
             memset(titles[wiiuTitlesCount].shortName, 0, sizeof(titles[wiiuTitlesCount].shortName));
             if (strcspn(cptr, "<") == 0)

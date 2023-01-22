@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Copy meta files">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Fix listing not inited titles">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
@@ -166,7 +166,7 @@
       <option name="presentableId" value="Default" />
       <updated>1674302678421</updated>
       <workItem from="1674302684584" duration="7543000" />
-      <workItem from="1674397019373" duration="2350000" />
+      <workItem from="1674397019373" duration="4862000" />
     </task>
     <task id="LOCAL-00001" summary="Fix CLion">
       <created>1674303670718</created>
@@ -301,7 +301,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674398823953</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Fix listing not inited titles">
+      <created>1674399708508</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1674399708508</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -338,7 +345,8 @@
     <MESSAGE value="And now we wait for WUT to accept the PR" />
     <MESSAGE value="Fixup" />
     <MESSAGE value="Copy meta files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Copy meta files" />
+    <MESSAGE value="Fix listing not inited titles" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix listing not inited titles" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
