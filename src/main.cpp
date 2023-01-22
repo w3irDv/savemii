@@ -174,6 +174,11 @@ static Title *loadWiiUTitles(int run) {
             memset(titles[wiiuTitlesCount].productCode, 0, sizeof(titles[wiiuTitlesCount].productCode));
             strlcpy(titles[wiiuTitlesCount].productCode, cptr, strcspn(cptr, "<") + 1);
 
+            cptr = strchr(strstr(xmlBuf, "account_save_size"), '>') + 1;
+            char accountSaveSize[255];
+            strlcpy(accountSaveSize, cptr, strcspn(cptr, "<") + 1);
+            titles[wiiuTitlesCount].accountSaveSize = strtoull(accountSaveSize, nullptr, 16);
+
             cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
             memset(titles[wiiuTitlesCount].shortName, 0, sizeof(titles[wiiuTitlesCount].shortName));
             if (strcspn(cptr, "<") == 0)

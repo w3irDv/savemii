@@ -40,6 +40,7 @@ struct Title {
     bool isTitleDupe;
     uint16_t dupeID;
     uint8_t *iconBuf;
+    uint64_t accountSaveSize;
 };
 
 struct Saves {

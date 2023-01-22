@@ -922,6 +922,10 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
 
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
+    // TODO: Change user and group
+    if (!title->saveInit && !isWii) {
+        FSAMakeQuota(handle, dstPath.c_str(), 0x660, title->accountSaveSize);
+    }
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
         FSAFlushVolume(handle, "/vol/storage_slccmpt01");
