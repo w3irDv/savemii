@@ -932,7 +932,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         shim->clientHandle = handle;
         shim->command = FSA_COMMAND_CHANGE_OWNER;
         shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        shim->request.changeOwner = {
+        shim->request.changeOwner = (FSARequestChangeOwner){
                 .path = dstPath.c_str(),
                 .owner = title->lowID,
                 .group = title->groupID,
