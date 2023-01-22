@@ -2,7 +2,7 @@ FROM wiiuenv/devkitppc:20220917 AS final
 
 COPY --from=wiiuenv/libmocha:20220919 /artifacts $DEVKITPRO
 
-RUN git clone --recursive https://github.com/Xpl0itU/wut -b patch-4 && \
+RUN git clone --recursive https://github.com/devkitPro/wut && \
   cd wut && \
   make -j$(nproc) && \
   make install && \
