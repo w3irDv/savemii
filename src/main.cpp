@@ -169,7 +169,7 @@ static Title *loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].saveInit = !saves[i].found;
 
         std::string xmlBuf;
-        auto *xmlBufData = reinterpret_cast<uint8_t *>(xmlBuf.data());
+        auto *xmlBufData = reinterpret_cast<uint8_t *>(const_cast<char *>(xmlBuf.data()));
         if (loadFile(path.c_str(), &xmlBufData)) {
             size_t productCodeStart = xmlBuf.find("product_code");
             if (productCodeStart != std::string::npos) {
