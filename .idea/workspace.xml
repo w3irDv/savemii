@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Try to fix meta folder creation">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Add error reporting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
@@ -332,7 +332,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674408105756</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Add error reporting">
+      <created>1674414311729</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1674414311729</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -350,7 +357,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix CLion" />
     <MESSAGE value="Cleanup and bump version" />
     <MESSAGE value="Port wipeSavedata and removeDir to std::string" />
     <MESSAGE value="Rework createFolder function" />
@@ -375,7 +381,8 @@
     <MESSAGE value="Fix folders not being created" />
     <MESSAGE value="Fix issues" />
     <MESSAGE value="Try to fix meta folder creation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Try to fix meta folder creation" />
+    <MESSAGE value="Add error reporting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add error reporting" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
