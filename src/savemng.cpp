@@ -202,6 +202,21 @@ static bool createFolder(const char *path) {
     return true;
 }
 
+static bool createFolderUnlocked(const std::string &path) {
+    size_t pos = 0;
+    std::string dir;
+    while ((pos = path.find('/', pos + 1)) != std::string::npos) {
+        dir = path.substr(0, pos);
+        FSError createdDir = FSAMakeDir(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
+        if ((createdDir != FS_ERROR_ALREADY_EXISTS) || (createdDir != FS_ERROR_OK))
+            return false;
+    }
+    FSError createdDir = FSAMakeDir(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
+    if ((createdDir != FS_ERROR_ALREADY_EXISTS) || (createdDir != FS_ERROR_OK))
+        return false;
+    return true;
+}
+
 void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) {
     char *tmp = nullptr;
     int x = 0;
@@ -940,16 +955,16 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
 
         __FSAShimSend(shim, 0);
         free(shim);
-        // TODO: Figure out why the meta directory isn't created, and thus the files not copied, over FTP works, maybe permission issue?
         const std::string titlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                 title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                 highID, lowID);
-        const std::string metaPath = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta",
+        const std::string savePath = StringUtils::stringFormat("%s/usr/save/%08x/%08x",
                                                                title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                highID, lowID);
-        createFolder(metaPath.c_str());
-        copyFile(titlePath + "/meta.xml", metaPath + "/meta.xml");
-        copyFile(titlePath + "/iconTex.tga", metaPath + "/iconTex.tga");
+        createFolderUnlocked(savePath + "/meta");
+        createFolderUnlocked(savePath + "/user");
+        copyFile(titlePath + "/meta.xml", savePath + "/meta/meta.xml");
+        copyFile(titlePath + "/iconTex.tga", savePath + "/meta/iconTex.tga");
     }
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
