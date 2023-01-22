@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Minimal changes">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Fix folders not being created">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
@@ -145,11 +145,6 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Makefile Application.all" />
       <item itemvalue="Makefile Application.build" />
@@ -166,7 +161,8 @@
       <option name="presentableId" value="Default" />
       <updated>1674302678421</updated>
       <workItem from="1674302684584" duration="7543000" />
-      <workItem from="1674397019373" duration="7559000" />
+      <workItem from="1674397019373" duration="9173000" />
+      <workItem from="1674407070608" duration="942000" />
     </task>
     <task id="LOCAL-00001" summary="Fix CLion">
       <created>1674303670718</created>
@@ -322,7 +318,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674402918670</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Fix folders not being created">
+      <created>1674404759825</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1674404759825</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -362,7 +365,8 @@
     <MESSAGE value="Fix listing not inited titles" />
     <MESSAGE value="Fix display of uninited titles" />
     <MESSAGE value="Minimal changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minimal changes" />
+    <MESSAGE value="Fix folders not being created" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix folders not being created" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

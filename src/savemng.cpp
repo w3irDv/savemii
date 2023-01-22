@@ -203,16 +203,19 @@ static bool createFolder(const char *path) {
 }
 
 static bool createFolderUnlocked(const std::string &path) {
+    std::string _path = newlibtoFSA(path);
     size_t pos = 0;
     std::string dir;
-    while ((pos = path.find('/', pos + 1)) != std::string::npos) {
-        dir = path.substr(0, pos);
-        FSError createdDir = FSAMakeDir(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
-        if ((createdDir != FS_ERROR_ALREADY_EXISTS) || (createdDir != FS_ERROR_OK))
+    while ((pos = _path.find('/', pos + 1)) != std::string::npos) {
+        dir = _path.substr(0, pos);
+        if ((dir == "/vol") || (dir == "/vol/storage_mlc01" || (dir == newlibtoFSA(getUSB()))))
+            continue;
+        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+        if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK))
             return false;
     }
-    FSError createdDir = FSAMakeDir(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
-    if ((createdDir != FS_ERROR_ALREADY_EXISTS) || (createdDir != FS_ERROR_OK))
+    FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+    if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK))
         return false;
     return true;
 }
@@ -923,7 +926,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     else
         srcPath = StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u", highID, lowID, slot);
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    createFolder(dstPath.c_str());
+    createFolderUnlocked(dstPath);
 
     if ((sdusers > -1) && !isWii) {
         if (common) {
