@@ -41,6 +41,7 @@ struct Title {
     uint16_t dupeID;
     uint8_t *iconBuf;
     uint64_t accountSaveSize;
+    uint32_t groupID;
 };
 
 struct Saves {

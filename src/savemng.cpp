@@ -10,6 +10,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 
+#define __FSAShimSend      ((FSError(*)(FSAShimBuffer *, uint32_t))(0x101C400 + 0x042d90))
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
 
 static char *p1;
@@ -922,9 +923,23 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
 
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
-    // TODO: Change user and group
-    if (!title->saveInit && !isWii) {
+    if (!title->saveInit && !isWii && title->accountSaveSize) {
         FSAMakeQuota(handle, dstPath.c_str(), 0x660, title->accountSaveSize);
+
+        FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
+        if (!shim) return;
+
+        shim->clientHandle = handle;
+        shim->command = FSA_COMMAND_CHANGE_OWNER;
+        shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
+        shim->request.changeOwner = {
+                .path = dstPath.c_str(),
+                .owner = title->lowID,
+                .group = title->groupID,
+        };
+
+        FSError ret = __FSAShimSend(shim, 0);
+        free(shim);
     }
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {

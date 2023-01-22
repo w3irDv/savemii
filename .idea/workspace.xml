@@ -20,11 +20,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Add const_cast">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="First progress">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/savemng.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/savemng.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -275,7 +274,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674386292449</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="First progress">
+      <created>1674388605820</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1674388605820</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -308,7 +314,8 @@
     <MESSAGE value="Rework title loading" />
     <MESSAGE value="Optimizations" />
     <MESSAGE value="Add const_cast" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add const_cast" />
+    <MESSAGE value="First progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="First progress" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
