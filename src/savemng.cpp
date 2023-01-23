@@ -952,7 +952,8 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
     if (!title->saveInit && !isWii) {
-        FSAMakeQuota(handle, dstPath.c_str(), 0x666, title->accountSaveSize);
+        std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+        FSAMakeQuota(handle, userPath.c_str(), 0x666, title->accountSaveSize);
 
         FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
         if (!shim) {
@@ -962,7 +963,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         shim->clientHandle = handle;
         shim->command = FSA_COMMAND_CHANGE_OWNER;
         shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        strcpy(shim->request.changeOwner.path, dstPath.c_str());
+        strcpy(shim->request.changeOwner.path, userPath.c_str());
         shim->request.changeOwner.owner = title->lowID;
         shim->request.changeOwner.group = title->groupID;
 
