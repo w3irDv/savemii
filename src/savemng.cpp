@@ -964,11 +964,10 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         __FSAShimSend(shim, 0);
         free(shim);
         const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
-                                                                title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
-                                                                highID, lowID);
-        const std::string metaPath = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta",
-                                                            title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
-                                                            highID, lowID);
+                                                                    title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+                                                                    highID, lowID);
+        std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+
         createFolderUnlocked(metaPath);
         copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
         copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");

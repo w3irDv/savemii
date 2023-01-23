@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Add error reporting">
+    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Fix modes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
@@ -339,7 +339,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674414311729</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Fix modes">
+      <created>1674416315798</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1674416315798</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -357,7 +364,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cleanup and bump version" />
     <MESSAGE value="Port wipeSavedata and removeDir to std::string" />
     <MESSAGE value="Rework createFolder function" />
     <MESSAGE value="Remove useless cast" />
@@ -382,7 +388,8 @@
     <MESSAGE value="Fix issues" />
     <MESSAGE value="Try to fix meta folder creation" />
     <MESSAGE value="Add error reporting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add error reporting" />
+    <MESSAGE value="Fix modes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix modes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
