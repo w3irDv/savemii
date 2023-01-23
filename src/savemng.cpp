@@ -930,10 +930,12 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     else
         srcPath = StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u", highID, lowID, slot);
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    const std::string metaPath = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta",
+    if(!isWii) {
+        const std::string metaPath = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta",
                                                             title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                             highID, lowID);
-    createFolderUnlocked(metaPath);
+        createFolderUnlocked(metaPath);
+    }
     createFolderUnlocked(dstPath);
 
     if ((sdusers > -1) && !isWii) {
