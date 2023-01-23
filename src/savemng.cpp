@@ -930,6 +930,10 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     else
         srcPath = StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u", highID, lowID, slot);
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+    const std::string metaPath = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta",
+                                                            title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+                                                            highID, lowID);
+    createFolderUnlocked(metaPath);
     createFolderUnlocked(dstPath);
 
     if ((sdusers > -1) && !isWii) {
@@ -962,16 +966,11 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
 
         __FSAShimSend(shim, 0);
         free(shim);
-        const std::string titlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
+        const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                 title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                 highID, lowID);
-        const std::string metaPath = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta",
-                                                               title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
-                                                               highID, lowID);
-        // TODO: Figure out why the meta folder isn't created
-        createFolderUnlocked(metaPath);
-        copyFile(titlePath + "/meta.xml", metaPath + "/meta.xml");
-        copyFile(titlePath + "/iconTex.tga", metaPath + "/iconTex.tga");
+        copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
+        copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
     }
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
