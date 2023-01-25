@@ -94,5 +94,6 @@
   "Failed to delete savefile.": "Löschen von Speicherstand fehlgeschlagen.",
   "Failed to delete user folder.\n%s": "Löschen vom Nutzerordner fehlgeschlagen.\n%s",
   "Failed to import savedata from loadiine.": "Importieren von Loadiine Speicherdaten fehlgeschlagen.",
-  "Failed to export savedata to loadiine.": "Exportieren von Loadiine Speicherdaten fehlgeschlagen."
+  "Failed to export savedata to loadiine.": "Exportieren von Loadiine Speicherdaten fehlgeschlagen.",
+  "German": "Deutsch"
 }

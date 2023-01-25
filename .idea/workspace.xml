@@ -20,11 +20,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/qmlSettings.xml" beforeDir="false" />
+    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="Fix creating meta folder">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/languages/german.json" beforeDir="false" afterPath="$PROJECT_DIR$/languages/german.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/LanguageUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/LanguageUtils.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +41,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="refactor" />
+        <entry key="$PROJECT_DIR$" value="fixNotInit" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -158,11 +157,23 @@
       <workItem from="1674583599463" duration="2924000" />
       <workItem from="1674588616982" duration="376000" />
       <workItem from="1674657022173" duration="1445000" />
-      <workItem from="1674658499656" duration="1959000" />
+      <workItem from="1674658499656" duration="2486000" />
     </task>
+    <task id="LOCAL-00001" summary="Fix creating meta folder">
+      <created>1674660690550</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674660690550</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fix creating meta folder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix creating meta folder" />
   </component>
 </project>
