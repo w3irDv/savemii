@@ -10,6 +10,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 
+#define __FSAShimSend      ((FSError(*)(FSAShimBuffer *, uint32_t))(0x101C400 + 0x042d90))
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
 
 static char *p1;
@@ -198,6 +199,28 @@ static bool createFolder(const char *path) {
     if (mkdir(strPath.c_str(), 0x666) != 0 && errno != EEXIST)
         return false;
     FSAChangeMode(handle, newlibtoFSA(strPath).c_str(), (FSMode) 0x666);
+    return true;
+}
+
+static bool createFolderUnlocked(const std::string &path) {
+    std::string _path = newlibtoFSA(path);
+    size_t pos = 0;
+    std::string dir;
+    while ((pos = _path.find('/', pos + 1)) != std::string::npos) {
+        dir = _path.substr(0, pos);
+        if ((dir == "/vol") || (dir == "/vol/storage_mlc01" || (dir == newlibtoFSA(getUSB()))))
+            continue;
+        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+        if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
+            promptError("Error while creating folder: %lx", createdDir);
+            return false;
+        }
+    }
+    FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+    if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
+        promptError("Error while creating final folder: %lx", createdDir);
+        return false;
+    }
     return true;
 }
 
@@ -907,7 +930,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     else
         srcPath = StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u", highID, lowID, slot);
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    createFolder(dstPath.c_str());
+    createFolderUnlocked(dstPath);
 
     if ((sdusers > -1) && !isWii) {
         if (common) {
@@ -922,6 +945,33 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
 
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
+    if (!title->saveInit && !isWii) {
+        std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
+        FSAMakeQuota(handle, userPath.c_str(), 0x666, title->accountSaveSize);
+
+        FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
+        if (!shim) {
+            return;
+        }
+
+        shim->clientHandle = handle;
+        shim->command = FSA_COMMAND_CHANGE_OWNER;
+        shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
+        strcpy(shim->request.changeOwner.path, userPath.c_str());
+        shim->request.changeOwner.owner = title->lowID;
+        shim->request.changeOwner.group = title->groupID;
+
+        __FSAShimSend(shim, 0);
+        free(shim);
+        const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
+                                                                    title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+                                                                    highID, lowID);
+        std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+
+        FSAMakeDir(handle, newlibtoFSA(metaPath).c_str(), (FSMode) 0x666);
+        copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
+        copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
+    }
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
         FSAFlushVolume(handle, "/vol/storage_slccmpt01");
