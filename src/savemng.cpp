@@ -968,7 +968,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
                                                                     highID, lowID);
         std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
-        createFolderUnlocked(metaPath);
+        FSAMakeDir(handle, newlibtoFSA(metaPath).c_str(), (FSMode) 0x666);
         copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
         copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
     }

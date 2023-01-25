@@ -20,7 +20,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="Fix modes">
+    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/qmlSettings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
@@ -38,7 +40,6 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
-    <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="refactor" />
@@ -46,21 +47,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="120a6522-4d80-454b-a96d-8e9d3bd340b0" />
-        <option name="url" value="https://github.com/Xpl0itU/savemii" />
-      </UrlAndAccount>
-    </option>
-  </component>
   <component name="MakefileLocalSettings">
-    <option name="toolchainName" value="Docker" />
     <option name="availableProjects">
       <map>
         <entry>
@@ -101,30 +88,37 @@
     <option name="majorVersion" value="2023" />
     <option name="minorVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2KdRrhOnjFDVENs5n6gbIHfYWih" />
+  <component name="ProjectId" id="2KmLwT7mSE7rAo8jhA43cSEr491" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.advertisement.text.overridden&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/samuel/savemii&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.advertisement.text.overridden": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "CPPToolchains",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Makefile Application.build">
+}]]></component>
+  <component name="RunManager" selected="Makefile Application.all">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Makefile" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="savemii" TARGET_NAME="Makefile" CONFIG_NAME="Makefile" version="1">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
@@ -155,244 +149,20 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7dcedf08-0d7e-4890-b3ee-eddbf788852c" name="Changes" comment="" />
-      <created>1674302678421</created>
+      <changelist id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="" />
+      <created>1674575055471</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1674302678421</updated>
-      <workItem from="1674302684584" duration="7543000" />
-      <workItem from="1674397019373" duration="9173000" />
-      <workItem from="1674407070608" duration="3073000" />
+      <updated>1674575055471</updated>
+      <workItem from="1674575072545" duration="2371000" />
+      <workItem from="1674583599463" duration="2924000" />
+      <workItem from="1674588616982" duration="376000" />
+      <workItem from="1674657022173" duration="1445000" />
+      <workItem from="1674658499656" duration="1959000" />
     </task>
-    <task id="LOCAL-00001" summary="Fix CLion">
-      <created>1674303670718</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1674303670718</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Cleanup and bump version">
-      <created>1674304006454</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1674304006454</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Port wipeSavedata and removeDir to std::string">
-      <created>1674311918219</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1674311918219</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Rework createFolder function">
-      <created>1674312469129</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1674312469129</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Remove useless cast">
-      <created>1674312592134</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1674312592134</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Forgot one">
-      <created>1674313502129</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1674313502129</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Make some arguments const">
-      <created>1674313654181</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1674313654181</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Error handling and more">
-      <created>1674314560939</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1674314560939</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Remove unused functions">
-      <created>1674314783679</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1674314783679</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Reorder imports">
-      <created>1674315333125</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1674315333125</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Bump version on meta.xml">
-      <created>1674315528965</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1674315528966</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Reduce duplicate code and make some functions return a bool">
-      <created>1674324548286</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1674324548286</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Rework title loading">
-      <created>1674328516680</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1674328516680</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Optimizations">
-      <created>1674329364539</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1674329364539</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Add const_cast">
-      <created>1674386292449</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1674386292449</updated>
-    </task>
-    <task id="LOCAL-00016" summary="First progress">
-      <created>1674388605820</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1674388605820</updated>
-    </task>
-    <task id="LOCAL-00017" summary="And now we wait for WUT to accept the PR">
-      <created>1674389882248</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1674389882248</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Fixup">
-      <created>1674397796882</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1674397796882</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Copy meta files">
-      <created>1674398823953</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1674398823953</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Fix listing not inited titles">
-      <created>1674399708508</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1674399708508</updated>
-    </task>
-    <task id="LOCAL-00021" summary="Fix display of uninited titles">
-      <created>1674402069590</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1674402069590</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Minimal changes">
-      <created>1674402918670</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1674402918670</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Fix folders not being created">
-      <created>1674404759825</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1674404759825</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Fix issues">
-      <created>1674408105756</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1674408105756</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Add error reporting">
-      <created>1674414311729</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1674414311729</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Fix modes">
-      <created>1674416315798</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1674416315798</updated>
-    </task>
-    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Port wipeSavedata and removeDir to std::string" />
-    <MESSAGE value="Rework createFolder function" />
-    <MESSAGE value="Remove useless cast" />
-    <MESSAGE value="Forgot one" />
-    <MESSAGE value="Make some arguments const" />
-    <MESSAGE value="Error handling and more" />
-    <MESSAGE value="Remove unused functions" />
-    <MESSAGE value="Reorder imports" />
-    <MESSAGE value="Bump version on meta.xml" />
-    <MESSAGE value="Reduce duplicate code and make some functions return a bool" />
-    <MESSAGE value="Rework title loading" />
-    <MESSAGE value="Optimizations" />
-    <MESSAGE value="Add const_cast" />
-    <MESSAGE value="First progress" />
-    <MESSAGE value="And now we wait for WUT to accept the PR" />
-    <MESSAGE value="Fixup" />
-    <MESSAGE value="Copy meta files" />
-    <MESSAGE value="Fix listing not inited titles" />
-    <MESSAGE value="Fix display of uninited titles" />
-    <MESSAGE value="Minimal changes" />
-    <MESSAGE value="Fix folders not being created" />
-    <MESSAGE value="Fix issues" />
-    <MESSAGE value="Try to fix meta folder creation" />
-    <MESSAGE value="Add error reporting" />
-    <MESSAGE value="Fix modes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix modes" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>
