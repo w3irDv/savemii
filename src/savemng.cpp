@@ -783,6 +783,23 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
     return false;
 }
 
+static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint64_t quotaSize) {
+    DIR *src_dir = opendir(src_path);
+    struct dirent *entry;
+    while ((entry = readdir(src_dir)) != nullptr) {
+        if (entry->d_type == DT_DIR) {
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+                continue;
+            char sub_src_path[1024];
+            snprintf(sub_src_path, sizeof(sub_src_path), "%s/%s", src_path, entry->d_name);
+            char sub_dst_path[1024];
+            snprintf(sub_dst_path, sizeof(sub_dst_path), "%s/%s", dst_path, entry->d_name);
+            FSAMakeQuota(handle, newlibtoFSA(sub_dst_path).c_str(), 0x666, quotaSize);
+        }
+    }
+    closedir(src_dir);
+}
+
 void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_d, bool common) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
@@ -804,6 +821,7 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", pathb.c_str(), highIDb, lowIDb, "user");
     createFolderUnlocked(dstPath);
+    FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize);
 
     if (allusers > -1)
         if (common)
@@ -815,7 +833,6 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
         promptError(LanguageUtils::gettext("Copy failed."));
     if (!titleb->saveInit) {
         std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
-        FSAMakeQuota(handle, userPath.c_str(), 0x666, titleb->accountSaveSize);
 
         FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
         if (!shim) {
@@ -825,7 +842,7 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
         shim->clientHandle = handle;
         shim->command = FSA_COMMAND_CHANGE_OWNER;
         shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        strcpy(shim->request.changeOwner.path, userPath.c_str());
+        strcpy(shim->request.changeOwner.path, newlibtoFSA(userPath).c_str());
         shim->request.changeOwner.owner = titleb->lowID;
         shim->request.changeOwner.group = titleb->groupID;
 
@@ -836,7 +853,8 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
                                                                     highIDb, lowIDb);
         std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
 
-        FSAMakeDir(handle, newlibtoFSA(metaPath).c_str(), (FSMode) 0x666);
+        FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000);
+
         copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
         copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
     }
@@ -958,23 +976,22 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         srcPath = StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u", highID, lowID, slot);
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     createFolderUnlocked(dstPath);
+    FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize);
 
     if ((sdusers > -1) && !isWii) {
         if (common) {
-            srcPath.append("/common");
-            dstPath.append("/common");
-            if (!copyDir(srcPath, dstPath))
+            if (!copyDir(srcPath + "/common", dstPath + "/common"))
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", sdacc[sdusers].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
     }
 
+
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
     if (!title->saveInit && !isWii) {
         std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
-        FSAMakeQuota(handle, userPath.c_str(), 0x666, title->accountSaveSize);
 
         FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
         if (!shim) {
@@ -984,7 +1001,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         shim->clientHandle = handle;
         shim->command = FSA_COMMAND_CHANGE_OWNER;
         shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        strcpy(shim->request.changeOwner.path, userPath.c_str());
+        strcpy(shim->request.changeOwner.path, newlibtoFSA(userPath).c_str());
         shim->request.changeOwner.owner = title->lowID;
         shim->request.changeOwner.group = title->groupID;
 
@@ -995,7 +1012,8 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
                                                                     highID, lowID);
         std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
-        FSAMakeDir(handle, newlibtoFSA(metaPath).c_str(), (FSMode) 0x666);
+        FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000);
+
         copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
         copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
     }
