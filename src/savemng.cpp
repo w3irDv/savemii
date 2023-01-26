@@ -986,8 +986,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         srcPath.append(StringUtils::stringFormat("/%s", sdacc[sdusers].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
     }
-
-
+    
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
     if (!title->saveInit && !isWii) {
