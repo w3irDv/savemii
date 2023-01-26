@@ -803,7 +803,7 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
     std::string pathb = (isUSBb ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", pathb.c_str(), highIDb, lowIDb, "user");
-    createFolder(dstPath.c_str());
+    createFolderUnlocked(dstPath);
 
     if (allusers > -1)
         if (common)
@@ -813,6 +813,33 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
     if (!copyDir(srcPath + StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID),
                  dstPath + StringUtils::stringFormat("/%s", wiiuacc[allusers_d].persistentID)))
         promptError(LanguageUtils::gettext("Copy failed."));
+    if (!titleb->saveInit) {
+        std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
+        FSAMakeQuota(handle, userPath.c_str(), 0x666, titleb->accountSaveSize);
+
+        FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
+        if (!shim) {
+            return;
+        }
+
+        shim->clientHandle = handle;
+        shim->command = FSA_COMMAND_CHANGE_OWNER;
+        shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
+        strcpy(shim->request.changeOwner.path, userPath.c_str());
+        shim->request.changeOwner.owner = titleb->lowID;
+        shim->request.changeOwner.group = titleb->groupID;
+
+        __FSAShimSend(shim, 0);
+        free(shim);
+        const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
+                                                                    titleb->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+                                                                    highIDb, lowIDb);
+        std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
+
+        FSAMakeDir(handle, newlibtoFSA(metaPath).c_str(), (FSMode) 0x666);
+        copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
+        copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
+    }
 
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
         FSAFlushVolume(handle, "/vol/storage_slccmpt01");
