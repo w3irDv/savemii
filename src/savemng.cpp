@@ -216,7 +216,7 @@ static bool createFolderUnlocked(const std::string &path) {
             return false;
         }
     }
-    FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+    FSError createdDir = FSAMakeDir(handle, _path.c_str(), (FSMode) 0x666);
     if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
         promptError("Error while creating final folder: %lx", createdDir);
         return false;
