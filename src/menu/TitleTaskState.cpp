@@ -104,7 +104,8 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sdusers, allusers, common, allusers_d, this->titles, this->titlesCount);
             }
         }
-
+        if (cursorPos > entrycount)
+            cursorPos = entrycount;
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
             if (entrycount <= 14)
                 cursorPos = (cursorPos + 1) % entrycount;
