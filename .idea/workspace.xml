@@ -20,9 +20,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="Formatting">
+    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="Try to fix cursor misplacement when switching from Wii U to vWii">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TitleTaskState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/savemng.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/savemng.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +155,7 @@
       <workItem from="1674658499656" duration="3193000" />
       <workItem from="1674670989536" duration="439000" />
       <workItem from="1674747077952" duration="6059000" />
-      <workItem from="1674807244614" duration="459000" />
+      <workItem from="1674807244614" duration="998000" />
     </task>
     <task id="LOCAL-00001" summary="Fix creating meta folder">
       <created>1674660690550</created>
@@ -185,7 +185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674753127272</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Try to fix cursor misplacement when switching from Wii U to vWii">
+      <created>1674807799671</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1674807799671</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,6 +203,7 @@
     <MESSAGE value="Enable german" />
     <MESSAGE value="Fix not being able to delete united saves and bump meta" />
     <MESSAGE value="Formatting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Formatting" />
+    <MESSAGE value="Try to fix cursor misplacement when switching from Wii U to vWii" />
+    <option name="LAST_COMMIT_MESSAGE" value="Try to fix cursor misplacement when switching from Wii U to vWii" />
   </component>
 </project>

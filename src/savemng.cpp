@@ -939,7 +939,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
         promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
     OSCalendarTime now;
     OSTicksToCalendarTime(OSGetTime(), &now);
-    std::string date = StringUtils::stringFormat("%02d/%02d/%d %02d:%02d", now.tm_mday, now.tm_mon, now.tm_year, now.tm_hour, now.tm_min);
+    const std::string date = StringUtils::stringFormat("%02d/%02d/%d %02d:%02d", now.tm_mday, ++now.tm_mon, now.tm_year, now.tm_hour, now.tm_min);
     Date *dateObj = new Date(title->highID, title->lowID, slot);
     dateObj->set(date);
     delete dateObj;
@@ -986,7 +986,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         srcPath.append(StringUtils::stringFormat("/%s", sdacc[sdusers].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
     }
-    
+
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
     if (!title->saveInit && !isWii) {
