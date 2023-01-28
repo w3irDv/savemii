@@ -1,12 +1,12 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int __extusb_fs_rename(struct _reent *r,
-                       const char *oldName,
-                       const char *newName) {
+int __sd_fs_rename(struct _reent *r,
+                   const char *oldName,
+                   const char *newName) {
     char *fixedOldPath, *fixedNewPath;
 
     if (!oldName || !newName) {
@@ -14,12 +14,12 @@ int __extusb_fs_rename(struct _reent *r,
         return -1;
     }
 
-    fixedOldPath = __extusb_fs_fixpath(r, oldName);
+    fixedOldPath = __sd_fs_fixpath(r, oldName);
     if (!fixedOldPath) {
         return -1;
     }
 
-    fixedNewPath = __extusb_fs_fixpath(r, newName);
+    fixedNewPath = __sd_fs_fixpath(r, newName);
     if (!fixedNewPath) {
         free(fixedOldPath);
         return -1;
@@ -30,7 +30,7 @@ int __extusb_fs_rename(struct _reent *r,
     free(fixedNewPath);
 
     if (fr != FR_OK) {
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         return -1;
     }
 

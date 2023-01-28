@@ -1,17 +1,17 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-ssize_t __extusb_fs_read(struct _reent *r, void *fd, char *ptr, size_t len) {
+ssize_t __sd_fs_read(struct _reent *r, void *fd, char *ptr, size_t len) {
     if (!fd || !ptr) {
         r->_errno = EINVAL;
         return -1;
     }
 
     // Check that the file was opened with read access
-    __extusb_fs_file_t *file = (__extusb_fs_file_t *) fd;
+    __sd_fs_file_t *file = (__sd_fs_file_t *) fd;
     if ((file->flags & O_ACCMODE) == O_WRONLY) {
         r->_errno = EBADF;
         return -1;
@@ -47,7 +47,7 @@ ssize_t __extusb_fs_read(struct _reent *r, void *fd, char *ptr, size_t len) {
                 return (ssize_t) bytesRead; // error after partial read
             }
 
-            r->_errno = __extusb_fs_translate_error(fr);
+            r->_errno = __sd_fs_translate_error(fr);
             return -1;
         }
 

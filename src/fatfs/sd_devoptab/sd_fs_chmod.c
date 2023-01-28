@@ -1,19 +1,19 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 #include <sys/stat.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int __extusb_fs_chmod(struct _reent *r,
-                      const char *path,
-                      mode_t mode) {
+int __sd_fs_chmod(struct _reent *r,
+                  const char *path,
+                  mode_t mode) {
     if (!path) {
         r->_errno = EINVAL;
         return -1;
     }
 
-    char *fixedPath = __extusb_fs_fixpath(r, path);
+    char *fixedPath = __sd_fs_fixpath(r, path);
     if (!fixedPath) {
         return -1;
     }
@@ -27,7 +27,7 @@ int __extusb_fs_chmod(struct _reent *r,
 
     free(fixedPath);
     if (fr != FR_OK) {
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         return -1;
     }
 

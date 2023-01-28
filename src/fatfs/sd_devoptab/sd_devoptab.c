@@ -1,93 +1,91 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 #include "../devices.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/iosupport.h>
 #include <whb/log.h>
-#include <whb/log_console.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 static devoptab_t
-        extusb_fs_devoptab =
+        sd_fs_devoptab =
                 {
                         .name = "sd",
-                        .structSize = sizeof(__extusb_fs_file_t),
-                        .open_r = __extusb_fs_open,
-                        .close_r = __extusb_fs_close,
-                        .write_r = __extusb_fs_write,
-                        .read_r = __extusb_fs_read,
-                        .seek_r = __extusb_fs_seek,
-                        .fstat_r = __extusb_fs_fstat,
-                        .stat_r = __extusb_fs_stat,
-                        .link_r = __extusb_fs_link,
-                        .unlink_r = __extusb_fs_unlink,
-                        .chdir_r = __extusb_fs_chdir,
-                        .rename_r = __extusb_fs_rename,
-                        .mkdir_r = __extusb_fs_mkdir,
-                        .dirStateSize = sizeof(__extusb_fs_dir_t),
-                        .diropen_r = __extusb_fs_diropen,
-                        .dirreset_r = __extusb_fs_dirreset,
-                        .dirnext_r = __extusb_fs_dirnext,
-                        .dirclose_r = __extusb_fs_dirclose,
-                        .statvfs_r = __extusb_fs_statvfs,
-                        .ftruncate_r = __extusb_fs_ftruncate,
-                        .fsync_r = __extusb_fs_fsync,
+                        .structSize = sizeof(__sd_fs_file_t),
+                        .open_r = __sd_fs_open,
+                        .close_r = __sd_fs_close,
+                        .write_r = __sd_fs_write,
+                        .read_r = __sd_fs_read,
+                        .seek_r = __sd_fs_seek,
+                        .fstat_r = __sd_fs_fstat,
+                        .stat_r = __sd_fs_stat,
+                        .link_r = __sd_fs_link,
+                        .unlink_r = __sd_fs_unlink,
+                        .chdir_r = __sd_fs_chdir,
+                        .rename_r = __sd_fs_rename,
+                        .mkdir_r = __sd_fs_mkdir,
+                        .dirStateSize = sizeof(__sd_fs_dir_t),
+                        .diropen_r = __sd_fs_diropen,
+                        .dirreset_r = __sd_fs_dirreset,
+                        .dirnext_r = __sd_fs_dirnext,
+                        .dirclose_r = __sd_fs_dirclose,
+                        .statvfs_r = __sd_fs_statvfs,
+                        .ftruncate_r = __sd_fs_ftruncate,
+                        .fsync_r = __sd_fs_fsync,
                         .deviceData = NULL,
-                        .chmod_r = __extusb_fs_chmod,
-                        .fchmod_r = __extusb_fs_fchmod,
-                        .rmdir_r = __extusb_fs_rmdir,
+                        .chmod_r = __sd_fs_chmod,
+                        .fchmod_r = __sd_fs_fchmod,
+                        .rmdir_r = __sd_fs_rmdir,
 };
 
-static BOOL extusb_fs_initialised = false;
+static BOOL sd_fs_initialised = false;
 
-int init_extusb_devoptab() {
-    if (extusb_fs_initialised) {
+int init_sd_devoptab() {
+    if (sd_fs_initialised) {
         return 0;
     }
 
-    extusb_fs_devoptab.deviceData = memalign(0x40, sizeof(FATFS));
-    if (extusb_fs_devoptab.deviceData == NULL) {
+    sd_fs_devoptab.deviceData = memalign(0x40, sizeof(FATFS));
+    if (sd_fs_devoptab.deviceData == NULL) {
         return -1;
     }
 
     char *mountPath = memalign(0x40, 256);
     sprintf(mountPath, "%d:", DEV_SD);
 
-    int dev = AddDevice(&extusb_fs_devoptab);
+    int dev = AddDevice(&sd_fs_devoptab);
     if (dev != -1) {
         setDefaultDevice(dev);
 
         // Mount the external USB drive
-        FRESULT fr = f_mount(extusb_fs_devoptab.deviceData, mountPath, 1);
+        FRESULT fr = f_mount(sd_fs_devoptab.deviceData, mountPath, 1);
 
         if (fr != FR_OK) {
-            free(extusb_fs_devoptab.deviceData);
-            extusb_fs_devoptab.deviceData = NULL;
+            free(sd_fs_devoptab.deviceData);
+            sd_fs_devoptab.deviceData = NULL;
             return fr;
         }
         // chdir to external USB root for general use
         chdir("sd:/");
-        extusb_fs_initialised = true;
+        sd_fs_initialised = true;
     } else {
         f_unmount(mountPath);
-        free(extusb_fs_devoptab.deviceData);
-        extusb_fs_devoptab.deviceData = NULL;
+        free(sd_fs_devoptab.deviceData);
+        sd_fs_devoptab.deviceData = NULL;
         return dev;
     }
 
     return 0;
 }
 
-int fini_extusb_devoptab() {
-    if (!extusb_fs_initialised) {
+int fini_sd_devoptab() {
+    if (!sd_fs_initialised) {
         return 0;
     }
 
-    int rc = RemoveDevice(extusb_fs_devoptab.name);
+    int rc = RemoveDevice(sd_fs_devoptab.name);
     if (rc < 0) {
         return rc;
     }
@@ -98,9 +96,9 @@ int fini_extusb_devoptab() {
     if (rc != FR_OK) {
         return rc;
     }
-    free(extusb_fs_devoptab.deviceData);
-    extusb_fs_devoptab.deviceData = NULL;
-    extusb_fs_initialised = false;
+    free(sd_fs_devoptab.deviceData);
+    sd_fs_devoptab.deviceData = NULL;
+    sd_fs_initialised = false;
 
     return rc;
 }

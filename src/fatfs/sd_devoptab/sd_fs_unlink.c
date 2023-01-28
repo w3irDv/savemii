@@ -1,11 +1,11 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int __extusb_fs_unlink(struct _reent *r,
-                       const char *name) {
+int __sd_fs_unlink(struct _reent *r,
+                   const char *name) {
     char *fixedPath;
 
     if (!name) {
@@ -13,7 +13,7 @@ int __extusb_fs_unlink(struct _reent *r,
         return -1;
     }
 
-    fixedPath = __extusb_fs_fixpath(r, name);
+    fixedPath = __sd_fs_fixpath(r, name);
     if (!fixedPath) {
         return -1;
     }
@@ -21,7 +21,7 @@ int __extusb_fs_unlink(struct _reent *r,
     FRESULT fr = f_unlink(fixedPath);
     free(fixedPath);
     if (fr != FR_OK) {
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         return -1;
     }
 

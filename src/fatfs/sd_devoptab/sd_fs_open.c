@@ -1,10 +1,10 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int __extusb_fs_open(struct _reent *r, void *fileStruct, const char *path, int flags, int mode) {
+int __sd_fs_open(struct _reent *r, void *fileStruct, const char *path, int flags, int mode) {
     if (!fileStruct || !path) {
         r->_errno = EINVAL;
         return -1;
@@ -28,7 +28,7 @@ int __extusb_fs_open(struct _reent *r, void *fileStruct, const char *path, int f
         return -1;
     }
 
-    char *fixedPath = __extusb_fs_fixpath(r, path);
+    char *fixedPath = __sd_fs_fixpath(r, path);
     if (!fixedPath) {
         return -1;
     }
@@ -39,12 +39,12 @@ int __extusb_fs_open(struct _reent *r, void *fileStruct, const char *path, int f
     // Open the file
     fr = f_open(&fp, fixedPath, fsMode);
     if (fr != FR_OK) {
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         free(fixedPath);
         return -1;
     }
 
-    __extusb_fs_file_t *file = (__extusb_fs_file_t *) fileStruct;
+    __sd_fs_file_t *file = (__sd_fs_file_t *) fileStruct;
     file->fp = fp;
     file->flags = (flags & (O_ACCMODE | O_APPEND | O_SYNC));
     file->offset = 0;

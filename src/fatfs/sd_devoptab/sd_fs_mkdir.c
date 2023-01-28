@@ -1,12 +1,12 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int __extusb_fs_mkdir(struct _reent *r,
-                      const char *path,
-                      int mode) {
+int __sd_fs_mkdir(struct _reent *r,
+                  const char *path,
+                  int mode) {
     char *fixedPath;
 
     if (!path) {
@@ -14,7 +14,7 @@ int __extusb_fs_mkdir(struct _reent *r,
         return -1;
     }
 
-    fixedPath = __extusb_fs_fixpath(r, path);
+    fixedPath = __sd_fs_fixpath(r, path);
     if (!fixedPath) {
         return -1;
     }
@@ -23,7 +23,7 @@ int __extusb_fs_mkdir(struct _reent *r,
     FRESULT fr = f_mkdir(fixedPath);
     free(fixedPath);
     if (fr != FR_OK) {
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         return -1;
     }
 

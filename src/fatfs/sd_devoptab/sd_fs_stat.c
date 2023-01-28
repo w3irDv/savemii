@@ -1,18 +1,18 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int __extusb_fs_stat(struct _reent *r,
-                     const char *path,
-                     struct stat *st) {
+int __sd_fs_stat(struct _reent *r,
+                 const char *path,
+                 struct stat *st) {
     if (!path || !st) {
         r->_errno = EINVAL;
         return -1;
     }
 
-    char *fixedPath = __extusb_fs_fixpath(r, path);
+    char *fixedPath = __sd_fs_fixpath(r, path);
     if (!fixedPath) {
         return -1;
     }
@@ -21,7 +21,7 @@ int __extusb_fs_stat(struct _reent *r,
     FRESULT fr = f_stat(fixedPath, &fno);
     if (fr != FR_OK) {
         free(fixedPath);
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         return -1;
     }
     free(fixedPath);
@@ -30,10 +30,10 @@ int __extusb_fs_stat(struct _reent *r,
 
     st->st_nlink = 1;
 
-    st->st_atime = __extusb_fs_translate_time(fno.fdate, fno.ftime);
-    st->st_ctime = __extusb_fs_translate_time(fno.fdate, fno.ftime);
-    st->st_mtime = __extusb_fs_translate_time(fno.fdate, fno.ftime);
-    st->st_mode = __extusb_fs_translate_mode(fno);
+    st->st_atime = __sd_fs_translate_time(fno.fdate, fno.ftime);
+    st->st_ctime = __sd_fs_translate_time(fno.fdate, fno.ftime);
+    st->st_mtime = __sd_fs_translate_time(fno.fdate, fno.ftime);
+    st->st_mode = __sd_fs_translate_mode(fno);
 
     if (!(fno.fattrib & AM_DIR)) {
         st->st_size = (off_t) fno.fsize;

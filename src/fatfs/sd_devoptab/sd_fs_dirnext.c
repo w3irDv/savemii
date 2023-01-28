@@ -1,23 +1,23 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int __extusb_fs_dirnext(struct _reent *r,
-                        DIR_ITER *dirState,
-                        char *filename,
-                        struct stat *filestat) {
+int __sd_fs_dirnext(struct _reent *r,
+                    DIR_ITER *dirState,
+                    char *filename,
+                    struct stat *filestat) {
     if (!dirState || !filename || !filestat) {
         r->_errno = EINVAL;
         return -1;
     }
 
-    __extusb_fs_dir_t *dir = (__extusb_fs_dir_t *) (dirState->dirStruct);
+    __sd_fs_dir_t *dir = (__sd_fs_dir_t *) (dirState->dirStruct);
     memset(&dir->entry_data, 0, sizeof(dir->entry_data));
     FRESULT fr = f_readdir(&dir->dp, &dir->entry_data);
     if (fr != FR_OK) {
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         return -1;
     }
     if (dir->entry_data.fname[0] == 0) {

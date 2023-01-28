@@ -1,5 +1,5 @@
 #include "../devices.h"
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 #include "stdio.h"
 
 #ifdef __cplusplus
@@ -7,8 +7,8 @@ extern "C" {
 #endif
 
 char *
-__extusb_fs_fixpath(struct _reent *r,
-                    const char *path) {
+__sd_fs_fixpath(struct _reent *r,
+                const char *path) {
     char *p;
     char *fixedPath;
 
@@ -37,7 +37,7 @@ __extusb_fs_fixpath(struct _reent *r,
     return fixedPath;
 }
 
-int __extusb_fs_translate_error(FRESULT error) {
+int __sd_fs_translate_error(FRESULT error) {
     switch ((int) error) {
         case FR_DISK_ERR:
         case FR_INT_ERR:
@@ -77,7 +77,7 @@ int __extusb_fs_translate_error(FRESULT error) {
     return (int) error;
 }
 
-time_t __extusb_fs_translate_time(WORD fdate, WORD ftime) {
+time_t __sd_fs_translate_time(WORD fdate, WORD ftime) {
     struct tm time;
     time.tm_year = fdate >> 9;
     time.tm_mon = (fdate >> 5) & 0b1111;
@@ -88,7 +88,7 @@ time_t __extusb_fs_translate_time(WORD fdate, WORD ftime) {
     return mktime(&time);
 }
 
-mode_t __extusb_fs_translate_mode(FILINFO fileStat) {
+mode_t __sd_fs_translate_mode(FILINFO fileStat) {
     mode_t retMode = 0;
 
     if ((fileStat.fattrib & AM_DIR) == AM_DIR) {

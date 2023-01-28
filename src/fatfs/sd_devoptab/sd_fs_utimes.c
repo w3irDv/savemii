@@ -1,13 +1,13 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 #include <time.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int __extusb_fs_utimes(struct _reent *r,
-                       const char *filename,
-                       const struct timeval times[2]) {
+int __sd_fs_utimes(struct _reent *r,
+                   const char *filename,
+                   const struct timeval times[2]) {
     if (!filename) {
         r->_errno = EINVAL;
         return -1;
@@ -27,7 +27,7 @@ int __extusb_fs_utimes(struct _reent *r,
 
     FRESULT fr = f_utime(filename, &fno);
     if (fr != FR_OK) {
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         return -1;
     }
     return 0;

@@ -1,13 +1,13 @@
-#include "extusb_devoptab.h"
+#include "sd_devoptab.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-off_t __extusb_fs_seek(struct _reent *r,
-                       void *fd,
-                       off_t pos,
-                       int whence) {
+off_t __sd_fs_seek(struct _reent *r,
+                   void *fd,
+                   off_t pos,
+                   int whence) {
     uint64_t offset;
     ;
 
@@ -16,7 +16,7 @@ off_t __extusb_fs_seek(struct _reent *r,
         return -1;
     }
 
-    __extusb_fs_file_t *file = (__extusb_fs_file_t *) fd;
+    __sd_fs_file_t *file = (__sd_fs_file_t *) fd;
     FILINFO fno;
     FRESULT fr;
 
@@ -36,7 +36,7 @@ off_t __extusb_fs_seek(struct _reent *r,
         case SEEK_END:
             fr = f_stat(file->path, &fno);
             if (fr != FR_OK) {
-                r->_errno = __extusb_fs_translate_error(fr);
+                r->_errno = __sd_fs_translate_error(fr);
                 return -1;
             }
             offset = fno.fsize;
@@ -62,7 +62,7 @@ off_t __extusb_fs_seek(struct _reent *r,
     if (fr != FR_OK) {
         // revert offset update on error.
         file->offset = old_offset;
-        r->_errno = __extusb_fs_translate_error(fr);
+        r->_errno = __sd_fs_translate_error(fr);
         return -1;
     }
 
