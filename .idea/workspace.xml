@@ -20,8 +20,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="Add German to options">
-      <change beforePath="$PROJECT_DIR$/include/version.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/version.h" afterDir="false" />
+    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="Bump version">
+      <change beforePath="$PROJECT_DIR$/meta/hbl/meta.xml" beforeDir="false" afterPath="$PROJECT_DIR$/meta/hbl/meta.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,7 +269,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675609015829</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Bump version">
+      <created>1675609196727</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1675609196727</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -289,6 +296,7 @@
     <MESSAGE value="Try to fix" />
     <MESSAGE value="Use newer cache" />
     <MESSAGE value="Add German to options" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add German to options" />
+    <MESSAGE value="Bump version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bump version" />
   </component>
 </project>
