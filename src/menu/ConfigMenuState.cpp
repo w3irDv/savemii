@@ -18,6 +18,8 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
         return SUBSTATE_RETURN;
     if (input->get(TRIGGER, PAD_BUTTON_RIGHT)) {
         if (language == LanguageUtils::gettext("Japanese"))
+            LanguageUtils::loadLanguage(Swkbd_LanguageType__German);
+        else if (language == LanguageUtils::gettext("German"))
             LanguageUtils::loadLanguage(Swkbd_LanguageType__Italian);
         else if (language == LanguageUtils::gettext("Italian"))
             LanguageUtils::loadLanguage(Swkbd_LanguageType__Portuguese);
@@ -40,6 +42,8 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
         if (language == LanguageUtils::gettext("Japanese"))
             LanguageUtils::loadLanguage(Swkbd_LanguageType__English);
         else if (language == LanguageUtils::gettext("English"))
+            LanguageUtils::loadLanguage(Swkbd_LanguageType__German);
+        else if (language == LanguageUtils::gettext("German"))
             LanguageUtils::loadLanguage(Swkbd_LanguageType__Chinese2);
         else if (language == LanguageUtils::gettext("Simplified Chinese"))
             LanguageUtils::loadLanguage(Swkbd_LanguageType__Russian);
