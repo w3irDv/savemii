@@ -20,9 +20,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="Use newer cache">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/ConfigMenuState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/ConfigMenuState.cpp" afterDir="false" />
+    <list default="true" id="cd5b4787-c551-419c-863c-d8c1ace05c7d" name="Changes" comment="Add German to options">
+      <change beforePath="$PROJECT_DIR$/include/version.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/version.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674928604991</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add German to options">
+      <created>1675609015829</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1675609015829</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,6 +288,7 @@
     <MESSAGE value="Build anything" />
     <MESSAGE value="Try to fix" />
     <MESSAGE value="Use newer cache" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use newer cache" />
+    <MESSAGE value="Add German to options" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add German to options" />
   </component>
 </project>
