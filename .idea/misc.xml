@@ -10,14 +10,14 @@
   <component name="MakefileSettings">
     <option name="linkedExternalProjectsSettings">
       <MakefileProjectSettings>
-        <option name="buildOptions" value="--eval=&quot;export DEVKITPRO=C:\msys64\opt\devkitpro&quot; --eval=&quot;export DEVKITARM=C:\msys64\opt\devkitpro\devkitARM&quot; --eval=&quot;export DEVKITPPC=C:\msys64\opt\devkitpro\devkitPPC&quot;" />
+        <option name="buildOptions" value="--eval=&quot;export DEVKITPRO=/opt/devkitpro&quot; --eval=&quot;export DEVKITARM=/opt/devkitpro/devkitARM&quot; --eval=&quot;export DEVKITPPC=/opt/devkitpro/devkitPPC&quot; CC=/opt/devkitpro/devkitPPC/bin/powerpc-eabi-gcc CXX=/opt/devkitpro/devkitPPC/bin/powerpc-eabi-c++" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
           </set>
         </option>
-        <option name="switches" value="--eval=&quot;export DEVKITPRO=C:\msys64\opt\devkitpro&quot; --eval=&quot;export DEVKITARM=C:\msys64\opt\devkitpro\devkitARM&quot; --eval=&quot;export DEVKITPPC=C:\msys64\opt\devkitpro\devkitPPC&quot; CC=C:\msys64\opt\devkitpro\devkitPPC\bin\powerpc-eabi-gcc.exe CXX=C:\msys64\opt\devkitpro\devkitPPC\bin\powerpc-eabi-c++.exe" />
+        <option name="switches" value="--eval=&quot;export DEVKITPRO=/opt/devkitpro&quot; --eval=&quot;export DEVKITARM=/opt/devkitpro/devkitARM&quot; --eval=&quot;export DEVKITPPC=/opt/devkitpro/devkitPPC&quot; CC=/opt/devkitpro/devkitPPC/bin/powerpc-eabi-gcc CXX=/opt/devkitpro/devkitPPC/bin/powerpc-eabi-c++" />
         <option name="version" value="2" />
       </MakefileProjectSettings>
     </option>
