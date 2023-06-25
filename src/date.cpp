@@ -15,13 +15,12 @@ std::string Date::get() {
         data[len] = '\0';
         fclose(f);
 
-        json_t *root;
         json_error_t error;
-
-        root = json_loads(data, 0, &error);
+        json_t *root = json_loads(data, 0, &error);
 
         if (root) {
-            std::string buf(json_string_value(json_object_get(root, "Date")));
+            std::string buf;
+            buf.assign(json_string_value(json_object_get(root, "Date")));
             json_decref(root);
 
             free(data);

@@ -4,10 +4,6 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 
-static int cursorPos = 0;
-static int entrycount;
-static uint8_t slot = 0;
-
 void TitleOptionsState::render() {
     this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
     entrycount = 3;
@@ -347,25 +343,25 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             case backup:
                 backupSavedata(&this->title, slot, allusers, common);
                 DrawUtils::setRedraw(true);
-                return SUBSTATE_RETURN;
+                break;
             case restore:
                 restoreSavedata(&this->title, slot, sdusers, allusers, common);
                 DrawUtils::setRedraw(true);
-                return SUBSTATE_RETURN;
+                break;
             case wipe:
                 wipeSavedata(&this->title, allusers, common);
                 DrawUtils::setRedraw(true);
-                return SUBSTATE_RETURN;
+                break;
             case copytoOtherDevice:
                 for (int i = 0; i < this->titleCount; i++) {
                     if (titles[i].listID == this->title.dupeID) {
                         copySavedata(&this->title, &titles[i], allusers, allusers_d, common);
                         DrawUtils::setRedraw(true);
-                        return SUBSTATE_RETURN;
+                        break;
                     }
                 }
                 DrawUtils::setRedraw(true);
-                return SUBSTATE_RETURN;
+                break;
         }
     }
     return SUBSTATE_RUNNING;

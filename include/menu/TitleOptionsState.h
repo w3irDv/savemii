@@ -43,4 +43,8 @@ private:
     int titleCount;
 
     bool isWiiUTitle;
+
+    uint8_t slot = 0;
+    int cursorPos = 0;
+    int entrycount;
 };
