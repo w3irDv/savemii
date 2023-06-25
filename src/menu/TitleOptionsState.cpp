@@ -45,8 +45,8 @@ void TitleOptionsState::render() {
                 if (sdusers == -1)
                     consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("all users"));
                 else
-                    consolePrintPos(M_OFF, 8, "   < %s > (%s)", sdacc[sdusers].persistentID,
-                                    hasAccountSave(&this->title, true, false, sdacc[sdusers].pID,
+                    consolePrintPos(M_OFF, 8, "   < %s > (%s)", getSDacc()[sdusers].persistentID,
+                                    hasAccountSave(&this->title, true, false, getSDacc()[sdusers].pID,
                                                    slot, 0)
                                             ? LanguageUtils::gettext("Has Save")
                                             : LanguageUtils::gettext("Empty"));
@@ -58,9 +58,9 @@ void TitleOptionsState::render() {
             if (this->allusers == -1)
                 consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("all users"));
             else
-                consolePrintPos(M_OFF, 8, "   < %s (%s) > (%s)", wiiuacc[this->allusers].miiName,
-                                wiiuacc[this->allusers].persistentID,
-                                hasAccountSave(&this->title, false, false, wiiuacc[this->allusers].pID,
+                consolePrintPos(M_OFF, 8, "   < %s (%s) > (%s)", getWiiUacc()[this->allusers].miiName,
+                                getWiiUacc()[this->allusers].persistentID,
+                                hasAccountSave(&this->title, false, false, getWiiUacc()[this->allusers].pID,
                                                slot, 0)
                                         ? LanguageUtils::gettext("Has Save")
                                         : LanguageUtils::gettext("Empty"));
@@ -76,11 +76,11 @@ void TitleOptionsState::render() {
                     consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s >", LanguageUtils::gettext("all users"));
                 else
                     consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s (%s) > (%s)",
-                                    wiiuacc[allusers].miiName, wiiuacc[allusers].persistentID,
+                                    getWiiUacc()[allusers].miiName, getWiiUacc()[allusers].persistentID,
                                     hasAccountSave(&this->title,
                                                    (!((task == backup) || (task == restore) || (task == copytoOtherDevice))),
                                                    (!((task < 3) || (task == copytoOtherDevice))),
-                                                   wiiuacc[this->allusers].pID, slot,
+                                                   getWiiUacc()[this->allusers].pID, slot,
                                                    this->versionList != nullptr ? this->versionList[slot] : 0)
                                             ? LanguageUtils::gettext("Has Save")
                                             : LanguageUtils::gettext("Empty"));
@@ -100,10 +100,10 @@ void TitleOptionsState::render() {
             if (allusers_d == -1)
                 consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("all users"));
             else
-                consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", wiiuacc[allusers_d].miiName,
-                                wiiuacc[allusers_d].persistentID,
+                consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUacc()[allusers_d].miiName,
+                                getWiiUacc()[allusers_d].persistentID,
                                 hasAccountSave(&titles[this->title.dupeID], false, false,
-                                               wiiuacc[allusers_d].pID, 0, 0)
+                                               getWiiUacc()[allusers_d].pID, 0, 0)
                                         ? LanguageUtils::gettext("Has Save")
                                         : LanguageUtils::gettext("Empty"));
         }
@@ -193,7 +193,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     allusers_d = ((this->allusers > -1) && (allusers_d == -1)) ? 0 : allusers_d;
                     break;
                 case 3:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -201,8 +201,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         } else if (this->task == restore) {
             switch (cursorPos) {
                 case 0:
-                    slot--;
-                    getAccountsSD(&this->title, slot);
+                    getAccountsSD(&this->title, --slot);
                     break;
                 case 1:
                     sdusers = ((sdusers == -1) ? -1 : (sdusers - 1));
@@ -213,7 +212,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     allusers = ((sdusers > -1) && (allusers == -1)) ? 0 : allusers;
                     break;
                 case 3:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -226,7 +225,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     allusers = ((allusers == -1) ? -1 : (allusers - 1));
                     break;
                 case 2:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -237,7 +236,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     slot--;
                     break;
                 case 1:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -251,7 +250,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     allusers = ((allusers == -1) ? -1 : (allusers - 1));
                     break;
                 case 2:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -264,15 +263,15 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case 0:
                     break;
                 case 1:
-                    allusers = ((allusers == (wiiuaccn - 1)) ? (wiiuaccn - 1) : (allusers + 1));
+                    allusers = ((allusers == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (allusers + 1));
                     allusers_d = allusers;
                     break;
                 case 2:
-                    allusers_d = ((allusers_d == (wiiuaccn - 1)) ? (wiiuaccn - 1) : (allusers_d + 1));
+                    allusers_d = ((allusers_d == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (allusers_d + 1));
                     allusers_d = (allusers == -1) ? -1 : allusers_d;
                     break;
                 case 3:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -280,19 +279,18 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         } else if (this->task == restore) {
             switch (cursorPos) {
                 case 0:
-                    slot++;
-                    getAccountsSD(&this->title, slot);
+                    getAccountsSD(&this->title, ++slot);
                     break;
                 case 1:
-                    sdusers = ((sdusers == (sdaccn - 1)) ? (sdaccn - 1) : (sdusers + 1));
+                    sdusers = ((sdusers == (getSDaccn() - 1)) ? (getSDaccn() - 1) : (sdusers + 1));
                     allusers = ((sdusers > -1) && (allusers == -1)) ? 0 : allusers;
                     break;
                 case 2:
-                    allusers = ((allusers == (wiiuaccn - 1)) ? (wiiuaccn - 1) : (allusers + 1));
+                    allusers = ((allusers == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (allusers + 1));
                     allusers = (sdusers == -1) ? -1 : allusers;
                     break;
                 case 3:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -302,10 +300,10 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case 0:
                     break;
                 case 1:
-                    allusers = ((allusers == (wiiuaccn - 1)) ? (wiiuaccn - 1) : (allusers + 1));
+                    allusers = ((allusers == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (allusers + 1));
                     break;
                 case 2:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -316,7 +314,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     slot++;
                     break;
                 case 1:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;
@@ -327,10 +325,10 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     slot++;
                     break;
                 case 1:
-                    allusers = ((allusers == (wiiuaccn - 1)) ? (wiiuaccn - 1) : (allusers + 1));
+                    allusers = ((allusers == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (allusers + 1));
                     break;
                 case 2:
-                    common ^= 1;
+                    common = common ? false : true;
                     break;
                 default:
                     break;

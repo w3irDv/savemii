@@ -47,6 +47,22 @@ std::string newlibtoFSA(std::string path) {
     return path;
 }
 
+uint8_t getSDaccn() {
+    return sdaccn;
+}
+
+uint8_t getWiiUaccn() {
+    return wiiuaccn;
+}
+
+Account *getWiiUacc() {
+    return wiiuacc;
+}
+
+Account *getSDacc() {
+    return sdacc;
+}
+
 int checkEntry(const char *fPath) {
     struct stat st {};
     if (stat(fPath, &st) == -1)
