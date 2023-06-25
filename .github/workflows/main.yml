@@ -20,16 +20,16 @@ jobs:
       - name: Build artifacts
         run: |
           docker build . --file Dockerfile --tag builder
-          docker run --rm -v ${PWD}:/project builder make -j$(nproc)
+          docker run --rm -v ${PWD}:/project builder make release -j$(nproc)
       - name: Upload Aroma version
         uses: actions/upload-artifact@v3
         with:
-          name: SaveMii-Aroma
-          path: savemii.wuhb
+          name: SaveMiiModWUTPort-Aroma
+          path: SaveMiiModWUTPort-Aroma.zip
           if-no-files-found: warn
       - name: Upload HBL version
         uses: actions/upload-artifact@v3
         with:
-          name: SaveMii-HBL
-          path: savemii.rpx
+          name: SaveMiiModWUTPort-HBL
+          path: SaveMiiModWUTPort-HBL.zip
           if-no-files-found: warn
