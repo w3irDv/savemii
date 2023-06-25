@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <coreinit/debug.h>
+#include <coreinit/thread.h>
 #include <limits>
 #include <list>
 #include <map>
