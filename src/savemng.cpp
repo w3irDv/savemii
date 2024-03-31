@@ -52,7 +52,7 @@ std::string newlibtoFSA(std::string path) {
 }
 
 std::string getBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot){
-    return StringUtils::stringFormat("%s/%08x%08x/%u", backupPath, lowId, highId, slot);
+    return StringUtils::stringFormat("%s/%08x%08x/%u", backupPath, highId, lowId, slot);
 }
 
 std::string getLegacyBackupPath(uint32_t highId, uint32_t lowId){
