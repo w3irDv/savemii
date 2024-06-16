@@ -386,24 +386,12 @@ static void unloadTitles(Title *titles, int count) {
 int main() {
     AXInit();
     AXQuit();
-    OSScreenInit();
-
-    uint32_t tvBufferSize = OSScreenGetBufferSizeEx(SCREEN_TV);
-    uint32_t drcBufferSize = OSScreenGetBufferSizeEx(SCREEN_DRC);
-
-    auto *screenBuffer = (uint8_t *) memalign(0x100, tvBufferSize + drcBufferSize);
-    if (!screenBuffer) {
-        OSFatal("Fail to allocate screenBuffer");
+    
+    State::init();
+    
+    if (DrawUtils::LogConsoleInit()) {
+        OSFatal("Failed to initialize OSSCreen");
     }
-    memset(screenBuffer, 0, tvBufferSize + drcBufferSize);
-
-    OSScreenSetBufferEx(SCREEN_TV, screenBuffer);
-    OSScreenSetBufferEx(SCREEN_DRC, screenBuffer + tvBufferSize);
-
-    OSScreenEnableEx(SCREEN_TV, TRUE);
-    OSScreenEnableEx(SCREEN_DRC, TRUE);
-
-    DrawUtils::initBuffers(screenBuffer, tvBufferSize, screenBuffer + tvBufferSize, drcBufferSize);
 
     if (!DrawUtils::initFont()) {
         OSFatal("Failed to init font");
@@ -412,8 +400,8 @@ int main() {
     WPADInit();
     KPADInit();
     WPADEnableURCC(1);
+
     loadWiiUTitles(0);
-    State::init();
 
     int res = romfsInit();
     if (res) {
@@ -422,20 +410,20 @@ int main() {
         State::shutdown();
         return 0;
     }
-
     Swkbd_LanguageType systemLanguage = LanguageUtils::getSystemLanguage();
     LanguageUtils::loadLanguage(systemLanguage);
 
     if (!initFS()) {
         promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
-        State::shutdown();
+            State::shutdown();
         return 0;
     }
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     DrawUtils::endDraw();
+
     Title *wiiutitles = loadWiiUTitles(1);
     Title *wiititles = loadWiiTitles();
     getAccountsWiiU();
@@ -445,8 +433,9 @@ int main() {
 
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,
-                                                                           vWiiTitlesCount);
+                                                                        vWiiTitlesCount);
     while (State::AppRunning()) {
+
         input.read();
 
         if (input.get(TRIGGER, PAD_BUTTON_ANY))
@@ -473,12 +462,13 @@ int main() {
 
     unloadTitles(wiiutitles, wiiuTitlesCount);
     unloadTitles(wiititles, vWiiTitlesCount);
-
     shutdownFS();
     LanguageUtils::gettextCleanUp();
     romfsExit();
 
     DrawUtils::deinitFont();
+    DrawUtils::LogConsoleFree();
+
     State::shutdown();
     return 0;
 }

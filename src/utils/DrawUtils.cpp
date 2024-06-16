@@ -5,21 +5,97 @@
 #include <memory>
 #include <tga_reader.h>
 #include <utils/DrawUtils.h>
+#include <utils/StateUtils.h>
+#include <malloc.h>
+#include <coreinit/debug.h>
 
+#include <coreinit/memheap.h>
+#include <coreinit/cache.h>
+#include <coreinit/memfrmheap.h>
+#include <coreinit/memory.h>
+#include <proc_ui/procui.h>
 
 // buffer width
 #define TV_WIDTH  0x500
 #define DRC_WIDTH 0x380
 
+#define CONSOLE_FRAME_HEAP_TAG (0x000DECAF)
+
+
 bool DrawUtils::isBackBuffer;
 
 uint8_t *DrawUtils::tvBuffer = nullptr;
-uint32_t DrawUtils::tvSize = 0;
 uint8_t *DrawUtils::drcBuffer = nullptr;
-uint32_t DrawUtils::drcSize = 0;
+/*
+uint32_t DrawUtils::sBufferSizeTV = 0;
+uint32_t DrawUtils::sBufferSizeDRC = 0;
+*/
 static SFT pFont = {};
 
 static Color font_col(0xFFFFFFFF);
+
+void *DrawUtils::sBufferTV = NULL, *DrawUtils::sBufferDRC = NULL;
+uint32_t DrawUtils::sBufferSizeTV = 0, DrawUtils::sBufferSizeDRC = 0;
+BOOL DrawUtils::sConsoleHasForeground = TRUE;
+
+uint32_t
+DrawUtils::ConsoleProcCallbackAcquired(void *context)
+{
+   MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
+   MEMRecordStateForFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
+
+   if (sBufferSizeTV) {
+      sBufferTV = MEMAllocFromFrmHeapEx(heap, sBufferSizeTV, 4);
+   }
+
+   if (sBufferSizeDRC) {
+      sBufferDRC = MEMAllocFromFrmHeapEx(heap, sBufferSizeDRC, 4);
+   }
+
+   sConsoleHasForeground = TRUE;
+   DrawUtils::setRedraw(true);
+   OSScreenSetBufferEx(SCREEN_TV, sBufferTV);
+   OSScreenSetBufferEx(SCREEN_DRC, sBufferDRC);
+   return 0;
+}
+
+uint32_t
+DrawUtils::ConsoleProcCallbackReleased(void *context)
+{
+   MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
+   MEMFreeByStateToFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
+   sConsoleHasForeground = FALSE;
+   return 0;
+}
+
+
+BOOL
+DrawUtils::LogConsoleInit()
+{
+   OSScreenInit();
+   sBufferSizeTV = OSScreenGetBufferSizeEx(SCREEN_TV);
+   sBufferSizeDRC = OSScreenGetBufferSizeEx(SCREEN_DRC);
+
+   ConsoleProcCallbackAcquired(NULL);
+   OSScreenEnableEx(SCREEN_TV, 1);
+   OSScreenEnableEx(SCREEN_DRC, 1);
+
+    State::registerProcUICallbacks();
+
+    DrawUtils::initBuffers(sBufferTV, sBufferDRC);
+
+   return FALSE;
+}
+
+void
+DrawUtils::LogConsoleFree()
+{
+   if (sConsoleHasForeground) {
+      OSScreenShutdown();
+      ConsoleProcCallbackReleased(NULL);
+   }
+}
+
 
 bool DrawUtils::redraw = true;
 
@@ -32,11 +108,9 @@ void DrawUtils::setRedraw(bool value) {
     redraw = value;
 }
 
-void DrawUtils::initBuffers(void *tvBuffer_, uint32_t tvSize_, void *drcBuffer_, uint32_t drcSize_) {
-    DrawUtils::tvBuffer = (uint8_t *) tvBuffer_;
-    DrawUtils::tvSize = tvSize_;
-    DrawUtils::drcBuffer = (uint8_t *) drcBuffer_;
-    DrawUtils::drcSize = drcSize_;
+void DrawUtils::initBuffers(void *sBufferTV_, void *sBufferDRC_) {
+    DrawUtils::tvBuffer = (uint8_t *) sBufferTV_;
+    DrawUtils::drcBuffer = (uint8_t *) sBufferDRC_;
 }
 
 void DrawUtils::beginDraw() {
@@ -56,8 +130,11 @@ void DrawUtils::beginDraw() {
 
 void DrawUtils::endDraw() {
     // OSScreenFlipBuffersEx already flushes the cache?
-    // DCFlushRange(tvBuffer, tvSize);
-    // DCFlushRange(drcBuffer, drcSize);
+    // DCFlushRange(tvBuffer, sBufferSizeTV);
+    // DCFlushRange(drcBuffer, sBufferSizeDRC);
+
+    DCFlushRange(sBufferTV, sBufferSizeTV);
+   DCFlushRange(sBufferDRC, sBufferSizeDRC);
 
     OSScreenFlipBuffersEx(SCREEN_DRC);
     OSScreenFlipBuffersEx(SCREEN_TV);
@@ -73,9 +150,9 @@ void DrawUtils::drawPixel(uint32_t x, uint32_t y, uint8_t r, uint8_t g, uint8_t 
 
     // put pixel in the drc buffer
     uint32_t i = (x + y * DRC_WIDTH) * 4;
-    if (i + 3 < drcSize / 2) {
+    if (i + 3 < sBufferSizeDRC / 2) {
         if (isBackBuffer) {
-            i += drcSize / 2;
+            i += sBufferSizeDRC / 2;
         }
         if (a == 0xFF) {
             drcBuffer[i] = r;
@@ -90,7 +167,7 @@ void DrawUtils::drawPixel(uint32_t x, uint32_t y, uint8_t r, uint8_t g, uint8_t 
 
     uint32_t USED_TV_WIDTH = TV_WIDTH;
     float scale = 1.5f;
-    if (DrawUtils::tvSize == 0x00FD2000) {
+    if (DrawUtils::sBufferSizeTV == 0x00FD2000) {
         USED_TV_WIDTH = 1920;
         scale = 2.25f;
     }
@@ -99,9 +176,9 @@ void DrawUtils::drawPixel(uint32_t x, uint32_t y, uint8_t r, uint8_t g, uint8_t 
     for (uint32_t yy = (y * scale); yy < ((y * scale) + (uint32_t) scale); yy++) {
         for (uint32_t xx = (x * scale); xx < ((x * scale) + (uint32_t) scale); xx++) {
             uint32_t i = (xx + yy * USED_TV_WIDTH) * 4;
-            if (i + 3 < tvSize / 2) {
+            if (i + 3 < sBufferSizeTV / 2) {
                 if (isBackBuffer) {
-                    i += tvSize / 2;
+                    i += sBufferSizeTV / 2;
                 }
                 if (a == 0xFF) {
                     tvBuffer[i] = r;
