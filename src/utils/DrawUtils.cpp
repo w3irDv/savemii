@@ -33,6 +33,7 @@ uint32_t DrawUtils::sBufferSizeDRC = 0;
 static SFT pFont = {};
 
 static Color font_col(0xFFFFFFFF);
+static Color black(0x000000FF);
 
 void *DrawUtils::sBufferTV = NULL, *DrawUtils::sBufferDRC = NULL;
 uint32_t DrawUtils::sBufferSizeTV = 0, DrawUtils::sBufferSizeDRC = 0;
@@ -52,10 +53,25 @@ DrawUtils::ConsoleProcCallbackAcquired(void *context)
       sBufferDRC = MEMAllocFromFrmHeapEx(heap, sBufferSizeDRC, 4);
    }
 
+    
    sConsoleHasForeground = TRUE;
-   DrawUtils::setRedraw(true);
+
    OSScreenSetBufferEx(SCREEN_TV, sBufferTV);
    OSScreenSetBufferEx(SCREEN_DRC, sBufferDRC);
+   DrawUtils::initBuffers(sBufferTV, sBufferDRC);
+
+    OSScreenEnableEx(SCREEN_TV, 1);
+   OSScreenEnableEx(SCREEN_DRC, 1);
+   
+
+   for (int i = 0; i<2; i++) // both buffers to black
+   {
+        DrawUtils::clear(black);
+        DrawUtils::endDraw();
+   }
+
+   DrawUtils::setRedraw(true); // force a redraw when reentering
+
    return 0;
 }
 
@@ -77,12 +93,8 @@ DrawUtils::LogConsoleInit()
    sBufferSizeDRC = OSScreenGetBufferSizeEx(SCREEN_DRC);
 
    ConsoleProcCallbackAcquired(NULL);
-   OSScreenEnableEx(SCREEN_TV, 1);
-   OSScreenEnableEx(SCREEN_DRC, 1);
-
+   
     State::registerProcUICallbacks();
-
-    DrawUtils::initBuffers(sBufferTV, sBufferDRC);
 
    return FALSE;
 }
