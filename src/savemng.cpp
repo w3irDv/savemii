@@ -10,6 +10,7 @@
 #include <utils/StringUtils.h>
 #include <malloc.h>
 
+
 #define __FSAShimSend      ((FSError(*)(FSAShimBuffer *, uint32_t))(0x101C400 + 0x042d90))
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
 
@@ -202,14 +203,18 @@ static bool folderEmpty(const char *fPath) {
     if (dir == nullptr)
         return false;
 
-    int c = 0;
+    bool empty = true;
     struct dirent *data;
-    while ((data = readdir(dir)) != nullptr)
-        if (++c > 2)
-            break;
+    while ((data = readdir(dir)) != nullptr) {
+        // rewritten to work wether ./.. are returned or not
+        if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0)
+            continue;
+        empty = false;
+        break;
+    }
 
     closedir(dir);
-    return c < 3;
+    return empty;
 }
 
 static bool createFolder(const char *path) {
