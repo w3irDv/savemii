@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
+#include <utils/Colors.h>
 #include <malloc.h>
 
 

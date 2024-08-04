@@ -10,6 +10,7 @@
 #include <savemng.h>
 #include <sndcore2/core.h>
 #include <utils/DrawUtils.h>
+#include <utils/Colors.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
@@ -393,6 +394,8 @@ int main() {
     if (DrawUtils::LogConsoleInit()) {
         OSFatal("Failed to initialize OSSCreen");
     }
+
+    State::registerProcUICallbacks();
 
     if (!DrawUtils::initFont()) {
         OSFatal("Failed to init font");

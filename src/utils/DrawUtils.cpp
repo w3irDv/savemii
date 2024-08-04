@@ -5,7 +5,7 @@
 #include <memory>
 #include <tga_reader.h>
 #include <utils/DrawUtils.h>
-#include <utils/StateUtils.h>
+#include <utils/Colors.h>
 #include <malloc.h>
 #include <coreinit/debug.h>
 
@@ -33,14 +33,13 @@ uint32_t DrawUtils::sBufferSizeDRC = 0;
 static SFT pFont = {};
 
 static Color font_col(0xFFFFFFFF);
-static Color black(0x000000FF);
 
 void *DrawUtils::sBufferTV = NULL, *DrawUtils::sBufferDRC = NULL;
 uint32_t DrawUtils::sBufferSizeTV = 0, DrawUtils::sBufferSizeDRC = 0;
 BOOL DrawUtils::sConsoleHasForeground = TRUE;
 
 uint32_t
-DrawUtils::ConsoleProcCallbackAcquired(void *context)
+DrawUtils::initScreen()
 {
    MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
    MEMRecordStateForFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
@@ -66,7 +65,7 @@ DrawUtils::ConsoleProcCallbackAcquired(void *context)
 
    for (int i = 0; i<2; i++) // both buffers to black
    {
-        DrawUtils::clear(black);
+        DrawUtils::clear(COLOR_BLACK);
         DrawUtils::endDraw();
    }
 
@@ -76,8 +75,15 @@ DrawUtils::ConsoleProcCallbackAcquired(void *context)
 }
 
 uint32_t
-DrawUtils::ConsoleProcCallbackReleased(void *context)
+DrawUtils::deinitScreen()
 {
+
+   for (int i = 0; i<2; i++) // both buffers to black
+   {
+        DrawUtils::clear(COLOR_BLACK);
+        DrawUtils::endDraw();
+   }
+
    MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
    MEMFreeByStateToFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
    sConsoleHasForeground = FALSE;
@@ -92,10 +98,8 @@ DrawUtils::LogConsoleInit()
    sBufferSizeTV = OSScreenGetBufferSizeEx(SCREEN_TV);
    sBufferSizeDRC = OSScreenGetBufferSizeEx(SCREEN_DRC);
 
-   ConsoleProcCallbackAcquired(NULL);
+   initScreen();
    
-    State::registerProcUICallbacks();
-
    return FALSE;
 }
 
@@ -103,8 +107,8 @@ void
 DrawUtils::LogConsoleFree()
 {
    if (sConsoleHasForeground) {
+      deinitScreen();
       OSScreenShutdown();
-      ConsoleProcCallbackReleased(NULL);
    }
 }
 

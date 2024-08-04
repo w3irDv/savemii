@@ -11,6 +11,9 @@
 
 #include <utils/DrawUtils.h>
 
+#include <whb/log_udp.h>
+#include <whb/log.h>
+
 bool State::aroma = false;
 
 void State::init() {
@@ -25,10 +28,22 @@ void State::init() {
 }
 
 
+uint32_t
+State::ConsoleProcCallbackAcquired(void *context)
+{
+    return DrawUtils::initScreen();
+}
+
+uint32_t
+State::ConsoleProcCallbackReleased(void *context)
+{
+    return DrawUtils::deinitScreen();
+}
+
 void State::registerProcUICallbacks() {
     if (aroma) {
-        ProcUIRegisterCallback(PROCUI_CALLBACK_ACQUIRE, DrawUtils::ConsoleProcCallbackAcquired, NULL, 100);
-        ProcUIRegisterCallback(PROCUI_CALLBACK_RELEASE, DrawUtils::ConsoleProcCallbackReleased, NULL, 100);
+        ProcUIRegisterCallback(PROCUI_CALLBACK_ACQUIRE, ConsoleProcCallbackAcquired, NULL, 100);
+        ProcUIRegisterCallback(PROCUI_CALLBACK_RELEASE, ConsoleProcCallbackReleased, NULL, 100);
     }
 }
 
@@ -43,6 +58,7 @@ bool State::AppRunning() {
                     break;
                 case PROCUI_STATUS_RELEASE_FOREGROUND:
                     // Free up MEM1 to next foreground app, deinit screen, etc.
+                    WHBLogPrintf("ToProcUIDoneRelease");
                     ProcUIDrawDoneRelease();
                     break;
                 case PROCUI_STATUS_IN_FOREGROUND:

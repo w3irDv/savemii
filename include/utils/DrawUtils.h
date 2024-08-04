@@ -77,9 +77,9 @@ public:
 
     static void drawRGB5A3(int x, int y, float scale, uint8_t *fileContent);
 
-    static uint32_t ConsoleProcCallbackAcquired(void *context);
+    static uint32_t initScreen();
 
-    static uint32_t ConsoleProcCallbackReleased(void *context);
+    static uint32_t deinitScreen();
 
 
 
