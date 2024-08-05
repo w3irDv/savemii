@@ -857,16 +857,23 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", pathb.c_str(), highIDb, lowIDb, "user");
     createFolderUnlocked(dstPath);
-    FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize);
 
-    if (allusers > -1)
-        if (common)
+    if (allusers > -1)  {
+        if (common) {
+            FSAMakeQuota(handle, newlibtoFSA(dstPath + "/common").c_str(), 0x666, titleb->accountSaveSize);
             if (!copyDir(srcPath + "/common", dstPath + "/common"))
                 promptError(LanguageUtils::gettext("Common save not found."));
+        }
+        srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
+        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers_d].persistentID));
+        FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, titleb->accountSaveSize);
+    } else {
+        FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize);
+    }
 
-    if (!copyDir(srcPath + StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID),
-                 dstPath + StringUtils::stringFormat("/%s", wiiuacc[allusers_d].persistentID)))
+    if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Copy failed."));
+    
     if (!titleb->saveInit) {
         std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
