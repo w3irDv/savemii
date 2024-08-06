@@ -59,9 +59,8 @@ DrawUtils::initScreen()
    OSScreenSetBufferEx(SCREEN_DRC, sBufferDRC);
    DrawUtils::initBuffers(sBufferTV, sBufferDRC);
 
-    OSScreenEnableEx(SCREEN_TV, 1);
+   OSScreenEnableEx(SCREEN_TV, 1);
    OSScreenEnableEx(SCREEN_DRC, 1);
-   
 
    for (int i = 0; i<2; i++) // both buffers to black
    {
@@ -99,7 +98,7 @@ DrawUtils::LogConsoleInit()
    sBufferSizeDRC = OSScreenGetBufferSizeEx(SCREEN_DRC);
 
    initScreen();
-   
+
    return FALSE;
 }
 

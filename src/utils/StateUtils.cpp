@@ -11,8 +11,6 @@
 
 #include <utils/DrawUtils.h>
 
-#include <whb/log_udp.h>
-#include <whb/log.h>
 
 bool State::aroma = false;
 
@@ -58,7 +56,6 @@ bool State::AppRunning() {
                     break;
                 case PROCUI_STATUS_RELEASE_FOREGROUND:
                     // Free up MEM1 to next foreground app, deinit screen, etc.
-                    WHBLogPrintf("ToProcUIDoneRelease");
                     ProcUIDrawDoneRelease();
                     break;
                 case PROCUI_STATUS_IN_FOREGROUND:
