@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 class State {
 public:
     static void init();

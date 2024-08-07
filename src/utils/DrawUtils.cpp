@@ -1,16 +1,14 @@
-#include <coreinit/cache.h>
-#include <coreinit/screen.h>
+#include <utils/DrawUtils.h>
+#include <utils/Colors.h>
 #include <cstdlib>
 #include <cstring>
 #include <memory>
-#include <tga_reader.h>
-#include <utils/DrawUtils.h>
-#include <utils/Colors.h>
 #include <malloc.h>
+#include <tga_reader.h>
 #include <coreinit/debug.h>
-
-#include <coreinit/memheap.h>
 #include <coreinit/cache.h>
+#include <coreinit/screen.h>
+#include <coreinit/memheap.h>
 #include <coreinit/memfrmheap.h>
 #include <coreinit/memory.h>
 #include <proc_ui/procui.h>

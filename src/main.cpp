@@ -1,6 +1,3 @@
-#include <coreinit/debug.h>
-#include <coreinit/mcp.h>
-#include <coreinit/screen.h>
 #include <cstdlib>
 #include <cstring>
 #include <icon.h>
@@ -16,6 +13,9 @@
 #include <utils/StateUtils.h>
 #include <utils/StringUtils.h>
 #include <version.h>
+#include <coreinit/debug.h>
+#include <coreinit/mcp.h>
+#include <coreinit/screen.h>
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 

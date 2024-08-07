@@ -1,15 +1,12 @@
+#include <utils/StateUtils.h>
+#include <utils/DrawUtils.h>
 #include <coreinit/core.h>
 #include <coreinit/dynload.h>
 #include <coreinit/foreground.h>
 #include <proc_ui/procui.h>
-#include <utils/StateUtils.h>
-#include <utils/DrawUtils.h>
-#include <coreinit/screen.h>
 #include <whb/proc.h>
 
 #include <string.h>
-
-#include <utils/DrawUtils.h>
 
 
 bool State::aroma = false;
