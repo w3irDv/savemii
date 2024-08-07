@@ -39,8 +39,6 @@ public:
 
     static void LogConsoleFree();
 
-    static void initBuffers(void *tvBuffer, void *drcBuffer);
-
     static void beginDraw();
 
     static void endDraw();
@@ -92,7 +90,6 @@ private:
     static uint8_t *tvBuffer;
     static uint8_t *drcBuffer;
 
-    static void *sBufferTV, *sBufferDRC;
     static uint32_t sBufferSizeTV, sBufferSizeDRC;
     static BOOL sConsoleHasForeground;
 };

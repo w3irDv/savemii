@@ -26,17 +26,12 @@ bool DrawUtils::isBackBuffer;
 
 uint8_t *DrawUtils::tvBuffer = nullptr;
 uint8_t *DrawUtils::drcBuffer = nullptr;
-/*
-uint32_t DrawUtils::sBufferSizeTV = 0;
-uint32_t DrawUtils::sBufferSizeDRC = 0;
-*/
+uint32_t DrawUtils::sBufferSizeTV = 0, DrawUtils::sBufferSizeDRC = 0;
+BOOL DrawUtils::sConsoleHasForeground = TRUE;
+
 static SFT pFont = {};
 
 static Color font_col(0xFFFFFFFF);
-
-void *DrawUtils::sBufferTV = NULL, *DrawUtils::sBufferDRC = NULL;
-uint32_t DrawUtils::sBufferSizeTV = 0, DrawUtils::sBufferSizeDRC = 0;
-BOOL DrawUtils::sConsoleHasForeground = TRUE;
 
 uint32_t
 DrawUtils::initScreen()
@@ -45,45 +40,36 @@ DrawUtils::initScreen()
    MEMRecordStateForFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
 
    if (sBufferSizeTV) {
-      sBufferTV = MEMAllocFromFrmHeapEx(heap, sBufferSizeTV, 4);
+      DrawUtils::tvBuffer = static_cast<uint8_t *>(MEMAllocFromFrmHeapEx(heap, sBufferSizeTV, 4));
    }
 
    if (sBufferSizeDRC) {
-      sBufferDRC = MEMAllocFromFrmHeapEx(heap, sBufferSizeDRC, 4);
+      DrawUtils::drcBuffer = static_cast<uint8_t *>(MEMAllocFromFrmHeapEx(heap, sBufferSizeDRC, 4));
    }
 
     
    sConsoleHasForeground = TRUE;
 
-   OSScreenSetBufferEx(SCREEN_TV, sBufferTV);
-   OSScreenSetBufferEx(SCREEN_DRC, sBufferDRC);
-   DrawUtils::initBuffers(sBufferTV, sBufferDRC);
+   OSScreenSetBufferEx(SCREEN_TV, DrawUtils::tvBuffer);
+   OSScreenSetBufferEx(SCREEN_DRC, DrawUtils::drcBuffer);
 
-   for (int i = 0; i<2; i++) // both buffers to black
-   {
-        DrawUtils::clear(COLOR_BLACK);
-        DrawUtils::endDraw();
-   }
+   DrawUtils::endDraw(); // flip buffers
 
    DrawUtils::setRedraw(true); // force a redraw when reentering
 
    return 0;
+
 }
 
 uint32_t
 DrawUtils::deinitScreen()
 {
 
-   for (int i = 0; i<2; i++) // both buffers to black
-   {
-        DrawUtils::clear(COLOR_BLACK);
-        DrawUtils::endDraw();
-   }
-
    MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
    MEMFreeByStateToFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
    sConsoleHasForeground = FALSE;
    return 0;
+
 }
 
 
@@ -123,11 +109,6 @@ void DrawUtils::setRedraw(bool value) {
     redraw = value;
 }
 
-void DrawUtils::initBuffers(void *sBufferTV_, void *sBufferDRC_) {
-    DrawUtils::tvBuffer = (uint8_t *) sBufferTV_;
-    DrawUtils::drcBuffer = (uint8_t *) sBufferDRC_;
-}
-
 void DrawUtils::beginDraw() {
     uint32_t pixel = *(uint32_t *) tvBuffer;
 
@@ -144,13 +125,6 @@ void DrawUtils::beginDraw() {
 }
 
 void DrawUtils::endDraw() {
-    // OSScreenFlipBuffersEx already flushes the cache?
-    // DCFlushRange(tvBuffer, sBufferSizeTV);
-    // DCFlushRange(drcBuffer, sBufferSizeDRC);
-
-    DCFlushRange(sBufferTV, sBufferSizeTV);
-   DCFlushRange(sBufferDRC, sBufferSizeDRC);
-
     OSScreenFlipBuffersEx(SCREEN_DRC);
     OSScreenFlipBuffersEx(SCREEN_TV);
 }
