@@ -53,6 +53,16 @@ std::string newlibtoFSA(std::string path) {
     return path;
 }
 
+std::string getUnifiedBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot) {
+
+    if (((highId & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
+        return getLegacyBackupPath(highId, lowId);
+    else
+        return getBackupPath(highId, lowId, slot);
+
+}
+
+
 std::string getBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot){
     return StringUtils::stringFormat("%s/%08x%08x/%u", backupPath, highId, lowId, slot);
 }
@@ -958,11 +968,14 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string dstPath;
+    dstPath = getUnifiedBackupPath(highID, lowID, slot);
+    /*
     if (isWii && (slot == 255))
         dstPath = StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highID, lowID);
     else
         dstPath = getBackupPath(highID, lowID, slot);
-    createFolder(dstPath.c_str());
+    */
+   createFolder(dstPath.c_str());
 
     if ((allusers > -1) && !isWii) {
         if (common) {
@@ -1013,11 +1026,15 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
     std::string srcPath;
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    srcPath = getUnifiedBackupPath(highID, lowID, slot);
+    /*
     if (isWii && (slot == 255))
         srcPath = StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highID, lowID);
     else
         srcPath = getBackupPath(highID, lowID, slot);
-    std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+    
+    */
+   std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     createFolderUnlocked(dstPath);
     
     if ((sdusers > -1) && !isWii) {

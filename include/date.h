@@ -2,13 +2,15 @@
 
 #include <jansson.h>
 #include <utils/StringUtils.h>
+#include <savemng.h>
 
 class Date {
 public:
     Date(uint32_t high, uint32_t low, uint8_t s) : highID(high),
                                                    lowID(low),
                                                    slot(s),
-                                                   path(StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u/savemiiMeta.json", highID, lowID, slot)) {
+                                                   //path(StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u/savemiiMeta.json", highID, lowID, slot)) {
+                                                   path(getUnifiedBackupPath(highID, lowID, slot).append("/savemiiMeta.json")) {
     }
     std::string get();
     bool set(const std::string &date);
