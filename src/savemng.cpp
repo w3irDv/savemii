@@ -979,9 +979,9 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
 
     if ((allusers > -1) && !isWii) {
         if (common) {
-            srcPath.append("/common");
-            dstPath.append("/common");
-            if (!copyDir(srcPath, dstPath))
+           //srcPath.append("/common");
+            //dstPath.append("/common");
+            if (!copyDir(srcPath+"/common", dstPath+"/common"))
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
