@@ -622,7 +622,7 @@ static bool removeDir(const std::string &pPath) {
         return false;
 
     struct dirent *data;
-
+    
     while ((data = readdir(dir)) != nullptr) {
         DrawUtils::beginDraw();
         DrawUtils::clear(COLOR_BLACK);
@@ -1110,21 +1110,19 @@ void wipeSavedata(Title *title, int8_t allusers, bool common) {
     srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     if ((allusers > -1) && !isWii) {
         if (common) {
-            srcPath += "/common";
-            origPath = srcPath;
-            if (!removeDir(srcPath))
+            origPath = srcPath + "/common";
+            if (!removeDir(origPath))
                 promptError(LanguageUtils::gettext("Common save not found."));
             if (unlink(origPath.c_str()) == -1)
                 promptError(LanguageUtils::gettext("Failed to delete common folder.\n%s"), strerror(errno));
         }
         srcPath += "/" + std::string(wiiuacc[allusers].persistentID);
-        origPath = srcPath;
     }
 
     if (!removeDir(srcPath))
         promptError(LanguageUtils::gettext("Failed to delete savefile."));
     if ((allusers > -1) && !isWii) {
-        if (unlink(origPath.c_str()) == -1)
+        if (unlink(srcPath.c_str()) == -1)
             promptError(LanguageUtils::gettext("Failed to delete user folder.\n%s"), strerror(errno));
     }
     std::string volPath;
