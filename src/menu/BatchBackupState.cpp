@@ -1,5 +1,6 @@
 #include <coreinit/time.h>
 #include <menu/BatchBackupState.h>
+#include <BackupSetList.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -7,6 +8,13 @@
 #define ENTRYCOUNT 3
 
 static int cursorPos = 0;
+
+extern std::unique_ptr<BackupSetList> myBackupSetList;
+
+void resetBackupList() {
+    myBackupSetList.reset();
+    myBackupSetList = std::make_unique<BackupSetList>("fs:/vol/external01/wiiu/backups/batch");
+}
 
 void BatchBackupState::render() {
     consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Backup All (%u Title%s)"), this->wiiuTitlesCount + this->vWiiTitlesCount,
@@ -35,14 +43,17 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
                 dateTime.tm_year = 0;
                 backupAllSave(this->wiiutitles, this->wiiuTitlesCount, &dateTime);
                 backupAllSave(this->wiititles, this->vWiiTitlesCount, &dateTime);
+                resetBackupList();
                 DrawUtils::setRedraw(true);
                 return SUBSTATE_RETURN;
             case 1:
                 backupAllSave(this->wiiutitles, this->wiiuTitlesCount, nullptr);
+                resetBackupList();
                 DrawUtils::setRedraw(true);
                 return SUBSTATE_RETURN;
             case 2:
                 backupAllSave(this->wiititles, this->vWiiTitlesCount, nullptr);
+                resetBackupList();
                 DrawUtils::setRedraw(true);
                 return SUBSTATE_RETURN;
             default:

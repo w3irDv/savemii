@@ -111,6 +111,7 @@ void promptError(const char *message, ...);
 std::string getBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot);
 std::string getLegacyBackupPath(uint32_t highID, uint32_t lowID);
 std::string getUnifiedBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot);
+void setBackupSetSubPath();
 void getAccountsWiiU();
 void getAccountsSD(Title *title, uint8_t slot);
 bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version);

@@ -5,6 +5,8 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 
+void resetBackupList();
+
 class BatchBackupState : public ApplicationState {
 public:
     BatchBackupState(Title *wiiutitles, Title *wiititles, int wiiuTitlesCount, int vWiiTitlesCount) : wiiutitles(wiiutitles),
@@ -18,6 +20,7 @@ public:
 
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
+
 
 private:
     std::unique_ptr<ApplicationState> subState{};

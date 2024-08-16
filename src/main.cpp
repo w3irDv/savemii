@@ -6,6 +6,7 @@
 #include <padscore/kpad.h>
 #include <savemng.h>
 #include <sndcore2/core.h>
+#include <BackupSetList.h>
 #include <utils/DrawUtils.h>
 #include <utils/Colors.h>
 #include <utils/InputUtils.h>
@@ -18,6 +19,7 @@
 #include <coreinit/screen.h>
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
+std::unique_ptr<BackupSetList> myBackupSetList;
 
 template<typename T, size_t N>
 static bool contains(const T (&arr)[N], const T &element) {
@@ -386,6 +388,7 @@ static void unloadTitles(Title *titles, int count) {
 }
 
 int main() {
+
     AXInit();
     AXQuit();
     
@@ -434,6 +437,8 @@ int main() {
 
     sortTitle(wiiutitles, wiiutitles + wiiuTitlesCount, 1, true);
     sortTitle(wiititles, wiititles + vWiiTitlesCount, 1, true);
+
+    myBackupSetList = std::make_unique<BackupSetList>("fs:/vol/external01/wiiu/backups/batch");
 
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,
