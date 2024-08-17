@@ -7,6 +7,8 @@
 #include <string>
 #include <algorithm>
 
+bool BackupSetList::sortAscending = false;
+
 BackupSetList::BackupSetList(const char *backupSetListRoot)
 {
 
@@ -26,18 +28,18 @@ BackupSetList::BackupSetList(const char *backupSetListRoot)
     closedir(dir);
 
     this->entries = backupSets.size();
-    this->sort(false);
+    this->sort(sortAscending);
 
 }
 
-void BackupSetList::sort(bool sortAscending)
+void BackupSetList::sort(bool sortAscending_)
 {    
-    if (sortAscending) {
+    if (sortAscending_) {
         std::ranges::sort(backupSets.begin()+1,backupSets.end(),std::ranges::less{});
     } else {
         std::ranges::sort(backupSets.begin()+1,backupSets.end(),std::ranges::greater{});
     }
-    this->sortAscending = sortAscending;
+    sortAscending = sortAscending_;
 }
 
 std::string BackupSetList::at(int i)
@@ -51,6 +53,6 @@ void BackupSetList::add(std::string backupSet)
 {
     backupSets.push_back(backupSet);
     this->entries++; 
-    if (!this->sortAscending)
+    if (!sortAscending)
         this->sort(false);   
 }

@@ -4,9 +4,13 @@
 #include <memory>
 #include <utils/InputUtils.h>
 
+
+
+
 class BackupSetListState : public ApplicationState {
 public:
     BackupSetListState();
+    static void resetCursorPosition();
     enum eState {
         STATE_BACKUPSET_MENU,
         STATE_DO_SUBSTATE,
@@ -19,7 +23,6 @@ private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_BACKUPSET_MENU;
 
-    int scroll = 0;
     bool sortAscending;
 
     std::string backupSetListRoot;

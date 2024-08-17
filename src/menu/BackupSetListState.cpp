@@ -8,7 +8,7 @@
 #define MAX_ROWS_SHOW 14
 
 static int cursorPos = 0;
-
+static int scroll = 0;
 static std::string language;
 
 extern std::unique_ptr<BackupSetList> myBackupSetList;
@@ -16,7 +16,18 @@ extern  std::string backupSetSubPath;
 extern  std::string backupSetEntry;
 
 BackupSetListState::BackupSetListState() {
-        this->sortAscending = myBackupSetList->sortAscending;
+        this->sortAscending = BackupSetList::sortAscending;
+}
+
+void BackupSetListState::resetCursorPosition() {   // after batch Backup
+    if ( cursorPos == 0 )
+        return;
+    if (BackupSetList::sortAscending) {
+        return;
+    }
+    else {
+        cursorPos++;
+    }
 }
 
 void BackupSetListState::render() {
@@ -24,29 +35,23 @@ void BackupSetListState::render() {
     consolePrintPos(44, 0, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
                         this->sortAscending ? "\u2191" : "\u2193");
     for (int i = 0; i < MAX_ROWS_SHOW; i++) {
-        if (i + this->scroll < 0 || i + this->scroll >= myBackupSetList->entries)
+        if (i + scroll < 0 || i + scroll >= myBackupSetList->entries)
             break;
-        DrawUtils::setFontColor(static_cast<Color>(0x00FF00FF));
-        if (myBackupSetList->at(i + this->scroll) == CURRENT_BS)
-            DrawUtils::setFontColor(static_cast<Color>(0xFF9000FF));
-        consolePrintPos(M_OFF, i + 2, "  %s", myBackupSetList->at(i + this->scroll).c_str());
-        DrawUtils::setFontColor(COLOR_TEXT);
+        DrawUtils::setFontColor(COLOR_LIST);
+        if (myBackupSetList->at(i + scroll) == CURRENT_BS)
+            DrawUtils::setFontColor(COLOR_LIST_CONTRAST);
+        consolePrintPos(M_OFF, i + 2, "  %s", myBackupSetList->at(i + scroll).c_str());
         }
-    
+    DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(-1, 2 + cursorPos, "\u2192");
     consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BackupSet  \ue001: Back"));
-/*
-    language = LanguageUtils::getLoadedLanguage();
-    consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Language: %s"), language.c_str());
-    consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
-*/
 }
 
 ApplicationState::eSubState BackupSetListState::update(Input *input) {
     if (input->get(TRIGGER, PAD_BUTTON_B))
         return SUBSTATE_RETURN;
     if (input->get(TRIGGER, PAD_BUTTON_A)) {
-        backupSetEntry = myBackupSetList->at(cursorPos + this->scroll);
+        backupSetEntry = myBackupSetList->at(cursorPos + scroll);
         setBackupSetSubPath();
         DrawUtils::setRedraw(true);
         return SUBSTATE_RETURN;       
@@ -55,12 +60,16 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if ( this->sortAscending ) {
             this->sortAscending = false;
             myBackupSetList->sort(this->sortAscending);
+            cursorPos = 0;
+            scroll = 0;
         }
     }
     if (input->get(TRIGGER, PAD_BUTTON_R)) {
         if ( ! this->sortAscending ) {
             this->sortAscending = true;
             myBackupSetList->sort(this->sortAscending);
+            cursorPos = 0;
+            scroll = 0;
         }
     }
     if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
@@ -68,7 +77,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             cursorPos = (cursorPos + 1) % myBackupSetList->entries;
         else if (cursorPos < 6)
             cursorPos++;
-        else if (((cursorPos + this->scroll + 1) % myBackupSetList->entries) != 0)
+        else if (((cursorPos + scroll + 1) % myBackupSetList->entries) != 0)
             scroll++;
         else
             cursorPos = scroll = 0;

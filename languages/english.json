@@ -94,5 +94,12 @@
   "Failed to delete savefile.": "Failed to delete savefile.",
   "Failed to delete user folder.\n%s": "Failed to delete user folder.\n%s",
   "Failed to import savedata from loadiine.": "Failed to import savedata from loadiine.",
-  "Failed to export savedata to loadiine.": "Failed to export savedata to loadiine."
+  "Failed to export savedata to loadiine.": "Failed to export savedata to loadiine.",
+  "\ue083 Sort: %s \ue084": "\ue083 Sort: %s \ue084",
+  "\ue000: Select BackupSet  \ue001: Back": "\ue000: Select BackupSet  \ue001: Back",
+  "WiiU USB Savedata >> slot 0": "WiiU USB Savedata >> slot 0",
+  "WiiU NAND Savedata >> slot 1": "WiiU NAND Savedata >> slot 1",
+  "vWii Savedata >> slot 0": "vWii Savedata >> slot 0"
+  "\uE002: Chg BackupSet \ue000: Restore  \ue001: Back": "\uE002: Chg BackupSet \ue000: Restore  \ue001: Back",
+  "BackupSet: %s": "BackupSet: %s"
 }

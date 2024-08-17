@@ -19,7 +19,7 @@ void TitleOptionsState::render() {
     }
     if (this->state == STATE_TITLE_OPTIONS) {    
         if (this->task == restore) {
-            consolePrintPosAligned(0, 4, 2,"BackupSet: %s",backupSetEntry.c_str());
+            consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BackupSet: %s"),backupSetEntry.c_str());
         }
         this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
         entrycount = 3;

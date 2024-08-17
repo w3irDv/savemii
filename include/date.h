@@ -9,9 +9,15 @@ public:
     Date(uint32_t high, uint32_t low, uint8_t s) : highID(high),
                                                    lowID(low),
                                                    slot(s),
-                                                   //path(StringUtils::stringFormat("sd:/wiiu/backups/%08x%08x/%u/savemiiMeta.json", highID, lowID, slot)) {
-                                                   path(getUnifiedBackupPath(highID, lowID, slot).append("/savemiiMeta.json")) {
+                                                   path (getUnifiedBackupPath(highID, lowID, slot).append("/savemiiMeta.json")) {
     }
+
+    Date(uint32_t high, uint32_t low, uint8_t s, std::string datetime) : highID(high),
+                                                   lowID(low),
+                                                   slot(s),
+                                                   path (getBatchBackupPath(highID, lowID, slot, datetime).append("/savemiiMeta.json")) { 
+    }
+
     std::string get();
     bool set(const std::string &date);
 

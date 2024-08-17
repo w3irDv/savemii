@@ -12,10 +12,11 @@ public:
     void sort(bool sortAscending = false);
     std::string at(int i);
     void add(std::string backupSet);
+
+    static bool sortAscending;
     
 private:
     std::vector<std::string> backupSets;
-    bool sortAscending = false;
     int entries;
     std::string backupSetListRoot;
 

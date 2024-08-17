@@ -66,6 +66,10 @@ std::string getUnifiedBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot) 
         return StringUtils::stringFormat("%s%s%08x%08x/%u", backupPath, backupSetSubPath.c_str(), highId, lowId, slot);
 }
 
+std::string getBatchBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot, std::string datetime) {
+    return StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, datetime.c_str(),highId, lowId, slot);
+}
+
 void setBackupSetSubPath() {
     if (backupSetEntry == CURRENT_BS)
         backupSetSubPath = "/";
@@ -925,37 +929,51 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
     }
 }
 
-void backupAllSave(Title *titles, int count, OSCalendarTime *date) {
-    OSCalendarTime dateTime;
-    if (date) {
-        if (date->tm_year == 0) {
-            OSTicksToCalendarTime(OSGetTime(), date);
-            date->tm_mon++;
-        }
-        dateTime = (*date);
-    } else {
-        OSTicksToCalendarTime(OSGetTime(), &dateTime);
-        dateTime.tm_mon++;
-    }
+std::string getNowDate() {
+    OSCalendarTime now;
+    OSTicksToCalendarTime(OSGetTime(), &now);
+    return StringUtils::stringFormat("%02d/%02d/%d %02d:%02d", now.tm_mday, ++now.tm_mon, now.tm_year, now.tm_hour, now.tm_min);
+}
 
-    std::string datetime = StringUtils::stringFormat("%04d-%02d-%02dT%02d%02d%02d", dateTime.tm_year, dateTime.tm_mon, dateTime.tm_mday,
-                                                     dateTime.tm_hour, dateTime.tm_min, dateTime.tm_sec);
+std::string getNowDateForFolder() {
+    OSCalendarTime now;
+    OSTicksToCalendarTime(OSGetTime(), &now);
+    return StringUtils::stringFormat("%04d-%02d-%02dT%02d%02d%02d", now.tm_year, ++now.tm_mon, now.tm_mday,
+                                                     now.tm_hour, now.tm_min, now.tm_sec);
+}
+
+void writeSavedataDate(uint32_t highID,uint32_t lowID,uint8_t slot) {
+    Date *dateObj = new Date(highID, lowID, slot);
+    dateObj->set(getNowDate());
+    delete dateObj;
+}
+
+void writeSavedataDate(uint32_t highID,uint32_t lowID,uint8_t slot, const std::string &batchDatetime) {
+    Date *dateObj = new Date(highID, lowID, slot, batchDatetime);
+    dateObj->set(getNowDate());
+    delete dateObj;
+}
+
+void backupAllSave(Title *titles, int count, const std::string &batchDatetime) {
     for (int i = 0; i < count; i++) {
         if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
             continue;
-
         uint32_t highID = titles[i].highID;
         uint32_t lowID = titles[i].lowID;
         bool isUSB = titles[i].isTitleOnUSB;
         bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+        uint8_t slot = ( isWii ? 0 : (isUSB ?  0 :  1));
         const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-        std::string dstPath = StringUtils::stringFormat("%s/%s/%08x%08x/0", batchBackupPath, datetime.c_str(), highID, lowID);
+        std::string dstPath = StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, batchDatetime.c_str(), highID, lowID,slot);
 
         createFolder(dstPath.c_str());
         if (!copyDir(srcPath, dstPath))
             promptError(LanguageUtils::gettext("Backup failed."));
+        else
+            writeSavedataDate(highID,lowID,slot, batchDatetime);
     }
+    
 }
 
 void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
@@ -975,8 +993,6 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
 
     if ((allusers > -1) && !isWii) {
         if (common) {
-            //srcPath.append("/common");
-            //dstPath.append("/common");
             if (!copyDir(srcPath+"/common", dstPath+"/common"))
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
@@ -990,12 +1006,9 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
     }
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
-    OSCalendarTime now;
-    OSTicksToCalendarTime(OSGetTime(), &now);
-    const std::string date = StringUtils::stringFormat("%02d/%02d/%d %02d:%02d", now.tm_mday, ++now.tm_mon, now.tm_year, now.tm_hour, now.tm_min);
-    Date *dateObj = new Date(title->highID, title->lowID, slot);
-    dateObj->set(date);
-    delete dateObj;
+    else
+        writeSavedataDate(highID,lowID,slot);
+
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
         FSAFlushVolume(handle, "/vol/storage_slccmpt01");
     } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
