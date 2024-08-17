@@ -21,4 +21,6 @@ private:
 
     int scroll = 0;
     bool sortAscending;
+
+    std::string backupSetListRoot;
 };

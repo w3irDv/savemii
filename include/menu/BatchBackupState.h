@@ -5,8 +5,6 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 
-void resetBackupList();
-
 class BatchBackupState : public ApplicationState {
 public:
     BatchBackupState(Title *wiiutitles, Title *wiititles, int wiiuTitlesCount, int vWiiTitlesCount) : wiiutitles(wiiutitles),

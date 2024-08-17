@@ -1,4 +1,4 @@
-#include "BackupSetList.h"
+#include <BackupSetList.h>
 
 #include <dirent.h>
 #include <cstring>
@@ -7,12 +7,14 @@
 #include <string>
 #include <algorithm>
 
-BackupSetList::BackupSetList(const char* fPath)
+BackupSetList::BackupSetList(const char *backupSetListRoot)
 {
+
+    this->backupSetListRoot = backupSetListRoot;
 
     backupSets.push_back(CURRENT_BS);
 
-    DIR *dir = opendir(fPath);
+    DIR *dir = opendir(backupSetListRoot);
     if (dir != nullptr) {
         struct dirent *data;
         while ((data = readdir(dir)) != nullptr) {

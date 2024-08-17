@@ -16,10 +16,13 @@
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
 
 const char *backupPath = "fs:/vol/external01/wiiu/backups";
+const char *batchBackupPath = "fs:/vol/external01/wiiu/backups/batch"; // Must be "backupPath/batch"  ~ backupSetListRoot
 const char *loadiineSavePath = "fs:/vol/external01/wiiu/saves";
 const char *legacyBackupPath = "fs:/vol/external01/savegames";
 std::string backupSetSubPath = "/";
-std::string backupSetEntry = ">> Current <<";
+std::string backupSetEntry = CURRENT_BS;
+
+extern std::unique_ptr<BackupSetList> myBackupSetList;
 
 static char *p1;
 Account *wiiuacc;
@@ -70,12 +73,9 @@ void setBackupSetSubPath() {
         backupSetSubPath = "/batch/"+backupSetEntry+"/";
 }
 
-std::string getBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot){
-    return StringUtils::stringFormat("%s/%08x%08x/%u", backupPath, highId, lowId, slot);
-}
-
-std::string getLegacyBackupPath(uint32_t highId, uint32_t lowId){
-    return StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highId, lowId);
+void resetBackupList() {
+    myBackupSetList.reset();
+    myBackupSetList = std::make_unique<BackupSetList>(batchBackupPath);
 }
 
 uint8_t getSDaccn() {
@@ -950,7 +950,7 @@ void backupAllSave(Title *titles, int count, OSCalendarTime *date) {
         bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
         const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-        std::string dstPath = StringUtils::stringFormat("%s/batch/%s/%08x%08x/0", backupPath, datetime.c_str(), highID, lowID);
+        std::string dstPath = StringUtils::stringFormat("%s/%s/%08x%08x/0", batchBackupPath, datetime.c_str(), highID, lowID);
 
         createFolder(dstPath.c_str());
         if (!copyDir(srcPath, dstPath))
@@ -971,13 +971,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string dstPath;
     dstPath = getUnifiedBackupPath(highID, lowID, slot);
-    /*
-    if (isWii && (slot == 255))
-        dstPath = StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highID, lowID);
-    else
-        dstPath = getBackupPath(highID, lowID, slot);
-    */
-   createFolder(dstPath.c_str());
+    createFolder(dstPath.c_str());
 
     if ((allusers > -1) && !isWii) {
         if (common) {
@@ -1029,13 +1023,6 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
     std::string srcPath;
     srcPath = getUnifiedBackupPath(highID, lowID, slot);
-    /*
-    if (isWii && (slot == 255))
-        srcPath = StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highID, lowID);
-    else
-        srcPath = getBackupPath(highID, lowID, slot);
-    
-    */
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     createFolderUnlocked(dstPath);

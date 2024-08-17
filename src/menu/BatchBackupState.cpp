@@ -9,13 +9,6 @@
 
 static int cursorPos = 0;
 
-extern std::unique_ptr<BackupSetList> myBackupSetList;
-
-void resetBackupList() {
-    myBackupSetList.reset();
-    myBackupSetList = std::make_unique<BackupSetList>("fs:/vol/external01/wiiu/backups/batch");
-}
-
 void BatchBackupState::render() {
     consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Backup All (%u Title%s)"), this->wiiuTitlesCount + this->vWiiTitlesCount,
                     ((this->wiiuTitlesCount + this->vWiiTitlesCount) > 1) ? "s" : "");
