@@ -72,9 +72,9 @@
   "Filesize: %d bytes": "Tamaño: %d bytes",
   "Deleting folder %s": "Eliminando carpeta %s",
   "From: \n%s": "Desde:\n%s",
-  "Failed to delete folder %s\n%s": "Error al eliminar la carpeta %s\n%s",
+  "Failed to delete folder %s: %s": "Error al eliminar la carpeta %s: %s",
   "Deleting file %s": "Eliminando archivo %s",
-  "Failed to delete file %s\n%s": "Error al eliminar el archivo %s\n%s",
+  "Failed to delete file %s: %s": "Error al eliminar el archivo %s: %s",
   "Loadiine game folder not found.": "Carpeta del juego de Loadiine no encontrada.",
   "Failed to open Loadiine game save directory.": "Error al abrir la carpeta de saves del juego de Loadiine.",
   "Are you sure?": "¿Estás seguro?",
@@ -90,9 +90,9 @@
   "Restore failed.": "Error al restaurar.",
   "Hm, are you REALLY sure?": "¿Hm, estás COMPLETAMENTE seguro?",
   "Backup current savedata first?": "¿Hacer copia antes del save?",
-  "Failed to delete common folder.\n%s": "Error al eliminar la carpeta common.\n%s",
+  "Failed to delete common folder: %s": "Error al eliminar la carpeta common: %s",
   "Failed to delete savefile.": "Error al eliminar el save.",
-  "Failed to delete user folder.\n%s": "Error al eliminar la carpeta user.\n%s",
+  "Failed to delete user folder: %s": "Error al eliminar la carpeta user: %s",
   "Failed to import savedata from loadiine.": "Error al importar el save de loadiine.",
   "Failed to export savedata to loadiine.": "Error al exportar el save a loadiine."
 }

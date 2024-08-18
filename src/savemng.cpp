@@ -399,7 +399,7 @@ void promptError(const char *message, ...) {
         free(tmp);
     DrawUtils::endDraw();
     va_end(va);
-    sleep(2);
+    sleep(4);
 }
 
 void getAccountsWiiU() {
@@ -635,11 +635,11 @@ static bool removeDir(const std::string &pPath) {
 
             consolePrintPos(-2, 0, LanguageUtils::gettext("Deleting folder %s"), data->d_name);
             consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), origPath.c_str());
-            if (unlink(origPath.c_str()) == -1) promptError(LanguageUtils::gettext("Failed to delete folder %s\n%s"), origPath.c_str(), strerror(errno));
+            if (unlink(origPath.c_str()) == -1) promptError(LanguageUtils::gettext("Failed to delete folder %s: %s"), origPath.c_str(), strerror(errno));
         } else {
             consolePrintPos(-2, 0, LanguageUtils::gettext("Deleting file %s"), data->d_name);
             consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), tempPath.c_str());
-            if (unlink(tempPath.c_str()) == -1) promptError(LanguageUtils::gettext("Failed to delete file %s\n%s"), tempPath.c_str(), strerror(errno));
+            if (unlink(tempPath.c_str()) == -1) promptError(LanguageUtils::gettext("Failed to delete file %s: %s"), tempPath.c_str(), strerror(errno));
         }
 
         DrawUtils::endDraw();
@@ -857,23 +857,32 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", pathb.c_str(), highIDb, lowIDb, "user");
     createFolderUnlocked(dstPath);
+    bool commonSaved = false;
 
     if (allusers > -1)  {
         if (common) {
             FSAMakeQuota(handle, newlibtoFSA(dstPath + "/common").c_str(), 0x666, titleb->accountSaveSize);
-            if (!copyDir(srcPath + "/common", dstPath + "/common"))
+            if (copyDir(srcPath + "/common", dstPath + "/common"))
+                commonSaved = true;
+            else
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers_d].persistentID));
-        FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, titleb->accountSaveSize);
+        if (checkEntry(srcPath.c_str()) == 2) {
+            FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, titleb->accountSaveSize);
+            if (!copyDir(srcPath, dstPath))
+                promptError(LanguageUtils::gettext("Copy failed."));
+        }
+        else
+            if (!commonSaved)
+                promptError(LanguageUtils::gettext("No save found for this user."));
     } else {
         FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize);
+        if (!copyDir(srcPath, dstPath))
+            promptError(LanguageUtils::gettext("Copy failed."));
     }
 
-    if (!copyDir(srcPath, dstPath))
-        promptError(LanguageUtils::gettext("Copy failed."));
-    
     if (!titleb->saveInit) {
         std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
@@ -974,17 +983,22 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
     std::string dstPath;
     dstPath = getDynamicBackupPath(highID, lowID, slot);
     createFolder(dstPath.c_str());
-
+    bool commonSaved = false;
     if ((allusers > -1) && !isWii) {
         if (common) {
-            if (!copyDir(srcPath+"/common", dstPath+"/common"))
+            if (copyDir(srcPath+"/common", dstPath+"/common"))
+                commonSaved = true;
+            else
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
 
         if (checkEntry(srcPath.c_str()) == 0) {
-            promptError(LanguageUtils::gettext("No save found for this user."));
+            if (commonSaved)
+                writeSavedataDate(highID,lowID,slot);
+            else
+                promptError(LanguageUtils::gettext("No save found for this user."));
             return;
         }
     }
@@ -1015,21 +1029,34 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     createFolderUnlocked(dstPath);
     
+    bool commonSaved = false;
     if ((sdusers > -1) && !isWii) {
         if (common) {
             FSAMakeQuota(handle, newlibtoFSA(dstPath + "/common").c_str(), 0x666, title->accountSaveSize);
-            if (!copyDir(srcPath + "/common", dstPath + "/common"))
+            if (copyDir(srcPath + "/common", dstPath + "/common"))
+                commonSaved = true;
+            else
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", sdacc[sdusers].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
-        FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
-    } else {
+        if (checkEntry(srcPath.c_str()) == 2) {
+            FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
+            if (!copyDir(srcPath, dstPath))
+                promptError(LanguageUtils::gettext("Restore failed."));
+        }
+        else
+            if (!commonSaved)
+                promptError(LanguageUtils::gettext("No save found for this user."));
+    }
+    else
+    {
         FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize);
+        if (!copyDir(srcPath, dstPath))
+            promptError(LanguageUtils::gettext("Restore failed."));
     }
 
-    if (!copyDir(srcPath, dstPath))
-        promptError(LanguageUtils::gettext("Restore failed."));
+    
 
 
     if (!title->saveInit && !isWii) {
@@ -1092,17 +1119,20 @@ void wipeSavedata(Title *title, int8_t allusers, bool common) {
             if (!removeDir(origPath))
                 promptError(LanguageUtils::gettext("Common save not found."));
             if (unlink(origPath.c_str()) == -1)
-                promptError(LanguageUtils::gettext("Failed to delete common folder.\n%s"), strerror(errno));
+                promptError(LanguageUtils::gettext("Failed to delete common folder: %s"), strerror(errno)); 
         }
         srcPath += "/" + std::string(wiiuacc[allusers].persistentID);
     }
 
-    if (!removeDir(srcPath))
-        promptError(LanguageUtils::gettext("Failed to delete savefile."));
-    if ((allusers > -1) && !isWii) {
-        if (unlink(srcPath.c_str()) == -1)
-            promptError(LanguageUtils::gettext("Failed to delete user folder.\n%s"), strerror(errno));
+    if (checkEntry(srcPath.c_str()) == 2) {
+        if (!removeDir(srcPath))
+            promptError(LanguageUtils::gettext("Failed to delete savefile."));
+        if ((allusers > -1) && !isWii) {
+            if (unlink(srcPath.c_str()) == -1)
+                promptError(LanguageUtils::gettext("Failed to delete user folder: %s"), strerror(errno));
+        }
     }
+
     std::string volPath;
     if (srcPath.find("_usb01") != std::string::npos) {
         volPath = "/vol/storage_usb01";

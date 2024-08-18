@@ -72,9 +72,9 @@
   "Filesize: %d bytes": "Dimensione file: %d byte",
   "Deleting folder %s": "Eliminazione cartella %s",
   "From: \n%s": "Da: \n%s",
-  "Failed to delete folder %s\n%s": "Non è stato possibile eliminare il file %s\n%s",
+  "Failed to delete folder %s: %s": "Non è stato possibile eliminare il file %s: %s",
   "Deleting file %s": "Eliminazione cartella %s",
-  "Failed to delete file %s\n%s": "Non è stato possibile eliminare il file %s\n%s",
+  "Failed to delete file %s: %s": "Non è stato possibile eliminare il file %s: %s",
   "Loadiine game folder not found.": "Cartella di gioco Loadiine non trovata.",
   "Failed to open Loadiine game save directory.": "Apertura della directory di salvataggio del gioco Loadiine non riuscita.",
   "Are you sure?": "Sei sicuro?",
@@ -90,9 +90,9 @@
   "Restore failed.": "Ripristino fallito.",
   "Hm, are you REALLY sure?": "Sei DAVVERO sicuro?",
   "Backup current savedata first?": "Salvare prima il salvataggio corrente?",
-  "Failed to delete common folder.\n%s": "Impossibile eliminare la cartella comune.\n%s",
+  "Failed to delete common folder: %s": "Impossibile eliminare la cartella comune: %s",
   "Failed to delete savefile.": "Non è stato possibile eliminare il salvataggio.",
-  "Failed to delete user folder.\n%s": "Impossibile eliminare la cartella.\n%s",
+  "Failed to delete user folder: %s": "Impossibile eliminare la cartella: %s",
   "Failed to import savedata from loadiine.": "Impossibile importare salvataggi da loadiine.",
   "Failed to export savedata to loadiine.": "Impossibile importare salvataggi da loadiine."
 }

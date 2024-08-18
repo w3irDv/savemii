@@ -72,9 +72,9 @@
   "Filesize: %d bytes": "資料大小：%d 個字節",
   "Deleting folder %s": "刪除資料夾 %s",
   "From: \n%s": "從：\n%s",
-  "Failed to delete folder %s\n%s": "無法刪除資料夾 %s\n%s",
+  "Failed to delete folder %s: %s": "無法刪除資料夾 %s: %s",
   "Deleting file %s": "刪除資料 %s",
-  "Failed to delete file %s\n%s": "無法刪除資料 %s\n%s",
+  "Failed to delete file %s: %s": "無法刪除資料 %s: %s",
   "Loadiine game folder not found.": "未找到Loadiine遊戲資料夾。",
   "Failed to open Loadiine game save directory.": "打開Loadiine遊戲保存資料夾失敗。",
   "Are you sure?": "你確定嗎？",
@@ -90,9 +90,9 @@
   "Restore failed.": "還原失敗。",
   "Hm, are you REALLY sure?": "蛤？你真的確定嗎？",
   "Backup current savedata first?": "先備份當前的保存數據？",
-  "Failed to delete common folder.\n%s": "無法刪除Common資料夾。\n%s",
+  "Failed to delete common folder: %s": "無法刪除Common資料夾: %s",
   "Failed to delete savefile.": "無法刪除保存資料。",
-  "Failed to delete user folder.\n%s": "無法刪除使用者資料夾。\n%s",
+  "Failed to delete user folder: %s": "無法刪除使用者資料夾: %s",
   "Failed to import savedata from loadiine.": "無法從loadiine導入保存數據。",
   "Failed to export savedata to loadiine.": "無法導出保存數據到Loadiine。"
 }

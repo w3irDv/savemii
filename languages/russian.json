@@ -72,9 +72,9 @@
   "Filesize: %d bytes": "Размер: %d байт",
   "Deleting folder %s": "Удаление папки %s",
   "From: \n%s": "Из %s",
-  "Failed to delete folder %s\n%s": "Не удалось удалить папку %s\n%s",
+  "Failed to delete folder %s: %s": "Не удалось удалить папку %s: %s",
   "Deleting file %s": "Удаление файла %s",
-  "Failed to delete file %s\n%s": "Не удалось удалить файл %s\n%s",
+  "Failed to delete file %s: %s": "Не удалось удалить файл %s: %s",
   "Loadiine game folder not found.": "Папка Loadiine не найдена.",
   "Failed to open Loadiine game save directory.": "Не удалось открыть каталог сохранения Loadiine.",
   "Are you sure?": "Вы уверены?",
@@ -90,9 +90,9 @@
   "Restore failed.": "Ошибка восстановления.",
   "Hm, are you REALLY sure?": "Вы ТОЧНО уверены?",
   "Backup current savedata first?": "Сделать сперва бекап сохранения?",
-  "Failed to delete common folder.\n%s": "Не удалось удалить папку \n%s",
+  "Failed to delete common folder: %s": "Не удалось удалить папку: %s",
   "Failed to delete savefile.": "Не удалось удалить сохранение.",
-  "Failed to delete user folder.\n%s": "Не удалось удалить пользовательскую папку\n%s",
+  "Failed to delete user folder: %s": "Не удалось удалить пользовательскую папку: %s",
   "Failed to import savedata from loadiine.": "Не удалось импортировать сохранения из loadiine.",
   "Failed to export savedata to loadiine.": "Не удалось экспортировать сохранения из loadiine."
 }

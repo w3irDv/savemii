@@ -73,9 +73,9 @@
   "Filesize: %d bytes": "Tamanho: %d bytes",
   "Deleting folder %s": "Excluindo pasta %s",
   "From: \n%s": "De:\n%s",
-  "Failed to delete folder %s\n%s": "Falha ao excluir pasta %s\n%s",
+  "Failed to delete folder %s: %s": "Falha ao excluir pasta %s: %s",
   "Deleting file %s": "Excluindo arquivo %s",
-  "Failed to delete file %s\n%s": "Falha ao excluir arquivo %s\n%s",
+  "Failed to delete file %s: %s": "Falha ao excluir arquivo %s: %s",
   "Loadiine game folder not found.": "Pasta do jogo não encontrada (Loadiine).",
   "Failed to open Loadiine game save directory.": "Falha ao abrir pasta de save (Loadiine).",
   "Are you sure?": "Tem certeza?",
@@ -91,9 +91,9 @@
   "Restore failed.": "Falha ao restaurar.",
   "Hm, are you REALLY sure?": "Hum, você quer REALMENTE fazer isso?",
   "Backup current savedata first?": "Deseja fazer backup do save?",
-  "Failed to delete common folder.\n%s": "Falha ao excluir pasta 'common'.\n%s",
+  "Failed to delete common folder: %s": "Falha ao excluir pasta 'common': %s",
   "Failed to delete savefile.": "Falha ao excluir save.",
-  "Failed to delete user folder.\n%s": "Falha ao excluir pasta de usuário.\n%s",
+  "Failed to delete user folder: %s": "Falha ao excluir pasta de usuário: %s",
   "Failed to import savedata from loadiine.": "Falha ao importar save (Loadiine).",
   "Failed to export savedata to loadiine.": "Falha ao exportar save (Loadiine)."
 }
