@@ -53,7 +53,7 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
             default:
                 return SUBSTATE_RETURN;
         }
-        resetBackupList();
+        BackupSetList::initBackupSetList();
         BackupSetListState::resetCursorPosition();
         DrawUtils::setRedraw(true);
         return SUBSTATE_RETURN;

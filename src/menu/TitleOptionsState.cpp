@@ -2,12 +2,11 @@
 #include <date.h>
 #include <menu/TitleOptionsState.h>
 #include <menu/BackupSetListState.h>
+#include <BackupSetList.h>
 #include <savemng.h>
+#include <utils/Colors.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-
-extern std::string backupSetSubPath;
-extern std::string backupSetEntry;
 
 void TitleOptionsState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -19,7 +18,9 @@ void TitleOptionsState::render() {
     }
     if (this->state == STATE_TITLE_OPTIONS) {    
         if (this->task == restore) {
-            consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BackupSet: %s"),backupSetEntry.c_str());
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BackupSet: %s"),BackupSetList::getBackupSetEntry().c_str());
+            DrawUtils::setFontColor(COLOR_TEXT);
         }
         this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
         entrycount = 3;
@@ -190,7 +191,7 @@ void TitleOptionsState::render() {
 ApplicationState::eSubState TitleOptionsState::update(Input *input) {
     if (this->state == STATE_TITLE_OPTIONS) {
         if (input->get(TRIGGER, PAD_BUTTON_B)) {
-            backupSetSubPath = "/"; // reset nxt operations to current backupSet
+            BackupSetList::setBackupSetSubPathToRoot(); // reset nxt operations to current backupSet
             return SUBSTATE_RETURN;
         }
         if (input->get(TRIGGER, PAD_BUTTON_X))
@@ -395,6 +396,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         } else if (retSubState == SUBSTATE_RETURN) {
             this->subState.reset();
             this->state = STATE_TITLE_OPTIONS;
+            slot = 0;
+            getAccountsSD(&this->title, slot);
         }
     }
     return SUBSTATE_RUNNING;

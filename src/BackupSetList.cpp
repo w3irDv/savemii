@@ -8,6 +8,13 @@
 #include <algorithm>
 
 bool BackupSetList::sortAscending = false;
+const std::string BackupSetList::CURRENT_BS = ">> Current <<";
+std::string BackupSetList::backupSetSubPath = "/";;
+std::string BackupSetList::backupSetEntry = CURRENT_BS;
+
+std::unique_ptr<BackupSetList> BackupSetList::currentBackupSetList  = std::make_unique<BackupSetList>();
+
+extern const char *batchBackupPath;
 
 BackupSetList::BackupSetList(const char *backupSetListRoot)
 {
@@ -55,4 +62,21 @@ void BackupSetList::add(std::string backupSet)
     this->entries++; 
     if (!sortAscending)
         this->sort(false);   
+}
+
+
+void BackupSetList::initBackupSetList() {
+    BackupSetList::currentBackupSetList.reset();
+    BackupSetList::currentBackupSetList = std::make_unique<BackupSetList>(batchBackupPath);
+}
+
+void BackupSetList::setBackupSetEntry(int i) {
+    backupSetEntry = currentBackupSetList->at(i);
+}
+
+void BackupSetList::setBackupSetSubPath() {
+    if (backupSetEntry == CURRENT_BS)
+        backupSetSubPath = "/";
+    else
+        backupSetSubPath = "/batch/"+backupSetEntry+"/";
 }

@@ -19,10 +19,6 @@ const char *backupPath = "fs:/vol/external01/wiiu/backups";
 const char *batchBackupPath = "fs:/vol/external01/wiiu/backups/batch"; // Must be "backupPath/batch"  ~ backupSetListRoot
 const char *loadiineSavePath = "fs:/vol/external01/wiiu/saves";
 const char *legacyBackupPath = "fs:/vol/external01/savegames";
-std::string backupSetSubPath = "/";
-std::string backupSetEntry = CURRENT_BS;
-
-extern std::unique_ptr<BackupSetList> myBackupSetList;
 
 static char *p1;
 Account *wiiuacc;
@@ -58,28 +54,16 @@ std::string newlibtoFSA(std::string path) {
     return path;
 }
 
-std::string getUnifiedBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot) {
+std::string getDynamicBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot) {
 
     if (((highId & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
         return StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highId, lowId); // LegacyBackup
     else
-        return StringUtils::stringFormat("%s%s%08x%08x/%u", backupPath, backupSetSubPath.c_str(), highId, lowId, slot);
+        return StringUtils::stringFormat("%s%s%08x%08x/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highId, lowId, slot);
 }
 
 std::string getBatchBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot, std::string datetime) {
     return StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, datetime.c_str(),highId, lowId, slot);
-}
-
-void setBackupSetSubPath() {
-    if (backupSetEntry == CURRENT_BS)
-        backupSetSubPath = "/";
-    else
-        backupSetSubPath = "/batch/"+backupSetEntry+"/";
-}
-
-void resetBackupList() {
-    myBackupSetList.reset();
-    myBackupSetList = std::make_unique<BackupSetList>(batchBackupPath);
 }
 
 uint8_t getSDaccn() {
@@ -463,7 +447,7 @@ void getAccountsSD(Title *title, uint8_t slot) {
     if (sdacc != nullptr)
         free(sdacc);
 
-    std::string path = getUnifiedBackupPath(highID, lowID, slot);
+    std::string path = getDynamicBackupPath(highID, lowID, slot);
     DIR *dir = opendir(path.c_str());
     if (dir != nullptr) {
         struct dirent *data;
@@ -740,7 +724,7 @@ static bool getLoadiineUserDir(char *out, const char *fullSavePath, const char *
 
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot) {
     std::string path;
-    path = getUnifiedBackupPath(highID, lowID,slot);
+    path = getDynamicBackupPath(highID, lowID,slot);
     int ret = checkEntry(path.c_str());
     return ret <= 0;
 }
@@ -774,7 +758,7 @@ bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
             }
         } else {
             if (!iine) {
-                sprintf(srcPath, "%s/%08X", getUnifiedBackupPath(highID, lowID, slot).c_str(), user);
+                sprintf(srcPath, "%s/%08X", getDynamicBackupPath(highID, lowID, slot).c_str(), user);
             } else {
                 if (!getLoadiineGameSaveDir(srcPath, title->productCode, title->longName, title->highID, title->lowID)) {
                     return false;
@@ -796,7 +780,7 @@ bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
         if (!inSD) {
             sprintf(srcPath, "storage_slccmpt01:/title/%08x/%08x/data", highID, lowID);
         } else {
-            strcpy(srcPath, getUnifiedBackupPath(highID, lowID, slot).c_str());
+            strcpy(srcPath, getDynamicBackupPath(highID, lowID, slot).c_str());
         }
     }
     if (checkEntry(srcPath) == 2)
@@ -820,7 +804,7 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
         srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s/common", path, highID, lowID, "user");
     } else {
         if (!iine) {
-            srcPath = getUnifiedBackupPath(highID, lowID, slot) + "/common";
+            srcPath = getDynamicBackupPath(highID, lowID, slot) + "/common";
         } else {
             if (!getLoadiineGameSaveDir(srcPath.data(), title->productCode, title->longName, title->highID, title->lowID))
                 return false;
@@ -988,7 +972,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string dstPath;
-    dstPath = getUnifiedBackupPath(highID, lowID, slot);
+    dstPath = getDynamicBackupPath(highID, lowID, slot);
     createFolder(dstPath.c_str());
 
     if ((allusers > -1) && !isWii) {
@@ -1009,15 +993,6 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
     else
         writeSavedataDate(highID,lowID,slot);
 
-    if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
-    } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_mlc01");
-    } else if (dstPath.rfind("storage_usb01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb01");
-    } else if (dstPath.rfind("storage_usb02:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb02");
-    }
 }
 
 void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers, bool common) {
@@ -1035,7 +1010,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
     bool isUSB = title->isTitleOnUSB;
     bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
     std::string srcPath;
-    srcPath = getUnifiedBackupPath(highID, lowID, slot);
+    srcPath = getDynamicBackupPath(highID, lowID, slot);
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     createFolderUnlocked(dstPath);

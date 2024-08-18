@@ -2,6 +2,7 @@
 #include <cstring>
 #include <menu/TitleOptionsState.h>
 #include <menu/TitleTaskState.h>
+#include <BackupSetList.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -61,7 +62,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             }
 
             if (this->task == restore) {
-                setBackupSetSubPath();
+                BackupSetList::setBackupSetSubPath();
                 getAccountsSD(&this->title, slot);
                 allusers = ((sdusers == -1) ? -1 : allusers);
                 sdusers = ((allusers == -1) ? -1 : sdusers);

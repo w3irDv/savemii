@@ -20,7 +20,6 @@
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 
-std::unique_ptr<BackupSetList> myBackupSetList;
 extern char *batchBackupPath;
 
 template<typename T, size_t N>
@@ -440,7 +439,7 @@ int main() {
     sortTitle(wiiutitles, wiiutitles + wiiuTitlesCount, 1, true);
     sortTitle(wiititles, wiititles + vWiiTitlesCount, 1, true);
 
-    myBackupSetList = std::make_unique<BackupSetList>(batchBackupPath);
+    BackupSetList::initBackupSetList();
 
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,

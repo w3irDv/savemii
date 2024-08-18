@@ -9,7 +9,7 @@ public:
     Date(uint32_t high, uint32_t low, uint8_t s) : highID(high),
                                                    lowID(low),
                                                    slot(s),
-                                                   path (getUnifiedBackupPath(highID, lowID, slot).append("/savemiiMeta.json")) {
+                                                   path (getDynamicBackupPath(highID, lowID, slot).append("/savemiiMeta.json")) {
     }
 
     Date(uint32_t high, uint32_t low, uint8_t s, std::string datetime) : highID(high),
