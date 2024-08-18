@@ -414,7 +414,7 @@ void getAccountsWiiU() {
         if (nn::act::IsSlotOccupied(i)) {
             unsigned int persistentID = nn::act::GetPersistentIdEx(i);
             wiiuacc[accn].pID = persistentID;
-            sprintf(wiiuacc[accn].persistentID, "%08X", persistentID);
+            sprintf(wiiuacc[accn].persistentID, "%08x", persistentID);
             nn::act::GetMiiNameEx((int16_t *) out, i);
             memset(wiiuacc[accn].miiName, 0, sizeof(wiiuacc[accn].miiName));
             for (int j = 0, k = 0; j < 10; j++) {
@@ -754,11 +754,11 @@ bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
             } else if (user == 0xFFFFFFFF) {
                 sprintf(srcPath, "%s/%08x/%08x/%s", path, highID, lowID, "user");
             } else {
-                sprintf(srcPath, "%s/%08x/%08x/%s/%08X", path, highID, lowID, "user", user);
+                sprintf(srcPath, "%s/%08x/%08x/%s/%08x", path, highID, lowID, "user", user);
             }
         } else {
             if (!iine) {
-                sprintf(srcPath, "%s/%08X", getDynamicBackupPath(highID, lowID, slot).c_str(), user);
+                sprintf(srcPath, "%s/%08x", getDynamicBackupPath(highID, lowID, slot).c_str(), user);
             } else {
                 if (!getLoadiineGameSaveDir(srcPath, title->productCode, title->longName, title->highID, title->lowID)) {
                     return false;
