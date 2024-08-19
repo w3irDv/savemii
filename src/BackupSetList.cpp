@@ -8,9 +8,9 @@
 #include <algorithm>
 
 bool BackupSetList::sortAscending = false;
-const std::string BackupSetList::CURRENT_BS = ">> Current <<";
+const std::string BackupSetList::ROOT_BS = ">> Root <<";
 std::string BackupSetList::backupSetSubPath = "/";;
-std::string BackupSetList::backupSetEntry = CURRENT_BS;
+std::string BackupSetList::backupSetEntry = ROOT_BS;
 
 std::unique_ptr<BackupSetList> BackupSetList::currentBackupSetList  = std::make_unique<BackupSetList>();
 
@@ -21,7 +21,7 @@ BackupSetList::BackupSetList(const char *backupSetListRoot)
 
     this->backupSetListRoot = backupSetListRoot;
 
-    backupSets.push_back(CURRENT_BS);
+    backupSets.push_back(ROOT_BS);
 
     DIR *dir = opendir(backupSetListRoot);
     if (dir != nullptr) {
@@ -75,7 +75,7 @@ void BackupSetList::setBackupSetEntry(int i) {
 }
 
 void BackupSetList::setBackupSetSubPath() {
-    if (backupSetEntry == CURRENT_BS)
+    if (backupSetEntry == ROOT_BS)
         backupSetSubPath = "/";
     else
         backupSetSubPath = "/batch/"+backupSetEntry+"/";

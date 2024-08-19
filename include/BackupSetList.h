@@ -16,7 +16,7 @@ public:
     std::string at(int i);
     void add(std::string backupSet);
         
-    static const std::string CURRENT_BS;
+    static const std::string ROOT_BS;
     static std::string getBackupSetSubPath() { return backupSetSubPath; }
     static std::string getBackupSetEntry()  { return backupSetEntry; }
     static void setBackupSetEntry(int i);

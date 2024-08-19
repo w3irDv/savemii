@@ -36,7 +36,7 @@ void BackupSetListState::render() {
             break;
         backupSetItem = BackupSetList::currentBackupSetList->at(i + scroll);
         DrawUtils::setFontColor(COLOR_LIST);
-        if ( backupSetItem == BackupSetList::CURRENT_BS)
+        if ( backupSetItem == BackupSetList::ROOT_BS)
             DrawUtils::setFontColor(COLOR_LIST_HIGH);
         if ( backupSetItem == BackupSetList::getBackupSetEntry())
             DrawUtils::setFontColor(COLOR_INFO);
