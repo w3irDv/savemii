@@ -28,15 +28,19 @@ void BackupSetListState::resetCursorPosition() {   // after batch Backup
 
 void BackupSetListState::render() {
 
+    std::string backupSetItem;
     consolePrintPos(44, 0, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
                         this->sortAscending ? "\u2191" : "\u2193");
     for (int i = 0; i < MAX_ROWS_SHOW; i++) {
         if (i + scroll < 0 || i + scroll >= BackupSetList::currentBackupSetList->entries)
             break;
+        backupSetItem = BackupSetList::currentBackupSetList->at(i + scroll);
         DrawUtils::setFontColor(COLOR_LIST);
-        if (BackupSetList::currentBackupSetList->at(i + scroll) == BackupSetList::CURRENT_BS)
-            DrawUtils::setFontColor(COLOR_LIST_CONTRAST);
-        consolePrintPos(M_OFF, i + 2, "  %s", BackupSetList::currentBackupSetList->at(i + scroll).c_str());
+        if ( backupSetItem == BackupSetList::CURRENT_BS)
+            DrawUtils::setFontColor(COLOR_LIST_HIGH);
+        if ( backupSetItem == BackupSetList::getBackupSetEntry())
+            DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPos(M_OFF, i + 2, "  %s", backupSetItem.c_str());
         }
     DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(-1, 2 + cursorPos, "\u2192");
