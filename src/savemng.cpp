@@ -1,5 +1,5 @@
 #include <savemng.h>
-#include <date.h>
+#include <metadata.h>
 #include <LockingQueue.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
@@ -935,16 +935,16 @@ std::string getNowDateForFolder() {
                                                      now.tm_hour, now.tm_min, now.tm_sec);
 }
 
-void writeSavedataDate(uint32_t highID,uint32_t lowID,uint8_t slot) {
-    Date *dateObj = new Date(highID, lowID, slot);
-    dateObj->set(getNowDate());
-    delete dateObj;
+void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) {
+    Metadata *metadataObj = new Metadata(highID, lowID, slot);
+    metadataObj->set(getNowDate(),isUSB);
+    delete metadataObj;
 }
 
-void writeSavedataDate(uint32_t highID,uint32_t lowID,uint8_t slot, const std::string &batchDatetime) {
-    Date *dateObj = new Date(highID, lowID, slot, batchDatetime);
-    dateObj->set(getNowDate());
-    delete dateObj;
+void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB, const std::string &batchDatetime) {
+    Metadata *metadataObj = new Metadata(highID, lowID, slot, batchDatetime);
+    metadataObj->set(getNowDate(),isUSB);
+    delete metadataObj;
 }
 
 void backupAllSave(Title *titles, int count, const std::string &batchDatetime) {
@@ -964,7 +964,7 @@ void backupAllSave(Title *titles, int count, const std::string &batchDatetime) {
         if (!copyDir(srcPath, dstPath))
             promptError(LanguageUtils::gettext("Backup failed."));
         else
-            writeSavedataDate(highID,lowID,slot, batchDatetime);
+            writeMetadata(highID,lowID,slot,isUSB,batchDatetime); 
     }
     
 }
@@ -996,7 +996,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
 
         if (checkEntry(srcPath.c_str()) == 0) {
             if (commonSaved)
-                writeSavedataDate(highID,lowID,slot);
+                writeMetadata(highID,lowID,slot,isUSB);
             else
                 promptError(LanguageUtils::gettext("No save found for this user."));
             return;
@@ -1005,7 +1005,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) {
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
     else
-        writeSavedataDate(highID,lowID,slot);
+        writeMetadata(highID,lowID,slot,isUSB);
 
 }
 

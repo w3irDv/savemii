@@ -101,5 +101,6 @@
   "WiiU NAND Savedata >> slot 1": "WiiU NAND Savedata >> slot 1",
   "vWii Savedata >> slot 0": "vWii Savedata >> slot 0"
   "\uE002: Chg BackupSet \ue000: Restore  \ue001: Back": "\uE002: Chg BackupSet \ue000: Restore  \ue001: Back",
-  "BackupSet: %s": "BackupSet: %s"
+  "BackupSet: %s": "BackupSet: %s",
+  ", from ": ", from" 
 }

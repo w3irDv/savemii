@@ -120,8 +120,8 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
 void copySavedata(Title *title, Title *titled, int8_t allusers, int8_t allusers_d, bool common) __attribute__((hot));
 std::string getNowDateForFolder() __attribute__((hot));
 std::string getNowDate() __attribute__((hot));
-void writeSavedataDate(uint32_t highID,uint32_t lowID,uint8_t slot) __attribute__((hot));
-void writeSavedataDate(uint32_t highID,uint32_t lowID,uint8_t slot, const std::string &batchDatetime) __attribute__((hot));
+void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) __attribute__((hot));
+void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &batchDatetime) __attribute__((hot));
 void backupAllSave(Title *titles, int count, const std::string &batchDatetime) __attribute__((hot));
 void backupSavedata(Title *title, uint8_t slot, int8_t allusers, bool common) __attribute__((hot));
 void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers, bool common) __attribute__((hot));

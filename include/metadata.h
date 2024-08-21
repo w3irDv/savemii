@@ -4,22 +4,23 @@
 #include <utils/StringUtils.h>
 #include <savemng.h>
 
-class Date {
+class Metadata {
 public:
-    Date(uint32_t high, uint32_t low, uint8_t s) : highID(high),
+    Metadata(uint32_t high, uint32_t low, uint8_t s) : highID(high),
                                                    lowID(low),
                                                    slot(s),
                                                    path (getDynamicBackupPath(highID, lowID, slot).append("/savemiiMeta.json")) {
     }
 
-    Date(uint32_t high, uint32_t low, uint8_t s, std::string datetime) : highID(high),
+    Metadata(uint32_t high, uint32_t low, uint8_t s, std::string datetime) : highID(high),
                                                    lowID(low),
                                                    slot(s),
                                                    path (getBatchBackupPath(highID, lowID, slot, datetime).append("/savemiiMeta.json")) { 
     }
 
     std::string get();
-    bool set(const std::string &date);
+    bool set(const std::string &date,bool isUSB);
+    static std::string serialId;
 
 private:
     uint32_t highID;

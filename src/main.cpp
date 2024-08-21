@@ -5,6 +5,7 @@
 #include <menu/MainMenuState.h>
 #include <padscore/kpad.h>
 #include <savemng.h>
+#include <metadata.h>
 #include <sndcore2/core.h>
 #include <BackupSetList.h>
 #include <utils/DrawUtils.h>
@@ -37,6 +38,20 @@ static void disclaimer() {
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
     consolePrintPosAligned(16, 0, 1,
                            LanguageUtils::gettext("Everything you do with this software is your own responsibility"));
+}
+
+static void getWiiUSerialId() {
+    // from WiiUIdent
+    WUT_ALIGNAS(0x40) MCPSysProdSettings sysProd{};
+    int32_t mcpHandle = MCP_Open();
+    if ( mcpHandle >= 0 ) {
+        MCP_GetSysProdSettings(mcpHandle,&sysProd);
+        MCP_Close(mcpHandle);
+    }
+
+    Metadata::serialId = sysProd.code_id;
+    Metadata::serialId += sysProd.serial_id;
+ 
 }
 
 static Title *loadWiiUTitles(int run) {
@@ -408,6 +423,8 @@ int main() {
     WPADInit();
     KPADInit();
     WPADEnableURCC(1);
+
+    getWiiUSerialId();
 
     loadWiiUTitles(0);
 

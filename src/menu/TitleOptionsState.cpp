@@ -1,5 +1,5 @@
 #include <coreinit/debug.h>
-#include <date.h>
+#include <metadata.h>
 #include <menu/TitleOptionsState.h>
 #include <menu/BackupSetListState.h>
 #include <BackupSetList.h>
@@ -100,10 +100,10 @@ void TitleOptionsState::render() {
             }
             if ((task == backup) || (task == restore))
                 if (!isSlotEmpty(this->title.highID, this->title.lowID, slot)) {
-                    Date *dateObj = new Date(this->title.highID, this->title.lowID, slot);
+                    Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
                     consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
-                                    dateObj->get().c_str());
-                    delete dateObj;
+                                    metadataObj->get().c_str());
+                    delete metadataObj;
                 }
 
             if (task == copytoOtherDevice) {
@@ -159,10 +159,10 @@ void TitleOptionsState::render() {
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawRGB5A3(650, 100, 1, this->title.iconBuf);
             if (!isSlotEmpty(this->title.highID, this->title.lowID, slot)) {
-                Date *dateObj = new Date(this->title.highID, this->title.lowID, slot);
+                Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
                 consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
-                                dateObj->get().c_str());
-                delete dateObj;
+                                metadataObj->get().c_str());
+                delete metadataObj;
             }
         }
 
