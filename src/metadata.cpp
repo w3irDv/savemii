@@ -3,7 +3,7 @@
 
 #define FS_ALIGN(x) ((x + 0x3F) & ~(0x3F))
 
-std::string Metadata::serialId = "";
+std::string Metadata::serialId {};
 
 std::string Metadata::get() {
     if (checkEntry(path.c_str()) != 0) {
@@ -22,10 +22,10 @@ std::string Metadata::get() {
         json_t *root = json_loads(data, 0, &error);
 
         if (root) {
-            std::string metadata;
+            std::string metadata {};
             const char* date_ = json_string_value(json_object_get(root, "Date"));
             if (date_ != nullptr) {
-                metadata.assign(json_string_value(json_object_get(root, "Date")));
+                metadata.append(json_string_value(json_object_get(root, "Date")));
             }
             const char* storage_ = json_string_value(json_object_get(root, "storage"));
             if (storage_ != nullptr) {
