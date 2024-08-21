@@ -3,7 +3,7 @@
 
 #define FS_ALIGN(x) ((x + 0x3F) & ~(0x3F))
 
-std::string Metadata::serialId {};
+std::string Metadata::serialId { "_WIIU_" };
 
 std::string Metadata::get() {
     if (checkEntry(path.c_str()) != 0) {

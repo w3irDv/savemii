@@ -41,17 +41,15 @@ static void disclaimer() {
 }
 
 static void getWiiUSerialId() {
-    // from WiiUIdent
+    // from WiiUCrashLogDumper
     WUT_ALIGNAS(0x40) MCPSysProdSettings sysProd{};
     int32_t mcpHandle = MCP_Open();
     if ( mcpHandle >= 0 ) {
-        MCP_GetSysProdSettings(mcpHandle,&sysProd);
+        if (MCP_GetSysProdSettings(mcpHandle,&sysProd)==0) {
+            Metadata::serialId = std::string(sysProd.code_id) + sysProd.serial_id;
+        }
         MCP_Close(mcpHandle);
-    }
-
-    Metadata::serialId = sysProd.code_id;
-    Metadata::serialId += sysProd.serial_id;
- 
+    } 
 }
 
 static Title *loadWiiUTitles(int run) {
