@@ -47,8 +47,7 @@
   "Include 'common' save?": "'Gemeinsame' Speicherung einschließen?",
   "yes": "Ja",
   "no ": "Nein ",
-  "No 'common' save found.": "Keine 'gemeinsame' Speicherung gefunden.",
-  "\ue000: Restore  \ue001: Back": "\ue000: Wiederherstellen  \ue001: Zurück",
+  "No 'common' save found.": "Keine 'gemeinsame' Speicherung gefunden.",,
   "\ue000: Wipe  \ue001: Back": "\ue000: Lösche  \ue001: Zurück",
   "\ue000: Import  \ue001: Back": "\ue000: Importieren  \ue001: Zurück",
   "\ue000: Export  \ue001: Back": "\ue000: Exportieren  \ue001: Zurück",
@@ -95,5 +94,13 @@
   "Failed to delete user folder: %s": "Löschen vom Nutzerordner fehlgeschlagen: %s",
   "Failed to import savedata from loadiine.": "Importieren von Loadiine Speicherdaten fehlgeschlagen.",
   "Failed to export savedata to loadiine.": "Exportieren von Loadiine Speicherdaten fehlgeschlagen.",
-  "German": "Deutsch"
+  "German": "Deutsch",
+  "\ue083 Sort: %s \ue084": "\ue083 Sortieren: %s \ue084",
+  "\ue000: Select BackupSet  \ue001: Back": "\ue000: Wählen Sie BackupSet  \ue001: Zurück",
+  "\ue002: Change BackupSet  \ue000: Restore  \ue001: Back": "\ue002: BackupSet ändern  \ue000: Wiederherstellen  \ue001: Zurück",
+  "WiiU USB Savedata >> slot 0": "WiiU USB Savedata >> slot 0",
+  "WiiU NAND Savedata >> slot 1": "WiiU NAND Savedata >> slot 1",
+  "vWii Savedata >> slot 0": "vWii Savedata >> slot 0",
+  "BackupSet: %s": "BackupSet: %s",
+  ", from ": ", aus "
 }

@@ -171,7 +171,7 @@ void TitleOptionsState::render() {
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
                 break;
             case restore:
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Chg BackupSet  \ue000: Restore  \ue001: Back"));
+                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Change BackupSet  \ue000: Restore  \ue001: Back"));
                 break;
             case wipe:
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));

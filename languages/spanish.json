@@ -94,5 +94,13 @@
   "Failed to delete savefile.": "Error al eliminar el save.",
   "Failed to delete user folder: %s": "Error al eliminar la carpeta user: %s",
   "Failed to import savedata from loadiine.": "Error al importar el save de loadiine.",
-  "Failed to export savedata to loadiine.": "Error al exportar el save a loadiine."
+  "Failed to export savedata to loadiine.": "Error al exportar el save a loadiine.",
+  "\ue083 Sort: %s \ue084": "\ue083 Ordenar: %s \ue084",
+  "\ue000: Select BackupSet  \ue001: Back": "\ue000: Seleccionar BackupSet  \ue001: Atrás",
+  "\ue002: Change BackupSet  \ue000: Restore  \ue001: Back": "\ue002: Cambiar BackupSet  \ue000: Restaurar  \ue001: Atrás",
+  "WiiU USB Savedata >> slot 0": "WiiU USB Savedata >> slot 0",
+  "WiiU NAND Savedata >> slot 1": "WiiU NAND Savedata >> slot 1",
+  "vWii Savedata >> slot 0": "vWii Savedata >> slot 0",
+  "BackupSet: %s": "BackupSet: %s",
+  ", from ": ", de "
 }
