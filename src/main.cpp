@@ -91,10 +91,11 @@ static Title *loadWiiUTitles(int run) {
                         path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml", (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a],
                                                          data->d_name);
                         if (checkEntry(path.c_str()) == 1) {
-                            for (int i = 0; i < usable; i++) {
-                                if (contains(highIDs, savesl[i].highID) &&
-                                    (strtoul(data->d_name, nullptr, 16) == savesl[i].lowID)) {
-                                    savesl[i].found = true;
+                            for (int ii = 0; ii < usable; ii++) {
+                                if (contains(highIDs, savesl[ii].highID) &&
+                                    (strtoul(data->d_name, nullptr, 16) == savesl[ii].lowID) &&
+                                    savesl[ii].dev == i ) {
+                                    savesl[ii].found = true;
                                     tNoSave--;
                                     break;
                                 }
@@ -109,7 +110,7 @@ static Title *loadWiiUTitles(int run) {
     }
 
     foundCount += tNoSave;
-    auto *saves = (Saves *) malloc((foundCount + tNoSave) * sizeof(Saves));
+    auto *saves = (Saves *) malloc((foundCount) * sizeof(Saves));
     if (saves == nullptr) {
         promptError(LanguageUtils::gettext("Out of memory."));
         return nullptr;
