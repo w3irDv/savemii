@@ -6,6 +6,7 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
+#include <utils/Colors.h>
 
 #define MAX_TITLE_SHOW 14
 static int cursorPos = 0;

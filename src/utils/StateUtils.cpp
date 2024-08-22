@@ -1,15 +1,13 @@
+#include <utils/StateUtils.h>
+#include <utils/DrawUtils.h>
 #include <coreinit/core.h>
 #include <coreinit/dynload.h>
 #include <coreinit/foreground.h>
 #include <proc_ui/procui.h>
-#include <utils/StateUtils.h>
-#include <utils/DrawUtils.h>
-#include <coreinit/screen.h>
 #include <whb/proc.h>
 
 #include <string.h>
 
-#include <utils/DrawUtils.h>
 
 bool State::aroma = false;
 
@@ -25,10 +23,22 @@ void State::init() {
 }
 
 
+uint32_t
+State::ConsoleProcCallbackAcquired(void *context)
+{
+    return DrawUtils::initScreen();
+}
+
+uint32_t
+State::ConsoleProcCallbackReleased(void *context)
+{
+    return DrawUtils::deinitScreen();
+}
+
 void State::registerProcUICallbacks() {
     if (aroma) {
-        ProcUIRegisterCallback(PROCUI_CALLBACK_ACQUIRE, DrawUtils::ConsoleProcCallbackAcquired, NULL, 100);
-        ProcUIRegisterCallback(PROCUI_CALLBACK_RELEASE, DrawUtils::ConsoleProcCallbackReleased, NULL, 100);
+        ProcUIRegisterCallback(PROCUI_CALLBACK_ACQUIRE, ConsoleProcCallbackAcquired, NULL, 100);
+        ProcUIRegisterCallback(PROCUI_CALLBACK_RELEASE, ConsoleProcCallbackReleased, NULL, 100);
     }
 }
 

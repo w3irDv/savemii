@@ -39,8 +39,6 @@ public:
 
     static void LogConsoleFree();
 
-    static void initBuffers(void *tvBuffer, void *drcBuffer);
-
     static void beginDraw();
 
     static void endDraw();
@@ -77,9 +75,9 @@ public:
 
     static void drawRGB5A3(int x, int y, float scale, uint8_t *fileContent);
 
-    static uint32_t ConsoleProcCallbackAcquired(void *context);
+    static uint32_t initScreen();
 
-    static uint32_t ConsoleProcCallbackReleased(void *context);
+    static uint32_t deinitScreen();
 
 
 
@@ -92,7 +90,6 @@ private:
     static uint8_t *tvBuffer;
     static uint8_t *drcBuffer;
 
-    static void *sBufferTV, *sBufferDRC;
     static uint32_t sBufferSizeTV, sBufferSizeDRC;
     static BOOL sConsoleHasForeground;
 };

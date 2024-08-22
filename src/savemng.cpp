@@ -8,7 +8,9 @@
 #include <sys/stat.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
+#include <utils/Colors.h>
 #include <malloc.h>
+
 
 #define __FSAShimSend      ((FSError(*)(FSAShimBuffer *, uint32_t))(0x101C400 + 0x042d90))
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
@@ -202,14 +204,18 @@ static bool folderEmpty(const char *fPath) {
     if (dir == nullptr)
         return false;
 
-    int c = 0;
+    bool empty = true;
     struct dirent *data;
-    while ((data = readdir(dir)) != nullptr)
-        if (++c > 2)
-            break;
+    while ((data = readdir(dir)) != nullptr) {
+        // rewritten to work wether ./.. are returned or not
+        if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0)
+            continue;
+        empty = false;
+        break;
+    }
 
     closedir(dir);
-    return c < 3;
+    return empty;
 }
 
 static bool createFolder(const char *path) {
@@ -851,16 +857,23 @@ void copySavedata(Title *title, Title *titleb, int8_t allusers, int8_t allusers_
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", pathb.c_str(), highIDb, lowIDb, "user");
     createFolderUnlocked(dstPath);
-    FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize);
 
-    if (allusers > -1)
-        if (common)
+    if (allusers > -1)  {
+        if (common) {
+            FSAMakeQuota(handle, newlibtoFSA(dstPath + "/common").c_str(), 0x666, titleb->accountSaveSize);
             if (!copyDir(srcPath + "/common", dstPath + "/common"))
                 promptError(LanguageUtils::gettext("Common save not found."));
+        }
+        srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
+        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers_d].persistentID));
+        FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, titleb->accountSaveSize);
+    } else {
+        FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize);
+    }
 
-    if (!copyDir(srcPath + StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID),
-                 dstPath + StringUtils::stringFormat("/%s", wiiuacc[allusers_d].persistentID)))
+    if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Copy failed."));
+    
     if (!titleb->saveInit) {
         std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
@@ -1006,19 +1019,24 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sdusers, int8_t allusers
         srcPath = getBackupPath(highID, lowID, slot);
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     createFolderUnlocked(dstPath);
-    FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize);
-
+    
     if ((sdusers > -1) && !isWii) {
         if (common) {
+            FSAMakeQuota(handle, newlibtoFSA(dstPath + "/common").c_str(), 0x666, title->accountSaveSize);
             if (!copyDir(srcPath + "/common", dstPath + "/common"))
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", sdacc[sdusers].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[allusers].persistentID));
+        FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
+    } else {
+        FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize);
     }
 
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Restore failed."));
+
+
     if (!title->saveInit && !isWii) {
         std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
 

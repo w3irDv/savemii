@@ -1,6 +1,3 @@
-#include <coreinit/debug.h>
-#include <coreinit/mcp.h>
-#include <coreinit/screen.h>
 #include <cstdlib>
 #include <cstring>
 #include <icon.h>
@@ -10,11 +7,15 @@
 #include <savemng.h>
 #include <sndcore2/core.h>
 #include <utils/DrawUtils.h>
+#include <utils/Colors.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
 #include <utils/StringUtils.h>
 #include <version.h>
+#include <coreinit/debug.h>
+#include <coreinit/mcp.h>
+#include <coreinit/screen.h>
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 
@@ -393,6 +394,8 @@ int main() {
     if (DrawUtils::LogConsoleInit()) {
         OSFatal("Failed to initialize OSSCreen");
     }
+
+    State::registerProcUICallbacks();
 
     if (!DrawUtils::initFont()) {
         OSFatal("Failed to init font");

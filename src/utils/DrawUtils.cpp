@@ -1,16 +1,14 @@
-#include <coreinit/cache.h>
-#include <coreinit/screen.h>
+#include <utils/DrawUtils.h>
+#include <utils/Colors.h>
 #include <cstdlib>
 #include <cstring>
 #include <memory>
-#include <tga_reader.h>
-#include <utils/DrawUtils.h>
-#include <utils/StateUtils.h>
 #include <malloc.h>
+#include <tga_reader.h>
 #include <coreinit/debug.h>
-
-#include <coreinit/memheap.h>
 #include <coreinit/cache.h>
+#include <coreinit/screen.h>
+#include <coreinit/memheap.h>
 #include <coreinit/memfrmheap.h>
 #include <coreinit/memory.h>
 #include <proc_ui/procui.h>
@@ -26,62 +24,50 @@ bool DrawUtils::isBackBuffer;
 
 uint8_t *DrawUtils::tvBuffer = nullptr;
 uint8_t *DrawUtils::drcBuffer = nullptr;
-/*
-uint32_t DrawUtils::sBufferSizeTV = 0;
-uint32_t DrawUtils::sBufferSizeDRC = 0;
-*/
-static SFT pFont = {};
-
-static Color font_col(0xFFFFFFFF);
-static Color black(0x000000FF);
-
-void *DrawUtils::sBufferTV = NULL, *DrawUtils::sBufferDRC = NULL;
 uint32_t DrawUtils::sBufferSizeTV = 0, DrawUtils::sBufferSizeDRC = 0;
 BOOL DrawUtils::sConsoleHasForeground = TRUE;
 
+static SFT pFont = {};
+
+static Color font_col(0xFFFFFFFF);
+
 uint32_t
-DrawUtils::ConsoleProcCallbackAcquired(void *context)
+DrawUtils::initScreen()
 {
    MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
    MEMRecordStateForFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
 
    if (sBufferSizeTV) {
-      sBufferTV = MEMAllocFromFrmHeapEx(heap, sBufferSizeTV, 4);
+      DrawUtils::tvBuffer = static_cast<uint8_t *>(MEMAllocFromFrmHeapEx(heap, sBufferSizeTV, 4));
    }
 
    if (sBufferSizeDRC) {
-      sBufferDRC = MEMAllocFromFrmHeapEx(heap, sBufferSizeDRC, 4);
+      DrawUtils::drcBuffer = static_cast<uint8_t *>(MEMAllocFromFrmHeapEx(heap, sBufferSizeDRC, 4));
    }
 
     
    sConsoleHasForeground = TRUE;
 
-   OSScreenSetBufferEx(SCREEN_TV, sBufferTV);
-   OSScreenSetBufferEx(SCREEN_DRC, sBufferDRC);
-   DrawUtils::initBuffers(sBufferTV, sBufferDRC);
+   OSScreenSetBufferEx(SCREEN_TV, DrawUtils::tvBuffer);
+   OSScreenSetBufferEx(SCREEN_DRC, DrawUtils::drcBuffer);
 
-    OSScreenEnableEx(SCREEN_TV, 1);
-   OSScreenEnableEx(SCREEN_DRC, 1);
-   
-
-   for (int i = 0; i<2; i++) // both buffers to black
-   {
-        DrawUtils::clear(black);
-        DrawUtils::endDraw();
-   }
+   DrawUtils::endDraw(); // flip buffers
 
    DrawUtils::setRedraw(true); // force a redraw when reentering
 
    return 0;
+
 }
 
 uint32_t
-DrawUtils::ConsoleProcCallbackReleased(void *context)
+DrawUtils::deinitScreen()
 {
+
    MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
    MEMFreeByStateToFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
    sConsoleHasForeground = FALSE;
    return 0;
+
 }
 
 
@@ -92,9 +78,10 @@ DrawUtils::LogConsoleInit()
    sBufferSizeTV = OSScreenGetBufferSizeEx(SCREEN_TV);
    sBufferSizeDRC = OSScreenGetBufferSizeEx(SCREEN_DRC);
 
-   ConsoleProcCallbackAcquired(NULL);
-   
-    State::registerProcUICallbacks();
+   initScreen();
+
+   OSScreenEnableEx(SCREEN_TV, 1);
+   OSScreenEnableEx(SCREEN_DRC, 1);
 
    return FALSE;
 }
@@ -103,8 +90,8 @@ void
 DrawUtils::LogConsoleFree()
 {
    if (sConsoleHasForeground) {
+      deinitScreen();
       OSScreenShutdown();
-      ConsoleProcCallbackReleased(NULL);
    }
 }
 
@@ -118,11 +105,6 @@ inline typename std::unique_ptr<T> make_unique_nothrow(size_t num) noexcept {
 
 void DrawUtils::setRedraw(bool value) {
     redraw = value;
-}
-
-void DrawUtils::initBuffers(void *sBufferTV_, void *sBufferDRC_) {
-    DrawUtils::tvBuffer = (uint8_t *) sBufferTV_;
-    DrawUtils::drcBuffer = (uint8_t *) sBufferDRC_;
 }
 
 void DrawUtils::beginDraw() {
@@ -141,13 +123,6 @@ void DrawUtils::beginDraw() {
 }
 
 void DrawUtils::endDraw() {
-    // OSScreenFlipBuffersEx already flushes the cache?
-    // DCFlushRange(tvBuffer, sBufferSizeTV);
-    // DCFlushRange(drcBuffer, sBufferSizeDRC);
-
-    DCFlushRange(sBufferTV, sBufferSizeTV);
-   DCFlushRange(sBufferDRC, sBufferSizeDRC);
-
     OSScreenFlipBuffersEx(SCREEN_DRC);
     OSScreenFlipBuffersEx(SCREEN_TV);
 }
