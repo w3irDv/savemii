@@ -35,7 +35,11 @@ public:
 
     static bool getRedraw() { return redraw; }
 
-    static void initBuffers(void *tvBuffer, uint32_t tvSize, void *drcBuffer, uint32_t drcSize);
+    static BOOL LogConsoleInit();
+
+    static void LogConsoleFree();
+
+    static void initBuffers(void *tvBuffer, void *drcBuffer);
 
     static void beginDraw();
 
@@ -73,12 +77,22 @@ public:
 
     static void drawRGB5A3(int x, int y, float scale, uint8_t *fileContent);
 
+    static uint32_t ConsoleProcCallbackAcquired(void *context);
+
+    static uint32_t ConsoleProcCallbackReleased(void *context);
+
+
+
+
 private:
     static bool redraw;
     static bool isBackBuffer;
 
+
     static uint8_t *tvBuffer;
-    static uint32_t tvSize;
     static uint8_t *drcBuffer;
-    static uint32_t drcSize;
+
+    static void *sBufferTV, *sBufferDRC;
+    static uint32_t sBufferSizeTV, sBufferSizeDRC;
+    static BOOL sConsoleHasForeground;
 };
