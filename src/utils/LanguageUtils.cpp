@@ -25,6 +25,7 @@ void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
             break;
 		*/
         case Swkbd_LanguageType__German:
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
             gettextLoadLanguage("romfs:/german.json");
             break;
         case Swkbd_LanguageType__Italian:
@@ -49,6 +50,7 @@ void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
             break;
         */
         case Swkbd_LanguageType__Portuguese:
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
 			gettextLoadLanguage("romfs:/portuguese.json");
             break;
         case Swkbd_LanguageType__Russian:

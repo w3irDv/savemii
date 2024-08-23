@@ -23,6 +23,8 @@ public:
     static void setBackupSetSubPath();
     static void initBackupSetList();
     static void setBackupSetSubPathToRoot() { backupSetSubPath = "/"; }
+    static void saveBackupSetSubPath() { savedBackupSetSubPath = backupSetSubPath; }
+    static void restoreBackupSetSubPath() { backupSetSubPath = savedBackupSetSubPath; }
 
 private:
     static bool sortAscending;
@@ -31,6 +33,7 @@ private:
     std::string backupSetListRoot;
     static std::string backupSetSubPath;
     static std::string backupSetEntry;
+    static std::string savedBackupSetSubPath;
 
 };
 

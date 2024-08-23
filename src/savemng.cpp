@@ -993,7 +993,6 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuser, bool common) {
         }
         srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuser].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuser].persistentID));
-
         if (checkEntry(srcPath.c_str()) == 0) {
             if (commonSaved)
                 writeMetadata(highID,lowID,slot,isUSB);
@@ -1016,9 +1015,13 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuser, 
     }
     if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
         return;
+    // backups to ROOT backupSet
+    BackupSetList::saveBackupSetSubPath();   
+    BackupSetList::setBackupSetSubPathToRoot();
     int slotb = getEmptySlot(title->highID, title->lowID);
     if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
         backupSavedata(title, slotb, wiiuser, common);
+    BackupSetList::restoreBackupSetSubPath();
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1036,7 +1039,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuser, 
             if (copyDir(srcPath + "/common", dstPath + "/common"))
                 commonSaved = true;
             else
-                promptError(LanguageUtils::gettext("Common save not found."));
+                promptError(LanguageUtils::gettext("Common save not restored."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", sdacc[sduser].persistentID));
         dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuser].persistentID));
