@@ -10,7 +10,7 @@
 static int cursorPos = 0;
 static int entrycount;
 static uint8_t slot = 0;
-static int8_t allusers = -1, allusers_d = -1, sdusers = -1;
+static int8_t wiiuser = -1, wiiuser_d = -1, sduser = -1;
 static bool common = true;
 
 void TitleTaskState::render() {
@@ -64,8 +64,8 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             if (this->task == restore) {
                 BackupSetList::setBackupSetSubPath();
                 getAccountsSD(&this->title, slot);
-                allusers = ((sdusers == -1) ? -1 : allusers);
-                sdusers = ((allusers == -1) ? -1 : sdusers);
+                wiiuser = ((sduser == -1) ? -1 : wiiuser);
+                sduser = ((wiiuser == -1) ? -1 : sduser);
             }
 
             if (this->task == wipe) {
@@ -103,7 +103,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             if (noError) {
                 DrawUtils::setRedraw(true);
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sdusers, allusers, common, allusers_d, this->titles, this->titlesCount);
+                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sduser, wiiuser, common, wiiuser_d, this->titles, this->titlesCount);
             }
         }
         if (cursorPos > entrycount)
