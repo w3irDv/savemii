@@ -116,6 +116,7 @@ bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
 bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *longName, const uint32_t highID, const uint32_t lowID);
 bool getLoadiineSaveVersionList(int *out, const char *gamePath);
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot);
+bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot, const std::string &batchDatetime);
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version);
 void copySavedata(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common) __attribute__((hot));
 std::string getNowDateForFolder() __attribute__((hot));

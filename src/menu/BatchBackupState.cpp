@@ -19,11 +19,6 @@ void BatchBackupState::render() {
                     (this->wiiuTitlesCount > 1) ? "s" : "");
     consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Backup vWii (%u Title%s)"), this->vWiiTitlesCount,
                     (this->vWiiTitlesCount > 1) ? "s" : "");
-    DrawUtils::setFontColor(COLOR_INFO);
-    consolePrintPosAligned(10,4,2,LanguageUtils::gettext("WiiU USB Savedata >> slot 0"));
-    consolePrintPosAligned(11,4,2,LanguageUtils::gettext("WiiU NAND Savedata >> slot 1"));
-    consolePrintPosAligned(12,4,2,LanguageUtils::gettext("vWii Savedata >> slot 0")); 
-    DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
     consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
 }

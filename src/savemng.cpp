@@ -729,12 +729,27 @@ bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot) {
     return ret <= 0;
 }
 
+bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot, const std::string &batchDatetime) {
+    std::string path;
+    path = getBatchBackupPath(highID,lowID,slot,batchDatetime);
+    int ret = checkEntry(path.c_str());
+    return ret <= 0;
+}
+
 static int getEmptySlot(uint32_t highID, uint32_t lowID) {
     for (int i = 0; i < 256; i++)
         if (isSlotEmpty(highID, lowID, i))
             return i;
     return -1;
 }
+
+static int getEmptySlot(uint32_t highID, uint32_t lowID, const std::string &batchDatetime) {
+    for (int i = 0; i < 256; i++)
+        if (isSlotEmpty(highID, lowID, i, batchDatetime))
+            return i;
+    return -1;
+}
+
 
 bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version) {
     uint32_t highID = title->highID;
@@ -948,26 +963,28 @@ void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB, const
 }
 
 void backupAllSave(Title *titles, int count, const std::string &batchDatetime) {
-    for (int i = 0; i < count; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
-            continue;
-        uint32_t highID = titles[i].highID;
-        uint32_t lowID = titles[i].lowID;
-        bool isUSB = titles[i].isTitleOnUSB;
-        bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
-        uint8_t slot = ( isWii ? 0 : (isUSB ?  0 :  1));
-        const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
-        std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-        //std::string dstPath = StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, batchDatetime.c_str(), highID, lowID,slot);
-        std::string dstPath = getBatchBackupPath(highID,lowID,slot, batchDatetime);
+    for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
+        for (int i = 0; i < count; i++) {
+            if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
+                continue;
+            uint32_t highID = titles[i].highID;
+            uint32_t lowID = titles[i].lowID;
+            bool isUSB = titles[i].isTitleOnUSB;
+            bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+            if ((sourceStorage == 0 && !isUSB) || (sourceStorage == 1 && isUSB)) // backup first WiiU USB savedata to slot 0
+                continue;
+            uint8_t slot = getEmptySlot(highID,lowID,batchDatetime);
+            const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+            std::string dstPath = getBatchBackupPath(highID,lowID,slot,batchDatetime);
 
-        createFolder(dstPath.c_str());
-        if (!copyDir(srcPath, dstPath))
-            promptError(LanguageUtils::gettext("Backup failed."));
-        else
-            writeMetadata(highID,lowID,slot,isUSB,batchDatetime); 
+            createFolder(dstPath.c_str());
+            if (!copyDir(srcPath, dstPath))
+                promptError(LanguageUtils::gettext("Backup failed."));
+            else
+                writeMetadata(highID,lowID,slot,isUSB,batchDatetime); 
+        }
     }
-    
 }
 
 void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common) {
