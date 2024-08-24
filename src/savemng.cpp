@@ -54,16 +54,16 @@ std::string newlibtoFSA(std::string path) {
     return path;
 }
 
-std::string getDynamicBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot) {
+std::string getDynamicBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot) {
 
-    if (((highId & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
-        return StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highId, lowId); // LegacyBackup
+    if (((highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
+        return StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highID, lowID); // LegacyBackup
     else
-        return StringUtils::stringFormat("%s%s%08x%08x/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highId, lowId, slot);
+        return StringUtils::stringFormat("%s%s%08x%08x/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID, slot);
 }
 
-std::string getBatchBackupPath(uint32_t highId, uint32_t lowId, uint8_t slot, std::string datetime) {
-    return StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, datetime.c_str(),highId, lowId, slot);
+std::string getBatchBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot, std::string datetime) {
+    return StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, datetime.c_str(),highID, lowID, slot);
 }
 
 uint8_t getSDaccn() {
@@ -836,7 +836,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
     closedir(src_dir);
 }
 
-void copySavedata(Title *title, Title *titleb, int8_t wiiuser, int8_t wiiuser_d, bool common) {
+void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -848,7 +848,7 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuser, int8_t wiiuser_d,
         return;
     int slotb = getEmptySlot(titleb->highID, titleb->lowID);
     if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
-        backupSavedata(titleb, slotb, wiiuser, common);
+        backupSavedata(titleb, slotb, wiiuuser, common);
         promptError(LanguageUtils::gettext("Backup done. Now copying Savedata."));
     }
 
@@ -859,7 +859,7 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuser, int8_t wiiuser_d,
     createFolderUnlocked(dstPath);
     bool commonSaved = false;
 
-    if (wiiuser > -1)  {
+    if (wiiuuser > -1)  {
         if (common) {
             FSAMakeQuota(handle, newlibtoFSA(dstPath + "/common").c_str(), 0x666, titleb->accountSaveSize);
             if (copyDir(srcPath + "/common", dstPath + "/common"))
@@ -867,8 +867,8 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuser, int8_t wiiuser_d,
             else
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
-        srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuser].persistentID));
-        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuser_d].persistentID));
+        srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser_d].persistentID));
         if (checkEntry(srcPath.c_str()) == 2) {
             FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, titleb->accountSaveSize);
             if (!copyDir(srcPath, dstPath))
@@ -958,7 +958,8 @@ void backupAllSave(Title *titles, int count, const std::string &batchDatetime) {
         uint8_t slot = ( isWii ? 0 : (isUSB ?  0 :  1));
         const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-        std::string dstPath = StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, batchDatetime.c_str(), highID, lowID,slot);
+        //std::string dstPath = StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, batchDatetime.c_str(), highID, lowID,slot);
+        std::string dstPath = getBatchBackupPath(highID,lowID,slot, batchDatetime);
 
         createFolder(dstPath.c_str());
         if (!copyDir(srcPath, dstPath))
@@ -969,7 +970,7 @@ void backupAllSave(Title *titles, int count, const std::string &batchDatetime) {
     
 }
 
-void backupSavedata(Title *title, uint8_t slot, int8_t wiiuser, bool common) {
+void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common) {
     if (!isSlotEmpty(title->highID, title->lowID, slot) &&
         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
         return;
@@ -984,15 +985,15 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuser, bool common) {
     dstPath = getDynamicBackupPath(highID, lowID, slot);
     createFolder(dstPath.c_str());
     bool commonSaved = false;
-    if ((wiiuser > -1) && !isWii) {
+    if ((wiiuuser > -1) && !isWii) {
         if (common) {
             if (copyDir(srcPath+"/common", dstPath+"/common"))
                 commonSaved = true;
             else
                 promptError(LanguageUtils::gettext("Common save not found."));
         }
-        srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuser].persistentID));
-        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuser].persistentID));
+        srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
         if (checkEntry(srcPath.c_str()) == 0) {
             if (commonSaved)
                 writeMetadata(highID,lowID,slot,isUSB);
@@ -1008,7 +1009,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuser, bool common) {
 
 }
 
-void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuser, bool common) {
+void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common) {
     if (isSlotEmpty(title->highID, title->lowID, slot)) {
         promptError(LanguageUtils::gettext("No backup found on selected slot."));
         return;
@@ -1020,7 +1021,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuser, 
     BackupSetList::setBackupSetSubPathToRoot();
     int slotb = getEmptySlot(title->highID, title->lowID);
     if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
-        backupSavedata(title, slotb, wiiuser, common);
+        backupSavedata(title, slotb, wiiuuser, common);
     BackupSetList::restoreBackupSetSubPath();
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
@@ -1042,7 +1043,7 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuser, 
                 promptError(LanguageUtils::gettext("Common save not restored."));
         }
         srcPath.append(StringUtils::stringFormat("/%s", sdacc[sduser].persistentID));
-        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuser].persistentID));
+        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
         if (checkEntry(srcPath.c_str()) == 2) {
             FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
             if (!copyDir(srcPath, dstPath))
@@ -1101,12 +1102,12 @@ void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuser, 
     }
 }
 
-void wipeSavedata(Title *title, int8_t wiiuser, bool common) {
+void wipeSavedata(Title *title, int8_t wiiuuser, bool common) {
     if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
         return;
     int slotb = getEmptySlot(title->highID, title->lowID);
     if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
-        backupSavedata(title, slotb, wiiuser, common);
+        backupSavedata(title, slotb, wiiuuser, common);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1116,7 +1117,7 @@ void wipeSavedata(Title *title, int8_t wiiuser, bool common) {
     std::string path;
     path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save") : "storage_mlc01:/usr/save"));
     srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    if ((wiiuser > -1) && !isWii) {
+    if ((wiiuuser > -1) && !isWii) {
         if (common) {
             origPath = srcPath + "/common";
             if (!removeDir(origPath))
@@ -1124,13 +1125,13 @@ void wipeSavedata(Title *title, int8_t wiiuser, bool common) {
             if (unlink(origPath.c_str()) == -1)
                 promptError(LanguageUtils::gettext("Failed to delete common folder: %s"), strerror(errno)); 
         }
-        srcPath += "/" + std::string(wiiuacc[wiiuser].persistentID);
+        srcPath += "/" + std::string(wiiuacc[wiiuuser].persistentID);
     }
 
     if (checkEntry(srcPath.c_str()) == 2) {
         if (!removeDir(srcPath))
             promptError(LanguageUtils::gettext("Failed to delete savefile."));
-        if ((wiiuser > -1) && !isWii) {
+        if ((wiiuuser > -1) && !isWii) {
             if (unlink(srcPath.c_str()) == -1)
                 promptError(LanguageUtils::gettext("Failed to delete user folder: %s"), strerror(errno));
         }
