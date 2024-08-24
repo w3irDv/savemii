@@ -5,7 +5,7 @@
 #include <menu/MainMenuState.h>
 #include <padscore/kpad.h>
 #include <savemng.h>
-#include <metadata.h>
+#include <Metadata.h>
 #include <sndcore2/core.h>
 #include <BackupSetList.h>
 #include <utils/DrawUtils.h>

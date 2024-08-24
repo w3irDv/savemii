@@ -1,5 +1,5 @@
 #include <coreinit/debug.h>
-#include <metadata.h>
+#include <Metadata.h>
 #include <menu/TitleOptionsState.h>
 #include <menu/BackupSetListState.h>
 #include <BackupSetList.h>
