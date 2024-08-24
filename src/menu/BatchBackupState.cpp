@@ -1,8 +1,12 @@
 #include <coreinit/time.h>
 #include <menu/BatchBackupState.h>
+#include <menu/BackupSetListState.h>
+#include <BackupSetList.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/DrawUtils.h>
+#include <utils/Colors.h>
 
 #define ENTRYCOUNT 3
 
@@ -29,25 +33,25 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
     if (input->get(TRIGGER, PAD_BUTTON_B))
         return SUBSTATE_RETURN;
     if (input->get(TRIGGER, PAD_BUTTON_A)) {
-        OSCalendarTime dateTime;
+        const std::string batchDatetime = getNowDateForFolder();
         switch (cursorPos) {
             case 0:
-                dateTime.tm_year = 0;
-                backupAllSave(this->wiiutitles, this->wiiuTitlesCount, &dateTime);
-                backupAllSave(this->wiititles, this->vWiiTitlesCount, &dateTime);
-                DrawUtils::setRedraw(true);
-                return SUBSTATE_RETURN;
+                backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
+                backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime);
+                break;
             case 1:
-                backupAllSave(this->wiiutitles, this->wiiuTitlesCount, nullptr);
-                DrawUtils::setRedraw(true);
-                return SUBSTATE_RETURN;
+                backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
+                break;
             case 2:
-                backupAllSave(this->wiititles, this->vWiiTitlesCount, nullptr);
-                DrawUtils::setRedraw(true);
-                return SUBSTATE_RETURN;
+                backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime);
+                break;
             default:
                 return SUBSTATE_RETURN;
         }
+        BackupSetList::initBackupSetList();
+        BackupSetListState::resetCursorPosition();
+        DrawUtils::setRedraw(true);
+        return SUBSTATE_RETURN;
     }
     return SUBSTATE_RUNNING;
 }

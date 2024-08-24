@@ -5,7 +5,9 @@
 #include <menu/MainMenuState.h>
 #include <padscore/kpad.h>
 #include <savemng.h>
+#include <Metadata.h>
 #include <sndcore2/core.h>
+#include <BackupSetList.h>
 #include <utils/DrawUtils.h>
 #include <utils/Colors.h>
 #include <utils/InputUtils.h>
@@ -18,6 +20,8 @@
 #include <coreinit/screen.h>
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
+
+extern char *batchBackupPath;
 
 template<typename T, size_t N>
 static bool contains(const T (&arr)[N], const T &element) {
@@ -34,6 +38,18 @@ static void disclaimer() {
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
     consolePrintPosAligned(16, 0, 1,
                            LanguageUtils::gettext("Everything you do with this software is your own responsibility"));
+}
+
+static void getWiiUSerialId() {
+    // from WiiUCrashLogDumper
+    WUT_ALIGNAS(0x40) MCPSysProdSettings sysProd{};
+    int32_t mcpHandle = MCP_Open();
+    if ( mcpHandle >= 0 ) {
+        if (MCP_GetSysProdSettings(mcpHandle,&sysProd)==0) {
+            Metadata::serialId = std::string(sysProd.code_id) + sysProd.serial_id;
+        }
+        MCP_Close(mcpHandle);
+    } 
 }
 
 static Title *loadWiiUTitles(int run) {
@@ -386,6 +402,7 @@ static void unloadTitles(Title *titles, int count) {
 }
 
 int main() {
+
     AXInit();
     AXQuit();
     
@@ -404,6 +421,8 @@ int main() {
     WPADInit();
     KPADInit();
     WPADEnableURCC(1);
+
+    getWiiUSerialId();
 
     loadWiiUTitles(0);
 
@@ -434,6 +453,8 @@ int main() {
 
     sortTitle(wiiutitles, wiiutitles + wiiuTitlesCount, 1, true);
     sortTitle(wiititles, wiititles + vWiiTitlesCount, 1, true);
+
+    BackupSetList::initBackupSetList();
 
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,

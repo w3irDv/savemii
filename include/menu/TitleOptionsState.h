@@ -7,13 +7,13 @@
 
 class TitleOptionsState : public ApplicationState {
 public:
-    TitleOptionsState(Title title, Task task, int *versionList, int8_t sdusers, int8_t allusers, bool common, int8_t allusers_d, Title *titles, int titleCount) : title(title),
+    TitleOptionsState(Title title, Task task, int *versionList, int8_t sduser, int8_t wiiuuser, bool common, int8_t wiiuuser_d, Title *titles, int titleCount) : title(title),
                                                                                                                                                                   task(task),
                                                                                                                                                                   versionList(versionList),
-                                                                                                                                                                  sdusers(sdusers),
-                                                                                                                                                                  allusers(allusers),
+                                                                                                                                                                  sduser(sduser),
+                                                                                                                                                                  wiiuuser(wiiuuser),
                                                                                                                                                                   common(common),
-                                                                                                                                                                  allusers_d(allusers_d),
+                                                                                                                                                                  wiiuuser_d(wiiuuser_d),
                                                                                                                                                                   titles(titles),
                                                                                                                                                                   titleCount(titleCount) {}
 
@@ -34,10 +34,10 @@ private:
 
     int *versionList;
 
-    int8_t sdusers;
-    int8_t allusers;
+    int8_t sduser;
+    int8_t wiiuuser;
     bool common;
-    int8_t allusers_d;
+    int8_t wiiuuser_d;
 
     Title *titles;
     int titleCount;

@@ -11,6 +11,7 @@ void ConfigMenuState::render() {
     language = LanguageUtils::getLoadedLanguage();
     consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Language: %s"), language.c_str());
     consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
+    consolePrintPosAligned(17,4,2,LanguageUtils::gettext("\ue001: Back"));
 }
 
 ApplicationState::eSubState ConfigMenuState::update(Input *input) {

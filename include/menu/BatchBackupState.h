@@ -19,6 +19,7 @@ public:
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
 
+
 private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_BATCH_BACKUP;

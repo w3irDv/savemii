@@ -22,7 +22,6 @@ void State::init() {
         WHBProcInit();
 }
 
-
 uint32_t
 State::ConsoleProcCallbackAcquired(void *context)
 {

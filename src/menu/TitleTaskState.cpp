@@ -2,14 +2,17 @@
 #include <cstring>
 #include <menu/TitleOptionsState.h>
 #include <menu/TitleTaskState.h>
+#include <BackupSetList.h>
+#include <Metadata.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/Colors.h>
 
 static int cursorPos = 0;
 static int entrycount;
 static uint8_t slot = 0;
-static int8_t allusers = -1, allusers_d = -1, sdusers = -1;
+static int8_t wiiuuser = -1, wiiuuser_d = -1, sduser = -1;
 static bool common = true;
 
 void TitleTaskState::render() {
@@ -21,6 +24,9 @@ void TitleTaskState::render() {
         return;
     }
     if (this->state == STATE_TITLE_TASKS) {
+        DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::serialId.c_str());
+        DrawUtils::setFontColor(COLOR_TEXT);
         this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
         entrycount = 3 + 2 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));
         consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
@@ -61,9 +67,10 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             }
 
             if (this->task == restore) {
+                BackupSetList::setBackupSetSubPath();
                 getAccountsSD(&this->title, slot);
-                allusers = ((sdusers == -1) ? -1 : allusers);
-                sdusers = ((allusers == -1) ? -1 : sdusers);
+                wiiuuser = ((sduser == -1) ? -1 : wiiuuser);
+                sduser = ((wiiuuser == -1) ? -1 : sduser);
             }
 
             if (this->task == wipe) {
@@ -101,7 +108,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             if (noError) {
                 DrawUtils::setRedraw(true);
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sdusers, allusers, common, allusers_d, this->titles, this->titlesCount);
+                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sduser, wiiuuser, common, wiiuuser_d, this->titles, this->titlesCount);
             }
         }
         if (cursorPos > entrycount)

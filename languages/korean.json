@@ -72,9 +72,9 @@
   "Filesize: %d bytes": "파일 크기: %d 바이트",
   "Deleting folder %s": "%s 폴더 삭제 중",
   "From: \n%s": "%s\n에서",
-  "Failed to delete folder %s\n%s": "%s 폴더 삭제 실패\n%s",
+  "Failed to delete folder %s: %s": "%s 폴더 삭제 실패: %s",
   "Deleting file %s": "%s 파일 삭제 중",
-  "Failed to delete file %s\n%s": "%s 파일 삭제 실패\n%s",
+  "Failed to delete file %s: %s": "%s 파일 삭제 실패: %s",
   "Loadiine game folder not found.": "Loadiine 게임 폴더를 찾을 수 없습니다.",
   "Failed to open Loadiine game save directory.": "Loadiine 게임 저장 디렉토리를 열지 못했습니다.",
   "Are you sure?": "확실하나요?",
@@ -90,9 +90,9 @@
   "Restore failed.": "복원에 실패했습니다.",
   "Hm, are you REALLY sure?": "흠, 정말 확신하나요?",
   "Backup current savedata first?": "현재 저장 데이터를 먼저 백업하겠습니까?",
-  "Failed to delete common folder.\n%s": "공통 폴더를 삭제하지 못했습니다.\n%s",
+  "Failed to delete common folder: %s": "공통 폴더를 삭제하지 못했습니다: %s",
   "Failed to delete savefile.": "저장파일을 삭제하지 못했습니다.",
-  "Failed to delete user folder.\n%s": "사용자 폴더를 삭제하지 못했습니다.\n%s",
+  "Failed to delete user folder: %s": "사용자 폴더를 삭제하지 못했습니다: %s",
   "Failed to import savedata from loadiine.": "loadiine에서 저장 데이터를 가져오지 못했습니다.",
   "Failed to export savedata to loadiine.": "저장 데이터를 loadiine으로 내보내지 못했습니다."
 }

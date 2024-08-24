@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Docker Layer Caching
@@ -22,13 +22,13 @@ jobs:
           docker build . --file Dockerfile --tag builder
           docker run --rm -v ${PWD}:/project builder make release -j$(nproc)
       - name: Upload Aroma version
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: SaveMiiModWUTPort-Aroma
           path: SaveMiiModWUTPort-Aroma.zip
           if-no-files-found: warn
       - name: Upload HBL version
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: SaveMiiModWUTPort-HBL
           path: SaveMiiModWUTPort-HBL.zip

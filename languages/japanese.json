@@ -72,9 +72,9 @@
   "Filesize: %d bytes": "ファイルサイズ: %d バイト",
   "Deleting folder %s": "フォルダ %s を削除しています",
   "From: \n%s": "差出人: \n%s",
-  "Failed to delete folder %s\n%s": "フォルダ %s の削除に失敗しました\n%s",
+  "Failed to delete folder %s: %s": "フォルダ %s の削除に失敗しました: %s",
   "Deleting file %s": "ファイル %s を削除しています",
-  "Failed to delete file %s\n%s": "ファイル %s の削除に失敗しました\n%s",
+  "Failed to delete file %s: %s": "ファイル %s の削除に失敗しました: %s",
   "Loadiine game folder not found.": "読み込み中のゲーム フォルダが見つかりません。",
   "Failed to open Loadiine game save directory.": "Loadiine ゲームの保存ディレクトリを開けませんでした。",
   "Are you sure?": "本当によろしいですか？",
@@ -90,9 +90,9 @@
   "Restore failed.": "復元に失敗しました。",
   "Hm, are you REALLY sure?": "うーん、本当によろしいですか？",
   "Backup current savedata first?": "最初に現在のセーブデータをバックアップしますか?",
-  "Failed to delete common folder.\n%s": "共通フォルダの削除に失敗しました.\n%s",
+  "Failed to delete common folder: %s": "共通フォルダの削除に失敗しました: %s",
   "Failed to delete savefile.": "保存ファイルの削除に失敗しました。",
-  "Failed to delete user folder.\n%s": "ユーザー フォルダの削除に失敗しました。\n%s",
+  "Failed to delete user folder: %s": "ユーザー フォルダの削除に失敗しました: %s",
   "Failed to import savedata from loadiine.": "loadiine からセーブデータをインポートできませんでした。",
   "Failed to export savedata to loadiine.": "セーブデータを loadiine にエクスポートできませんでした。"
 }
