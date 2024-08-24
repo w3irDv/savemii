@@ -15,7 +15,7 @@ TOPDIR ?= $(CURDIR)
 #-------------------------------------------------------------------------------
 APP_NAME	    := SaveMii WUT Port
 APP_SHORTNAME	    := SaveMii
-APP_AUTHOR	    := DaThinkingChair
+APP_AUTHOR	    := DaThinkingChair,w3irDv
 
 include $(DEVKITPRO)/wut/share/wut_rules
 
