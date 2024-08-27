@@ -40,7 +40,7 @@
   "all users": "所有用户",
   "Has Save": "该用户有保存数据",
   "Select Wii U user to delete from:": "选择从SD删除数据的用户：",
-  "Select Wii U user%s:": "选择Wii U的用户：",
+  "Select Wii U user%s:": "选择Wii U的用户%s：",
   " to copy from": " ",
   " to copy to": " ",
   "Date: %s": "保存日期：%s",
@@ -48,7 +48,6 @@
   "yes": "是",
   "no ": "不",
   "No 'common' save found.": "没有发现'common'保存数据",
-  "\ue000: Restore  \ue001: Back": "\ue000：还原  \ue001：返回",
   "\ue000: Wipe  \ue001: Back": "\ue000：清除  \ue001：返回",
   "\ue000: Import  \ue001: Back": "\ue000：导入  \ue001：返回",
   "\ue000: Export  \ue001: Back": "\ue000：导出  \ue001：返回",
@@ -95,4 +94,14 @@
   "Failed to delete user folder: %s": "删除user文件夹失败: %s",
   "Failed to import savedata from loadiine.": "导入loadiine保存数据失败。",
   "Failed to export savedata to loadiine.": "导出保存数据到loadiine失败。"
+  "\ue083 Sort: %s \ue084": "\ue083 排序: %s \ue084",
+  "\ue000: Select BackupSet  \ue001: Back": "\ue000: 选择备份设置  \ue001: 备份",
+  "\ue002: Change BackupSet  \ue000: Restore  \ue001: Back": "\ue002: 更改备份设置  \ue000: 恢复  \ue001: 备份",
+  "WiiU USB Savedata >> slot 0": "WiiU USB 存档数据 >> slot 0",
+  "WiiU NAND Savedata >> slot 1": "WiiU NAND 存档数据 >> slot 1",
+  "vWii Savedata >> slot 0": "vWii 存档数据 >> slot 0",
+  "BackupSet: %s": "备份设置: %s",
+  ", from ": ", 来自 ",
+  "Common save not restored.": "普通存档未恢复。",  
+  "\ue001: Back": "\ue001: 备份"
 }
