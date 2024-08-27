@@ -79,12 +79,15 @@ static Title *loadWiiUTitles(int run) {
     for (uint32_t i = 0; i < receivedCount; i++) {
         char *element = tList + (i * 0x61);
         savesl[j].highID = *(uint32_t *) (element);
-        if (!contains(highIDs, savesl[j].highID)) {
+        bool isUSB = ( memcmp(element + 0x56, "usb", 4) == 0 );
+        bool isMLC = ( memcmp(element + 0x56, "mlc", 4) == 0 );
+        if (!contains(highIDs, savesl[j].highID) || !(isUSB || isMLC) ) {
             usable--;
             continue;
         }
         savesl[j].lowID = *(uint32_t *) (element + 4);
-        savesl[j].dev = static_cast<uint8_t>((memcmp(element + 0x56, "usb", 4) != 0));
+        savesl[j].dev = static_cast<uint8_t>(isMLC);   // 0 = usb, 1 = nand
+
         savesl[j].found = false;
         j++;
     }
