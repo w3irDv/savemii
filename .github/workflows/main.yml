@@ -11,12 +11,11 @@ jobs:
         with:
           fetch-depth: 0
       - name: Docker Layer Caching
-        uses: jpribyl/action-docker-layer-caching@v0.1.1
+        uses: ScribeMD/docker-cache@0.5.0
         continue-on-error: true
+        id: cache
         with:
-          key: savemii-docker-cache-{hash}
-          restore-keys: |
-            savemii-docker-cache-
+          key: savemii-docker-cache-${{ hashFiles('DockerFile')}}
       - name: Build artifacts
         run: |
           docker build . --file Dockerfile --tag builder
@@ -25,11 +24,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SaveMiiModWUTPort-Aroma
-          path: SaveMiiModWUTPort-Aroma.zip
+          path: build/Aroma/*
           if-no-files-found: warn
       - name: Upload HBL version
         uses: actions/upload-artifact@v4
         with:
           name: SaveMiiModWUTPort-HBL
-          path: SaveMiiModWUTPort-HBL.zip
+          path: build/HBL/*
           if-no-files-found: warn

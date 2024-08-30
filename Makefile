@@ -156,13 +156,16 @@ clean:
 
 #-------------------------------------------------------------------------------
 release: $(BUILD)
-	@mkdir -p SaveMiiModWUTPort
-	@cp savemii.rpx SaveMiiModWUTPort
-	@cp meta/hbl/icon.png SaveMiiModWUTPort
-	@cp meta/hbl/meta.xml SaveMiiModWUTPort
-	@zip -9 -r SaveMiiModWUTPort-HBL.zip SaveMiiModWUTPort
-	@zip -9 SaveMiiModWUTPort-Aroma.zip savemii.wuhb
-	@rm -rf SaveMiiModWUTPort
+	@mkdir -p build/Aroma/wiiu/apps/SaveMiiModWUTPort
+	@mkdir -p build/HBL/wiiu/apps/SaveMiiModWUTPort
+	@rm -rf build/Aroma/wiiu/apps/SaveMiiModWUTPort/*
+	@rm -rf build/HBL/wiiu/apps/SaveMiiModWUTPort/*
+	@cp savemii.rpx build/HBL/wiiu/apps/SaveMiiModWUTPort
+	@cp meta/hbl/icon.png build/HBL/wiiu/apps/SaveMiiModWUTPort
+	@cp meta/hbl/meta.xml build/HBL/wiiu/apps/SaveMiiModWUTPort
+	@cp savemii.wuhb build/Aroma/wiiu/apps/SaveMiiModWUTPort
+	@zip -9 -r SaveMiiModWUTPort-HBL.zip build/HBL
+	@zip -9 -r SaveMiiModWUTPort-Aroma.zip build/Aroma
 #-------------------------------------------------------------------------------
 else
 .PHONY:	all
