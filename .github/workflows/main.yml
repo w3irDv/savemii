@@ -23,12 +23,12 @@ jobs:
       - name: Upload Aroma version
         uses: actions/upload-artifact@v4
         with:
-          name: SaveMiiModWUTPort-Aroma.zip
+          name: SaveMiiModWUTPort-Aroma
           path: build/Aroma/*
           if-no-files-found: warn
       - name: Upload HBL version
         uses: actions/upload-artifact@v4
         with:
-          name: SaveMiiModWUTPort-HBL.zip
+          name: SaveMiiModWUTPort-HBL
           path: build/HBL/*
           if-no-files-found: warn
