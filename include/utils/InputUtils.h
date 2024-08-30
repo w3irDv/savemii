@@ -14,6 +14,8 @@ typedef enum Button {
     PAD_BUTTON_RIGHT,
     PAD_BUTTON_L,
     PAD_BUTTON_R,
+    PAD_BUTTON_PLUS,
+    PAD_BUTTON_MINUS,
     PAD_BUTTON_ANY
 } Button;
 

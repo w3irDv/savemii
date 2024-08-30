@@ -103,5 +103,7 @@
   "BackupSet: %s": "BackupSet: %s",
   ", from ": ", from ",
   "Common save not restored.": "Common save not restored.",
-  "\ue001: Back": "\ue001: Back"
+  "\ue001: Back": "\ue001: Back",
+  "Failed to delete slot %u.": "Failed to delete slot %u.",
+  "Error setting path. Aborting.": "Error setting path. Aborting."
 }

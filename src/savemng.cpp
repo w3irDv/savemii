@@ -1227,3 +1227,25 @@ void exportToLoadiine(Title *title, bool common, int version) {
             promptError(LanguageUtils::gettext("Common save not found."));
     }
 }
+
+void deleteSlot(Title *title, uint8_t slot) {
+    if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
+        return;
+    uint32_t highID = title->highID;
+    uint32_t lowID = title->lowID;
+    std::string path;
+    path = getDynamicBackupPath(highID, lowID, slot);
+    if (path.find(backupPath) == std::string::npos) {
+        promptError(LanguageUtils::gettext("Error setting delete path. Aborting."));
+        return;
+    }
+    if (checkEntry(path.c_str()) == 2) {
+        if (removeDir(path)) {
+            if (unlink(path.c_str()) == -1)
+                promptError(LanguageUtils::gettext("Failed to delete slot %u."),slot);
+        }
+        else
+            promptError(LanguageUtils::gettext("Failed to delete slot %u."),slot);
+    }
+}
+ 

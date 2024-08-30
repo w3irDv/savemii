@@ -138,3 +138,4 @@ uint8_t getSDaccn();
 uint8_t getWiiUaccn();
 Account *getWiiUacc();
 Account *getSDacc();
+void deleteSlot(Title *title, uint8_t slot);

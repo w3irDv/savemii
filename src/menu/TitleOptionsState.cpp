@@ -17,9 +17,11 @@ void TitleOptionsState::render() {
         return;
     }
     if (this->state == STATE_TITLE_OPTIONS) {    
-        if (this->task == restore) {
+        bool emptySlot = isSlotEmpty(this->title.highID, this->title.lowID, slot);
+        if (this->task == backup || this->task == restore) {
             DrawUtils::setFontColor(COLOR_INFO);
-            consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BackupSet: %s"),BackupSetList::getBackupSetEntry().c_str());
+            consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BackupSet: %s"),
+                ( this->task == backup ) ? BackupSetList::ROOT_BS.c_str() : BackupSetList::getBackupSetEntry().c_str());
             DrawUtils::setFontColor(COLOR_TEXT);
         }
         this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
@@ -41,17 +43,17 @@ void TitleOptionsState::render() {
 
             if (((this->title.highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
                 consolePrintPos(M_OFF, 5, "   < SaveGame Manager GX > (%s)",
-                                isSlotEmpty(this->title.highID, this->title.lowID, slot) ? LanguageUtils::gettext("Empty")
+                                emptySlot ? LanguageUtils::gettext("Empty")
                                                                                         : LanguageUtils::gettext("Used"));
             else
                 consolePrintPos(M_OFF, 5, "   < %03u > (%s)", slot,
-                                isSlotEmpty(this->title.highID, this->title.lowID, slot) ? LanguageUtils::gettext("Empty")
+                                emptySlot ? LanguageUtils::gettext("Empty")
                                                                                         : LanguageUtils::gettext("Used"));
         }
 
         if (this->isWiiUTitle) {
             if (task == restore) {
-                if (!isSlotEmpty(this->title.highID, this->title.lowID, slot)) {
+                if (!emptySlot) {
                     entrycount++;
                     consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select SD user to copy from:"));
                     if (sduser == -1)
@@ -79,7 +81,7 @@ void TitleOptionsState::render() {
             }
 
             if ((task == backup) || (task == restore) || (task == copytoOtherDevice)) {
-                if ((task == restore) && isSlotEmpty(this->title.highID, this->title.lowID, slot))
+                if ((task == restore) && emptySlot)
                     entrycount--;
                 else {
                     consolePrintPos(M_OFF, (task == restore) ? 10 : 7, LanguageUtils::gettext("Select Wii U user%s:"),
@@ -99,7 +101,7 @@ void TitleOptionsState::render() {
                 }
             }
             if ((task == backup) || (task == restore))
-                if (!isSlotEmpty(this->title.highID, this->title.lowID, slot)) {
+                if (!emptySlot) {
                     Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
                     consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
                                     metadataObj->get().c_str());
@@ -158,7 +160,7 @@ void TitleOptionsState::render() {
             entrycount = 1;
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawRGB5A3(650, 100, 1, this->title.iconBuf);
-            if (!isSlotEmpty(this->title.highID, this->title.lowID, slot)) {
+            if (!emptySlot) {
                 Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
                 consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
                                 metadataObj->get().c_str());
@@ -168,7 +170,10 @@ void TitleOptionsState::render() {
 
         switch (task) {
             case backup:
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
+                if (emptySlot)
+                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
+                else
+                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE046 Delete Slot  \ue000: Backup  \ue001: Back"));
                 break;
             case restore:
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Change BackupSet  \ue000: Restore  \ue001: Back"));
@@ -373,6 +378,12 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             if (cursorPos > 0)
                 --cursorPos;
         }
+        if (input->get(TRIGGER, PAD_BUTTON_MINUS))
+            if (this->task == backup) {
+                if (!isSlotEmpty(this->title.highID, this->title.lowID, slot))
+                    deleteSlot(&this->title, slot);
+                DrawUtils::setRedraw(true);
+            }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
             switch (this->task) {
                 case backup:
