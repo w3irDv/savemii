@@ -158,8 +158,8 @@ clean:
 release: $(BUILD)
 	@mkdir -p build/Aroma/wiiu/apps/SaveMiiModWUTPort
 	@mkdir -p build/HBL/wiiu/apps/SaveMiiModWUTPort
-	@rm -rf build/Aroma/wiiu/apps/SaveMiiModWUTPort
-	@rm -rf build/HBL/wiiu/apps/SaveMiiModWUTPort
+	@rm -rf build/Aroma/wiiu/apps/SaveMiiModWUTPort/*
+	@rm -rf build/HBL/wiiu/apps/SaveMiiModWUTPort/*
 	@cp savemii.rpx build/HBL/wiiu/apps/SaveMiiModWUTPort
 	@cp meta/hbl/icon.png build/HBL/wiiu/apps/SaveMiiModWUTPort
 	@cp meta/hbl/meta.xml build/HBL/wiiu/apps/SaveMiiModWUTPort
