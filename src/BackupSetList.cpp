@@ -81,3 +81,10 @@ void BackupSetList::setBackupSetSubPath() {
     else
         backupSetSubPath = "/batch/"+backupSetEntry+"/";
 }
+
+std::string BackupSetList::getBackupSetSubPath(int i) {
+    if (i == 0)
+        return "/";
+    else
+        return  "/batch/"+currentBackupSetList->at(i)+"/";
+}

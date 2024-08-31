@@ -343,6 +343,7 @@ bool promptConfirm(Style st, const std::string &question) {
     DrawUtils::setFontColor(COLOR_TEXT);
     const std::string msg1 = LanguageUtils::gettext("\ue000 Yes - \ue001 No");
     const std::string msg2 = LanguageUtils::gettext("\ue000 Confirm - \ue001 Cancel");
+    const std::string msg3 = LanguageUtils::gettext("\ue003 Confirm - \ue001 Cancel");
     std::string msg;
     switch (st & 0x0F) {
         case ST_YES_NO:
@@ -354,7 +355,9 @@ bool promptConfirm(Style st, const std::string &question) {
         default:
             msg = msg2;
     }
-    if (st & ST_WARNING) {
+    if (st & ST_WIPE)  // for wipe bakupSet operation, we will ask that the user press X 
+        msg = msg3;
+    if (st & ST_WARNING || st & ST_WIPE ) {
         DrawUtils::clear(Color(0x7F7F0000));
     } else if (st & ST_ERROR) {
         DrawUtils::clear(Color(0x7F000000));
@@ -371,9 +374,18 @@ bool promptConfirm(Style st, const std::string &question) {
     Input input{};
     while (true) {
         input.read();
-        if (input.get(TRIGGER, PAD_BUTTON_A)) {
-            ret = 1;
-            break;
+        if ( st & ST_WIPE) {
+            if (input.get(TRIGGER, PAD_BUTTON_Y)) {
+                ret = 1;
+                break;
+            }
+        }
+        else
+        {
+            if (input.get(TRIGGER, PAD_BUTTON_A)) {
+                ret = 1;
+                break;
+            }
         }
         if (input.get(TRIGGER, PAD_BUTTON_B)) {
             ret = 0;
@@ -1233,10 +1245,9 @@ void deleteSlot(Title *title, uint8_t slot) {
         return;
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
-    std::string path;
-    path = getDynamicBackupPath(highID, lowID, slot);
+    const std::string path = getDynamicBackupPath(highID, lowID, slot);
     if (path.find(backupPath) == std::string::npos) {
-        promptError(LanguageUtils::gettext("Error setting delete path. Aborting."));
+        promptError(LanguageUtils::gettext("Error setting path. Aborting."));
         return;
     }
     if (checkEntry(path.c_str()) == 2) {
@@ -1247,5 +1258,37 @@ void deleteSlot(Title *title, uint8_t slot) {
         else
             promptError(LanguageUtils::gettext("Failed to delete slot %u."),slot);
     }
+    else
+    {
+        promptError(LanguageUtils::gettext("Folder does not exist."));
+    }
+}
+
+bool wipeBackupSet(const std::string &subPath) {
+    if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Wipe BackupSet - Are you sure?")) || !promptConfirm(ST_WIPE, LanguageUtils::gettext("Wipe BackupSet - Hm, are you REALLY sure?")))
+        return false;
+    const std::string path = StringUtils::stringFormat("%s%s", backupPath,subPath.c_str());
+    if (path.find(batchBackupPath) == std::string::npos) {
+        promptError(LanguageUtils::gettext("Error setting path. Aborting."));
+        return false;
+    }
+    if (checkEntry(path.c_str()) == 2) {
+        if (removeDir(path)) {
+            if (unlink(path.c_str()) == -1) {
+                promptError(LanguageUtils::gettext("Failed to delete backupSet %s."),subPath.c_str());
+                return false;
+            }
+        }
+        else
+        {
+            promptError(LanguageUtils::gettext("Failed to delete backupSet %s."),subPath.c_str());
+            return false;
+        }
+    }
+    else
+    {
+        promptError(LanguageUtils::gettext("Folder does not exist."));
+    }
+    return true;
 }
  

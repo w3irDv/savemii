@@ -173,7 +173,7 @@ void TitleOptionsState::render() {
                 if (emptySlot)
                     consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
                 else
-                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE046 Delete Slot  \ue000: Backup  \ue001: Back"));
+                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue046 Delete Slot  \ue001: Back"));
                 break;
             case restore:
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Change BackupSet  \ue000: Restore  \ue001: Back"));

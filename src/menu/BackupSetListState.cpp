@@ -44,7 +44,10 @@ void BackupSetListState::render() {
         }
     DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(-1, 2 + cursorPos, "\u2192");
-    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BackupSet  \ue001: Back"));
+    if (cursorPos + scroll > 0)
+        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BackupSet  \ue046: Wipe BackupSet  \ue001: Back"));
+    else
+        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BackupSet  \ue001: Back"));
 }
 
 ApplicationState::eSubState BackupSetListState::update(Input *input) {
@@ -81,7 +84,8 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             scroll++;
         else
             cursorPos = scroll = 0;
-    } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+    }
+    if (input->get(TRIGGER, PAD_BUTTON_UP)) {
         if (scroll > 0)
             cursorPos -= (cursorPos > 6) ? 1 : 0 * (scroll--);
         else if (cursorPos > 0)
@@ -90,6 +94,23 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             scroll = BackupSetList::currentBackupSetList->entries - (cursorPos = 6) - 1;
         else
             cursorPos = BackupSetList::currentBackupSetList->entries - 1;
+    }
+    if (input->get(TRIGGER, PAD_BUTTON_MINUS)) {
+        int entry = cursorPos+scroll;
+        if (entry > 0)
+        {
+            if (BackupSetList::getBackupSetSubPath() == BackupSetList::getBackupSetSubPath(entry))
+            {
+                BackupSetList::setBackupSetEntry(entry-1);
+                BackupSetList::setBackupSetSubPath();
+            }
+            if ( wipeBackupSet(BackupSetList::getBackupSetSubPath(entry)))
+            {
+                BackupSetList::initBackupSetList();
+                cursorPos--;
+            }   
+            DrawUtils::setRedraw(true);
+        }
     }
     return SUBSTATE_RUNNING;
 }

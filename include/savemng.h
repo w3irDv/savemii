@@ -58,7 +58,8 @@ enum Style {
     ST_CONFIRM_CANCEL = 2,
     ST_MULTILINE = 16,
     ST_WARNING = 32,
-    ST_ERROR = 64
+    ST_ERROR = 64,
+    ST_WIPE = 128
 };
 
 template<class It>
@@ -139,3 +140,4 @@ uint8_t getWiiUaccn();
 Account *getWiiUacc();
 Account *getSDacc();
 void deleteSlot(Title *title, uint8_t slot);
+bool wipeBackupSet(const std::string &subPath);
