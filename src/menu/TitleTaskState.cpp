@@ -25,7 +25,7 @@ void TitleTaskState::render() {
     }
     if (this->state == STATE_TITLE_TASKS) {
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::serialId.c_str());
+        consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
         DrawUtils::setFontColor(COLOR_TEXT);
         this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
         entrycount = 3 + 2 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));

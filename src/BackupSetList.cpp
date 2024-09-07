@@ -1,11 +1,15 @@
 #include <BackupSetList.h>
+#include <Metadata.h>
+#include <savemng.h>
 
 #include <dirent.h>
 #include <cstring>
-#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <set>
+
+
 
 bool BackupSetList::sortAscending = false;
 const std::string BackupSetList::ROOT_BS = ">> Root <<";
@@ -22,7 +26,13 @@ BackupSetList::BackupSetList(const char *backupSetListRoot)
 
     this->backupSetListRoot = backupSetListRoot;
 
-    backupSets.push_back(ROOT_BS);
+    BSMetadata bsm;
+
+    backupSetsEnh.push_back(BackupSetItem(ROOT_BS,bsm));
+    bsMetadataValues.year.range.insert("*");
+    bsMetadataValues.month.range.insert("*");
+    bsMetadataValues.serialId.range.insert("*");
+    bsMetadataValues.tag.range.insert("*");
 
     DIR *dir = opendir(backupSetListRoot);
     if (dir != nullptr) {
@@ -30,14 +40,37 @@ BackupSetList::BackupSetList(const char *backupSetListRoot)
         while ((data = readdir(dir)) != nullptr) {
             if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))
                 continue;
-            backupSets.push_back(data->d_name);
+
+            std::string metadataPath = data->d_name;
+            Metadata metadata(std::string(batchBackupPath)+"/"+metadataPath);
+            if(!metadata.read()) {
+                metadata.write();
+            }
+            bsm = BSMetadata(metadata.getDate().substr(0,4),metadata.getDate().size()>6 ? metadata.getDate().substr(5,2) : "",
+                metadata.getSerialId(),metadata.getTag());
+            backupSetsEnh.push_back(BackupSetItem(data->d_name,bsm));
+            bsMetadataValues.year.range.insert(bsm.year);
+            bsMetadataValues.month.range.insert(bsm.month);
+            bsMetadataValues.serialId.range.insert(bsm.serialId);
+            if (bsm.tag != "")
+                bsMetadataValues.tag.range.insert(bsm.tag);
         }
     }
     closedir(dir);
 
+    for (unsigned int i=0;i<backupSetsEnh.size();i++) {
+        this->backupSets.push_back(backupSetsEnh[i].entryPath);
+        this->serialIds.push_back(backupSetsEnh[i].bsItemMetadata.serialId);
+        this->tags.push_back(backupSetsEnh[i].bsItemMetadata.tag);
+    }
+
     this->entries = backupSets.size();
     this->sort(sortAscending);
 
+    bsMetadataValues.year.iterator = --bsMetadataValues.year.range.end();
+    bsMetadataValues.month.iterator = --bsMetadataValues.month.range.end(); 
+    bsMetadataValues.serialId.iterator = bsMetadataValues.serialId.range.begin();
+    bsMetadataValues.tag.iterator = bsMetadataValues.tag.range.begin();
 }
 
 void BackupSetList::sort(bool sortAscending_)
@@ -87,4 +120,33 @@ std::string BackupSetList::getBackupSetSubPath(int i) {
         return "/";
     else
         return  "/batch/"+currentBackupSetList->at(i)+"/";
+}
+
+void BackupSetList::filter(BSMetadata filterDef) {
+    backupSets.erase(backupSets.begin()+1,backupSets.end());
+    for (unsigned int i=1; i < this->backupSetsEnh.size(); i++) {
+        if (filterDef.year == "*" || filterDef.year == this->backupSetsEnh[i].bsItemMetadata.year)
+            if (filterDef.month == "*" || filterDef.month == this->backupSetsEnh[i].bsItemMetadata.month)
+                if (filterDef.serialId == "*" || filterDef.serialId == this->backupSetsEnh[i].bsItemMetadata.serialId)
+                    if (filterDef.tag == "*" || filterDef.tag == this->backupSetsEnh[i].bsItemMetadata.tag) {
+                        this->backupSets.push_back(backupSetsEnh[i].entryPath);
+                        this->serialIds.push_back(backupSetsEnh[i].bsItemMetadata.serialId);
+                        this->tags.push_back(backupSetsEnh[i].bsItemMetadata.tag);
+                    }
+    }
+    entries = this->backupSets.size();
+}
+
+
+void BSMetadataValues::Right(auto & metadata ) {
+    metadata.iterator++;
+    if (metadata.iterator == metadata.range.end())
+        metadata.iterator = metadata.range.begin();
+}
+
+void BSMetadataValues::Left(auto & metadata ) {
+    if (metadata.iterator == metadata.range.begin())
+        metadata.iterator = --metadata.range.end();
+    else
+        metadata.iterator--;
 }

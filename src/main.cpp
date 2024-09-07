@@ -46,7 +46,7 @@ static void getWiiUSerialId() {
     int32_t mcpHandle = MCP_Open();
     if ( mcpHandle >= 0 ) {
         if (MCP_GetSysProdSettings(mcpHandle,&sysProd)==0) {
-            Metadata::serialId = std::string(sysProd.code_id) + sysProd.serial_id;
+            Metadata::thisConsoleSerialId = std::string(sysProd.code_id) + sysProd.serial_id;
         }
         MCP_Close(mcpHandle);
     } 
@@ -456,6 +456,14 @@ int main() {
 
     sortTitle(wiiutitles, wiiutitles + wiiuTitlesCount, 1, true);
     sortTitle(wiititles, wiititles + vWiiTitlesCount, 1, true);
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    disclaimer();
+    DrawUtils::drawTGA(298, 144, 1, icon_tga);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing BackupSets metadata."));
+    consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Please wait. First write to SD may be slow."));
+    DrawUtils::endDraw();
 
     BackupSetList::initBackupSetList();
 

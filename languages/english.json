@@ -111,6 +111,7 @@
   "\ue000: Backup  \ue046 Delete Slot  \ue001: Back": "\ue000: Backup  \ue046 Delete Slot  \ue001: Back",
   "\ue003 Confirm - \ue001 Cancel": "\ue003 Confirm - \ue001 Cancel",
   "Wipe BackupSet - Are you sure?": "Wipe BackupSet - Are you sure?",
-  "Wipe BackupSet - Hm, are you REALLY sure?": "Wipe BackupSet - Hm, are you REALLY sure?"
-
+  "Wipe BackupSet - Hm, are you REALLY sure?": "Wipe BackupSet - Hm, are you REALLY sure?",
+  "Initializing BackupSets metadata.": "Initializing BackupSets metadata.", 
+  "Please wait. First write to SD may be slow.": "Initializing BackupSets metadata."
 }
