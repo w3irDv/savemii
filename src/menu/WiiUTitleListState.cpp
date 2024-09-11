@@ -9,7 +9,8 @@
 #include <utils/Colors.h>
 
 #define MAX_TITLE_SHOW 14
-static int cursorPos = 0;
+int WiiUTitleListState::cursorPos = 0;
+int WiiUTitleListState::scroll = 0;
 
 void WiiUTitleListState::render() {
     if (this->state == STATE_DO_SUBSTATE) {

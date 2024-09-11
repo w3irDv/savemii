@@ -33,7 +33,8 @@ private:
                                            LanguageUtils::gettext("Storage+Name")};
 
     int titleSort = 1;
-    int scroll = 0;
+    static int scroll;
+    static int cursorPos;
     bool sortAscending = true;
     int targ = 0;
 

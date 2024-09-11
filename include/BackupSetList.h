@@ -9,32 +9,26 @@ class BSMetadataValues {
     friend class BSMetadata;
     friend class BackupSetList;
     public:
-    class Year {
+
+    template <class T>
+    class attr {
         public:
-        std::set<std::string,std::greater<std::string>> range;
+        std::set<std::string,T> range;
         std::set<std::string>::iterator iterator;
     };
-    class Month {
-        public:
-        std::set<std::string,std::greater<std::string>> range;
-        std::set<std::string>::iterator iterator;
-    };
-    class SerialId {
-        public:
-        std::set<std::string,std::less<std::string>> range;
-        std::set<std::string>::iterator iterator;
-    };
-    class Tag {
-        public:
-        std::set<std::string,std::less<std::string>> range;
-        std::set<std::string>::iterator iterator;
-    };
-    Year year;
-    Month month;
-    SerialId serialId;
-    Tag tag;
-    static void Right(auto & bsMetadataValuesAttr );
-    static void Left(auto & bsMetadataValuesAttr );
+    attr<std::greater<std::string>> year;
+    attr<std::greater<std::string>> month;
+    attr<std::less<std::string>> serialId;
+    attr<std::less<std::string>> tag;
+
+    template <typename T>
+    static void  Right (T & metadataAttrValues);
+
+    template <typename T>
+    static void  Left (T & metadataAttrValues);
+
+    void resetFilter();
+    
 };
 
 class BSMetadata {
@@ -64,20 +58,33 @@ class BackupSetItem {
         BSMetadata bsItemMetadata;
 };
 
+struct BackupSetItemView {
+    std::string entryPath;
+    std::string serialId;
+    std::string tag;
+};
+
 
 class BackupSetList {
 public:
     friend class BackupSetListState;
+    friend class BackupSetListFilterState;
     BackupSetList() {};
     BackupSetList(const char *backupSetListRoot);
     static std::unique_ptr<BackupSetList> currentBackupSetList;
 
     void sort(bool sortAscending = false);
+    static bool getSortAscending() { return sortAscending;};
     std::string at(int i);
-    void add(std::string backupSet);
+    std::string serialIdAt(int i);
+    std::string serialIdStretchedAt(int i);
+    std::string tagAt(int i);
+    void add(std::string entryPath,std::string serialId,std::string tag);
 
     int getLen() { return this->entries;};
+    int getEnhLen() { return this->enhEntries;};
 
+    void filter();
     void filter(BSMetadata filterDef);
     BSMetadataValues *getBSMetadataValues() {return &bsMetadataValues; };
         
@@ -91,17 +98,16 @@ public:
     static void setBackupSetSubPathToRoot() { backupSetSubPath = "/"; }
     static void saveBackupSetSubPath() { savedBackupSetSubPath = backupSetSubPath; }
     static void restoreBackupSetSubPath() { backupSetSubPath = savedBackupSetSubPath; }
-    static void Right(auto & range, std::set<std::string>::iterator & iterator );
-    static void Left(auto & range, std::set<std::string>::iterator & iterator );
-
+ 
 private:
     static bool sortAscending;
-    std::vector<std::string> backupSets;
+    std::vector<BackupSetItemView> backupSets;
     std::vector<BackupSetItem> backupSetsEnh;
     std::vector<std::string> serialIds;
     std::vector<std::string> tags;
     BSMetadataValues bsMetadataValues;
     int entries;
+    int enhEntries;
     std::string backupSetListRoot;
     static std::string backupSetSubPath;
     static std::string backupSetEntry;

@@ -13,6 +13,7 @@
 static int cursorPos = 0;
 
 void BatchBackupState::render() {
+    consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Batch Backup"));
     consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Backup All (%u Title%s)"), this->wiiuTitlesCount + this->vWiiTitlesCount,
                     ((this->wiiuTitlesCount + this->vWiiTitlesCount) > 1) ? "s" : "");
     consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Backup Wii U (%u Title%s)"), this->wiiuTitlesCount,

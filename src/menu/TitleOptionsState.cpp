@@ -174,20 +174,26 @@ void TitleOptionsState::render() {
                     consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
                 else
                     consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue046 Delete Slot  \ue001: Back"));
+                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Backup"));
                 break;
             case restore:
+                consolePrintPos(20,0,LanguageUtils::gettext("Restore"));
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Change BackupSet  \ue000: Restore  \ue001: Back"));
                 break;
             case wipe:
+                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Wipe"));
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
                 break;
             case importLoadiine:
+                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Import Loadiine"));
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Import  \ue001: Back"));
                 break;
             case exportLoadiine:
+                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Export Loadiine"));
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Export  \ue001: Back"));
                 break;
             case copytoOtherDevice:
+                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Copy to Other Device"));
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
                 break;
         }

@@ -19,6 +19,13 @@
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
 
+//#define DEBUG
+
+#ifdef DEBUG
+#include <whb/log_udp.h>
+#include <whb/log.h>
+#endif
+
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 
 extern char *batchBackupPath;
@@ -405,6 +412,10 @@ static void unloadTitles(Title *titles, int count) {
 }
 
 int main() {
+
+#ifdef DEBUG    
+    WHBLogUdpInit();
+#endif
 
     AXInit();
     AXQuit();

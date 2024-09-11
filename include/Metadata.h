@@ -26,14 +26,24 @@ public:
                                                    serialId(this->unknownSerialId),
                                                    tag({}) { }
 
-    Metadata(std::string path) : storage({}),
+// guess date from batchBackupRoot, to infer a savemiiMeta.json for <1.6.4 batchBackups
+    Metadata(const std::string & path) : storage({}),
                                  serialId(this->unknownSerialId),
                                  tag({}) {
                                     Date = path.substr(path.length()-17,17);
                                     if (Date.substr(0,2) != "20")
                                         Date="";
-                                    this->path = path.append("/savemiiMeta.json"); 
+                                    this->path = path + ("/savemiiMeta.json"); 
                                     }
+                                    
+    Metadata(const std::string & datetime, const std::string & storage, const std::string & serialId,const std::string & tag ) :
+                                Date(datetime),
+                                storage(storage),
+                                serialId(serialId),
+                                tag(tag) {
+                                    path = getBatchBackupPathRoot(datetime)+"/savemiiMeta.json";
+                                }
+    
 
     bool read();
     bool write();

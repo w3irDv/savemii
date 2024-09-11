@@ -9,8 +9,6 @@
 #include <algorithm>
 #include <set>
 
-
-
 bool BackupSetList::sortAscending = false;
 const std::string BackupSetList::ROOT_BS = ">> Root <<";
 std::string BackupSetList::backupSetSubPath = "/";;
@@ -49,8 +47,10 @@ BackupSetList::BackupSetList(const char *backupSetListRoot)
             bsm = BSMetadata(metadata.getDate().substr(0,4),metadata.getDate().size()>6 ? metadata.getDate().substr(5,2) : "",
                 metadata.getSerialId(),metadata.getTag());
             backupSetsEnh.push_back(BackupSetItem(data->d_name,bsm));
-            bsMetadataValues.year.range.insert(bsm.year);
-            bsMetadataValues.month.range.insert(bsm.month);
+            if (bsm.year != "")
+                bsMetadataValues.year.range.insert(bsm.year);
+            if (bsm.month != "")
+                bsMetadataValues.month.range.insert(bsm.month);
             bsMetadataValues.serialId.range.insert(bsm.serialId);
             if (bsm.tag != "")
                 bsMetadataValues.tag.range.insert(bsm.tag);
@@ -58,10 +58,14 @@ BackupSetList::BackupSetList(const char *backupSetListRoot)
     }
     closedir(dir);
 
-    for (unsigned int i=0;i<backupSetsEnh.size();i++) {
-        this->backupSets.push_back(backupSetsEnh[i].entryPath);
-        this->serialIds.push_back(backupSetsEnh[i].bsItemMetadata.serialId);
-        this->tags.push_back(backupSetsEnh[i].bsItemMetadata.tag);
+    this->enhEntries = this->backupSetsEnh.size();
+
+    BackupSetItemView bsiv;
+    for (int i=0;i < this->enhEntries;i++) {
+        bsiv.entryPath = backupSetsEnh[i].entryPath;
+        bsiv.serialId = backupSetsEnh[i].bsItemMetadata.serialId;
+        bsiv.tag = backupSetsEnh[i].bsItemMetadata.tag;
+        this->backupSets.push_back(bsiv);
     }
 
     this->entries = backupSets.size();
@@ -76,23 +80,38 @@ BackupSetList::BackupSetList(const char *backupSetListRoot)
 void BackupSetList::sort(bool sortAscending_)
 {    
     if (sortAscending_) {
-        std::ranges::sort(backupSets.begin()+1,backupSets.end(),std::ranges::less{});
+        std::ranges::sort(backupSets.begin()+1,backupSets.end(),std::ranges::less{},&BackupSetItemView::entryPath);
     } else {
-        std::ranges::sort(backupSets.begin()+1,backupSets.end(),std::ranges::greater{});
+        std::ranges::sort(backupSets.begin()+1,backupSets.end(),std::ranges::greater{},&BackupSetItemView::entryPath);
     }
     sortAscending = sortAscending_;
 }
 
-std::string BackupSetList::at(int i)
-{
-    
-    return backupSets.at(i);
-
+std::string BackupSetList::at(int i) {
+    return backupSets.at(i).entryPath;
 }
 
-void BackupSetList::add(std::string backupSet)
+std::string BackupSetList::serialIdAt(int i) {
+    return backupSets.at(i).serialId;
+}
+
+std::string BackupSetList::serialIdStretchedAt(int i) {
+    int serialIdSize = serialIdAt(i).size();
+    return serialIdSize > 8 ?  serialIdAt(i).substr(0,4)+".."+serialIdAt(i).substr(serialIdSize-4,4) : serialIdAt(i);
+}
+
+std::string BackupSetList::tagAt(int i) {
+    return backupSets.at(i).tag;
+}
+
+
+void BackupSetList::add(std::string entryPath,std::string serialId,std::string tag)
 {
-    backupSets.push_back(backupSet);
+    BackupSetItemView bsiv; 
+    bsiv.entryPath = entryPath;
+    bsiv.serialId = serialId;
+    bsiv.tag = tag;
+    backupSets.push_back(bsiv);
     this->entries++; 
     if (!sortAscending)
         this->sort(false);   
@@ -124,29 +143,63 @@ std::string BackupSetList::getBackupSetSubPath(int i) {
 
 void BackupSetList::filter(BSMetadata filterDef) {
     backupSets.erase(backupSets.begin()+1,backupSets.end());
+    BackupSetItemView bsiv;
     for (unsigned int i=1; i < this->backupSetsEnh.size(); i++) {
         if (filterDef.year == "*" || filterDef.year == this->backupSetsEnh[i].bsItemMetadata.year)
             if (filterDef.month == "*" || filterDef.month == this->backupSetsEnh[i].bsItemMetadata.month)
                 if (filterDef.serialId == "*" || filterDef.serialId == this->backupSetsEnh[i].bsItemMetadata.serialId)
                     if (filterDef.tag == "*" || filterDef.tag == this->backupSetsEnh[i].bsItemMetadata.tag) {
-                        this->backupSets.push_back(backupSetsEnh[i].entryPath);
-                        this->serialIds.push_back(backupSetsEnh[i].bsItemMetadata.serialId);
-                        this->tags.push_back(backupSetsEnh[i].bsItemMetadata.tag);
+                        bsiv.entryPath = backupSetsEnh[i].entryPath;
+                        bsiv.serialId = backupSetsEnh[i].bsItemMetadata.serialId;
+                        bsiv.tag = backupSetsEnh[i].bsItemMetadata.tag;
+                        this->backupSets.push_back(bsiv);
                     }
     }
-    entries = this->backupSets.size();
+    this->entries = this->backupSets.size();
 }
 
-
-void BSMetadataValues::Right(auto & metadata ) {
-    metadata.iterator++;
-    if (metadata.iterator == metadata.range.end())
-        metadata.iterator = metadata.range.begin();
+void BackupSetList::filter() {
+    backupSets.erase(backupSets.begin()+1,backupSets.end());
+    BackupSetItemView bsiv;
+    for (unsigned int i=1; i < this->backupSetsEnh.size(); i++) {
+        if (*bsMetadataValues.year.iterator == "*" || *bsMetadataValues.year.iterator == this->backupSetsEnh[i].bsItemMetadata.year)
+            if (*bsMetadataValues.month.iterator == "*" || *bsMetadataValues.month.iterator == this->backupSetsEnh[i].bsItemMetadata.month)
+                if (*bsMetadataValues.serialId.iterator == "*" || *bsMetadataValues.serialId.iterator == this->backupSetsEnh[i].bsItemMetadata.serialId)
+                    if (*bsMetadataValues.tag.iterator == "*" || *bsMetadataValues.tag.iterator == this->backupSetsEnh[i].bsItemMetadata.tag) {
+                        bsiv.entryPath = backupSetsEnh[i].entryPath;
+                        bsiv.serialId = backupSetsEnh[i].bsItemMetadata.serialId;
+                        bsiv.tag = backupSetsEnh[i].bsItemMetadata.tag;
+                        this->backupSets.push_back(bsiv);
+                    }
+    }
+    this->entries = this->backupSets.size();
 }
 
-void BSMetadataValues::Left(auto & metadata ) {
-    if (metadata.iterator == metadata.range.begin())
-        metadata.iterator = --metadata.range.end();
+void BSMetadataValues::resetFilter() {
+    this->year.iterator = --this->year.range.end();
+    this->month.iterator = --this->month.range.end(); 
+    this->serialId.iterator = this->serialId.range.begin();
+    this->tag.iterator = this->tag.range.begin();
+}
+
+template < typename T >
+void BSMetadataValues::Right( T & metadataAttr ) {
+    metadataAttr.iterator++;
+    if (metadataAttr.iterator == metadataAttr.range.end())
+        metadataAttr.iterator = metadataAttr.range.begin();
+}
+
+template < typename T >
+void BSMetadataValues::Left(T & metadataAttr ) {
+    if (metadataAttr.iterator == metadataAttr.range.begin())
+        metadataAttr.iterator = --metadataAttr.range.end();
     else
-        metadata.iterator--;
+        metadataAttr.iterator--;
 }
+
+template void BSMetadataValues::Right(attr<std::greater<std::string>> &);
+template void BSMetadataValues::Right(attr<std::less<std::string>> &);
+template void BSMetadataValues::Left(attr<std::greater<std::string>> &);
+template void BSMetadataValues::Left(attr<std::less<std::string>> &);
+
+

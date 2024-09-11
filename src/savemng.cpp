@@ -66,6 +66,11 @@ std::string getBatchBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot, st
     return StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, datetime.c_str(),highID, lowID, slot);
 }
 
+std::string getBatchBackupPathRoot(std::string datetime) {
+    return StringUtils::stringFormat("%s/%s", batchBackupPath, datetime.c_str());
+}
+
+
 uint8_t getSDaccn() {
     return sdaccn;
 }
@@ -974,7 +979,13 @@ void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB, const
     delete metadataObj;
 }
 
-void backupAllSave(Title *titles, int count, const std::string &batchDatetime) {
+void writeBackupAllMetadata(const std::string & batchDatetime) {
+    Metadata *metadataObj = new Metadata(batchDatetime,"", Metadata::thisConsoleSerialId, "");
+    metadataObj->write();
+    delete metadataObj;
+}
+
+void backupAllSave(Title *titles, int count, const std::string & batchDatetime) {
     for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
         for (int i = 0; i < count; i++) {
             if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
@@ -997,6 +1008,7 @@ void backupAllSave(Title *titles, int count, const std::string &batchDatetime) {
                 writeMetadata(highID,lowID,slot,isUSB,batchDatetime); 
         }
     }
+    writeBackupAllMetadata(batchDatetime);
 }
 
 void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common) {

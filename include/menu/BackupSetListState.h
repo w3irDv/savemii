@@ -11,6 +11,7 @@ class BackupSetListState : public ApplicationState {
 public:
     BackupSetListState();
     static void resetCursorPosition();
+    static void resetCursorAndScroll();
     enum eState {
         STATE_BACKUPSET_MENU,
         STATE_DO_SUBSTATE,
@@ -24,6 +25,9 @@ private:
     eState state = STATE_BACKUPSET_MENU;
 
     bool sortAscending;
+    
+    static int cursorPos;
+    static int scroll;
 
     std::string backupSetListRoot;
 };

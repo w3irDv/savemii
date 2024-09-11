@@ -8,7 +8,8 @@
 #include <utils/Colors.h>
 
 #define MAX_TITLE_SHOW 14
-static int cursorPos = 0;
+int vWiiTitleListState::scroll = 0;
+int vWiiTitleListState::cursorPos = 0;
 
 void vWiiTitleListState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
