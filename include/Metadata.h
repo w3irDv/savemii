@@ -47,13 +47,15 @@ public:
 
     bool read();
     bool write();
+    std::string simpleFormat();
     std::string get();
     bool set(const std::string &date,bool isUSB);
     static std::string thisConsoleSerialId;
     static std::string unknownSerialId;
-    std::string getDate() { return Date;}
-    std::string getTag() { return tag;}
-    std::string getSerialId() { return serialId;}
+    std::string getDate() { return Date;};
+    std::string getTag() { return tag;};
+    void setTag(std::string tag_) { this->tag = tag_;};
+    std::string getSerialId() { return serialId;};
 
 private:
     uint32_t highID;

@@ -122,7 +122,7 @@
   "\ue000: Apply Filter  \uE002: Reset Filters  \ue001: Back": "\ue000: Apply Filter  \uE002: Reset Filters  \ue001: Back",
   "BackupSets": "BackupSets",
   "BackupSets (filter applied)": "BackupSets (filter applied)",
-  "\ue000: Select BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back": "\ue000: Select BS  \ue046: Wipe BS  \ue002: Filter List  \ue001: Back",
+  "\ue000: Select BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back": "\ue000: Select BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back",
   "\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back": "\ue000: Select BackupSet  \ue002: Filter List  \ue001: Back",
   "Batch Backup": "Batch Backup",
   "Backup": "Backup",

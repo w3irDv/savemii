@@ -16,6 +16,11 @@ public:
         STATE_BACKUPSET_MENU,
         STATE_DO_SUBSTATE,
     };
+    enum eSubstateCalled {
+        NONE,
+        STATE_BACKUPSET_FILTER,
+        STATE_KEYBOARD
+    };
 
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
@@ -23,6 +28,7 @@ public:
 private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_BACKUPSET_MENU;
+    eSubstateCalled substateCalled = NONE;
 
     bool sortAscending;
     
@@ -30,4 +36,7 @@ private:
     static int scroll;
 
     std::string backupSetListRoot;
+
+    std::string tag;
+    std::string newTag;
 };

@@ -21,6 +21,10 @@ public:
         SUBSTATE_RETURN,
     };
 
+    enum eSubstateCalled {
+        NONE
+    };
+
     virtual void render() = 0;
     virtual eSubState update(Input *input) = 0;
 };

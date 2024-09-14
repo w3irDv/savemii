@@ -76,16 +76,19 @@ public:
     void sort(bool sortAscending = false);
     static bool getSortAscending() { return sortAscending;};
     std::string at(int i);
-    std::string serialIdAt(int i);
-    std::string serialIdStretchedAt(int i);
-    std::string tagAt(int i);
+    std::string getSerialIdAt(int i);
+    std::string getStretchedSerialIdAt(int i);
+    std::string getTagAt(int i);
+    void setTagBSVAt(int i, const std::string & tag);
+    void setTagBSAt(int i, const std::string & tag);
     void add(std::string entryPath,std::string serialId,std::string tag);
 
-    int getLen() { return this->entries;};
-    int getEnhLen() { return this->enhEntries;};
+    int getSizeView() { return this->entriesView;};
+    int getSize() { return this->entries;};
 
     void filter();
     void filter(BSMetadata filterDef);
+    void resetTagRange();
     BSMetadataValues *getBSMetadataValues() {return &bsMetadataValues; };
         
     static const std::string ROOT_BS;
@@ -101,13 +104,14 @@ public:
  
 private:
     static bool sortAscending;
-    std::vector<BackupSetItemView> backupSets;
-    std::vector<BackupSetItem> backupSetsEnh;
+    std::vector<BackupSetItemView> backupSetsView;
+    std::vector<BackupSetItem> backupSets;
     std::vector<std::string> serialIds;
     std::vector<std::string> tags;
+    std::vector<int> v2b;
     BSMetadataValues bsMetadataValues;
+    int entriesView;
     int entries;
-    int enhEntries;
     std::string backupSetListRoot;
     static std::string backupSetSubPath;
     static std::string backupSetEntry;

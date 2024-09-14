@@ -61,6 +61,18 @@ std::string Metadata::get() {
     return "";
 }
 
+std::string Metadata::simpleFormat() {
+    if (this->Date != "") {
+        std::string metadataMessage {};
+        metadataMessage.assign(this->Date);
+        if (this->storage != "")
+            metadataMessage.append(LanguageUtils::gettext(", from ")).append(this->storage);
+        metadataMessage.append(" | ").append(this->serialId);
+        return metadataMessage;   
+    }
+    return "";
+}
+
 bool Metadata::set(const std::string &date, bool isUSB) {
 
     this->Date = date;

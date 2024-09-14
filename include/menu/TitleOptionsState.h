@@ -22,12 +22,20 @@ public:
         STATE_DO_SUBSTATE,
     };
 
+    enum eSubstateCalled {
+        NONE,
+        STATE_BACKUPSET_MENU,
+        STATE_KEYBOARD
+    };
+
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
 
 private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_TITLE_OPTIONS;
+
+    eSubstateCalled substateCalled = NONE;
 
     Title title;
     Task task;
@@ -47,4 +55,7 @@ private:
     uint8_t slot = 0;
     int cursorPos = 0;
     int entrycount;
+
+    std::string tag;
+    std::string newTag;
 };

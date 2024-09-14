@@ -2,6 +2,7 @@
 #include <Metadata.h>
 #include <menu/TitleOptionsState.h>
 #include <menu/BackupSetListState.h>
+#include <menu/KeyboardState.h>
 #include <BackupSetList.h>
 #include <savemng.h>
 #include <utils/Colors.h>
@@ -103,8 +104,13 @@ void TitleOptionsState::render() {
             if ((task == backup) || (task == restore))
                 if (!emptySlot) {
                     Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
-                    consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
-                                    metadataObj->get().c_str());
+                    if (metadataObj->read()) {
+                        consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
+                                    metadataObj->simpleFormat().c_str());
+                        tag = metadataObj->getTag();
+                        newTag = tag;
+                        consolePrintPosAligned (14,0,4,"tag %s, newtag %s",tag.c_str(),newTag.c_str());
+                    }
                     delete metadataObj;
                 }
 
@@ -157,24 +163,30 @@ void TitleOptionsState::render() {
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawTGA(660, 100, 1, this->title.iconBuf);
         } else {
+
             entrycount = 1;
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawRGB5A3(650, 100, 1, this->title.iconBuf);
             if (!emptySlot) {
                 Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
-                consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
-                                metadataObj->get().c_str());
+                if (metadataObj->read()) {
+                    consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
+                                metadataObj->simpleFormat().c_str());
+                    tag = metadataObj->getTag();
+                    newTag = tag;
+                    consolePrintPosAligned (14,0,4,"tag %s, newtag %s",tag.c_str(),newTag.c_str());
+                }
                 delete metadataObj;
             }
         }
 
         switch (task) {
             case backup:
+                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Backup"));
                 if (emptySlot)
                     consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
                 else
-                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue046 Delete Slot  \ue001: Back"));
-                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Backup"));
+                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
                 break;
             case restore:
                 consolePrintPos(20,0,LanguageUtils::gettext("Restore"));
@@ -209,6 +221,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_X))
             if (this->task == restore) {
                 this->state = STATE_DO_SUBSTATE;
+                this->substateCalled = STATE_BACKUPSET_MENU;
                 this->subState = std::make_unique<BackupSetListState>();
             }
         if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
@@ -416,16 +429,33 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
             }
         }
+        if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
+            this->state = STATE_DO_SUBSTATE;
+            this->substateCalled = STATE_KEYBOARD;
+            this->subState = std::make_unique<KeyboardState>(newTag);
+        }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {
             // keep running.
             return SUBSTATE_RUNNING;
         } else if (retSubState == SUBSTATE_RETURN) {
+            if ( this->substateCalled == STATE_KEYBOARD) {
+                if (newTag != tag) {
+                    Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
+                    metadataObj->read();
+                    metadataObj->setTag(newTag);
+                    metadataObj->write();
+                    delete metadataObj;
+                }
+            }
+            if ( this->substateCalled == STATE_BACKUPSET_MENU) {
+                slot = 0;
+                getAccountsSD(&this->title, slot);
+            }
             this->subState.reset();
             this->state = STATE_TITLE_OPTIONS;
-            slot = 0;
-            getAccountsSD(&this->title, slot);
+            this->substateCalled = NONE;
         }
     }
     return SUBSTATE_RUNNING;
