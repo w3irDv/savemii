@@ -39,7 +39,7 @@ CONTENT		:=
 ICON		:=	meta/wuhb/icon.png
 TV_SPLASH	:=	meta/wuhb/tv-splash.png
 DRC_SPLASH	:=	meta/wuhb/drc-splash.png
-ROMFS 		:= 	languages
+ROMFS 		:= 	romfs
 
 #-------------------------------------------------------------------------------
 # options for code generation

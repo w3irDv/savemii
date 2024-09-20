@@ -51,9 +51,11 @@ public:
 
     static void drawRect(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-    static bool initFont();
+    static bool initFont(OSSharedDataType fontType);
+    static bool initKFont();
 
-    static bool setFont(OSSharedDataType fontType);
+    static bool setFont();
+    static bool setKFont();
 
     static void deinitFont();
 

@@ -137,6 +137,7 @@ int32_t loadFile(const char *fPath, uint8_t **buf) __attribute__((hot));
 int32_t loadTitleIcon(Title *title) __attribute__((hot));
 void consolePrintPosMultiline(int x, int y, const char *format, ...) __attribute__((hot));
 void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) __attribute__((hot));
+void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...) __attribute__((hot));
 uint8_t getSDaccn();
 uint8_t getWiiUaccn();
 Account *getWiiUacc();

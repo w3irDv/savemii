@@ -16,11 +16,11 @@ class Keyboard {
         void delPressed();
         std::string input;
         Keyboard() : row(2),column(5) {
-            keysNormal = {"`1234567890-=",
+            keysNormal = {"1234567890-= ",
                           "qwertyuiop[]|",
                           "asdfghjkl;'  ",
                           "zxcvbnm ,./  "};
-            keysShift = { "~!@#$%^&*()_+",
+            keysShift = { "!@#$%^&*()_+~",
                           "QWERTYUIOP{}\\",
                           "ASDFGHJKL:\"  ",
                           "ZXCVBNM <>   "};

@@ -311,6 +311,19 @@ void consolePrintPos(int x, int y, const char *format, ...) { // Source: ftpiiu
         free(tmp);
 }
 
+void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...) { // Source: ftpiiu
+    char *tmp = nullptr;
+    y += Y_OFF;
+
+    va_list va;
+    va_start(va, format);
+    if ((vasprintf(&tmp, format, va) >= 0) && (tmp != nullptr))
+        DrawUtils::print(x  * 52 + x_offset, y * 50, tmp);
+    va_end(va);
+    if (tmp != nullptr)
+        free(tmp);
+}
+
 void consolePrintPosMultiline(int x, int y, const char *format, ...) {
     va_list va;
     va_start(va, format);

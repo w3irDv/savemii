@@ -428,9 +428,11 @@ int main() {
 
     State::registerProcUICallbacks();
 
-    if (!DrawUtils::initFont()) {
+    if (!DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD)) {
         OSFatal("Failed to init font");
     }
+
+    DrawUtils::setFont();
 
     WPADInit();
     KPADInit();
@@ -449,6 +451,13 @@ int main() {
     }
     Swkbd_LanguageType systemLanguage = LanguageUtils::getSystemLanguage();
     LanguageUtils::loadLanguage(systemLanguage);
+
+    if (!DrawUtils::initKFont()) {
+        promptError("Failed to init keyboardFont");
+        DrawUtils::endDraw();
+        State::shutdown();
+        return 0;
+    }
 
     if (!initFS()) {
         promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));

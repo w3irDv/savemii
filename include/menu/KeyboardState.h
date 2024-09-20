@@ -9,6 +9,8 @@ class KeyboardState : public ApplicationState {
 public:
     KeyboardState(std::string & input) : input(input) {
         this->keyboard = std::make_unique<Keyboard>();
+        this->cursorPosX = this->keyboard->column;
+        this->cursorPosY = this->keyboard->row;
     }
     enum eState {
         STATE_KEYBOARD,
