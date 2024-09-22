@@ -123,7 +123,7 @@
   "BackupSets": "BackupSets",
   "BackupSets (filter applied)": "BackupSets (filter applied)",
   "\ue000: Select BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back": "\ue000: Select BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back",
-  "\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back": "\ue000: Select BackupSet  \ue002: Filter List  \ue001: Back",
+  "\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back": "\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back",
   "Batch Backup": "Batch Backup",
   "Backup": "Backup",
   "Restore": "Restore",
@@ -133,5 +133,14 @@
   "Copy to Other Device": "Copy to Other Device",
   "Tasks": "Tasks",
   "Initializing BackupSets metadata.": "Initializing BackupSets metadata.",
-  "Please wait. First write to SD may be slow.": "Please wait. First write to SD may be slow." 
+  "Please wait. First write to SD may be slow.": "Please wait. First write to SD may be slow.",
+  "1234567890-=": "1234567890-=",
+  "KB_N_0": "1234567890-= ",
+  "KB_N_1": "qwertyuiop[]|",
+  "KB_N_2": "asdfghjkl;'  ",
+  "KB_N_3": "zxcvbnm ,./  ",
+  "KB_S_0": "!@#$%^&*()_+~",
+  "KB_S_1": "QWERTYUIOP{}\\",
+  "KB_S_2": "ASDFGHJKL:\"  ",
+  "KB_S_3": "ZXCVBNM <>   "
 }

@@ -69,10 +69,12 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<KeyboardState>(tag);
         }
+        /*
         if (input->get(TRIGGER, PAD_BUTTON_X)) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<BackupSetListState>();
-        }    
+        } 
+        */   
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {
