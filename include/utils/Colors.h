@@ -7,5 +7,6 @@
 #define COLOR_LIST_HIGH      Color(0x40D050FF)
 #define COLOR_LIST      Color(0x00FF00FF)
 #define COLOR_INFO      Color(0x88CC88FF)
-#define COLOR_KEY      Color(0xFF6666FF)
+#define COLOR_KEY      Color(0xFF3333FF)
 #define COLOR_KEY_S      Color(0xFF666600)
+#define COLOR_KEY_C      Color(0xFF0000FF)

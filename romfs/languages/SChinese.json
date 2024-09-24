@@ -93,7 +93,7 @@
   "Failed to delete savefile.": "删除保存数据失败。",
   "Failed to delete user folder: %s": "删除user文件夹失败: %s",
   "Failed to import savedata from loadiine.": "导入loadiine保存数据失败。",
-  "Failed to export savedata to loadiine.": "导出保存数据到loadiine失败。"
+  "Failed to export savedata to loadiine.": "导出保存数据到loadiine失败。",
   "\ue083 Sort: %s \ue084": "\ue083 排序: %s \ue084",
   "\ue000: Select BackupSet  \ue001: Back": "\ue000: 选择备份设置  \ue001: 备份",
   "\ue002: Change BackupSet  \ue000: Restore  \ue001: Back": "\ue002: 更改备份设置  \ue000: 恢复  \ue001: 备份",

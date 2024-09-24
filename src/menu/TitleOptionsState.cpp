@@ -9,6 +9,8 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 
+#define TAG_OFF 17
+
 void TitleOptionsState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
@@ -50,6 +52,7 @@ void TitleOptionsState::render() {
                 consolePrintPos(M_OFF, 5, "   < %03u > (%s)", slot,
                                 emptySlot ? LanguageUtils::gettext("Empty")
                                                                                         : LanguageUtils::gettext("Used"));
+
         }
 
         if (this->isWiiUTitle) {
@@ -108,8 +111,8 @@ void TitleOptionsState::render() {
                         consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
                                     metadataObj->simpleFormat().c_str());
                         tag = metadataObj->getTag();
-                        newTag = tag;
-                        consolePrintPosAligned (14,0,4,"tag %s, newtag %s",tag.c_str(),newTag.c_str());
+                        if ( tag != "" )
+                            consolePrintPos(TAG_OFF, 5,"[%s]",tag.c_str());
                     }
                     delete metadataObj;
                 }
@@ -173,8 +176,8 @@ void TitleOptionsState::render() {
                     consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
                                 metadataObj->simpleFormat().c_str());
                     tag = metadataObj->getTag();
-                    newTag = tag;
-                    consolePrintPosAligned (14,0,4,"tag %s, newtag %s",tag.c_str(),newTag.c_str());
+                    if ( tag != "" )
+                        consolePrintPos(TAG_OFF, 5,"[%s]",tag.c_str());
                 }
                 delete metadataObj;
             }

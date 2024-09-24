@@ -95,6 +95,7 @@
   "Failed to delete user folder: %s": "ユーザー フォルダの削除に失敗しました: %s",
   "Failed to import savedata from loadiine.": "loadiine からセーブデータをインポートできませんでした。",
   "Failed to export savedata to loadiine.": "セーブデータを loadiine にエクスポートできませんでした。",
-  "KB_N_0": "セーブデータを load",
-  "KB_S_1": "うーん、本当によろしいです"
+  "\ue001: Back": "\ue001: 戻る",
+  "KB_N_0": "セーブデータを TEST",
+  "KB_S_1": "うーん、本当によろし TEST"
 }

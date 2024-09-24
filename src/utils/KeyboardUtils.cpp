@@ -3,6 +3,8 @@
 #include <locale>
 #include <codecvt>
 
+#define MAX_INPUT_SIZE 30
+
 void Keyboard::render() {
 }
 
@@ -66,7 +68,8 @@ void Keyboard::shiftPressed() {
 }
 
 void Keyboard::kbKeyPressed() {
-    input.append(ucs4ToUtf8(currentKey));
+    if (input.size() < MAX_INPUT_SIZE )
+        input.append(ucs4ToUtf8(currentKey));
 }
 
 void Keyboard::delPressed() {

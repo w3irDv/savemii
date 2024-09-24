@@ -52,7 +52,7 @@
   "\ue000: Import  \ue001: Back": "\ue000: Import  \ue001: Back",
   "\ue000: Export  \ue001: Back": "\ue000: Export  \ue001: Back",
   "\ue000: Copy  \ue001: Back": "\ue000: Copy  \ue001: Back",
-  "Press \ue044 to exit.": "Press \ue044 to exit.",
+  "Press \ue044 to exit.": "\ue044 Exit",
   "No Wii U titles found.": "No Wii U titles found.",
   "No vWii saves found.": "No vWii saves found.",
   "CBHC save. Could be dangerous to modify. Continue?": "CBHC save. Could be dangerous to modify. Continue?",
@@ -134,13 +134,12 @@
   "Tasks": "Tasks",
   "Initializing BackupSets metadata.": "Initializing BackupSets metadata.",
   "Please wait. First write to SD may be slow.": "Please wait. First write to SD may be slow.",
-  "1234567890-=": "1234567890-=",
-  "KB_N_0": "1234567890-= ",
+  "KB_N_0": "1234567890-=",
   "KB_N_1": "qwertyuiop[]|",
-  "KB_N_2": "asdfghjkl;'  ",
-  "KB_N_3": "zxcvbnm ,./  ",
+  "KB_N_2": "asdfghjkl;'",
+  "KB_N_3": "zxcvbnm ,./",
   "KB_S_0": "!@#$%^&*()_+~",
   "KB_S_1": "QWERTYUIOP{}\\",
-  "KB_S_2": "ASDFGHJKL:\"  ",
-  "KB_S_3": "ZXCVBNM <>   "
+  "KB_S_2": "ASDFGHJKL:\"",
+  "KB_S_3": "ZXCVBNM <>"
 }

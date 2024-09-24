@@ -65,9 +65,9 @@ void BackupSetListState::render() {
                 DrawUtils::setFontColor(COLOR_LIST_HIGH);
             if ( backupSetItem == BackupSetList::getBackupSetEntry())
                 DrawUtils::setFontColor(COLOR_INFO);
-            consolePrintPos(M_OFF, i + 2, "  %s", backupSetItem.c_str());
-            consolePrintPos(24, i+2,"%s", BackupSetList::currentBackupSetList->getStretchedSerialIdAt(i+scroll).c_str());
-            consolePrintPos(38, i+2,"%s", BackupSetList::currentBackupSetList->getTagAt(i+scroll).c_str());
+            consolePrintPos(M_OFF-1, i + 2, "  %s", backupSetItem.substr(0,15).c_str());
+            consolePrintPos(21, i+2,"%s", BackupSetList::currentBackupSetList->getStretchedSerialIdAt(i+scroll).c_str());
+            consolePrintPos(33, i+2,"%s", BackupSetList::currentBackupSetList->getTagAt(i+scroll).c_str());
             }
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(-1, 2 + cursorPos, "\u2192");

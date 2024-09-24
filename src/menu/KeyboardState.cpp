@@ -21,13 +21,16 @@ void KeyboardState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);  
         DrawUtils::setFont();  //was kFont
         for (int row_=0;row_<4;row_++)
-            for (int column_=0;column_<keyboard->getKeyboardRowSize(row_);column_++)
+            for (int column_=0;column_<keyboard->getKeyboardRowSize(row_);column_++) {
                 kConsolePrintPos(KB_X_OFFSET+column_,KB_Y_OFFSET+row_,KB_ROW_OFFSET*row_, "%s", keyboard->getKey(row_,column_).c_str());
+                DrawUtils::drawKey(KB_X_OFFSET+column_,KB_Y_OFFSET+row_,KB_ROW_OFFSET*row_,COLOR_WHITE);
+            }
         DrawUtils::setFontColor(COLOR_KEY_S);
         kConsolePrintPos(cursorPosX+KB_X_OFFSET,cursorPosY+KB_Y_OFFSET,cursorPosY*KB_ROW_OFFSET-3,"%s", keyboard->getCurrentKey().c_str());
         kConsolePrintPos(cursorPosX+KB_X_OFFSET,cursorPosY+KB_Y_OFFSET,cursorPosY*KB_ROW_OFFSET+3,"%s", keyboard->getCurrentKey().c_str());
         DrawUtils::setFontColor(COLOR_KEY);
         kConsolePrintPos(cursorPosX+KB_X_OFFSET,cursorPosY+KB_Y_OFFSET,cursorPosY*KB_ROW_OFFSET,"%s", keyboard->getCurrentKey().c_str());
+        DrawUtils::drawKey(cursorPosX+KB_X_OFFSET,cursorPosY+KB_Y_OFFSET,cursorPosY*KB_ROW_OFFSET,COLOR_KEY_C);
         DrawUtils::setFontColor(COLOR_TEXT);
         DrawUtils::setFont();
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Press Key  \uE003: Shift  \uE002: Del  \ue045: OK!  \ue001: Back"));      

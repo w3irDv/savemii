@@ -81,6 +81,7 @@ public:
 
     static uint32_t deinitScreen();
 
+    static void drawKey(int x,int y,int x_off,Color color);
 
 
 
