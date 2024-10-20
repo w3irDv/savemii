@@ -15,9 +15,9 @@ extern Account *sdacc;
 extern uint8_t sdaccn;
 
 BatchRestoreOptions::BatchRestoreOptions(Title *titles, 
-    int titlesCount) : titles(titles),
-                        titlesCount(titlesCount) {
-
+    int titlesCount,bool  vWiiRestore) : titles(titles),
+                        titlesCount(titlesCount), vWiiRestore(vWiiRestore) {
+    WHBLogPrintf("batchRestore constructor");
     for (int i = 0; i<this->titlesCount; i++) {
         this->titles[i].currentBackup= {
             .hasBatchBackup = false,

@@ -120,7 +120,7 @@ void BRTitleSelectState::render() {
                 consolePrintPos(M_OFF, i + 2, "   %s %s%s%s [%s]", this->titles[c2t[i + this->scroll]].shortName,
                                 this->titles[c2t[i + this->scroll]].isTitleOnUSB ? "(USB)" : "(NAND)",
                                 this->titles[c2t[i + this->scroll]].isTitleDupe ? " [D]" : "",
-                                this->titles[c2t[i + this->scroll]].currentBackup.selected ? LanguageUtils::gettext(" [Restore]" : LanguageUtils::gettext(" [Skip]"),
+                                this->titles[c2t[i + this->scroll]].currentBackup.selected ? LanguageUtils::gettext(" [Restore]" ) : LanguageUtils::gettext(" [Skip]"),
                                 titleStateAfterBR[this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState]);
 
             else

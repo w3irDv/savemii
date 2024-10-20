@@ -9,7 +9,7 @@
 
 class BatchRestoreOptions : public ApplicationState {
 public:
-    BatchRestoreOptions(Title *titles, int titlesCount);
+    BatchRestoreOptions(Title *titles, int titlesCount, bool vWiiRestore);
     
     enum eState {
         STATE_BATCH_RESTORE_OPTIONS_MENU,
@@ -36,4 +36,6 @@ private:
     int titlesCount = 0;
 
     int cursorPos = 0;
+
+    bool vWiiRestore;
 };

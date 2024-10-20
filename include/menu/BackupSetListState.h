@@ -8,7 +8,7 @@
 class BackupSetListState : public ApplicationState {
 public:
     BackupSetListState();
-    BackupSetListState(Title *titles, int titlesCount);
+    BackupSetListState(Title *titles, int titlesCount, bool vWiiRestore);
 
     static void resetCursorPosition();
     static void resetCursorAndScroll();
@@ -30,7 +30,7 @@ private:
     eState state = STATE_BACKUPSET_MENU;
     eSubstateCalled substateCalled = NONE;
     bool finalScreen;
-
+    
     bool sortAscending;
     
     static int cursorPos;
@@ -43,4 +43,6 @@ private:
 
     Title *titles;
     int titlesCount;
+
+    bool vWiiRestore;
 };
