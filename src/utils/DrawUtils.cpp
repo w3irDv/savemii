@@ -14,6 +14,9 @@
 #include <coreinit/memory.h>
 #include <proc_ui/procui.h>
 
+#include <whb/log_udp.h>
+#include <whb/log.h>
+
 // buffer width
 #define TV_WIDTH  0x500
 #define DRC_WIDTH 0x380
@@ -306,11 +309,17 @@ void DrawUtils::print(uint32_t x, uint32_t y, const wchar_t *string, bool alignR
                 return;
             }
 
+
+
             if (*string == '\n') {
-                penY += mtx.minHeight;
+                WHBLogPrintf("minHeight: %d",mtx.minHeight);
+                //penY += mtx.minHeight;
+                penY += 40; // temporal - 
                 penX = x;
                 continue;
             }
+
+            
 
             textureWidth = (mtx.minWidth + 3) & ~3;
             textureHeight = mtx.minHeight;

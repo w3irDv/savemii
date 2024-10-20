@@ -23,6 +23,23 @@
 #define M_OFF            1
 #define Y_OFF            1
 
+enum eBatchRestoreState {
+    NOT_TRIED = 0,
+    ABORTED = 1,
+    OK = 2,
+    WR = 3,
+    KO = 4
+};
+
+struct backupInfo {
+    bool hasBatchBackup;
+    bool candidateToBeRestored;
+    bool selected;
+    bool hasUserSavedata;
+    bool hasCommonSavedata;
+    eBatchRestoreState batchRestoreState; 
+};
+
 struct Title {
     uint32_t highID;
     uint32_t lowID;
@@ -37,6 +54,7 @@ struct Title {
     uint8_t *iconBuf;
     uint64_t accountSaveSize;
     uint32_t groupID;
+    backupInfo currentBackup;
 };
 
 struct Saves {
@@ -119,6 +137,7 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *long
 bool getLoadiineSaveVersionList(int *out, const char *gamePath);
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot);
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot, const std::string &batchDatetime);
+bool folderEmpty(const char *fPath);
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version);
 void copySavedata(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common) __attribute__((hot));
 std::string getNowDateForFolder() __attribute__((hot));
@@ -128,8 +147,8 @@ void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const 
 void writeBackupAllMetadata(const std::string & Date);
 void backupAllSave(Title *titles, int count, const std::string &batchDatetime) __attribute__((hot));
 void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common) __attribute__((hot));
-void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common) __attribute__((hot));
-void wipeSavedata(Title *title, int8_t wiiuuser, bool common) __attribute__((hot));
+int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
+int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
 void importFromLoadiine(Title *title, bool common, int version);
 void exportToLoadiine(Title *title, bool common, int version);
 int checkEntry(const char *fPath);

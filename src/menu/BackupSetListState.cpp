@@ -1,5 +1,6 @@
 #include <menu/BackupSetListState.h>
 #include <menu/BackupSetListFilterState.h>
+#include <menu/BatchRestoreOptions.h>
 #include <menu/KeyboardState.h>
 #include <Metadata.h>
 #include <BackupSetList.h>
@@ -16,7 +17,14 @@ int BackupSetListState::scroll = 0;
 static std::string language;
 
 BackupSetListState::BackupSetListState() {
-        this->sortAscending = BackupSetList::sortAscending;
+    finalScreen = true;
+    this->sortAscending = BackupSetList::sortAscending;
+}
+
+BackupSetListState::BackupSetListState(Title *titles, int titlesCount) :
+        titles(titles),
+        titlesCount(titlesCount) {
+    finalScreen = false;
 }
 
 void BackupSetListState::resetCursorPosition() {   // if bslist is modified after a new batch Backup
@@ -87,7 +95,13 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
             DrawUtils::setRedraw(true);
-            return SUBSTATE_RETURN;       
+            if (finalScreen)
+                return SUBSTATE_RETURN;
+            else    // is a step in batchRestore
+            {
+                this->state = STATE_DO_SUBSTATE;
+                this->subState = std::make_unique<BatchRestoreOptions>(titles, titlesCount);
+            }      
         }
         if (input->get(TRIGGER, PAD_BUTTON_Y)) {
             this->state = STATE_DO_SUBSTATE;

@@ -1,5 +1,6 @@
 #include <coreinit/debug.h>
 #include <menu/BatchBackupState.h>
+#include <menu/BackupSetListState.h>
 #include <menu/ConfigMenuState.h>
 #include <menu/MainMenuState.h>
 #include <menu/WiiUTitleListState.h>
@@ -8,10 +9,10 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 
-#include <menu/BackupSetListState.h>
+#include <menu/BatchRestoreState.h>
 #include <menu/KeyboardState.h>
 
-#define ENTRYCOUNT 3
+#define ENTRYCOUNT 4
 
 static int cursorPos = 0;
 
@@ -29,6 +30,7 @@ void MainMenuState::render() {
         consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
                         (this->vWiiTitlesCount > 1) ? "s" : "");
         consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Batch Backup"));
+        consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Batch Restore"));
         consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
         consolePrintPos(M_OFF, 10, "tag: %s",tag.c_str());
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
@@ -50,6 +52,10 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                 case 2:
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchBackupState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
+                    break;
+                case 3:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
                     break;
                 default:
                     break;

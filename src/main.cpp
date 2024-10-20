@@ -19,7 +19,7 @@
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 #include <whb/log_udp.h>
@@ -415,6 +415,7 @@ int main() {
 
 #ifdef DEBUG    
     WHBLogUdpInit();
+    WHBLogPrintf("Hello from savemii!");
 #endif
 
     AXInit();

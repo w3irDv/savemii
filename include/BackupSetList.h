@@ -93,6 +93,7 @@ public:
         
     static const std::string ROOT_BS;
     static std::string getBackupSetSubPath() { return backupSetSubPath; };
+    static std::string getBackupSetPath() { return currentBackupSetList->backupSetListRoot+backupSetSubPath; };
     static std::string getBackupSetEntry()  { return backupSetEntry; };
     static std::string getBackupSetSubPath(int i);
     static void setBackupSetEntry(int i);

@@ -2,14 +2,14 @@
 
 #include <ApplicationState.h>
 #include <memory>
+#include <savemng.h>
 #include <utils/InputUtils.h>
-
-
-
 
 class BackupSetListState : public ApplicationState {
 public:
     BackupSetListState();
+    BackupSetListState(Title *titles, int titlesCount);
+
     static void resetCursorPosition();
     static void resetCursorAndScroll();
     enum eState {
@@ -29,6 +29,7 @@ private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_BACKUPSET_MENU;
     eSubstateCalled substateCalled = NONE;
+    bool finalScreen;
 
     bool sortAscending;
     
@@ -39,4 +40,7 @@ private:
 
     std::string tag;
     std::string newTag;
+
+    Title *titles;
+    int titlesCount;
 };

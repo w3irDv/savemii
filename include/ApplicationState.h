@@ -27,4 +27,5 @@ public:
 
     virtual void render() = 0;
     virtual eSubState update(Input *input) = 0;
+
 };
