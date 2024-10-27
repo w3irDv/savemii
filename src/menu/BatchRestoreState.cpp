@@ -37,11 +37,11 @@ ApplicationState::eSubState BatchRestoreState::update(Input *input) {
             switch (cursorPos) {
                 case 0:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, false);
+                    this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, true);
                     break;
                 case 1:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, true);
+                    this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, false);
                     break;
                 default:
                     return SUBSTATE_RUNNING;

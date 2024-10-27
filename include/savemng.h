@@ -50,6 +50,7 @@ struct Title {
     bool saveInit;
     bool isTitleOnUSB;
     bool isTitleDupe;
+    bool is_Wii;
     uint16_t dupeID;
     uint8_t *iconBuf;
     uint64_t accountSaveSize;

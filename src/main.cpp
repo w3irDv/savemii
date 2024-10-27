@@ -239,10 +239,14 @@ static Title *loadWiiUTitles(int run) {
 
         titles[wiiuTitlesCount].highID = highID;
         titles[wiiuTitlesCount].lowID = lowID;
+        titles[wiiuTitlesCount].is_Wii = ((highID & 0xFFFFFFF0) == 0x00010000);
         titles[wiiuTitlesCount].isTitleOnUSB = isTitleOnUSB;
         titles[wiiuTitlesCount].listID = wiiuTitlesCount;
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr;
+        
+        //titles[wiiuTitlesCount].is_Wii = false;
+        WHBLogPrintf("count %d -- iconbuf %u",wiiuTitlesCount,titles[wiiuTitlesCount].iconBuf);
 
         wiiuTitlesCount++;
 
@@ -374,6 +378,7 @@ static Title *loadWiiTitles() {
 
                 titles[i].highID = strtoul(highID, nullptr, 16);
                 titles[i].lowID = strtoul(data->d_name, nullptr, 16);
+                titles[i].is_Wii = true;
 
                 titles[i].listID = i;
                 memcpy(titles[i].productCode, &titles[i].lowID, 4);

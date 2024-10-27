@@ -42,35 +42,49 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
         this->titles[i].currentBackup.batchRestoreState = NOT_TRIED;
         if ( this->titles[i].currentBackup.hasBatchBackup == false )
             continue;
+        
         WHBLogPrintf("get id %u",i);
+        WHBLogPrintf("shortname %s",this->titles[i].shortName);
+        
         uint32_t highID = this->titles[i].highID;
         uint32_t lowID = this->titles[i].lowID;
-        
+        bool isWii = titles[i].is_Wii;
+        WHBLogPrintf("is wii %s",isWii ? "si" : "no");
 
         std::string srcPath = getDynamicBackupPath(highID, lowID, 0);
-        std::string usersavePath = srcPath+"/"+getSDacc()[sduser].persistentID;
 
-        WHBLogPrintf("check user - %u",i);
-        WHBLogPrintf("check empty path - %s",usersavePath.c_str());
+        if (! isWii) {
+            std::string usersavePath = srcPath+"/"+getSDacc()[sduser].persistentID;
 
+            WHBLogPrintf("check user - %u",i);
+            WHBLogPrintf("check empty path - %s",usersavePath.c_str());
 
-        if (! folderEmpty(usersavePath.c_str()))
-            this->titles[i].currentBackup.hasUserSavedata = true; 
+            if (! folderEmpty(usersavePath.c_str()))
+                this->titles[i].currentBackup.hasUserSavedata = true; 
 
-        std::string commonSavePath = srcPath+"/common";
-        if (! folderEmpty(commonSavePath.c_str()))
-            this->titles[i].currentBackup.hasCommonSavedata = true; 
+            std::string commonSavePath = srcPath+"/common";
+            if (! folderEmpty(commonSavePath.c_str()))
+                this->titles[i].currentBackup.hasCommonSavedata = true; 
 
-        if ( sduser != -1 && common == false && ! this->titles[i].currentBackup.hasUserSavedata)
-            continue;
+            if ( sduser != -1 && common == false && ! this->titles[i].currentBackup.hasUserSavedata)
+                continue;
 
-        // shouldn't happen for wii u titles, but ...
-        if ( sduser != -1 && ! this->titles[i].currentBackup.hasCommonSavedata && ! this->titles[i].currentBackup.hasUserSavedata )
-            continue;
+            // shouldn't happen for wii u titles, but ...
+            if ( sduser != -1 && ! this->titles[i].currentBackup.hasCommonSavedata && ! this->titles[i].currentBackup.hasUserSavedata )
+                continue;
 
-        WHBLogPrintf("set to true - %u", i);
-        this->titles[i].currentBackup.candidateToBeRestored = true;  // backup has enough data to try restore
-        this->titles[i].currentBackup.selected = true;  // from candidates list, user can select/deselest at wish
+            WHBLogPrintf("candiadte/select set to true - %u", i);
+            WHBLogPrintf("init select wiiU - is wii %s",isWii ? "si" : "no");
+            this->titles[i].currentBackup.candidateToBeRestored = true;  // backup has enough data to try restore
+            this->titles[i].currentBackup.selected = true;  // from candidates list, user can select/deselest at wish
+
+        } 
+        else
+        {
+            WHBLogPrintf("init select wii - is wii %s",isWii ? "si" : "no");
+            this->titles[i].currentBackup.candidateToBeRestored = true;
+            this->titles[i].currentBackup.selected = true; 
+        }
         // to recover title from "candidate title" index
         this->c2t.push_back(i);
     }
@@ -101,34 +115,51 @@ void BRTitleSelectState::render() {
     }
     if (this->state == STATE_BATCH_RESTORE_TITLE_SELECT) {
         if ((this->titles == nullptr) || (this->titlesCount == 0 || (this->candidatesCount == 0))) {
-            promptError(LanguageUtils::gettext("No Wii U titles found."));
+            promptError(LanguageUtils::gettext("No titles matching criterias found."));
             this->noTitles = true;
         }
         consolePrintPos(39, 0, LanguageUtils::gettext("%s Sort: %s \ue084"),
                         (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
+            WHBLogPrintf("iteracio %d",i);
             if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidatesCount)
                 break;
+            bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
             DrawUtils::setFontColor(static_cast<Color>(0x00FF00FF));
+            WHBLogPrintf("candidates %d",candidatesCount);
+            WHBLogPrintf("scroll  %d ",scroll);
+            WHBLogPrintf("c2t %d",c2t[i + this->scroll]);
+        
             if (!this->titles[c2t[i + this->scroll]].currentBackup.selected)
                 DrawUtils::setFontColor(static_cast<Color>(0xFFFF00FF));
             if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
                 DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
             if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == KO)
                 DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
-            if (strlen(this->titles[c2t[i + this->scroll]].shortName) != 0u)
+            WHBLogPrintf("nom");
+            if (strlen(this->titles[c2t[i + this->scroll]].shortName) != 0u) {
                 consolePrintPos(M_OFF, i + 2, "   %s %s%s%s [%s]", this->titles[c2t[i + this->scroll]].shortName,
                                 this->titles[c2t[i + this->scroll]].isTitleOnUSB ? "(USB)" : "(NAND)",
                                 this->titles[c2t[i + this->scroll]].isTitleDupe ? " [D]" : "",
                                 this->titles[c2t[i + this->scroll]].currentBackup.selected ? LanguageUtils::gettext(" [Restore]" ) : LanguageUtils::gettext(" [Skip]"),
                                 titleStateAfterBR[this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState]);
-
-            else
-                consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", this->titles[i + this->scroll].highID,
+                                WHBLogPrintf("shortname %s",this->titles[c2t[i + this->scroll]].shortName);
+            }
+            else {
+                consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", this->titles[c2t[i + this->scroll]].highID,
                                 this->titles[c2t[i + this->scroll]].lowID);
+                                WHBLogPrintf("nameid  %08lx%08lx",this->titles[c2t[i + this->scroll]].highID,
+                                this->titles[c2t[i + this->scroll]].lowID);
+            }
             DrawUtils::setFontColor(COLOR_TEXT);
+            WHBLogPrintf("icona");
             if (this->titles[c2t[i + this->scroll]].iconBuf != nullptr) {
-                DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, this->titles[c2t[i + this->scroll]].iconBuf);
+                if (isWii)
+                    DrawUtils::drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
+                                      titles[c2t[i + this->scroll]].iconBuf);
+                else
+                    DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, this->titles[c2t[i + this->scroll]].iconBuf);
+                WHBLogPrintf("  drawTGA   -- var1 %d   var2 %d  c2t  %d    iconBuf %u",(M_OFF + 4) * 12 - 2,(i + 3) * 24,c2t[i + this->scroll],this->titles[c2t[i + this->scroll]].iconBuf);
             }
         }
         consolePrintPos(-1, 2 + cursorPos, "\u2192");

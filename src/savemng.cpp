@@ -187,13 +187,14 @@ static int32_t loadFilePart(const char *fPath, uint32_t start, uint32_t size, ui
         fclose(file);
     }
     return ret;
-}
+}   
 
 int32_t loadTitleIcon(Title *title) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
-    bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+    bool isWii = title->is_Wii;
+    //bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
     std::string path;
 
     if (isWii) {
@@ -788,7 +789,7 @@ bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
-    bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+    bool isWii = title->is_Wii;
     if (highID == 0 || lowID == 0)
         return false;
 
@@ -841,7 +842,7 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
-    bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+    bool isWii = title->is_Wii;
     if (isWii)
         return false;
 
@@ -1009,7 +1010,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime) 
             uint32_t highID = titles[i].highID;
             uint32_t lowID = titles[i].lowID;
             bool isUSB = titles[i].isTitleOnUSB;
-            bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+            bool isWii = titles[i].is_Wii;
             if ((sourceStorage == 0 && !isUSB) || (sourceStorage == 1 && isUSB)) // backup first WiiU USB savedata to slot 0
                 continue;
             uint8_t slot = getEmptySlot(highID,lowID,batchDatetime);
@@ -1035,7 +1036,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
-    bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+    bool isWii = title->is_Wii;
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string dstPath;
@@ -1139,7 +1140,8 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
-    bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+    bool isWii = title->is_Wii;
+    WHBLogPrintf("title type %s", isWii ? "vWii":"wiiU");
     std::string srcPath;
     srcPath = getDynamicBackupPath(highID, lowID, slot);
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
@@ -1301,7 +1303,8 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
-    bool isWii = ((highID & 0xFFFFFFF0) == 0x00010000);
+    bool isWii = title->is_Wii;
+    WHBLogPrintf("title type %s", isWii ? "vWii":"wiiU");
     std::string srcPath;
     std::string commonPath;
     std::string path;

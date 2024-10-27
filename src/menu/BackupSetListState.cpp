@@ -21,10 +21,10 @@ BackupSetListState::BackupSetListState() {
     this->sortAscending = BackupSetList::sortAscending;
 }
 
-BackupSetListState::BackupSetListState(Title *titles, int titlesCount, bool vWiiRestore) :
+BackupSetListState::BackupSetListState(Title *titles, int titlesCount, bool isWiiUBatchRestore) :
         titles(titles),
         titlesCount(titlesCount),
-        vWiiRestore(vWiiRestore) {
+        isWiiUBatchRestore(isWiiUBatchRestore) {
     finalScreen = false;
 }
 
@@ -101,7 +101,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             else    // is a step in batchRestore
             {
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<BatchRestoreOptions>(titles, titlesCount, vWiiRestore);
+                this->subState = std::make_unique<BatchRestoreOptions>(titles, titlesCount, isWiiUBatchRestore);
             }      
         }
         if (input->get(TRIGGER, PAD_BUTTON_Y)) {
