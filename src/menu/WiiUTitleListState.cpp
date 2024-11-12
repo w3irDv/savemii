@@ -24,7 +24,14 @@ void WiiUTitleListState::render() {
         if ((this->titles == nullptr) || (this->titlesCount == 0)) {
             promptError(LanguageUtils::gettext("No Wii U titles found."));
             this->noTitles = true;
+            DrawUtils::beginDraw();
+            consolePrintPosAligned(8, 4, 1, LanguageUtils::gettext("No Wii U titles found"));
+            consolePrintPosAligned(17, 4, 1, LanguageUtils::gettext("Any Button: Back"));
+            return;
         }
+         DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Wii U Titles"));
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(39, 0, LanguageUtils::gettext("%s Sort: %s \ue084"),
                         (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
@@ -35,14 +42,14 @@ void WiiUTitleListState::render() {
                 DrawUtils::setFontColor(static_cast<Color>(0xFFFF00FF));
             if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
                 DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
-            if (strlen(this->titles[i + this->scroll].shortName) != 0u)
+            //if (strlen(this->titles[i + this->scroll].shortName) != 0u)
                 consolePrintPos(M_OFF, i + 2, "   %s %s%s%s", this->titles[i + this->scroll].shortName,
                                 this->titles[i + this->scroll].isTitleOnUSB ? "(USB)" : "(NAND)",
                                 this->titles[i + this->scroll].isTitleDupe ? " [D]" : "",
                                 this->titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
-            else
-                consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", this->titles[i + this->scroll].highID,
-                                this->titles[i + this->scroll].lowID);
+            //else
+            //    consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", this->titles[i + this->scroll].highID,
+            //                    this->titles[i + this->scroll].lowID);
             DrawUtils::setFontColor(COLOR_TEXT);
             if (this->titles[i + this->scroll].iconBuf != nullptr) {
                 DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, this->titles[i + this->scroll].iconBuf);

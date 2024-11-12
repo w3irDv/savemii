@@ -93,6 +93,12 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_B))
             return SUBSTATE_RETURN;
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
+            if (! finalScreen) {
+                if (cursorPos + scroll == 0) {
+                    promptError(LanguageUtils::gettext("Root BackupSet cannot be selecte for batchRestore"));
+                    return SUBSTATE_RUNNING;
+                }
+            }
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
             DrawUtils::setRedraw(true);

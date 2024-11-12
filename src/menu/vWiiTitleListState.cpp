@@ -23,7 +23,14 @@ void vWiiTitleListState::render() {
         if ((this->titles == nullptr) || (this->titlesCount == 0)) {
             promptError(LanguageUtils::gettext("No vWii titles found."));
             this->noTitles = true;
+            DrawUtils::beginDraw();
+            consolePrintPosAligned(8, 4, 1, LanguageUtils::gettext("No vWii titles found"));
+            consolePrintPosAligned(17, 4, 1, LanguageUtils::gettext("Any Button: Back"));
+            return;
         }
+        DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("vWii Titles"));
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(39, 0, LanguageUtils::gettext("%s Sort: %s \ue084"),
                         (titleSort > 0) ? (sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         for (int i = 0; i < 14; i++) {
@@ -34,13 +41,13 @@ void vWiiTitleListState::render() {
                 DrawUtils::setFontColor(static_cast<Color>(0xFFFF00FF));
             if (strcmp(titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
                 DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
-            if (strlen(titles[i + this->scroll].shortName) != 0u)
+            //if (strlen(titles[i + this->scroll].shortName) != 0u)
                 consolePrintPos(M_OFF, i + 2, "   %s %s%s", titles[i + this->scroll].shortName,
                                 titles[i + this->scroll].isTitleDupe ? " [D]" : "",
                                 titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
-            else
-                consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", titles[i + this->scroll].highID,
-                                titles[i + this->scroll].lowID);
+            //else
+            //    consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", titles[i + this->scroll].highID,
+            //                    titles[i + this->scroll].lowID);
             DrawUtils::setFontColor(COLOR_TEXT);
             if (titles[i + this->scroll].iconBuf != nullptr) {
                 DrawUtils::drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,

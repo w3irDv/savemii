@@ -9,7 +9,7 @@
 
 class BRTitleSelectState : public ApplicationState {
 public:
-    BRTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles, int titlesCount);
+    BRTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles, int titlesCount, bool isWiiUBatchRestore);
 
     enum eState {
         STATE_BATCH_RESTORE_TITLE_SELECT,
@@ -31,6 +31,7 @@ private:
     bool fullBackup;
     Title *titles;
     int titlesCount;
+    bool isWiiUBatchRestore;
 
 
     std::vector<const char *> sortNames = {LanguageUtils::gettext("None"),

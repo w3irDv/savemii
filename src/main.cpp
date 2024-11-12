@@ -41,6 +41,7 @@ static bool contains(const T (&arr)[N], const T &element) {
 }
 
 static void disclaimer() {
+    consolePrintPosAligned(13, 0, 1,"SaveMii v%u.%u.%u", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
     consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
     consolePrintPosAligned(16, 0, 1,
@@ -226,6 +227,10 @@ static Title *loadWiiUTitles(int run) {
 
             free(xmlBuf);
         }
+        if (strlen(titles[wiiuTitlesCount].shortName) == 0u)
+            sprintf(titles[wiiuTitlesCount].shortName,"%08x%08x",
+                titles[wiiuTitlesCount].highID,
+                titles[wiiuTitlesCount].lowID);
 
         titles[wiiuTitlesCount].isTitleDupe = false;
         for (int i = 0; i < wiiuTitlesCount; i++) {
@@ -243,10 +248,7 @@ static Title *loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].isTitleOnUSB = isTitleOnUSB;
         titles[wiiuTitlesCount].listID = wiiuTitlesCount;
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
-            titles[wiiuTitlesCount].iconBuf = nullptr;
-        
-        //titles[wiiuTitlesCount].is_Wii = false;
-        WHBLogPrintf("count %d -- iconbuf %u",wiiuTitlesCount,titles[wiiuTitlesCount].iconBuf);
+            titles[wiiuTitlesCount].iconBuf = nullptr; 
 
         wiiuTitlesCount++;
 
@@ -347,6 +349,10 @@ static Title *loadWiiTitles() {
                                 titles[i].shortName[k++] = 0x80 | (bnrBuf[j] & 0x3F);
                             }
                         }
+                        if (strlen(titles[i].shortName) == 0u)
+                            sprintf(titles[i].shortName,"%08x%08x",
+                                titles[i].highID,
+                                titles[i].lowID);
 
                         memset(titles[i].longName, 0, sizeof(titles[i].longName));
                         for (int j = 0x20, k = 0; j < 0x40; j++) {

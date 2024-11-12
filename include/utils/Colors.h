@@ -10,3 +10,4 @@
 #define COLOR_KEY      Color(0xFF3333FF)
 #define COLOR_KEY_S      Color(0xFF666600)
 #define COLOR_KEY_C      Color(0xFF0000FF)
+#define COLOR_BG_SUCCESS      Color(0x00DD55FF)

@@ -2,6 +2,7 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/Colors.h>
 
 #include <menu/BatchRestoreState.h>
 #include <menu/BackupSetListState.h>
@@ -19,7 +20,10 @@ void BatchRestoreState::render() {
         return;
     }
     if (this->state == STATE_BATCH_RESTORE_MENU) {
+        DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Batch Restore"));
+        DrawUtils::setFontColor(COLOR_TEXT);
+        
         consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Batch Restore is .... \n bla bla bla"));
         consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Restore Wii U (%u Title%s)"), this->wiiuTitlesCount,
                         (this->wiiuTitlesCount > 1) ? "s" : "");

@@ -14,14 +14,15 @@
 #define MAX_TITLE_SHOW 14
 
 BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,
-    Title *titles, int titlesCount) :
+    Title *titles, int titlesCount, bool isWiiUBatchRestore) :
     sduser(sduser),
     wiiuuser(wiiuuser),
     common(common),
     wipeBeforeRestore(wipeBeforeRestore),
     fullBackup(fullBackup),
     titles(titles),
-    titlesCount(titlesCount)
+    titlesCount(titlesCount),
+    isWiiUBatchRestore(isWiiUBatchRestore)
 {
     WHBLogPrintf("sduser %d",sduser);
     WHBLogPrintf("wiiuuser %d",wiiuuser);
@@ -29,12 +30,13 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
     WHBLogPrintf("wipe %c",wipeBeforeRestore ? '0':'1');
     WHBLogPrintf("tcount %u",titlesCount);
     WHBLogPrintf("titles %u",titles);
+    bool test = false;
 
     c2t.clear();
     // from the subset of titles with backup data, filter out the ones without the specified user info
     for (int i = 0; i < this->titlesCount; i++) {
-        WHBLogPrintf("processing %u",i);
-        WHBLogPrintf("has backup %u",i);
+        //WHBLogPrintf("processing %u",i);
+        //WHBLogPrintf("has backup %u",i);
         this->titles[i].currentBackup.candidateToBeRestored = false;
         this->titles[i].currentBackup.selected = false;
         this->titles[i].currentBackup.hasUserSavedata = false;
@@ -77,7 +79,12 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
             WHBLogPrintf("init select wiiU - is wii %s",isWii ? "si" : "no");
             this->titles[i].currentBackup.candidateToBeRestored = true;  // backup has enough data to try restore
             this->titles[i].currentBackup.selected = true;  // from candidates list, user can select/deselest at wish
-
+            if (! test) {
+                this->titles[i].saveInit = false;
+                test = true;
+            }
+            if ( ! this->titles[i].saveInit )
+                this->titles[i].currentBackup.selected = false; // we discourage a restore to a not init titles
         } 
         else
         {
@@ -114,12 +121,22 @@ void BRTitleSelectState::render() {
         return;
     }
     if (this->state == STATE_BATCH_RESTORE_TITLE_SELECT) {
+        DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Batch Restore - Select & Go"));
+        DrawUtils::setFontColor(COLOR_TEXT);
         if ((this->titles == nullptr) || (this->titlesCount == 0 || (this->candidatesCount == 0))) {
-            promptError(LanguageUtils::gettext("No titles matching criterias found."));
+            DrawUtils::endDraw();
+            promptError(LanguageUtils::gettext("There are no titles matching selected filters."));
             this->noTitles = true;
+            DrawUtils::beginDraw();
+            consolePrintPosAligned(8, 4, 1, LanguageUtils::gettext("No titles found"));
+            consolePrintPosAligned(17, 4, 1, LanguageUtils::gettext("Any Button: Back"));
+            return;
         }
-        consolePrintPos(39, 0, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        consolePrintPosAligned(39, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
                         (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
+        std::string nxtAction;
+        std::string lastState;
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             WHBLogPrintf("iteracio %d",i);
             if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidatesCount)
@@ -130,36 +147,62 @@ void BRTitleSelectState::render() {
             WHBLogPrintf("scroll  %d ",scroll);
             WHBLogPrintf("c2t %d",c2t[i + this->scroll]);
         
-            if (!this->titles[c2t[i + this->scroll]].currentBackup.selected)
-                DrawUtils::setFontColor(static_cast<Color>(0xFFFF00FF));
+            if ( ! this->titles[c2t[i + this->scroll]].currentBackup.selected)
+                DrawUtils::setFontColor(static_cast<Color>(0x888800FF));
+            if (this->titles[c2t[i + this->scroll]].currentBackup.selected && ! this->titles[c2t[i + this->scroll]].saveInit)
+                DrawUtils::setFontColor(static_cast<Color>(0xFF8800FF));
             if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
                 DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
             if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == KO)
                 DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
+            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == OK)
+                DrawUtils::setFontColor(static_cast<Color>(0xFFFFFFFF));    
             WHBLogPrintf("nom");
-            if (strlen(this->titles[c2t[i + this->scroll]].shortName) != 0u) {
-                consolePrintPos(M_OFF, i + 2, "   %s %s%s%s [%s]", this->titles[c2t[i + this->scroll]].shortName,
-                                this->titles[c2t[i + this->scroll]].isTitleOnUSB ? "(USB)" : "(NAND)",
-                                this->titles[c2t[i + this->scroll]].isTitleDupe ? " [D]" : "",
-                                this->titles[c2t[i + this->scroll]].currentBackup.selected ? LanguageUtils::gettext(" [Restore]" ) : LanguageUtils::gettext(" [Skip]"),
-                                titleStateAfterBR[this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState]);
-                                WHBLogPrintf("shortname %s",this->titles[c2t[i + this->scroll]].shortName);
-            }
-            else {
-                consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", this->titles[c2t[i + this->scroll]].highID,
-                                this->titles[c2t[i + this->scroll]].lowID);
-                                WHBLogPrintf("nameid  %08lx%08lx",this->titles[c2t[i + this->scroll]].highID,
-                                this->titles[c2t[i + this->scroll]].lowID);
-            }
+
+            switch (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState) {
+                case NOT_TRIED :
+                    lastState = "[]";
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext("[Restore]") : LanguageUtils::gettext("[Skip]");
+                    break;
+                case OK :
+                    lastState = LanguageUtils::gettext("[Ok]");
+                    nxtAction = LanguageUtils::gettext("[Restored]");
+                    break;
+                case ABORTED :
+                    lastState = LanguageUtils::gettext("[AbortedByUser]");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext("[Retry]") : LanguageUtils::gettext("[Skip]");
+                    break;
+                case WR :
+                    lastState = LanguageUtils::gettext("[Warning-CheckSave]");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext("[Retry]") : LanguageUtils::gettext("[Skip]");
+                    break;
+                case KO:
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext("[Retry]") : LanguageUtils::gettext("[Skip]");
+                    lastState = LanguageUtils::gettext("[Failed]");
+                    break;
+                default:
+                    nxtAction = "";
+                    lastState = "";
+                    break;
+            }            
+
+            
+            consolePrintPos(M_OFF, i + 2, "   %s %s %s %s %s %s",
+                    this->titles[c2t[i + this->scroll]].shortName,
+                    this->titles[c2t[i + this->scroll]].isTitleOnUSB ? "(USB)" : "(NAND)",
+                    this->titles[c2t[i + this->scroll]].isTitleDupe ? " [D]" : "",
+                    this->titles[c2t[i + this->scroll]].saveInit ? "" : " [No Init]",
+                    nxtAction.c_str(),lastState.c_str());
+            //WHBLogPrintf("shortname %s",this->titles[c2t[i + this->scroll]].shortName);
             DrawUtils::setFontColor(COLOR_TEXT);
-            WHBLogPrintf("icona");
+            //WHBLogPrintf("icona");
             if (this->titles[c2t[i + this->scroll]].iconBuf != nullptr) {
                 if (isWii)
                     DrawUtils::drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
                                       titles[c2t[i + this->scroll]].iconBuf);
                 else
                     DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, this->titles[c2t[i + this->scroll]].iconBuf);
-                WHBLogPrintf("  drawTGA   -- var1 %d   var2 %d  c2t  %d    iconBuf %u",(M_OFF + 4) * 12 - 2,(i + 3) * 24,c2t[i + this->scroll],this->titles[c2t[i + this->scroll]].iconBuf);
+                //WHBLogPrintf("  drawTGA   -- var1 %d   var2 %d  c2t  %d    iconBuf %u",(M_OFF + 4) * 12 - 2,(i + 3) * 24,c2t[i + this->scroll],this->titles[c2t[i + this->scroll]].iconBuf);
             }
         }
         consolePrintPos(-1, 2 + cursorPos, "\u2192");
@@ -193,6 +236,38 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                 if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("vWii saves are in the vWii section. Continue?")))
                     return SUBSTATE_RUNNING;
             */
+           char summary[512];
+           const char* summaryTemplate;
+           char usermsg[128];
+           if (isWiiUBatchRestore) {
+                summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n%s\n%s\n%s\n%s.\nContinue?\n\n");
+                if (sduser > - 1) {
+                        snprintf(usermsg,64,LanguageUtils::gettext("- Restore from %s to < %s (%s) >"),getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
+                }
+                snprintf(summary,512,summaryTemplate,
+                    (sduser == -1) ? LanguageUtils::gettext("- Restore allusers") : usermsg,
+                    (common || sduser == -1 ) ? LanguageUtils::gettext("- Include common savedata: Y") :  LanguageUtils::gettext("- Include common savedata: N"),
+                    wipeBeforeRestore ? LanguageUtils::gettext("- Wipe data: Y") :  LanguageUtils::gettext("- Wipe data: N"),
+                    fullBackup ? LanguageUtils::gettext("- Perform full backup: Y") :  LanguageUtils::gettext("- Perform full backup: N"));
+           } else {
+                summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n%s\n%s.\nContinue?\n\n");
+                snprintf(summary,512,summaryTemplate,
+                wipeBeforeRestore ? LanguageUtils::gettext("- Wipe data: Y") :  LanguageUtils::gettext("- Wipe data: N"),
+                fullBackup ? LanguageUtils::gettext("- Perform full backup: Y") :  LanguageUtils::gettext("- Perform full backup: N"));
+           }
+
+           if (!promptConfirm(ST_WARNING,summary))
+                        return SUBSTATE_RUNNING;
+
+           for (int i = 0; i < titlesCount ; i++) {
+                if (! this->titles[i].currentBackup.selected )
+                    continue;
+                if (! this->titles[i].saveInit) {
+                    if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uniniilized titles (not recommended). Are you 100% sure?")))
+                        return SUBSTATE_RUNNING;
+                    break;
+                }
+           }
            WHBLogPrintf("initiating restore process");
             if ( fullBackup ) {
                 const std::string batchDatetime = getNowDateForFolder();
@@ -246,13 +321,42 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                 if (retCode > 0)
                     this->titles[i].currentBackup.batchRestoreState = KO;
                 WHBLogPrintf("%u - restore user: %d common: %s",i,wiiuuser,effectiveCommon ? "si":"no");
+                if (this->titles[i].currentBackup.batchRestoreState == OK || this->titles[i].currentBackup.batchRestoreState == WR )
+                    this->titles[i].currentBackup.selected = false;
            }
            
-           WHBLogPrintf("restore done");
            
-            //DrawUtils::setRedraw(true);
-            //this->state = STATE_DO_SUBSTATE;
-            //this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
+           WHBLogPrintf("restore done");
+           int titlesOK = 0;
+           int titlesAborted = 0;
+           int titlesWarning = 0;
+           int titlesKO = 0;
+           int titlesSkipped = 0; 
+           for (int i = 0; i < titlesCount ; i++) {
+                if (this->titles[i].currentBackup.candidateToBeRestored && ! this->titles[i].currentBackup.selected) {
+                    titlesSkipped++;
+                    continue;
+                }
+                switch (this->titles[i].currentBackup.batchRestoreState) {
+                    case OK :
+                        titlesOK++;
+                        break;
+                    case WR :
+                        titlesWarning++;
+                        break;
+                    case KO:
+                        titlesKO++;
+                        break;
+                    case ABORTED :
+                        titlesAborted++;
+                        break;
+                }
+           }
+           summaryTemplate = LanguageUtils::gettext("Restore done\n  OK: %d\n  Warning: %d\n  KO: %d\n Aborted: %d\n Skipped: %d\n");
+           snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped);
+           promptMessage(COLOR_BG_SUCCESS,summary);
+           DrawUtils::setRedraw(true);
+           return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
             if (this->candidatesCount <= 14)
@@ -274,7 +378,10 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                 cursorPos = this->candidatesCount - 1;
         }
         if (input->get(TRIGGER, PAD_BUTTON_Y)) {
-            this->titles[c2t[cursorPos + this->scroll]].currentBackup.selected = this->titles[c2t[cursorPos + this->scroll]].currentBackup.selected ? false:true;
+            if (this->titles[c2t[cursorPos + this->scroll]].currentBackup.batchRestoreState != OK)
+                this->titles[c2t[cursorPos + this->scroll]].currentBackup.selected = this->titles[c2t[cursorPos + this->scroll]].currentBackup.selected ? false:true;
+            else
+                return SUBSTATE_RUNNING;
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);

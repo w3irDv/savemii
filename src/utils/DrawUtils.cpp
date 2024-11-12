@@ -312,9 +312,9 @@ void DrawUtils::print(uint32_t x, uint32_t y, const wchar_t *string, bool alignR
 
 
             if (*string == '\n') {
-                WHBLogPrintf("minHeight: %d",mtx.minHeight);
+                //WHBLogPrintf("minHeight: %d",mtx.minHeight);
                 //penY += mtx.minHeight;
-                penY += 40; // temporal - 
+                penY += 36; // temporal fix for multiline output 
                 penX = x;
                 continue;
             }

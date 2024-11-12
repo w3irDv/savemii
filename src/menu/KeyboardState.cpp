@@ -12,6 +12,9 @@
 #define KB_ROW_OFFSET 6
 
 void KeyboardState::render() {
+     DrawUtils::setFontColor(COLOR_INFO);
+    consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Keyboard"));
+    DrawUtils::setFontColor(COLOR_TEXT);
     if (this->state == STATE_KEYBOARD) {
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPosAligned(0,4,1,"Keyboard");

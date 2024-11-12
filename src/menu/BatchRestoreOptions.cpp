@@ -5,6 +5,7 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/Colors.h>
 
 #include <whb/log_udp.h>
 #include <whb/log.h>
@@ -33,13 +34,13 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
         };
         if (this->titles[i].highID == 0 || this->titles[i].lowID == 0)
             continue;
-        if (! this->titles[i].saveInit)
-            continue;
+        //if (! this->titles[i].saveInit) // we allow uninitializedTitles
+        //    continue;
         if (this->titles[i].isTitleDupe && ! this->titles[i].isTitleOnUSB)
             continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) // skip CBHC savedata
             continue;
-        if (this->titles[i].is_Wii && isWiiUBatchRestore) // wii titles installed as wiiU will need special treatment
+        if (this->titles[i].is_Wii && isWiiUBatchRestore) // wii titles installed as wiiU appear in vWii restore
             continue;
         uint32_t highID = this->titles[i].highID;
         uint32_t lowID = this->titles[i].lowID;
@@ -54,12 +55,12 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                     if (data->d_name[0] == '8')
                         batchSDUsers.insert(data->d_name);
                     this->titles[i].currentBackup.hasBatchBackup=true;
-                    WHBLogPrintf("has backup %d",i);
+                    //WHBLogPrintf("has backup %d",i);
                 }
             } else {
                 this->titles[i].currentBackup.hasBatchBackup = ! folderEmpty (srcPath.c_str());
-                if (this->titles[i].currentBackup.hasBatchBackup)
-                    WHBLogPrintf("has backup %d",i);
+                //if (this->titles[i].currentBackup.hasBatchBackup)
+                    //WHBLogPrintf("has backup %d",i);
             }
 
         }
@@ -90,7 +91,9 @@ void BatchRestoreOptions::render() {
     }
 
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
-    
+        DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BatchRestore - Options"));
+        DrawUtils::setFontColor(COLOR_TEXT);
         if (isWiiUBatchRestore) {
             consolePrintPos(M_OFF, 3, LanguageUtils::gettext("Select SD user to copy from:"));
             if (sduser == -1)
@@ -110,11 +113,12 @@ void BatchRestoreOptions::render() {
                 consolePrintPos(M_OFF, 10, "   < %s >", common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
             }
         }
-        consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Wipe Target users before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
-        consolePrintPos(M_OFF, 13, LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes"):LanguageUtils::gettext("No"));
 
-        consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : cursorPos + 5 ), "\u2192");
-        
+        consolePrintPos(M_OFF, 12 - (isWiiUBatchRestore ? 0 : 8) , LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        consolePrintPos(M_OFF, 14 - (isWiiUBatchRestore ? 0 : 8), LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes"):LanguageUtils::gettext("No"));
+
+        consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3+(cursorPos-3)*2 + 5) - (isWiiUBatchRestore ? 0 : 8), "\u2192");
+
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
    }
 }
@@ -127,7 +131,7 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
                 WHBLogPrintf("sduser %d",sduser);
                 WHBLogPrintf("wiiuuser %d",wiiuuser);
                 WHBLogPrintf("titles %u",titles);
-                this->subState = std::make_unique<BRTitleSelectState>(sduser, wiiuuser, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount);
+                this->subState = std::make_unique<BRTitleSelectState>(sduser, wiiuuser, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchRestore);
         }
         if (input->get(TRIGGER, PAD_BUTTON_B))
             return SUBSTATE_RETURN;

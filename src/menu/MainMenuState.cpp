@@ -11,6 +11,7 @@
 
 #include <menu/BatchRestoreState.h>
 #include <menu/KeyboardState.h>
+#include <utils/Colors.h>
 
 #define ENTRYCOUNT 4
 
@@ -25,6 +26,9 @@ void MainMenuState::render() {
         return;
     }
     if (this->state == STATE_MAIN_MENU) {
+         DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Main menu"));
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Wii U Save Management (%u Title%s)"), this->wiiuTitlesCount,
                         (this->wiiuTitlesCount > 1) ? "s" : "");
         consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,

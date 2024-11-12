@@ -2,12 +2,16 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/Colors.h>
 
 static int cursorPos = 0;
 
 static std::string language;
 
 void ConfigMenuState::render() {
+    DrawUtils::setFontColor(COLOR_INFO);
+    consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Configuration Options"));
+    DrawUtils::setFontColor(COLOR_TEXT);
     language = LanguageUtils::getLoadedLanguage();
     consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Language: %s"), language.c_str());
     consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
