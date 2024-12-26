@@ -446,13 +446,34 @@ int main() {
 
     DrawUtils::setFont();
 
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing WPAD and KAPD"));
+    DrawUtils::endDraw();
+
     WPADInit();
     KPADInit();
     WPADEnableURCC(1);
 
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Getting Serial ID"));
+    DrawUtils::endDraw();
+
     getWiiUSerialId();
 
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing loadWiiU Titles"));
+    DrawUtils::endDraw();
+
     loadWiiUTitles(0);
+
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing ROMFS"));
+    DrawUtils::endDraw();
 
     int res = romfsInit();
     if (res) {
@@ -464,6 +485,7 @@ int main() {
     Swkbd_LanguageType systemLanguage = LanguageUtils::getSystemLanguage();
     LanguageUtils::loadLanguage(systemLanguage);
 
+    // notUsed
     if (!DrawUtils::initKFont()) {
         promptError("Failed to init keyboardFont");
         DrawUtils::endDraw();
@@ -481,6 +503,7 @@ int main() {
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     DrawUtils::endDraw();
+
 
     Title *wiiutitles = loadWiiUTitles(1);
     Title *wiititles = loadWiiTitles();

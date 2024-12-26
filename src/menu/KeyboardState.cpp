@@ -39,7 +39,6 @@ void KeyboardState::render() {
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Press Key  \uE003: Shift  \uE002: Del  \ue045: OK!  \ue001: Back"));      
     }   
 }
-// cursor , A -> select , X -> delete, Y -> shift, B -> Back, + = return
 
 ApplicationState::eSubState KeyboardState::update(Input *input) {
     if (input->get(TRIGGER, PAD_BUTTON_B)) {

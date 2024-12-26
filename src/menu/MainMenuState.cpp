@@ -10,7 +10,6 @@
 #include <utils/LanguageUtils.h>
 
 #include <menu/BatchRestoreState.h>
-#include <menu/KeyboardState.h>
 #include <utils/Colors.h>
 
 #define ENTRYCOUNT 4
@@ -36,7 +35,6 @@ void MainMenuState::render() {
         consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Batch Backup"));
         consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Batch Restore"));
         consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
-        consolePrintPos(M_OFF, 10, "tag: %s",tag.c_str());
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
     }
 }
@@ -75,12 +73,8 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_DOWN))
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
-        if (input->get(TRIGGER, PAD_BUTTON_Y)) {
-            this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<KeyboardState>(tag);
-        }
         /*
-        if (input->get(TRIGGER, PAD_BUTTON_X)) {
+        if (input->get(TRIGGER, PAD_BUTTON_Y)) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<BackupSetListState>();
         } 

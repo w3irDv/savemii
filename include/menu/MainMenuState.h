@@ -18,7 +18,6 @@ public:
 
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
-    std::string tag;
 
 private:
     std::unique_ptr<ApplicationState> subState{};

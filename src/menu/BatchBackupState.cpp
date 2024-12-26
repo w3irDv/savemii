@@ -41,12 +41,15 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
             case 0:
                 backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
                 backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime);
+                writeBackupAllMetadata(batchDatetime,"WiiU and vWii titles");
                 break;
             case 1:
                 backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
+                writeBackupAllMetadata(batchDatetime,"WiiU titles");
                 break;
             case 2:
                 backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime);
+                writeBackupAllMetadata(batchDatetime,"vWii titles");
                 break;
             default:
                 return SUBSTATE_RETURN;

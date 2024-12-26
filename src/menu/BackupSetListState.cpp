@@ -54,15 +54,13 @@ void BackupSetListState::render() {
     }
     if (this->state == STATE_BACKUPSET_MENU) {
         std::string backupSetItem;
+        DrawUtils::setFontColor(COLOR_INFO);
         if (BackupSetList::currentBackupSetList->entriesView == BackupSetList::currentBackupSetList->entries) {
             consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets"));    
         } else {
-            DrawUtils::setFontColor(COLOR_INFO);
             consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets (filter applied)"));
         }
         DrawUtils::setFontColor(COLOR_TEXT);
-        //consolePrintPos(47, 0, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
-        //                    this->sortAscending ? "\u2191" : "\u2193");
         consolePrintPosAligned(0,4,2, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
                             this->sortAscending ? "\u2191" : "\u2193");
         for (int i = 0; i < MAX_ROWS_SHOW; i++) {
@@ -84,7 +82,6 @@ void BackupSetListState::render() {
             consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BS  \ue045: Tag BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back"));
         else
             consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back"));
-        consolePrintPos (40,2,"tag %s, newtag %s",tag.c_str(),newTag.c_str());
     }
 }
 

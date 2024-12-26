@@ -24,6 +24,7 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
     titlesCount(titlesCount),
     isWiiUBatchRestore(isWiiUBatchRestore)
 {
+    WHBLogPrintf("IN BRTitleSelectState. Inputs:");
     WHBLogPrintf("sduser %d",sduser);
     WHBLogPrintf("wiiuuser %d",wiiuuser);
     WHBLogPrintf("common %c",common ? '0':'1');
@@ -45,21 +46,21 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
         if ( this->titles[i].currentBackup.hasBatchBackup == false )
             continue;
         
-        WHBLogPrintf("get id %u",i);
-        WHBLogPrintf("shortname %s",this->titles[i].shortName);
+        //WHBLogPrintf("get id %u",i);
+        //WHBLogPrintf("shortname %s",this->titles[i].shortName);
         
         uint32_t highID = this->titles[i].highID;
         uint32_t lowID = this->titles[i].lowID;
         bool isWii = titles[i].is_Wii;
-        WHBLogPrintf("is wii %s",isWii ? "si" : "no");
+        //WHBLogPrintf("is wii %s",isWii ? "si" : "no");
 
         std::string srcPath = getDynamicBackupPath(highID, lowID, 0);
 
         if (! isWii) {
             std::string usersavePath = srcPath+"/"+getSDacc()[sduser].persistentID;
 
-            WHBLogPrintf("check user - %u",i);
-            WHBLogPrintf("check empty path - %s",usersavePath.c_str());
+            //WHBLogPrintf("check user - %u",i);
+            //WHBLogPrintf("check empty path - %s",usersavePath.c_str());
 
             if (! folderEmpty(usersavePath.c_str()))
                 this->titles[i].currentBackup.hasUserSavedata = true; 
@@ -75,8 +76,8 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
             if ( sduser != -1 && ! this->titles[i].currentBackup.hasCommonSavedata && ! this->titles[i].currentBackup.hasUserSavedata )
                 continue;
 
-            WHBLogPrintf("candiadte/select set to true - %u", i);
-            WHBLogPrintf("init select wiiU - is wii %s",isWii ? "si" : "no");
+            //WHBLogPrintf("candiadte/select set to true - %u", i);
+            //WHBLogPrintf("init select wiiU - is wii %s",isWii ? "si" : "no");
             this->titles[i].currentBackup.candidateToBeRestored = true;  // backup has enough data to try restore
             this->titles[i].currentBackup.selected = true;  // from candidates list, user can select/deselest at wish
             if (! test) {
@@ -88,14 +89,16 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
         } 
         else
         {
-            WHBLogPrintf("init select wii - is wii %s",isWii ? "si" : "no");
+            //WHBLogPrintf("init select wii - is wii %s",isWii ? "si" : "no");
             this->titles[i].currentBackup.candidateToBeRestored = true;
             this->titles[i].currentBackup.selected = true; 
         }
         // to recover title from "candidate title" index
         this->c2t.push_back(i);
+        this->titles[i].currentBackup.lastErrCode = 0;
+
     }
-    WHBLogPrintf("out of loop");
+    //WHBLogPrintf("out of loop");
     candidatesCount = (int) this->c2t.size();
     WHBLogPrintf("init done. size: %u",candidatesCount);
 
@@ -138,14 +141,14 @@ void BRTitleSelectState::render() {
         std::string nxtAction;
         std::string lastState;
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
-            WHBLogPrintf("iteracio %d",i);
+            //WHBLogPrintf("iteracio %d",i);
             if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidatesCount)
                 break;
             bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
             DrawUtils::setFontColor(static_cast<Color>(0x00FF00FF));
-            WHBLogPrintf("candidates %d",candidatesCount);
-            WHBLogPrintf("scroll  %d ",scroll);
-            WHBLogPrintf("c2t %d",c2t[i + this->scroll]);
+            //WHBLogPrintf("candidates %d",candidatesCount);
+            //WHBLogPrintf("scroll  %d ",scroll);
+            //WHBLogPrintf("c2t %d",c2t[i + this->scroll]);
         
             if ( ! this->titles[c2t[i + this->scroll]].currentBackup.selected)
                 DrawUtils::setFontColor(static_cast<Color>(0x888800FF));
@@ -157,45 +160,51 @@ void BRTitleSelectState::render() {
                 DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
             if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == OK)
                 DrawUtils::setFontColor(static_cast<Color>(0xFFFFFFFF));    
-            WHBLogPrintf("nom");
+            //WHBLogPrintf("nom");
 
             switch (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState) {
                 case NOT_TRIED :
                     lastState = "[]";
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext("[Restore]") : LanguageUtils::gettext("[Skip]");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext(">> Restore") : LanguageUtils::gettext(">> Skip");
                     break;
                 case OK :
-                    lastState = LanguageUtils::gettext("[Ok]");
-                    nxtAction = LanguageUtils::gettext("[Restored]");
+                    lastState = LanguageUtils::gettext("[OK]");
+                    nxtAction = LanguageUtils::gettext("|Restored|");
                     break;
                 case ABORTED :
-                    lastState = LanguageUtils::gettext("[AbortedByUser]");
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext("[Retry]") : LanguageUtils::gettext("[Skip]");
+                    lastState = LanguageUtils::gettext("[AB]");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 case WR :
-                    lastState = LanguageUtils::gettext("[Warning-CheckSave]");
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext("[Retry]") : LanguageUtils::gettext("[Skip]");
+                    lastState = LanguageUtils::gettext("[WR]");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 case KO:
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext("[Retry]") : LanguageUtils::gettext("[Skip]");
-                    lastState = LanguageUtils::gettext("[Failed]");
+                    lastState = LanguageUtils::gettext("[KO]");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 default:
-                    nxtAction = "";
                     lastState = "";
+                    nxtAction = "";
                     break;
             }            
 
-            
+            //int lastErrCode = this->titles[c2t[i + this->scroll]].currentBackup.lastErrCode;
+            //std::string lastErrCodeString = "(Err: "+std::to_string(lastErrCode)+")";
+            char shortName[32];
+            for (int p=0;p<32;p++)
+                shortName[p] = this->titles[c2t[i + this->scroll]].shortName[p];
+            shortName[31] = '\0'; 
             consolePrintPos(M_OFF, i + 2, "   %s %s %s %s %s %s",
-                    this->titles[c2t[i + this->scroll]].shortName,
+                    shortName,
                     this->titles[c2t[i + this->scroll]].isTitleOnUSB ? "(USB)" : "(NAND)",
-                    this->titles[c2t[i + this->scroll]].isTitleDupe ? " [D]" : "",
-                    this->titles[c2t[i + this->scroll]].saveInit ? "" : " [No Init]",
-                    nxtAction.c_str(),lastState.c_str());
-            //WHBLogPrintf("shortname %s",this->titles[c2t[i + this->scroll]].shortName);
+                    this->titles[c2t[i + this->scroll]].isTitleDupe ? "[D]" : "",
+                    this->titles[c2t[i + this->scroll]].saveInit ? "" : "[No Init]",
+                    lastState.c_str(),
+                    nxtAction.c_str());
+            WHBLogPrintf("shortname %s nextAction: %s",this->titles[c2t[i + this->scroll]].shortName,
+                nxtAction.c_str());
             DrawUtils::setFontColor(COLOR_TEXT);
-            //WHBLogPrintf("icona");
             if (this->titles[c2t[i + this->scroll]].iconBuf != nullptr) {
                 if (isWii)
                     DrawUtils::drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
@@ -256,15 +265,19 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                 fullBackup ? LanguageUtils::gettext("- Perform full backup: Y") :  LanguageUtils::gettext("- Perform full backup: N"));
            }
 
-           if (!promptConfirm(ST_WARNING,summary))
-                        return SUBSTATE_RUNNING;
+           if (!promptConfirm(ST_WARNING,summary)) {
+                DrawUtils::setRedraw(true);
+                return SUBSTATE_RUNNING;
+           }
 
            for (int i = 0; i < titlesCount ; i++) {
                 if (! this->titles[i].currentBackup.selected )
                     continue;
                 if (! this->titles[i].saveInit) {
-                    if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uniniilized titles (not recommended). Are you 100% sure?")))
+                    if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?"))) {
+                        DrawUtils::setRedraw(true);
                         return SUBSTATE_RUNNING;
+                    }   
                     break;
                 }
            }
@@ -275,7 +288,7 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                 WHBLogPrintf("perform all backup");
             }
 
-            int retCode;
+            int retCode = 0;
 
            for (int i = 0; i < titlesCount ; i++) {
                 if (! this->titles[i].currentBackup.selected )
@@ -301,11 +314,15 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                     }
 
                     retCode = wipeSavedata(&this->titles[i], wiiuuser, effectiveCommon, false);
+                    WHBLogPrintf("wipe retcode: %d",retCode);
                     if (retCode > 0)
                         this->titles[i].currentBackup.batchRestoreState = WR;
                     WHBLogPrintf("%u - wipe user: %d common: %s",i,wiiuuser,effectiveCommon ? "si":"no");
                 }
+
                 wipeDone:
+                int globalRetCode = retCode<<8; 
+                WHBLogPrintf("wipe ret code %d",retCode);
                 WHBLogPrintf("restoring");
                 if (sduser != -1) { 
                     if ( ! this->titles[i].currentBackup.hasUserSavedata && effectiveCommon) {
@@ -314,30 +331,34 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                         if (retCode > 0)
                             this->titles[i].currentBackup.batchRestoreState = KO;
                         WHBLogPrintf("%u - restore user: %d common: %s",i,-2,effectiveCommon ? "si":"no");
-                        continue;
+                        goto restoreDone;
                     }
                 }
                 retCode = restoreSavedata(&this->titles[i], 0, sduser, wiiuuser, effectiveCommon, false); //always from slot 0
                 if (retCode > 0)
                     this->titles[i].currentBackup.batchRestoreState = KO;
                 WHBLogPrintf("%u - restore user: %d common: %s",i,wiiuuser,effectiveCommon ? "si":"no");
+                
+                restoreDone:
                 if (this->titles[i].currentBackup.batchRestoreState == OK || this->titles[i].currentBackup.batchRestoreState == WR )
                     this->titles[i].currentBackup.selected = false;
+                
+                globalRetCode = globalRetCode + retCode;
+                this->titles[i].currentBackup.lastErrCode = globalRetCode;
+                WHBLogPrintf("restore ret code %d",retCode);
            }
            
            
-           WHBLogPrintf("restore done");
+           
+           WHBLogPrintf("restore process done");
            int titlesOK = 0;
            int titlesAborted = 0;
            int titlesWarning = 0;
            int titlesKO = 0;
            int titlesSkipped = 0; 
-           for (int i = 0; i < titlesCount ; i++) {
-                if (this->titles[i].currentBackup.candidateToBeRestored && ! this->titles[i].currentBackup.selected) {
-                    titlesSkipped++;
-                    continue;
-                }
-                switch (this->titles[i].currentBackup.batchRestoreState) {
+           for (int i = 0; i < this->candidatesCount ; i++) {
+                WHBLogPrintf("%s restoreState %d",this->titles[c2t[i]].shortName,this->titles[c2t[i]].currentBackup.batchRestoreState);
+                switch (this->titles[c2t[i]].currentBackup.batchRestoreState) {
                     case OK :
                         titlesOK++;
                         break;
@@ -350,9 +371,12 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                     case ABORTED :
                         titlesAborted++;
                         break;
+                    default:
+                        titlesSkipped++;
+                        break;
                 }
            }
-           summaryTemplate = LanguageUtils::gettext("Restore done\n  OK: %d\n  Warning: %d\n  KO: %d\n Aborted: %d\n Skipped: %d\n");
+           summaryTemplate = LanguageUtils::gettext("Restore completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
            snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped);
            promptMessage(COLOR_BG_SUCCESS,summary);
            DrawUtils::setRedraw(true);

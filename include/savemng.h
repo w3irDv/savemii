@@ -37,7 +37,8 @@ struct backupInfo {
     bool selected;
     bool hasUserSavedata;
     bool hasCommonSavedata;
-    eBatchRestoreState batchRestoreState; 
+    eBatchRestoreState batchRestoreState;
+    int lastErrCode; 
 };
 
 struct Title {
