@@ -100,8 +100,13 @@ public:
     static void setBackupSetSubPath();
     static void initBackupSetList();
     static void setBackupSetSubPathToRoot() { backupSetSubPath = "/"; }
+    static void setBackupSetToRoot() { setBackupSetEntry(0); setBackupSetSubPathToRoot();}
     static void saveBackupSetSubPath() { savedBackupSetSubPath = backupSetSubPath; }
     static void restoreBackupSetSubPath() { backupSetSubPath = savedBackupSetSubPath; }
+    static bool getIsInitializationRequired() { return isInitializationRequired; }
+    static void setIsInitializationRequired(bool isInitializationRequired_) {
+            BackupSetList::isInitializationRequired = isInitializationRequired_;
+        }
  
 private:
     static bool sortAscending;
@@ -117,6 +122,7 @@ private:
     static std::string backupSetSubPath;
     static std::string backupSetEntry;
     static std::string savedBackupSetSubPath;
+    inline static bool isInitializationRequired = false;
 
 };
 

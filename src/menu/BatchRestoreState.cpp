@@ -24,11 +24,13 @@ void BatchRestoreState::render() {
         consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Batch Restore"));
         DrawUtils::setFontColor(COLOR_TEXT);
         
-        
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
         consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Restore Wii U (%u Title%s)"), this->wiiuTitlesCount,
                         (this->wiiuTitlesCount > 1) ? "s" : "");
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
         consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Restore vWii (%u Title%s)"), this->vWiiTitlesCount,
                         (this->vWiiTitlesCount > 1) ? "s" : "");
+        DrawUtils::setFontColor(COLOR_TEXT);                
         consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPos(M_OFF, 6, LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to a different user in the same console \n* or to a different console where the games are previouly installed.\nIn the later case, it is recommended to first run the game to \n  initialize the savedata."));

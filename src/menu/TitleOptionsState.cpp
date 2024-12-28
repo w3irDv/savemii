@@ -29,21 +29,25 @@ void TitleOptionsState::render() {
         }
         this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
         entrycount = 3;
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2, "[%08X-%08X] %s", this->title.highID, this->title.lowID,
                         this->title.shortName);
         if (this->task == copytoOtherDevice) {
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Destination:"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "NAND" : "USB");
         } else if (this->task > 2) {
             entrycount = 2;
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             consolePrintPos(M_OFF, 5, "   < v%u >", this->versionList != nullptr ? this->versionList[slot] : 0);
         } else if (this->task == wipe) {
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Delete from:"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "USB" : "NAND");
         } else {
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("slot"));
-
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             if (((this->title.highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
                 consolePrintPos(M_OFF, 5, "   < SaveGame Manager GX > (%s)",
                                 emptySlot ? LanguageUtils::gettext("Empty")
@@ -55,11 +59,13 @@ void TitleOptionsState::render() {
 
         }
 
+        DrawUtils::setFontColor(COLOR_TEXT);
         if (this->isWiiUTitle) {
             if (task == restore) {
                 if (!emptySlot) {
                     entrycount++;
                     consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select SD user to copy from:"));
+                    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                     if (sduser == -1)
                         consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("all users"));
                     else
@@ -71,8 +77,10 @@ void TitleOptionsState::render() {
                 }
             }
 
+            DrawUtils::setFontColor(COLOR_TEXT);
             if (task == wipe) {
                 consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select Wii U user to delete from:"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                 if (this->wiiuuser == -1)
                     consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("all users"));
                 else
@@ -84,12 +92,17 @@ void TitleOptionsState::render() {
                                             : LanguageUtils::gettext("Empty"));
             }
 
+            DrawUtils::setFontColor(COLOR_TEXT);
             if ((task == backup) || (task == restore) || (task == copytoOtherDevice)) {
                 if ((task == restore) && emptySlot)
                     entrycount--;
                 else {
                     consolePrintPos(M_OFF, (task == restore) ? 10 : 7, LanguageUtils::gettext("Select Wii U user%s:"),
                                     (task == copytoOtherDevice) ? LanguageUtils::gettext(" to copy from") : ((task == restore) ? LanguageUtils::gettext(" to copy to") : ""));
+                    if (task == restore)
+                        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
+                    else
+                        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                     if (this->wiiuuser == -1)
                         consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s >", LanguageUtils::gettext("all users"));
                     else
@@ -104,6 +117,8 @@ void TitleOptionsState::render() {
                                                 : LanguageUtils::gettext("Empty"));
                 }
             }
+
+            DrawUtils::setFontColor(COLOR_TEXT);
             if ((task == backup) || (task == restore))
                 if (!emptySlot) {
                     Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
@@ -111,8 +126,10 @@ void TitleOptionsState::render() {
                         consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
                                     metadataObj->simpleFormat().c_str());
                         tag = metadataObj->getTag();
-                        if ( tag != "" )
+                        if ( tag != "" ) {
+                            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
                             consolePrintPos(TAG_OFF, 5,"[%s]",tag.c_str());
+                        }
                     }
                     delete metadataObj;
                 }
@@ -120,6 +137,7 @@ void TitleOptionsState::render() {
             if (task == copytoOtherDevice) {
                 entrycount++;
                 consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user%s:"), (task == copytoOtherDevice) ? LanguageUtils::gettext(" to copy to") : "");
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                 if (wiiuuser_d == -1)
                     consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("all users"));
                 else
@@ -131,6 +149,7 @@ void TitleOptionsState::render() {
                                             : LanguageUtils::gettext("Empty"));
             }
 
+            DrawUtils::setFontColor(COLOR_TEXT);
             if ((task != importLoadiine) && (task != exportLoadiine)) {
                 if (this->wiiuuser > -1) {
                     if (hasCommonSave(&this->title,
@@ -139,6 +158,10 @@ void TitleOptionsState::render() {
                                     this->versionList != nullptr ? this->versionList[slot] : 0)) {
                         consolePrintPos(M_OFF, (task == restore) || (task == copytoOtherDevice) ? 13 : 10,
                                         LanguageUtils::gettext("Include 'common' save?"));
+                        if ((task == restore) || (task == copytoOtherDevice))
+                            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
+                        else
+                            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                         consolePrintPos(M_OFF, (task == restore) || (task == copytoOtherDevice) ? 14 : 11, "   < %s >",
                                         common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                     } else {
@@ -154,6 +177,7 @@ void TitleOptionsState::render() {
             } else {
                 if (hasCommonSave(&this->title, true, true, slot, this->versionList != nullptr ? this->versionList[slot] : 0)) {
                     consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Include 'common' save?"));
+                    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                     consolePrintPos(M_OFF, 8, "   < %s >", common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                 } else {
                     common = false;
@@ -162,11 +186,11 @@ void TitleOptionsState::render() {
                 }
             }
 
+            DrawUtils::setFontColor(COLOR_TEXT);
             consolePrintPos(M_OFF, 5 + cursorPos * 3, "\u2192");
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawTGA(660, 100, 1, this->title.iconBuf);
         } else {
-
             entrycount = 1;
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawRGB5A3(650, 100, 1, this->title.iconBuf);
@@ -183,6 +207,7 @@ void TitleOptionsState::render() {
             }
         }
 
+        DrawUtils::setFontColor(COLOR_TEXT);
         switch (task) {
             case backup:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Backup"));

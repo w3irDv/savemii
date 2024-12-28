@@ -32,29 +32,40 @@ void WiiUTitleListState::render() {
          DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Wii U Titles"));
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPos(39, 0, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        consolePrintPosAligned(0 , 4, 2,  LanguageUtils::gettext("%s Sort: %s \ue084"),
                         (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= this->titlesCount)
                 break;
-            DrawUtils::setFontColor(static_cast<Color>(0x00FF00FF));
-            if (!this->titles[i + this->scroll].saveInit)
-                DrawUtils::setFontColor(static_cast<Color>(0xFFFF00FF));
-            if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
-                DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
-            //if (strlen(this->titles[i + this->scroll].shortName) != 0u)
-                consolePrintPos(M_OFF, i + 2, "   %s %s%s%s", this->titles[i + this->scroll].shortName,
+            if ( i == cursorPos )
+            {
+                DrawUtils::setFontColor(COLOR_LIST_AT_CURSOR);
+                if (!this->titles[i + this->scroll].saveInit)
+                    DrawUtils::setFontColor(COLOR_LIST_NOSAVE_AT_CURSOR);
+                if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
+                    DrawUtils::setFontColor(COLOR_LIST_DANGER_AT_CURSOR);
+            }
+            else
+            {
+                DrawUtils::setFontColor(COLOR_LIST);
+                if (!this->titles[i + this->scroll].saveInit)
+                    DrawUtils::setFontColor(COLOR_LIST_NOSAVE);
+                if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
+                    DrawUtils::setFontColor(COLOR_LIST_DANGER);
+            }
+            
+            consolePrintPos(M_OFF+1, i + 2, "   %s %s%s%s%s",
+                                this->titles[i + this->scroll].shortName,
                                 this->titles[i + this->scroll].isTitleOnUSB ? "(USB)" : "(NAND)",
                                 this->titles[i + this->scroll].isTitleDupe ? " [D]" : "",
-                                this->titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
-            //else
-            //    consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", this->titles[i + this->scroll].highID,
-            //                    this->titles[i + this->scroll].lowID);
-            DrawUtils::setFontColor(COLOR_TEXT);
+                                this->titles[i + this->scroll].noFwImg ? LanguageUtils::gettext(" [vWiiInject]") : "",
+                                this->titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]")
+                            );
             if (this->titles[i + this->scroll].iconBuf != nullptr) {
                 DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, this->titles[i + this->scroll].iconBuf);
             }
         }
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(-1, 2 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Game  \ue001: Back"));
     }
@@ -84,12 +95,17 @@ ApplicationState::eSubState WiiUTitleListState::update(Input *input) {
                     return SUBSTATE_RUNNING;
                 }
             }
+            /*
             std::string path = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
                                                          (this->titles[this->targ].isTitleOnUSB) ? getUSB().c_str() : "storage_mlc01:", this->titles[this->targ].highID,
                                                          this->titles[this->targ].lowID);
             if (checkEntry(path.c_str()) != 0)
+            */
+            if(this->titles[this->targ].noFwImg)
                 if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("vWii saves are in the vWii section. Continue?")))
                     return SUBSTATE_RUNNING;
+            
+
             if (!this->titles[this->targ].saveInit) {
                 if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Recommended to run Game at least one time. Continue?")) ||
                     !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?"))) {

@@ -250,6 +250,19 @@ static Title *loadWiiUTitles(int run) {
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr; 
 
+        std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
+                    titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+                    titles[wiiuTitlesCount].highID,
+                    titles[wiiuTitlesCount].lowID);
+        if (checkEntry(fwpath.c_str()) != 0)
+            titles[wiiuTitlesCount].noFwImg = true;
+        else
+            titles[wiiuTitlesCount].noFwImg = false;
+
+        WHBLogPrintf("%s %s %s",
+            titles[wiiuTitlesCount].shortName,
+            titles[wiiuTitlesCount].is_Wii ? "vWii" : "WiiU",
+            titles[wiiuTitlesCount].noFwImg ? "noFW" : "siFW");
         wiiuTitlesCount++;
 
         DrawUtils::beginDraw();
@@ -385,6 +398,7 @@ static Title *loadWiiTitles() {
                 titles[i].highID = strtoul(highID, nullptr, 16);
                 titles[i].lowID = strtoul(data->d_name, nullptr, 16);
                 titles[i].is_Wii = true;
+                titles[i].noFwImg = true;
 
                 titles[i].listID = i;
                 memcpy(titles[i].productCode, &titles[i].lowID, 4);

@@ -96,12 +96,15 @@ void BatchRestoreOptions::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         if (isWiiUBatchRestore) {
             consolePrintPos(M_OFF, 3, LanguageUtils::gettext("Select SD user to copy from:"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             if (sduser == -1)
                 consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("all users"));
             else
                 consolePrintPos(M_OFF, 4, "   < %s >", getSDacc()[sduser].persistentID);
             
+            DrawUtils::setFontColor(COLOR_TEXT);
             consolePrintPos(M_OFF, 6 , LanguageUtils::gettext("Select Wii U user to copy to"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
             if (this->wiiuuser == -1)
                 consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("same user than in source"));
             else
@@ -109,14 +112,19 @@ void BatchRestoreOptions::render() {
                                 getWiiUacc()[wiiuuser].miiName, getWiiUacc()[wiiuuser].persistentID);
 
             if (this->wiiuuser > -1) {
+                DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPos(M_OFF, 9, LanguageUtils::gettext("Include 'common' save?"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                 consolePrintPos(M_OFF, 10, "   < %s >", common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
             }
         }
 
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
         consolePrintPos(M_OFF, 12 - (isWiiUBatchRestore ? 0 : 8) , LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
         consolePrintPos(M_OFF, 14 - (isWiiUBatchRestore ? 0 : 8), LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes"):LanguageUtils::gettext("No"));
 
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3+(cursorPos-3)*2 + 5) - (isWiiUBatchRestore ? 0 : 8), "\u2192");
 
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));

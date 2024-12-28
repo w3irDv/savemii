@@ -1102,11 +1102,14 @@ void writeBackupAllMetadata(const std::string & batchDatetime, const std::string
     delete metadataObj;
 }
 
-void backupAllSave(Title *titles, int count, const std::string & batchDatetime) {
+void backupAllSave(Title *titles, int count, const std::string & batchDatetime, bool onlySelectedTitles /*= false*/) {
     for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
         for (int i = 0; i < count; i++) {
             if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
                 continue;
+            if (onlySelectedTitles)
+                if (! titles[i].currentBackup.selected)
+                    continue;
             uint32_t highID = titles[i].highID;
             uint32_t lowID = titles[i].lowID;
             bool isUSB = titles[i].isTitleOnUSB;

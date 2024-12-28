@@ -256,6 +256,13 @@ void DrawUtils::setFontColor(Color col) {
     font_col = col;
 }
 
+void DrawUtils::setFontColorByCursor(Color col, Color colAtCursor,int cursorPos, int line)  {
+    if (cursorPos == line)
+        font_col = colAtCursor;
+    else
+        font_col = col;
+}
+
 static void draw_freetype_bitmap(SFT_Image *bmp, int32_t x, int32_t y) {
     int32_t i, j, p, q;
 

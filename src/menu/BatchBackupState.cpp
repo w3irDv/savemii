@@ -15,13 +15,16 @@ static int cursorPos = 0;
 void BatchBackupState::render() {
     DrawUtils::setFontColor(COLOR_INFO);
     consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Batch Backup"));
-    DrawUtils::setFontColor(COLOR_TEXT);
+    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
     consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Backup All (%u Title%s)"), this->wiiuTitlesCount + this->vWiiTitlesCount,
                     ((this->wiiuTitlesCount + this->vWiiTitlesCount) > 1) ? "s" : "");
+    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
     consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Backup Wii U (%u Title%s)"), this->wiiuTitlesCount,
                     (this->wiiuTitlesCount > 1) ? "s" : "");
+    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
     consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Backup vWii (%u Title%s)"), this->vWiiTitlesCount,
                     (this->vWiiTitlesCount > 1) ? "s" : "");
+    DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
     consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
 }

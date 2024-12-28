@@ -67,15 +67,27 @@ void BackupSetListState::render() {
             if (i + scroll < 0 || i + scroll >= BackupSetList::currentBackupSetList->entriesView)
                 break;
             backupSetItem = BackupSetList::currentBackupSetList->at(i + scroll);
-            DrawUtils::setFontColor(COLOR_LIST);
-            if ( backupSetItem == BackupSetList::ROOT_BS)
-                DrawUtils::setFontColor(COLOR_LIST_HIGH);
-            if ( backupSetItem == BackupSetList::getBackupSetEntry())
-                DrawUtils::setFontColor(COLOR_INFO);
+
+            if ( i == cursorPos ) {
+                DrawUtils::setFontColor(COLOR_LIST_AT_CURSOR);
+                if ( backupSetItem == BackupSetList::ROOT_BS)
+                    DrawUtils::setFontColor(COLOR_LIST_HIGH_AT_CURSOR);
+                if ( backupSetItem == BackupSetList::getBackupSetEntry())
+                    DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+            }
+            else
+            {
+                DrawUtils::setFontColor(COLOR_LIST);
+                if ( backupSetItem == BackupSetList::ROOT_BS)
+                    DrawUtils::setFontColor(COLOR_LIST_HIGH);
+                if ( backupSetItem == BackupSetList::getBackupSetEntry())
+                    DrawUtils::setFontColor(COLOR_INFO);
+            }
+
             consolePrintPos(M_OFF-1, i + 2, "  %s", backupSetItem.substr(0,15).c_str());
             consolePrintPos(21, i+2,"%s", BackupSetList::currentBackupSetList->getStretchedSerialIdAt(i+scroll).c_str());
             consolePrintPos(33, i+2,"%s", BackupSetList::currentBackupSetList->getTagAt(i+scroll).c_str());
-            }
+        }
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(-1, 2 + cursorPos, "\u2192");
         if (cursorPos + scroll > 0)
@@ -193,6 +205,11 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                         BackupSetList::currentBackupSetList->resetTagRange();
                     delete metadataObj;
                 }
+            }
+            if (BackupSetList::getIsInitializationRequired() ) {
+                BackupSetList::initBackupSetList();
+                BackupSetListState::resetCursorPosition();
+                BackupSetList::setIsInitializationRequired(false);
             }
             this->subState.reset();
             this->state = STATE_BACKUPSET_MENU;

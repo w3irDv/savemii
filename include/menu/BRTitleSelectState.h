@@ -37,7 +37,7 @@ private:
     std::vector<const char *> sortNames = {LanguageUtils::gettext("None"),
                                            LanguageUtils::gettext("Name"),
                                            LanguageUtils::gettext("Storage"),
-                                           LanguageUtils::gettext("Storage+Name")};
+                                           LanguageUtils::gettext("Stg+Name")};
 
     int titleSort = 1;
     int scroll = 0;
