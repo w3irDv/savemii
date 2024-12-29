@@ -32,7 +32,7 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
     WHBLogPrintf("wipe %c",wipeBeforeRestore ? '0':'1');
     WHBLogPrintf("tcount %u",titlesCount);
     WHBLogPrintf("titles %u",titles);
-    bool test = false;
+    bool testForceSaveInitFalse = false;
 
     c2t.clear();
     // from the subset of titles with backup data, filter out the ones without the specified user info
@@ -83,9 +83,9 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
             //WHBLogPrintf("init select wiiU - is wii %s",isWii ? "si" : "no");
             this->titles[i].currentBackup.candidateToBeRestored = true;  // backup has enough data to try restore
             this->titles[i].currentBackup.selected = true;  // from candidates list, user can select/deselest at wish
-            if (test) {
+            if (testForceSaveInitFalse) {
                 this->titles[i].saveInit = false;
-                test = false;
+                testForceSaveInitFalse = false;
             }
             if ( ! this->titles[i].saveInit )
                 this->titles[i].currentBackup.selected = false; // we discourage a restore to a not init titles
@@ -166,41 +166,20 @@ void BRTitleSelectState::render() {
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             }
 
-            if ( cursorPos == i) {
-                if ( this->titles[c2t[i + this->scroll]].currentBackup.selected)
-                    DrawUtils::setFontColor(COLOR_LIST_AT_CURSOR);
-                else
-                    DrawUtils::setFontColor(COLOR_LIST_SKIPPED_AT_CURSOR);
-                
-                if (this->titles[c2t[i + this->scroll]].currentBackup.selected && ! this->titles[c2t[i + this->scroll]].saveInit) {
-                    DrawUtils::setFontColor(COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR);
-                }
-                if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
-                    DrawUtils::setFontColor(COLOR_LIST_DANGER_AT_CURSOR);
-                if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == KO)
-                    DrawUtils::setFontColor(COLOR_LIST_DANGER_AT_CURSOR);
-                if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == OK)
-                    DrawUtils::setFontColor(COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR);
-
-            }
+            if ( this->titles[c2t[i + this->scroll]].currentBackup.selected)
+                DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
             else
-            {
+                DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED,COLOR_LIST_SKIPPED_AT_CURSOR,cursorPos,i);
             
-                if ( this->titles[c2t[i + this->scroll]].currentBackup.selected)
-                    DrawUtils::setFontColor(COLOR_LIST);
-                else
-                    DrawUtils::setFontColor(COLOR_LIST_SKIPPED);
-                
-                if (this->titles[c2t[i + this->scroll]].currentBackup.selected && ! this->titles[c2t[i + this->scroll]].saveInit) {
-                    DrawUtils::setFontColor(COLOR_LIST_SELECTED_NOSAVE);
-                }
-                if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
-                    DrawUtils::setFontColor(COLOR_LIST_DANGER);
-                if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == KO)
-                    DrawUtils::setFontColor(COLOR_LIST_DANGER);
-                if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == OK)
-                    DrawUtils::setFontColor(COLOR_LIST_RESTORE_SUCCESS);    
+            if (this->titles[c2t[i + this->scroll]].currentBackup.selected && ! this->titles[c2t[i + this->scroll]].saveInit) {
+                DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
             }
+            if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
+            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == KO)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
+            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == OK)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS,COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR,cursorPos,i);
 
             switch (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState) {
                 case NOT_TRIED :
@@ -257,7 +236,7 @@ void BRTitleSelectState::render() {
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(-1, 2 + cursorPos, "\u2192");
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue003: Select/Deselect  \ue000: Restore selected titles  \ue001: Back"));
+        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue003\ue07e: Select/Deselect  \ue000: Restore selected titles  \ue001: Back"));
     }
 }
 

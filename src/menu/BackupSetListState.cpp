@@ -68,21 +68,14 @@ void BackupSetListState::render() {
                 break;
             backupSetItem = BackupSetList::currentBackupSetList->at(i + scroll);
 
-            if ( i == cursorPos ) {
-                DrawUtils::setFontColor(COLOR_LIST_AT_CURSOR);
-                if ( backupSetItem == BackupSetList::ROOT_BS)
-                    DrawUtils::setFontColor(COLOR_LIST_HIGH_AT_CURSOR);
-                if ( backupSetItem == BackupSetList::getBackupSetEntry())
-                    DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-            }
-            else
-            {
-                DrawUtils::setFontColor(COLOR_LIST);
-                if ( backupSetItem == BackupSetList::ROOT_BS)
-                    DrawUtils::setFontColor(COLOR_LIST_HIGH);
-                if ( backupSetItem == BackupSetList::getBackupSetEntry())
-                    DrawUtils::setFontColor(COLOR_INFO);
-            }
+
+            DrawUtils::setFontColorByCursor(COLOR_LIST_NOSAVE,COLOR_LIST_NOSAVE_AT_CURSOR,cursorPos,i);
+
+            DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
+            if ( backupSetItem == BackupSetList::ROOT_BS)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_HIGH,COLOR_LIST_HIGH_AT_CURSOR,cursorPos,i);
+            if ( backupSetItem == BackupSetList::getBackupSetEntry())
+                DrawUtils::setFontColorByCursor(COLOR_INFO,COLOR_INFO_AT_CURSOR,cursorPos,i);
 
             consolePrintPos(M_OFF-1, i + 2, "  %s", backupSetItem.substr(0,15).c_str());
             consolePrintPos(21, i+2,"%s", BackupSetList::currentBackupSetList->getStretchedSerialIdAt(i+scroll).c_str());
@@ -104,7 +97,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
             if (! finalScreen) {
                 if (cursorPos + scroll == 0) {
-                    promptError(LanguageUtils::gettext("Root BackupSet cannot be selecte for batchRestore"));
+                    promptError(LanguageUtils::gettext("Root BackupSet cannot be selected for batchRestore"));
                     return SUBSTATE_RUNNING;
                 }
             }

@@ -37,22 +37,12 @@ void WiiUTitleListState::render() {
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= this->titlesCount)
                 break;
-            if ( i == cursorPos )
-            {
-                DrawUtils::setFontColor(COLOR_LIST_AT_CURSOR);
-                if (!this->titles[i + this->scroll].saveInit)
-                    DrawUtils::setFontColor(COLOR_LIST_NOSAVE_AT_CURSOR);
-                if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
-                    DrawUtils::setFontColor(COLOR_LIST_DANGER_AT_CURSOR);
-            }
-            else
-            {
-                DrawUtils::setFontColor(COLOR_LIST);
-                if (!this->titles[i + this->scroll].saveInit)
-                    DrawUtils::setFontColor(COLOR_LIST_NOSAVE);
-                if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
-                    DrawUtils::setFontColor(COLOR_LIST_DANGER);
-            }
+
+            DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
+            if (!this->titles[i + this->scroll].saveInit)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_NOSAVE,COLOR_LIST_NOSAVE_AT_CURSOR,cursorPos,i);
+            if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
             
             consolePrintPos(M_OFF+1, i + 2, "   %s %s%s%s%s",
                                 this->titles[i + this->scroll].shortName,
