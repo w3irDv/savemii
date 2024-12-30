@@ -9,8 +9,16 @@
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
 
+//#define DEBUG
+#ifdef DEBUG
 #include <whb/log_udp.h>
 #include <whb/log.h>
+#endif
+
+//#define TESTSAVEINIT
+#ifdef TESTSAVEINIT
+bool testForceSaveInitFalse = true
+#endif
 
 #define MAX_TITLE_SHOW 14
 
@@ -25,20 +33,10 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
     titlesCount(titlesCount),
     isWiiUBatchRestore(isWiiUBatchRestore)
 {
-    WHBLogPrintf("IN BRTitleSelectState. Inputs:");
-    WHBLogPrintf("sduser %d",sduser);
-    WHBLogPrintf("wiiuuser %d",wiiuuser);
-    WHBLogPrintf("common %c",common ? '0':'1');
-    WHBLogPrintf("wipe %c",wipeBeforeRestore ? '0':'1');
-    WHBLogPrintf("tcount %u",titlesCount);
-    WHBLogPrintf("titles %u",titles);
-    bool testForceSaveInitFalse = false;
 
     c2t.clear();
     // from the subset of titles with backup data, filter out the ones without the specified user info
     for (int i = 0; i < this->titlesCount; i++) {
-        //WHBLogPrintf("processing %u",i);
-        //WHBLogPrintf("has backup %u",i);
         this->titles[i].currentBackup.candidateToBeRestored = false;
         this->titles[i].currentBackup.selected = false;
         this->titles[i].currentBackup.hasUserSavedata = false;
@@ -49,21 +47,14 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
         
-        //WHBLogPrintf("get id %u",i);
-        //WHBLogPrintf("shortname %s",this->titles[i].shortName);
-        
         uint32_t highID = this->titles[i].highID;
         uint32_t lowID = this->titles[i].lowID;
         bool isWii = titles[i].is_Wii;
-        //WHBLogPrintf("is wii %s",isWii ? "si" : "no");
 
         std::string srcPath = getDynamicBackupPath(highID, lowID, 0);
 
         if (! isWii) {
             std::string usersavePath = srcPath+"/"+getSDacc()[sduser].persistentID;
-
-            //WHBLogPrintf("check user - %u",i);
-            //WHBLogPrintf("check empty path - %s",usersavePath.c_str());
 
             if (! folderEmpty(usersavePath.c_str()))
                 this->titles[i].currentBackup.hasUserSavedata = true; 
@@ -79,20 +70,19 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
             if ( sduser != -1 && ! this->titles[i].currentBackup.hasCommonSavedata && ! this->titles[i].currentBackup.hasUserSavedata )
                 continue;
 
-            //WHBLogPrintf("candiadte/select set to true - %u", i);
-            //WHBLogPrintf("init select wiiU - is wii %s",isWii ? "si" : "no");
             this->titles[i].currentBackup.candidateToBeRestored = true;  // backup has enough data to try restore
             this->titles[i].currentBackup.selected = true;  // from candidates list, user can select/deselest at wish
-            if (testForceSaveInitFalse) {
+#ifdef TESTSAVEINIT
+            if (testForceSaveInitFalse) {  // first title will have fake false saveinit
                 this->titles[i].saveInit = false;
                 testForceSaveInitFalse = false;
             }
+#endif
             if ( ! this->titles[i].saveInit )
                 this->titles[i].currentBackup.selected = false; // we discourage a restore to a not init titles
         } 
         else
         {
-            //WHBLogPrintf("init select wii - is wii %s",isWii ? "si" : "no");
             if (strcmp(this->titles[i].productCode, "OHBC") == 0)
                 continue;
             this->titles[i].currentBackup.candidateToBeRestored = true;
@@ -103,10 +93,7 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
         this->titles[i].currentBackup.lastErrCode = 0;
 
     }
-    //WHBLogPrintf("out of loop");
     candidatesCount = (int) this->c2t.size();
-    WHBLogPrintf("init done. size: %u",candidatesCount);
-
 };
 
 void BRTitleSelectState::updateC2t()
@@ -120,7 +107,6 @@ void BRTitleSelectState::updateC2t()
 }
 
 void BRTitleSelectState::render() {
-    WHBLogPrintf("rendering");
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
             OSFatal("SubState was null");
@@ -152,7 +138,6 @@ void BRTitleSelectState::render() {
         std::string nxtAction;
         std::string lastState;
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
-            //WHBLogPrintf("iteracio %d",i);
             if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidatesCount)
                 break;
             bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
@@ -208,8 +193,6 @@ void BRTitleSelectState::render() {
                     break;
             }            
 
-            //int lastErrCode = this->titles[c2t[i + this->scroll]].currentBackup.lastErrCode;
-            //std::string lastErrCodeString = "(Err: "+std::to_string(lastErrCode)+")";
             char shortName[32];
             for (int p=0;p<32;p++)
                 shortName[p] = this->titles[c2t[i + this->scroll]].shortName[p];
@@ -222,16 +205,12 @@ void BRTitleSelectState::render() {
                     this->titles[c2t[i + this->scroll]].saveInit ? "" : " [No Init]",
                     lastState.c_str(),
                     nxtAction.c_str());
-            WHBLogPrintf("shortname %s nextAction: %s",this->titles[c2t[i + this->scroll]].shortName,
-                nxtAction.c_str());
-            //DrawUtils::setFontColor(COLOR_TEXT);
             if (this->titles[c2t[i + this->scroll]].iconBuf != nullptr) {
                 if (isWii)
                     DrawUtils::drawRGB5A3((M_OFF + 6) * 12, (i + 3) * 24 + 8, 0.25,
                                       titles[c2t[i + this->scroll]].iconBuf);
                 else
                     DrawUtils::drawTGA((M_OFF + 7) * 12 - 5, (i + 3) * 24 + 4, 0.18, this->titles[c2t[i + this->scroll]].iconBuf);
-                   //WHBLogPrintf("  drawTGA   -- var1 %d   var2 %d  c2t  %d    iconBuf %u",(M_OFF + 4) * 12 - 2,(i + 3) * 24,c2t[i + this->scroll],this->titles[c2t[i + this->scroll]].iconBuf);
             }
         }
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -257,15 +236,6 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
-            /*
-            this->targ = cursorPos + this->scroll;
-            std::string path = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
-                                                         (this->titles[this->targ].isTitleOnUSB) ? getUSB().c_str() : "storage_mlc01:", this->titles[this->targ].highID,
-                                                         this->titles[this->targ].lowID);
-            if (checkEntry(path.c_str()) != 0)
-                if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("vWii saves are in the vWii section. Continue?")))
-                    return SUBSTATE_RUNNING;
-            */
            char summary[512];
            const char* summaryTemplate;
            char usermsg[128];
@@ -302,13 +272,15 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                     break;
                 }
            }
-           WHBLogPrintf("initiating restore process");
+
             if ( fullBackup ) {
                 const std::string batchDatetime = getNowDateForFolder();
                 backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
-                writeBackupAllMetadata(batchDatetime,"preBatchRestore Backup ");
+                if(isWiiUBatchRestore)
+                    writeBackupAllMetadata(batchDatetime,"(pre)BatchRestore Backup (WiiU)");
+                else
+                    writeBackupAllMetadata(batchDatetime,"(pre)BatchRestore Backup (vWii)");
                 BackupSetList::setIsInitializationRequired(true);
-                WHBLogPrintf("perform all backup");
             }
 
             int retCode = 0;
@@ -316,12 +288,9 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
            for (int i = 0; i < titlesCount ; i++) {
                 if (! this->titles[i].currentBackup.selected )
                     continue;
-                WHBLogPrintf("processing title %d %s",i,this->titles[i].shortName);
                 this->titles[i].currentBackup.batchRestoreState = OK;
-                WHBLogPrintf("TITLE HAS COMMON: %s",this->titles[i].currentBackup.hasCommonSavedata?"si":"no");
                 bool effectiveCommon = common && this->titles[i].currentBackup.hasCommonSavedata;
                 if ( wipeBeforeRestore ) {
-                    WHBLogPrintf("wiping");
                     if (sduser != -1) {   
                         if ( ! this->titles[i].currentBackup.hasUserSavedata && effectiveCommon) { // if sduser does not exist, don't try to wipe wiiuser, but only common
                             // -2 is a flag just to only operate on common saves (because sd user does not exist for this title)
@@ -330,37 +299,29 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                                 this->titles[i].currentBackup.batchRestoreState = WR;
                             else if (retCode < 0)
                                 this->titles[i].currentBackup.batchRestoreState = ABORTED;
-
-                            WHBLogPrintf("%u - wipe user: %d common: %s",i,-2,effectiveCommon ? "si":"no");
                             goto wipeDone;
                         }
                     }
 
                     retCode = wipeSavedata(&this->titles[i], wiiuuser, effectiveCommon, false);
-                    WHBLogPrintf("wipe retcode: %d",retCode);
                     if (retCode > 0)
                         this->titles[i].currentBackup.batchRestoreState = WR;
-                    WHBLogPrintf("%u - wipe user: %d common: %s",i,wiiuuser,effectiveCommon ? "si":"no");
                 }
 
                 wipeDone:
-                int globalRetCode = retCode<<8; 
-                WHBLogPrintf("wipe ret code %d",retCode);
-                WHBLogPrintf("restoring");
+                int globalRetCode = retCode<<8;
                 if (sduser != -1) { 
                     if ( ! this->titles[i].currentBackup.hasUserSavedata && effectiveCommon) {
                         // -2 is a flag just to only operate on common saves (because sd user does not exist for this title)
                         retCode = restoreSavedata(&this->titles[i], 0, -2 , wiiuuser, effectiveCommon, false);
                         if (retCode > 0)
                             this->titles[i].currentBackup.batchRestoreState = KO;
-                        WHBLogPrintf("%u - restore user: %d common: %s",i,-2,effectiveCommon ? "si":"no");
                         goto restoreDone;
                     }
                 }
                 retCode = restoreSavedata(&this->titles[i], 0, sduser, wiiuuser, effectiveCommon, false); //always from slot 0
                 if (retCode > 0)
                     this->titles[i].currentBackup.batchRestoreState = KO;
-                WHBLogPrintf("%u - restore user: %d common: %s",i,wiiuuser,effectiveCommon ? "si":"no");
                 
                 restoreDone:
                 if (this->titles[i].currentBackup.batchRestoreState == OK || this->titles[i].currentBackup.batchRestoreState == WR )
@@ -368,19 +329,14 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                 
                 globalRetCode = globalRetCode + retCode;
                 this->titles[i].currentBackup.lastErrCode = globalRetCode;
-                WHBLogPrintf("restore ret code %d",retCode);
            }
            
-           
-           
-           WHBLogPrintf("restore process done");
            int titlesOK = 0;
            int titlesAborted = 0;
            int titlesWarning = 0;
            int titlesKO = 0;
            int titlesSkipped = 0; 
            for (int i = 0; i < this->candidatesCount ; i++) {
-                WHBLogPrintf("%s restoreState %d",this->titles[c2t[i]].shortName,this->titles[c2t[i]].currentBackup.batchRestoreState);
                 switch (this->titles[c2t[i]].currentBackup.batchRestoreState) {
                     case OK :
                         titlesOK++;

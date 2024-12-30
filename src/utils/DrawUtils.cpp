@@ -32,8 +32,10 @@ uint32_t DrawUtils::sBufferSizeTV = 0, DrawUtils::sBufferSizeDRC = 0;
 BOOL DrawUtils::sConsoleHasForeground = TRUE;
 
 static SFT cFont = {};
-static SFT kFont = {};
 static SFT pFont = {};
+#ifdef KFONT
+static SFT kFont = {};
+#endif
 
 static Color font_col(0xFFFFFFFF);
 
@@ -215,6 +217,12 @@ bool DrawUtils::initFont(OSSharedDataType fontType) {
 }
 
 
+bool DrawUtils::setFont() {
+    cFont = pFont;
+    return true;
+}
+
+#ifdef KFONT
 bool DrawUtils::initKFont() {
     uint8_t * kfont = nullptr;
     uint32_t size = 0;
@@ -233,23 +241,21 @@ bool DrawUtils::initKFont() {
     return true;
 }
 
-bool DrawUtils::setFont() {
-    cFont = pFont;
-    return true;
-}
 bool DrawUtils::setKFont() {
     cFont = kFont;
     return true;
 }
+#endif
 
 void DrawUtils::deinitFont() {
     sft_freefont(pFont.font);
     pFont.font = nullptr;
     pFont = {};
-
+#ifdef KFONT
     sft_freefont(kFont.font);
     kFont.font = nullptr;
     kFont = {};
+#endif
 }
 
 void DrawUtils::setFontColor(Color col) {

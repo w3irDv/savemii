@@ -7,8 +7,11 @@
 #include <utils/LanguageUtils.h>
 #include <utils/Colors.h>
 
+//#define DEBUG
+#ifdef DEBUG
 #include <whb/log_udp.h>
 #include <whb/log.h>
+#endif
 
 #define ENTRYCOUNT 5
 
@@ -18,11 +21,8 @@ extern uint8_t sdaccn;
 BatchRestoreOptions::BatchRestoreOptions(Title *titles, 
     int titlesCount,bool  isWiiUBatchRestore) : titles(titles),
                         titlesCount(titlesCount), isWiiUBatchRestore(isWiiUBatchRestore) {
-    WHBLogPrintf("batchRestore constructor");
-    WHBLogPrintf("restore type %s",isWiiUBatchRestore ? "wiiU" : "vWii");
     minCursorPos = isWiiUBatchRestore ? 0 : 3;
     cursorPos = minCursorPos;
-    //WHBLogPrintf("cursorPos %d    minCursospos %d",cursorPos,minCursorPos);
     for (int i = 0; i<this->titlesCount; i++) {
         this->titles[i].currentBackup= {
             .hasBatchBackup = false,
@@ -55,12 +55,9 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                     if (data->d_name[0] == '8')
                         batchSDUsers.insert(data->d_name);
                     this->titles[i].currentBackup.hasBatchBackup=true;
-                    //WHBLogPrintf("has backup %d",i);
                 }
             } else {
                 this->titles[i].currentBackup.hasBatchBackup = ! folderEmpty (srcPath.c_str());
-                //if (this->titles[i].currentBackup.hasBatchBackup)
-                    //WHBLogPrintf("has backup %d",i);
             }
 
         }
@@ -135,22 +132,14 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {        
                 this->state = STATE_DO_SUBSTATE;
-                /*
-                WHBLogPrintf("to title select");
-                WHBLogPrintf("sduser %d",sduser);
-                WHBLogPrintf("wiiuuser %d",wiiuuser);
-                WHBLogPrintf("titles %u",titles);
-                */
                 this->subState = std::make_unique<BRTitleSelectState>(sduser, wiiuuser, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchRestore);
         }
         if (input->get(TRIGGER, PAD_BUTTON_B))
             return SUBSTATE_RETURN;
         if (input->get(TRIGGER, PAD_BUTTON_X)) {
             this->state = STATE_DO_SUBSTATE;
-            //this->subState = std::make_unique<ConfigMenuState>();
         }
         if (input->get(TRIGGER, PAD_BUTTON_UP)) {
-            //if (--cursorPos == -1)
             if (--cursorPos < minCursorPos)
                 ++cursorPos;
             if (cursorPos == 2 && sduser == -1 ) 

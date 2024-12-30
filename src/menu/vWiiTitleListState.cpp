@@ -24,7 +24,7 @@ void vWiiTitleListState::render() {
             promptError(LanguageUtils::gettext("No vWii titles found."));
             this->noTitles = true;
             DrawUtils::beginDraw();
-            consolePrintPosAligned(8, 4, 1, LanguageUtils::gettext("No vWii titles found"));
+            consolePrintPosAligned(8, 4, 1, LanguageUtils::gettext("No vWii titles found."));
             consolePrintPosAligned(17, 4, 1, LanguageUtils::gettext("Any Button: Back"));
             return;
         }

@@ -104,7 +104,7 @@ void TitleOptionsState::render() {
                     else
                         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                     if (this->wiiuuser == -1)
-                        consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s >", LanguageUtils::gettext("all users"));
+                        consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s >", (task == copytoOtherDevice || task == backup) ? LanguageUtils::gettext("all users") : LanguageUtils::gettext("same user than in source"));
                     else
                         consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s (%s) > (%s)",
                                         getWiiUacc()[wiiuuser].miiName, getWiiUacc()[wiiuuser].persistentID,
@@ -139,7 +139,7 @@ void TitleOptionsState::render() {
                 consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user%s:"), (task == copytoOtherDevice) ? LanguageUtils::gettext(" to copy to") : "");
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                 if (wiiuuser_d == -1)
-                    consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("all users"));
+                    consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("same user than in source"));
                 else
                     consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUacc()[wiiuuser_d].miiName,
                                     getWiiUacc()[wiiuuser_d].persistentID,
@@ -218,7 +218,7 @@ void TitleOptionsState::render() {
                 break;
             case restore:
                 consolePrintPos(20,0,LanguageUtils::gettext("Restore"));
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Change BackupSet  \ue000: Restore  \ue001: Back"));
+                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
                 break;
             case wipe:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Wipe"));

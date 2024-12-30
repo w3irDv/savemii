@@ -19,7 +19,7 @@
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #include <whb/log_udp.h>
@@ -259,10 +259,6 @@ static Title *loadWiiUTitles(int run) {
         else
             titles[wiiuTitlesCount].noFwImg = false;
 
-        WHBLogPrintf("%s %s %s",
-            titles[wiiuTitlesCount].shortName,
-            titles[wiiuTitlesCount].is_Wii ? "vWii" : "WiiU",
-            titles[wiiuTitlesCount].noFwImg ? "noFW" : "siFW");
         wiiuTitlesCount++;
 
         DrawUtils::beginDraw();
@@ -498,14 +494,6 @@ int main() {
     }
     Swkbd_LanguageType systemLanguage = LanguageUtils::getSystemLanguage();
     LanguageUtils::loadLanguage(systemLanguage);
-
-    // notUsed
-    if (!DrawUtils::initKFont()) {
-        promptError("Failed to init keyboardFont");
-        DrawUtils::endDraw();
-        State::shutdown();
-        return 0;
-    }
 
     if (!initFS()) {
         promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
