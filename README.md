@@ -11,6 +11,99 @@ For sorting Titles press R to change sorting method and press L to change betwee
 
 Use it at your own risk and please report any issues that may occur.
 
+## Quick Notes
+### Wii U Title Management / vWii Title Management
+
+Allows you to backup/restore/wipe individual titles.
+
+1. First select the title you want to manage.
+	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing it beforehand) it will be marked as "Not init" and will appear in yellow. You can try to manage it (restore task), but the outcome is uncertain. It is recommended to first play to the game before trying to restore its savedata.
+		1. An special case of this are vWii injects. They have a vWii title and an associated  Wii U title with no savedata  that will appear in Wii U title Management marked with "Not init". Savedata for these titles can be managed from the vWii Management tasks, and will appear ther after you create an initital save by playing it. Savemii allows yo to manage the Wii U title portion, but as stated, the real savedata should be managed from the "vWii Title managament" tasks.  
+2. Select the task you want to do:
+	1. Backup: Copy savedata from USB/NAND to SD
+	2. Restore: Copy savedata from SD to USB/NAND
+	3. Wipe: Delete savedata from USB/NAND
+	4. Export / Import to Loadiine: Legacy options to manage Loadiine savedata
+	5. Copy to other Device: If savedata for a title is present in USB and NAND, copy it from one storage to the other
+
+#### Backup
+1. Select a slot to save the savedata. You can select a number from 0 to 255, each one representing a different folder in the SD card. After the backup is done, you can tag the slot with a meaningful name using the Option X
+2. For Wii U titles, select which data to save
+	1. All users: Recommended option Will backup all game data
+	2. From user: xxxxx. Will only backup the data for the specified profile. In this case, must also specify if you want to save "common" data or not. "Common" savedata is data shared by all profiles
+
+```
+sd:/wiiu/backup/
+     xxxxxxxx-yyyyyyy/
+         0/
+            saveMii.json
+            80000001/
+                ...
+            80000002/
+                ...
+            ... one folder for each profile
+	        common/
+	            ...
+	    1/
+			    ...
+```
+#### Restore
+1. Select a slot to get the data from.  By default, data from the "root" backup set (the one where the manual backups are stored) is used. But you can also use slots from batch restore backup sets, by using option X and selecting the one you want to use. BackupSets can also be tagged by using option X in the backupSet list Menu.
+   To identify which data the slot contains: If the slot has been tagged, you will see its tag next to the slot number. On the top line, you can see which backupSet are you using. And at the last line, you can see when the savedata were taken, and from which console.
+2. For Wii U titles, select witch data to restore:
+	1. From: All users / To: Same user than Source
+		1. This wil restore all save data (profiles+common) from the selected slot keeping the same userid that was used to backup the data. This option can be only used to restore previous savedata from the same console, or if the profile ids in the new console are the same thant the ones in the source console. If profile ids from source and target differ, you must use fhe following option
+	2. From: select source user / To: select target user. This will copy savedata from the specified profile id in the slotbackup to the specified profile id in the console. You can specify if copy common savedata or not.
+	   If you are just copying the savedata from one profileid to a different one in the same console, choose `copy common savedata: no`. If you  are restoring to a new console with different profile ids, just choose `copy common savedata: yes` once for any of the profile ids, and copy the rest of profiles with `copy common savedata: no`
+#### Wipe
+1. Sometimes you will need to wipe savedata in the console before restoring a previous backup. If a restore is unsuccesful, please try to wipe previous data before attempting a new restore. Options are the same than in the *Backup* task, but now refer to savedata for the specified titel in the NAND or in the USB. 
+#### Copy to other device
+If a title has savedata in the NAND and in the USB, you can copy it between both storages. Options are the same than in the *Restore* task.
+
+
+### Batch Backup
+
+You can backup savedata for all Wii U titles and all Wii titles at once using this tasks. Savedata will be stored in a "Backup set" in the `batch` directori, and can after be used to restore individual titles or to batch restore all of them.
+Batch backupsets can be tagged from the list batch backup set menu (accessible by pressing X in the Backup task for any title, or by entering the menu Backupset Management from the Main menu)
+
+```
+sd:/wiiu/backup/batch/
+     ${timestamp}/
+	     xxxxxxxx-yyyyyyy/
+	         0/                    (USB or NAND savedata for the title)
+	            saveMii.json
+	            80000001/
+	                ...
+	            80000002/
+	                ...
+	            ... one folder for each profile
+		        common/
+		            ...
+		    1/                              (NAND savedata only for titles simultanously installed in USB and NAND)
+				    ...
+		xxxxxxxxx-yyyyyyy/
+	         0/
+	        ....
+```
+
+### Batch Restore
+
+This task allows you to restore  from a batch backupset the savedata for titles already installed in the Wii U or in the vWii
+1. Select wether you want to restore Wii U titles or vWii titles
+2. Select the backupSet you want to restore from
+3. Select wich data to restore. Options are the same than in the *Restore* task. You can also choose if you want to perform a full backup (recommended) or to wipe data before restoring it
+4. The list of all titles that are installed, that have a backup in the backupset, and that match  the savedata criteria choosen in the previous step will appear. You can select / deselect which titles to restore. Titles with "Not Init" savedata will be skipped by default.
+5. Once you have reviewed the list of titles to be restored, press A. A summary screen will appear, and if is OK, you can inititiate the restore.
+6. Once the restore is completed, a summary screen will show number of sucess/failed/skipped titles.
+7. The list of all titles will appear again, now showing the restored status. You can try to select failed titles and restore them again to see what the error is. Succesfully restored titles will be skipped.
+
+### Backupset management
+In this menu you can tag backupsets or delete the one you don't need. You cal also set the one you want to use to restore savedata (you cal also select it directrly from the savedata restore menu)
+
+
+----
+
+
 Reasons to use this over original mod:
 
 - Faster copy speeds

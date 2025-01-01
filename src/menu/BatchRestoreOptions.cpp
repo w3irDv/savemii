@@ -89,7 +89,9 @@ void BatchRestoreOptions::render() {
 
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BatchRestore - Options"));
+        consolePrintPos(16,0, LanguageUtils::gettext("BatchRestore - Options"));
+        DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+        consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BS: %s"),BackupSetList::getBackupSetEntry().c_str());
         DrawUtils::setFontColor(COLOR_TEXT);
         if (isWiiUBatchRestore) {
             consolePrintPos(M_OFF, 3, LanguageUtils::gettext("Select SD user to copy from:"));

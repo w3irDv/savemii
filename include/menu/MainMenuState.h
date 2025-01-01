@@ -16,12 +16,19 @@ public:
         STATE_DO_SUBSTATE,
     };
 
+    enum eSubstateCalled {
+        NONE,
+        STATE_BACKUPSET_MENU,
+    };
+
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
 
 private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_MAIN_MENU;
+
+    eSubstateCalled substateCalled = NONE;
 
     Title *wiiutitles;
     Title *wiititles;

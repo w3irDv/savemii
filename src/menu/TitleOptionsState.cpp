@@ -22,10 +22,9 @@ void TitleOptionsState::render() {
     if (this->state == STATE_TITLE_OPTIONS) {    
         bool emptySlot = isSlotEmpty(this->title.highID, this->title.lowID, slot);
         if (this->task == backup || this->task == restore) {
-            DrawUtils::setFontColor(COLOR_INFO);
+            DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
             consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BackupSet: %s"),
                 ( this->task == backup ) ? BackupSetList::ROOT_BS.c_str() : BackupSetList::getBackupSetEntry().c_str());
-            DrawUtils::setFontColor(COLOR_TEXT);
         }
         this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
         entrycount = 3;
@@ -207,10 +206,11 @@ void TitleOptionsState::render() {
             }
         }
 
-        DrawUtils::setFontColor(COLOR_TEXT);
+        DrawUtils::setFontColor(COLOR_INFO);
         switch (task) {
             case backup:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Backup"));
+                DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
                     consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
                 else
@@ -218,22 +218,27 @@ void TitleOptionsState::render() {
                 break;
             case restore:
                 consolePrintPos(20,0,LanguageUtils::gettext("Restore"));
+                DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
                 break;
             case wipe:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Wipe"));
+                DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
                 break;
             case importLoadiine:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Import Loadiine"));
+                DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Import  \ue001: Back"));
                 break;
             case exportLoadiine:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Export Loadiine"));
+                DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Export  \ue001: Back"));
                 break;
             case copytoOtherDevice:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Copy to Other Device"));
+                DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
                 break;
         }
@@ -443,6 +448,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 case wipe:
                     wipeSavedata(&this->title, wiiuuser, common);
+                    cursorPos = 0;
                     DrawUtils::setRedraw(true);
                     break;
                 case copytoOtherDevice:
