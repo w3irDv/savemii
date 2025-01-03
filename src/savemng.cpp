@@ -114,12 +114,12 @@ Account *getSDacc() {
 int checkEntry(const char *fPath) {
     struct stat st {};
     if (stat(fPath, &st) == -1)
-        return 0;
+        return 0;  // path does not exist    
 
     if (S_ISDIR(st.st_mode))
-        return 2;
+        return 2;   // is a directory
 
-    return 1;
+    return 1;   // is a file
 }
 #else
 int checkEntry(const char *fPath) {
@@ -474,7 +474,7 @@ void promptError(const char *message, ...) {
         free(tmp);
     DrawUtils::endDraw();
     va_end(va);
-    sleep(4);
+    sleep(3);
 }
 
 void promptMessage(Color bgcolor, const char *message, ...) {
@@ -996,7 +996,7 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_
         return;
     int slotb = getEmptySlot(titleb->highID, titleb->lowID);
     if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
-        backupSavedata(titleb, slotb, wiiuuser, common, "backup pre-copyToOtherDev");
+        backupSavedata(titleb, slotb, wiiuuser, common, LanguageUtils::gettext("pre-copyToOtherDev backup"));
         promptError(LanguageUtils::gettext("Backup done. Now copying Savedata."));
     }
 
@@ -1138,6 +1138,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
 }
 
 void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag /* = "" */) {
+    int errorCode = 0;
     if (!isSlotEmpty(title->highID, title->lowID, slot) &&
         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
         return;
@@ -1148,10 +1149,86 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
     bool isWii = title->is_Wii;
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    std::string dstPath;
-    dstPath = getDynamicBackupPath(highID, lowID, slot);
+    std::string dstPath = getDynamicBackupPath(highID, lowID, slot);
     createFolder(dstPath.c_str());
+
+    std::string srcCommonPath = srcPath + "/common";
+    std::string dstCommonPath = dstPath + "/common";
+
     bool commonSaved = false;
+    bool doBase;
+    bool doCommon;
+    bool singleUser = false;
+
+    if ( isWii  ) {
+        doBase = true;
+        doCommon = false;
+    }
+    else
+    {
+        switch (wiiuuser) {
+            case -1: // allusers
+                doBase = true;
+                doCommon = false;
+                break;
+            default:  // wiiuuser = 0 .. n
+                doBase = true;
+                doCommon = common;
+                singleUser = true;
+                srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+                dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+                break;
+        }
+    }
+
+
+    if (doCommon) {
+       if (copyDir(srcCommonPath, dstCommonPath))
+                commonSaved = true;
+        else {
+            promptError(LanguageUtils::gettext("Common save not found."));
+            errorCode = 1 ;
+        }
+    }
+
+    if (doBase) {
+        if (singleUser) 
+        {
+            if (checkEntry(srcPath.c_str()) == 0) {  // no dir for user data
+                if (commonSaved)
+                    writeMetadataWithTag(highID,lowID,slot,isUSB,tag);
+                else 
+                {
+                    promptError(LanguageUtils::gettext("No save found for this user."));
+                    dstPath = getDynamicBackupPath(highID, lowID, slot);
+                    removeDir(dstPath);
+                    unlink(dstPath.c_str());
+                    errorCode += 2;
+                }
+            
+            }
+            else {
+                if (!copyDir(srcPath, dstPath)) {
+                    promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
+                    writeMetadataWithTag(highID,lowID,slot,isUSB,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED")); 
+                    errorCode += 4;
+                }
+                else
+                    writeMetadataWithTag(highID,lowID,slot,isUSB,tag);    
+            }
+        }
+        else  // allusers
+        {
+            if (!copyDir(srcPath, dstPath)) {
+                promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
+                writeMetadataWithTag(highID,lowID,slot,isUSB,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED")); 
+                errorCode += 8;
+            }
+            else
+                writeMetadataWithTag(highID,lowID,slot,isUSB,tag);
+        }
+    }
+/*
     if ((wiiuuser > -1) && !isWii) {
         if (common) {
             if (copyDir(srcPath+"/common", dstPath+"/common"))
@@ -1174,10 +1251,10 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
             return;
         }
     }
-    if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
     else
         writeMetadataWithTag(highID,lowID,slot,isUSB,tag);
+*/
 
 }
 
@@ -1195,7 +1272,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
         BackupSetList::setBackupSetSubPathToRoot();
         int slotb = getEmptySlot(title->highID, title->lowID);
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
-            backupSavedata(title, slotb, wiiuuser, common , "backup pre-Restore");
+            backupSavedata(title, slotb, wiiuuser, common , LanguageUtils::gettext("pre-Restore backup"));
         BackupSetList::restoreBackupSetSubPath();
     }
     uint32_t highID = title->highID;
@@ -1333,7 +1410,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
             return -1;
         int slotb = getEmptySlot(title->highID, title->lowID);
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
-            backupSavedata(title, slotb, wiiuuser, common, "backup pre-Wipe");
+            backupSavedata(title, slotb, wiiuuser, common, LanguageUtils::gettext("pre-Wipe backup"));
     }
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;

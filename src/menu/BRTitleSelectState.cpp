@@ -277,9 +277,9 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                 const std::string batchDatetime = getNowDateForFolder();
                 backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
                 if(isWiiUBatchRestore)
-                    writeBackupAllMetadata(batchDatetime,"(pre)BatchRestore Backup (WiiU)");
+                    writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("pre-BatchRestore Backup (WiiU)"));
                 else
-                    writeBackupAllMetadata(batchDatetime,"(pre)BatchRestore Backup (vWii)");
+                    writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("pre-BatchRestore Backup (vWii)"));
                 BackupSetList::setIsInitializationRequired(true);
             }
 

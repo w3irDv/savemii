@@ -75,7 +75,7 @@ void BackupSetListState::render() {
             if ( backupSetItem == BackupSetList::ROOT_BS)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_HIGH,COLOR_LIST_HIGH_AT_CURSOR,cursorPos,i);
             if ( backupSetItem == BackupSetList::getBackupSetEntry())
-                DrawUtils::setFontColorByCursor(COLOR_INFO,COLOR_INFO_AT_CURSOR,cursorPos,i);
+                DrawUtils::setFontColorByCursor(COLOR_CURRENT_BS,COLOR_CURRENT_BS_AT_CURSOR,cursorPos,i);
 
             consolePrintPos(M_OFF-1, i + 2, "  %s", backupSetItem.substr(0,15).c_str());
             consolePrintPos(21, i+2,"%s", BackupSetList::currentBackupSetList->getStretchedSerialIdAt(i+scroll).c_str());
@@ -175,9 +175,13 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
-            this->state = STATE_DO_SUBSTATE;
-            this->substateCalled = STATE_KEYBOARD;
-            this->subState = std::make_unique<KeyboardState>(newTag);    
+            int entry = cursorPos+scroll;
+            if (entry > 0)
+            {
+                this->state = STATE_DO_SUBSTATE;
+                this->substateCalled = STATE_KEYBOARD;
+                this->subState = std::make_unique<KeyboardState>(newTag);
+            }    
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
