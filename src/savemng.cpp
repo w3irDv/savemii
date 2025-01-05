@@ -1205,7 +1205,6 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
                     unlink(dstPath.c_str());
                     errorCode += 2;
                 }
-            
             }
             else {
                 if (!copyDir(srcPath, dstPath)) {
@@ -1228,34 +1227,6 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
                 writeMetadataWithTag(highID,lowID,slot,isUSB,tag);
         }
     }
-/*
-    if ((wiiuuser > -1) && !isWii) {
-        if (common) {
-            if (copyDir(srcPath+"/common", dstPath+"/common"))
-                commonSaved = true;
-            else
-                promptError(LanguageUtils::gettext("Common save not found."));
-        }
-        srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
-        dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
-        if (checkEntry(srcPath.c_str()) == 0) {
-            if (commonSaved)
-                writeMetadataWithTag(highID,lowID,slot,isUSB,tag);
-            else 
-            {
-                promptError(LanguageUtils::gettext("No save found for this user."));
-                dstPath = getDynamicBackupPath(highID, lowID, slot);
-                removeDir(dstPath);
-                unlink(dstPath.c_str());
-            }
-            return;
-        }
-    }
-        promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
-    else
-        writeMetadataWithTag(highID,lowID,slot,isUSB,tag);
-*/
-
 }
 
 int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive /*= true*/) {
