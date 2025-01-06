@@ -51,12 +51,10 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
             switch (cursorPos) {
                 case 0:
-                    //BackupSetList::setBackupSetToRoot();
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<WiiUTitleListState>(this->wiiutitles, this->wiiuTitlesCount);
                     break;
                 case 1:
-                    //BackupSetList::setBackupSetToRoot();
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<vWiiTitleListState>(this->wiititles, this->vWiiTitlesCount);
                     break;
@@ -65,12 +63,10 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     this->subState = std::make_unique<BatchBackupState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
                     break;
                 case 3:
-                    //BackupSetList::setBackupSetToRoot();
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
                     break;
                 case 4:
-                    //BackupSetList::setBackupSetToRoot();
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>();

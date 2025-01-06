@@ -997,7 +997,7 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_
     int slotb = getEmptySlot(titleb->highID, titleb->lowID);
     if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
         backupSavedata(titleb, slotb, wiiuuser, common, LanguageUtils::gettext("pre-copyToOtherDev backup"));
-        promptError(LanguageUtils::gettext("Backup done. Now copying Savedata."));
+        promptError(LanguageUtils::gettext("Backup done. Now copying Savedata."));       
     }
 
     std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");

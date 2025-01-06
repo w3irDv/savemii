@@ -248,7 +248,6 @@ void TitleOptionsState::render() {
 ApplicationState::eSubState TitleOptionsState::update(Input *input) {
     if (this->state == STATE_TITLE_OPTIONS) {
         if (input->get(TRIGGER, PAD_BUTTON_B)) {
-            BackupSetList::setBackupSetSubPathToRoot(); // reset nxt operations to current backupSet
             return SUBSTATE_RETURN;
         }
         if (input->get(TRIGGER, PAD_BUTTON_X))

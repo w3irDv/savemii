@@ -75,7 +75,8 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 if (!this->title.saveInit) {
                     promptError(LanguageUtils::gettext("No save to Backup."));
                     noError = false;
-                }
+                } else 
+                    BackupSetList::setBackupSetSubPathToRoot(); // from backup menu, always backup to root
             }
 
             if (this->task == restore) {
@@ -89,10 +90,12 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 if (!this->title.saveInit) {
                     promptError(LanguageUtils::gettext("No save to Wipe."));
                     noError = false;
-                }
+                } else
+                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
             }
 
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
+                BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 char gamePath[PATH_SIZE];
                 memset(versionList, 0, 0x100 * sizeof(int));
                 if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.longName, this->title.highID, this->title.lowID)) {
@@ -115,7 +118,8 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 if (!this->title.saveInit) {
                     promptError(LanguageUtils::gettext("No save to Copy."));
                     noError = false;
-                }
+                } else
+                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
             }
             if (noError) {
                 DrawUtils::setRedraw(true);
