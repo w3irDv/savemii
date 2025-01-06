@@ -2,14 +2,24 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/Colors.h>
+#include <Metadata.h>
 
 static int cursorPos = 0;
 
 static std::string language;
 
 void ConfigMenuState::render() {
+    DrawUtils::setFontColor(COLOR_INFO);
+    consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Configuration Options"));
+    DrawUtils::setFontColor(COLOR_TEXT);
     language = LanguageUtils::getLoadedLanguage();
     consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Language: %s"), language.c_str());
+
+    DrawUtils::setFontColor(COLOR_INFO);
+    consolePrintPos(M_OFF + 2, 8,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
+
+    DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
     consolePrintPosAligned(17,4,2,LanguageUtils::gettext("\ue001: Back"));
 }

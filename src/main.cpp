@@ -19,6 +19,13 @@
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
 
+//#define DEBUG
+
+#ifdef DEBUG
+#include <whb/log_udp.h>
+#include <whb/log.h>
+#endif
+
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 
 extern char *batchBackupPath;
@@ -34,6 +41,7 @@ static bool contains(const T (&arr)[N], const T &element) {
 }
 
 static void disclaimer() {
+    consolePrintPosAligned(13, 0, 1,"SaveMii v%u.%u.%u", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
     consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
     consolePrintPosAligned(16, 0, 1,
@@ -46,7 +54,7 @@ static void getWiiUSerialId() {
     int32_t mcpHandle = MCP_Open();
     if ( mcpHandle >= 0 ) {
         if (MCP_GetSysProdSettings(mcpHandle,&sysProd)==0) {
-            Metadata::serialId = std::string(sysProd.code_id) + sysProd.serial_id;
+            Metadata::thisConsoleSerialId = std::string(sysProd.code_id) + sysProd.serial_id;
         }
         MCP_Close(mcpHandle);
     } 
@@ -79,12 +87,15 @@ static Title *loadWiiUTitles(int run) {
     for (uint32_t i = 0; i < receivedCount; i++) {
         char *element = tList + (i * 0x61);
         savesl[j].highID = *(uint32_t *) (element);
-        if (!contains(highIDs, savesl[j].highID)) {
+        bool isUSB = ( memcmp(element + 0x56, "usb", 4) == 0 );
+        bool isMLC = ( memcmp(element + 0x56, "mlc", 4) == 0 );
+        if (!contains(highIDs, savesl[j].highID) || !(isUSB || isMLC) ) {
             usable--;
             continue;
         }
         savesl[j].lowID = *(uint32_t *) (element + 4);
-        savesl[j].dev = static_cast<uint8_t>((memcmp(element + 0x56, "usb", 4) != 0));
+        savesl[j].dev = static_cast<uint8_t>(isMLC);   // 0 = usb, 1 = nand
+
         savesl[j].found = false;
         j++;
     }
@@ -216,6 +227,10 @@ static Title *loadWiiUTitles(int run) {
 
             free(xmlBuf);
         }
+        if (strlen(titles[wiiuTitlesCount].shortName) == 0u)
+            sprintf(titles[wiiuTitlesCount].shortName,"%08x%08x",
+                titles[wiiuTitlesCount].highID,
+                titles[wiiuTitlesCount].lowID);
 
         titles[wiiuTitlesCount].isTitleDupe = false;
         for (int i = 0; i < wiiuTitlesCount; i++) {
@@ -229,10 +244,20 @@ static Title *loadWiiUTitles(int run) {
 
         titles[wiiuTitlesCount].highID = highID;
         titles[wiiuTitlesCount].lowID = lowID;
+        titles[wiiuTitlesCount].is_Wii = ((highID & 0xFFFFFFF0) == 0x00010000);
         titles[wiiuTitlesCount].isTitleOnUSB = isTitleOnUSB;
         titles[wiiuTitlesCount].listID = wiiuTitlesCount;
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
-            titles[wiiuTitlesCount].iconBuf = nullptr;
+            titles[wiiuTitlesCount].iconBuf = nullptr; 
+
+        std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
+                    titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+                    titles[wiiuTitlesCount].highID,
+                    titles[wiiuTitlesCount].lowID);
+        if (checkEntry(fwpath.c_str()) != 0)
+            titles[wiiuTitlesCount].noFwImg = true;
+        else
+            titles[wiiuTitlesCount].noFwImg = false;
 
         wiiuTitlesCount++;
 
@@ -333,6 +358,10 @@ static Title *loadWiiTitles() {
                                 titles[i].shortName[k++] = 0x80 | (bnrBuf[j] & 0x3F);
                             }
                         }
+                        if (strlen(titles[i].shortName) == 0u)
+                            sprintf(titles[i].shortName,"%08x%08x",
+                                titles[i].highID,
+                                titles[i].lowID);
 
                         memset(titles[i].longName, 0, sizeof(titles[i].longName));
                         for (int j = 0x20, k = 0; j < 0x40; j++) {
@@ -364,6 +393,8 @@ static Title *loadWiiTitles() {
 
                 titles[i].highID = strtoul(highID, nullptr, 16);
                 titles[i].lowID = strtoul(data->d_name, nullptr, 16);
+                titles[i].is_Wii = true;
+                titles[i].noFwImg = true;
 
                 titles[i].listID = i;
                 memcpy(titles[i].productCode, &titles[i].lowID, 4);
@@ -403,6 +434,11 @@ static void unloadTitles(Title *titles, int count) {
 
 int main() {
 
+#ifdef DEBUG    
+    WHBLogUdpInit();
+    WHBLogPrintf("Hello from savemii!");
+#endif
+
     AXInit();
     AXQuit();
     
@@ -414,17 +450,40 @@ int main() {
 
     State::registerProcUICallbacks();
 
-    if (!DrawUtils::initFont()) {
+    if (!DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD)) {
         OSFatal("Failed to init font");
     }
+
+    DrawUtils::setFont();
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing WPAD and KAPD"));
+    DrawUtils::endDraw();
 
     WPADInit();
     KPADInit();
     WPADEnableURCC(1);
 
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Getting Serial ID"));
+    DrawUtils::endDraw();
+
     getWiiUSerialId();
 
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing loadWiiU Titles"));
+    DrawUtils::endDraw();
+
     loadWiiUTitles(0);
+
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing ROMFS"));
+    DrawUtils::endDraw();
 
     int res = romfsInit();
     if (res) {
@@ -447,12 +506,21 @@ int main() {
     DrawUtils::clear(COLOR_BLACK);
     DrawUtils::endDraw();
 
+
     Title *wiiutitles = loadWiiUTitles(1);
     Title *wiititles = loadWiiTitles();
     getAccountsWiiU();
 
     sortTitle(wiiutitles, wiiutitles + wiiuTitlesCount, 1, true);
     sortTitle(wiititles, wiititles + vWiiTitlesCount, 1, true);
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    disclaimer();
+    DrawUtils::drawTGA(298, 144, 1, icon_tga);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing BackupSets metadata."));
+    consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Please wait. First write to SD may be slow."));
+    DrawUtils::endDraw();
 
     BackupSetList::initBackupSetList();
 

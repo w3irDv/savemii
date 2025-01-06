@@ -8,12 +8,15 @@ typedef enum Button {
     PAD_BUTTON_A,
     PAD_BUTTON_B,
     PAD_BUTTON_X,
+    PAD_BUTTON_Y,
     PAD_BUTTON_UP,
     PAD_BUTTON_DOWN,
     PAD_BUTTON_LEFT,
     PAD_BUTTON_RIGHT,
     PAD_BUTTON_L,
     PAD_BUTTON_R,
+    PAD_BUTTON_PLUS,
+    PAD_BUTTON_MINUS,
     PAD_BUTTON_ANY
 } Button;
 

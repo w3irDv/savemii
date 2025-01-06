@@ -24,27 +24,39 @@ void TitleTaskState::render() {
         return;
     }
     if (this->state == STATE_TITLE_TASKS) {
+        DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+        consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::serialId.c_str());
-        DrawUtils::setFontColor(COLOR_TEXT);
+        consolePrintPos(22,0,LanguageUtils::gettext("Tasks"));
         this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
         entrycount = 3 + 2 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));
+        if (cursorPos > entrycount)
+            cursorPos = 0;
+        DrawUtils::setFontColor(COLOR_TEXT);    
         consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
                         this->title.productCode);
         consolePrintPos(M_OFF, 3, "   %s", this->title.shortName);
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
         consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Backup savedata"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
         consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Restore savedata"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
         consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Wipe savedata"));
         if (this->isWiiUTitle) {
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
             consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Import from loadiine"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
             consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export to loadiine"));
-            if (this->title.isTitleDupe)
+            if (this->title.isTitleDupe) {
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
                 consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
                                 this->title.isTitleOnUSB ? "NAND" : "USB");
+            }
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawTGA(660, 80, 1, this->title.iconBuf);
         } else if (this->title.iconBuf != nullptr)
             DrawUtils::drawRGB5A3(645, 80, 1, this->title.iconBuf);
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
     }

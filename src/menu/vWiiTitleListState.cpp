@@ -8,7 +8,8 @@
 #include <utils/Colors.h>
 
 #define MAX_TITLE_SHOW 14
-static int cursorPos = 0;
+int vWiiTitleListState::scroll = 0;
+int vWiiTitleListState::cursorPos = 0;
 
 void vWiiTitleListState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -22,30 +23,35 @@ void vWiiTitleListState::render() {
         if ((this->titles == nullptr) || (this->titlesCount == 0)) {
             promptError(LanguageUtils::gettext("No vWii titles found."));
             this->noTitles = true;
+            DrawUtils::beginDraw();
+            consolePrintPosAligned(8, 4, 1, LanguageUtils::gettext("No vWii titles found."));
+            consolePrintPosAligned(17, 4, 1, LanguageUtils::gettext("Any Button: Back"));
+            return;
         }
-        consolePrintPos(39, 0, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("vWii Titles"));
+        DrawUtils::setFontColor(COLOR_TEXT);
+        consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
                         (titleSort > 0) ? (sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         for (int i = 0; i < 14; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= this->titlesCount)
                 break;
-            DrawUtils::setFontColor(static_cast<Color>(0x00FF00FF));
-            if (!titles[i + this->scroll].saveInit)
-                DrawUtils::setFontColor(static_cast<Color>(0xFFFF00FF));
-            if (strcmp(titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
-                DrawUtils::setFontColor(static_cast<Color>(0xFF0000FF));
-            if (strlen(titles[i + this->scroll].shortName) != 0u)
-                consolePrintPos(M_OFF, i + 2, "   %s %s%s", titles[i + this->scroll].shortName,
+
+            DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
+            if (!this->titles[i + this->scroll].saveInit)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_NOSAVE,COLOR_LIST_NOSAVE_AT_CURSOR,cursorPos,i);
+            if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
+
+            consolePrintPos(M_OFF + 1, i + 2, "   %s %s%s", titles[i + this->scroll].shortName,
                                 titles[i + this->scroll].isTitleDupe ? " [D]" : "",
                                 titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
-            else
-                consolePrintPos(M_OFF, i + 2, "   %08lx%08lx", titles[i + this->scroll].highID,
-                                titles[i + this->scroll].lowID);
-            DrawUtils::setFontColor(COLOR_TEXT);
             if (titles[i + this->scroll].iconBuf != nullptr) {
                 DrawUtils::drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
                                       titles[i + this->scroll].iconBuf);
             }
         }
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(-3, 2 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Game  \ue001: Back"));
     }

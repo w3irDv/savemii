@@ -23,6 +23,24 @@
 #define M_OFF            1
 #define Y_OFF            1
 
+enum eBatchRestoreState {
+    NOT_TRIED = 0,
+    ABORTED = 1,
+    OK = 2,
+    WR = 3,
+    KO = 4
+};
+
+struct backupInfo {
+    bool hasBatchBackup;
+    bool candidateToBeRestored;
+    bool selected;
+    bool hasUserSavedata;
+    bool hasCommonSavedata;
+    eBatchRestoreState batchRestoreState;
+    int lastErrCode; 
+};
+
 struct Title {
     uint32_t highID;
     uint32_t lowID;
@@ -33,10 +51,13 @@ struct Title {
     bool saveInit;
     bool isTitleOnUSB;
     bool isTitleDupe;
+    bool is_Wii;
+    bool noFwImg;
     uint16_t dupeID;
     uint8_t *iconBuf;
     uint64_t accountSaveSize;
     uint32_t groupID;
+    backupInfo currentBackup;
 };
 
 struct Saves {
@@ -58,7 +79,8 @@ enum Style {
     ST_CONFIRM_CANCEL = 2,
     ST_MULTILINE = 16,
     ST_WARNING = 32,
-    ST_ERROR = 64
+    ST_ERROR = 64,
+    ST_WIPE = 128
 };
 
 template<class It>
@@ -108,8 +130,10 @@ std::string getUSB();
 void consolePrintPos(int x, int y, const char *format, ...) __attribute__((hot));
 bool promptConfirm(Style st, const std::string &question);
 void promptError(const char *message, ...);
+void promptMessage(Color bgcolor,const char *message, ...);
 std::string getDynamicBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot);
 std::string getBatchBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot, std::string datetime);
+std::string getBatchBackupPathRoot(std::string datetime);
 void getAccountsWiiU();
 void getAccountsSD(Title *title, uint8_t slot);
 bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version);
@@ -117,16 +141,19 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *long
 bool getLoadiineSaveVersionList(int *out, const char *gamePath);
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot);
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot, const std::string &batchDatetime);
+bool folderEmpty(const char *fPath);
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version);
 void copySavedata(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common) __attribute__((hot));
 std::string getNowDateForFolder() __attribute__((hot));
 std::string getNowDate() __attribute__((hot));
 void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) __attribute__((hot));
 void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &batchDatetime) __attribute__((hot));
-void backupAllSave(Title *titles, int count, const std::string &batchDatetime) __attribute__((hot));
-void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common) __attribute__((hot));
-void restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common) __attribute__((hot));
-void wipeSavedata(Title *title, int8_t wiiuuser, bool common) __attribute__((hot));
+void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &tag) __attribute__((hot));
+void writeBackupAllMetadata(const std::string & Date, const std::string & tag);
+void backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
+void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag = "") __attribute__((hot));
+int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
+int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
 void importFromLoadiine(Title *title, bool common, int version);
 void exportToLoadiine(Title *title, bool common, int version);
 int checkEntry(const char *fPath);
@@ -134,7 +161,10 @@ int32_t loadFile(const char *fPath, uint8_t **buf) __attribute__((hot));
 int32_t loadTitleIcon(Title *title) __attribute__((hot));
 void consolePrintPosMultiline(int x, int y, const char *format, ...) __attribute__((hot));
 void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) __attribute__((hot));
+void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...) __attribute__((hot));
 uint8_t getSDaccn();
 uint8_t getWiiUaccn();
 Account *getWiiUacc();
 Account *getSDacc();
+void deleteSlot(Title *title, uint8_t slot);
+bool wipeBackupSet(const std::string &subPath);

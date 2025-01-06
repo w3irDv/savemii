@@ -51,13 +51,16 @@ public:
 
     static void drawRect(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-    static bool initFont();
+    static bool initFont(OSSharedDataType fontType);
+    //static bool initKFont();
 
-    static bool setFont(OSSharedDataType fontType);
+    static bool setFont();
+    //static bool setKFont();
 
     static void deinitFont();
 
     static void setFontColor(Color col);
+    static void setFontColorByCursor(Color col, Color colAtCursor,int cursorPos, int line);
 
     static void print(uint32_t x, uint32_t y, const char *string, bool alignRight = false);
 
@@ -79,6 +82,7 @@ public:
 
     static uint32_t deinitScreen();
 
+    static void drawKey(int x,int y,int x_off,Color color);
 
 
 
