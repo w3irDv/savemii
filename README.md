@@ -30,7 +30,7 @@ Allows you to backup/restore/wipe individual titles.
 	5. Copy to other Device: If savedata for a title is present in USB and NAND, copy it from one storage to the other
 
 #### Backup
-1. Select a slot to store the savedata. You can select any number from 0 to 255, each one representing a different folder in the SD card.
+1. Select a slot to store the savedata. You can select any number from 0 to 255, each one representing a different folder in the SD card. Individual backups will always be stored in the `Root backupSet`.
 2. For Wii U titles, select which data to save:
 	1. All users: Recommended option. Will backup all game data.
 	2. From user: xxxxxxxx. Will only backup the data for the specified user/profile. In this case, you must also specify if you want to save the "common" data or not. "Common" savedata is data shared by all profiles. Titles can have common save data, profile savedata or both.
@@ -38,7 +38,7 @@ Allows you to backup/restore/wipe individual titles.
 
 *Wii U titles savedata layout:*
 ```
-sd:/wiiu/backups/
+sd:/wiiu/backups/         # Root backupSet
     xxxxxxxxyyyyyyyy/     # Title Id 
         0/
             saveMiiMeta.json
@@ -55,7 +55,7 @@ sd:/wiiu/backups/
 For vWii titles, savedata is directly under the slot folder.
 
 #### Restore
-1. Select a slot to get the data from.  By default, data from the "root" backupSet (the one where the manual backups are stored) is used. But you can also use slots from batch backupSets, by pressing "X" button in this menu and selecting the backupSet you want to use. BackupSets can be tagged by pressing "+" button in the BackupSet List Menu, or from the BackupSet Management in Main menu.
+1. Select a slot to get the data from.  If you haven't selected any backupSet, the data from the `Root backupSet`  (the one where the manual backups are always stored) is used. But you can also use data from any batch backupSet, by pressing the "X" button and selecting the backupSet you want to use. Notice that the last backupSet you previously selected in any task (Batch Restore or BackupSet Management) will be the one used here by default. BackupSets can be tagged by pressing "+" button in the BackupSet List Menu, or from the BackupSet Management in Main menu.
    To identify which data the slot contains: If the slot has been tagged, you will see its tag next to the slot number. On the top screen line, you will see which backupSet is being used. And at the last screen line, you can see when the savedata were taken, and from which console.
 2. For Wii U titles, select witch data to restore:
 	1. `From: All users / To: Same user than Source`
@@ -77,7 +77,7 @@ BackupSets can be tagged by pressing "+" button in the BackupSet List menu or by
 
 ```
 sd:/wiiu/backups/batch/
-    ${timestamp}/
+    ${timestamp}/                  # batch backupSet
         saveMiiMeta.json
         xxxxxxxxyyyyyyyy/          # one folder for each title
             0/                    # slot containing USB or NAND savedata for the title

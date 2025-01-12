@@ -125,6 +125,7 @@ void TitleOptionsState::render() {
                         consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
                                     metadataObj->simpleFormat().c_str());
                         tag = metadataObj->getTag();
+                        newTag = tag;
                         if ( tag != "" ) {
                             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
                             consolePrintPos(TAG_OFF, 5,"[%s]",tag.c_str());
@@ -199,6 +200,7 @@ void TitleOptionsState::render() {
                     consolePrintPos(M_OFF, 15, LanguageUtils::gettext("Date: %s"),
                                 metadataObj->simpleFormat().c_str());
                     tag = metadataObj->getTag();
+                    newTag = tag;
                     if ( tag != "" )
                         consolePrintPos(TAG_OFF, 5,"[%s]",tag.c_str());
                 }
@@ -219,7 +221,10 @@ void TitleOptionsState::render() {
             case restore:
                 consolePrintPos(20,0,LanguageUtils::gettext("Restore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
+                if (emptySlot)
+                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
+                else
+                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
                 break;
             case wipe:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Wipe"));
@@ -246,6 +251,7 @@ void TitleOptionsState::render() {
 }
 
 ApplicationState::eSubState TitleOptionsState::update(Input *input) {
+    bool emptySlot = isSlotEmpty(this->title.highID, this->title.lowID, slot);
     if (this->state == STATE_TITLE_OPTIONS) {
         if (input->get(TRIGGER, PAD_BUTTON_B)) {
             return SUBSTATE_RETURN;
@@ -463,9 +469,13 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
-            this->state = STATE_DO_SUBSTATE;
-            this->substateCalled = STATE_KEYBOARD;
-            this->subState = std::make_unique<KeyboardState>(newTag);
+            if (emptySlot)
+                return SUBSTATE_RUNNING;
+            if (this->task == backup || this->task == restore ) {
+                this->state = STATE_DO_SUBSTATE;
+                this->substateCalled = STATE_KEYBOARD;
+                this->subState = std::make_unique<KeyboardState>(newTag);
+            }
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
@@ -474,7 +484,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             return SUBSTATE_RUNNING;
         } else if (retSubState == SUBSTATE_RETURN) {
             if ( this->substateCalled == STATE_KEYBOARD) {
-                if (newTag != tag) {
+                if (newTag != tag ) {
                     Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
                     metadataObj->read();
                     metadataObj->setTag(newTag);
