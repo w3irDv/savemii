@@ -495,6 +495,11 @@ int main() {
     Swkbd_LanguageType systemLanguage = LanguageUtils::getSystemLanguage();
     LanguageUtils::loadLanguage(systemLanguage);
 
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing FS"));
+    DrawUtils::endDraw();
+
     if (!initFS()) {
         promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();

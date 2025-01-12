@@ -20,6 +20,7 @@
 
 #define __FSAShimSend      ((FSError(*)(FSAShimBuffer *, uint32_t))(0x101C400 + 0x042d90))
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
+#define MAXWIDTH 60
 
 const char *backupPath = "fs:/vol/external01/wiiu/backups";
 const char *batchBackupPath = "fs:/vol/external01/wiiu/backups/batch"; // Must be "backupPath/batch"  ~ backupSetListRoot
@@ -465,16 +466,28 @@ void promptError(const char *message, ...) {
     va_start(va, message);
     char *tmp = nullptr;
     if ((vasprintf(&tmp, message, va) >= 0) && (tmp != nullptr)) {
-        int x = 31 - (DrawUtils::getTextWidth(tmp) / 24);
-        int y = 8;
+        std::string splitted;
+        std::stringstream message_ss(tmp);
+        int nLines = 0;
+        int maxLineSize = 0;
+        int lineSize = 0;
+        while (getline(message_ss,splitted,'\n')) {
+            lineSize = DrawUtils::getTextWidth((char *) splitted.c_str());
+            maxLineSize = lineSize > maxLineSize ? lineSize : maxLineSize;
+            nLines++;
+        }
+        int initialYPos = 8 - nLines/2;
+        initialYPos = initialYPos > 0 ? initialYPos : 0;
+
+        int x = 31 - (maxLineSize / 24);
         x = (x < -4 ? -4 : x);
-        DrawUtils::print((x + 4) * 12, (y + 1) * 24, tmp);
+        DrawUtils::print((x + 4) * 12, (initialYPos + 1) * 24, tmp);
     }
     if (tmp != nullptr)
         free(tmp);
     DrawUtils::endDraw();
     va_end(va);
-    sleep(3);
+    sleep(4);
 }
 
 void promptMessage(Color bgcolor, const char *message, ...) {
@@ -589,6 +602,8 @@ void getAccountsSD(Title *title, uint8_t slot) {
     }
 }
 
+int readError;
+
 static bool readThread(FILE *srcFile, LockingQueue<file_buffer> *ready, LockingQueue<file_buffer> *done) {
     file_buffer currentBuffer{};
     ready->waitAndPop(currentBuffer);
@@ -597,8 +612,14 @@ static bool readThread(FILE *srcFile, LockingQueue<file_buffer> *ready, LockingQ
         ready->waitAndPop(currentBuffer);
     }
     done->push(currentBuffer);
-    return ferror(srcFile) == 0;
+    if (! ferror(srcFile) ==  0)  {
+        readError=errno;
+        return false;
+    } 
+    return true;
 }
+
+int writeError;
 
 static bool writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, LockingQueue<file_buffer> *done, size_t totalSize) {
     uint bytes_written;
@@ -611,7 +632,11 @@ static bool writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, Locking
         written += bytes_written;
     }
     done->push(currentBuffer);
-    return ferror(dstFile) == 0;
+    if (! ferror(dstFile) == 0 ) {
+        writeError=errno;
+        return false;
+    }
+    return true;
 }
 
 static bool copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, const std::string &pPath, const std::string &oPath) {
@@ -661,33 +686,55 @@ static inline size_t getFilesize(FILE *fp) {
 static bool copyFile(const std::string &pPath, const std::string &oPath) {
     if (pPath.find("savemiiMeta.json") != std::string::npos)
         return true;
+    //std::string uPath = pPath + "nonExistent";
+    //FILE *source = fopen(uPath.c_str(), "rb");
     FILE *source = fopen(pPath.c_str(), "rb");
-    if (source == nullptr)
+    if (source == nullptr) {
+        std::string multilinePath;
+        splitStringWithNewLines(pPath,multilinePath);
+        promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
+    }
 
     FILE *dest = fopen(oPath.c_str(), "wb");
     if (dest == nullptr) {
         fclose(source);
+        std::string multilinePath;
+        splitStringWithNewLines(oPath,multilinePath);
+        promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
     }
 
     size_t sizef = getFilesize(source);
 
-    copyFileThreaded(source, dest, sizef, pPath, oPath);
+    readError = 0;
+    writeError = 0;
+    bool success =  copyFileThreaded(source, dest, sizef, pPath, oPath);
 
     fclose(source);
     fclose(dest);
 
     FSAChangeMode(handle, newlibtoFSA(oPath).c_str(), (FSMode) 0x666);
 
-    return true;
+    if (! success) {
+        if (readError > 0 )
+            promptError(LanguageUtils::gettext("Read error\n%s"),strerror(readError));
+        if (writeError > 0 )
+            promptError(LanguageUtils::gettext("Write error\n%s"),strerror(writeError));
+    }
+
+    return success;
 }
 
 #ifndef MOCK
 static bool copyDir(const std::string &pPath, const std::string &tPath) { // Source: ft2sd
     DIR *dir = opendir(pPath.c_str());
-    if (dir == nullptr)
+    if (dir == nullptr) {
+        std::string multilinePath;
+        splitStringWithNewLines(pPath,multilinePath);
+        promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
+    }
 
     mkdir(tPath.c_str(), 0x666);
     FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
@@ -759,11 +806,19 @@ static bool removeDir(const std::string &pPath) {
 
             consolePrintPos(-2, 0, LanguageUtils::gettext("Deleting folder %s"), data->d_name);
             consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), origPath.c_str());
-            if (unlink(origPath.c_str()) == -1) promptError(LanguageUtils::gettext("Failed to delete folder %s: %s"), origPath.c_str(), strerror(errno));
+            if (unlink(origPath.c_str()) == -1) {
+                std::string multilinePath;
+                splitStringWithNewLines(origPath,multilinePath);
+                promptError(LanguageUtils::gettext("Failed to delete folder\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+            }
         } else {
             consolePrintPos(-2, 0, LanguageUtils::gettext("Deleting file %s"), data->d_name);
             consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), tempPath.c_str());
-            if (unlink(tempPath.c_str()) == -1) promptError(LanguageUtils::gettext("Failed to delete file %s: %s"), tempPath.c_str(), strerror(errno));
+            if (unlink(tempPath.c_str()) == -1) {
+                std::string multilinePath;
+                splitStringWithNewLines(tempPath,multilinePath);
+                promptError(LanguageUtils::gettext("Failed to delete file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+            }
         }
 
         DrawUtils::endDraw();
@@ -1095,7 +1150,6 @@ void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB, const
     delete metadataObj;
 }
 
-
 void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot, bool isUSB, const std::string &tag) {
     Metadata *metadataObj = new Metadata(highID, lowID, slot);
     metadataObj->setTag(tag);
@@ -1130,7 +1184,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
 
             createFolder(dstPath.c_str());
             if (!copyDir(srcPath, dstPath))
-                promptError(LanguageUtils::gettext("Backup failed."));
+                promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
             else
                 writeMetadata(highID,lowID,slot,isUSB,batchDatetime); 
         }
@@ -1186,7 +1240,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
        if (copyDir(srcCommonPath, dstCommonPath))
                 commonSaved = true;
         else {
-            promptError(LanguageUtils::gettext("Common save not found."));
+            promptError(LanguageUtils::gettext("%s \n Common save not found."),title->shortName);
             errorCode = 1 ;
         }
     }
@@ -1199,7 +1253,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
                     writeMetadataWithTag(highID,lowID,slot,isUSB,tag);
                 else 
                 {
-                    promptError(LanguageUtils::gettext("No save found for this user."));
+                    promptError(LanguageUtils::gettext("%s\nNo save found for this user."),title->shortName);
                     dstPath = getDynamicBackupPath(highID, lowID, slot);
                     removeDir(dstPath);
                     unlink(dstPath.c_str());
@@ -1208,7 +1262,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
             }
             else {
                 if (!copyDir(srcPath, dstPath)) {
-                    promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
+                    promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),title->shortName);
                     writeMetadataWithTag(highID,lowID,slot,isUSB,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED")); 
                     errorCode += 4;
                 }
@@ -1219,7 +1273,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
         else  // allusers
         {
             if (!copyDir(srcPath, dstPath)) {
-                promptError(LanguageUtils::gettext("Backup failed. DO NOT restore from this slot."));
+                promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),title->shortName);
                 writeMetadataWithTag(highID,lowID,slot,isUSB,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED")); 
                 errorCode += 8;
             }
@@ -1430,7 +1484,9 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         #else
         if (!unlink_c) {
         #endif
-            promptError(LanguageUtils::gettext("%s \n Failed to delete common folder:\n %s"), title->shortName,strerror(errno)); 
+            std::string multilinePath;
+            splitStringWithNewLines(commonPath,multilinePath);
+            promptError(LanguageUtils::gettext("%s \n Failed to delete common folder:\n%s\n%s"), title->shortName,multilinePath.c_str(),strerror(errno)); 
             errorCode += 2;
         }
     }
@@ -1438,7 +1494,9 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
     if (doBase) {
         if (checkEntry(srcPath.c_str()) == 2) {
             if (!removeDir(srcPath)) {   
-                promptError(LanguageUtils::gettext("%s \n Failed to delete savefile."),title->shortName);
+                std::string multilinePath;
+                splitStringWithNewLines(srcPath,multilinePath);
+                promptError(LanguageUtils::gettext("%s \n Failed to delete savefile:\n%s"),title->shortName,multilinePath.c_str());
                 errorCode += 4;
             }
             if ((wiiuuser > -1) && !isWii) {
@@ -1447,7 +1505,9 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
                 #else
                 if (!unlink_b) {
                 #endif
-                    promptError(LanguageUtils::gettext("%s \n Failed to delete user folder:\n %s"), title->shortName,strerror(errno));
+                    std::string multilinePath;
+                    splitStringWithNewLines(srcPath,multilinePath);
+                    promptError(LanguageUtils::gettext("%s \n Failed to delete user folder:\n%s\n%s"), title->shortName,multilinePath.c_str(),strerror(errno));
                     errorCode += 8;
                 }
             }
@@ -1579,5 +1639,11 @@ bool wipeBackupSet(const std::string &subPath) {
         promptError(LanguageUtils::gettext("Folder does not exist."));
     }
     return true;
+}
+
+void splitStringWithNewLines(const std::string &input, std::string &output) {
+    for (unsigned i=0; i < input.length(); i += MAXWIDTH) {
+        output = output + input.substr(i,MAXWIDTH) + "\n";
+    }
 }
  
