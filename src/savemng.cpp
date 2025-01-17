@@ -271,13 +271,20 @@ static bool createFolder(const char *path) {
     std::string dir;
     while ((pos = strPath.find('/', pos + 1)) != std::string::npos) {
         dir = strPath.substr(0, pos);
-        if (mkdir(dir.c_str(), 0x666) != 0 && errno != EEXIST){
+        if (mkdir(dir.c_str(), 0x666) != 0 && errno != EEXIST) {
+            std::string multilinePath;
+            splitStringWithNewLines(dir,multilinePath);
+            promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
             return false;
         }
         FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
     }
-    if (mkdir(strPath.c_str(), 0x666) != 0 && errno != EEXIST)
+    if (mkdir(strPath.c_str(), 0x666) != 0 && errno != EEXIST) {
+        std::string multilinePath;
+        splitStringWithNewLines(dir,multilinePath);
+        promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
+    }
     FSAChangeMode(handle, newlibtoFSA(strPath).c_str(), (FSMode) 0x666);
     return true;
 }
@@ -292,13 +299,17 @@ static bool createFolderUnlocked(const std::string &path) {
             continue;
         FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
         if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
-            promptError("Error while creating folder: %lx", createdDir);
+            std::string multilinePath;
+            splitStringWithNewLines(dir,multilinePath);
+            promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%lx"), multilinePath.c_str(), createdDir);
             return false;
         }
     }
     FSError createdDir = FSAMakeDir(handle, _path.c_str(), (FSMode) 0x666);
     if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
-        promptError("Error while creating final folder: %lx", createdDir);
+        std::string multilinePath;
+        splitStringWithNewLines(dir,multilinePath);
+        promptError(LanguageUtils::gettext("Error while creating final folder:\n\n%s\n%lx"), multilinePath.c_str(), createdDir);
         return false;
     }
     return true;
@@ -1059,7 +1070,12 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_
     std::string pathb = (isUSBb ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", pathb.c_str(), highIDb, lowIDb, "user");
-    createFolderUnlocked(dstPath);
+    
+    if ( ! createFolderUnlocked(dstPath)) {
+        promptError(LanguageUtils::gettext("Copy failed."));
+        return;
+    }
+
     bool commonSaved = false;
 
     if (wiiuuser > -1)  {
@@ -1182,17 +1198,19 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
             std::string dstPath = getBatchBackupPath(highID,lowID,slot,batchDatetime);
 
-            createFolder(dstPath.c_str());
-            if (!copyDir(srcPath, dstPath))
-                promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
-            else
-                writeMetadata(highID,lowID,slot,isUSB,batchDatetime); 
+            if (createFolder(dstPath.c_str()))
+                if (copyDir(srcPath, dstPath)) {
+                    writeMetadata(highID,lowID,slot,isUSB,batchDatetime);
+                    continue;
+                }
+            // backup has failed
+            promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
         }
     }
 }
 
 void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag /* = "" */) {
-    int errorCode = 0;
+    int errorCode = 0; // not used
     if (!isSlotEmpty(title->highID, title->lowID, slot) &&
         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
         return;
@@ -1204,7 +1222,12 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string dstPath = getDynamicBackupPath(highID, lowID, slot);
-    createFolder(dstPath.c_str());
+
+    if (! createFolder(dstPath.c_str())) {
+        promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),title->shortName);
+        writeMetadataWithTag(highID,lowID,slot,isUSB,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
+        return;
+    }
 
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
@@ -1309,7 +1332,11 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     
-    createFolderUnlocked(dstPath);
+    if (! createFolderUnlocked(dstPath)) {
+        promptError(LanguageUtils::gettext("%s\nRestore failed."),title->shortName);
+        errorCode = 16;
+        return errorCode;
+    }
     
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
@@ -1547,7 +1574,10 @@ void importFromLoadiine(Title *title, bool common, int version) {
     uint32_t srcOffset = strlen(srcPath);
     getLoadiineUserDir(srcPath, srcPath, usrPath);
     sprintf(dstPath, "%s/usr/save/%08x/%08x/user", isUSB ? getUSB().c_str() : "storage_mlc01:", highID, lowID);
-    createFolder(dstPath);
+    if (!createFolder(dstPath)) {
+        promptError(LanguageUtils::gettext("Failed to import savedata from loadiine."));
+        return;
+    }
     uint32_t dstOffset = strlen(dstPath);
     sprintf(dstPath + dstOffset, "/%s", usrPath);
     if (!copyDir(srcPath, dstPath))
@@ -1578,7 +1608,10 @@ void exportToLoadiine(Title *title, bool common, int version) {
     sprintf(srcPath, "%s/usr/save/%08x/%08x/user", isUSB ? getUSB().c_str() : "storage_mlc01:", highID, lowID);
     uint32_t srcOffset = strlen(srcPath);
     sprintf(srcPath + srcOffset, "/%s", usrPath);
-    createFolder(dstPath);
+    if (!createFolder(dstPath)) {
+        promptError(LanguageUtils::gettext("Failed to export savedata to loadiine."));
+        return;
+    }
     if (!copyDir(srcPath, dstPath))
         promptError(LanguageUtils::gettext("Failed to export savedata to loadiine."));
     if (common) {
