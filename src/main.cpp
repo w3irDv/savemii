@@ -524,7 +524,7 @@ int main() {
     disclaimer();
     DrawUtils::drawTGA(298, 144, 1, icon_tga);
     consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing BackupSets metadata."));
-    consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Please wait. First write to SD may be slow."));
+    consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
     DrawUtils::endDraw();
 
     BackupSetList::initBackupSetList();

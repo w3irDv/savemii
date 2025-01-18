@@ -27,6 +27,8 @@ const char *batchBackupPath = "fs:/vol/external01/wiiu/backups/batch"; // Must b
 const char *loadiineSavePath = "fs:/vol/external01/wiiu/saves";
 const char *legacyBackupPath = "fs:/vol/external01/savegames";
 
+bool firstSDWrite = true;
+
 //static char *p1;
 Account *wiiuacc;
 Account *sdacc;
@@ -1180,6 +1182,9 @@ void writeBackupAllMetadata(const std::string & batchDatetime, const std::string
 }
 
 void backupAllSave(Title *titles, int count, const std::string & batchDatetime, bool onlySelectedTitles /*= false*/) {
+    if (firstSDWrite)
+        sdWriteDisclaimer();
+
     for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
         for (int i = 0; i < count; i++) {
             if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
@@ -1222,6 +1227,9 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string dstPath = getDynamicBackupPath(highID, lowID, slot);
+
+    if (firstSDWrite)
+        sdWriteDisclaimer();
 
     if (! createFolder(dstPath.c_str())) {
         promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),title->shortName);
@@ -1679,4 +1687,11 @@ void splitStringWithNewLines(const std::string &input, std::string &output) {
         output = output + input.substr(i,MAXWIDTH) + "\n";
     }
 }
- 
+
+void sdWriteDisclaimer() {
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BACKGROUND);
+    consolePrintPosAligned(8, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
+    DrawUtils::endDraw();
+    firstSDWrite = false;
+}
