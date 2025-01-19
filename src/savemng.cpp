@@ -699,8 +699,6 @@ static inline size_t getFilesize(FILE *fp) {
 static bool copyFile(const std::string &pPath, const std::string &oPath) {
     if (pPath.find("savemiiMeta.json") != std::string::npos)
         return true;
-    //std::string uPath = pPath + "nonExistent";
-    //FILE *source = fopen(uPath.c_str(), "rb");
     FILE *source = fopen(pPath.c_str(), "rb");
     if (source == nullptr) {
         std::string multilinePath;
@@ -1233,7 +1231,6 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
 
     if (! createFolder(dstPath.c_str())) {
         promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),title->shortName);
-        writeMetadataWithTag(highID,lowID,slot,isUSB,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
         return;
     }
 
@@ -1690,7 +1687,7 @@ void splitStringWithNewLines(const std::string &input, std::string &output) {
 
 void sdWriteDisclaimer() {
     DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BACKGROUND);
+    DrawUtils::clear(COLOR_BLACK);
     consolePrintPosAligned(8, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
     DrawUtils::endDraw();
     firstSDWrite = false;
