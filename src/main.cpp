@@ -41,7 +41,7 @@ static bool contains(const T (&arr)[N], const T &element) {
 }
 
 static void disclaimer() {
-    consolePrintPosAligned(13, 0, 1,"SaveMii v%u.%u.%u", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
+    consolePrintPosAligned(13, 0, 1,"SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
     consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
     consolePrintPosAligned(16, 0, 1,
@@ -524,7 +524,7 @@ int main() {
     disclaimer();
     DrawUtils::drawTGA(298, 144, 1, icon_tga);
     consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing BackupSets metadata."));
-    consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Please wait. First write to SD may be slow."));
+    consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
     DrawUtils::endDraw();
 
     BackupSetList::initBackupSetList();
@@ -543,7 +543,7 @@ int main() {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BACKGROUND);
 
-            consolePrintPos(0, 0, "SaveMii v%u.%u.%u", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
+            consolePrintPos(0, 0, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
             consolePrintPos(0, 1, "----------------------------------------------------------------------------");
 
             DrawUtils::setRedraw(false);

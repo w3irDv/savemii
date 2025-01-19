@@ -169,3 +169,4 @@ Account *getSDacc();
 void deleteSlot(Title *title, uint8_t slot);
 bool wipeBackupSet(const std::string &subPath);
 void splitStringWithNewLines(const std::string &input, std::string &output);
+void sdWriteDisclaimer(); 
