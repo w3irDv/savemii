@@ -12,7 +12,7 @@ public:
                                                                                                       wiiuTitlesCount(wiiuTitlesCount),
                                                                                                       vWiiTitlesCount(vWiiTitlesCount) {}
     enum eState {
-        STATE_BATCH_BACKUP,
+        STATE_BATCH_BACKUP_MENU,
         STATE_DO_SUBSTATE,
     };
 
@@ -22,7 +22,7 @@ public:
 
 private:
     std::unique_ptr<ApplicationState> subState{};
-    eState state = STATE_BATCH_BACKUP;
+    eState state = STATE_BATCH_BACKUP_MENU;
 
     Title *wiiutitles;
     Title *wiititles;

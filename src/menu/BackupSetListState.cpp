@@ -19,6 +19,11 @@ static std::string language;
 BackupSetListState::BackupSetListState() {
     finalScreen = true;
     this->sortAscending = BackupSetList::sortAscending;
+    if (BackupSetList::getIsInitializationRequired() ) {
+        BackupSetList::initBackupSetList();
+        BackupSetListState::resetCursorPosition();
+        BackupSetList::setIsInitializationRequired(false);
+    }
 }
 
 BackupSetListState::BackupSetListState(Title *titles, int titlesCount, bool isWiiUBatchRestore) :
@@ -26,6 +31,11 @@ BackupSetListState::BackupSetListState(Title *titles, int titlesCount, bool isWi
         titlesCount(titlesCount),
         isWiiUBatchRestore(isWiiUBatchRestore) {
     finalScreen = false;
+    if (BackupSetList::getIsInitializationRequired() ) {
+        BackupSetList::initBackupSetList();
+        BackupSetListState::resetCursorPosition();
+        BackupSetList::setIsInitializationRequired(false);
+    }
 }
 
 void BackupSetListState::resetCursorPosition() {   // if bslist is modified after a new batch Backup
@@ -103,9 +113,19 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             }
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
-            DrawUtils::setRedraw(true);
-            if (finalScreen)
+            //DrawUtils::setRedraw(true);
+            if (finalScreen) {
+                char message[256]; 
+                const char* messageTemplate = LanguageUtils::gettext("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
+                snprintf(message,256,messageTemplate,
+                    BackupSetList::currentBackupSetList->at(cursorPos + scroll).c_str(),
+                    BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll).c_str(),
+                    BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos+scroll).c_str(),
+                    Metadata::thisConsoleSerialId.c_str());
+                promptMessage(COLOR_SUMMARY,message);
+                DrawUtils::setRedraw(true);
                 return SUBSTATE_RETURN;
+            }
             else    // is a step in batchRestore
             {
                 this->state = STATE_DO_SUBSTATE;

@@ -1173,6 +1173,14 @@ void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot, bool isUS
     delete metadataObj;
 }
 
+void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag) {
+    Metadata *metadataObj = new Metadata(highID, lowID, slot, batchDatetime);
+    metadataObj->setTag(tag);
+    metadataObj->set(getNowDate(),isUSB);
+    delete metadataObj;
+}
+
+
 void writeBackupAllMetadata(const std::string & batchDatetime, const std::string & tag) {
     Metadata *metadataObj = new Metadata(batchDatetime,"", Metadata::thisConsoleSerialId, tag);
     metadataObj->write();
@@ -1204,9 +1212,13 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             if (createFolder(dstPath.c_str()))
                 if (copyDir(srcPath, dstPath)) {
                     writeMetadata(highID,lowID,slot,isUSB,batchDatetime);
+                    titles[i].currentBackup.batchRestoreState = OK;
+                    titles[i].currentBackup.selected = false;
                     continue;
                 }
-            // backup has failed
+            // backup for this tile has failed
+            titles[i].currentBackup.batchRestoreState = KO;
+            writeMetadataWithTag(highID,lowID,slot,isUSB,batchDatetime,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
             promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
         }
     }
@@ -1679,11 +1691,11 @@ bool wipeBackupSet(const std::string &subPath) {
     return true;
 }
 
-void splitStringWithNewLines(const std::string &input, std::string &output) {
-    for (unsigned i=0; i < input.length(); i += MAXWIDTH) {
-        output = output + input.substr(i,MAXWIDTH) + "\n";
+    void splitStringWithNewLines(const std::string &input, std::string &output) {
+        for (unsigned i=0; i < input.length(); i += MAXWIDTH) {
+            output = output + input.substr(i,MAXWIDTH) + "\n";
+        }
     }
-}
 
 void sdWriteDisclaimer() {
     DrawUtils::beginDraw();

@@ -149,6 +149,7 @@ std::string getNowDate() __attribute__((hot));
 void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) __attribute__((hot));
 void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &batchDatetime) __attribute__((hot));
 void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &tag) __attribute__((hot));
+void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &batchDatetime,const std::string &tag) __attribute__((hot));
 void writeBackupAllMetadata(const std::string & Date, const std::string & tag);
 void backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
 void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag = "") __attribute__((hot));
