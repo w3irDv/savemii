@@ -7,6 +7,7 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/StringUtils.h>
 #include <utils/Colors.h>
 
 static int cursorPos = 0;
@@ -14,6 +15,8 @@ static int entrycount;
 static uint8_t slot = 0;
 static int8_t wiiuuser = -1, wiiuuser_d = -1, sduser = -1;
 static bool common = true;
+
+int statCount = 0;
 
 void TitleTaskState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -136,6 +139,27 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             if (cursorPos > 0)
                 --cursorPos;
         }
+        if (input->get(TRIGGER, PAD_BUTTON_PLUS))
+        {
+            statCount++;
+
+            std::string statFilePath = "fs:/vol/external01/wiiu/backups/stat-" + std::string(this->title.shortName) + "-"+std::to_string(statCount)+ ".out"; 
+            FILE *file = fopen(statFilePath.c_str(),"w");
+
+            uint32_t highID = this->title.highID;
+            uint32_t lowID = this->title.lowID;
+            bool isUSB = this->title.isTitleOnUSB;
+            bool isWii = this->title.is_Wii;
+
+            const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+            
+            statDir(srcPath,file);
+
+            fclose(file); 
+
+        }
+        
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {

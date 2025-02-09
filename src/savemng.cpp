@@ -49,7 +49,6 @@ struct file_buffer {
 static file_buffer buffers[16];
 static char *fileBuf[2];
 static bool buffersInitialized = false;
-
 //#define MOCK
 #ifdef MOCK
    // number of times the function will return a failed operation
@@ -273,21 +272,21 @@ static bool createFolder(const char *path) {
     std::string dir;
     while ((pos = strPath.find('/', pos + 1)) != std::string::npos) {
         dir = strPath.substr(0, pos);
-        if (mkdir(dir.c_str(), 0x666) != 0 && errno != EEXIST) {
+        if (mkdir(dir.c_str(), 0x660) != 0 && errno != EEXIST) {
             std::string multilinePath;
             splitStringWithNewLines(dir,multilinePath);
             promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
             return false;
         }
-        FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
+        FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x660);
     }
-    if (mkdir(strPath.c_str(), 0x666) != 0 && errno != EEXIST) {
+    if (mkdir(strPath.c_str(), 0x660) != 0 && errno != EEXIST) {
         std::string multilinePath;
         splitStringWithNewLines(dir,multilinePath);
         promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
     }
-    FSAChangeMode(handle, newlibtoFSA(strPath).c_str(), (FSMode) 0x666);
+    FSAChangeMode(handle, newlibtoFSA(strPath).c_str(), (FSMode) 0x660);
     return true;
 }
 
@@ -299,7 +298,7 @@ static bool createFolderUnlocked(const std::string &path) {
         dir = _path.substr(0, pos);
         if ((dir == "/vol") || (dir == "/vol/storage_mlc01" || (dir == newlibtoFSA(getUSB()))))
             continue;
-        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x660);
         if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
             std::string multilinePath;
             splitStringWithNewLines(dir,multilinePath);
@@ -307,7 +306,7 @@ static bool createFolderUnlocked(const std::string &path) {
             return false;
         }
     }
-    FSError createdDir = FSAMakeDir(handle, _path.c_str(), (FSMode) 0x666);
+    FSError createdDir = FSAMakeDir(handle, _path.c_str(), (FSMode) 0x660);
     if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
         std::string multilinePath;
         splitStringWithNewLines(dir,multilinePath);
@@ -725,7 +724,7 @@ static bool copyFile(const std::string &pPath, const std::string &oPath) {
     fclose(source);
     fclose(dest);
 
-    FSAChangeMode(handle, newlibtoFSA(oPath).c_str(), (FSMode) 0x666);
+    FSAChangeMode(handle, newlibtoFSA(oPath).c_str(), (FSMode) 0x660);
 
     if (! success) {
         if (readError > 0 )
@@ -747,8 +746,8 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         return false;
     }
 
-    mkdir(tPath.c_str(), 0x666);
-    FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
+    mkdir(tPath.c_str(), 0x660);
+    FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x660);
     auto *data = (dirent *) malloc(sizeof(dirent));
 
     while ((data = readdir(dir)) != nullptr) {
@@ -761,8 +760,8 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string targetPath = StringUtils::stringFormat("%s/%s", tPath.c_str(), data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-            mkdir(targetPath.c_str(), 0x666);
-            FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x666);
+            mkdir(targetPath.c_str(), 0x660);
+            FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x660);
             if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 closedir(dir);
                 return false;
@@ -1691,4 +1690,75 @@ void sdWriteDisclaimer() {
     consolePrintPosAligned(8, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
     DrawUtils::endDraw();
     firstSDWrite = false;
+}
+
+
+bool statDir(const std::string &pPath,FILE *file) {
+
+    DIR *dir = opendir(pPath.c_str());
+    if (dir == nullptr) {
+//        std::string multilinePath;
+//        splitStringWithNewLines(pPath,multilinePath);
+//        promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        fprintf(stdout,"Error opening source dir\n\n%s\n%s",pPath.c_str(),strerror(errno));
+        return false;
+    }
+
+    auto *data = (dirent *) malloc(sizeof(dirent));
+
+    while ((data = readdir(dir)) != nullptr) {
+
+        if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
+            continue;
+
+        if ((data->d_type & DT_DIR) != 0) {
+            struct stat st;
+            mode_t perm;
+
+            std::string dirPath = (pPath + "/" + std::string(data->d_name));  
+
+            stat(dirPath.c_str(),&st);
+            perm = st.st_mode;
+
+            fprintf (file,"dir  %o %s\n",perm & 0777,dirPath.c_str());
+            //std::cout << "dir  "<< std::oct << ( perm & 0777 ) << "  " << dirPath <<"\n";
+
+            FSAStat fsast;
+            FSMode fsamode;
+            FSAGetStat(handle, newlibtoFSA(dirPath).c_str(), &fsast);
+            fsamode = fsast.mode;
+            fprintf (file,"fsadir  %x %s - og %x %x - q %llu\n",fsamode,dirPath.c_str(),fsast.owner,fsast.group,fsast.quotaSize);
+
+
+
+
+            if (!statDir(dirPath.c_str(),file)) {
+                closedir(dir);
+                return false;
+            }
+        }
+        else
+        {
+            struct stat st;
+            mode_t perm;
+
+            std::string filePath = pPath + "/" + std::string(data->d_name); 
+            stat(filePath.c_str(),&st);
+            perm = st.st_mode;
+            fprintf (file,"file %o %s\n",perm & 0777,filePath.c_str());
+            //std::cout << "file "<< std::oct << ( perm & 0777 ) << " "<< filePath <<"\n";
+
+            FSAStat fsast;
+            FSMode fsamode;
+            FSAGetStat(handle, newlibtoFSA(filePath).c_str(), &fsast);
+            fsamode = fsast.mode;
+            fprintf (file,"fsafile  %x %s - og %x %x - q %llu\n",fsamode,filePath.c_str(),fsast.owner,fsast.group,fsast.quotaSize);
+
+        }
+    }
+
+    closedir(dir);
+
+
+    return true;
 }
