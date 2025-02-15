@@ -27,7 +27,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
         this->titles[i].currentBackup= {
             .hasBatchBackup = false,
             .candidateToBeRestored = false,
-            .selected = false,
+            .selectedToRestore = false,
             .hasUserSavedata = false,
             .hasCommonSavedata = false,
             .batchRestoreState = NOT_TRIED

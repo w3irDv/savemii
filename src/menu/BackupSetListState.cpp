@@ -122,7 +122,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll).c_str(),
                     BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos+scroll).c_str(),
                     Metadata::thisConsoleSerialId.c_str());
-                promptMessage(COLOR_SUMMARY,message);
+                promptMessage(COLOR_BG_OK,message);
                 DrawUtils::setRedraw(true);
                 return SUBSTATE_RETURN;
             }
