@@ -165,6 +165,8 @@ void BRTitleSelectState::render() {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
             if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == KO)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
+            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == ABORTED)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
             if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == OK)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS,COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR,cursorPos,i);
 
@@ -178,7 +180,10 @@ void BRTitleSelectState::render() {
                     nxtAction = LanguageUtils::gettext("|Restored|");
                     break;
                 case ABORTED :
-                    lastState = LanguageUtils::gettext("[AB]");
+                    if (this->titles[c2t[i + this->scroll]].currentBackup.batchBackupState == KO)
+                        lastState = LanguageUtils::gettext("[AB-BackupFailed]");
+                    else
+                        lastState = LanguageUtils::gettext("[AB]");
                     nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 case WR :
@@ -297,6 +302,11 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
            for (int i = 0; i < titlesCount ; i++) {
                 if (! this->titles[i].currentBackup.selectedToRestore )
                     continue;
+                if ( fullBackup )
+                    if ( this->titles[i].currentBackup.batchBackupState == KO ) {
+                        this->titles[i].currentBackup.batchRestoreState = ABORTED;
+                        continue;
+                    }
                 this->titles[i].currentBackup.batchRestoreState = OK;
                 bool effectiveCommon = common && this->titles[i].currentBackup.hasCommonSavedata;
                 if ( wipeBeforeRestore ) {
@@ -366,7 +376,14 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
            }
            summaryTemplate = LanguageUtils::gettext("Restore completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
            snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped);
-           promptMessage(COLOR_SUMMARY,summary);
+           
+           Color summaryColor = COLOR_BG_OK;
+            if ( titlesWarning > 0 || titlesAborted > 0)
+                summaryColor = COLOR_BG_WR;
+            if ( titlesKO > 0 )
+                summaryColor = COLOR_BG_KO;
+        
+           promptMessage(summaryColor,summary);
 
            DrawUtils::beginDraw();
            DrawUtils::clear(COLOR_BACKGROUND);

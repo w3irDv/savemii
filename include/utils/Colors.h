@@ -27,5 +27,7 @@
 #define COLOR_KEY_S      Color(0xFF666600)
 #define COLOR_KEY_C      Color(0xFF0000FF)
 #define COLOR_BG_SUCCESS      Color(0x00DD55FF)
-#define COLOR_SUMMARY      Color(0x00AA0099)
+#define COLOR_BG_OK      Color(0x00AA0099)
+#define COLOR_BG_WR      Color(0xBB7F0000)
+#define COLOR_BG_KO      Color(0x7F000000)
 #define COLOR_BG_ERROR Color(0xAA0000FF)

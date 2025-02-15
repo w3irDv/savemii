@@ -38,13 +38,13 @@ BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titl
             (! this->titles[i].saveInit ) ||
             (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0))) {
                 this->titles[i].currentBackup.selectedToBackup = false;
-                this->titles[i].currentBackup.candidateToBeRestored = false;
+                this->titles[i].currentBackup.candidateToBeBacked = false;
                 continue;
         } 
 
         // candidates to backup
         this->titles[i].currentBackup.selectedToBackup = true;
-        this->titles[i].currentBackup.candidateToBeRestored = true;
+        this->titles[i].currentBackup.candidateToBeBacked = true;
 
         // to recover title from "candidate title" index
         this->c2t.push_back(i);
@@ -58,7 +58,7 @@ void BatchBackupTitleSelectState::updateC2t()
 {
     int j = 0;
     for (int i = 0; i < this->titlesCount; i++) {
-        if ( ! this->titles[i].currentBackup.candidateToBeRestored )
+        if ( ! this->titles[i].currentBackup.candidateToBeBacked )
             continue;
         c2t[j++]=i;
     }
@@ -242,7 +242,14 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
            const char* summaryTemplate;
            summaryTemplate = LanguageUtils::gettext("Backup completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
            snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped);
-           promptMessage(COLOR_BG_SUCCESS,summary);
+           
+           Color summaryColor = COLOR_BG_OK;
+           if ( titlesWarning > 0 || titlesAborted > 0)
+                summaryColor = COLOR_BG_WR;
+           if ( titlesKO > 0 )
+                summaryColor = COLOR_BG_KO;
+           
+           promptMessage(summaryColor,summary);
 
            DrawUtils::beginDraw();
            DrawUtils::clear(COLOR_BACKGROUND);
@@ -277,7 +284,7 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
-                if ( ! this->titles[i].currentBackup.candidateToBeRestored )
+                if ( ! this->titles[i].currentBackup.candidateToBeBacked )
                     continue;
                 this->titles[i].currentBackup.selectedToBackup = true;
             }
@@ -285,7 +292,7 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_MINUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
-                if ( ! this->titles[i].currentBackup.candidateToBeRestored )
+                if ( ! this->titles[i].currentBackup.candidateToBeBacked )
                     continue;
                 this->titles[i].currentBackup.selectedToBackup = false;
             }
