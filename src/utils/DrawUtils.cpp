@@ -31,11 +31,7 @@ uint8_t *DrawUtils::drcBuffer = nullptr;
 uint32_t DrawUtils::sBufferSizeTV = 0, DrawUtils::sBufferSizeDRC = 0;
 BOOL DrawUtils::sConsoleHasForeground = TRUE;
 
-static SFT cFont = {};
 static SFT pFont = {};
-#ifdef KFONT
-static SFT kFont = {};
-#endif
 
 static Color font_col(0xFFFFFFFF);
 
@@ -196,8 +192,27 @@ void DrawUtils::drawRect(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g, u
     drawLine(x1, y1, x1, y2, r, g, b, a);
 }
 
+bool DrawUtils::initFont() {
+    void *font = nullptr;
+    uint32_t size = 0;
+    OSGetSharedData(OS_SHAREDDATATYPE_FONT_STANDARD, 0, &font, &size);
 
-bool DrawUtils::initFont(OSSharedDataType fontType) {
+    if (font && size) {
+        pFont.xScale = 22;
+        pFont.yScale = 22,
+        pFont.flags = SFT_DOWNWARD_Y;
+        pFont.font = sft_loadmem(font, size);
+        if (!pFont.font) {
+            return false;
+        }
+        OSMemoryBarrier();
+        return true;
+    }
+    return false;
+}
+
+
+bool DrawUtils::setFont(OSSharedDataType fontType) {
     void *font = nullptr;
     uint32_t size = 0;
     OSGetSharedData(fontType, 0, &font, &size);
@@ -217,45 +232,10 @@ bool DrawUtils::initFont(OSSharedDataType fontType) {
 }
 
 
-bool DrawUtils::setFont() {
-    cFont = pFont;
-    return true;
-}
-
-#ifdef KFONT
-bool DrawUtils::initKFont() {
-    uint8_t * kfont = nullptr;
-    uint32_t size = 0;
-    size =  loadFile("romfs:/ttf/21513_Keyboard.ttf",&kfont);
-    if (kfont && size) {
-        kFont.xScale = 44;
-        kFont.yScale = 44,
-        kFont.flags = SFT_DOWNWARD_Y;
-        kFont.font = sft_loadmem(kfont, size);
-        if (!kFont.font) {
-            return false;
-        }
-    } else {
-        return false;
-    }
-    return true;
-}
-
-bool DrawUtils::setKFont() {
-    cFont = kFont;
-    return true;
-}
-#endif
-
 void DrawUtils::deinitFont() {
     sft_freefont(pFont.font);
     pFont.font = nullptr;
     pFont = {};
-#ifdef KFONT
-    sft_freefont(kFont.font);
-    kFont.font = nullptr;
-    kFont = {};
-#endif
 }
 
 void DrawUtils::setFontColor(Color col) {
@@ -316,9 +296,9 @@ void DrawUtils::print(uint32_t x, uint32_t y, const wchar_t *string, bool alignR
     uint16_t textureWidth = 0, textureHeight = 0;
     for (; *string; string++) {
         SFT_Glyph gid; //  unsigned long gid;
-        if (sft_lookup(&cFont, *string, &gid) >= 0) {
+        if (sft_lookup(&pFont, *string, &gid) >= 0) {
             SFT_GMetrics mtx;
-            if (sft_gmetrics(&cFont, gid, &mtx) < 0) {
+            if (sft_gmetrics(&pFont, gid, &mtx) < 0) {
                 return;
             }
 
@@ -354,7 +334,7 @@ void DrawUtils::print(uint32_t x, uint32_t y, const wchar_t *string, bool alignR
                 return;
             }
             img.pixels = buffer.get();
-            if (sft_render(&cFont, gid, img) < 0) {
+            if (sft_render(&pFont, gid, img) < 0) {
                 return;
             } else {
                 draw_freetype_bitmap(&img, (int32_t) (penX + mtx.leftSideBearing), (int32_t) (penY + mtx.yOffset));
@@ -387,9 +367,9 @@ uint32_t DrawUtils::getTextWidth(const wchar_t *string) {
 
     for (; *string; string++) {
         SFT_Glyph gid; //  unsigned long gid;
-        if (sft_lookup(&cFont, *string, &gid) >= 0) {
+        if (sft_lookup(&pFont, *string, &gid) >= 0) {
             SFT_GMetrics mtx;
-            sft_gmetrics(&cFont, gid, &mtx);
+            sft_gmetrics(&pFont, gid, &mtx);
             width += (int32_t) mtx.advanceWidth;
         }
     }
