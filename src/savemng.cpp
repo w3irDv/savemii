@@ -1196,7 +1196,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
                 continue;
             if (onlySelectedTitles)
-                if (! titles[i].currentBackup.selected)
+                if (! titles[i].currentBackup.selectedToBackup)
                     continue;
             uint32_t highID = titles[i].highID;
             uint32_t lowID = titles[i].lowID;
@@ -1212,12 +1212,12 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             if (createFolder(dstPath.c_str()))
                 if (copyDir(srcPath, dstPath)) {
                     writeMetadata(highID,lowID,slot,isUSB,batchDatetime);
-                    titles[i].currentBackup.batchRestoreState = OK;
-                    titles[i].currentBackup.selected = false;
+                    titles[i].currentBackup.batchBackupState = OK;
+                    titles[i].currentBackup.selectedToBackup= false;
                     continue;
                 }
             // backup for this tile has failed
-            titles[i].currentBackup.batchRestoreState = KO;
+            titles[i].currentBackup.batchBackupState = KO;
             writeMetadataWithTag(highID,lowID,slot,isUSB,batchDatetime,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
             promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
         }

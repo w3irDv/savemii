@@ -34,10 +34,13 @@ enum eBatchRestoreState {
 struct backupInfo {
     bool hasBatchBackup;
     bool candidateToBeRestored;
-    bool selected;
+    bool candidateToBeBacked;
+    bool selectedToRestore;
+    bool selectedToBackup;
     bool hasUserSavedata;
     bool hasCommonSavedata;
     eBatchRestoreState batchRestoreState;
+    eBatchRestoreState batchBackupState;
     int lastErrCode; 
 };
 

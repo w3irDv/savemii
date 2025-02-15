@@ -27,7 +27,7 @@ BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titl
     c2t.clear();
     // from the subset of titles with backup data, filter out the ones without the specified user info
     for (int i = 0; i < this->titlesCount; i++) {
-        this->titles[i].currentBackup.batchRestoreState = NOT_TRIED;
+        this->titles[i].currentBackup.batchBackupState = NOT_TRIED;
         
         //uint32_t highID = this->titles[i].highID;
         //uint32_t lowID = this->titles[i].lowID;
@@ -37,13 +37,13 @@ BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titl
         if ((strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) ||
             (! this->titles[i].saveInit ) ||
             (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0))) {
-                this->titles[i].currentBackup.selected = false;
+                this->titles[i].currentBackup.selectedToBackup = false;
                 this->titles[i].currentBackup.candidateToBeRestored = false;
                 continue;
         } 
 
         // candidates to backup
-        this->titles[i].currentBackup.selected = true;
+        this->titles[i].currentBackup.selectedToBackup = true;
         this->titles[i].currentBackup.candidateToBeRestored = true;
 
         // to recover title from "candidate title" index
@@ -104,33 +104,33 @@ void BatchBackupTitleSelectState::render() {
             bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
             
             DrawUtils::setFontColor(COLOR_LIST);
-            if ( this->titles[c2t[i + this->scroll]].currentBackup.selected)
+            if ( this->titles[c2t[i + this->scroll]].currentBackup.selectedToBackup)
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             
-            if (this->titles[c2t[i + this->scroll]].currentBackup.selected && ! this->titles[c2t[i + this->scroll]].saveInit) {
+            if (this->titles[c2t[i + this->scroll]].currentBackup.selectedToBackup && ! this->titles[c2t[i + this->scroll]].saveInit) {
                 DrawUtils::setFontColor(COLOR_LIST_SELECTED_NOSAVE);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             }
 
-            if ( this->titles[c2t[i + this->scroll]].currentBackup.selected)
+            if ( this->titles[c2t[i + this->scroll]].currentBackup.selectedToBackup)
                 DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
             else
                 DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED,COLOR_LIST_SKIPPED_AT_CURSOR,cursorPos,i);
             
-            if (this->titles[c2t[i + this->scroll]].currentBackup.selected && ! this->titles[c2t[i + this->scroll]].saveInit) {
+            if (this->titles[c2t[i + this->scroll]].currentBackup.selectedToBackup && ! this->titles[c2t[i + this->scroll]].saveInit) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
             }
             if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == KO)
+            if (this->titles[c2t[i + this->scroll]].currentBackup.batchBackupState == KO)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == OK)
+            if (this->titles[c2t[i + this->scroll]].currentBackup.batchBackupState == OK)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS,COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR,cursorPos,i);
 
-            switch (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState) {
+            switch (this->titles[c2t[i + this->scroll]].currentBackup.batchBackupState) {
                 case NOT_TRIED :
                     lastState = "";
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext(">> Backup") : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToBackup ?  LanguageUtils::gettext(">> Backup") : LanguageUtils::gettext(">> Skip");
                     break;
                 case OK :
                     lastState = LanguageUtils::gettext("[OK]");
@@ -138,15 +138,15 @@ void BatchBackupTitleSelectState::render() {
                     break;
                 case ABORTED :
                     lastState = LanguageUtils::gettext("[AB]");
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToBackup ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 case WR :
                     lastState = LanguageUtils::gettext("[WR]");
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToBackup ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 case KO:
                     lastState = LanguageUtils::gettext("[KO]");
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selected ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToBackup ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 default:
                     lastState = "";
@@ -208,7 +208,7 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
            int titlesKO = 0;
            int titlesSkipped = 0; 
            for (int i = 0; i < this->candidatesCount ; i++) {
-                switch (this->titles[c2t[i]].currentBackup.batchRestoreState) {
+                switch (this->titles[c2t[i]].currentBackup.batchBackupState) {
                     case OK :
                         titlesOK++;
                         break;
@@ -270,8 +270,8 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
                 cursorPos = this->candidatesCount - 1;
         }
         if (input->get(TRIGGER, PAD_BUTTON_Y) || input->get(TRIGGER, PAD_BUTTON_RIGHT) || input->get(TRIGGER, PAD_BUTTON_LEFT)) {
-            if (this->titles[c2t[cursorPos + this->scroll]].currentBackup.batchRestoreState != OK)
-                this->titles[c2t[cursorPos + this->scroll]].currentBackup.selected = this->titles[c2t[cursorPos + this->scroll]].currentBackup.selected ? false:true;
+            if (this->titles[c2t[cursorPos + this->scroll]].currentBackup.batchBackupState != OK)
+                this->titles[c2t[cursorPos + this->scroll]].currentBackup.selectedToBackup = this->titles[c2t[cursorPos + this->scroll]].currentBackup.selectedToBackup ? false:true;
             else
                 return SUBSTATE_RUNNING;
         }
@@ -279,7 +279,7 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
             for (int i = 0; i < this->titlesCount; i++) {
                 if ( ! this->titles[i].currentBackup.candidateToBeRestored )
                     continue;
-                this->titles[i].currentBackup.selected = true;
+                this->titles[i].currentBackup.selectedToBackup = true;
             }
             return SUBSTATE_RUNNING;
         }
@@ -287,7 +287,7 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
             for (int i = 0; i < this->titlesCount; i++) {
                 if ( ! this->titles[i].currentBackup.candidateToBeRestored )
                     continue;
-                this->titles[i].currentBackup.selected = false;
+                this->titles[i].currentBackup.selectedToBackup = false;
             }
             return SUBSTATE_RUNNING;    
         }
