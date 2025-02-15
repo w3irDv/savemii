@@ -11,6 +11,7 @@
 #include <nn/act/client_cpp.h>
 #include <sys/stat.h>
 #include <malloc.h>
+#include <unistd.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -272,7 +273,7 @@ static bool createFolder(const char *path) {
     std::string dir;
     while ((pos = strPath.find('/', pos + 1)) != std::string::npos) {
         dir = strPath.substr(0, pos);
-        if (mkdir(dir.c_str(), 0x660) != 0 && errno != EEXIST) {
+        if (mkdir(dir.c_str(), 0660) != 0 && errno != EEXIST) {
             std::string multilinePath;
             splitStringWithNewLines(dir,multilinePath);
             promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
@@ -280,7 +281,7 @@ static bool createFolder(const char *path) {
         }
         FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x660);
     }
-    if (mkdir(strPath.c_str(), 0x660) != 0 && errno != EEXIST) {
+    if (mkdir(strPath.c_str(), 0660) != 0 && errno != EEXIST) {
         std::string multilinePath;
         splitStringWithNewLines(dir,multilinePath);
         promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
@@ -290,7 +291,7 @@ static bool createFolder(const char *path) {
     return true;
 }
 
-static bool createFolderUnlocked(const std::string &path) {
+static bool createFolderUnlocked(const std::string &path) { 
     std::string _path = newlibtoFSA(path);
     size_t pos = 0;
     std::string dir;
@@ -746,7 +747,7 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         return false;
     }
 
-    mkdir(tPath.c_str(), 0x660);
+    mkdir(tPath.c_str(), 0660);
     FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x660);
     auto *data = (dirent *) malloc(sizeof(dirent));
 
@@ -760,7 +761,7 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string targetPath = StringUtils::stringFormat("%s/%s", tPath.c_str(), data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-            mkdir(targetPath.c_str(), 0x660);
+            mkdir(targetPath.c_str(), 0660);
             FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x660);
             if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 closedir(dir);
@@ -1712,15 +1713,17 @@ bool statDir(const std::string &pPath,FILE *file) {
             continue;
 
         if ((data->d_type & DT_DIR) != 0) {
+            std::string dirPath = (pPath + "/" + std::string(data->d_name));  
+            /*
             struct stat st;
             mode_t perm;
-
-            std::string dirPath = (pPath + "/" + std::string(data->d_name));  
-
             stat(dirPath.c_str(),&st);
             perm = st.st_mode;
+            auto uid = st.st_uid;
+            auto gid = st.st_gid; 
 
-            fprintf (file,"dir  %o %s\n",perm & 0777,dirPath.c_str());
+            fprintf (file,"dir  %o %s - og %x %x\n",perm & 0777,dirPath.c_str(),uid,gid);
+            */
             //std::cout << "dir  "<< std::oct << ( perm & 0777 ) << "  " << dirPath <<"\n";
 
             FSAStat fsast;
@@ -1729,9 +1732,6 @@ bool statDir(const std::string &pPath,FILE *file) {
             fsamode = fsast.mode;
             fprintf (file,"fsadir  %x %s - og %x %x - q %llu\n",fsamode,dirPath.c_str(),fsast.owner,fsast.group,fsast.quotaSize);
 
-
-
-
             if (!statDir(dirPath.c_str(),file)) {
                 closedir(dir);
                 return false;
@@ -1739,13 +1739,16 @@ bool statDir(const std::string &pPath,FILE *file) {
         }
         else
         {
+            std::string filePath = pPath + "/" + std::string(data->d_name);
+            /*
             struct stat st;
             mode_t perm;
-
-            std::string filePath = pPath + "/" + std::string(data->d_name); 
             stat(filePath.c_str(),&st);
             perm = st.st_mode;
-            fprintf (file,"file %o %s\n",perm & 0777,filePath.c_str());
+            auto uid = st.st_uid;
+            auto gid = st.st_gid; 
+            fprintf (file,"file %o %s - og %x %x\n",perm & 0777,filePath.c_str(),uid,gid);
+            */
             //std::cout << "file "<< std::oct << ( perm & 0777 ) << " "<< filePath <<"\n";
 
             FSAStat fsast;
@@ -1761,4 +1764,18 @@ bool statDir(const std::string &pPath,FILE *file) {
 
 
     return true;
+}
+
+void getStat() {
+                
+                std::string dir = "storage_usb01:/usr/save/00050000/10184e00/user/common";
+                FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x642);
+                FSAFlushVolume(handle, "/vol/storage_usb01");
+                struct stat st;
+                mode_t perm;
+                stat(dir.c_str(),&st);
+                perm = st.st_mode;
+                promptError("mode %o\n%s",perm & 0777,strerror(errno));
+                DrawUtils::setRedraw(true);
+
 }
