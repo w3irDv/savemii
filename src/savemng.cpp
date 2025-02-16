@@ -273,7 +273,7 @@ static bool createFolder(const char *path) {
     std::string dir;
     while ((pos = strPath.find('/', pos + 1)) != std::string::npos) {
         dir = strPath.substr(0, pos);
-        if (mkdir(dir.c_str(), 0x666) != 0 && errno != EEXIST) {
+        if (mkdir(dir.c_str(), 0666) != 0 && errno != EEXIST) {
             std::string multilinePath;
             splitStringWithNewLines(dir,multilinePath);
             promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
@@ -281,7 +281,7 @@ static bool createFolder(const char *path) {
         }
         FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
     }
-    if (mkdir(strPath.c_str(), 0x666) != 0 && errno != EEXIST) {
+    if (mkdir(strPath.c_str(), 0666) != 0 && errno != EEXIST) {
         std::string multilinePath;
         splitStringWithNewLines(dir,multilinePath);
         promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
@@ -747,7 +747,7 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         return false;
     }
 
-    mkdir(tPath.c_str(), 0x666);
+    mkdir(tPath.c_str(), 0666);
     FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
     auto *data = (dirent *) malloc(sizeof(dirent));
 
@@ -761,7 +761,7 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string targetPath = StringUtils::stringFormat("%s/%s", tPath.c_str(), data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-            mkdir(targetPath.c_str(), 0x666);
+            mkdir(targetPath.c_str(), 0666);
             FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x666);
             if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 closedir(dir);
