@@ -6,7 +6,7 @@
 #include <padscore/kpad.h>
 #include <savemng.h>
 #include <Metadata.h>
-#include <sndcore2/core.h>
+//#include <sndcore2/core.h>
 #include <BackupSetList.h>
 #include <utils/DrawUtils.h>
 #include <utils/Colors.h>
@@ -439,9 +439,12 @@ int main() {
     WHBLogPrintf("Hello from savemii!");
 #endif
 
-    AXInit();
+// freezes console to some users
+/*
+    AXInit();    
     AXQuit();
-    
+*/    
+
     State::init();
     
     if (DrawUtils::LogConsoleInit()) {
