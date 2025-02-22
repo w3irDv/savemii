@@ -14,6 +14,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
 #include <utils/StringUtils.h>
+#include <GlobalConfig.h>
 #include <version.h>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
@@ -459,31 +460,13 @@ int main() {
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing WPAD and KAPD"));
-    DrawUtils::endDraw();
-
-    WPADInit();
-    KPADInit();
-    WPADEnableURCC(1);
-
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Getting Serial ID"));
+    consolePrintPosAligned(10, 0, 1, "Getting Serial ID");
     DrawUtils::endDraw();
 
     getWiiUSerialId();
-
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing loadWiiU Titles"));
-    DrawUtils::endDraw();
-
-    loadWiiUTitles(0);
-
-
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing ROMFS"));
+    consolePrintPosAligned(10, 0, 1, "Initializing ROMFS");
     DrawUtils::endDraw();
 
     int res = romfsInit();
@@ -493,8 +476,38 @@ int main() {
         State::shutdown();
         return 0;
     }
-    Swkbd_LanguageType systemLanguage = LanguageUtils::getSystemLanguage();
-    LanguageUtils::loadLanguage(systemLanguage);
+
+    LanguageUtils::getSystemLanguage();    
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, "Initializing global config");
+    DrawUtils::endDraw();
+
+    if (GlobalConfig::init()) {
+        GlobalConfig::read();
+    }
+    else {
+        OSFatal("Failed to init global config. Problems with sd:/wiiu/backups");    
+    }
+
+    LanguageUtils::loadLanguage(GlobalConfig::getLanguage());
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing WPAD and KAPD"));
+    DrawUtils::endDraw();
+
+    WPADInit();
+    KPADInit();
+    WPADEnableURCC(1);
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing loadWiiU Titles"));
+    DrawUtils::endDraw();
+
+    loadWiiUTitles(0);
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);

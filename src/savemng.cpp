@@ -264,7 +264,7 @@ bool folderEmpty(const char *fPath) {
     return empty;
 }
 
-static bool createFolder(const char *path) {
+bool createFolder(const char *path) {
     std::string strPath(path);
     size_t pos = 0;
     std::string vol_prefix("fs:/vol/");

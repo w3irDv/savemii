@@ -161,6 +161,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = 
 void importFromLoadiine(Title *title, bool common, int version);
 void exportToLoadiine(Title *title, bool common, int version);
 int checkEntry(const char *fPath);
+bool createFolder(const char *fPath);
 int32_t loadFile(const char *fPath, uint8_t **buf) __attribute__((hot));
 int32_t loadTitleIcon(Title *title) __attribute__((hot));
 void consolePrintPosMultiline(int x, int y, const char *format, ...) __attribute__((hot));
