@@ -8,8 +8,8 @@
 bool GlobalConfig::init() {
 
 
-    // Set Defaults
-    GlobalConfig::setLanguage(LanguageUtils::getSysLang());
+    // Set Defaults    
+    GlobalConfig::setLanguage(LanguageUtils::getSystemLanguage());
 
     // Check path
     int checkCfgPath = checkEntry(cfgPath.c_str());

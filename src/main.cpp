@@ -433,6 +433,26 @@ static void unloadTitles(Title *titles, int count) {
         free(titles);
 }
 
+
+std::vector<const char*> initMessageList;
+
+void addInitMessage(const char* newMessage) {
+
+    initMessageList.push_back(newMessage);
+    
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+
+    int line = 0;
+    for (auto & message : initMessageList) {
+        consolePrintPosAligned(7 + line++, 0, 1, message);
+    }
+
+    DrawUtils::endDraw();
+}
+
+
 int main() {
 
 #ifdef DEBUG    
@@ -458,16 +478,10 @@ int main() {
         OSFatal("Failed to init font");
     }
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, "Getting Serial ID");
-    DrawUtils::endDraw();
-
+    addInitMessage("Getting Serial ID");
     getWiiUSerialId();
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, "Initializing ROMFS");
-    DrawUtils::endDraw();
+
+    addInitMessage("Initializing ROMFS");
 
     int res = romfsInit();
     if (res) {
@@ -477,12 +491,7 @@ int main() {
         return 0;
     }
 
-    LanguageUtils::getSystemLanguage();    
-
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, "Initializing global config");
-    DrawUtils::endDraw();
+    addInitMessage("Initializing global config");
 
     if (GlobalConfig::init()) {
         GlobalConfig::read();
@@ -493,26 +502,17 @@ int main() {
 
     LanguageUtils::loadLanguage(GlobalConfig::getLanguage());
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing WPAD and KAPD"));
-    DrawUtils::endDraw();
+    addInitMessage(LanguageUtils::gettext("Initializing WPAD and KAPD"));
 
     WPADInit();
     KPADInit();
     WPADEnableURCC(1);
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing loadWiiU Titles"));
-    DrawUtils::endDraw();
+    addInitMessage(LanguageUtils::gettext("Initializing loadWiiU Titles"));
 
     loadWiiUTitles(0);
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing FS"));
-    DrawUtils::endDraw();
+    addInitMessage(LanguageUtils::gettext("Initializing FS"));
 
     if (!initFS()) {
         promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));

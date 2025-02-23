@@ -35,7 +35,7 @@ public:
     static void loadLanguage(Swkbd_LanguageType language) __attribute__((cold));
     static std::string getLoadedLanguage();
     static Swkbd_LanguageType getSystemLanguage() __attribute__((cold));
-    static Swkbd_LanguageType getSysLang() { return sysLang; } __attribute__((cold));
+    static Swkbd_LanguageType getSwkbdLoadedLang() { return loadedLang; } __attribute__((cold));
     static void gettextCleanUp() __attribute__((__cold__));
     static const char *gettext(const char *msg) __attribute__((__hot__));
 

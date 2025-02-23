@@ -4,6 +4,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/Colors.h>
 #include <Metadata.h>
+#include <GlobalConfig.h>
 
 static int cursorPos = 0;
 
@@ -21,7 +22,7 @@ void ConfigMenuState::render() {
 
     DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
-    consolePrintPosAligned(17,4,2,LanguageUtils::gettext("\ue001: Back"));
+    consolePrintPosAligned(17,4,2,LanguageUtils::gettext("\ue045 SaveConfig  \ue001: Back"));
 }
 
 ApplicationState::eSubState ConfigMenuState::update(Input *input) {
@@ -70,6 +71,14 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
             LanguageUtils::loadLanguage(Swkbd_LanguageType__Italian);
         else if (language == LanguageUtils::gettext("Italian"))
             LanguageUtils::loadLanguage(Swkbd_LanguageType__Japanese);
+    }
+    if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
+        GlobalConfig::setLanguage(LanguageUtils::getSwkbdLoadedLang());
+        if(GlobalConfig::write())
+            promptMessage(COLOR_BG_OK,LanguageUtils::gettext("Configuration saved"));
+        else
+            promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Error saving configuration"));
+        
     }
     return SUBSTATE_RUNNING;
 }
