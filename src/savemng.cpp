@@ -383,7 +383,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
 
     y += Y_OFF;
 
-    uint32_t maxLineLength = (66 - x);
+    uint32_t maxLineLength = (60 - x);
 
     std::string currentLine;
     std::istringstream iss(tmp);
@@ -393,7 +393,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
             if (spacePos == std::string::npos) {
                 spacePos = maxLineLength;
             }
-            DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.substr(0, spacePos).c_str());
+            DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.substr(0, spacePos+1).c_str());
             currentLine = currentLine.substr(spacePos + 1);
         }
         DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.c_str());
