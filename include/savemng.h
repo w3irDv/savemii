@@ -83,7 +83,8 @@ enum Style {
     ST_MULTILINE = 16,
     ST_WARNING = 32,
     ST_ERROR = 64,
-    ST_WIPE = 128
+    ST_WIPE = 128,
+    ST_MULTIPLE_CHOICE = 256
 };
 
 template<class It>
@@ -134,6 +135,7 @@ void consolePrintPos(int x, int y, const char *format, ...) __attribute__((hot))
 bool promptConfirm(Style st, const std::string &question);
 void promptError(const char *message, ...);
 void promptMessage(Color bgcolor,const char *message, ...);
+Button promptMultipleChoice(Style st, const std::string &question);
 std::string getDynamicBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot);
 std::string getBatchBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot, std::string datetime);
 std::string getBatchBackupPathRoot(std::string datetime);

@@ -8,6 +8,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
+#include <GlobalConfig.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -299,7 +300,31 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
             return SUBSTATE_RUNNING;    
         }
         if (input->get(TRIGGER, PAD_BUTTON_X)) {
-            
+            std::string choices = LanguageUtils::gettext("\ue000  Apply saved excludes\n\ue045  Save current excludes\n\ue001  Back");
+            Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,choices.c_str());
+
+            switch (choice) {
+                case PAD_BUTTON_A:
+                    GlobalConfig::read();
+                    if (isWiiUBatchBackup)
+                        GlobalConfig::config2Title(GlobalConfig::wiiUTitlesID,titles,titlesCount);
+                    else
+                        GlobalConfig::config2Title(GlobalConfig::vWiiTitlesID,titles,titlesCount);                
+                    break;
+                case PAD_BUTTON_PLUS:
+                    if (isWiiUBatchBackup)
+                        GlobalConfig::title2Config(titles,titlesCount,GlobalConfig::wiiUTitlesID);
+                    else
+                        GlobalConfig::title2Config(titles,titlesCount,GlobalConfig::vWiiTitlesID);
+                    GlobalConfig::write();
+                    break;
+                case PAD_BUTTON_B:
+                    break;
+                default:
+                    break;
+            }
+            DrawUtils::setRedraw(true);
+
             return SUBSTATE_RUNNING;    
         }
 

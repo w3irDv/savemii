@@ -541,6 +541,71 @@ void promptMessage(Color bgcolor, const char *message, ...) {
 }
 
 
+Button promptMultipleChoice(Style st, const std::string &question) {
+    DrawUtils::beginDraw();
+    DrawUtils::setFontColor(COLOR_TEXT);
+    if (st & ST_WARNING || st & ST_WIPE ) {
+        DrawUtils::clear(Color(0x7F7F0000));
+    } else if (st & ST_ERROR) {
+        DrawUtils::clear(Color(0x7F000000));
+    } else if (st & ST_MULTIPLE_CHOICE) {
+        DrawUtils::clear(COLOR_BLACK);
+    }
+    else {
+        DrawUtils::clear(Color(0x007F0000));
+    }
+
+    const std::string msg = LanguageUtils::gettext("Choose your option");
+    
+    std::string splitted;
+    std::stringstream question_ss(question);
+    int nLines = 0;
+    int maxLineSize = 0;
+    int lineSize = 0;
+    while (getline(question_ss,splitted,'\n')) {
+        lineSize = DrawUtils::getTextWidth((char *) splitted.c_str());
+        maxLineSize = lineSize > maxLineSize ? lineSize : maxLineSize;
+        nLines++;
+    }
+    int initialYPos = 6 - nLines/2;
+    initialYPos = initialYPos > 0 ? initialYPos : 0;
+    consolePrintPos(31 - (maxLineSize / 24), initialYPos, question.c_str());
+    consolePrintPos(31 - (DrawUtils::getTextWidth((char *) msg.c_str()) / 24), initialYPos+2+nLines, msg.c_str());
+
+
+    Button ret;
+    DrawUtils::endDraw();
+    Input input{};
+    while (true) {
+        input.read();
+        if (input.get(TRIGGER, PAD_BUTTON_A)) {
+            ret = PAD_BUTTON_A;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_B)) {
+            ret = PAD_BUTTON_B;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_X)) {
+            ret = PAD_BUTTON_X;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_Y)) {
+            ret = PAD_BUTTON_Y;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_PLUS)) {
+            ret = PAD_BUTTON_PLUS;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_MINUS)) {
+            ret = PAD_BUTTON_MINUS;
+            break;
+        }
+    }
+    return ret;
+}
+
 void getAccountsWiiU() {
     /* get persistent ID - thanks to Maschell */
     nn::act::Initialize();
