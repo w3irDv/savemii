@@ -27,6 +27,13 @@
 #include <whb/log.h>
 #endif
 
+#define STRESS
+#ifdef STRESS
+#include <algorithm>
+#include <tga_reader.h>
+#define MAXTITLES 300
+#endif
+
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
 
 extern char *batchBackupPath;
@@ -180,7 +187,11 @@ static Title *loadWiiUTitles(int run) {
         }
     }
 
+#ifndef STRESS
     auto *titles = (Title *) malloc(foundCount * sizeof(Title));
+#else
+    auto *titles = (Title *) malloc(std::max(foundCount,MAXTITLES) * sizeof(Title));
+#endif
     if (titles == nullptr) {
         promptError(LanguageUtils::gettext("Out of memory."));
         return nullptr;
@@ -273,6 +284,37 @@ static Title *loadWiiUTitles(int run) {
     free(savesl);
     free(saves);
     free(tList);
+
+#ifdef STRESS
+    for (int i=wiiuTitlesCount; i < MAXTITLES; i++) {
+        titles[i].highID = titles[i-wiiuTitlesCount].highID;
+        titles[i].lowID = titles[i-wiiuTitlesCount].lowID + i/wiiuTitlesCount;
+        titles[i].is_Wii = titles[i-wiiuTitlesCount].is_Wii;
+        titles[i].isTitleOnUSB = titles[i-wiiuTitlesCount].isTitleOnUSB;
+        titles[i].isTitleDupe = titles[i-wiiuTitlesCount].isTitleDupe;
+        titles[i].listID = titles[i-wiiuTitlesCount].listID;
+        titles[i].dupeID = titles[i-wiiuTitlesCount].dupeID;
+        titles[i].noFwImg = titles[i-wiiuTitlesCount].noFwImg;
+        titles[i].saveInit= titles[i-wiiuTitlesCount].saveInit;
+        sprintf(titles[i].shortName,"%s",titles[i-wiiuTitlesCount].shortName);
+        sprintf(titles[i].longName,"%s",titles[i-wiiuTitlesCount].longName);
+        sprintf(titles[i].productCode,"%s",titles[i-wiiuTitlesCount].productCode);
+        titles[i].accountSaveSize = titles[i-wiiuTitlesCount].accountSaveSize;
+        titles[i].groupID = titles[i-wiiuTitlesCount].groupID;
+
+        if (titles[i-wiiuTitlesCount].iconBuf != nullptr) {
+            int tgaSize = 4 * tgaGetWidth(titles[i-wiiuTitlesCount].iconBuf) *
+                            tgaGetHeight(titles[i-wiiuTitlesCount].iconBuf);
+            titles[i].iconBuf = (uint8_t *) malloc(tgaSize);
+            memcpy(titles[i].iconBuf,titles[i-wiiuTitlesCount].iconBuf,tgaSize);
+        }
+        else {
+            titles[i].iconBuf = nullptr;
+        }
+    }
+    wiiuTitlesCount = std::max(wiiuTitlesCount,MAXTITLES);
+#endif
+
     return titles;
 }
 
