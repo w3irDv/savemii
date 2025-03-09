@@ -309,27 +309,32 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_X)) {
             std::string choices = LanguageUtils::gettext("\ue000  Apply saved excludes\n\ue045  Save current excludes\n\ue001  Back");
-            Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,choices.c_str());
-
-            switch (choice) {
-                case PAD_BUTTON_A:
-                    if(excludes->read())
-                        excludes->applyConfig();
-                    break;
-                case PAD_BUTTON_PLUS:
-                    if(excludes->getConfig()) {
-                        if (firstSDWrite)
-                            sdWriteDisclaimer();
-                        if(excludes->save())
-                            promptMessage(COLOR_BG_OK,LanguageUtils::gettext("Configuration saved"));
-                        else
-                            promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Error saving configuration"));
-                    }
-                    break;
-                case PAD_BUTTON_B:
-                    break;
-                default:
-                    break;
+            bool done = false;
+            while (! done) {
+                Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,choices.c_str());
+                switch (choice) {
+                    case PAD_BUTTON_A:
+                        if(excludes->read())
+                            excludes->applyConfig();
+                        done = true;
+                        break;
+                    case PAD_BUTTON_PLUS:
+                        if(excludes->getConfig()) {
+                            if (firstSDWrite)
+                                sdWriteDisclaimer();
+                            if(excludes->save())
+                                promptMessage(COLOR_BG_OK,LanguageUtils::gettext("Configuration saved"));
+                            else
+                                promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Error saving configuration"));
+                        }
+                        done = true;
+                        break;
+                    case PAD_BUTTON_B:
+                        done = true;
+                        break;
+                    default:
+                        break;
+                }
             }
             DrawUtils::setRedraw(true);
 
