@@ -296,17 +296,15 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
-                if ( ! this->titles[i].currentBackup.candidateToBeBacked )
-                    continue;
-                this->titles[i].currentBackup.selectedToBackup = true;
+                if ( this->titles[i].currentBackup.candidateToBeBacked && this->titles[i].currentBackup.batchBackupState != OK)
+                    this->titles[i].currentBackup.selectedToBackup = true;
             }
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_MINUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
-                if ( ! this->titles[i].currentBackup.candidateToBeBacked )
-                    continue;
-                this->titles[i].currentBackup.selectedToBackup = false;
+                if ( this->titles[i].currentBackup.candidateToBeBacked && this->titles[i].currentBackup.batchBackupState != OK)
+                    this->titles[i].currentBackup.selectedToBackup = false;
             }
             return SUBSTATE_RUNNING;    
         }
