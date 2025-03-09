@@ -58,9 +58,12 @@ BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titl
     }
     candidatesCount = (int) this->c2t.size();
 
-    if (GlobalCfg::global->getAlwaysApplyExcludes())
+    if (GlobalCfg::global->getAlwaysApplyExcludes()) {
         if(excludes->read())
             excludes->applyConfig();
+        else
+            DrawUtils::setRedraw(true);
+    }
 };
 
 void BatchBackupTitleSelectState::updateC2t()
