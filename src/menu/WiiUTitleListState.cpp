@@ -82,6 +82,7 @@ ApplicationState::eSubState WiiUTitleListState::update(Input *input) {
             if (strcmp(this->titles[this->targ].shortName, "DONT TOUCH ME") == 0) {
                 if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("CBHC save. Could be dangerous to modify. Continue?")) ||
                     !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?"))) {
+                    DrawUtils::setRedraw(true);
                     return SUBSTATE_RUNNING;
                 }
             }

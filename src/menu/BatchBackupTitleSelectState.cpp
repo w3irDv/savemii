@@ -61,9 +61,10 @@ BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titl
     if (GlobalCfg::global->getAlwaysApplyExcludes()) {
         if(excludes->read())
             excludes->applyConfig();
-        else
+        else // there has been some error and a prompt has been shown, force menu redraw
             DrawUtils::setRedraw(true);
     }
+
 };
 
 void BatchBackupTitleSelectState::updateC2t()

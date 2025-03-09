@@ -78,6 +78,7 @@ ApplicationState::eSubState vWiiTitleListState::update(Input *input) {
             if (!this->titles[this->targ].saveInit) {
                 if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Recommended to run Game at least one time. Continue?")) ||
                     !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?"))) {
+                    DrawUtils::setRedraw(true);
                     return SUBSTATE_RUNNING;
                 }
             }
