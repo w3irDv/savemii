@@ -56,9 +56,13 @@ bool ExcludesCfg::mkJsonCfg()   {
             return false;
         }
 
-        json_object_set_new(element, "h", json_integer(titleID.highID));
-        json_object_set_new(element, "l", json_integer(titleID.lowID));
-        json_object_set_new(element, "s", json_boolean(titleID.isTitleOnUSB));
+        char hID[9];
+        char lID[9];
+        snprintf(hID,9,"%08x",titleID.highID);
+        snprintf(lID,9,"%08x",titleID.lowID);
+        json_object_set_new(element, "h", json_string(hID));
+        json_object_set_new(element, "l", json_string(lID));
+        json_object_set_new(element, "u", json_boolean(titleID.isTitleOnUSB));
     
         json_array_append(excludes,element);    
         json_decref(element);    
@@ -105,7 +109,7 @@ bool ExcludesCfg::parseJsonCfg() {
     std::string koElements {};
     for (size_t i=0;i < json_array_size(excludes);i++)
     {
-        json_t *element,*h,*l,*s;
+        json_t *element,*h,*l,*u;
 
         element = json_array_get(excludes,i);
         if (!json_is_object(element))
@@ -116,19 +120,34 @@ bool ExcludesCfg::parseJsonCfg() {
         }
         h = json_object_get(element,"h");
         l = json_object_get(element,"l");
-        s = json_object_get(element,"s");
+        u = json_object_get(element,"u");
 
-        if ( !json_is_integer(h) || !json_is_integer(l) || !json_is_boolean(s) )  
+        if ( !json_is_string(h) || !json_is_string(l) || !json_is_boolean(u) )  
         {
             errorCount++;
             koElements = koElements + "el_e:" + std::to_string(i) + " ";
             continue; 
         }
 
+        const char* hID = json_string_value(h);
+        const char* lID = json_string_value(l);
+
+        if ( hID == nullptr || lID == nullptr )  
+        {
+            errorCount++;
+            koElements = koElements + "el_e:" + std::to_string(i) + " ";
+            continue; 
+        }
+
+        char hID_[9];
+        char lID_[9];
+        snprintf(hID_,9,"%s",hID);
+        snprintf(lID_,9,"%s",lID);
+
         titleID titleID;
-        titleID.highID = json_integer_value(h);
-        titleID.lowID = json_integer_value(l);
-        titleID.isTitleOnUSB = json_boolean_value(s);
+        titleID.highID = static_cast<uint32_t>(std::stoul(hID_,nullptr,16));
+        titleID.lowID = static_cast<uint32_t>(std::stoul(lID_,nullptr,16));
+        titleID.isTitleOnUSB = json_boolean_value(u);
         titlesID.push_back(titleID);
     
     }
