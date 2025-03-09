@@ -62,11 +62,11 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
                     break;
                 case 1: 
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchBackupTitleSelectState>(this->wiiutitles, this->wiiuTitlesCount, true);
+                    this->subState = std::make_unique<BatchBackupTitleSelectState>(this->wiiutitles, this->wiiuTitlesCount, true,ExcludesCfg::wiiuExcludes);
                     break;
                 case 2:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchBackupTitleSelectState>(this->wiititles, this->vWiiTitlesCount, false);
+                    this->subState = std::make_unique<BatchBackupTitleSelectState>(this->wiititles, this->vWiiTitlesCount, false,ExcludesCfg::wiiExcludes);
                     break;
                 default:
                     return SUBSTATE_RUNNING;

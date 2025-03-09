@@ -14,7 +14,8 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
 #include <utils/StringUtils.h>
-#include <GlobalConfig.h>
+#include <cfg/GlobalCfg.h>
+#include <cfg/ExcludesCfg.h>
 #include <version.h>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
@@ -27,7 +28,7 @@
 #include <whb/log.h>
 #endif
 
-#define STRESS
+//#define STRESS
 #ifdef STRESS
 #include <algorithm>
 #include <tga_reader.h>
@@ -494,6 +495,27 @@ void addInitMessage(const char* newMessage) {
     DrawUtils::endDraw();
 }
 
+void resetMessageList() {
+    initMessageList.clear();
+}
+
+void addInitMessageWithIcon(const char* newMessage) {
+
+    initMessageList.push_back(newMessage);
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    disclaimer();
+    DrawUtils::drawTGA(298, 144, 1, icon_tga);
+    int line = 0;
+    for (auto & message : initMessageList) {
+        consolePrintPosAligned(10 + line++, 0, 1, message);
+    }
+
+    DrawUtils::endDraw();
+
+}
+
 
 int main() {
 
@@ -534,15 +556,23 @@ int main() {
     }
 
     addInitMessage("Initializing global config");
+    addInitMessage("... can take several seconds on some SDs");
 
-    if (GlobalConfig::init()) {
-        GlobalConfig::read();
-    }
-    else {
-        OSFatal("Failed to init global config. Problems with sd:/wiiu/backups");    
+    GlobalCfg::global = std::make_unique<GlobalCfg>("cfg");
+    
+    if (! GlobalCfg::global->init()) {
+        promptError("Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
+        romfsExit();
+
+        DrawUtils::deinitFont();
+        DrawUtils::LogConsoleFree();
+
+        State::shutdown();
+        return 0;
     }
 
-    LanguageUtils::loadLanguage(GlobalConfig::getLanguage());
+    GlobalCfg::global->read();
+    GlobalCfg::global->applyConfig();
 
     addInitMessage(LanguageUtils::gettext("Initializing WPAD and KAPD"));
 
@@ -559,7 +589,10 @@ int main() {
     if (!initFS()) {
         promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
-            State::shutdown();
+        romfsExit();
+        DrawUtils::deinitFont();
+        DrawUtils::LogConsoleFree();
+        State::shutdown();
         return 0;
     }
 
@@ -575,15 +608,20 @@ int main() {
     sortTitle(wiiutitles, wiiutitles + wiiuTitlesCount, 1, true);
     sortTitle(wiititles, wiititles + vWiiTitlesCount, 1, true);
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    disclaimer();
-    DrawUtils::drawTGA(298, 144, 1, icon_tga);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing BackupSets metadata."));
-    consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
-    DrawUtils::endDraw();
+
+    resetMessageList();
+    addInitMessageWithIcon(LanguageUtils::gettext("Initializing BackupSets metadata."));
 
     BackupSetList::initBackupSetList();
+
+    addInitMessageWithIcon(LanguageUtils::gettext("Initializing Excludes config."));
+
+    ExcludesCfg::wiiuExcludes = std::make_unique<ExcludesCfg>("wiiuExcludes",wiiutitles,wiiuTitlesCount);
+    ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes",wiititles,vWiiTitlesCount);
+    ExcludesCfg::wiiuExcludes->init();
+    ExcludesCfg::wiiExcludes->init();
+    
+    resetMessageList();
 
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,

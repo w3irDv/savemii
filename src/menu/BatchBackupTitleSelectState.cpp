@@ -8,7 +8,8 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
-#include <GlobalConfig.h>
+#include <cfg/ExcludesCfg.h>
+#include <cfg/GlobalCfg.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -19,10 +20,13 @@
 
 #define MAX_TITLE_SHOW 14
 
-BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchBackup) :
+extern bool firstSDWrite;
+
+BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchBackup,std::unique_ptr<ExcludesCfg> & excludes) :
     titles(titles),
     titlesCount(titlesCount),
-    isWiiUBatchBackup(isWiiUBatchBackup)
+    isWiiUBatchBackup(isWiiUBatchBackup),
+    excludes(excludes)
 {
 
     c2t.clear();
@@ -53,6 +57,10 @@ BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titl
 
     }
     candidatesCount = (int) this->c2t.size();
+
+    if (GlobalCfg::global->getAlwaysApplyExcludes())
+        if(excludes->read())
+            excludes->applyConfig();
 };
 
 void BatchBackupTitleSelectState::updateC2t()
@@ -305,18 +313,18 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
 
             switch (choice) {
                 case PAD_BUTTON_A:
-                    GlobalConfig::read();
-                    if (isWiiUBatchBackup)
-                        GlobalConfig::config2Title(GlobalConfig::wiiUTitlesID,titles,titlesCount);
-                    else
-                        GlobalConfig::config2Title(GlobalConfig::vWiiTitlesID,titles,titlesCount);                
+                    if(excludes->read())
+                        excludes->applyConfig();
                     break;
                 case PAD_BUTTON_PLUS:
-                    if (isWiiUBatchBackup)
-                        GlobalConfig::title2Config(titles,titlesCount,GlobalConfig::wiiUTitlesID);
-                    else
-                        GlobalConfig::title2Config(titles,titlesCount,GlobalConfig::vWiiTitlesID);
-                    GlobalConfig::write();
+                    if(excludes->getConfig()) {
+                        if (firstSDWrite)
+                            sdWriteDisclaimer();
+                        if(excludes->save())
+                            promptMessage(COLOR_BG_OK,LanguageUtils::gettext("Configuration saved"));
+                        else
+                            promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Error saving configuration"));
+                    }
                     break;
                 case PAD_BUTTON_B:
                     break;
