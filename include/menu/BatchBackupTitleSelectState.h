@@ -5,11 +5,12 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <cfg/ExcludesCfg.h>
 #include <vector>
 
 class BatchBackupTitleSelectState : public ApplicationState {
 public:
-    BatchBackupTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchBackup);
+    BatchBackupTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchBackup,std::unique_ptr<ExcludesCfg> & excludes);
 
     enum eState {
         STATE_BATCH_BACKUP_TITLE_SELECT,
@@ -52,4 +53,7 @@ private:
         " > WR",
         " > KO"
     };
+
+    std::unique_ptr<ExcludesCfg> & excludes;
+
 };

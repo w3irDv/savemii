@@ -8,6 +8,8 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
+#include <cfg/ExcludesCfg.h>
+#include <cfg/GlobalCfg.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -18,10 +20,13 @@
 
 #define MAX_TITLE_SHOW 14
 
-BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchBackup) :
+extern bool firstSDWrite;
+
+BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchBackup,std::unique_ptr<ExcludesCfg> & excludes) :
     titles(titles),
     titlesCount(titlesCount),
-    isWiiUBatchBackup(isWiiUBatchBackup)
+    isWiiUBatchBackup(isWiiUBatchBackup),
+    excludes(excludes)
 {
 
     c2t.clear();
@@ -52,6 +57,13 @@ BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titl
 
     }
     candidatesCount = (int) this->c2t.size();
+
+    if (GlobalCfg::global->getAlwaysApplyExcludes()) {
+        if(excludes->read())
+            excludes->applyConfig();
+        else
+            DrawUtils::setRedraw(true);
+    }
 };
 
 void BatchBackupTitleSelectState::updateC2t()
@@ -284,22 +296,49 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
-                if ( ! this->titles[i].currentBackup.candidateToBeBacked )
-                    continue;
-                this->titles[i].currentBackup.selectedToBackup = true;
+                if ( this->titles[i].currentBackup.candidateToBeBacked && this->titles[i].currentBackup.batchBackupState != OK)
+                    this->titles[i].currentBackup.selectedToBackup = true;
             }
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_MINUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
-                if ( ! this->titles[i].currentBackup.candidateToBeBacked )
-                    continue;
-                this->titles[i].currentBackup.selectedToBackup = false;
+                if ( this->titles[i].currentBackup.candidateToBeBacked && this->titles[i].currentBackup.batchBackupState != OK)
+                    this->titles[i].currentBackup.selectedToBackup = false;
             }
             return SUBSTATE_RUNNING;    
         }
         if (input->get(TRIGGER, PAD_BUTTON_X)) {
-            
+            std::string choices = LanguageUtils::gettext("\ue000  Apply saved excludes\n\ue045  Save current excludes\n\ue001  Back");
+            bool done = false;
+            while (! done) {
+                Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,choices.c_str());
+                switch (choice) {
+                    case PAD_BUTTON_A:
+                        if(excludes->read())
+                            excludes->applyConfig();
+                        done = true;
+                        break;
+                    case PAD_BUTTON_PLUS:
+                        if(excludes->getConfig()) {
+                            if (firstSDWrite)
+                                sdWriteDisclaimer();
+                            if(excludes->save())
+                                promptMessage(COLOR_BG_OK,LanguageUtils::gettext("Configuration saved"));
+                            else
+                                promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Error saving configuration"));
+                        }
+                        done = true;
+                        break;
+                    case PAD_BUTTON_B:
+                        done = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            DrawUtils::setRedraw(true);
+
             return SUBSTATE_RUNNING;    
         }
 

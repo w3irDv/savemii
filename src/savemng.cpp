@@ -264,7 +264,7 @@ bool folderEmpty(const char *fPath) {
     return empty;
 }
 
-static bool createFolder(const char *path) {
+bool createFolder(const char *path) {
     std::string strPath(path);
     size_t pos = 0;
     std::string vol_prefix("fs:/vol/");
@@ -273,7 +273,7 @@ static bool createFolder(const char *path) {
     std::string dir;
     while ((pos = strPath.find('/', pos + 1)) != std::string::npos) {
         dir = strPath.substr(0, pos);
-        if (mkdir(dir.c_str(), 0x666) != 0 && errno != EEXIST) {
+        if (mkdir(dir.c_str(), 0666) != 0 && errno != EEXIST) {
             std::string multilinePath;
             splitStringWithNewLines(dir,multilinePath);
             promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
@@ -281,7 +281,7 @@ static bool createFolder(const char *path) {
         }
         FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
     }
-    if (mkdir(strPath.c_str(), 0x666) != 0 && errno != EEXIST) {
+    if (mkdir(strPath.c_str(), 0666) != 0 && errno != EEXIST) {
         std::string multilinePath;
         splitStringWithNewLines(dir,multilinePath);
         promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
@@ -383,7 +383,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
 
     y += Y_OFF;
 
-    uint32_t maxLineLength = (66 - x);
+    uint32_t maxLineLength = (60 - x);
 
     std::string currentLine;
     std::istringstream iss(tmp);
@@ -393,7 +393,7 @@ void consolePrintPosMultiline(int x, int y, const char *format, ...) {
             if (spacePos == std::string::npos) {
                 spacePos = maxLineLength;
             }
-            DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.substr(0, spacePos).c_str());
+            DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.substr(0, spacePos+1).c_str());
             currentLine = currentLine.substr(spacePos + 1);
         }
         DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.c_str());
@@ -540,6 +540,71 @@ void promptMessage(Color bgcolor, const char *message, ...) {
     }
 }
 
+
+Button promptMultipleChoice(Style st, const std::string &question) {
+    DrawUtils::beginDraw();
+    DrawUtils::setFontColor(COLOR_TEXT);
+    if (st & ST_WARNING || st & ST_WIPE ) {
+        DrawUtils::clear(Color(0x7F7F0000));
+    } else if (st & ST_ERROR) {
+        DrawUtils::clear(Color(0x7F000000));
+    } else if (st & ST_MULTIPLE_CHOICE) {
+        DrawUtils::clear(COLOR_BLACK);
+    }
+    else {
+        DrawUtils::clear(Color(0x007F0000));
+    }
+
+    const std::string msg = LanguageUtils::gettext("Choose your option");
+    
+    std::string splitted;
+    std::stringstream question_ss(question);
+    int nLines = 0;
+    int maxLineSize = 0;
+    int lineSize = 0;
+    while (getline(question_ss,splitted,'\n')) {
+        lineSize = DrawUtils::getTextWidth((char *) splitted.c_str());
+        maxLineSize = lineSize > maxLineSize ? lineSize : maxLineSize;
+        nLines++;
+    }
+    int initialYPos = 6 - nLines/2;
+    initialYPos = initialYPos > 0 ? initialYPos : 0;
+    consolePrintPos(31 - (maxLineSize / 24), initialYPos, question.c_str());
+    consolePrintPos(31 - (DrawUtils::getTextWidth((char *) msg.c_str()) / 24), initialYPos+2+nLines, msg.c_str());
+
+
+    Button ret;
+    DrawUtils::endDraw();
+    Input input{};
+    while (true) {
+        input.read();
+        if (input.get(TRIGGER, PAD_BUTTON_A)) {
+            ret = PAD_BUTTON_A;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_B)) {
+            ret = PAD_BUTTON_B;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_X)) {
+            ret = PAD_BUTTON_X;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_Y)) {
+            ret = PAD_BUTTON_Y;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_PLUS)) {
+            ret = PAD_BUTTON_PLUS;
+            break;
+        }
+        if (input.get(TRIGGER, PAD_BUTTON_MINUS)) {
+            ret = PAD_BUTTON_MINUS;
+            break;
+        }
+    }
+    return ret;
+}
 
 void getAccountsWiiU() {
     /* get persistent ID - thanks to Maschell */
@@ -747,7 +812,7 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         return false;
     }
 
-    mkdir(tPath.c_str(), 0x666);
+    mkdir(tPath.c_str(), 0666);
     FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
     auto *data = (dirent *) malloc(sizeof(dirent));
 
@@ -761,7 +826,7 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string targetPath = StringUtils::stringFormat("%s/%s", tPath.c_str(), data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-            mkdir(targetPath.c_str(), 0x666);
+            mkdir(targetPath.c_str(), 0666);
             FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x666);
             if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 closedir(dir);

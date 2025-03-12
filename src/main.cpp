@@ -6,7 +6,7 @@
 #include <padscore/kpad.h>
 #include <savemng.h>
 #include <Metadata.h>
-#include <sndcore2/core.h>
+//#include <sndcore2/core.h>
 #include <BackupSetList.h>
 #include <utils/DrawUtils.h>
 #include <utils/Colors.h>
@@ -14,6 +14,8 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
 #include <utils/StringUtils.h>
+#include <cfg/GlobalCfg.h>
+#include <cfg/ExcludesCfg.h>
 #include <version.h>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
@@ -24,6 +26,13 @@
 #ifdef DEBUG
 #include <whb/log_udp.h>
 #include <whb/log.h>
+#endif
+
+//#define STRESS
+#ifdef STRESS
+#include <algorithm>
+#include <tga_reader.h>
+#define MAXTITLES 300
 #endif
 
 static int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
@@ -179,7 +188,11 @@ static Title *loadWiiUTitles(int run) {
         }
     }
 
+#ifndef STRESS
     auto *titles = (Title *) malloc(foundCount * sizeof(Title));
+#else
+    auto *titles = (Title *) malloc(std::max(foundCount,MAXTITLES) * sizeof(Title));
+#endif
     if (titles == nullptr) {
         promptError(LanguageUtils::gettext("Out of memory."));
         return nullptr;
@@ -272,6 +285,37 @@ static Title *loadWiiUTitles(int run) {
     free(savesl);
     free(saves);
     free(tList);
+
+#ifdef STRESS
+    for (int i=wiiuTitlesCount; i < MAXTITLES; i++) {
+        titles[i].highID = titles[i-wiiuTitlesCount].highID;
+        titles[i].lowID = titles[i-wiiuTitlesCount].lowID + i/wiiuTitlesCount;
+        titles[i].is_Wii = titles[i-wiiuTitlesCount].is_Wii;
+        titles[i].isTitleOnUSB = titles[i-wiiuTitlesCount].isTitleOnUSB;
+        titles[i].isTitleDupe = titles[i-wiiuTitlesCount].isTitleDupe;
+        titles[i].listID = titles[i-wiiuTitlesCount].listID;
+        titles[i].dupeID = titles[i-wiiuTitlesCount].dupeID;
+        titles[i].noFwImg = titles[i-wiiuTitlesCount].noFwImg;
+        titles[i].saveInit= titles[i-wiiuTitlesCount].saveInit;
+        sprintf(titles[i].shortName,"%s",titles[i-wiiuTitlesCount].shortName);
+        sprintf(titles[i].longName,"%s",titles[i-wiiuTitlesCount].longName);
+        sprintf(titles[i].productCode,"%s",titles[i-wiiuTitlesCount].productCode);
+        titles[i].accountSaveSize = titles[i-wiiuTitlesCount].accountSaveSize;
+        titles[i].groupID = titles[i-wiiuTitlesCount].groupID;
+
+        if (titles[i-wiiuTitlesCount].iconBuf != nullptr) {
+            int tgaSize = 4 * tgaGetWidth(titles[i-wiiuTitlesCount].iconBuf) *
+                            tgaGetHeight(titles[i-wiiuTitlesCount].iconBuf);
+            titles[i].iconBuf = (uint8_t *) malloc(tgaSize);
+            memcpy(titles[i].iconBuf,titles[i-wiiuTitlesCount].iconBuf,tgaSize);
+        }
+        else {
+            titles[i].iconBuf = nullptr;
+        }
+    }
+    wiiuTitlesCount = std::max(wiiuTitlesCount,MAXTITLES);
+#endif
+
     return titles;
 }
 
@@ -432,6 +476,47 @@ static void unloadTitles(Title *titles, int count) {
         free(titles);
 }
 
+
+std::vector<const char*> initMessageList;
+
+void addInitMessage(const char* newMessage) {
+
+    initMessageList.push_back(newMessage);
+    
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+
+    int line = 0;
+    for (auto & message : initMessageList) {
+        consolePrintPosAligned(7 + line++, 0, 1, message);
+    }
+
+    DrawUtils::endDraw();
+}
+
+void resetMessageList() {
+    initMessageList.clear();
+}
+
+void addInitMessageWithIcon(const char* newMessage) {
+
+    initMessageList.push_back(newMessage);
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    disclaimer();
+    DrawUtils::drawTGA(298, 144, 1, icon_tga);
+    int line = 0;
+    for (auto & message : initMessageList) {
+        consolePrintPosAligned(10 + line++, 0, 1, message);
+    }
+
+    DrawUtils::endDraw();
+
+}
+
+
 int main() {
 
 #ifdef DEBUG    
@@ -439,9 +524,12 @@ int main() {
     WHBLogPrintf("Hello from savemii!");
 #endif
 
-    AXInit();
+// freezes console to some users
+/*
+    AXInit();    
     AXQuit();
-    
+*/    
+
     State::init();
     
     if (DrawUtils::LogConsoleInit()) {
@@ -454,34 +542,10 @@ int main() {
         OSFatal("Failed to init font");
     }
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing WPAD and KAPD"));
-    DrawUtils::endDraw();
-
-    WPADInit();
-    KPADInit();
-    WPADEnableURCC(1);
-
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Getting Serial ID"));
-    DrawUtils::endDraw();
-
+    addInitMessage("Getting Serial ID");
     getWiiUSerialId();
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing loadWiiU Titles"));
-    DrawUtils::endDraw();
-
-    loadWiiUTitles(0);
-
-
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing ROMFS"));
-    DrawUtils::endDraw();
+    addInitMessage("Initializing ROMFS");
 
     int res = romfsInit();
     if (res) {
@@ -490,18 +554,45 @@ int main() {
         State::shutdown();
         return 0;
     }
-    Swkbd_LanguageType systemLanguage = LanguageUtils::getSystemLanguage();
-    LanguageUtils::loadLanguage(systemLanguage);
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing FS"));
-    DrawUtils::endDraw();
+    addInitMessage("Initializing global config");
+    addInitMessage("... can take several seconds on some SDs");
+
+    GlobalCfg::global = std::make_unique<GlobalCfg>("cfg");
+    
+    if (! GlobalCfg::global->init()) {
+        promptError("Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
+        romfsExit();
+
+        DrawUtils::deinitFont();
+        DrawUtils::LogConsoleFree();
+
+        State::shutdown();
+        return 0;
+    }
+
+    GlobalCfg::global->read();
+    GlobalCfg::global->applyConfig();
+
+    addInitMessage(LanguageUtils::gettext("Initializing WPAD and KAPD"));
+
+    WPADInit();
+    KPADInit();
+    WPADEnableURCC(1);
+
+    addInitMessage(LanguageUtils::gettext("Initializing loadWiiU Titles"));
+
+    loadWiiUTitles(0);
+
+    addInitMessage(LanguageUtils::gettext("Initializing FS"));
 
     if (!initFS()) {
         promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
-            State::shutdown();
+        romfsExit();
+        DrawUtils::deinitFont();
+        DrawUtils::LogConsoleFree();
+        State::shutdown();
         return 0;
     }
 
@@ -517,15 +608,20 @@ int main() {
     sortTitle(wiiutitles, wiiutitles + wiiuTitlesCount, 1, true);
     sortTitle(wiititles, wiititles + vWiiTitlesCount, 1, true);
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    disclaimer();
-    DrawUtils::drawTGA(298, 144, 1, icon_tga);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing BackupSets metadata."));
-    consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
-    DrawUtils::endDraw();
+
+    resetMessageList();
+    addInitMessageWithIcon(LanguageUtils::gettext("Initializing BackupSets metadata."));
 
     BackupSetList::initBackupSetList();
+
+    addInitMessageWithIcon(LanguageUtils::gettext("Initializing Excludes config."));
+
+    ExcludesCfg::wiiuExcludes = std::make_unique<ExcludesCfg>("wiiuExcludes",wiiutitles,wiiuTitlesCount);
+    ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes",wiititles,vWiiTitlesCount);
+    ExcludesCfg::wiiuExcludes->init();
+    ExcludesCfg::wiiExcludes->init();
+    
+    resetMessageList();
 
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,
