@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
+#include <vector>
 
 #define PATH_SIZE        0x400
 
@@ -176,4 +177,6 @@ Account *getSDacc();
 void deleteSlot(Title *title, uint8_t slot);
 bool wipeBackupSet(const std::string &subPath);
 void splitStringWithNewLines(const std::string &input, std::string &output);
-void sdWriteDisclaimer(); 
+void sdWriteDisclaimer();
+void summarizeBackupCounters(Title *titles, int titleCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles);
+void showBackupCounters (int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles);
