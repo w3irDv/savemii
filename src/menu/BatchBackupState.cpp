@@ -59,12 +59,26 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
             return SUBSTATE_RETURN;
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
             const std::string batchDatetime = getNowDateForFolder();
+            int titlesOK = 0;
+            int titlesAborted = 0;
+            int titlesWarning = 0;
+            int titlesKO = 0;
+            int titlesSkipped = 0;
+            int titlesNotInitialized = 0;
+            std::vector<std::string> failedTitles;
             switch (cursorPos) {
                 case 0:
                     backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
                     backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime);
+
+                    summarizeBackupCounters  (this->wiiutitles, this->wiiuTitlesCount,titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+                    summarizeBackupCounters  (this->wiititles, this->vWiiTitlesCount,titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+
                     writeBackupAllMetadata(batchDatetime,"WiiU and vWii titles");
                     BackupSetList::setIsInitializationRequired(true);
+
+                    showBackupCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+
                     DrawUtils::setRedraw(true);
                     break;
                 case 1: 

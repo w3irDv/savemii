@@ -51,6 +51,7 @@ static char *fileBuf[2];
 static bool buffersInitialized = false;
 
 //#define MOCK
+//#define MOCKALLBACKUP
 #ifdef MOCK
    // number of times the function will return a failed operation
     int f_copyDir = 1;
@@ -520,7 +521,7 @@ void promptMessage(Color bgcolor, const char *message, ...) {
             maxLineSize = lineSize > maxLineSize ? lineSize : maxLineSize;
             nLines++;
         }
-        int initialYPos = 6 - nLines/2;
+        int initialYPos = 7 - nLines/2;
         initialYPos = initialYPos > 0 ? initialYPos : 0;
 
         int x = 31 - (maxLineSize / 24);
@@ -1274,6 +1275,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
             std::string dstPath = getBatchBackupPath(highID,lowID,slot,batchDatetime);
 
+#ifndef MOCKALLBACKUP
             if (createFolder(dstPath.c_str()))
                 if (copyDir(srcPath, dstPath)) {
                     writeMetadata(highID,lowID,slot,isUSB,batchDatetime);
@@ -1285,6 +1287,19 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             titles[i].currentBackup.batchBackupState = KO;
             writeMetadataWithTag(highID,lowID,slot,isUSB,batchDatetime,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
             promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
+#else
+        if (i%2 == 0) {
+            titles[i].currentBackup.batchBackupState = OK;
+            titles[i].currentBackup.selectedToBackup= false;
+        }
+        else {
+            titles[i].currentBackup.batchBackupState = KO;
+        }
+        if (i > 10)
+            break;
+#endif
+
+
         }
     }
 }
@@ -1768,4 +1783,89 @@ void sdWriteDisclaimer() {
     consolePrintPosAligned(8, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
     DrawUtils::endDraw();
     firstSDWrite = false;
+}
+
+void summarizeBackupCounters  (Title *titles, int titleCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles) {
+    for (int i = 0; i < titleCount ; i++) {
+        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
+            titlesNotInitialized++;
+        std::string failedTitle;
+
+        switch (titles[i].currentBackup.batchBackupState) {
+            case OK :
+                titlesOK++;
+                break;
+            case WR :
+                titlesWarning++;
+                break;
+            case KO:
+                titlesKO++;
+                failedTitle.assign(titles[i].shortName);
+                failedTitles.push_back(failedTitle);
+                break;
+            case ABORTED :
+                titlesAborted++;
+                break;
+            default:
+                titlesSkipped++;
+                break;
+        }
+    }
+}
+
+
+
+void showBackupCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles) {
+
+    char summary[512];
+    const char* summaryTemplate;
+    summaryTemplate = LanguageUtils::gettext("Backup completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (includes notInitialized: %d)\n");
+    snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
+    
+    std::string summaryWithTitles;
+    summaryWithTitles.assign(summary);
+
+    Color summaryColor = COLOR_BG_OK;
+    if ( titlesWarning > 0 || titlesAborted > 0)
+        summaryColor = COLOR_BG_WR;
+    if ( titlesKO > 0 ) {
+        summaryColor = COLOR_BG_KO;
+        summaryWithTitles.append(LanguageUtils::gettext("\nFailed Titles:"));
+        int ctlLine = 0;
+        for (const std::string & failedTitle : failedTitles ) {
+            summaryWithTitles.append("  "+failedTitle+"      ");
+            // if in the future we add a function to check backupSet status
+            /*
+            if (ctlLine > 7 ) {
+                int notShown = failedTitles.size()-ctlLine-1;
+                const char* moreTitlesTemp;
+                if (notShown == 1) 
+                    moreTitlesTemp = LanguageUtils::gettext("\n...and %d more title, check the BackupSet content");
+                else
+                    moreTitlesTemp = LanguageUtils::gettext("\n...and %d more titles, check the BackupSet content");
+                char moreTitles[80];
+                snprintf(moreTitles,80,moreTitlesTemp,notShown);
+                summaryWithTitles.append(moreTitles);
+                break;
+            }
+            */
+            if (ctlLine > 8 ) {
+                int notShown = failedTitles.size()-ctlLine-1;
+                const char* moreTitlesTemp;
+                moreTitlesTemp = LanguageUtils::gettext("... and %d more");
+                char moreTitles[30];
+                snprintf(moreTitles,30,moreTitlesTemp,notShown);
+                summaryWithTitles.append(moreTitles);
+                break;
+            }
+            if (ctlLine++ % 2 == 0)
+                summaryWithTitles.append("\n");
+        }        
+    }
+    
+    promptMessage(summaryColor,summaryWithTitles.c_str());
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BACKGROUND);
+    DrawUtils::endDraw();
 }
