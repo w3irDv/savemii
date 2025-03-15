@@ -29,6 +29,8 @@ const char *legacyBackupPath = "fs:/vol/external01/savegames";
 
 bool firstSDWrite = true;
 
+static std::string titleBeingProcessed {};
+
 //static char *p1;
 Account *wiiuacc;
 Account *sdacc;
@@ -171,9 +173,12 @@ std::string getUSB() {
 }
 
 static void showFileOperation(const std::string &file_name, const std::string &file_src, const std::string &file_dest) {
-    consolePrintPos(-2, 0, LanguageUtils::gettext("Copying file: %s"), file_name.c_str());
-    consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: %s"), file_src.c_str());
-    consolePrintPosMultiline(-2, 8, LanguageUtils::gettext("To: %s"), file_dest.c_str());
+    DrawUtils::setFontColor(COLOR_INFO);
+    consolePrintPos(-2, 0, ">> %s", titleBeingProcessed.c_str());
+    DrawUtils::setFontColor(COLOR_TEXT);
+    consolePrintPos(-2, 1, LanguageUtils::gettext("Copying file: %s"), file_name.c_str());
+    consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: %s"), file_src.c_str());
+    consolePrintPosMultiline(-2, 10, LanguageUtils::gettext("To: %s"), file_dest.c_str());
 }
 
 int32_t loadFile(const char *fPath, uint8_t **buf) {
@@ -748,7 +753,7 @@ static bool copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, con
         DrawUtils::beginDraw();
         DrawUtils::clear(COLOR_BLACK);
         showFileOperation(basename(pPath.c_str()), pPath, oPath);
-        consolePrintPos(-2, 15, "Bytes Copied: %d of %d (%i kB/s)", written, totalSize, (uint32_t) (((uint64_t) written * 1000) / ((uint64_t) 1024 * passedMs)));
+        consolePrintPos(-2, 17, "Bytes Copied: %d of %d (%i kB/s)", written, totalSize, (uint32_t) (((uint64_t) written * 1000) / ((uint64_t) 1024 * passedMs)));
         DrawUtils::endDraw();
     } while (std::future_status::ready != writeFut.wait_for(std::chrono::milliseconds(0)));
     bool success = readFut.get() && writeFut.get();
@@ -1117,6 +1122,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
 }
 
 void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common) {
+    titleBeingProcessed.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1264,6 +1270,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             if (onlySelectedTitles)
                 if (! titles[i].currentBackup.selectedToBackup)
                     continue;
+            titleBeingProcessed.assign(titles[i].shortName);        
             uint32_t highID = titles[i].highID;
             uint32_t lowID = titles[i].lowID;
             bool isUSB = titles[i].isTitleOnUSB;
@@ -1310,6 +1317,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
         return;
     }
+    titleBeingProcessed.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1420,6 +1428,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
             backupSavedata(title, slotb, wiiuuser, common , LanguageUtils::gettext("pre-Restore backup"));
         BackupSetList::restoreBackupSetSubPath();
     }
+    titleBeingProcessed.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1561,6 +1570,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
             backupSavedata(title, slotb, wiiuuser, common, LanguageUtils::gettext("pre-Wipe backup"));
     }
+    titleBeingProcessed.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1658,6 +1668,7 @@ void importFromLoadiine(Title *title, bool common, int version) {
     int slotb = getEmptySlot(title->highID, title->lowID);
     if (slotb >= 0 && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
         backupSavedata(title, slotb, 0, common);
+    titleBeingProcessed.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1690,6 +1701,7 @@ void importFromLoadiine(Title *title, bool common, int version) {
 void exportToLoadiine(Title *title, bool common, int version) {
     if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
         return;
+    titleBeingProcessed.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1722,6 +1734,7 @@ void exportToLoadiine(Title *title, bool common, int version) {
 void deleteSlot(Title *title, uint8_t slot) {
     if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
         return;
+    titleBeingProcessed.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     const std::string path = getDynamicBackupPath(highID, lowID, slot);
