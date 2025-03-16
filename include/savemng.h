@@ -129,6 +129,13 @@ void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
     }
 }
 
+class InProgress {
+    public:
+        inline static std::string titleName {};
+        inline static int currentStep = 0;
+        inline static int totalSteps = 0;
+};
+
 bool initFS() __attribute__((__cold__));
 void shutdownFS() __attribute__((__cold__));
 std::string getUSB();
@@ -158,6 +165,7 @@ void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB
 void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &batchDatetime,const std::string &tag) __attribute__((hot));
 void writeBackupAllMetadata(const std::string & Date, const std::string & tag);
 void backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
+int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
 void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag = "") __attribute__((hot));
 int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
 int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
