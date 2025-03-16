@@ -1,7 +1,7 @@
 #include <coreinit/debug.h>
 #include <cstring>
 #include <menu/TitleTaskState.h>
-#include <menu/BRTitleSelectState.h>
+#include <menu/BatchRestoreTitleSelectState.h>
 #include <BackupSetList.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
@@ -22,7 +22,7 @@ bool testForceSaveInitFalse = true
 
 #define MAX_TITLE_SHOW 14
 
-BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,
+BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,
     Title *titles, int titlesCount, bool isWiiUBatchRestore) :
     sduser(sduser),
     wiiuuser(wiiuuser),
@@ -98,7 +98,7 @@ BRTitleSelectState::BRTitleSelectState(int sduser, int wiiuuser, bool common, bo
     candidatesCount = (int) this->c2t.size();
 };
 
-void BRTitleSelectState::updateC2t()
+void BatchRestoreTitleSelectState::updateC2t()
 {
     int j = 0;
     for (int i = 0; i < this->titlesCount; i++) {
@@ -108,7 +108,7 @@ void BRTitleSelectState::updateC2t()
     }
 }
 
-void BRTitleSelectState::render() {
+void BatchRestoreTitleSelectState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
             OSFatal("SubState was null");
@@ -227,7 +227,7 @@ void BRTitleSelectState::render() {
     }
 }
 
-ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
+ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_TITLE_SELECT) {
         if (input->get(TRIGGER, PAD_BUTTON_B) || noTitles)
             return SUBSTATE_RETURN;

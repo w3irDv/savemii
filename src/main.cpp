@@ -574,7 +574,7 @@ int main() {
     GlobalCfg::global->read();
     GlobalCfg::global->applyConfig();
 
-    addInitMessage(LanguageUtils::gettext("Initializing WPAD and KAPD"));
+    addInitMessage(LanguageUtils::gettext("Initializing WPAD and KPAD"));
 
     WPADInit();
     KPADInit();
