@@ -281,6 +281,13 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                 }
            }
 
+            InProgress::totalSteps = InProgress::currentStep = 0;
+            for (int i = 0; i < titlesCount ; i++) {
+                if (! this->titles[i].currentBackup.selectedToRestore )
+                    continue;
+                InProgress::totalSteps++;
+            }
+
             if ( fullBackup ) {
                 const std::string batchDatetime = getNowDateForFolder();
                 for (int i = 0; i < titlesCount ; i++) {
@@ -289,6 +296,7 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
                     else
                         this->titles[i].currentBackup.selectedToBackup = false;
                 }
+                InProgress::totalSteps = InProgress::totalSteps + countTitlesToSave(this->titles, this->titlesCount,true);
                 backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
                 if(isWiiUBatchRestore)
                     writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("pre-BatchRestore Backup (WiiU)"));
@@ -302,6 +310,7 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
            for (int i = 0; i < titlesCount ; i++) {
                 if (! this->titles[i].currentBackup.selectedToRestore )
                     continue;
+                InProgress::currentStep++;
                 if ( fullBackup )
                     if ( this->titles[i].currentBackup.batchBackupState == KO ) {
                         this->titles[i].currentBackup.batchRestoreState = ABORTED;

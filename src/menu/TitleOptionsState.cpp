@@ -442,6 +442,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 DrawUtils::setRedraw(true);
             }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
+            InProgress::totalSteps = InProgress::currentStep = 1;
             switch (this->task) {
                 case backup:
                     backupSavedata(&this->title, slot, wiiuuser, common);

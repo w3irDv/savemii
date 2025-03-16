@@ -29,8 +29,6 @@ const char *legacyBackupPath = "fs:/vol/external01/savegames";
 
 bool firstSDWrite = true;
 
-static std::string titleBeingProcessed {};
-
 //static char *p1;
 Account *wiiuacc;
 Account *sdacc;
@@ -174,7 +172,8 @@ std::string getUSB() {
 
 static void showFileOperation(const std::string &file_name, const std::string &file_src, const std::string &file_dest) {
     DrawUtils::setFontColor(COLOR_INFO);
-    consolePrintPos(-2, 0, ">> %s", titleBeingProcessed.c_str());
+    consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
+    consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
     DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(-2, 1, LanguageUtils::gettext("Copying file: %s"), file_name.c_str());
     consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: %s"), file_src.c_str());
@@ -886,16 +885,24 @@ static bool removeDir(const std::string &pPath) {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BLACK);
 
-            consolePrintPos(-2, 0, LanguageUtils::gettext("Deleting folder %s"), data->d_name);
-            consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), origPath.c_str());
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
+            consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
+            DrawUtils::setFontColor(COLOR_TEXT);
+            consolePrintPos(-2, 1, LanguageUtils::gettext("Deleting folder %s"), data->d_name);
+            consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), origPath.c_str());
             if (unlink(origPath.c_str()) == -1) {
                 std::string multilinePath;
                 splitStringWithNewLines(origPath,multilinePath);
                 promptError(LanguageUtils::gettext("Failed to delete folder\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
             }
         } else {
-            consolePrintPos(-2, 0, LanguageUtils::gettext("Deleting file %s"), data->d_name);
-            consolePrintPosMultiline(-2, 2, LanguageUtils::gettext("From: \n%s"), tempPath.c_str());
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
+            consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
+            DrawUtils::setFontColor(COLOR_TEXT);
+            consolePrintPos(-2, 1, LanguageUtils::gettext("Deleting file %s"), data->d_name);
+            consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), tempPath.c_str());
             if (unlink(tempPath.c_str()) == -1) {
                 std::string multilinePath;
                 splitStringWithNewLines(tempPath,multilinePath);
@@ -1122,7 +1129,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
 }
 
 void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common) {
-    titleBeingProcessed.assign(title->shortName);
+    InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1259,6 +1266,22 @@ void writeBackupAllMetadata(const std::string & batchDatetime, const std::string
     delete metadataObj;
 }
 
+
+int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= false*/) {
+    int titlesToSave = 0;
+    for (int i = 0; i < count; i++) {
+        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit) {
+            continue;
+        }
+        if (onlySelectedTitles)
+            if (! titles[i].currentBackup.selectedToBackup)
+                continue;
+        titlesToSave++;
+    }
+    return titlesToSave;
+}
+
+
 void backupAllSave(Title *titles, int count, const std::string & batchDatetime, bool onlySelectedTitles /*= false*/) {
     if (firstSDWrite)
         sdWriteDisclaimer();
@@ -1269,14 +1292,15 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
                 continue;
             if (onlySelectedTitles)
                 if (! titles[i].currentBackup.selectedToBackup)
-                    continue;
-            titleBeingProcessed.assign(titles[i].shortName);        
+                    continue;       
             uint32_t highID = titles[i].highID;
             uint32_t lowID = titles[i].lowID;
             bool isUSB = titles[i].isTitleOnUSB;
             bool isWii = titles[i].is_Wii;
             if ((sourceStorage == 0 && !isUSB) || (sourceStorage == 1 && isUSB)) // backup first WiiU USB savedata to slot 0
                 continue;
+            InProgress::titleName.assign(titles[i].shortName);     
+            InProgress::currentStep++;
             uint8_t slot = getEmptySlot(highID,lowID,batchDatetime);
             const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
@@ -1317,7 +1341,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
         return;
     }
-    titleBeingProcessed.assign(title->shortName);
+    InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1428,7 +1452,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
             backupSavedata(title, slotb, wiiuuser, common , LanguageUtils::gettext("pre-Restore backup"));
         BackupSetList::restoreBackupSetSubPath();
     }
-    titleBeingProcessed.assign(title->shortName);
+    InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1570,7 +1594,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
             backupSavedata(title, slotb, wiiuuser, common, LanguageUtils::gettext("pre-Wipe backup"));
     }
-    titleBeingProcessed.assign(title->shortName);
+    InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1668,7 +1692,7 @@ void importFromLoadiine(Title *title, bool common, int version) {
     int slotb = getEmptySlot(title->highID, title->lowID);
     if (slotb >= 0 && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
         backupSavedata(title, slotb, 0, common);
-    titleBeingProcessed.assign(title->shortName);
+    InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1701,7 +1725,7 @@ void importFromLoadiine(Title *title, bool common, int version) {
 void exportToLoadiine(Title *title, bool common, int version) {
     if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
         return;
-    titleBeingProcessed.assign(title->shortName);
+    InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1734,7 +1758,7 @@ void exportToLoadiine(Title *title, bool common, int version) {
 void deleteSlot(Title *title, uint8_t slot) {
     if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
         return;
-    titleBeingProcessed.assign(title->shortName);
+    InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     const std::string path = getDynamicBackupPath(highID, lowID, slot);
@@ -1832,7 +1856,7 @@ void showBackupCounters(int titlesOK, int titlesAborted, int titlesWarning, int 
 
     char summary[512];
     const char* summaryTemplate;
-    summaryTemplate = LanguageUtils::gettext("Backup completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (includes notInitialized: %d)\n");
+    summaryTemplate = LanguageUtils::gettext("Backup completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
     snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
     
     std::string summaryWithTitles;

@@ -68,6 +68,9 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
             std::vector<std::string> failedTitles;
             switch (cursorPos) {
                 case 0:
+                    InProgress::totalSteps = countTitlesToSave(this->wiiutitles, this->wiiuTitlesCount) + countTitlesToSave(this->wiititles, this->vWiiTitlesCount);
+                    InProgress::currentStep = 0;
+
                     backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
                     backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime);
 

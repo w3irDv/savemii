@@ -186,6 +186,8 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     BackupSetList::setBackupSetEntry(entry-1);
                     BackupSetList::setBackupSetSubPath();
                 }
+                InProgress::totalSteps = InProgress::currentStep = 1;
+                InProgress::titleName.assign(BackupSetList::currentBackupSetList->at(entry));
                 if ( wipeBackupSet(BackupSetList::getBackupSetSubPath(entry)))
                 {
                     BackupSetList::initBackupSetList();

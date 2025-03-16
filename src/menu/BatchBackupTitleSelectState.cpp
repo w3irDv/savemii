@@ -211,6 +211,8 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
 
+            InProgress::totalSteps = countTitlesToSave(this->titles, this->titlesCount,true);
+            InProgress::currentStep = 0;
             const std::string batchDatetime = getNowDateForFolder();
             backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
             BackupSetList::setIsInitializationRequired(true);
