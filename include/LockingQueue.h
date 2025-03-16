@@ -43,9 +43,10 @@ public:
 
     bool tryWaitAndPop(T &_value, int _milli) {
         std::unique_lock<std::mutex> lock(guard);
-        while (queue.empty()) {
+        if (queue.empty()) {
             signal.wait_for(lock, std::chrono::milliseconds(_milli));
-            return false;
+            if (queue.empty)
+                return false;
         }
 
         _value = queue.front();
