@@ -7,9 +7,9 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
-class BRTitleSelectState : public ApplicationState {
+class BatchRestoreTitleSelectState : public ApplicationState {
 public:
-    BRTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles, int titlesCount, bool isWiiUBatchRestore);
+    BatchRestoreTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles, int titlesCount, bool isWiiUBatchRestore);
 
     enum eState {
         STATE_BATCH_RESTORE_TITLE_SELECT,

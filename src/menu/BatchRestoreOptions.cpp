@@ -1,7 +1,7 @@
 #include <coreinit/debug.h>
 #include <menu/BatchRestoreOptions.h>
 #include <BackupSetList.h>
-#include <menu/BRTitleSelectState.h>
+#include <menu/BatchRestoreTitleSelectState.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -134,7 +134,7 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {        
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<BRTitleSelectState>(sduser, wiiuuser, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchRestore);
+                this->subState = std::make_unique<BatchRestoreTitleSelectState>(sduser, wiiuuser, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchRestore);
         }
         if (input->get(TRIGGER, PAD_BUTTON_B))
             return SUBSTATE_RETURN;
