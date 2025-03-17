@@ -32,7 +32,6 @@ public:
     bool get(ButtonState state, Button button) const __attribute__((hot));
 
 private:
-    VPADStatus vpad_status;
-    VPADReadError vpad_error;
-    KPADStatus kpad[4], kpad_status;
+    VPADStatus vpad_status = {};
+    KPADStatus kpad_status = {};
 };
