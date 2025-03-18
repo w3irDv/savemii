@@ -21,6 +21,7 @@ bool testForceSaveInitFalse = true
 #endif
 
 #define MAX_TITLE_SHOW 14
+#define MAX_WINDOW_SCROLL 6
 
 BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,
     Title *titles, int titlesCount, bool isWiiUBatchRestore) :
@@ -401,9 +402,9 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
            return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
-            if (this->candidatesCount <= 14)
+            if (this->candidatesCount <= MAX_TITLE_SHOW )
                 cursorPos = (cursorPos + 1) % this->candidatesCount;
-            else if (cursorPos < 6)
+            else if (cursorPos < MAX_WINDOW_SCROLL)
                 cursorPos++;
             else if (((cursorPos + this->scroll + 1) % this->candidatesCount) != 0)
                 scroll++;
@@ -411,11 +412,11 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                 cursorPos = scroll = 0;
         } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
             if (scroll > 0)
-                cursorPos -= (cursorPos > 6) ? 1 : 0 * (scroll--);
+                cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)
                 cursorPos--;
-            else if (this->candidatesCount > 14)
-                scroll = this->candidatesCount - (cursorPos = 6) - 1;
+            else if (this->candidatesCount > MAX_TITLE_SHOW )
+                scroll = this->candidatesCount - (cursorPos = MAX_WINDOW_SCROLL) - 1;
             else
                 cursorPos = this->candidatesCount - 1;
         }
