@@ -7,12 +7,12 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
-class vWiiTitleListState : public ApplicationState {
+class TitleListState : public ApplicationState {
 public:
-    vWiiTitleListState(Title *titles, int titlesCount) : titles(titles),
-                                                         titlesCount(titlesCount) {}
+    explicit TitleListState(Title *titles, int titlesCount, bool isWiiU) : titles(titles),
+                                                    titlesCount(titlesCount),isWiiU(isWiiU) {}
     enum eState {
-        STATE_VWII_TITLE_LIST,
+        STATE_TITLE_LIST,
         STATE_DO_SUBSTATE,
     };
 
@@ -21,11 +21,13 @@ public:
 
 private:
     std::unique_ptr<ApplicationState> subState{};
-    eState state = STATE_VWII_TITLE_LIST;
+    eState state = STATE_TITLE_LIST;
 
     Title *titles;
 
     int titlesCount;
+
+    bool isWiiU;
 
     std::vector<const char *> sortNames = {LanguageUtils::gettext("None"),
                                            LanguageUtils::gettext("Name"),
@@ -33,8 +35,8 @@ private:
                                            LanguageUtils::gettext("Storage+Name")};
 
     int titleSort = 1;
-    static int scroll;
-    static int cursorPos;
+    int scroll = 0;
+    int cursorPos = 0;
     bool sortAscending = true;
     int targ = 0;
 
