@@ -113,7 +113,6 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             }
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
-            //DrawUtils::setRedraw(true);
             if (finalScreen) {
                 char message[256]; 
                 const char* messageTemplate = LanguageUtils::gettext("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
@@ -123,7 +122,6 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos+scroll).c_str(),
                     Metadata::thisConsoleSerialId.c_str());
                 promptMessage(COLOR_BG_OK,message);
-                DrawUtils::setRedraw(true);
                 return SUBSTATE_RETURN;
             }
             else    // is a step in batchRestore
@@ -193,7 +191,6 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     BackupSetList::initBackupSetList();
                     cursorPos--;
                 }   
-                DrawUtils::setRedraw(true);
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {

@@ -82,7 +82,6 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
 
                     showBackupCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
 
-                    DrawUtils::setRedraw(true);
                     break;
                 case 1: 
                     this->state = STATE_DO_SUBSTATE;

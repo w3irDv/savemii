@@ -439,33 +439,27 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             if (this->task == backup) {
                 if (!isSlotEmpty(this->title.highID, this->title.lowID, slot))
                     deleteSlot(&this->title, slot);
-                DrawUtils::setRedraw(true);
             }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
             InProgress::totalSteps = InProgress::currentStep = 1;
             switch (this->task) {
                 case backup:
                     backupSavedata(&this->title, slot, wiiuuser, common);
-                    DrawUtils::setRedraw(true);
                     break;
                 case restore:
                     restoreSavedata(&this->title, slot, sduser, wiiuuser, common);
-                    DrawUtils::setRedraw(true);
                     break;
                 case wipe:
                     wipeSavedata(&this->title, wiiuuser, common);
                     cursorPos = 0;
-                    DrawUtils::setRedraw(true);
                     break;
                 case copytoOtherDevice:
                     for (int i = 0; i < this->titleCount; i++) {
                         if (titles[i].listID == this->title.dupeID) {
                             copySavedata(&this->title, &titles[i], wiiuuser, wiiuuser_d, common);
-                            DrawUtils::setRedraw(true);
                             break;
                         }
                     }
-                    DrawUtils::setRedraw(true);
                     break;
             }
         }

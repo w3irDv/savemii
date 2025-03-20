@@ -59,13 +59,9 @@ BatchBackupTitleSelectState::BatchBackupTitleSelectState(Title *titles, int titl
     }
     candidatesCount = (int) this->c2t.size();
 
-    if (GlobalCfg::global->getAlwaysApplyExcludes()) {
+    if (GlobalCfg::global->getAlwaysApplyExcludes())
         if(excludes->read())
             excludes->applyConfig();
-        else // there has been some error and a prompt has been shown, force menu redraw
-            DrawUtils::setRedraw(true);
-    }
-
 };
 
 void BatchBackupTitleSelectState::updateC2t()
@@ -98,8 +94,7 @@ void BatchBackupTitleSelectState::render() {
             promptError(LanguageUtils::gettext("There are no titles matching selected filters."));
             this->noTitles = true;
             DrawUtils::beginDraw();
-            consolePrintPosAligned(8, 4, 1, LanguageUtils::gettext("No titles found"));
-            consolePrintPosAligned(17, 4, 1, LanguageUtils::gettext("Any Button: Back"));
+            DrawUtils::setRedraw(true);
             return;
         }
 
@@ -267,10 +262,6 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
            
            promptMessage(summaryColor,summary);
 
-           DrawUtils::beginDraw();
-           DrawUtils::clear(COLOR_BACKGROUND);
-           DrawUtils::endDraw();
-           DrawUtils::setRedraw(true);
            return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
@@ -341,8 +332,6 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
                         break;
                 }
             }
-            DrawUtils::setRedraw(true);
-
             return SUBSTATE_RUNNING;    
         }
 
