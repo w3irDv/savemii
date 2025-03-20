@@ -122,7 +122,6 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                     BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
             }
             if (noError) {
-                DrawUtils::setRedraw(true);
                 this->state = STATE_DO_SUBSTATE;
                 this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sduser, wiiuuser, common, wiiuuser_d, this->titles, this->titlesCount);
             }

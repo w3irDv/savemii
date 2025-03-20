@@ -633,19 +633,20 @@ int main() {
             DrawUtils::setRedraw(true);
 
         if (DrawUtils::getRedraw()) {
+            
+            state->update(&input);
+
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BACKGROUND);
 
             consolePrintPos(0, 0, "SaveMii v%u.%u.%u%ci-beta", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
             consolePrintPos(0, 1, "----------------------------------------------------------------------------");
 
-            DrawUtils::setRedraw(false);
-
-            state->update(&input);
-            state->render();
-
             consolePrintPos(0, 16, "----------------------------------------------------------------------------");
             consolePrintPos(0, 17, LanguageUtils::gettext("Press \ue044 to exit."));
+
+            DrawUtils::setRedraw(false);
+            state->render();
 
             DrawUtils::endDraw();
         }

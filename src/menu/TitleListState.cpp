@@ -21,11 +21,11 @@ void TitleListState::render() {
     }
     if (this->state == STATE_TITLE_LIST) {
         if ((this->titles == nullptr) || (this->titlesCount == 0)) {
+            DrawUtils::endDraw();
             promptError(isWiiU ? LanguageUtils::gettext("No Wii U titles found."):LanguageUtils::gettext("No vWii titles found."));
             this->noTitles = true;
             DrawUtils::beginDraw();
-            consolePrintPosAligned(8, 4, 1, isWiiU ? LanguageUtils::gettext("No Wii U titles found"):LanguageUtils::gettext("No vWii titles found."));
-            consolePrintPosAligned(17, 4, 1, LanguageUtils::gettext("Any Button: Back"));
+            DrawUtils::setRedraw(true);
             return;
         }
         DrawUtils::setFontColor(COLOR_INFO);
@@ -91,22 +91,19 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                 if (strcmp(this->titles[this->targ].shortName, "DONT TOUCH ME") == 0) {
                     if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("CBHC save. Could be dangerous to modify. Continue?")) ||
                         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?"))) {
-                        DrawUtils::setRedraw(true);
                         return SUBSTATE_RUNNING;
                     }
                 }
                 if(this->titles[this->targ].noFwImg)
-                    if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("vWii saves are in the vWii section. Continue?")))
+                    if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("vWii saves are in the vWii section. Continue?"))) {
                         return SUBSTATE_RUNNING;
+                    }
             }
 
-            if (!this->titles[this->targ].saveInit) {
+            if (!this->titles[this->targ].saveInit)
                 if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Recommended to run Game at least one time. Continue?")) ||
-                    !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?"))) {
+                    !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?")))
                     return SUBSTATE_RUNNING;
-                }
-            }
-            DrawUtils::setRedraw(true);
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
         }

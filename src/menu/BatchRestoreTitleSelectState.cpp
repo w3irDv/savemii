@@ -132,8 +132,7 @@ void BatchRestoreTitleSelectState::render() {
             promptError(LanguageUtils::gettext("There are no titles matching selected filters."));
             this->noTitles = true;
             DrawUtils::beginDraw();
-            consolePrintPosAligned(8, 4, 1, LanguageUtils::gettext("No titles found"));
-            consolePrintPosAligned(17, 4, 1, LanguageUtils::gettext("Any Button: Back"));
+            DrawUtils::setRedraw(true);
             return;
         }
         consolePrintPosAligned(39, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
@@ -265,19 +264,15 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                 fullBackup ? LanguageUtils::gettext("- Perform full backup: Y") :  LanguageUtils::gettext("- Perform full backup: N"));
            }
 
-           if (!promptConfirm(ST_WARNING,summary)) {
-                DrawUtils::setRedraw(true);
+           if (!promptConfirm(ST_WARNING,summary))
                 return SUBSTATE_RUNNING;
-           }
 
            for (int i = 0; i < titlesCount ; i++) {
                 if (! this->titles[i].currentBackup.selectedToRestore )
                     continue;
                 if (! this->titles[i].saveInit) {
-                    if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?"))) {
-                        DrawUtils::setRedraw(true);
+                    if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?")))
                         return SUBSTATE_RUNNING;
-                    }   
                     break;
                 }
            }
@@ -395,10 +390,6 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
         
            promptMessage(summaryColor,summary);
 
-           DrawUtils::beginDraw();
-           DrawUtils::clear(COLOR_BACKGROUND);
-           DrawUtils::endDraw();
-           DrawUtils::setRedraw(true);
            return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
