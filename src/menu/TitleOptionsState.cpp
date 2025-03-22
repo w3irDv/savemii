@@ -490,6 +490,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             if ( this->substateCalled == STATE_BACKUPSET_MENU) {
                 slot = 0;
                 getAccountsSD(&this->title, slot);
+                cursorPos = 0;
             }
             this->subState.reset();
             this->state = STATE_TITLE_OPTIONS;

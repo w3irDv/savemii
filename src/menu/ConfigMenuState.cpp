@@ -6,7 +6,6 @@
 #include <Metadata.h>
 #include <cfg/GlobalCfg.h>
 
-static int cursorPos = 0;
 #define ENTRYCOUNT 2
 
 static std::string language;

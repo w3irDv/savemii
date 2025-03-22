@@ -9,10 +9,17 @@ class TitleTaskState : public ApplicationState {
 public:
     TitleTaskState(Title title, Title *titles, int titlesCount) : title(title),
                                                                   titles(titles),
-                                                                  titlesCount(titlesCount) {}
+                                                                  titlesCount(titlesCount) {
+                this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
+                entrycount = 3 + 2 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));
+                if (cursorPos > entrycount -1 )
+                        cursorPos = 0;
+    }
+
     ~TitleTaskState() {
         free(this->versionList);
     }
+
     enum eState {
         STATE_TITLE_TASKS,
         STATE_DO_SUBSTATE,
@@ -32,4 +39,8 @@ private:
 
     Task task;
     int *versionList = (int *) malloc(0x100 * sizeof(int));
+
+    inline static int cursorPos = 0;
+    int entrycount;
+    
 };

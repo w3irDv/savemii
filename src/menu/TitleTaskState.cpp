@@ -9,8 +9,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/Colors.h>
 
-static int cursorPos = 0;
-static int entrycount;
+// defaults to pass to titleTask
 static uint8_t slot = 0;
 static int8_t wiiuuser = -1, wiiuuser_d = -1, sduser = -1;
 static bool common = true;
@@ -28,10 +27,6 @@ void TitleTaskState::render() {
         consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPos(22,0,LanguageUtils::gettext("Tasks"));
-        this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
-        entrycount = 3 + 2 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));
-        if (cursorPos > entrycount)
-            cursorPos = 0;
         DrawUtils::setFontColor(COLOR_TEXT);    
         consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
                         this->title.productCode);
@@ -126,10 +121,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sduser, wiiuuser, common, wiiuuser_d, this->titles, this->titlesCount);
             }
         }
-        if (cursorPos > entrycount)
-            cursorPos = entrycount;
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
-            if (entrycount <= 14)
                 cursorPos = (cursorPos + 1) % entrycount;
         } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
             if (cursorPos > 0)

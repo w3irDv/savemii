@@ -29,4 +29,6 @@ private:
 
     int wiiuTitlesCount;
     int vWiiTitlesCount;
+
+    inline static int cursorPos = 0;
 };

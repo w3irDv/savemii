@@ -9,8 +9,6 @@
 
 #define ENTRYCOUNT 2
 
-static int cursorPos = 0;
-
 void BatchRestoreState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
