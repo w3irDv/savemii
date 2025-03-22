@@ -17,4 +17,6 @@ public:
 private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_CONFIG_MENU;
+
+    inline static int cursorPos = 0;
 };

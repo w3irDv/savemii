@@ -15,8 +15,6 @@
 
 #define ENTRYCOUNT 5
 
-static int cursorPos = 0;
-
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {

@@ -13,8 +13,6 @@
 
 #define ENTRYCOUNT 3
 
-static int cursorPos = 0;
-
 void BatchBackupState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
