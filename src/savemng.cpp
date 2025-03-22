@@ -273,21 +273,21 @@ static bool createFolder(const char *path) {
     std::string dir;
     while ((pos = strPath.find('/', pos + 1)) != std::string::npos) {
         dir = strPath.substr(0, pos);
-        if (mkdir(dir.c_str(), 0660) != 0 && errno != EEXIST) {
+        if (mkdir(dir.c_str(), 0666) != 0 && errno != EEXIST) {
             std::string multilinePath;
             splitStringWithNewLines(dir,multilinePath);
             promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
             return false;
         }
-        FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x660);
+        FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x666);
     }
-    if (mkdir(strPath.c_str(), 0660) != 0 && errno != EEXIST) {
+    if (mkdir(strPath.c_str(), 0666) != 0 && errno != EEXIST) {
         std::string multilinePath;
         splitStringWithNewLines(dir,multilinePath);
         promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
     }
-    FSAChangeMode(handle, newlibtoFSA(strPath).c_str(), (FSMode) 0x660);
+    FSAChangeMode(handle, newlibtoFSA(strPath).c_str(), (FSMode) 0x666);
     return true;
 }
 
@@ -299,7 +299,7 @@ static bool createFolderUnlocked(const std::string &path) {
         dir = _path.substr(0, pos);
         if ((dir == "/vol") || (dir == "/vol/storage_mlc01" || (dir == newlibtoFSA(getUSB()))))
             continue;
-        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x660);
+        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
         if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
             std::string multilinePath;
             splitStringWithNewLines(dir,multilinePath);
@@ -307,7 +307,7 @@ static bool createFolderUnlocked(const std::string &path) {
             return false;
         }
     }
-    FSError createdDir = FSAMakeDir(handle, _path.c_str(), (FSMode) 0x660);
+    FSError createdDir = FSAMakeDir(handle, _path.c_str(), (FSMode) 0x666);
     if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
         std::string multilinePath;
         splitStringWithNewLines(dir,multilinePath);
@@ -725,7 +725,7 @@ static bool copyFile(const std::string &pPath, const std::string &oPath) {
     fclose(source);
     fclose(dest);
 
-    FSAChangeMode(handle, newlibtoFSA(oPath).c_str(), (FSMode) 0x660);
+    FSAChangeMode(handle, newlibtoFSA(oPath).c_str(), (FSMode) 0x666);
 
     if (! success) {
         if (readError > 0 )
@@ -747,8 +747,8 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         return false;
     }
 
-    mkdir(tPath.c_str(), 0660);
-    FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x660);
+    mkdir(tPath.c_str(), 0666);
+    FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
     auto *data = (dirent *) malloc(sizeof(dirent));
 
     while ((data = readdir(dir)) != nullptr) {
@@ -761,8 +761,8 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string targetPath = StringUtils::stringFormat("%s/%s", tPath.c_str(), data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-            mkdir(targetPath.c_str(), 0660);
-            FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x660);
+            mkdir(targetPath.c_str(), 0666);
+            FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x666);
             if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 closedir(dir);
                 return false;

@@ -169,7 +169,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
             //getStat();
 
-            statDir(srcPath,file);
+            //statDir(srcPath,file);
 
             fclose(file); 
 
