@@ -106,7 +106,7 @@ std::string BackupSetList::getTagAt(int i) {
     return backupSetsView.at(i).tag;
 }
 
-void BackupSetList::add(std::string entryPath,std::string serialId,std::string tag)
+void BackupSetList::add(const std::string &entryPath,const std::string &serialId,const std::string &tag)
 {
     BackupSetItemView bsiv; 
     bsiv.entryPath = entryPath;

@@ -35,10 +35,10 @@ class BSMetadata {
     public:
         friend class BackupSetItem;
         friend class BackupSetList;
-        BSMetadata(std::string year = "*", std::string month = "*",
-                        std::string serialId = "*", std::string tag = "*") :
+        BSMetadata(const std::string &year = "*", const std::string &month = "*",
+                        const std::string &serialId = "*", const std::string &tag = "*") :
                     year(year),month(month),serialId(serialId),tag(tag) {};
-        BSMetadata(BSMetadataValues  & bsMetadataValues) : 
+        BSMetadata(const BSMetadataValues  & bsMetadataValues) : 
             year(*(bsMetadataValues.year.iterator)),month(*(bsMetadataValues.month.iterator)),
             serialId(*(bsMetadataValues.serialId.iterator)),tag(*(bsMetadataValues.tag.iterator)) {};
     private:
@@ -51,7 +51,7 @@ class BSMetadata {
 class BackupSetItem {
     public:
         friend class BackupSetList;
-        BackupSetItem(std::string entryPath,BSMetadata bsItemMetadata) :
+        BackupSetItem(const std::string &entryPath,const BSMetadata &bsItemMetadata) :
             entryPath(entryPath),bsItemMetadata(bsItemMetadata) {};
     private:
         std::string entryPath;
@@ -81,7 +81,7 @@ public:
     std::string getTagAt(int i);
     void setTagBSVAt(int i, const std::string & tag);
     void setTagBSAt(int i, const std::string & tag);
-    void add(std::string entryPath,std::string serialId,std::string tag);
+    void add(const std::string &entryPath,const std::string &serialId,const std::string &tag);
 
     int getSizeView() { return this->entriesView;};
     int getSize() { return this->entries;};

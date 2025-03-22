@@ -88,11 +88,11 @@ std::string getDynamicBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot) 
         return StringUtils::stringFormat("%s%s%08x%08x/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID, slot);
 }
 
-std::string getBatchBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot, std::string datetime) {
+std::string getBatchBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot, const std::string & datetime) {
     return StringUtils::stringFormat("%s/%s/%08x%08x/%u", batchBackupPath, datetime.c_str(),highID, lowID, slot);
 }
 
-std::string getBatchBackupPathRoot(std::string datetime) {
+std::string getBatchBackupPathRoot(const std::string & datetime) {
     return StringUtils::stringFormat("%s/%s", batchBackupPath, datetime.c_str());
 }
 

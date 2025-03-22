@@ -17,7 +17,7 @@ public:
                                                    serialId(this->unknownSerialId),
                                                    tag({}) { }
 
-    Metadata(uint32_t high, uint32_t low, uint8_t s, std::string datetime) : highID(high),
+    Metadata(uint32_t high, uint32_t low, uint8_t s, const std::string &datetime) : highID(high),
                                                    lowID(low),
                                                    slot(s),
                                                    path (getBatchBackupPath(highID, lowID, slot, datetime).append("/savemiiMeta.json")),
@@ -54,7 +54,7 @@ public:
     static std::string unknownSerialId;
     std::string getDate() { return Date;};
     std::string getTag() { return tag;};
-    void setTag(std::string tag_) { this->tag = tag_;};
+    void setTag(const std::string &tag_) { this->tag = tag_;};
     std::string getSerialId() { return serialId;};
 
 private:
