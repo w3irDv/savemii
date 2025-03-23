@@ -34,11 +34,14 @@ void BatchBackupState::render() {
         consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Backup vWii (%u Title%s)"), this->vWiiTitlesCount,
                         (this->vWiiTitlesCount > 1) ? "s" : "");
 
-        if (GlobalCfg::global->getAlwaysApplyExcludes()) {
-            DrawUtils::setFontColor(COLOR_INFO);
-            consolePrintPos(M_OFF+9,8,
-                LanguageUtils::gettext("Reminder: Your Excludes will be applied to\n  'Backup Wii U' and 'Backup vWii' tasks"));
+        if (cursorPos > 0) {
+            if (GlobalCfg::global->getAlwaysApplyExcludes()) {
+                DrawUtils::setFontColor(COLOR_INFO);
+                consolePrintPos(M_OFF+9,8,
+                    LanguageUtils::gettext("Reminder: Your Excludes will be applied to\n  'Backup Wii U' and 'Backup vWii' tasks"));
+            }
         }
+        
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
