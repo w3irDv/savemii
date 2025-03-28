@@ -260,6 +260,7 @@ static Title *loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].is_Wii = ((highID & 0xFFFFFFF0) == 0x00010000);
         titles[wiiuTitlesCount].isTitleOnUSB = isTitleOnUSB;
         titles[wiiuTitlesCount].listID = wiiuTitlesCount;
+        titles[wiiuTitlesCount].indexID = wiiuTitlesCount;
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr; 
 
@@ -294,6 +295,7 @@ static Title *loadWiiUTitles(int run) {
         titles[i].isTitleOnUSB = titles[i-wiiuTitlesCount].isTitleOnUSB;
         titles[i].isTitleDupe = titles[i-wiiuTitlesCount].isTitleDupe;
         titles[i].listID = titles[i-wiiuTitlesCount].listID;
+        titles[i].indexID = titles[i-wiiuTitlesCount].indexID;
         titles[i].dupeID = titles[i-wiiuTitlesCount].dupeID;
         titles[i].noFwImg = titles[i-wiiuTitlesCount].noFwImg;
         titles[i].saveInit= titles[i-wiiuTitlesCount].saveInit;
@@ -441,6 +443,7 @@ static Title *loadWiiTitles() {
                 titles[i].noFwImg = true;
 
                 titles[i].listID = i;
+                titles[i].indexID = i;
                 memcpy(titles[i].productCode, &titles[i].lowID, 4);
                 for (int ii = 0; ii < 4; ii++)
                     if (titles[i].productCode[ii] == 0)
