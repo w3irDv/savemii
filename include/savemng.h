@@ -49,6 +49,7 @@ struct Title {
     uint32_t highID;
     uint32_t lowID;
     uint16_t listID;
+    uint16_t indexID;
     char shortName[256];
     char longName[512];
     char productCode[5];
@@ -127,6 +128,19 @@ void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
         default:
             break;
     }
+
+    for (Title* title = titles;title < last ;title++ ) {
+        if ( title->isTitleDupe) {
+            for (int id = 0; id < last-titles; id++) {
+                if (titles[id].indexID == title->dupeID ) {
+                    title->dupeID = id;
+                    break;
+                }
+            }
+        }
+    }
+    for (int id = 0; id < last-titles; id++)
+        titles[id].indexID = id;
 }
 
 class InProgress {

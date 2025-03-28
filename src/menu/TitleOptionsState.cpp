@@ -454,12 +454,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     cursorPos = 0;
                     break;
                 case copytoOtherDevice:
-                    for (int i = 0; i < this->titleCount; i++) {
-                        if (titles[i].listID == this->title.dupeID) {
-                            copySavedata(&this->title, &titles[i], wiiuuser, wiiuuser_d, common);
-                            break;
-                        }
-                    }
+                    copySavedata(&this->title, &titles[this->title.dupeID], wiiuuser, wiiuuser_d, common);
                     break;
             }
         }
