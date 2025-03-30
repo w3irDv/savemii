@@ -1190,7 +1190,10 @@ int copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d
         int slotb = getEmptySlot(titleb->highID, titleb->lowID);
         // backup is always of allusers
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
-            backupSavedata(titleb, slotb, -1, true, LanguageUtils::gettext("pre-copyToOtherDev backup"));     
+            if (!( backupSavedata(titleb, slotb, -1, true, LanguageUtils::gettext("pre-copyToOtherDev backup")) == 0 )) {
+                promptError(LanguageUtils::gettext("Backup Failed - Retore aborted !!"));
+                return -1;
+            }     
         }
     }
     
@@ -1413,12 +1416,12 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
     }
 }
 
-void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag /* = "" */) {
+int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag /* = "" */) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     if (!isSlotEmpty(title->highID, title->lowID, slot) &&
         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
-        return;
+        return -1;
     }
     InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
@@ -1439,7 +1442,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
 
     if (! createFolder(dstPath.c_str())) {
         promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),title->shortName);
-        return;
+        return 4;
     }
              
     bool doBase;
@@ -1492,6 +1495,7 @@ void backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, co
         promptError(errorMessage.c_str(),title->shortName);
         writeMetadataWithTag(highID,lowID,slot,isUSB,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED")); 
     }
+    return errorCode;
 }
 
 int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive /*= true*/) {
@@ -1526,7 +1530,12 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
             BackupSetList::setBackupSetSubPathToRoot();
             int slotb = getEmptySlot(title->highID, title->lowID);
             if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
-                backupSavedata(title, slotb, -1, true , LanguageUtils::gettext("pre-Restore backup"));
+                if (!(backupSavedata(title, slotb, -1, true , LanguageUtils::gettext("pre-Restore backup")) == 0)) {
+                    promptError(LanguageUtils::gettext("Backup Failed - Retore aborted !!"));
+                    BackupSetList::restoreBackupSetSubPath();
+                    return -1;
+                }
+
             BackupSetList::restoreBackupSetSubPath();
         }
     }
@@ -1674,7 +1683,11 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         int slotb = getEmptySlot(title->highID, title->lowID);
         // backup is always of full type
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
-            backupSavedata(title, slotb, -1, true, LanguageUtils::gettext("pre-Wipe backup"));
+            if (!(backupSavedata(title, slotb, -1, true, LanguageUtils::gettext("pre-Wipe backup")) == 0)) {
+                promptError(LanguageUtils::gettext("Backup Failed - Wipe aborted !!"));
+                return -1;
+            }
+            ;
     }
 
     bool doBase;
