@@ -168,7 +168,6 @@ void TitleOptionsState::render() {
                     consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("same user than in source"));
                 } else {
                     bool hasTargetUserData = hasAccountSave(&(titles[this->title.dupeID]), false, false, getWiiUacc()[wiiuuser_d].pID, 0, 0);
-                    consolePrintPosAligned(13,4,2,"%s",titles[this->title.dupeID].shortName);
                     consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUacc()[wiiuuser_d].miiName,
                         getWiiUacc()[wiiuuser_d].persistentID,
                         hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
