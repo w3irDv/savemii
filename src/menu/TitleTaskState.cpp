@@ -30,7 +30,7 @@ void TitleTaskState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);    
         consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
                         this->title.productCode);
-        consolePrintPos(M_OFF, 3, "   %s", this->title.shortName);
+        consolePrintPos(M_OFF, 3, "   %s (%s)", this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
         consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Backup savedata"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
@@ -48,9 +48,9 @@ void TitleTaskState::render() {
                                 this->title.isTitleOnUSB ? "NAND" : "USB");
             }
             if (this->title.iconBuf != nullptr)
-                DrawUtils::drawTGA(660, 80, 1, this->title.iconBuf);
+                DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
         } else if (this->title.iconBuf != nullptr)
-            DrawUtils::drawRGB5A3(645, 80, 1, this->title.iconBuf);
+            DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
