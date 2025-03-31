@@ -1167,7 +1167,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
     closedir(src_dir);
 }
 
-int copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common) {
+int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common) {
     int errorCode = 0;
     InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
@@ -1296,6 +1296,60 @@ end:
 
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nCopy failed.")+std::string("\n\n")+errorMessage;
+        promptError(errorMessage.c_str(),title->shortName);
+    }
+    return errorCode;
+}
+
+int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive /*= true*/) {
+    int errorCode = 0;
+    InProgress::titleName.assign(title->shortName);
+    uint32_t highID = title->highID;
+    uint32_t lowID = title->lowID;
+    bool isUSB = title->isTitleOnUSB;
+
+    std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+    std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
+    
+    if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
+        return -1;
+    if (!folderEmpty(basePath.c_str())) {
+        int slot = getEmptySlot(highID,lowID);
+        // backup is always of allusers
+        if ((slot >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
+            if (!( backupSavedata(title, slot, -1, true, LanguageUtils::gettext("pre-copySavedataToOtherProfile backup")) == 0 )) {
+                promptError(LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
+                return -1;
+            }     
+        }
+    }
+    
+
+    std::string srcPath = basePath+StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID); 
+    std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiuacc[wiiuuser_d].persistentID);
+
+    std::string errorMessage {};
+
+    #ifndef MOCK
+        FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
+    #endif
+    if (! copyDir(srcPath, dstPath)) { 
+        errorMessage = LanguageUtils::gettext("Error copying profile savedata.");
+        errorCode = 1;
+    }         
+
+    if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
+    } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_mlc01");
+    } else if (dstPath.rfind("storage_usb01:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_usb01");
+    } else if (dstPath.rfind("storage_usb02:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_usb02");
+    }
+
+    if (errorCode != 0) {
+        errorMessage = LanguageUtils::gettext("%s\nReplicate failed.")+std::string("\n\n")+errorMessage;
         promptError(errorMessage.c_str(),title->shortName);
     }
     return errorCode;
