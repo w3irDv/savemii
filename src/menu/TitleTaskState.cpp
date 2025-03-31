@@ -39,12 +39,14 @@ void TitleTaskState::render() {
         consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Wipe savedata"));
         if (this->isWiiUTitle) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
-            consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Import from loadiine"));
+            consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Copy savedata to other profile"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
-            consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export to loadiine"));
+            consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Import from loadiine"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
+            consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Export to loadiine"));
             if (this->title.isTitleDupe) {
-                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
-                consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);
+                consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
                                 this->title.isTitleOnUSB ? "NAND" : "USB");
             }
             if (this->title.iconBuf != nullptr)
@@ -89,6 +91,17 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                     BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
             }
 
+            if (this->task == copyToOtherProfile) {
+                if (!this->title.saveInit) {
+                    promptError(LanguageUtils::gettext("No save to Replicate."));
+                    noError = false;
+                } else if (getWiiUaccn() < 2 ) {
+                    promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
+                    noError = false;
+                } else
+                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+            }
+
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 char gamePath[PATH_SIZE];
@@ -109,7 +122,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 }
             }
 
-            if (this->task == copytoOtherDevice) {
+            if (this->task == copyToOtherDevice) {
                 if (!this->title.saveInit) {
                     promptError(LanguageUtils::gettext("No save to Copy."));
                     noError = false;
@@ -118,7 +131,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             }
             if (noError) {
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sduser, wiiuuser, common, wiiuuser_d, this->titles, this->titlesCount);
+                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sduser, (task == copyToOtherProfile ) ? 0:wiiuuser, (task == copyToOtherProfile ) ? false:common, (task == copyToOtherProfile ) ? 1:wiiuuser_d, this->titles, this->titlesCount);
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {

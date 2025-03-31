@@ -15,7 +15,9 @@ public:
                                                                                                                                                                   common(common),
                                                                                                                                                                   wiiuuser_d(wiiuuser_d),
                                                                                                                                                                   titles(titles),
-                                                                                                                                                                  titleCount(titleCount) {}
+                                                                                                                                                                  titleCount(titleCount) {
+                                                                                                                                                                    wiiUAccountsTotalNumber = getWiiUaccn();
+                                                                                                                                                                  }
 
     enum eState {
         STATE_TITLE_OPTIONS,
@@ -58,4 +60,6 @@ private:
 
     std::string tag;
     std::string newTag;
+
+    int wiiUAccountsTotalNumber;
 };

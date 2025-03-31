@@ -9,9 +9,10 @@ enum Task {
     backup = 0,
     restore = 1,
     wipe = 2,
-    importLoadiine = 3,
-    exportLoadiine = 4,
-    copytoOtherDevice = 5
+    copyToOtherProfile = 3,
+    importLoadiine = 4,
+    exportLoadiine = 5,
+    copyToOtherDevice = 6
 };
 
 class ApplicationState {

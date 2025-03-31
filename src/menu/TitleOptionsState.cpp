@@ -21,7 +21,9 @@ void TitleOptionsState::render() {
         this->subState->render();
         return;
     }
-    if (this->state == STATE_TITLE_OPTIONS) {    
+    if (this->state == STATE_TITLE_OPTIONS) {
+        if (((this->task == copyToOtherDevice) || (this->task == copyToOtherProfile)) && cursorPos == 0)
+            cursorPos = 1;     
         bool emptySlot = isSlotEmpty(this->title.highID, this->title.lowID, slot);
         if (this->task == backup || this->task == restore) {
             DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
@@ -33,11 +35,14 @@ void TitleOptionsState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2, "[%08X-%08X] %s (%s)", this->title.highID, this->title.lowID,
                         this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
-        if (this->task == copytoOtherDevice) {
+        if (this->task == copyToOtherDevice) {
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Destination:"));
-            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
+            DrawUtils::setFontColor(COLOR_TEXT);
             consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "NAND" : "USB");
-        } else if (this->task > 2) {
+        } else if (this->task == copyToOtherProfile) {
+            DrawUtils::setFontColor(COLOR_TEXT);
+            consolePrintPos(M_OFF, 5, LanguageUtils::gettext("    Copy profile savedata to a different profile."));
+        } else if (this->task > 3) {
             entrycount = 2;
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
@@ -104,13 +109,13 @@ void TitleOptionsState::render() {
             }
 
             DrawUtils::setFontColor(COLOR_TEXT);
-            if ((task == backup) || (task == restore) || (task == copytoOtherDevice)) { // manage lines related to NAND/USB savedata (source copytoOtherD & backup, target in restore)
+            if ((task == backup) || (task == restore) || (task == copyToOtherDevice) || (task == copyToOtherProfile)) { // manage lines related to NAND/USB savedata (source copytoOtherD, backup & copyToOtherProfile, target in restore)
                 if ((task == restore) && emptySlot) {
                     entrycount--;
                 }
                 else {
                     consolePrintPos(M_OFF, (task == restore) ? 10 : 7, LanguageUtils::gettext("Select Wii U user%s:"),
-                                    (task == copytoOtherDevice) ? LanguageUtils::gettext(" to copy from") : ((task == restore) ? LanguageUtils::gettext(" to copy to") : ""));
+                                    (task == restore) ? LanguageUtils::gettext(" to copy to") : LanguageUtils::gettext(" to copy from"));
                     if (task == restore)
                         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                     else
@@ -120,7 +125,8 @@ void TitleOptionsState::render() {
                         consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s >", LanguageUtils::gettext("no profile user"));
                     } else if (this->wiiuuser == -1) {
                         if (task == restore) {
-                            consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("same user than in source"));
+                            consolePrintPos(M_OFF, 11, "   < %s > (%s)", LanguageUtils::gettext("same user than in source"),
+                                (hasSavedata(&this->title, false,slot)) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                         } else {
                             hasUserData = hasSavedata(&this->title, false,slot);    
                             consolePrintPos(M_OFF, 8, "   < %s > (%s)", 
@@ -158,16 +164,18 @@ void TitleOptionsState::render() {
                     delete metadataObj;
                 }
 
-            if (task == copytoOtherDevice) { // manage lines with target user data
+            if ((task == copyToOtherDevice) || (task == copyToOtherProfile)) { // manage lines with target user data
                 entrycount++;
-                consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user%s:"), (task == copytoOtherDevice) ? LanguageUtils::gettext(" to copy to") : "");
+                consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user%s:"), LanguageUtils::gettext(" to copy to"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                 if (wiiuuser_d == -2)
                     consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("no profile user"));
                 else if (wiiuuser_d == -1) {
-                    consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("same user than in source"));
+                    consolePrintPos(M_OFF, 11, "   < %s > (%s)", LanguageUtils::gettext("same user than in source"),
+                        (hasSavedata(&this->title, false,slot)) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
-                    bool hasTargetUserData = hasAccountSave(&(titles[this->title.dupeID]), false, false, getWiiUacc()[wiiuuser_d].pID, 0, 0);
+                    int targetIndex = (task == copyToOtherDevice) ? this->title.dupeID : this->title.indexID;
+                    bool hasTargetUserData = hasAccountSave(&(titles[targetIndex]), false, false, getWiiUacc()[wiiuuser_d].pID, 0, 0);
                     consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUacc()[wiiuuser_d].miiName,
                         getWiiUacc()[wiiuuser_d].persistentID,
                         hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
@@ -175,13 +183,17 @@ void TitleOptionsState::render() {
             }
 
             DrawUtils::setFontColor(COLOR_TEXT);
+            if ((task == copyToOtherProfile)) {
+                entrycount--;
+                goto showCursor;  // we copyToOtherProfile only profile savedata, no common must be shown
+            }
             if ((task != importLoadiine) && (task != exportLoadiine)) {    // now is time to show common savedata status
                 if (this->wiiuuser != -1) {
-                    if ((task == restore) || (task == copytoOtherDevice)) {
+                    if ((task == restore) || (task == copyToOtherDevice)) {
                         bool hasCommonSaveInTarget = false;
                         if (task == restore) {
                             hasCommonSaveInTarget = hasCommonSave(&this->title,false,false,0,0);
-                        } else if (task == copytoOtherDevice) {
+                        } else if (task == copyToOtherDevice) {
                             hasCommonSaveInTarget = hasCommonSave(&(titles[this->title.dupeID]),false,false,0,0);
                         }
                     DrawUtils::setFontColor(COLOR_TEXT);
@@ -189,14 +201,11 @@ void TitleOptionsState::render() {
                         hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                     }
                 
-                    if (hasCommonSave(&this->title,
-                                    (!((task == backup) || (task == wipe) || (task == copytoOtherDevice))),
-                                    (!((task < 3) || (task == copytoOtherDevice))), slot,
-                                    this->versionList != nullptr ? this->versionList[slot] : 0)) {
-                        consolePrintPos(M_OFF, (task == restore) || (task == copytoOtherDevice) ? 13 : 10,
+                    if (hasCommonSave(&this->title, task == restore, false, slot,0)) {
+                        consolePrintPos(M_OFF, (task == restore) || (task == copyToOtherDevice) ? 13 : 10,
                                         LanguageUtils::gettext("Include 'common' save?"));    
                         
-                        if ((task == restore) || (task == copytoOtherDevice)) {
+                        if ((task == restore) || (task == copyToOtherDevice)) {
                             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
                             consolePrintPos(M_OFF, 14, "   < %s >",
                                         common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
@@ -207,7 +216,7 @@ void TitleOptionsState::render() {
                         }
                     } else {
                         common = false;
-                        consolePrintPos(M_OFF, (task == restore) || (task == copytoOtherDevice) ? 13 : 10,
+                        consolePrintPos(M_OFF, (task == restore) || (task == copyToOtherDevice) ? 13 : 10,
                                         LanguageUtils::gettext("No 'common' save found."));
                         entrycount--;
                     }
@@ -227,6 +236,7 @@ void TitleOptionsState::render() {
                 }
             }
 
+showCursor:
             DrawUtils::setFontColor(COLOR_TEXT);
             consolePrintPos(M_OFF, 5 + cursorPos * 3, "\u2192");
             if (this->title.iconBuf != nullptr)
@@ -286,6 +296,11 @@ void TitleOptionsState::render() {
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
                 break;
+            case copyToOtherProfile:
+                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Copy to Other Profile"));
+                DrawUtils::setFontColor(COLOR_TEXT);
+                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Replicate  \ue001: Back"));
+                break;
             case importLoadiine:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Import Loadiine"));
                 DrawUtils::setFontColor(COLOR_TEXT);
@@ -296,7 +311,7 @@ void TitleOptionsState::render() {
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Export  \ue001: Back"));
                 break;
-            case copytoOtherDevice:
+            case copyToOtherDevice:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Copy to Other Device"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
@@ -318,7 +333,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 this->subState = std::make_unique<BackupSetListState>();
             }
         if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
-            if (this->task == copytoOtherDevice) {
+            if (this->task == copyToOtherDevice) {
                 switch (cursorPos) {
                     case 0:
                         break;
@@ -374,6 +389,24 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
+            } else if (this->task == copyToOtherProfile) {
+                switch (cursorPos) {
+                    case 0:
+                        break;
+                    case 1:
+                        this->wiiuuser = ((this->wiiuuser == 0) ? 0 : (this->wiiuuser - 1));
+                        if (wiiuuser == wiiuuser_d)
+                            wiiuuser_d = ( wiiuuser + 1 ) % wiiUAccountsTotalNumber;
+                        break;
+                    case 2:
+                        wiiuuser_d = ( --wiiuuser_d == - 1) ? (wiiUAccountsTotalNumber-1) : (wiiuuser_d);
+                        if (wiiuuser == wiiuuser_d)
+                            wiiuuser_d = ( wiiuuser_d - 1 ) % wiiUAccountsTotalNumber;
+                        wiiuuser_d = (wiiuuser_d < 0) ? (wiiUAccountsTotalNumber-1) : wiiuuser_d;
+                        break;
+                    default:
+                        break;
+                }
             } else if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 switch (cursorPos) {
                     case 0:
@@ -402,16 +435,16 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_RIGHT)) {
-            if (this->task == copytoOtherDevice) {
+            if (this->task == copyToOtherDevice) {
                 switch (cursorPos) {
                     case 0:
                         break;
                     case 1:
-                        wiiuuser = ((wiiuuser == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (wiiuuser + 1));
+                        wiiuuser = ((wiiuuser == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiuuser + 1));
                         wiiuuser_d = wiiuuser;
                         break;
                     case 2:
-                        wiiuuser_d = ((wiiuuser_d == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (wiiuuser_d + 1));
+                        wiiuuser_d = ((wiiuuser_d == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiuuser_d + 1));
                         wiiuuser_d = (wiiuuser < 0 ) ? wiiuuser : wiiuuser_d;
                         break;
                     case 3:
@@ -436,7 +469,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         wiiuuser = ((sduser > -1 ) && ( wiiuuser < 0 )) ? 0 : wiiuuser; 
                         break;
                     case 2:
-                        wiiuuser = ((wiiuuser == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (wiiuuser + 1));
+                        wiiuuser = ((wiiuuser == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiuuser + 1));
                         wiiuuser = (sduser < 0 ) ? sduser : wiiuuser;
                         break;
                     case 3:
@@ -450,7 +483,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         break;
                     case 1:
-                        wiiuuser = ((wiiuuser == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (wiiuuser + 1));
+                        wiiuuser = ((wiiuuser == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiuuser + 1));
                         break;
                     case 2:
                         common = common ? false : true;
@@ -458,6 +491,23 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
+            } else if (this->task == copyToOtherProfile) {
+                switch (cursorPos) {
+                    case 0:
+                        break;
+                    case 1:
+                        wiiuuser = ((wiiuuser == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiuuser + 1));
+                        if (wiiuuser == wiiuuser_d)
+                            wiiuuser_d = ( wiiuuser_d + 1 ) % wiiUAccountsTotalNumber;
+                        break;
+                    case 2:
+                        wiiuuser_d = ( ++ wiiuuser_d == wiiUAccountsTotalNumber) ? 0 : wiiuuser_d;
+                        if (wiiuuser == wiiuuser_d)
+                            wiiuuser_d = ( wiiuuser_d + 1 ) % wiiUAccountsTotalNumber;
+                        break;
+                    default:
+                        break;
+                } 
             } else if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 switch (cursorPos) {
                     case 0:
@@ -475,7 +525,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         slot++;
                         break;
                     case 1:
-                        wiiuuser = ((wiiuuser == (getWiiUaccn() - 1)) ? (getWiiUaccn() - 1) : (wiiuuser + 1));
+                        wiiuuser = ((wiiuuser == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiuuser + 1));
                         break;
                     case 2:
                         common = common ? false : true;
@@ -504,14 +554,17 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             switch (this->task) {
                 case backup:
                 case wipe:
-                case copytoOtherDevice:
+                case copyToOtherProfile:
+                case copyToOtherDevice:
                     if ( ! ( common || hasUserData) )
                     {
                         if (this->task == backup)
                             promptError(LanguageUtils::gettext("No data selected to backup"));
                         else if (this->task == wipe)
                             promptError(LanguageUtils::gettext("No data selected to wipe"));
-                        else 
+                        else if (this->task == copyToOtherProfile)
+                            promptError(LanguageUtils::gettext("No data selected to copyToOtherProfile"));
+                        else if (this->task == copyToOtherDevice)
                             promptError(LanguageUtils::gettext("No data selected to copy"));
                         return SUBSTATE_RUNNING;
                     } 
@@ -543,8 +596,11 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     wipeSavedata(&this->title, wiiuuser_, common);
                     cursorPos = 0;
                     break;
-                case copytoOtherDevice:
-                    copySavedata(&this->title, &titles[this->title.dupeID], wiiuuser_, wiiuuser_d, common);
+                case copyToOtherProfile:
+                    copySavedataToOtherProfile(&this->title, wiiuuser_, wiiuuser_d);
+                    break;
+                case copyToOtherDevice:
+                    copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], wiiuuser_, wiiuuser_d, common);
                     break;
             }
         }
