@@ -839,7 +839,7 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
 
     mkdir(tPath.c_str(), 0666);
     FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
-    auto *data = (dirent *) malloc(sizeof(dirent));
+    struct dirent *data;
 
     while ((data = readdir(dir)) != nullptr) {
         DrawUtils::beginDraw();
