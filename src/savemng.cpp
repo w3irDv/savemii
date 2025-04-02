@@ -842,8 +842,6 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
     struct dirent *data;
 
     while ((data = readdir(dir)) != nullptr) {
-        DrawUtils::beginDraw();
-        DrawUtils::clear(COLOR_BLACK);
 
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
             continue;
@@ -858,8 +856,6 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
                 return false;
             }
         } else {
-            showFileOperation(data->d_name, pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath);
-
             if (!copyFile(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 closedir(dir);
                 return false;
@@ -881,6 +877,15 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) {
 } 
 #endif
 
+void showDeleteOperations(bool isFolder, const char *name, const std::string & path ) {
+        DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
+        consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
+        DrawUtils::setFontColor(COLOR_TEXT);
+        consolePrintPos(-2, 1, isFolder ? 
+            LanguageUtils::gettext("Deleting folder %s"):LanguageUtils::gettext("Deleting file %s"), name);
+        consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), path.c_str());
+}
 
 #ifndef MOCK
 static bool removeDir(const std::string &pPath) {
@@ -891,8 +896,6 @@ static bool removeDir(const std::string &pPath) {
     struct dirent *data;
     
     while ((data = readdir(dir)) != nullptr) {
-        DrawUtils::beginDraw();
-        DrawUtils::clear(COLOR_BLACK);
 
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0) continue;
 
@@ -904,33 +907,40 @@ static bool removeDir(const std::string &pPath) {
 
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BLACK);
-
+            showDeleteOperations(true, data->d_name, origPath);
+            /*
             DrawUtils::setFontColor(COLOR_INFO);
             consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
             consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
             DrawUtils::setFontColor(COLOR_TEXT);
             consolePrintPos(-2, 1, LanguageUtils::gettext("Deleting folder %s"), data->d_name);
             consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), origPath.c_str());
+            */
+            DrawUtils::endDraw();            
             if (unlink(origPath.c_str()) == -1) {
                 std::string multilinePath;
                 splitStringWithNewLines(origPath,multilinePath);
                 promptError(LanguageUtils::gettext("Failed to delete folder\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
             }
         } else {
+            DrawUtils::beginDraw();
+            DrawUtils::clear(COLOR_BLACK);
+            showDeleteOperations(false, data->d_name, tempPath);
+            /*
             DrawUtils::setFontColor(COLOR_INFO);
             consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
             consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
             DrawUtils::setFontColor(COLOR_TEXT);
             consolePrintPos(-2, 1, LanguageUtils::gettext("Deleting file %s"), data->d_name);
             consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), tempPath.c_str());
+            */
+            DrawUtils::endDraw();
             if (unlink(tempPath.c_str()) == -1) {
                 std::string multilinePath;
                 splitStringWithNewLines(tempPath,multilinePath);
                 promptError(LanguageUtils::gettext("Failed to delete file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
             }
         }
-
-        DrawUtils::endDraw();
     }
 
     closedir(dir);
