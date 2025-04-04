@@ -29,6 +29,8 @@ const char *legacyBackupPath = "fs:/vol/external01/savegames";
 
 bool firstSDWrite = true;
 
+int copyErrorsCounter = 0;
+
 //static char *p1;
 Account *wiiuacc;
 Account *sdacc;
@@ -813,15 +815,29 @@ static bool copyFile(const std::string &pPath, const std::string &oPath) {
     bool success =  copyFileThreaded(source, dest, sizef, pPath, oPath);
 
     fclose(source);
-    fclose(dest);
+
+    std::string writeErrorStr {};
+    if ( fclose(dest) != 0 ) {
+        success = false;
+        writeErrorStr.assign(strerror(errno));
+        if (writeError++ > 0) {
+            writeErrorStr = std::string(strerror(writeError))+"\n"+writeErrorStr;
+        }
+    }
 
     FSAChangeMode(handle, newlibtoFSA(oPath).c_str(), (FSMode) 0x666);
 
     if (! success) {
-        if (readError > 0 )
-            promptError(LanguageUtils::gettext("Read error\n%s"),strerror(readError));
-        if (writeError > 0 )
-            promptError(LanguageUtils::gettext("Write error\n%s"),strerror(writeError));
+        if (readError > 0 ) {
+            std::string multilinePath;
+            splitStringWithNewLines(pPath,multilinePath);
+            promptError(LanguageUtils::gettext("Read error\n%s\n\n%s"),strerror(readError),multilinePath);
+        }
+        if (writeError > 0 ) {
+            std::string multilinePath;
+            splitStringWithNewLines(oPath,multilinePath);
+            promptError(LanguageUtils::gettext("Write error\n%s\n\n%s"),writeErrorStr.c_str(),multilinePath);
+        }
     }
 
     return success;
@@ -831,16 +847,25 @@ static bool copyFile(const std::string &pPath, const std::string &oPath) {
 static bool copyDir(const std::string &pPath, const std::string &tPath) { // Source: ft2sd
     DIR *dir = opendir(pPath.c_str());
     if (dir == nullptr) {
+        copyErrorsCounter++;
         std::string multilinePath;
         splitStringWithNewLines(pPath,multilinePath);
         promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
     }
 
-    mkdir(tPath.c_str(), 0666);
+    if ( (mkdir(tPath.c_str(), 0666) != 0) && errno != EEXIST) {
+        copyErrorsCounter++;
+        std::string multilinePath;
+        splitStringWithNewLines(tPath,multilinePath);
+        promptError(LanguageUtils::gettext("Error creating folder\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        return false;    
+    }
+
     FSAChangeMode(handle, newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
     struct dirent *data;
 
+    errno = 0;
     while ((data = readdir(dir)) != nullptr) {
 
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
@@ -849,23 +874,54 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string targetPath = StringUtils::stringFormat("%s/%s", tPath.c_str(), data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-            mkdir(targetPath.c_str(), 0666);
-            FSAChangeMode(handle, newlibtoFSA(targetPath).c_str(), (FSMode) 0x666);
             if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
-                closedir(dir);
-                return false;
+                copyErrorsCounter++;
+                char errorMessage[256];
+                snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+                if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+                    closedir(dir);
+                    return false;
+                }
             }
         } else {
             if (!copyFile(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
-                closedir(dir);
-                return false;
+                copyErrorsCounter++;
+                char errorMessage[256];
+                snprintf(errorMessage,256,LanguageUtils::gettext("Error copying file - Backup is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+                if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+                    closedir(dir);
+                    return false;
+                }
             }
+        }
+        errno = 0;
+    }
+
+    if (errno != 0) {
+        copyErrorsCounter++;
+        std::string multilinePath;
+        splitStringWithNewLines(pPath,multilinePath);
+        promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n%s\n\nCopy may be incomplete"),multilinePath.c_str(),strerror(errno));
+        char errorMessage[256];
+        snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+        if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+            closedir(dir);
+            return false;
         }
     }
 
-    closedir(dir);
+    if ( closedir(dir) != 0 ) {
+        copyErrorsCounter++;
+        std::string multilinePath;
+        splitStringWithNewLines(pPath,multilinePath);
+        promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        char errorMessage[256];
+        snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+        if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage))
+            return false;    
+    }
 
-    return true;
+    return ( copyErrorsCounter == 0 );
 }
 #else
 static bool copyDir(const std::string &pPath, const std::string &tPath) {
@@ -908,14 +964,6 @@ static bool removeDir(const std::string &pPath) {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BLACK);
             showDeleteOperations(true, data->d_name, origPath);
-            /*
-            DrawUtils::setFontColor(COLOR_INFO);
-            consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
-            consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
-            DrawUtils::setFontColor(COLOR_TEXT);
-            consolePrintPos(-2, 1, LanguageUtils::gettext("Deleting folder %s"), data->d_name);
-            consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), origPath.c_str());
-            */
             DrawUtils::endDraw();            
             if (unlink(origPath.c_str()) == -1) {
                 std::string multilinePath;
@@ -926,14 +974,6 @@ static bool removeDir(const std::string &pPath) {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BLACK);
             showDeleteOperations(false, data->d_name, tempPath);
-            /*
-            DrawUtils::setFontColor(COLOR_INFO);
-            consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
-            consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
-            DrawUtils::setFontColor(COLOR_TEXT);
-            consolePrintPos(-2, 1, LanguageUtils::gettext("Deleting file %s"), data->d_name);
-            consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), tempPath.c_str());
-            */
             DrawUtils::endDraw();
             if (unlink(tempPath.c_str()) == -1) {
                 std::string multilinePath;
@@ -943,7 +983,12 @@ static bool removeDir(const std::string &pPath) {
         }
     }
 
-    closedir(dir);
+    if ( closedir(dir) != 0 ) {
+        std::string multilinePath;
+        splitStringWithNewLines(pPath,multilinePath);
+        promptError(LanguageUtils::gettext("Error while reading folder content\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        return false;    
+    }
     return true;
 }
 #else
@@ -1179,6 +1224,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
 
 int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common) {
     int errorCode = 0;
+    copyErrorsCounter = 0;
     InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
@@ -1313,6 +1359,7 @@ end:
 
 int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive /*= true*/) {
     int errorCode = 0;
+    copyErrorsCounter = 0;
     InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
@@ -1483,6 +1530,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
 int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag /* = "" */) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
+    copyErrorsCounter = 0;
     if (!isSlotEmpty(title->highID, title->lowID, slot) &&
         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
         return -1;
@@ -1565,6 +1613,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, con
 int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive /*= true*/) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
+    copyErrorsCounter = 0;
     // THIS NOW CANNOT HAPPEN CHECK IF THIS IS STILL NEEEDED!!!!
     /*
     if (isSlotEmpty(title->highID, title->lowID, slot)) {    
@@ -1720,6 +1769,7 @@ end:
 int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*= true*/) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
+    copyErrorsCounter = 0;
     InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;

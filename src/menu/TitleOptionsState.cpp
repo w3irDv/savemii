@@ -22,7 +22,7 @@ void TitleOptionsState::render() {
         return;
     }
     if (this->state == STATE_TITLE_OPTIONS) {
-        if (((this->task == copyToOtherDevice) || (this->task == copyToOtherProfile)) && cursorPos == 0)
+        if (((this->task == copyToOtherDevice) || (this->task == copyToOtherProfile)|| (this->task == wipe)) && cursorPos == 0)
             cursorPos = 1;     
         bool emptySlot = isSlotEmpty(this->title.highID, this->title.lowID, slot);
         if (this->task == backup || this->task == restore) {
