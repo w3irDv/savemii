@@ -297,7 +297,7 @@ void TitleOptionsState::render() {
             case copyToOtherProfile:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Copy to Other Profile"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Replicate  \ue001: Back"));
+                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
                 break;
             case importLoadiine:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Import Loadiine"));

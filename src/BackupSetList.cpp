@@ -118,7 +118,6 @@ void BackupSetList::add(const std::string &entryPath,const std::string &serialId
         this->sort(false);   
 }
 
-
 void BackupSetList::initBackupSetList() {
     BackupSetList::currentBackupSetList.reset();
     BackupSetList::currentBackupSetList = std::make_unique<BackupSetList>(batchBackupPath);
