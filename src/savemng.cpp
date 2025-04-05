@@ -30,6 +30,7 @@ const char *legacyBackupPath = "fs:/vol/external01/savegames";
 bool firstSDWrite = true;
 
 int copyErrorsCounter = 0;
+bool abortCopy = false;
 
 //static char *p1;
 Account *wiiuacc;
@@ -817,11 +818,17 @@ static bool copyFile(const std::string &pPath, const std::string &oPath) {
     fclose(source);
 
     std::string writeErrorStr {};
+    
+    if (writeError > 0)
+        writeErrorStr.assign(strerror(writeError));
+    
     if ( fclose(dest) != 0 ) {
         success = false;
-        writeErrorStr.assign(strerror(errno));
-        if (writeError++ > 0) {
-            writeErrorStr = std::string(strerror(writeError))+"\n"+writeErrorStr;
+        if (writeError != 0)
+            writeErrorStr = writeErrorStr + "\n" + std::string(strerror(errno));
+        else {
+            writeError = errno;
+            writeErrorStr.assign(strerror(errno));
         }
     }
 
@@ -830,13 +837,13 @@ static bool copyFile(const std::string &pPath, const std::string &oPath) {
     if (! success) {
         if (readError > 0 ) {
             std::string multilinePath;
-            splitStringWithNewLines(pPath,multilinePath);
-            promptError(LanguageUtils::gettext("Read error\n%s\n\n%s"),strerror(readError),multilinePath);
+            splitStringWithNewLines("reading from "+pPath,multilinePath);
+            promptError(LanguageUtils::gettext("Read error\n\n%s\n\n%s"),strerror(readError),multilinePath.c_str());
         }
         if (writeError > 0 ) {
             std::string multilinePath;
-            splitStringWithNewLines(oPath,multilinePath);
-            promptError(LanguageUtils::gettext("Write error\n%s\n\n%s"),writeErrorStr.c_str(),multilinePath);
+            splitStringWithNewLines("copying to "+pPath,multilinePath);
+            promptError(LanguageUtils::gettext("Write error\n\n%s\n\n%s"),writeErrorStr.c_str(),multilinePath.c_str());
         }
     }
 
@@ -875,10 +882,13 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
 
         if ((data->d_type & DT_DIR) != 0) {
             if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
+                if (abortCopy)
+                    return false;
                 copyErrorsCounter++;
                 char errorMessage[256];
-                snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+                snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
                 if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+                    abortCopy=true;
                     closedir(dir);
                     return false;
                 }
@@ -887,8 +897,9 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
             if (!copyFile(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 copyErrorsCounter++;
                 char errorMessage[256];
-                snprintf(errorMessage,256,LanguageUtils::gettext("Error copying file - Backup is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+                snprintf(errorMessage,256,LanguageUtils::gettext("Error copying file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
                 if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+                    abortCopy=true;
                     closedir(dir);
                     return false;
                 }
@@ -903,8 +914,9 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         splitStringWithNewLines(pPath,multilinePath);
         promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n%s\n\nCopy may be incomplete"),multilinePath.c_str(),strerror(errno));
         char errorMessage[256];
-        snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+        snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
         if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+            abortCopy=true;
             closedir(dir);
             return false;
         }
@@ -916,9 +928,11 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         splitStringWithNewLines(pPath,multilinePath);
         promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         char errorMessage[256];
-        snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
-        if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage))
-            return false;    
+        snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+        if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+            abortCopy=true;
+            return false;
+        }
     }
 
     return ( copyErrorsCounter == 0 );
@@ -1225,6 +1239,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
 int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common) {
     int errorCode = 0;
     copyErrorsCounter = 0;
+    abortCopy = false;
     InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
@@ -1360,6 +1375,7 @@ end:
 int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive /*= true*/) {
     int errorCode = 0;
     copyErrorsCounter = 0;
+    abortCopy = false;
     InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
@@ -1531,6 +1547,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, con
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     copyErrorsCounter = 0;
+    abortCopy = false;
     if (!isSlotEmpty(title->highID, title->lowID, slot) &&
         !promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
         return -1;
@@ -1556,7 +1573,9 @@ int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, con
         promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),title->shortName);
         return 4;
     }
-             
+
+    writeMetadataWithTag(highID,lowID,slot,isUSB,LanguageUtils::gettext("BACKUP IN PROGRESS"));
+
     bool doBase;
     bool doCommon;
 
@@ -1614,6 +1633,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     copyErrorsCounter = 0;
+    abortCopy = false;
     // THIS NOW CANNOT HAPPEN CHECK IF THIS IS STILL NEEEDED!!!!
     /*
     if (isSlotEmpty(title->highID, title->lowID, slot)) {    
@@ -1770,6 +1790,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     copyErrorsCounter = 0;
+    abortCopy = false;
     InProgress::titleName.assign(title->shortName);
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
