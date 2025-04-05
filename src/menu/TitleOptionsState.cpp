@@ -183,11 +183,9 @@ void TitleOptionsState::render() {
             }
 
             DrawUtils::setFontColor(COLOR_TEXT);
-            if ((task == copyToOtherProfile)) {
+            if ((task == copyToOtherProfile)) {    // now is time to show common savedata status
                 entrycount--;
-                goto showCursor;  // we copyToOtherProfile only profile savedata, no common must be shown
-            }
-            if ((task != importLoadiine) && (task != exportLoadiine)) {    // now is time to show common savedata status
+            } else if ((task != importLoadiine) && (task != exportLoadiine)) {
                 if (this->wiiuuser != -1) {
                     if ((task == restore) || (task == copyToOtherDevice)) {
                         bool hasCommonSaveInTarget = false;
@@ -236,9 +234,6 @@ void TitleOptionsState::render() {
                 }
             }
 
-showCursor:
-            DrawUtils::setFontColor(COLOR_TEXT);
-            consolePrintPos(M_OFF, 5 + cursorPos * 3, "\u2192");
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
         } else {
@@ -272,6 +267,9 @@ showCursor:
                 delete metadataObj;
             }
         }
+
+        DrawUtils::setFontColor(COLOR_TEXT);
+        consolePrintPos(M_OFF, 5 + cursorPos * 3, "\u2192"); 
 
         DrawUtils::setFontColor(COLOR_INFO);
         switch (task) {
