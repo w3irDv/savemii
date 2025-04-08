@@ -526,8 +526,8 @@ void promptError(const char *message, ...) {
     }
     if (tmp != nullptr)
         free(tmp);
-    DrawUtils::endDraw();
     va_end(va);
+    DrawUtils::endDraw();
     sleep(4);
 }
 
@@ -825,10 +825,14 @@ static bool copyFile(const std::string &pPath, const std::string &oPath) {
     if ( fclose(dest) != 0 ) {
         success = false;
         if (writeError != 0)
-            writeErrorStr = writeErrorStr + "\n" + std::string(strerror(errno));
+            writeErrorStr.append("\n" + std::string(strerror(errno)));
         else {
             writeError = errno;
             writeErrorStr.assign(strerror(errno));
+        }
+        if (errno == 28) {   // let's warn about the "no space left of device" that is generated when copy common savedata without wiping
+            if (oPath.starts_with("storage"))
+                writeErrorStr.append(LanguageUtils::gettext("\n\nbeware: if you haven't done it, try to wipe savedata before restoring"));
         }
     }
 
