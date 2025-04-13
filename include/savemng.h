@@ -63,6 +63,7 @@ struct Title {
     uint64_t accountSaveSize;
     uint32_t groupID;
     backupInfo currentBackup;
+    char friendlyDirName[256];
 };
 
 struct Saves {
@@ -158,9 +159,6 @@ bool promptConfirm(Style st, const std::string &question);
 void promptError(const char *message, ...);
 void promptMessage(Color bgcolor,const char *message, ...);
 Button promptMultipleChoice(Style st, const std::string &question);
-std::string getDynamicBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot);
-std::string getBatchBackupPath(uint32_t highID, uint32_t lowID, uint8_t slot, const std::string &datetime);
-std::string getBatchBackupPathRoot(const std::string &datetime);
 void getAccountsWiiU();
 void getAccountsSD(Title *title, uint8_t slot);
 bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version);
@@ -170,6 +168,8 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *long
 bool getLoadiineSaveVersionList(int *out, const char *gamePath);
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot);
 bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot, const std::string &batchDatetime);
+bool isSlotEmpty(Title *title, uint8_t slot);
+bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime);
 bool folderEmpty(const char *fPath);
 bool folderEmptyIgnoreSavemii(const char *fPath);
 int copySavedataToOtherDevice(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common) __attribute__((hot));
@@ -205,3 +205,8 @@ void splitStringWithNewLines(const std::string &input, std::string &output);
 void sdWriteDisclaimer();
 void summarizeBackupCounters(Title *titles, int titleCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles);
 void showBackupCounters (int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles);
+void setFriendlyDirName(Title *title);
+std::string getDynamicBackupPath(Title *title, uint8_t slot);
+std::string getDynamicBackupPath(Title *title, uint8_t slot);
+std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string &datetime);
+std::string getBatchBackupPathRoot(const std::string &datetime);

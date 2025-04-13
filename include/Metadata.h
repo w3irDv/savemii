@@ -8,24 +8,24 @@
 
 class Metadata {
 public:
-    Metadata(uint32_t high, uint32_t low, uint8_t s) : highID(high),
-                                                   lowID(low),
+ 
+    Metadata(Title *title, uint8_t s) : highID(title->highID),
+                                                   lowID(title->lowID),
                                                    slot(s),
-                                                   path (getDynamicBackupPath(highID, lowID, slot).append("/savemiiMeta.json")),
+                                                   path (getDynamicBackupPath(title, slot).append("/savemiiMeta.json")),
                                                    Date({}),
                                                    storage({}),
                                                    serialId(this->unknownSerialId),
                                                    tag({}) { }
 
-    Metadata(uint32_t high, uint32_t low, uint8_t s, const std::string &datetime) : highID(high),
-                                                   lowID(low),
+    Metadata(Title *title, uint8_t s, const std::string &datetime) : highID(title->highID),
+                                                   lowID(title->lowID),
                                                    slot(s),
-                                                   path (getBatchBackupPath(highID, lowID, slot, datetime).append("/savemiiMeta.json")),
+                                                   path (getBatchBackupPath(title, slot, datetime).append("/savemiiMeta.json")),
                                                    Date({}),
                                                    storage({}),
                                                    serialId(this->unknownSerialId),
                                                    tag({}) { }
-
 // guess date from batchBackupRoot, to infer a savemiiMeta.json for <1.6.4 batchBackups
     Metadata(const std::string & path) : storage({}),
                                  serialId(this->unknownSerialId),
