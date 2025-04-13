@@ -9,6 +9,8 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 
+#include <locale>
+
 #define TAG_OFF 17
 
 bool hasUserData = false;
@@ -24,7 +26,7 @@ void TitleOptionsState::render() {
     if (this->state == STATE_TITLE_OPTIONS) {
         if (((this->task == copyToOtherDevice) || (this->task == copyToOtherProfile)|| (this->task == wipe)) && cursorPos == 0)
             cursorPos = 1;     
-        bool emptySlot = isSlotEmpty(this->title.highID, this->title.lowID, slot);
+        bool emptySlot = isSlotEmpty(&this->title, slot);
         if (this->task == backup || this->task == restore) {
             DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
             consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BackupSet: %s"),
@@ -150,7 +152,7 @@ void TitleOptionsState::render() {
             DrawUtils::setFontColor(COLOR_TEXT);
             if ((task == backup) || (task == restore))
                 if (!emptySlot) {
-                    Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
+                    Metadata *metadataObj = new Metadata(&this->title, slot);
                     if (metadataObj->read()) {
                         consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Slot -> Date: %s"),
                                     metadataObj->simpleFormat().c_str());
@@ -255,7 +257,7 @@ void TitleOptionsState::render() {
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
             if (!emptySlot) {
-                Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
+                Metadata *metadataObj = new Metadata(&this->title, slot);
                 if (metadataObj->read()) {
                     consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Date: %s"),
                                 metadataObj->simpleFormat().c_str());
@@ -319,7 +321,7 @@ void TitleOptionsState::render() {
 }
 
 ApplicationState::eSubState TitleOptionsState::update(Input *input) {
-    bool emptySlot = isSlotEmpty(this->title.highID, this->title.lowID, slot);
+    bool emptySlot = isSlotEmpty(&this->title, slot);
     if (this->state == STATE_TITLE_OPTIONS) {
         if (input->get(TRIGGER, PAD_BUTTON_B)) {
             return SUBSTATE_RETURN;
@@ -542,7 +544,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_MINUS))
             if (this->task == backup) {
-                if (!isSlotEmpty(this->title.highID, this->title.lowID, slot))
+                if (!isSlotEmpty(&this->title, slot))
                     deleteSlot(&this->title, slot);
             }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
@@ -620,7 +622,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         } else if (retSubState == SUBSTATE_RETURN) {
             if ( this->substateCalled == STATE_KEYBOARD) {
                 if (newTag != tag ) {
-                    Metadata *metadataObj = new Metadata(this->title.highID, this->title.lowID, slot);
+                    Metadata *metadataObj = new Metadata(&this->title, slot);
                     metadataObj->read();
                     metadataObj->setTag(newTag);
                     metadataObj->write();

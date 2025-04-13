@@ -273,6 +273,8 @@ static Title *loadWiiUTitles(int run) {
         else
             titles[wiiuTitlesCount].noFwImg = false;
 
+        setFriendlyDirName(&titles[wiiuTitlesCount]);
+
         wiiuTitlesCount++;
 
         DrawUtils::beginDraw();
@@ -454,6 +456,8 @@ static Title *loadWiiTitles() {
                 titles[i].dupeID = 0;
                 if (!titles[i].saveInit || (loadTitleIcon(&titles[i]) < 0))
                     titles[i].iconBuf = nullptr;
+
+                setFriendlyDirName(&titles[i]);
                 i++;
 
                 DrawUtils::beginDraw();

@@ -42,9 +42,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
             continue;
         if (this->titles[i].is_Wii && isWiiUBatchRestore) // wii titles installed as wiiU appear in vWii restore
             continue;
-        uint32_t highID = this->titles[i].highID;
-        uint32_t lowID = this->titles[i].lowID;
-        std::string srcPath = getDynamicBackupPath(highID, lowID, 0);
+        std::string srcPath = getDynamicBackupPath(&this->titles[i], 0);
         DIR *dir = opendir(srcPath.c_str());
         if (dir != nullptr) {
             if (isWiiUBatchRestore) {

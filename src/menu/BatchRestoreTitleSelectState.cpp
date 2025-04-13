@@ -50,11 +50,9 @@ BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuu
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
         
-        uint32_t highID = this->titles[i].highID;
-        uint32_t lowID = this->titles[i].lowID;
         bool isWii = titles[i].is_Wii;
 
-        std::string srcPath = getDynamicBackupPath(highID, lowID, 0);
+        std::string srcPath = getDynamicBackupPath(&this->titles[i], 0);
 
         if (! isWii) {
             std::string usersavePath = srcPath+"/"+getSDacc()[sduser].persistentID;
