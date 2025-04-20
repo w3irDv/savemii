@@ -7,6 +7,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
+#include <BackupSetList.h>
 
 #define MAX_TITLE_SHOW 14
 #define MAX_WINDOW_SCROLL 6
@@ -106,6 +107,41 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                     return SUBSTATE_RUNNING;
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
+        
+            if (isTitleUsingIdBasedPath(&this->titles[targ]) && BackupSetList::isRootBackupSet() 
+                    && checkIdVsTitleNameBasedPath) {
+                char message[512];
+                const char* choices = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders.\nInstead of using hex values, folders will be named after the title name,\nso for this title, folder '%08x%08x' would become\n'%s',\neasier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all titles\n\ue001  Not this time\n\ue002  Not in this session\n\n\n");
+                snprintf(message,512,choices,this->titles[targ].highID,this->titles[targ].lowID,this->titles[targ].titleNameBasedDirName);
+                bool done = false;
+                while (! done) {
+                    Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,message);
+                    switch (choice) {
+                        case PAD_BUTTON_A:
+                            //rename this title
+                            renameTitleFolder(&this->titles[targ]);
+                            done = true;
+                            break;
+                        case PAD_BUTTON_PLUS:
+                            //rename all folders
+                            renameAllTitlesFolder(this->titles,this->titlesCount);
+                            done = true;
+                            break;
+                        case PAD_BUTTON_X:
+                            checkIdVsTitleNameBasedPath = false;
+                        case PAD_BUTTON_B:
+                            if (isTitleUsingTitleNameBasedPath(&this->titles[targ]))
+                                promptMessage(COLOR_BLACK,LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them"),this->titles[targ].highID,this->titles[targ].lowID,this->titles[targ].titleNameBasedDirName);
+                            else
+                                promptMessage(COLOR_BLACK,LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used."),this->titles[targ].highID,this->titles[targ].lowID);
+                            done = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
             if (this->titlesCount <= MAX_TITLE_SHOW)
