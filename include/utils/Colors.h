@@ -4,7 +4,7 @@
 #define COLOR_BLACK      Color(0, 0, 0, 255)
 #define COLOR_BACKGROUND Color(0x00006F00)
 #define COLOR_TEXT       COLOR_WHITE
-#define COLOR_TEXT_AT_CURSOR      Color(0xBBBBEEFF)
+#define COLOR_TEXT_AT_CURSOR      Color(0xB0B0FFFF)
 #define COLOR_LIST_HIGH      Color(0x40D070FF)
 #define COLOR_LIST_HIGH_AT_CURSOR      Color(0x40D0BBFF)
 #define COLOR_LIST      Color(0x00FF00FF)

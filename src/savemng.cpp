@@ -11,6 +11,8 @@
 #include <nn/act/client_cpp.h>
 #include <sys/stat.h>
 #include <malloc.h>
+#include <climits>
+
 
 //#define DEBUG
 #ifdef DEBUG
@@ -95,13 +97,13 @@ std::string getDynamicBackupPath(Title *title, uint8_t slot) {
         if (checkEntry(idBasedPath.c_str()) == 2) //hilo dir already exists
             return StringUtils::stringFormat("%s%s%08x%08x/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID, slot);
         else
-            return StringUtils::stringFormat("%s%s%s/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->friendlyDirName, slot);
+            return StringUtils::stringFormat("%s%s%s/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName, slot);
     }
 }
 
 std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string & datetime) {
     
-    return StringUtils::stringFormat("%s/%s/%s/%u", batchBackupPath, datetime.c_str(),title->friendlyDirName, slot);
+    return StringUtils::stringFormat("%s/%s/%s/%u", batchBackupPath, datetime.c_str(),title->titleNameBasedDirName, slot);
 }
 
 std::string getBatchBackupPathRoot(const std::string & datetime) {
@@ -511,7 +513,7 @@ bool promptConfirm(Style st, const std::string &question) {
 
 void promptError(const char *message, ...) {
     DrawUtils::beginDraw();
-    DrawUtils::clear(static_cast<Color>(0x7F000000));
+    DrawUtils::clear(COLOR_BG_KO);
     va_list va;
     va_start(va, message);
     char *tmp = nullptr;
@@ -877,6 +879,7 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string multilinePath;
         splitStringWithNewLines(tPath,multilinePath);
         promptError(LanguageUtils::gettext("Error creating folder\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        closedir(dir);
         return false;    
     }
 
@@ -893,8 +896,10 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
 
         if ((data->d_type & DT_DIR) != 0) {
             if (!copyDir(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
-                if (abortCopy)
+                if (abortCopy) {
+                    closedir(dir);
                     return false;
+                }
                 copyErrorsCounter++;
                 char errorMessage[256];
                 snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
@@ -1113,6 +1118,13 @@ bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime) {
     return ret <= 0;
 }
 
+bool isSlotEmptyInTitleNameBasedPath(Title *title, uint8_t slot) {
+    std::string path;
+    path = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName)+"/"+std::to_string(slot);
+    int ret = checkEntry(path.c_str());
+    return ret <= 0;
+}
+
 static int getEmptySlot(Title *title) {
     for (int i = 0; i < 256; i++)
         if (isSlotEmpty(title, i))
@@ -1123,6 +1135,13 @@ static int getEmptySlot(Title *title) {
 static int getEmptySlot(Title *title, const std::string &batchDatetime) {
     for (int i = 0; i < 256; i++)
         if (isSlotEmpty(title, i, batchDatetime))
+            return i;
+    return -1;
+}
+
+static int getEmptySlotInTitleNameBasedPath(Title *title) {
+    for (int i = 0; i < 256; i++)
+        if (isSlotEmptyInTitleNameBasedPath(title, i))
             return i;
     return -1;
 }
@@ -2089,8 +2108,8 @@ void sdWriteDisclaimer() {
     firstSDWrite = false;
 }
 
-void summarizeBackupCounters  (Title *titles, int titleCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles) {
-    for (int i = 0; i < titleCount ; i++) {
+void summarizeBackupCounters  (Title *titles, int titlesCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles) {
+    for (int i = 0; i < titlesCount ; i++) {
         if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
@@ -2180,28 +2199,264 @@ char forbidden[] = "\\/:*?\"<>|";
 #define FILENAME_BUFF_SIZE 256
 #define ID_STR_BUFF_SIZE 21
 
-void setFriendlyDirName(Title* title) {
+void setTitleNameBasedDirName(Title* title) {
 
-    strcpy(title->friendlyDirName,title->shortName);
-    int len = strlen(title->friendlyDirName);
+    strcpy(title->titleNameBasedDirName,title->shortName);
+    int len = strlen(title->titleNameBasedDirName);
     for (int i = 0; i < len + 1; i++) {
         for (int j = 0; j < FORBIDDEN_LENGTH; j++)
-            if (title->friendlyDirName[i] == forbidden[j]) {
-                title->friendlyDirName[i] = '_';
+            if (title->titleNameBasedDirName[i] == forbidden[j]) {
+                title->titleNameBasedDirName[i] = '_';
                 break;
             }  
     }
 
     for (int i = 0; i < len ; i++) {
-        if ( title->friendlyDirName[i] == ' ' ) 
-            title->friendlyDirName[i] = '_';
+        if ( title->titleNameBasedDirName[i] == ' ' ) 
+            title->titleNameBasedDirName[i] = '_';
         else
             break;
     }
 
     char idstr[ID_STR_BUFF_SIZE];
     sprintf(idstr," [%08x-%08x]",title->highID,title->lowID);
-    int insert_point = std::min((int) strlen(title->friendlyDirName),FILENAME_BUFF_SIZE - ID_STR_BUFF_SIZE);
-    strcpy(&(title->friendlyDirName[insert_point]),idstr);
+    int insert_point = std::min((int) strlen(title->titleNameBasedDirName),FILENAME_BUFF_SIZE - ID_STR_BUFF_SIZE);
+    strcpy(&(title->titleNameBasedDirName[insert_point]),idstr);
 
+}
+
+bool isTitleUsingIdBasedPath(Title *title) {
+
+    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->highID, title->lowID);
+    if (checkEntry(idBasedPath.c_str()) == 2)
+        return true;
+    else
+        return false;
+}
+
+bool isTitleUsingTitleNameBasedPath(Title *title) {
+
+    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
+    if (checkEntry(titleNameBasedPath.c_str()) == 2)
+        return true;
+    else
+        return false;
+}
+
+bool renameTitleFolder(Title* title) {
+
+    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->highID, title->lowID);
+    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
+
+    if (checkEntry(titleNameBasedPath.c_str()) == 2) {
+        if (! mergeTitleFolders(title)) {
+            promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Unable to merge folder '%08x%08x' with existent folder\n'%s'\n\nSome backups may have been moved to this last folder.\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"),title->highID, title->lowID,title->titleNameBasedDirName,title->highID, title->lowID);
+            return false;
+        }
+        return true;
+    }
+
+    if (! mkdirAndUnlink(titleNameBasedPath)) {
+        std::string multilinePath;
+        splitStringWithNewLines(titleNameBasedPath,multilinePath);
+        promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"),multilinePath.c_str(),strerror(errno),title->highID, title->lowID);
+        return false;
+    }
+
+    if ( rename(idBasedPath.c_str(),titleNameBasedPath.c_str()) != 0) {
+        std::string multilinePath;
+        splitStringWithNewLines(titleNameBasedPath,multilinePath);
+        promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Unable to rename folder '%08x%08x' to\n'%s'\n\n%s\n\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"),title->highID, title->lowID,title->titleNameBasedDirName,strerror(errno),title->highID, title->lowID);
+        return false;
+    }
+
+    return true;
+
+}
+
+
+bool mkdirAndUnlink(const std::string & path) {
+
+    if (firstSDWrite)
+        sdWriteDisclaimer();
+
+    if (mkdir(path.c_str(), 0666) != 0 ) {  
+        std::string multilinePath;
+        splitStringWithNewLines(path,multilinePath);
+        promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        return false;
+    }
+
+    if (unlink(path.c_str()) == -1) {
+        std::string multilinePath;
+        splitStringWithNewLines(path,multilinePath);
+        promptError(LanguageUtils::gettext("Failed to delete (test) folder \n\n%s \n%s"), multilinePath.c_str(), strerror(errno));
+        return false;
+    }
+
+    return true;
+
+}
+
+bool renameAllTitlesFolder(Title* titles, int titlesCount) {
+    int errorCounter = 0;
+    int titlesToMigrate = 0;
+
+    for (int i=0;i<titlesCount;i++) {
+        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), titles[i].highID, titles[i].lowID);
+        if (checkEntry(idBasedPath.c_str()) == 0)
+            continue;
+        titlesToMigrate++;
+    }
+
+    int step = 1;
+    for (int i=0;i<titlesCount;i++) {
+
+        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), titles[i].highID, titles[i].lowID);
+        if (checkEntry(idBasedPath.c_str()) == 0)
+            continue;
+
+        DrawUtils::beginDraw();
+        DrawUtils::clear(COLOR_BACKGROUND);
+        
+        DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPos(-2, 6, ">> %s", titles[i].shortName);
+        consolePrintPosAligned(6,4,2, "%d/%d",step,titlesToMigrate);
+        DrawUtils::setFontColor(COLOR_TEXT);
+        consolePrintPos(-2, 8, LanguageUtils::gettext("Migrating from folder: %08x%08x"), titles[i].highID, titles[i].lowID);
+        consolePrintPosMultiline(-2, 11, LanguageUtils::gettext("To: %s"), titles[i].titleNameBasedDirName);
+        DrawUtils::endDraw();
+
+        if (! renameTitleFolder(&titles[i])) {
+            errorCounter++;
+            char errorMessage[512];
+            snprintf(errorMessage,512,LanguageUtils::gettext("Error renaming/moving '%08x%08x' to \n\n'%s'\n\nConversion errors so far: %d\n\nDo you want to continue?\n"),titles[i].highID, titles[i].lowID,titles[i].titleNameBasedDirName,errorCounter);
+            if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+                return false;
+            }
+        }
+        step++;
+    }
+    return ( errorCounter == 0 );
+}
+
+bool mergeTitleFolders(Title* title) {
+
+    int mergeErrorsCounter = 0;
+    bool showAbortPrompt = false;
+
+    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->highID, title->lowID);
+    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
+
+    DIR *dir = opendir(idBasedPath.c_str());
+    struct dirent *data;
+    errno = 0;
+    while ((data = readdir(dir)) != nullptr) {
+
+        if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
+            continue;
+
+        if (mergeErrorsCounter > 0 && showAbortPrompt) {
+            char errorMessage[128];
+            snprintf(errorMessage,128,LanguageUtils::gettext("Errors so far in this (sub)task: %d\nDo you want to continue?"),mergeErrorsCounter);
+            if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+                closedir(dir);
+                return false;
+            }
+            showAbortPrompt = false;
+        }
+
+
+        std::string sourcePath = StringUtils::stringFormat("%s/%s", idBasedPath.c_str(), data->d_name);
+        std::string targetPath;
+
+        int sourceSlot = 0;
+        if ((data->d_type & DT_DIR) == 0 || str2int(sourceSlot,data->d_name,10) != SUCCESS)  {// higly improbable, is not a savemii slot, but try to move it "as is" anyway
+            targetPath = StringUtils::stringFormat("%s/%s", titleNameBasedPath.c_str(), data->d_name);
+            if (checkEntry(targetPath.c_str()) != 0 ) {
+                mergeErrorsCounter++;
+                std::string multilinePath;
+                splitStringWithNewLines(targetPath,multilinePath);
+                promptError(LanguageUtils::gettext("Cannot move %s from '%08x%08x' to\n\n%s\nfile already exists in target folder."),data->d_name,title->highID, title->lowID,multilinePath.c_str());
+                showAbortPrompt = true;
+                continue;
+            }
+        } else {
+            targetPath = StringUtils::stringFormat("%s/%d", titleNameBasedPath.c_str(), getEmptySlotInTitleNameBasedPath(title));
+            if (! mkdirAndUnlink(targetPath)) {
+                mergeErrorsCounter++;
+                std::string multilinePath;
+                splitStringWithNewLines(targetPath,multilinePath);
+                promptError(LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!"),multilinePath.c_str(),strerror(errno));
+                showAbortPrompt = true;
+                continue;
+            }
+        }
+
+        if ( rename(sourcePath.c_str(),targetPath.c_str()) != 0) {
+            mergeErrorsCounter++;
+            std::string multilinePath;
+            splitStringWithNewLines(targetPath,multilinePath);
+            promptError(LanguageUtils::gettext("Cannot rename folder '%08x%08x/%s' to\n\n%s\n%s"),title->highID, title->lowID,data->d_name,multilinePath.c_str(),strerror(errno));
+            showAbortPrompt = true;
+            continue;
+        }
+        errno = 0;
+    }
+
+    if (errno != 0) {
+        mergeErrorsCounter++;
+        std::string multilinePath;
+        splitStringWithNewLines(idBasedPath,multilinePath);
+        promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n%s\n\nMigration may be incomplete"),multilinePath.c_str(),strerror(errno));
+        closedir(dir);
+        return false;
+    }
+
+    if ( closedir(dir) != 0 ) {
+        mergeErrorsCounter++;
+        std::string multilinePath;
+        splitStringWithNewLines(idBasedPath,multilinePath);
+        promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        return false;
+    }
+
+    if (!folderEmpty(idBasedPath.c_str())) {
+        mergeErrorsCounter++;
+        std::string multilinePath;
+        splitStringWithNewLines(idBasedPath,multilinePath);
+        promptError(LanguageUtils::gettext("Error merging folders: after moving all slots, folder\n\n%s\nis still not empty and cannot be deleted."),multilinePath.c_str());
+        return false;
+
+    }
+
+    if (unlink(idBasedPath.c_str()) == -1) {
+        mergeErrorsCounter++;
+        std::string multilinePath;
+        splitStringWithNewLines(idBasedPath,multilinePath);
+        promptError(LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+        return false;
+    }
+
+    return ( mergeErrorsCounter == 0 );
+
+} 
+
+STR2INT_ERROR str2int (int &i, char const *s, int base /*= 0*/) // from https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c
+{
+    char *end;
+    long  l;
+    errno = 0;
+    l = strtol(s, &end, base);
+    if ((errno == ERANGE && l == LONG_MAX) || l > INT_MAX) {
+        return OVERFLOW;
+    }
+    if ((errno == ERANGE && l == LONG_MIN) || l < INT_MIN) {
+        return UNDERFLOW;
+    }
+    if (*s == '\0' || *end != '\0') {
+        return INCONVERTIBLE;
+    }
+    i = l;
+    return SUCCESS;
 }

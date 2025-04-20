@@ -45,6 +45,12 @@ struct backupInfo {
     int lastErrCode; 
 };
 
+enum eFileNameStyle {
+    Unknown,
+    HiLo,
+    titleName
+};
+
 struct Title {
     uint32_t highID;
     uint32_t lowID;
@@ -63,7 +69,8 @@ struct Title {
     uint64_t accountSaveSize;
     uint32_t groupID;
     backupInfo currentBackup;
-    char friendlyDirName[256];
+    char titleNameBasedDirName[256];
+    eFileNameStyle fileNameStyle;
 };
 
 struct Saves {
@@ -166,9 +173,8 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
 bool hasSavedata(Title *title, bool inSD, uint8_t slot);
 bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *longName, const uint32_t highID, const uint32_t lowID);
 bool getLoadiineSaveVersionList(int *out, const char *gamePath);
-bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot);
-bool isSlotEmpty(uint32_t highID, uint32_t lowID, uint8_t slot, const std::string &batchDatetime);
 bool isSlotEmpty(Title *title, uint8_t slot);
+bool isSlotEmptyInTitleBasedPath(Title *title, uint8_t slot);
 bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime);
 bool folderEmpty(const char *fPath);
 bool folderEmptyIgnoreSavemii(const char *fPath);
@@ -203,10 +209,19 @@ void deleteSlot(Title *title, uint8_t slot);
 bool wipeBackupSet(const std::string &subPath);
 void splitStringWithNewLines(const std::string &input, std::string &output);
 void sdWriteDisclaimer();
-void summarizeBackupCounters(Title *titles, int titleCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles);
+void summarizeBackupCounters(Title *titles, int titlesCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles);
 void showBackupCounters (int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles);
-void setFriendlyDirName(Title *title);
+void setTitleNameBasedDirName(Title *title);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);
 std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string &datetime);
 std::string getBatchBackupPathRoot(const std::string &datetime);
+bool isTitleUsingIdBasedPath(Title *title);
+bool isTitleUsingTitleNameBasedPath(Title *title);
+bool renameTitleFolder(Title* title);
+bool renameAllTitlesFolder(Title *titles, int titlesCount);
+bool mkdirAndUnlink(const std::string & path);
+bool mergeTitleFolders(Title* title);
+enum STR2INT_ERROR { SUCCESS, OVERFLOW, UNDERFLOW, INCONVERTIBLE };
+STR2INT_ERROR str2int (int &i, char const *s, int base = 0);
+

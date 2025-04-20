@@ -307,7 +307,7 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
             std::string choices = LanguageUtils::gettext("\ue000  Apply saved excludes\n\ue045  Save current excludes\n\ue001  Back");
             bool done = false;
             while (! done) {
-                Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,choices.c_str());
+                Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,choices);
                 switch (choice) {
                     case PAD_BUTTON_A:
                         if(excludes->read())

@@ -13,7 +13,7 @@
 
 #define TAG_OFF 17
 
-bool hasUserData = false;
+bool sourceHasRequestedSavedata = false;
 
 void TitleOptionsState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -74,20 +74,20 @@ void TitleOptionsState::render() {
                     consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select SD user to copy from:"));
                     DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                     if (sduser == -2) {
-                        hasUserData = false;
+                        sourceHasRequestedSavedata = false;
                         consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("no profile user"));
                     }
                     else if (sduser == -1) {
-                        hasUserData = hasSavedata(&this->title, true,slot);
+                        sourceHasRequestedSavedata = hasSavedata(&this->title, true,slot);
                         consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("all users"),
-                            hasUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                            sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                     } else {
-                        hasUserData = hasAccountSave(&this->title, true, false, getSDacc()[sduser].pID,slot, 0);
+                        sourceHasRequestedSavedata = hasAccountSave(&this->title, true, false, getSDacc()[sduser].pID,slot, 0);
                         consolePrintPos(M_OFF, 8, "   < %s > (%s)", getSDacc()[sduser].persistentID,
-                            hasUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                            sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                     }
                 } else {
-                    hasUserData = false;
+                    sourceHasRequestedSavedata = false;
                 }
             }
 
@@ -96,17 +96,17 @@ void TitleOptionsState::render() {
                 consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select Wii U user to delete from:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                 if (this->wiiuuser == -2) {
-                    hasUserData = false;
+                    sourceHasRequestedSavedata = false;
                     consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("no profile user"));
                 } else if (this->wiiuuser == -1) {
-                    hasUserData = hasSavedata(&this->title, false,slot);
+                    sourceHasRequestedSavedata = hasSavedata(&this->title, false,slot);
                     consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("all users"),
-                        hasUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                        sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
-                    hasUserData = hasAccountSave(&this->title, false, false, getWiiUacc()[this->wiiuuser].pID,slot, 0);
+                    sourceHasRequestedSavedata = hasAccountSave(&this->title, false, false, getWiiUacc()[this->wiiuuser].pID,slot, 0);
                     consolePrintPos(M_OFF, 8, "   < %s (%s) > (%s)", getWiiUacc()[this->wiiuuser].miiName,
                         getWiiUacc()[this->wiiuuser].persistentID,
-                        hasUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                        sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 }
             }
 
@@ -123,28 +123,28 @@ void TitleOptionsState::render() {
                     else
                         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                     if (this->wiiuuser == -2) {
-                        hasUserData = false;
+                        sourceHasRequestedSavedata = false;
                         consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s >", LanguageUtils::gettext("no profile user"));
                     } else if (this->wiiuuser == -1) {
                         if (task == restore) {
                             consolePrintPos(M_OFF, 11, "   < %s > (%s)", LanguageUtils::gettext("same user than in source"),
                                 (hasSavedata(&this->title, false,slot)) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                         } else {
-                            hasUserData = hasSavedata(&this->title, false,slot);    
+                            sourceHasRequestedSavedata = hasSavedata(&this->title, false,slot);    
                             consolePrintPos(M_OFF, 8, "   < %s > (%s)", 
-                            LanguageUtils::gettext("all users"),hasUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                            LanguageUtils::gettext("all users"),sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                         }
                     }
                     else {
-                        bool hasUSerDataInTitleStorage = hasAccountSave(&this->title,
+                        bool hasUserDataInTitleStorage = hasAccountSave(&this->title,
                                                 false,
                                                 false,
                                                 getWiiUacc()[this->wiiuuser].pID, slot,0);
                         if (task != restore)
-                            hasUserData = hasUSerDataInTitleStorage;
+                            sourceHasRequestedSavedata = hasUserDataInTitleStorage;
                         consolePrintPos(M_OFF, (task == restore) ? 11 : 8, "   < %s (%s) > (%s)",
                             getWiiUacc()[wiiuuser].miiName, getWiiUacc()[wiiuuser].persistentID,
-                            hasUSerDataInTitleStorage ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                            hasUserDataInTitleStorage ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                     }
                 }
             }
@@ -244,14 +244,14 @@ void TitleOptionsState::render() {
             DrawUtils::setFontColor(COLOR_TEXT);
             bool hasUserDataInNAND = hasSavedata(&this->title, false,slot);
             consolePrintPos(M_OFF, 7, "%s", (task == backup ) ?  LanguageUtils::gettext("Source:"):LanguageUtils::gettext("Target:"));
-                hasUserData = hasSavedata(&this->title, false,slot);
+                sourceHasRequestedSavedata = hasSavedata(&this->title, false,slot);
                 consolePrintPos(M_OFF, 8, "   %s (%s)", LanguageUtils::gettext("Savedata in NAND"),
                         hasUserDataInNAND ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
             
             if (this->task == wipe || this->task == backup) {
-                hasUserData = hasUserDataInNAND;
+                sourceHasRequestedSavedata = hasUserDataInNAND;
             } else if (this->task == restore) {
-                hasUserData = emptySlot ? false : true;
+                sourceHasRequestedSavedata = emptySlot ? false : true;
             }        
 
             if (this->title.iconBuf != nullptr)
@@ -556,7 +556,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case wipe:
                 case copyToOtherProfile:
                 case copyToOtherDevice:
-                    if ( ! ( common || hasUserData) )
+                    if ( ! ( common || sourceHasRequestedSavedata) )
                     {
                         if (this->task == backup)
                             promptError(LanguageUtils::gettext("No data selected to backup"));
@@ -568,18 +568,18 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                             promptError(LanguageUtils::gettext("No data selected to copy"));
                         return SUBSTATE_RUNNING;
                     } 
-                    if ((wiiuuser > -1 && ! hasUserData))
+                    if ((wiiuuser > -1 && ! sourceHasRequestedSavedata))
                         wiiuuser_ = -2;
                     else
                         wiiuuser_ = wiiuuser;
                     break;
                 case restore:
-                    if ( ! ( common || hasUserData) )
+                    if ( ! ( common || sourceHasRequestedSavedata) )
                     {
                         promptError(LanguageUtils::gettext("No data selected to restore"));
                         return SUBSTATE_RUNNING;
                     }
-                    if ((sduser > -1 && ! hasUserData))
+                    if ((sduser > -1 && ! sourceHasRequestedSavedata))
                         sduser_ = -2;
                     else
                         sduser_ = sduser;
@@ -617,7 +617,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {
             // keep running.
-            hasUserData = false;
+            sourceHasRequestedSavedata = false;
             return SUBSTATE_RUNNING;
         } else if (retSubState == SUBSTATE_RETURN) {
             if ( this->substateCalled == STATE_KEYBOARD) {

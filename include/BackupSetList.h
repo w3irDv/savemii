@@ -107,6 +107,8 @@ public:
     static void setIsInitializationRequired(bool isInitializationRequired_) {
             BackupSetList::isInitializationRequired = isInitializationRequired_;
         }
+    static bool isRootBackupSet() { return ( backupSetSubPath == "/"); }
+
  
 private:
     static bool sortAscending;

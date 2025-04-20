@@ -41,4 +41,5 @@ private:
     int targ = 0;
 
     bool noTitles = false;
+    static inline bool checkIdVsTitleNameBasedPath = true; 
 };
