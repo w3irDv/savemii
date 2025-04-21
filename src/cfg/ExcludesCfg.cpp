@@ -53,6 +53,7 @@ bool ExcludesCfg::mkJsonCfg()   {
             snprintf(titleKO,23,"%08x-%08x-%s",titleID.highID,titleID.lowID,titleID.isTitleOnUSB?"USB ":"NAND");
             promptError(LanguageUtils::gettext("Error creating JSON object: %s"),titleKO);
             json_decref(excludes);
+            json_decref(config);
             return false;
         }
 
@@ -69,7 +70,8 @@ bool ExcludesCfg::mkJsonCfg()   {
         
     }
     
-    json_object_set_new(config, cfg.c_str(), excludes);
+    json_object_set(config, cfg.c_str(), excludes);
+    json_decref(excludes);
     configString = json_dumps(config, JSON_INDENT(2));
     json_decref(config);
     if (configString == nullptr) {
@@ -101,8 +103,8 @@ bool ExcludesCfg::parseJsonCfg() {
     json_t* excludes = json_object_get(root,cfg.c_str());
     if (excludes == nullptr) {
         promptError(LanguageUtils::gettext("Error: unexpected format (%s not an array)"),cfg.c_str());
-        return false;
         json_decref(root);
+        return false;
     }
 
     int errorCount = 0;
@@ -158,6 +160,7 @@ bool ExcludesCfg::parseJsonCfg() {
         promptError(LanguageUtils::gettext("Error parsing values in elements:\n%s"),multilineError.c_str());
     }
 
+    json_decref(root);
     return (errorCount == 0);
 }
 
