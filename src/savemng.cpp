@@ -2201,22 +2201,33 @@ char forbidden[] = "\\/:*?\"<>|";
 
 void setTitleNameBasedDirName(Title* title) {
 
-    strcpy(title->titleNameBasedDirName,title->shortName);
-    int len = strlen(title->titleNameBasedDirName);
-    for (int i = 0; i < len + 1; i++) {
-        for (int j = 0; j < FORBIDDEN_LENGTH; j++)
-            if (title->titleNameBasedDirName[i] == forbidden[j]) {
-                title->titleNameBasedDirName[i] = '_';
-                break;
-            }  
+    std::string shortName(title->shortName);
+    std::string titleNameBasedDirName;
+
+    int len = shortName.length();
+    int cplen;
+    for (int i = 0; i < len + 1;) {
+        if ((shortName[i] & 0x80) != 0)
+            titleNameBasedDirName.append("_");
+        else {
+            std::string currentChar = shortName.substr(i,1);
+            for (int j = 0; j < FORBIDDEN_LENGTH; j++)
+                if (shortName[i] == forbidden[j]) {
+                    currentChar = '_';
+                    break;
+                }
+            titleNameBasedDirName.append(currentChar);  
+        }
+        if ((shortName[i] & 0xf8) == 0xf0) cplen=4;
+        else if ((shortName[i] & 0xf0) == 0xe0) cplen=3;
+        else if ((shortName[i] & 0xe0) == 0xc0) cplen=2;
+        else cplen=1;
+        i += cplen;
     }
 
-    for (int i = 0; i < len ; i++) {
-        if ( title->titleNameBasedDirName[i] == ' ' ) 
-            title->titleNameBasedDirName[i] = '_';
-        else
-            break;
-    }
+    titleNameBasedDirName.erase(0,titleNameBasedDirName.find_first_not_of(" "));
+
+    strncpy(title->titleNameBasedDirName,titleNameBasedDirName.c_str(),FILENAME_BUFF_SIZE-1);
 
     char idstr[ID_STR_BUFF_SIZE];
     sprintf(idstr," [%08x-%08x]",title->highID,title->lowID);
