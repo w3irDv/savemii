@@ -4,6 +4,7 @@
 #include <savemng.h>
 #include <Metadata.h>
 #include <cfg/GlobalCfg.h>
+#include <menu/TitleListState.h>
 
 
 GlobalCfg::GlobalCfg(const std::string & cfg) :
@@ -11,6 +12,7 @@ GlobalCfg::GlobalCfg(const std::string & cfg) :
         // set Defaults
         Language = LanguageUtils::getSystemLanguage();
         alwaysApplyExcludes = false;
+        askForBackupDirConversion = true;
     }
 
 bool GlobalCfg::mkJsonCfg()   {
@@ -24,6 +26,7 @@ bool GlobalCfg::mkJsonCfg()   {
 
     json_object_set_new(config, "language", json_integer(Language));
     json_object_set_new(config, "alwaysApplyExcludes", json_boolean(alwaysApplyExcludes));
+    json_object_set_new(config, "askForBackupDirConversion", json_boolean(askForBackupDirConversion));
 
     configString = json_dumps(config, 0);
     json_decref(config);
@@ -62,6 +65,10 @@ bool GlobalCfg::parseJsonCfg() {
     if ( json_is_boolean(alwaysapplyexcludes) )
         alwaysApplyExcludes = json_boolean_value(alwaysapplyexcludes);
 
+    json_t* askforbackupdirconversion = json_object_get(root,"askForBackupDirConversion");
+    if ( json_is_boolean(askforbackupdirconversion) )
+        askForBackupDirConversion = json_boolean_value(askforbackupdirconversion);
+    
     json_decref(root);
 
     return true;
@@ -72,6 +79,8 @@ bool GlobalCfg::parseJsonCfg() {
 bool GlobalCfg::applyConfig() {
 
     LanguageUtils::loadLanguage(Language);
+    TitleListState::setCheckIdVsTitleNameBasedPath(GlobalCfg::global->askForBackupDirConversion);
+
     return true;
 
 }

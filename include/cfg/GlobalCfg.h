@@ -25,6 +25,7 @@ public:
 private:
 
     Swkbd_LanguageType Language;
-    bool alwaysApplyExcludes; 
+    bool alwaysApplyExcludes;
+    bool askForBackupDirConversion; 
 
 };

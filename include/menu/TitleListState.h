@@ -18,6 +18,8 @@ public:
 
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
+    static void setCheckIdVsTitleNameBasedPath(bool value) {checkIdVsTitleNameBasedPath = value;};
+    static bool getCheckIdVsTitleNameBasedPath() {return checkIdVsTitleNameBasedPath;};
 
 private:
     std::unique_ptr<ApplicationState> subState{};
