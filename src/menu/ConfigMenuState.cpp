@@ -1,4 +1,5 @@
 #include <menu/ConfigMenuState.h>
+#include <menu/TitleListState.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -6,7 +7,7 @@
 #include <Metadata.h>
 #include <cfg/GlobalCfg.h>
 
-#define ENTRYCOUNT 2
+#define ENTRYCOUNT 3
 
 static std::string language;
 extern bool firstSDWrite;
@@ -14,15 +15,27 @@ extern bool firstSDWrite;
 void ConfigMenuState::render() {
     DrawUtils::setFontColor(COLOR_INFO);
     consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Configuration Options"));
-    DrawUtils::setFontColor(COLOR_TEXT);
+    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
     language = LanguageUtils::getLoadedLanguage();
     consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Language: %s"), language.c_str());
 
+    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
     consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Always apply Backup Excludes: %s"),
         GlobalCfg::global->alwaysApplyExcludes ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
+    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
+    consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Ask for backup dir conversion to titleName based format: %s"),
+        GlobalCfg::global->askForBackupDirConversion ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+    
+    if (GlobalCfg::global->askForBackupDirConversion != TitleListState::getCheckIdVsTitleNameBasedPath()) {
+        DrawUtils::setFontColor(COLOR_TEXT);
+        consolePrintPos(M_OFF+32, 7, LanguageUtils::gettext("   This session value: %s"),
+        TitleListState::getCheckIdVsTitleNameBasedPath() ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+    }
+
+
     DrawUtils::setFontColor(COLOR_INFO);
-    consolePrintPos(M_OFF + 2, 8,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
+    consolePrintPos(M_OFF + 2, 10,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
 
     DrawUtils::setFontColor(COLOR_TEXT);
     consolePrintPos(M_OFF, 2 + cursorPos * 2, "\u2192");
@@ -65,6 +78,10 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
             case 1:
                 GlobalCfg::global->alwaysApplyExcludes = GlobalCfg::global->alwaysApplyExcludes ? false : true;
                 break;
+            case 2:
+                GlobalCfg::global->askForBackupDirConversion = GlobalCfg::global->askForBackupDirConversion ? false : true;
+                TitleListState::setCheckIdVsTitleNameBasedPath(GlobalCfg::global->askForBackupDirConversion);
+                break;
         }
     }
     if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
@@ -73,8 +90,6 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
                 if (language == LanguageUtils::gettext("Japanese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__English);
                 else if (language == LanguageUtils::gettext("English"))
-                    LanguageUtils::loadLanguage(Swkbd_LanguageType__German);
-                else if (language == LanguageUtils::gettext("German"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Chinese2);
                 else if (language == LanguageUtils::gettext("Simplified Chinese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Russian);
@@ -89,10 +104,16 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
                 else if (language == LanguageUtils::gettext("Portuguese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Italian);
                 else if (language == LanguageUtils::gettext("Italian"))
+                    LanguageUtils::loadLanguage(Swkbd_LanguageType__German);
+                else if (language == LanguageUtils::gettext("German"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Japanese);
                 break;
             case 1:
                 GlobalCfg::global->alwaysApplyExcludes = GlobalCfg::global->alwaysApplyExcludes ? false : true;
+                break;
+            case 2:
+                GlobalCfg::global->askForBackupDirConversion = GlobalCfg::global->askForBackupDirConversion ? false : true;
+                TitleListState::setCheckIdVsTitleNameBasedPath(GlobalCfg::global->askForBackupDirConversion);
                 break;
         }
     }
