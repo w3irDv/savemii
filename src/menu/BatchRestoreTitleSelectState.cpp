@@ -357,8 +357,13 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
            int titlesAborted = 0;
            int titlesWarning = 0;
            int titlesKO = 0;
-           int titlesSkipped = 0; 
+           int titlesSkipped = 0;
+           int titlesNotInitialized = 0;
+           std::vector<std::string> failedTitles; 
            for (int i = 0; i < this->candidatesCount ; i++) {
+                if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 || ! this->titles[c2t[i]].saveInit)
+                    titlesNotInitialized++;
+                std::string failedTitle;
                 switch (this->titles[c2t[i]].currentBackup.batchRestoreState) {
                     case OK :
                         titlesOK++;
@@ -368,6 +373,8 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                         break;
                     case KO:
                         titlesKO++;
+                        failedTitle.assign(this->titles[c2t[i]].shortName);
+                        failedTitles.push_back(failedTitle);
                         break;
                     case ABORTED :
                         titlesAborted++;
@@ -377,17 +384,9 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                         break;
                 }
            }
-           summaryTemplate = LanguageUtils::gettext("Restore completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
-           snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped);
            
-           Color summaryColor = COLOR_BG_OK;
-            if ( titlesWarning > 0 || titlesAborted > 0)
-                summaryColor = COLOR_BG_WR;
-            if ( titlesKO > 0 )
-                summaryColor = COLOR_BG_KO;
-        
-           promptMessage(summaryColor,summary);
-
+           showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+           
            return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
