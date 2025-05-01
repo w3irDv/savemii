@@ -210,7 +210,7 @@ bool wipeBackupSet(const std::string &subPath);
 void splitStringWithNewLines(const std::string &input, std::string &output);
 void sdWriteDisclaimer();
 void summarizeBackupCounters(Title *titles, int titlesCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles);
-void showBackupCounters (int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles);
+void showBatchStatusCounters (int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles);
 void setTitleNameBasedDirName(Title *title);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);

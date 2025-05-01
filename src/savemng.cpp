@@ -2138,11 +2138,14 @@ void summarizeBackupCounters  (Title *titles, int titlesCount,int & titlesOK, in
 
 
 
-void showBackupCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles) {
+void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles) {
 
     char summary[512];
     const char* summaryTemplate;
-    summaryTemplate = LanguageUtils::gettext("Backup completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
+    if (titlesNotInitialized == 0 )
+        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
+    else
+        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
     snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
     
     std::string summaryWithTitles;

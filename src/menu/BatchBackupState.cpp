@@ -81,7 +81,7 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
                     writeBackupAllMetadata(batchDatetime,"WiiU and vWii titles");
                     BackupSetList::setIsInitializationRequired(true);
 
-                    showBackupCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+                    showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
 
                     break;
                 case 1: 
