@@ -43,7 +43,7 @@ void TitleOptionsState::render() {
             consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "NAND" : "USB");
         } else if (this->task == copyToOtherProfile) {
             DrawUtils::setFontColor(COLOR_TEXT);
-            consolePrintPos(M_OFF, 5, LanguageUtils::gettext("    Copy profile savedata to a different profile."));
+            consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Copy profile savedata to a different profile."));
         } else if (this->task > 3) {
             entrycount = 2;
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
@@ -197,7 +197,7 @@ void TitleOptionsState::render() {
                             hasCommonSaveInTarget = hasCommonSave(&(titles[this->title.dupeID]),false,false,0,0);
                         }
                     DrawUtils::setFontColor(COLOR_TEXT);
-                    consolePrintPosAligned(13, 4, 2,"(Target has 'common': %s)",
+                    consolePrintPosAligned(13, 4, 2,LanguageUtils::gettext("(Target has 'common': %s)"),
                         hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                     }
                 
