@@ -24,6 +24,7 @@ void TitleOptionsState::render() {
         return;
     }
     if (this->state == STATE_TITLE_OPTIONS) {
+        std::string slotFormat = slotFormatType(&this->title, slot);
         if (((this->task == copyToOtherDevice) || (this->task == copyToOtherProfile)|| (this->task == wipe)) && cursorPos == 0)
             cursorPos = 1;     
         bool emptySlot = isSlotEmpty(&this->title, slot);
@@ -54,7 +55,7 @@ void TitleOptionsState::render() {
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "USB" : "NAND");
         } else {
-            consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("slot"));
+            consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s [%s]:"), LanguageUtils::gettext("slot"),slotFormat.c_str());
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             if (((this->title.highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
                 consolePrintPos(M_OFF, 5, "   < SaveGame Manager GX > (%s)",

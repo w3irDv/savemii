@@ -85,6 +85,21 @@ std::string newlibtoFSA(std::string path) {
     return path;
 }
 
+std::string slotFormatType(Title *title, uint8_t slot) {
+    uint32_t highID = title->highID;
+    uint32_t lowID = title->lowID;
+
+    if (((highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
+        return "L"; // LegacyBackup
+    else {
+        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID);
+        if (checkEntry(idBasedPath.c_str()) == 2) //hilo dir already exists
+            return "H";
+        else
+            return "T";
+    }
+}
+
 std::string getDynamicBackupPath(Title *title, uint8_t slot) {
 
     uint32_t highID = title->highID;
