@@ -11,6 +11,7 @@
 
 #define MAX_TITLE_SHOW 14
 #define MAX_WINDOW_SCROLL 6
+#define VERYLONGMESSAGE 1024
 
 void TitleListState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -110,9 +111,9 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
         
             if (isTitleUsingIdBasedPath(&this->titles[targ]) && BackupSetList::isRootBackupSet() 
                     && checkIdVsTitleNameBasedPath) {
-                char message[512];
-                const char* choices = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders.\nInstead of using hex values, folders will be named after the title name,\nso for this title, folder '%08x%08x' would become\n'%s',\neasier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all titles\n\ue001  Not this time\n\ue002  Not in this session\n\n\n");
-                snprintf(message,512,choices,this->titles[targ].highID,this->titles[targ].lowID,this->titles[targ].titleNameBasedDirName);
+                char message[VERYLONGMESSAGE];
+                const char* choices = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders.\nInstead of using hex values, folders will be named after the title name,\nso for this title, folder '%08x%08x' would become\n'%s',\neasier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all %s\n\ue001  Not this time\n\ue002  Not in this session\n\n\n");
+                snprintf(message,VERYLONGMESSAGE,choices,this->titles[targ].highID,this->titles[targ].lowID,this->titles[targ].titleNameBasedDirName,isWiiU ? LanguageUtils::gettext("Wii U Titles"):LanguageUtils::gettext("vWii Titles"));
                 bool done = false;
                 while (! done) {
                     Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,message);

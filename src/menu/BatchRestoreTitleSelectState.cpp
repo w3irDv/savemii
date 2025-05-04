@@ -248,7 +248,7 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
            if (isWiiUBatchRestore) {
                 summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n%s\n%s\n%s\n%s.\nContinue?\n\n");
                 if (sduser > - 1) {
-                        snprintf(usermsg,64,LanguageUtils::gettext("- Restore from %s to < %s (%s) >"),getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
+                        snprintf(usermsg,128,LanguageUtils::gettext("- Restore from %s to < %s (%s) >"),getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
                 }
                 snprintf(summary,512,summaryTemplate,
                     (sduser == -1) ? LanguageUtils::gettext("- Restore allusers") : usermsg,
