@@ -294,7 +294,7 @@
   "no profile user": "no profile user",
   "No save to Replicate.": "No save to Replicate.",
   "Ok, legacy folder '%08x%08x' will be used.": "Ok, legacy folder '%08x%08x' will be used.",
-  "Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them": "Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them",
+  "Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them": "Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s'\nwill not be accessible\n\nManually copy or migrate data beween folders to access them",
   "Partial Backup - %d %s title%s": "Partial Backup - %d %s title%s",
   "pre-copySavedataToOtherProfile backup": "pre-copySavedataToOtherProfile backup",
   "Read error\n\n%s\n\n%s": "Read error\n\n%s\n\n%s",
