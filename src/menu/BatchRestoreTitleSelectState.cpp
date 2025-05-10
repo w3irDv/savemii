@@ -348,6 +348,11 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                 if ( wipeBeforeRestore ) {
                     switch (sduser) {
                         case -1:
+                            if (! checkProfilesInBackupForTheTitleExists (&this->titles[i], 0)) {
+                                this->titles[i].currentBackup.batchRestoreState = ABORTED;
+                                promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),titles[i].shortName);
+                                continue;
+                            }
                             if (hasSavedata(&this->titles[i], false,0))
                                 retCode = wipeSavedata(&this->titles[i], wiiuuser, effectiveCommon, false);
                             break;
@@ -388,6 +393,8 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                 restoreDone:
                 if (retCode > 0)
                     this->titles[i].currentBackup.batchRestoreState = KO;
+                else if (retCode < 0)
+                    this->titles[i].currentBackup.batchRestoreState = ABORTED;
                 if (this->titles[i].currentBackup.batchRestoreState == OK || this->titles[i].currentBackup.batchRestoreState == WR )
                     this->titles[i].currentBackup.selectedToRestore = false;
                 
