@@ -350,7 +350,7 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                         case -1:
                             if (! checkProfilesInBackupForTheTitleExists (&this->titles[i], 0)) {
                                 this->titles[i].currentBackup.batchRestoreState = ABORTED;
-                                promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),titles[i].shortName);
+                                promptError(LanguageUtils::gettext("%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),titles[i].shortName);
                                 continue;
                             }
                             if (hasSavedata(&this->titles[i], false,0))
