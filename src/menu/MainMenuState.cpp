@@ -33,15 +33,15 @@ void MainMenuState::render() {
         consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
                         (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
-        consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Batch Backup"));
+        consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Backup"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
-        consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Batch Restore"));
+        consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch Restore"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
-        consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch ProfileCopy"));
+        consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch ProfileCopy"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);   
-        consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   BackupSet Management"));
+        consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
+        consolePrintPos(M_OFF, 2 + cursorPos + (cursorPos > 1) ? 1:0 + (cursorPos > 4) ? 1:0 , "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
     }
 }
