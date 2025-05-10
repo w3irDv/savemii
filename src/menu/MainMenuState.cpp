@@ -9,11 +9,11 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-
 #include <menu/BatchRestoreState.h>
+#include <menu/BatchRestoreOptions.h>
 #include <utils/Colors.h>
 
-#define ENTRYCOUNT 5
+#define ENTRYCOUNT 6
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -36,8 +36,10 @@ void MainMenuState::render() {
         consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Batch Backup"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
         consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Batch Restore"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);   
-        consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   BackupSet Management"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
+        consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch ProfileCopy"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);   
+        consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
@@ -65,6 +67,14 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
                     break;
                 case 4:
+                    if (getWiiUaccn() < 2 )
+                        promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
+                    else {
+                        this->state = STATE_DO_SUBSTATE;
+                        this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
+                    }
+                    break;
+                case 5:
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>();

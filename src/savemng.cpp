@@ -698,6 +698,23 @@ void getAccountsWiiU() {
     nn::act::Finalize();
 }
 
+bool profileExists(const char* name) {
+    bool exists = false;
+    uint32_t probablePersistentID = 0;
+    probablePersistentID = strtoul(name,nullptr,16);
+    if  ( probablePersistentID != 0 && probablePersistentID != ULONG_LONG_MAX ) {
+        for (int i = 0;i < getWiiUaccn();i++) {
+            if ( (uint32_t) probablePersistentID == getWiiUacc()[i].pID) {
+                exists = true;
+                break;
+            }
+        }
+    }
+    return exists;
+}
+
+
+
 void getAccountsSD(Title *title, uint8_t slot) {
     sdaccn = 0;
     if (sdacc != nullptr)
@@ -989,7 +1006,7 @@ void showDeleteOperations(bool isFolder, const char *name, const std::string & p
 }
 
 #ifndef MOCK
-static bool removeDir(const std::string &pPath) {
+bool removeDir(const std::string &pPath) {
     DIR *dir = opendir(pPath.c_str());
     if (dir == nullptr)
         return false;
@@ -1429,16 +1446,18 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
     std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
     std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
     
-    if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
-        return -1;
-    if (!folderEmpty(basePath.c_str())) {
-        int slot = getEmptySlot(title);
-        // backup is always of allusers
-        if ((slot >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
-            if (!( backupSavedata(title, slot, -1, true, LanguageUtils::gettext("pre-copySavedataToOtherProfile backup")) == 0 )) {
-                promptError(LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
-                return -1;
-            }     
+    if (interactive) {
+        if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
+            return -1;
+        if (!folderEmpty(basePath.c_str())) {
+            int slot = getEmptySlot(title);
+            // backup is always of allusers
+            if ((slot >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
+                if (!( backupSavedata(title, slot, -1, true, LanguageUtils::gettext("pre-copySavedataToOtherProfile backup")) == 0 )) {
+                    promptError(LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
+                    return -1;
+                }     
+            }
         }
     }
     
@@ -1970,15 +1989,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
     }
 
     std::string volPath;
-    if (srcPath.find("_usb01") != std::string::npos) {
-        volPath = "/vol/storage_usb01";
-    } else if (srcPath.find("_usb02") != std::string::npos) {
-        volPath = "/vol/storage_usb02";
-    } else if (srcPath.find("_mlc") != std::string::npos) {
-        volPath = "/vol/storage_mlc01";
-    } else if (srcPath.find("_slccmpt") != std::string::npos) {
-        volPath = "/vol/storage_slccmpt01";
-    }
+    getVolPath(srcPath,volPath);
     FSAFlushVolume(handle, volPath.c_str());
     
     if (errorCode != 0) {
@@ -2488,4 +2499,42 @@ STR2INT_ERROR str2int (int &i, char const *s, int base /*= 0*/) // from https://
     }
     i = l;
     return SUCCESS;
+}
+
+bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
+    DIR *dir = opendir(srcPath.c_str());
+    if (dir != nullptr) {
+        struct dirent *data;
+        while ((data = readdir(dir)) != nullptr) {
+            if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))
+                continue;
+            if (data->d_name[0] == '8') {
+                if (! profileExists(data->d_name)) {
+                    promptError(LanguageUtils::gettext("WARNING\n\nFound savedata for the non-existent profile %s\nThis savedata wll be ignored"),data->d_name);
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+void getVolPath(const std::string & srcPath, std::string & volPath) {
+    if (srcPath.find("_usb01") != std::string::npos) {
+        volPath = "/vol/storage_usb01";
+    } else if (srcPath.find("_usb02") != std::string::npos) {
+        volPath = "/vol/storage_usb02";
+    } else if (srcPath.find("_mlc") != std::string::npos) {
+        volPath = "/vol/storage_mlc01";
+    } else if (srcPath.find("_slccmpt") != std::string::npos) {
+        volPath = "/vol/storage_slccmpt01";
+    }
+}
+
+bool removeFolderAndFlush(const std::string & srcPath) {
+    bool result = removeDir(srcPath);
+    std::string volPath;
+    getVolPath(srcPath, volPath);
+    FSAFlushVolume(handle, volPath.c_str()); 
+    return result;
 }
