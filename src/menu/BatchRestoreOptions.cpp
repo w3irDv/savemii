@@ -63,7 +63,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                     if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))
                         continue;
                     if (data->d_name[0] == '8') {
-                        if (restoreType == PROFILE_TO_PROFILE)
+                        if (restoreType == PROFILE_TO_PROFILE) {
                             if (! profileExists(data->d_name)) {
                                 char message[1024];
                                 snprintf(message,1024,LanguageUtils::gettext("WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile %s\nThis savedata wll be ignored\n\nDo you want to wipe it?"),this->titles[i].shortName,this->titles[i].isTitleOnUSB ? "USB":"NAND",data->d_name);
@@ -72,6 +72,10 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                                     removeFolderAndFlush(srcPath+"/"+data->d_name);
                                 goto hasBatchBackup;
                             }
+                        } else {
+                            if (! profileExists(data->d_name))
+                                nonexistentProfileInBackup = true;
+                        }
                         batchSDUsers.insert(data->d_name);
                     }
                     hasBatchBackup:
@@ -179,8 +183,12 @@ void BatchRestoreOptions::render() {
 ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {        
-                this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<BatchRestoreTitleSelectState>(sduser, wiiuuser, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchRestore, restoreType);
+            if (sduser == -1 && nonexistentProfileInBackup == true) {
+                if (! promptConfirm((Style) (ST_YES_NO | ST_WARNING),LanguageUtils::gettext("Backup contains savedata for profiles that do not exist in this console.\nYou can continue, but restore process will fail for those titles.\n\nRecommended action: restore from/to individual users.\n\nDo you want to continue?")))
+                    return SUBSTATE_RUNNING;    
+            }
+            this->state = STATE_DO_SUBSTATE;
+            this->subState = std::make_unique<BatchRestoreTitleSelectState>(sduser, wiiuuser, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchRestore, restoreType);
         }
         if (input->get(TRIGGER, PAD_BUTTON_B))
             return SUBSTATE_RETURN;

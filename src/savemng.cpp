@@ -1747,6 +1747,11 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
 
+    if (sduser == -1 && ! checkIfAllProfilesInFolderExists(srcPath)) {
+            promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
+            return -1;
+    }
+
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
@@ -1757,7 +1762,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
             int slotb = getEmptySlot(title);
             if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
                 if (!(backupSavedata(title, slotb, -1, true , LanguageUtils::gettext("pre-Restore backup")) == 0)) {
-                    promptError(LanguageUtils::gettext("Backup Failed - Retore aborted !!"));
+                    promptError(LanguageUtils::gettext("%s\n\nBackup Failed - Retore aborted !!"));
                     BackupSetList::restoreBackupSetSubPath();
                     return -1;
                 }
@@ -2510,7 +2515,7 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
                 continue;
             if (data->d_name[0] == '8') {
                 if (! profileExists(data->d_name)) {
-                    promptError(LanguageUtils::gettext("WARNING\n\nFound savedata for the non-existent profile %s\nThis savedata wll be ignored"),data->d_name);
+                    promptError(LanguageUtils::gettext("Backup contains savedata for the profile %s,\nbut the profile does not exists in this console"),data->d_name);
                     return false;
                 }
             }
@@ -2537,4 +2542,15 @@ bool removeFolderAndFlush(const std::string & srcPath) {
     getVolPath(srcPath, volPath);
     FSAFlushVolume(handle, volPath.c_str()); 
     return result;
+}
+
+bool checkProfilesInBackupForTheTitleExists (Title *title, uint8_t slot) {
+    std::string srcPath;
+    srcPath = getDynamicBackupPath(title, slot);
+
+    if (checkIfAllProfilesInFolderExists(srcPath)) {
+            promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
+            return false;
+    }
+    return true;
 }

@@ -44,5 +44,6 @@ private:
     int wiiUAccountsTotalNumber;
     int sdAccountsTotalNumber;
 
+    bool nonexistentProfileInBackup;
 
 };

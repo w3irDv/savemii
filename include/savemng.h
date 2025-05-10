@@ -229,4 +229,4 @@ bool profileExists(char const *name);
 void getVolPath(const std::string & srcPath, std::string & volPath);
 bool checkIfAllProfilesInFolderExists(const std::string srcPath);
 bool removeFolderAndFlush(const std::string & srcPath);
-
+bool checkProfilesInBackupForTheTitleExists (Title *title, uint8_t slot);
