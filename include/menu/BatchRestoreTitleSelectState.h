@@ -9,7 +9,8 @@
 
 class BatchRestoreTitleSelectState : public ApplicationState {
 public:
-    BatchRestoreTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles, int titlesCount, bool isWiiUBatchRestore);
+    BatchRestoreTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles,
+            int titlesCount, bool isWiiUBatchRestore, eRestoreType restoreType);
 
     enum eState {
         STATE_BATCH_RESTORE_TITLE_SELECT,
@@ -59,4 +60,7 @@ private:
         " > WR",
         " > KO"
     };
+
+    eRestoreType restoreType;
+    int wiiuuser_s;
 };

@@ -127,7 +127,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             else    // is a step in batchRestore
             {
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<BatchRestoreOptions>(titles, titlesCount, isWiiUBatchRestore);
+                this->subState = std::make_unique<BatchRestoreOptions>(titles, titlesCount, isWiiUBatchRestore, BACKUP_TO_STORAGE);
             }      
         }
         if (input->get(TRIGGER, PAD_BUTTON_Y)) {

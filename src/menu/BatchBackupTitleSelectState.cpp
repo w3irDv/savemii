@@ -254,7 +254,7 @@ ApplicationState::eSubState BatchBackupTitleSelectState::update(Input *input) {
                 (titlesOK == 1) ? "" : "s");
            }
            else
-             snprintf(tag,64,"Failed backup - No titles");
+             snprintf(tag,64,LanguageUtils::gettext("Failed backup - No titles"));
            writeBackupAllMetadata(batchDatetime,tag);
 
            showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);

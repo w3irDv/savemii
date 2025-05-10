@@ -225,4 +225,8 @@ bool mergeTitleFolders(Title* title);
 enum STR2INT_ERROR { SUCCESS, OVERFLOW, UNDERFLOW, INCONVERTIBLE };
 STR2INT_ERROR str2int (int &i, char const *s, int base = 0);
 std::string slotFormatType(Title *title, uint8_t slot);
+bool profileExists(char const *name);
+void getVolPath(const std::string & srcPath, std::string & volPath);
+bool checkIfAllProfilesInFolderExists(const std::string srcPath);
+bool removeFolderAndFlush(const std::string & srcPath);
 
