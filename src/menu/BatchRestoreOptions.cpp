@@ -66,7 +66,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                         if (restoreType == PROFILE_TO_PROFILE) {
                             if (! profileExists(data->d_name)) {
                                 char message[1024];
-                                snprintf(message,1024,LanguageUtils::gettext("WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile %s\nThis savedata wll be ignored\n\nDo you want to wipe it?"),this->titles[i].shortName,this->titles[i].isTitleOnUSB ? "USB":"NAND",data->d_name);
+                                snprintf(message,1024,LanguageUtils::gettext("WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?"),this->titles[i].shortName,this->titles[i].isTitleOnUSB ? "USB":"NAND",data->d_name);
                                 const std::string Message(message);
                                 if ( promptConfirm((Style) (ST_YES_NO | ST_WARNING),Message))
                                     removeFolderAndFlush(srcPath+"/"+data->d_name);
@@ -132,7 +132,7 @@ void BatchRestoreOptions::render() {
 
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPos(16,0, (restoreType == BACKUP_TO_STORAGE) ? LanguageUtils::gettext("BatchRestore - Options") : LanguageUtils::gettext("BatchProfileCopy - Options"));
+        consolePrintPos(16,0, (restoreType == BACKUP_TO_STORAGE) ? LanguageUtils::gettext("BatchRestore - Options") : LanguageUtils::gettext("Batch ProfileCopy - Options"));
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
         if (restoreType == BACKUP_TO_STORAGE)
             consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BS: %s"),BackupSetList::getBackupSetEntry().c_str());
@@ -192,9 +192,6 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_B))
             return SUBSTATE_RETURN;
-        if (input->get(TRIGGER, PAD_BUTTON_X)) {
-            this->state = STATE_DO_SUBSTATE;
-        }
         if (input->get(TRIGGER, PAD_BUTTON_UP)) {
             if (--cursorPos < minCursorPos)
                 ++cursorPos;

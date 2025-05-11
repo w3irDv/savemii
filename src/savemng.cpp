@@ -1324,7 +1324,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
         // backup is always of allusers
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
             if (!( backupSavedata(titleb, slotb, -1, true, LanguageUtils::gettext("pre-copyToOtherDev backup")) == 0 )) {
-                promptError(LanguageUtils::gettext("Backup Failed - Retore aborted !!"));
+                promptError(LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
                 return -1;
             }     
         }
@@ -1746,7 +1746,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
             int slotb = getEmptySlot(title);
             if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
                 if (!(backupSavedata(title, slotb, -1, true , LanguageUtils::gettext("pre-Restore backup")) == 0)) {
-                    promptError(LanguageUtils::gettext("%s\n\nBackup Failed - Restore aborted !!"));
+                    promptError(LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
                     BackupSetList::restoreBackupSetSubPath();
                     return -1;
                 }
