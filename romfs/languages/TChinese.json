@@ -340,6 +340,7 @@
   "%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\n未嘗試擦除\n由於設定檔不存在，恢復任務中止\n\n嘗試使用來自/到使用者選項進行恢復",
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e設定/取消設定 \ue045\ue046設定/取消設定全部 \ue000設定檔複製 \ue001返回",
   "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "警告\n\n標題 %s\n具有 %s 個保存數據，但配置文件 '%s' 不存在\n此保存數據將被忽略\n\n是否要擦除它？",
+  "   Ask for wipe non-existent profiles: %s": "   請求擦除不存在的設定檔：%s",
   "Keyboard": "Teclado",
   "KB_N_0": "1234567890-=",
   "KB_N_1": "qwertyuiop[]|",

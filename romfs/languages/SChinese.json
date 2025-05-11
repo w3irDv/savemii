@@ -338,6 +338,7 @@
   "%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\n未尝试擦除\n由于配置文件不存在，恢复任务中止\n\n尝试使用从/到用户选项进行恢复",
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e设置/取消设置 \ue045\ue046设置/取消全部设置 \ue000配置文件复制 \ue001返回",
   "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "警告\n\n游戏 %s\n 包含 %s 个不存在配置文件 '%s' 的保存数据\n此保存数据将被忽略\n\n您是否想擦掉它吗",
+  "   Ask for wipe non-existent profiles: %s": "   请求擦除不存在的配置文件：%s",
   "Keyboard": "键盘",
   "KB_N_0": "1234567890-=",
   "KB_N_1": "qwertyuiop[]|",
