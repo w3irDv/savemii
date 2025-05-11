@@ -1417,15 +1417,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
     }
 #endif
 end:
-    if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
-    } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_mlc01");
-    } else if (dstPath.rfind("storage_usb01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb01");
-    } else if (dstPath.rfind("storage_usb02:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb02");
-    }
+    flushVol(dstPath);
 
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nCopy failed.")+std::string("\n\n")+errorMessage;
@@ -1475,15 +1467,7 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
         errorCode = 1;
     }         
 
-    if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
-    } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_mlc01");
-    } else if (dstPath.rfind("storage_usb01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb01");
-    } else if (dstPath.rfind("storage_usb02:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb02");
-    }
+    flushVol(dstPath);
 
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nReplicate failed.")+std::string("\n\n")+errorMessage;
@@ -1867,15 +1851,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     }
 #endif
 end:
-    if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
-    } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_mlc01");
-    } else if (dstPath.rfind("storage_usb01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb01");
-    } else if (dstPath.rfind("storage_usb02:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_usb02");
-    }
+    flushVol(dstPath);
 
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nRestore failed.")+std::string("\n\n")+errorMessage;
@@ -1993,10 +1969,8 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         }
     }
 
-    std::string volPath;
-    getVolPath(srcPath,volPath);
-    FSAFlushVolume(handle, volPath.c_str());
-    
+    flushVol(srcPath);
+        
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nWipe failed.")+std::string("\n\n")+errorMessage;
         promptError(errorMessage.c_str(),title->shortName);
@@ -2526,23 +2500,23 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
     return true;
 }
 
-void getVolPath(const std::string & srcPath, std::string & volPath) {
-    if (srcPath.find("_usb01") != std::string::npos) {
-        volPath = "/vol/storage_usb01";
-    } else if (srcPath.find("_usb02") != std::string::npos) {
-        volPath = "/vol/storage_usb02";
-    } else if (srcPath.find("_mlc") != std::string::npos) {
-        volPath = "/vol/storage_mlc01";
-    } else if (srcPath.find("_slccmpt") != std::string::npos) {
-        volPath = "/vol/storage_slccmpt01";
+void flushVol(const std::string & dstPath) {
+
+    if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
+    } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_mlc01");
+    } else if (dstPath.rfind("storage_usb01:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_usb01");
+    } else if (dstPath.rfind("storage_usb02:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_usb02");
     }
+
 }
 
 bool removeFolderAndFlush(const std::string & srcPath) {
     bool result = removeDir(srcPath);
-    std::string volPath;
-    getVolPath(srcPath, volPath);
-    FSAFlushVolume(handle, volPath.c_str()); 
+    flushVol(srcPath);
     return result;
 }
 
