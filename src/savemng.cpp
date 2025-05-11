@@ -1157,7 +1157,7 @@ bool isSlotEmptyInTitleNameBasedPath(Title *title, uint8_t slot) {
     return ret <= 0;
 }
 
-static int getEmptySlot(Title *title) {
+int getEmptySlot(Title *title) {
     for (int i = 0; i < 256; i++)
         if (isSlotEmpty(title, i))
             return i;
@@ -2489,7 +2489,7 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
                 continue;
             if (data->d_name[0] == '8') {
                 if (! profileExists(data->d_name)) {
-                    promptError(LanguageUtils::gettext("Backup contains savedata for the profile %s,\nbut the profile does not exists in this console"),data->d_name);
+                    promptError(LanguageUtils::gettext("Backup contains savedata for the profile '%s',\nbut the profile does not exists in this console"),data->d_name);
                     closedir(dir);
                     return false;
                 }
