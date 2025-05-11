@@ -230,3 +230,4 @@ void flushVol(const std::string & srcPath);
 bool checkIfAllProfilesInFolderExists(const std::string srcPath);
 bool removeFolderAndFlush(const std::string & srcPath);
 bool checkProfilesInBackupForTheTitleExists (Title *title, uint8_t slot);
+int getEmptySlot(Title *title);
