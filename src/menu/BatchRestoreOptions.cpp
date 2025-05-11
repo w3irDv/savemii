@@ -7,6 +7,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
+#include <cfg/GlobalCfg.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -65,19 +66,24 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                     if (data->d_name[0] == '8') {
                         if (restoreType == PROFILE_TO_PROFILE) {
                             if (! profileExists(data->d_name)) {
-                                char message[1024];
-                                snprintf(message,1024,LanguageUtils::gettext("WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?"),this->titles[i].shortName,this->titles[i].isTitleOnUSB ? "USB":"NAND",data->d_name);
-                                const std::string Message(message);
-                                if ( promptConfirm((Style) (ST_YES_NO | ST_WARNING),Message)) {                       
-                                    BackupSetList::saveBackupSetSubPath();   
-                                    BackupSetList::setBackupSetSubPathToRoot();
-                                    int slotb = getEmptySlot(&this->titles[i]);
-                                    if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
-                                        if (!(backupSavedata(&this->titles[i], slotb, -1, true , LanguageUtils::gettext("pre-copySavedataToOtherProfile backup")) == 0)) {
-                                            promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),this->titles[i].shortName);
+                                if (GlobalCfg::global->getAskForWipeNonExistentProfiles()) {
+                                    char message[1024];
+                                    snprintf(message,1024,LanguageUtils::gettext("WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?"),this->titles[i].shortName,this->titles[i].isTitleOnUSB ? "USB":"NAND",data->d_name);
+                                    const std::string Message(message);
+                                    if ( promptConfirm((Style) (ST_YES_NO | ST_WARNING),Message)) {                       
+                                        BackupSetList::saveBackupSetSubPath();   
+                                        BackupSetList::setBackupSetSubPathToRoot();
+                                        int slotb = getEmptySlot(&this->titles[i]);
+                                        if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
+                                            if (backupSavedata(&this->titles[i], slotb, -1, true , LanguageUtils::gettext("pre-copySavedataToOtherProfile backup")) == 0) {
+                                                std::string profilePath = srcPath+"/"+data->d_name; 
+                                                removeFolderAndFlush(profilePath);
+                                            } else {
+                                                promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),this->titles[i].shortName);
+                                            }
                                         }
-                                    BackupSetList::restoreBackupSetSubPath();                      
-                                    removeFolderAndFlush(srcPath+"/"+data->d_name);
+                                        BackupSetList::restoreBackupSetSubPath();                      
+                                    }
                                 }
                                 goto hasBatchBackup;
                             }

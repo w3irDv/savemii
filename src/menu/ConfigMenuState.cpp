@@ -7,7 +7,7 @@
 #include <Metadata.h>
 #include <cfg/GlobalCfg.h>
 
-#define ENTRYCOUNT 3
+#define ENTRYCOUNT 4
 
 static std::string language;
 extern bool firstSDWrite;
@@ -33,6 +33,9 @@ void ConfigMenuState::render() {
         TitleListState::getCheckIdVsTitleNameBasedPath() ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
     }
 
+    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
+    consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Ask for wipe non-existent profiles: %s"),
+        GlobalCfg::global->askForWipeNonExistentProfiles ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
     DrawUtils::setFontColor(COLOR_INFO);
     consolePrintPos(M_OFF + 2, 10,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
@@ -114,6 +117,9 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
             case 2:
                 GlobalCfg::global->askForBackupDirConversion = GlobalCfg::global->askForBackupDirConversion ? false : true;
                 TitleListState::setCheckIdVsTitleNameBasedPath(GlobalCfg::global->askForBackupDirConversion);
+                break;
+            case 3:
+                GlobalCfg::global->askForWipeNonExistentProfiles = GlobalCfg::global->askForWipeNonExistentProfiles ? false : true;
                 break;
         }
     }

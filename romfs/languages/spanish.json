@@ -320,6 +320,7 @@
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e: Activar/Des. \ue045\ue046: Activar/Des. todo \ue000: Copiar Perfil \ue001: Atrás",
   "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "ADVERTENCIA\n\nEl título %s\ntiene %s datos guardados para el perfil inexistente '%s'\nEstos datos guardados se ignorarán\n\n¿Quieres borrarlos?",
   "Yes": "Sí",
+  "   Ask for wipe non-existent profiles: %s": "   Solicitar borrado de perfiles inexistentes: %s",
   "Keyboard": "Teclado",
   "KB_N_0": "1234567890-=",
   "KB_N_1": "qwertyuiop[]|",

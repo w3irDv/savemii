@@ -545,8 +545,10 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_MINUS))
             if (this->task == backup) {
-                if (!isSlotEmpty(&this->title, slot))
+                if (!isSlotEmpty(&this->title, slot)) {
+                    InProgress::totalSteps = InProgress::currentStep = 1;
                     deleteSlot(&this->title, slot);
+                }
             }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
             InProgress::totalSteps = InProgress::currentStep = 1;

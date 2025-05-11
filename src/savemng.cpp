@@ -2516,6 +2516,7 @@ void flushVol(const std::string & dstPath) {
 
 bool removeFolderAndFlush(const std::string & srcPath) {
     bool result = removeDir(srcPath);
+    unlink(srcPath.c_str());
     flushVol(srcPath);
     return result;
 }

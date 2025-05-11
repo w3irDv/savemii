@@ -314,6 +314,7 @@
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e: 설정/해제 \ue045\ue046: 모두 설정/해제 \ue000: 프로필 복사 \ue001: 뒤로",
   "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "경고\n\n타이틀 %s\n에 존재하지 않는 프로필 %s에 대한 '%s' 저장 데이터가 있습니다.\n이 저장 데이터는 무시됩니다.\n\n삭제하시겠습니까?",
   "You have selected uninitialized titles (not recommended). Are you 100%% sure?": "초기화되지 않은 제목을 선택했습니다(권장하지 않음). 100% 확실합니까?", 
+  "   Ask for wipe non-existent profiles: %s": "   존재하지 않는 프로필 삭제 요청: %s",
   "Failed to export savedata to loadiine.": "저장 데이터를 loadiine으로 내보내지 못했습니다.",
   "Keyboard": "키보드",
   "KB_N_1": "qwertyuiop[]|",
