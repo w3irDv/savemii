@@ -312,7 +312,7 @@
   "%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\n존재하지 않는 프로필로 인해 복원 작업이 중단되었습니다.\n\n시작/종료 사용자 옵션을 사용하여 복원을 시도하십시오.",
   "%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\n삭제 시도 안 됨\n존재하지 않는 프로필로 인해 복원 작업이 중단되었습니다.\n\n시작/종료 사용자 옵션을 사용하여 복원을 시도하십시오.",
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e: 설정/해제 \ue045\ue046: 모두 설정/해제 \ue000: 프로필 복사 \ue001: 뒤로",
-  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "경고\n\n타이틀 %s\n에 존재하지 않는 프로필 %s에 대한 '%s' 저장 데이터가 있습니다.\n이 저장 데이터는 무시됩니다.\n\n삭제하시겠습니까?",
+  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "경고\n\n타이틀 %s\n에 존재하지 않는 프로필 %s에 대한 '%s' 저장 데이터가 있습니다.\n이 저장 데이터는 무시됩니다.\n\n삭제하시겠습니까?\n(백업이 이루어지며, 저장된 데이터를 다른 프로필로 복원할 수 있습니다)\n",
   "You have selected uninitialized titles (not recommended). Are you 100%% sure?": "초기화되지 않은 제목을 선택했습니다(권장하지 않음). 100% 확실합니까?", 
   "   Ask for wipe non-existent profiles: %s": "   존재하지 않는 프로필 삭제 요청: %s",
   "Failed to export savedata to loadiine.": "저장 데이터를 loadiine으로 내보내지 못했습니다.",

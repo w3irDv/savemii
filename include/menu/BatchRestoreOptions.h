@@ -44,6 +44,8 @@ private:
     int wiiUAccountsTotalNumber;
     int sdAccountsTotalNumber;
 
-    bool nonexistentProfileInBackup;
+    bool nonexistentProfileInBackup = false;
+
+    std::vector<std::string> titlesWithNonExistentProfile;
 
 };

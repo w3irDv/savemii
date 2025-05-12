@@ -231,3 +231,4 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath);
 bool removeFolderAndFlush(const std::string & srcPath);
 bool checkProfilesInBackupForTheTitleExists (Title *title, uint8_t slot);
 int getEmptySlot(Title *title);
+void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::string> & failedTitles);

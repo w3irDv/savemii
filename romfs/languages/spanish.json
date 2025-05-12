@@ -318,7 +318,7 @@
   "%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nRestauración cancelada debido a un perfil inexistente\n\nIntentar restaurar usando las opciones de usuario",
   "%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nBorrar no intentado\nRestauración cancelada debido a un perfil inexistente\n\nIntentar restaurar usando las opciones de usuario",
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e: Activar/Des. \ue045\ue046: Activar/Des. todo \ue000: Copiar Perfil \ue001: Atrás",
-  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "ADVERTENCIA\n\nEl título %s\ntiene %s datos guardados para el perfil inexistente '%s'\nEstos datos guardados se ignorarán\n\n¿Quieres borrarlos?",
+  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "ADVERTENCIA\n\nEl título %s\ntiene %s datos guardados para el perfil inexistente '%s'\nEstos datos guardados se ignorarán\n\n¿Quieres borrarlos?\n(Se realizará una copia de seguridad y luego podrás restaurar\n los datos guardados en otro perfil)\n",
   "Yes": "Sí",
   "   Ask for wipe non-existent profiles: %s": "   Solicitar borrado de perfiles inexistentes: %s",
   "Keyboard": "Teclado",

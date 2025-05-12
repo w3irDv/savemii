@@ -88,7 +88,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                                 goto hasBatchBackup;
                             }
                         } else {
-                            if (! profileExists(data->d_name))
+                            if ( ! profileExists(data->d_name))
                                 nonexistentProfileInBackup = true;
                         }
                         batchSDUsers.insert(data->d_name);
@@ -102,6 +102,10 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
 
         }
         closedir(dir);
+        if (nonexistentProfileInBackup) {
+            titlesWithNonExistentProfile.push_back(std::string(this->titles[i].shortName));
+            nonexistentProfileInBackup = false;
+        }
     }
 
     if (sdacc != nullptr)
@@ -198,8 +202,12 @@ void BatchRestoreOptions::render() {
 ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {        
-            if (sduser == -1 && nonexistentProfileInBackup == true) {
-                if (! promptConfirm((Style) (ST_YES_NO | ST_WARNING),LanguageUtils::gettext("Backup contains savedata for profiles that do not exist in this console.\nYou can continue, but restore process will fail for those titles.\n\nRecommended action: restore from/to individual users.\n\nDo you want to continue?")))
+            if (sduser == -1 && titlesWithNonExistentProfile.size() > 0) {
+                std::string summaryWithTitles(LanguageUtils::gettext("Backup contains savedata for profiles that do not exist in this console.\nYou can continue, but restore process will fail for those titles.\n\nRecommended action: restore from/to individual users.\n\nDo you want to continue?"));
+                summaryWithTitles.append(LanguageUtils::gettext("\n\nTitles with non-existent profiles:\n"));
+                titleListInColumns(summaryWithTitles,titlesWithNonExistentProfile);
+                summaryWithTitles.append("\n\n\n");
+                if (! promptConfirm((Style) (ST_YES_NO | ST_WARNING),summaryWithTitles.c_str()))
                     return SUBSTATE_RUNNING;    
             }
             this->state = STATE_DO_SUBSTATE;
