@@ -318,7 +318,7 @@
   "%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nWiederherstellungsvorgang wegen nicht vorhandenem Profil abgebrochen\n\nVersuche, die Benutzeroptionen 'Von/Nach' zu verwenden",
   "%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nLöschen nicht versucht\nWiederherstellungsvorgang wegen nicht vorhandenem Profil abgebrochen\n\nVersuche, die Benutzeroptionen 'Von/Nach' zu verwenden",
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e:Akt/Deakt \ue045\ue046:Alle a/d \ue000: Profilkopie \ue001: Zurück",
-  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "WARNUNG\n\nTitel %s\nhat %s Speicherdaten für das nicht vorhandene Profil '%s'\nDiese Speicherdaten werden ignoriert\n\nMöchtest du sie löschen?",
+  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "WARNUNG\n\nTitel %s\nhat %s Speicherdaten für das nicht vorhandene Profil '%s'\nDiese Speicherdaten werden ignoriert\n\nMöchtest du sie löschen?\n(Es wird eine Sicherungskopie erstellt und Sie können die gespeicherten \nDaten anschließend in einem anderen Profil wiederherstellen.)\n",
   "   Ask for wipe non-existent profiles: %s": "   Fordere zum Löschen nicht vorhandener Profile auf: %s",
   "You have selected uninitialized titles (not recommended). Are you 100%% sure?": "Sie haben nicht initialisierte Titel ausgewählt (nicht empfohlen). Sind Sie 100% sicher?",  "KB_N_0": "1234567890-=",
   "Keyboard": "Tastatur",

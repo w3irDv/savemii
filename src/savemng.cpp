@@ -2162,24 +2162,11 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
     if ( titlesKO > 0 ) {
         summaryColor = COLOR_BG_KO;
         summaryWithTitles.append(LanguageUtils::gettext("\nFailed Titles:"));
+        titleListInColumns(summaryWithTitles,failedTitles);
+/*
         int ctlLine = 0;
         for (const std::string & failedTitle : failedTitles ) {
             summaryWithTitles.append("  "+failedTitle+"      ");
-            // if in the future we add a function to check backupSet status
-            /*
-            if (ctlLine > 7 ) {
-                int notShown = failedTitles.size()-ctlLine-1;
-                const char* moreTitlesTemp;
-                if (notShown == 1) 
-                    moreTitlesTemp = LanguageUtils::gettext("\n...and %d more title, check the BackupSet content");
-                else
-                    moreTitlesTemp = LanguageUtils::gettext("\n...and %d more titles, check the BackupSet content");
-                char moreTitles[80];
-                snprintf(moreTitles,80,moreTitlesTemp,notShown);
-                summaryWithTitles.append(moreTitles);
-                break;
-            }
-            */
             if (ctlLine > 8 ) {
                 int notShown = failedTitles.size()-ctlLine-1;
                 const char* moreTitlesTemp;
@@ -2191,7 +2178,8 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
             }
             if (ctlLine++ % 2 == 0)
                 summaryWithTitles.append("\n");
-        }        
+        }
+*/        
     }
     
     promptMessage(summaryColor,summaryWithTitles.c_str());
@@ -2525,9 +2513,43 @@ bool checkProfilesInBackupForTheTitleExists (Title *title, uint8_t slot) {
     std::string srcPath;
     srcPath = getDynamicBackupPath(title, slot);
 
-    if (checkIfAllProfilesInFolderExists(srcPath)) {
-            promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
+    if ( ! checkIfAllProfilesInFolderExists(srcPath)) {
+            //promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
             return false;
     }
     return true;
+}
+
+
+void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::string> & failedTitles) {
+    int ctlLine = 0;
+    for (const std::string & failedTitle : failedTitles ) {
+        summaryWithTitles.append("  "+failedTitle.substr(0,30)+"      ");
+        // if in the future we add a function to check backupSet status
+            /*
+            if (ctlLine > 7 ) {
+                int notShown = failedTitles.size()-ctlLine-1;
+                const char* moreTitlesTemp;
+                if (notShown == 1) 
+                    moreTitlesTemp = LanguageUtils::gettext("\n...and %d more title, check the BackupSet content");
+                else
+                    moreTitlesTemp = LanguageUtils::gettext("\n...and %d more titles, check the BackupSet content");
+                char moreTitles[80];
+                snprintf(moreTitles,80,moreTitlesTemp,notShown);
+                summaryWithTitles.append(moreTitles);
+                break;
+            }
+            */
+        if (ctlLine > 8 ) {
+            int notShown = failedTitles.size()-ctlLine-1;
+            const char* moreTitlesTemp;
+            moreTitlesTemp = LanguageUtils::gettext("... and %d more");
+            char moreTitles[64];
+            snprintf(moreTitles,64,moreTitlesTemp,notShown);
+            summaryWithTitles.append(moreTitles);
+            break;
+        }
+        if (++ctlLine % 2 == 0)
+            summaryWithTitles.append("\n");
+    }
 }

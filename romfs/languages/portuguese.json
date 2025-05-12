@@ -318,7 +318,7 @@
   "%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nTarefa de restauração abortada devido a um perfil inexistente\n\nTente restaurar usando as opções de/para o usuário",
   "%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nApagar não foi tentado\nTarefa de restauração abortada devido a um perfil inexistente\n\nTente restaurar usando as opções de/para o usuário",
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e: Def/Desm \ue045\ue046: Def/Desm Tudo \ue000: ProfileCopy \ue001: Voltar",
-  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "AVISO\n\nO título %s\ntem %s dados salvos para o perfil inexistente '%s'\nEstes dados salvos serão ignorados\n\nDeseja apagá-los?",
+  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "AVISO\n\nO título %s\ntem %s dados salvos para o perfil inexistente '%s'\nEstes dados salvos serão ignorados\n\nDeseja apagá-los?\n(Será feito um backup e você poderá restaurar os dados salvos em outro perfil)\n",
   "   Ask for wipe non-existent profiles: %s": "   Solicitar limpeza de perfis inexistentes: %s",
   "Yes": "Sim",  "KB_N_0": "1234567890-=",
   "Keyboard": "Teclado",

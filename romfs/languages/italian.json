@@ -319,7 +319,7 @@
   "%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nRipristino attività interrotto a causa di un profilo inesistente\n\nProva a ripristinare utilizzando le opzioni utente da/a",
   "%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nCancellazione non tentata\nRipristino attività interrotto a causa di un profilo inesistente\n\nProva a ripristinare utilizzando le opzioni utente da/a",
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07e: Imp/Ann \ue045\ue046: Imp/Ann tutto \ue000: ProfileCopy \ue001: Indietro",
-  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "ATTENZIONE\n\nIl titolo %s\nha %s dati salvati per il profilo inesistente '%s'\nQuesti dati salvati verranno ignorati\n\nVuoi pulirlo?",
+  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "ATTENZIONE\n\nIl titolo %s\nha %s dati salvati per il profilo inesistente '%s'\nQuesti dati salvati verranno ignorati\n\nVuoi pulirlo?\n(Verrà effettuato un backup e sarà possibile ripristinare \ni dati salvati su un altro profilo)\n",
   "   Ask for wipe non-existent profiles: %s": "   Richiedi cancellazione profili inesistenti: %s",
   "You have selected uninitialized titles (not recommended). Are you 100%% sure?": "Hai selezionato titoli non inizializzati (sconsigliato). Sei sicuro al 100%%?",  "KB_N_0": "1234567890-=",
   "Keyboard": "Tastiera",

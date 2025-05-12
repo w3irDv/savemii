@@ -313,7 +313,7 @@
   "%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nЗадача восстановления прервана из-за несуществующего профиля\n\nПопробуйте восстановить с помощью параметров пользователя 'из/в'",
   "%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options": "%s\n\nОчистка не производилась\nЗадача восстановления прервана из-за несуществующего профиля\n\nПопробуйте восстановить с помощью параметров пользователя 'из/в'",
   "\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back": "\ue003\ue07eУстановить/снять \ue045\ue046 все \ue000: ProfileCopy \ue001: Назад",
-  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "ВНИМАНИЕ\n\nЗаголовок %s\nимеет %s сохраненных данных для несуществующего\n профиля '%s'\nЭти сохраненные данные будут проигнорированы\n\nВы хотите стереть его?",
+  "WARNING\n\nTitle %s\nhas %s savedata for the non-existent profile '%s'\nThis savedata wll be ignored\n\nDo you want to wipe it?": "ВНИМАНИЕ\n\nЗаголовок %s\nимеет %s сохраненных данных для несуществующего\n профиля '%s'\nЭти сохраненные данные будут проигнорированы\n\nВы хотите стереть его?\n(Будет создана резервная копия, и вы сможете восстановить сохраненные\n данные в другом профиле)\n",
   "   Ask for wipe non-existent profiles: %s": "   Запросить очистку несуществующих профилей: %s",
   "You have selected uninitialized titles (not recommended). Are you 100%% sure?": "Вы выбрали неинициализированные заголовки (не рекомендуется). Вы уверены на 100%%?",  "KB_N_0": "1234567890-=",
   "Keyboard": "Клавиатура",
