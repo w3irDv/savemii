@@ -97,6 +97,12 @@ enum Style {
     ST_MULTIPLE_CHOICE = 256
 };
 
+enum eNEProfileWipeMode {
+    DECIDE_ALL,     // can choose if wipe or backup individually
+    DECIDE_WIPE,   // can choose if wipe, then always backup
+    BATCH          // wipe and backup all titles with non-existen profiles
+};
+
 template<class It>
 void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
     switch (tsort) {
@@ -157,6 +163,12 @@ class InProgress {
         inline static int currentStep = 0;
         inline static int totalSteps = 0;
 };
+
+struct titlesNEProfiles{
+    int index;
+    std::string nEProfiles;
+};
+
 
 bool initFS() __attribute__((__cold__));
 void shutdownFS() __attribute__((__cold__));
@@ -230,5 +242,8 @@ void flushVol(const std::string & srcPath);
 bool checkIfAllProfilesInFolderExists(const std::string srcPath);
 bool removeFolderAndFlush(const std::string & srcPath);
 bool checkProfilesInBackupForTheTitleExists (Title *title, uint8_t slot);
-int getEmptySlot(Title *title);
 void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::string> & failedTitles);
+int removeSavedataForNonExistentProfiles(Title* titles, int titlesCount, eNEProfileWipeMode nEPWipeMode, int totalTitlesToFix, int totalProfilesToFix );
+void resetNEPWipeCounters();
+void showTitlesAndNEProfiles(Title * titles, std::vector<titlesNEProfiles> & titlesAndNEProfiles);
+int reviewTitlesWithNonExistentProfiles(Title* titles, int titlesCount);
