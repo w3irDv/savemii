@@ -260,6 +260,7 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
             this->titleSort = (this->titleSort + 1) % 4;
             sortTitle(this->titles, this->titles + this->titlesCount, this->titleSort, this->sortAscending);
             this->updateC2t();
+            return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_L)) {
             if (this->titleSort > 0) {
@@ -267,6 +268,7 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                 sortTitle(this->titles, this->titles + this->titlesCount, this->titleSort, this->sortAscending);
                 this->updateC2t();
             }
+            return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
            char summary[512];
@@ -447,7 +449,9 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                 scroll++;
             else
                 cursorPos = scroll = 0;
-        } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+            return SUBSTATE_RUNNING;
+        }
+        if (input->get(TRIGGER, PAD_BUTTON_UP)) {
             if (scroll > 0)
                 cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)
@@ -456,12 +460,12 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                 scroll = this->candidatesCount - (cursorPos = MAX_WINDOW_SCROLL) - 1;
             else
                 cursorPos = this->candidatesCount - 1;
+            return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_Y) || input->get(TRIGGER, PAD_BUTTON_RIGHT) || input->get(TRIGGER, PAD_BUTTON_LEFT)) {
             if (this->titles[c2t[cursorPos + this->scroll]].currentBackup.batchRestoreState != OK)
                 this->titles[c2t[cursorPos + this->scroll]].currentBackup.selectedToRestore = this->titles[c2t[cursorPos + this->scroll]].currentBackup.selectedToRestore ? false:true;
-            else
-                return SUBSTATE_RUNNING;
+            return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
