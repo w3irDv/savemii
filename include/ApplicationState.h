@@ -26,11 +26,6 @@ public:
         NONE
     };
 
-    enum eRestoreType {
-        BACKUP_TO_STORAGE,
-        PROFILE_TO_PROFILE
-    };
-
     virtual void render() = 0;
     virtual eSubState update(Input *input) = 0;
 

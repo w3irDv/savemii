@@ -35,6 +35,8 @@ BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuu
     isWiiUBatchRestore(isWiiUBatchRestore),
     restoreType(restoreType)
 {
+    // from batchRestore to batch* -> restore variables refer to the task performed, and backup to the source data, wether in SD or NAND or USB
+    // All this should be renamed in a neutral way.
 
     c2t.clear();
     // from the subset of titles with backup data, filter out the ones without the specified user info
@@ -46,7 +48,7 @@ BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuu
         this->titles[i].currentBackup.hasCommonSavedata = false;
         this->titles[i].currentBackup.batchRestoreState = NOT_TRIED;
         this->titles[i].currentBackup.batchBackupState = NOT_TRIED;
-        if ( this->titles[i].currentBackup.hasBatchBackup == false )
+        if ( this->titles[i].currentBackup.hasBatchBackup == false )  // for PROFILE_TO_PROFILE and WIPE_SAVEDATA, it's true if there is savedat for the source user
             continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
@@ -59,9 +61,10 @@ BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuu
             case BACKUP_TO_STORAGE:
                 srcPath = getDynamicBackupPath(&this->titles[i], 0);
                 break;
+            case WIPE_PROFILE:
             case PROFILE_TO_PROFILE:
-                std::string path = (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
-                srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, "user");
+                std::string path = ( this->titles[i].is_Wii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+                srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, isWii ? "data" : "user");
                 break;
         }
 
@@ -140,11 +143,35 @@ void BatchRestoreTitleSelectState::render() {
         if (! isWiiUBatchRestore)
             nameVWiiOffset = 1;
 
+        const char * screenTitle, * screenOptions, *nextActionBrief, *lastActionBriefOk;    
+        switch (restoreType) {
+            case BACKUP_TO_STORAGE:
+                screenTitle = LanguageUtils::gettext("Batch Restore - Select & Go");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: Restore titles  \ue001: Back");
+                nextActionBrief = LanguageUtils::gettext(">> Restore");
+                lastActionBriefOk = LanguageUtils::gettext("|Restored|");
+                break;
+            case PROFILE_TO_PROFILE:
+                screenTitle = LanguageUtils::gettext("Batch ProfileCopy - Select & Go");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back");
+                nextActionBrief = LanguageUtils::gettext(">> Copy");
+                lastActionBriefOk = LanguageUtils::gettext("|Copied|");
+                break;
+            case WIPE_PROFILE:
+                screenTitle=LanguageUtils::gettext("Batch ProfileCopy - Select & Go");
+                screenOptions=LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: WipeProfile  \ue001: Back");
+                nextActionBrief = LanguageUtils::gettext(">> Wipe");
+                lastActionBriefOk = LanguageUtils::gettext("|Wiped|");
+                break;
+            default:
+                screenTitle="";
+                screenOptions="";
+                nextActionBrief="";
+                lastActionBriefOk="";
+                break;
+        }
         DrawUtils::setFontColor(COLOR_INFO);
-        if (restoreType == BACKUP_TO_STORAGE)
-            consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Batch Restore - Select & Go"));
-        else
-        consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Batch ProfileCopy - Select & Go"));
+        consolePrintPosAligned(0, 4, 1,screenTitle);
         
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
@@ -195,11 +222,11 @@ void BatchRestoreTitleSelectState::render() {
             switch (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState) {
                 case NOT_TRIED :
                     lastState = "";
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore ?  ( (restoreType == BACKUP_TO_STORAGE) ? LanguageUtils::gettext(">> Restore") : LanguageUtils::gettext(">> Copy")) : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore ? nextActionBrief : LanguageUtils::gettext(">> Skip");
                     break;
                 case OK :
                     lastState = LanguageUtils::gettext("[OK]");
-                    nxtAction = (restoreType == BACKUP_TO_STORAGE) ? LanguageUtils::gettext("|Restored|") : LanguageUtils::gettext("|Copied|");
+                    nxtAction = lastActionBriefOk;
                     break;
                 case ABORTED :
                     if (this->titles[c2t[i + this->scroll]].currentBackup.batchBackupState == KO)
@@ -244,10 +271,7 @@ void BatchRestoreTitleSelectState::render() {
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(-1, 2 + cursorPos, "\u2192");
-        if (restoreType == BACKUP_TO_STORAGE)
-            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: Restore titles  \ue001: Back"));
-        else
-            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back"));
+        consolePrintPosAligned(17, 4, 2, screenOptions);
 
     }
 }
@@ -271,41 +295,72 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
-           char summary[512];
-           const char* summaryTemplate;
-           char usermsg[128];
-           if (isWiiUBatchRestore) {
-                summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n%s\n%s\n%s\n%s.\nContinue?\n\n");
-                if (sduser > - 1) {
-                    if (restoreType == BACKUP_TO_STORAGE)
-                        snprintf(usermsg,128,LanguageUtils::gettext("- Restore from %s to < %s (%s) >"),getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
-                    else
-                        snprintf(usermsg,128,LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >"),getSDacc()[sduser].miiName,getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
-                }
-                snprintf(summary,512,summaryTemplate,
-                    (sduser == -1) ? LanguageUtils::gettext("- Restore allusers") : usermsg,
-                    (common || sduser == -1 ) ? LanguageUtils::gettext("- Include common savedata: Y") :  LanguageUtils::gettext("- Include common savedata: N"),
-                    wipeBeforeRestore ? LanguageUtils::gettext("- Wipe data: Y") :  LanguageUtils::gettext("- Wipe data: N"),
-                    fullBackup ? LanguageUtils::gettext("- Perform full backup: Y") :  LanguageUtils::gettext("- Perform full backup: N"));
-           } else {
-                summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n%s\n%s.\nContinue?\n\n");
-                snprintf(summary,512,summaryTemplate,
-                wipeBeforeRestore ? LanguageUtils::gettext("- Wipe data: Y") :  LanguageUtils::gettext("- Wipe data: N"),
-                fullBackup ? LanguageUtils::gettext("- Perform full backup: Y") :  LanguageUtils::gettext("- Perform full backup: N"));
-           }
-
-           if (!promptConfirm(ST_WARNING,summary))
-                return SUBSTATE_RUNNING;
-
-           for (int i = 0; i < titlesCount ; i++) {
-                if (! this->titles[i].currentBackup.selectedToRestore )
-                    continue;
-                if (! this->titles[i].saveInit) {
-                    if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?")))
-                        return SUBSTATE_RUNNING;
+            const char * taskDescription, * backupDescription, *allUsersInfo;
+            switch (restoreType) {
+                case BACKUP_TO_STORAGE:
+                    taskDescription = isWiiUBatchRestore ? LanguageUtils::gettext("- Restore from %s to < %s (%s) >") : LanguageUtils::gettext("- Restore");
+                    backupDescription = isWiiUBatchRestore ? LanguageUtils::gettext("pre-BatchRestore Backup (WiiU)") : LanguageUtils::gettext("pre-BatchRestore Backup (vWii)");
+                    allUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Restore allusers") : LanguageUtils::gettext("- Restore");
                     break;
+                case PROFILE_TO_PROFILE:
+                    taskDescription = isWiiUBatchRestore ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
+                    backupDescription = isWiiUBatchRestore ? LanguageUtils::gettext("pre-ProfileCopy Backup (WiiU)") : "";
+                    allUsersInfo = "";
+                    break;
+                case WIPE_PROFILE:
+                    taskDescription = isWiiUBatchRestore ?LanguageUtils::gettext("- Wipe  < %s (%s)>") : LanguageUtils::gettext("- Wipe");
+                    backupDescription = isWiiUBatchRestore ?LanguageUtils::gettext("pre-BatchWipe Backup (WiiU)") : LanguageUtils::gettext("pre-BatchWipe Backup (vWii)");
+                    allUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Wipe allusers") : LanguageUtils::gettext("- Wipe");
+                    break;
+                default:
+                    taskDescription = "";
+                    backupDescription = "";
+                    allUsersInfo = "";
+                    break;
+            }
+            char summary[512];
+            const char* summaryTemplate;
+            char selectedUserInfo[128];
+            
+            if (isWiiUBatchRestore) {
+                    summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n%s\n%s\n%s\n%s.\nContinue?\n\n");
+                    if (sduser > - 1) {
+                        switch (restoreType) {
+                            case BACKUP_TO_STORAGE:
+                                snprintf(selectedUserInfo,128,taskDescription,getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
+                                break;
+                            case PROFILE_TO_PROFILE:
+                                snprintf(selectedUserInfo,128,taskDescription,getSDacc()[sduser].miiName,getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
+                                break;
+                            case WIPE_PROFILE:
+                                snprintf(selectedUserInfo,128,taskDescription,getSDacc()[sduser].miiName,getSDacc()[sduser].persistentID);
+                                break;
+                        }                        
                 }
-           }
+                snprintf(summary,512,summaryTemplate,
+                    (sduser == -1) ? allUsersInfo : selectedUserInfo,
+                    (common || sduser == -1 ) ? LanguageUtils::gettext("- Include common savedata: Y") :  LanguageUtils::gettext("- Include common savedata: N"),
+                    (wipeBeforeRestore || restoreType == WIPE_PROFILE)? LanguageUtils::gettext("- Wipe data: Y") :  LanguageUtils::gettext("- Wipe data: N"),
+                    fullBackup ? LanguageUtils::gettext("- Perform full backup: Y") :  LanguageUtils::gettext("- Perform full backup: N"));
+            } else {
+                    summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n%s\n%s\n%s.\nContinue?\n\n");
+                    snprintf(summary,512,summaryTemplate,taskDescription,
+                    (wipeBeforeRestore || restoreType == WIPE_PROFILE) ? LanguageUtils::gettext("- Wipe data: Y") :  LanguageUtils::gettext("- Wipe data: N"),
+                    fullBackup ? LanguageUtils::gettext("- Perform full backup: Y") :  LanguageUtils::gettext("- Perform full backup: N"));
+            }
+
+            if (!promptConfirm(ST_WARNING,summary))
+                    return SUBSTATE_RUNNING;
+
+            for (int i = 0; i < titlesCount ; i++) {
+                    if (! this->titles[i].currentBackup.selectedToRestore )
+                        continue;
+                    if (! this->titles[i].saveInit) {
+                        if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?")))
+                            return SUBSTATE_RUNNING;
+                        break;
+                    }
+            }
 
             InProgress::totalSteps = InProgress::currentStep = 0;
             for (int i = 0; i < titlesCount ; i++) {
@@ -324,13 +379,7 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                 }
                 InProgress::totalSteps = InProgress::totalSteps + countTitlesToSave(this->titles, this->titlesCount,true);
                 backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
-                if(isWiiUBatchRestore)
-                    if (restoreType == BACKUP_TO_STORAGE)
-                        writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("pre-BatchRestore Backup (WiiU)"));
-                    else
-                        writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("pre-ProfileCopy Backup (WiiU)"));
-                else
-                    writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("pre-BatchRestore Backup (vWii)"));
+                writeBackupAllMetadata(batchDatetime,backupDescription);
                 BackupSetList::setIsInitializationRequired(true);
             }       
 
@@ -347,24 +396,60 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
                     }
                 this->titles[i].currentBackup.batchRestoreState = OK;
                 bool effectiveCommon = common && this->titles[i].currentBackup.hasCommonSavedata;
-                if ( wipeBeforeRestore ) {
+                if ( wipeBeforeRestore || restoreType == WIPE_PROFILE) {
                     switch (sduser) {
                         case -1:
-                            if (! checkProfilesInBackupForTheTitleExists (&this->titles[i], 0)) {
+                            if (restoreType == BACKUP_TO_STORAGE && ! checkProfilesInBackupForTheTitleExists (&this->titles[i], 0)) {
                                 this->titles[i].currentBackup.batchRestoreState = ABORTED;
                                 promptError(LanguageUtils::gettext("%s\n\nWipe not tried\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),titles[i].shortName);
                                 continue;
                             }
-                            if (hasSavedata(&this->titles[i], false,0))
-                                retCode = wipeSavedata(&this->titles[i], wiiuuser, effectiveCommon, false);
+                            if (hasSavedata(&this->titles[i], false,0)) {
+                                //retCode = wipeSavedata(&this->titles[i], wiiuuser, effectiveCommon, false);
+                                bool ha = hasSavedata(&this->titles[i], false,0);
+                                promptMessage(COLOR_BG_WR,
+                                    "has save: %s\n%s\nindex:%d common: %s",
+                                    ha ? "yes":"no",
+                                    titles[i].shortName,
+                                    sduser,
+                                    effectiveCommon ? "yes":"no"   
+                                );
+                            }
                             break;
                         default:
                             if ( ! this->titles[i].currentBackup.hasUserSavedata && effectiveCommon) { // if sduser does not exist, don't try to wipe wiiuser, but only common
                                     // -2 is a flag just to only operate on common saves (because sd user does not exist for this title)
-                                retCode = wipeSavedata(&this->titles[i], -2, effectiveCommon, false);
+                                //retCode = wipeSavedata(&this->titles[i], -2, effectiveCommon, false);
+                                bool ha = this->titles[i].currentBackup.hasUserSavedata;
+                                promptMessage(COLOR_BG_WR,
+                                    "has save: %s\n%s\nindex: -2 common: %s",
+                                    ha ? "yes":"no",
+                                    titles[i].shortName,
+                                    effectiveCommon ? "yes":"no"   
+                                );
                             } else {
-                                if (hasAccountSave(&this->titles[i],false,false,getWiiUacc()[this->wiiuuser].pID, 0,0))
-                                    retCode = wipeSavedata(&this->titles[i], wiiuuser, effectiveCommon, false);
+                                switch(restoreType) {
+                                    case BACKUP_TO_STORAGE:
+                                    case PROFILE_TO_PROFILE:
+                                        if (hasAccountSave(&this->titles[i],false,false,getWiiUacc()[this->wiiuuser].pID, 0,0))
+                                            retCode = wipeSavedata(&this->titles[i], wiiuuser, effectiveCommon, false);
+                                        break;
+                                    case WIPE_PROFILE:
+                                        if (hasAccountSave(&this->titles[i],false,false,getSDacc()[this->sduser].pID, 0,0)) {
+                                            //retCode = wipeSavedata(&this->titles[i], sduser, effectiveCommon, false, USE_SD_OR_STORAGE_PROFILES);
+                                            bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->sduser].pID, 0,0);
+                                            promptMessage(COLOR_BG_WR,
+                                                "has save: %s\nuser %08x\n%s\nindex:%d common: %s\nuser:%s",
+                                                ha ? "yes":"no",
+                                                getSDacc()[this->sduser].pID,
+                                                titles[i].shortName,
+                                                sduser,
+                                                effectiveCommon ? "yes":"no",
+                                                getSDacc()[this->sduser].persistentID
+                                            );
+                                            }
+                                        break;
+                                }
                             }
                             break;
                     }

@@ -25,7 +25,7 @@ extern Account *wiiuacc;
 BatchRestoreOptions::BatchRestoreOptions(Title *titles, 
     int titlesCount,bool  isWiiUBatchRestore, eRestoreType restoreType) : titles(titles),
                         titlesCount(titlesCount), isWiiUBatchRestore(isWiiUBatchRestore), restoreType(restoreType) {
-    minCursorPos = isWiiUBatchRestore ? 0 : 3;
+    minCursorPos = isWiiUBatchRestore ? 0 : (restoreType != WIPE_PROFILE ? 3 : 4);
     cursorPos = minCursorPos;
     for (int i = 0; i<this->titlesCount; i++) {
         this->titles[i].currentBackup= {
@@ -40,8 +40,9 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
             continue;
         //if (! this->titles[i].saveInit) // we allow uninitializedTitles
         //    continue;
-        if (this->titles[i].isTitleDupe && ! this->titles[i].isTitleOnUSB)
-            continue;
+        if (restoreType == BACKUP_TO_STORAGE || restoreType == PROFILE_TO_PROFILE )
+            if (this->titles[i].isTitleDupe && ! this->titles[i].isTitleOnUSB)
+                continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) // skip CBHC savedata
             continue;
         if (this->titles[i].is_Wii && isWiiUBatchRestore) // wii titles installed as wiiU appear in vWii restore
@@ -51,9 +52,10 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
             case BACKUP_TO_STORAGE:
                 srcPath = getDynamicBackupPath(&this->titles[i], 0);
                 break;
+            case WIPE_PROFILE:
             case PROFILE_TO_PROFILE:
-                std::string path = (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
-                srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, "user");
+                std::string path = ( this->titles[i].is_Wii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+                srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, this->titles[i].is_Wii ? "data" : "user");
                 break;
         }
         DIR *dir = opendir(srcPath.c_str());
@@ -69,7 +71,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                             nonExistentProfileInTitleBackup = true;
                             totalNumberOfNonExistentProfilesAllTitles++;
                         }
-                        if (restoreType == BACKUP_TO_STORAGE || profileDefined)
+                        if (restoreType == BACKUP_TO_STORAGE || restoreType == WIPE_PROFILE || profileDefined)
                             batchSDUsers.insert(data->d_name);
                         this->titles[i].currentBackup.hasBatchBackup=true;
                     }
@@ -77,10 +79,16 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
             } else {
                     this->titles[i].currentBackup.hasBatchBackup = ! folderEmpty (srcPath.c_str());
             }
+        } else {
+            std::string multilinePath;
+            splitStringWithNewLines(srcPath,multilinePath);
+            promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+            promptError(LanguageUtils::gettext("%s\n\nsavedata information cannot be retrieved"),this->titles[i].shortName);
+            continue;
         }
         closedir(dir);
         if (nonExistentProfileInTitleBackup) {
-            titlesWithNonExistentProfile.push_back(std::string(this->titles[i].shortName)+((this->titles[i].isTitleOnUSB)?"[U]":"[N]"));
+            titlesWithNonExistentProfile.push_back(std::string(this->titles[i].shortName)+((this->titles[i].isTitleOnUSB)?" [U]":" [N]"));
             nonExistentProfileInTitleBackup = false;
         }
     }
@@ -105,8 +113,11 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
         sduser = 0;
         wiiuuser = 1;
         common = false;
+    }
 
+    if (restoreType == PROFILE_TO_PROFILE || restoreType == WIPE_PROFILE) {
         for (int i = 0; i < sdAccountsTotalNumber; i++) {
+            strcpy(sdacc[i].miiName,"undefined");
             for (int j = 0; j < wiiUAccountsTotalNumber;j++) {
                 if (sdacc[i].pID == wiiuacc[j].pID) {
                     strcpy(sdacc[i].miiName,wiiuacc[j].miiName);
@@ -115,6 +126,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
             }
         }
     }
+
 
 
     for (int i = 0; i<titlesCount; i++) {
@@ -173,14 +185,17 @@ void BatchRestoreOptions::render() {
 
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPos(16,0, (restoreType == BACKUP_TO_STORAGE) ? LanguageUtils::gettext("BatchRestore - Options") : LanguageUtils::gettext("Batch ProfileCopy - Options"));
+        consolePrintPos(16,0, (restoreType == BACKUP_TO_STORAGE) ? LanguageUtils::gettext("BatchRestore - Options") : 
+            ( (restoreType == PROFILE_TO_PROFILE) ? LanguageUtils::gettext("Batch ProfileCopy - Options"):
+                                                    LanguageUtils::gettext("Batch Wipe - Options") ) );
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
         if (restoreType == BACKUP_TO_STORAGE)
             consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BS: %s"),BackupSetList::getBackupSetEntry().c_str());
         DrawUtils::setFontColor(COLOR_TEXT);
         if (isWiiUBatchRestore) {
             consolePrintPos(M_OFF, 3, (restoreType == BACKUP_TO_STORAGE) ? LanguageUtils::gettext("Select SD user to copy from:") :
-                LanguageUtils::gettext("Select Wii U user to copy from"));
+                ( (restoreType == PROFILE_TO_PROFILE) ? LanguageUtils::gettext("Select Wii U user to copy from"):
+                                                        LanguageUtils::gettext("Select Wii U user to wipe") ));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             if (sduser == -1)
                 consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("all users"));
@@ -188,20 +203,22 @@ void BatchRestoreOptions::render() {
                 if (restoreType == BACKUP_TO_STORAGE)
                     consolePrintPos(M_OFF, 4, "   < %s >", getSDacc()[sduser].persistentID);
                 else
-                consolePrintPos(M_OFF, 4, "   < %s (%s) >",
-                    getSDacc()[sduser].miiName, getSDacc()[sduser].persistentID);
+                    consolePrintPos(M_OFF, 4, "   < %s (%s) >",
+                        getSDacc()[sduser].miiName, getSDacc()[sduser].persistentID);
             }
             
-            DrawUtils::setFontColor(COLOR_TEXT);
-            consolePrintPos(M_OFF, 6 , LanguageUtils::gettext("Select Wii U user to copy to"));
-            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
-            if (this->wiiuuser == -1)
-                consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("same user than in source"));
-            else
-                consolePrintPos(M_OFF, 7, "   < %s (%s) >",
-                                getWiiUacc()[wiiuuser].miiName, getWiiUacc()[wiiuuser].persistentID);
+            if (restoreType == BACKUP_TO_STORAGE || restoreType == PROFILE_TO_PROFILE) {
+                DrawUtils::setFontColor(COLOR_TEXT);
+                consolePrintPos(M_OFF, 6 , LanguageUtils::gettext("Select Wii U user to copy to"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
+                if (this->wiiuuser == -1)
+                    consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("same user than in source"));
+                else
+                    consolePrintPos(M_OFF, 7, "   < %s (%s) >",
+                                    getWiiUacc()[wiiuuser].miiName, getWiiUacc()[wiiuuser].persistentID);
+            }
 
-            if (this->wiiuuser > -1 && restoreType == BACKUP_TO_STORAGE) {
+            if (this->wiiuuser > -1 && ( restoreType == BACKUP_TO_STORAGE || restoreType == WIPE_PROFILE )) {
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPos(M_OFF, 9, LanguageUtils::gettext("Include 'common' save?"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
@@ -209,8 +226,10 @@ void BatchRestoreOptions::render() {
             }
         }
 
-        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
-        consolePrintPos(M_OFF, 12 - (isWiiUBatchRestore ? 0 : 8) , LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        if (restoreType != WIPE_PROFILE) {
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
+            consolePrintPos(M_OFF, 12 - (isWiiUBatchRestore ? 0 : 8) , LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        }
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
         consolePrintPos(M_OFF, 14 - (isWiiUBatchRestore ? 0 : 8), LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes"):LanguageUtils::gettext("No"));
 
@@ -229,7 +248,7 @@ void BatchRestoreOptions::render() {
 ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {        
-            if (sduser == -1 && totalNumberOfTitlesWithNonExistentProfiles > 0) {
+            if ( restoreType == BACKUP_TO_STORAGE && (sduser == -1 && totalNumberOfTitlesWithNonExistentProfiles > 0)) {
                 std::string summaryWithTitles(LanguageUtils::gettext("Backup contains savedata for profiles that do not exist in this console.\nYou can continue, but restore process will fail for those titles.\n\nRecommended action: restore from/to individual users.\n\nDo you want to continue?"));
                 summaryWithTitles.append(LanguageUtils::gettext("\n\nTitles with non-existent profiles:\n"));
                 titleListInColumns(summaryWithTitles,titlesWithNonExistentProfile);
@@ -276,19 +295,31 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_UP)) {
             if (--cursorPos < minCursorPos)
                 ++cursorPos;
-            if (cursorPos == 2 && ( sduser == -1 || restoreType == PROFILE_TO_PROFILE)) 
-                --cursorPos;
+            else {
+                if ( cursorPos == 3 && restoreType == WIPE_PROFILE) 
+                    --cursorPos;
+                if ( cursorPos == 2 && ( sduser == -1 || restoreType == PROFILE_TO_PROFILE)) 
+                    --cursorPos;
+                if ((cursorPos == 1) && restoreType == WIPE_PROFILE) 
+                    --cursorPos;
+            }   
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
-            if (cursorPos == 2 && ( sduser == -1 || restoreType == PROFILE_TO_PROFILE)) 
-                ++cursorPos;
+            else {
+                if ( cursorPos == 1  && restoreType == WIPE_PROFILE) 
+                    ++cursorPos;
+                if ( cursorPos == 2 && ( sduser == -1 || restoreType == PROFILE_TO_PROFILE)) 
+                    ++cursorPos;
+                if ( cursorPos == 3  && restoreType == WIPE_PROFILE) 
+                    ++cursorPos;    
+            }
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
-            if (restoreType == BACKUP_TO_STORAGE ) {
+            if (restoreType == BACKUP_TO_STORAGE || restoreType ==  WIPE_PROFILE ) {
                 switch (cursorPos) {
                     case 0:
                         sduser = ((sduser == -1) ? -1 : (sduser - 1));
@@ -304,7 +335,7 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
                     default:
                         break;
                 }
-            } else { // PROFILE_TO_PROFILE
+            } else if (restoreType == PROFILE_TO_PROFILE) {
                 switch (cursorPos) {
                     case 0:
                         this->sduser = ((this->sduser == 0) ? 0 : (this->sduser - 1));
@@ -334,7 +365,7 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_RIGHT)) {
-            if (restoreType == BACKUP_TO_STORAGE ) {
+            if (restoreType == BACKUP_TO_STORAGE || restoreType ==  WIPE_PROFILE) {
                 switch (cursorPos) {
                     case 0:
                         sduser = ((sduser == (sdAccountsTotalNumber - 1)) ? (sdAccountsTotalNumber - 1) : (sduser + 1));
@@ -350,7 +381,7 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
                     default:
                         break;
                 }
-            } else { //PROFILE_2_PROFILE
+            } else if (restoreType == PROFILE_TO_PROFILE ) {
                 switch (cursorPos) {
                     case 0:
                         sduser = ((sduser == (sdAccountsTotalNumber - 1)) ? (sdAccountsTotalNumber - 1) : (sduser + 1));

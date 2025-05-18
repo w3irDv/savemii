@@ -13,7 +13,7 @@
 #include <menu/BatchRestoreOptions.h>
 #include <utils/Colors.h>
 
-#define ENTRYCOUNT 6
+#define ENTRYCOUNT 7
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -37,11 +37,13 @@ void MainMenuState::render() {
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
         consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Restore"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
-        consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch ProfileCopy"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);   
-        consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   BackupSet Management"));
+        consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch Wipe"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
+        consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch ProfileCopy"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);   
+        consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1)?1:0) + ((cursorPos > 4)?1:0) , "\u2192");
+        consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1)?1:0) + ((cursorPos > 5)?1:0) , "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
     }
 }
@@ -64,9 +66,13 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     break;
                 case 3:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
+                    this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, BACKUP_TO_STORAGE);
                     break;
                 case 4:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, WIPE_PROFILE);
+                    break;
+                case 5:
                     if (getWiiUaccn() < 2 )
                         promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
                     else {
@@ -74,7 +80,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                         this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
                     }
                     break;
-                case 5:
+                case 6:
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>();
