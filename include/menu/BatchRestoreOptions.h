@@ -31,6 +31,7 @@ private:
     bool wipeBeforeRestore = true;
     bool fullBackup = true;
     std::set<std::string,std::less<std::string>> batchSDUsers;
+    std::set<std::string,std::less<std::string>> undefinedUsers;
 
     Title *titles;
     int titlesCount = 0;
@@ -48,6 +49,6 @@ private:
 
     std::vector<std::string> titlesWithNonExistentProfile;
     int totalNumberOfTitlesWithNonExistentProfiles = 0;
-    int totalNumberOfNonExistentProfilesAllTitles = 0;
+    std::string titlesWithUndefinedProfilesSummary = "";
 
 };

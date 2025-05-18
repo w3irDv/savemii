@@ -59,6 +59,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                 srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, this->titles[i].is_Wii ? "data" : "user");
                 break;
         }
+
         DIR *dir = opendir(srcPath.c_str());
         if (dir != nullptr) {
             if (isWiiUBatchRestore) {
@@ -70,7 +71,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
                         bool profileDefined = profileExists(data->d_name);
                         if (! profileDefined) {
                             nonExistentProfileInTitleBackup = true;
-                            totalNumberOfNonExistentProfilesAllTitles++;
+                            undefinedUsers.insert(data->d_name);
                         }
                         if (restoreType == BACKUP_TO_STORAGE || restoreType == WIPE_PROFILE || profileDefined)
                             batchSDUsers.insert(data->d_name);
@@ -93,8 +94,11 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
         }
         closedir(dir);
         if (nonExistentProfileInTitleBackup) {
-            titlesWithNonExistentProfile.push_back(std::string(this->titles[i].shortName)+((this->titles[i].isTitleOnUSB)?" [U]":" [N]"));
+            titlesWithNonExistentProfile.push_back(std::string(this->titles[i].shortName) +
+                ((restoreType == BACKUP_TO_STORAGE) ? "[SD]" : (this->titles[i].isTitleOnUSB ? " [USB]":" [NAND]")));
+            totalNumberOfTitlesWithNonExistentProfiles++;
             nonExistentProfileInTitleBackup = false;
+
         }
     }
 
@@ -132,51 +136,37 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
         }
     }
 
-
-
-    for (int i = 0; i<titlesCount; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0)
-            continue;
-        if (!(titles[i].isTitleDupe && ! titles[i].isTitleOnUSB))
-            continue;
-        if (strcmp(titles[i].shortName, "DONT TOUCH ME") == 0) // skip CBHC savedata
-            continue;
-        if (titles[i].is_Wii)
-            continue;
-
-        bool firstTimeThisTitleHasBeenHit = true;
-        std::string srcPath;
-        std::string path = (titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
-        srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), titles[i].highID, titles[i].lowID, "user");
-        
-        DIR *dir = opendir(srcPath.c_str());
-        if (dir != nullptr) {
-            struct dirent *data;
-            while ((data = readdir(dir)) != nullptr) {
-                if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))
-                    continue;
-                if (data->d_name[0] == '8') {
-                    if (! profileExists(data->d_name)) {
-                        totalNumberOfNonExistentProfilesAllTitles++;
-                        if (firstTimeThisTitleHasBeenHit) {
-                            titlesWithNonExistentProfile.push_back(std::string(this->titles[i].shortName)+((this->titles[i].isTitleOnUSB)?"[U]":"[N]"));
-                            firstTimeThisTitleHasBeenHit = false;
-                        }
-                    }
-                }
-            }
+    std::string undefinedUsersMessage;
+    int count = 1;
+    for ( auto user : undefinedUsers ) {
+        undefinedUsersMessage+=user+" ";
+        count++;
+        if (count > 6) {
+            count = 0;
+            undefinedUsersMessage+="\n";
         }
     }
-    totalNumberOfTitlesWithNonExistentProfiles = titlesWithNonExistentProfile.size();    
-    resetNEPWipeCounters();
 
-    if (restoreType == PROFILE_TO_PROFILE &&  totalNumberOfTitlesWithNonExistentProfiles > 0) {
-        std::string summaryWithTitles (LanguageUtils::gettext("WARNING\n\nSome titles have savedata for profiles that do not exist in this console\nThese savedata wll be ignored\n\nYou can wipe them with the option 'Manage Non-Exitent Profiles'\n"));
-        summaryWithTitles.append(LanguageUtils::gettext("\n\nTitles with non-existent profiles:\n"));
-        titleListInColumns(summaryWithTitles,titlesWithNonExistentProfile);
-        summaryWithTitles.append("\n\n\n");
-        promptMessage(COLOR_BG_WR,summaryWithTitles.c_str());
+    if (totalNumberOfTitlesWithNonExistentProfiles > 0) {
+        switch (restoreType) {
+            case PROFILE_TO_PROFILE:
+            case WIPE_PROFILE:
+                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored\nYou can wipe them using the 'Batch Wipe' task."));
+                break;
+            case BACKUP_TO_STORAGE:
+                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("The BackupSet contains savedata for profiles that don't exist in this console.\nYou can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
+                break;
+        }
+        titlesWithUndefinedProfilesSummary.append(LanguageUtils::gettext("\n\nNon-existent profiles:\n  "));
+        titlesWithUndefinedProfilesSummary+=undefinedUsersMessage;
+        titlesWithUndefinedProfilesSummary.append(LanguageUtils::gettext("\nTitles affected:\n"));
+        titleListInColumns(titlesWithUndefinedProfilesSummary,titlesWithNonExistentProfile);
+        titlesWithUndefinedProfilesSummary.append("\n");
+
+        if (restoreType == PROFILE_TO_PROFILE)
+            promptMessage(COLOR_BG_WR,titlesWithUndefinedProfilesSummary.c_str());
     }
+
 }
 
 void BatchRestoreOptions::render() {
@@ -248,7 +238,7 @@ void BatchRestoreOptions::render() {
         if (totalNumberOfTitlesWithNonExistentProfiles == 0)
             consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
         else
-            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Non-Existent Profiles \ue000: Ok! Go to Title selection  \ue001: Back"));
+            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
 
 
    }
@@ -258,11 +248,8 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {        
             if ( restoreType == BACKUP_TO_STORAGE && (sduser == -1 && totalNumberOfTitlesWithNonExistentProfiles > 0)) {
-                std::string summaryWithTitles(LanguageUtils::gettext("Backup contains savedata for profiles that do not exist in this console.\nYou can continue, but restore process will fail for those titles.\n\nRecommended action: restore from/to individual users.\n\nDo you want to continue?"));
-                summaryWithTitles.append(LanguageUtils::gettext("\n\nTitles with non-existent profiles:\n"));
-                titleListInColumns(summaryWithTitles,titlesWithNonExistentProfile);
-                summaryWithTitles.append("\n\n\n");
-                if (! promptConfirm((Style) (ST_YES_NO | ST_WARNING),summaryWithTitles.c_str()))
+                std::string prompt = titlesWithUndefinedProfilesSummary+LanguageUtils::gettext("\nDo you want to continue?\n");
+                if (! promptConfirm((Style) (ST_YES_NO | ST_WARNING),prompt.c_str()))
                     return SUBSTATE_RUNNING;    
             }
             this->state = STATE_DO_SUBSTATE;
@@ -271,34 +258,7 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_B))
             return SUBSTATE_RETURN;
         if (input->get(TRIGGER, PAD_BUTTON_X)) {
-            std::string choices = LanguageUtils::gettext("\ue000 Individually decide backup&wipe savedata for non-existent profiles\n\n\ue003 Pick wich title to wipe, always perform backup\n\n\ue046 Batch backup & wipe savedata for non-existent profiles\n\n\ue002 Review Titles with non-Existent Profiles\n\n\ue001 Back");
-            bool done = false;
-            while (! done) {
-                Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,choices);
-                switch (choice) {
-                    case PAD_BUTTON_A:
-                        removeSavedataForNonExistentProfiles(titles, titlesCount , DECIDE_ALL, totalNumberOfTitlesWithNonExistentProfiles, totalNumberOfNonExistentProfilesAllTitles);
-                        done = true;
-                        break;
-                    case PAD_BUTTON_Y:
-                        removeSavedataForNonExistentProfiles(titles, titlesCount , DECIDE_WIPE, totalNumberOfTitlesWithNonExistentProfiles, totalNumberOfNonExistentProfilesAllTitles);
-                        done = true;
-                        break;
-                    case PAD_BUTTON_MINUS:
-                        removeSavedataForNonExistentProfiles(titles, titlesCount , BATCH, totalNumberOfTitlesWithNonExistentProfiles, totalNumberOfNonExistentProfilesAllTitles);
-                        done = true;
-                        break;
-                    case PAD_BUTTON_X:
-                        reviewTitlesWithNonExistentProfiles(titles, titlesCount);
-                        done = true;
-                        break;
-                    case PAD_BUTTON_B:
-                        done = true;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            promptMessage(COLOR_BG_WR,titlesWithUndefinedProfilesSummary.c_str());
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_UP)) {
@@ -373,6 +333,8 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
             }
             if (sduser == -2)
                 common = true;
+            if (sduser == -1)
+                common = false;
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_RIGHT)) {
@@ -421,6 +383,8 @@ ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
             }
             if (sduser == -2)
                 common = true;
+            if (sduser == -1)
+                common = false;
             return SUBSTATE_RUNNING;
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
