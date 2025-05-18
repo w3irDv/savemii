@@ -97,6 +97,12 @@ enum Style {
     ST_MULTIPLE_CHOICE = 256
 };
 
+enum eRestoreType {
+    BACKUP_TO_STORAGE,
+    WIPE_PROFILE,
+    PROFILE_TO_PROFILE,
+};
+
 enum eNEProfileWipeMode {
     DECIDE_ALL,     // can choose if wipe or backup individually
     DECIDE_WIPE,   // can choose if wipe, then always backup
@@ -169,6 +175,10 @@ struct titlesNEProfiles{
     std::string nEProfiles;
 };
 
+enum eAccountSource {
+    USE_WIIU_PROFILES,
+    USE_SD_OR_STORAGE_PROFILES
+};
 
 bool initFS() __attribute__((__cold__));
 void shutdownFS() __attribute__((__cold__));
@@ -202,7 +212,7 @@ void backupAllSave(Title *titles, int count, const std::string &batchDatetime, b
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
 int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag = "") __attribute__((hot));
 int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
-int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
+int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive = true) __attribute__((hot));
 void importFromLoadiine(Title *title, bool common, int version);
 void exportToLoadiine(Title *title, bool common, int version);

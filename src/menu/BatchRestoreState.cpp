@@ -6,6 +6,7 @@
 
 #include <menu/BatchRestoreState.h>
 #include <menu/BackupSetListState.h>
+#include <menu/BatchRestoreOptions.h>
 
 #define ENTRYCOUNT 2
 
@@ -18,40 +19,84 @@ void BatchRestoreState::render() {
         return;
     }
     if (this->state == STATE_BATCH_RESTORE_MENU) {
+
+        const char *screenTitle, *wiiUTask, *vWiiTask, *readme, *nextTask;
+        switch(restoreType) {
+            case BACKUP_TO_STORAGE:
+                screenTitle = LanguageUtils::gettext("Batch Restore");
+                wiiUTask = LanguageUtils::gettext("   Restore Wii U (%u Title%s)");
+                vWiiTask = LanguageUtils::gettext("   Restore vWii (%u Title%s)");
+                readme = LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to a different user in the same console \n* or to a different console where the games are previouly installed.\nIn the later case, it is recommended to first run the game to \n  initialize the savedata.");
+                nextTask = LanguageUtils::gettext("\ue000: Continue to BackupSet selection  \ue001: Back");
+                break;
+            case WIPE_PROFILE:
+                screenTitle = LanguageUtils::gettext("Batch Wipe");
+                wiiUTask = LanguageUtils::gettext("   Wipe Wii U Profiles (%u Title%s)");
+                vWiiTask = LanguageUtils::gettext("   Wipe vWii Savedata (%u Title%s)");
+                readme = LanguageUtils::gettext("Batch Wipe allows you to wipe savedata belonging to a given profile\nacross all selected titles.\nIt detects also savedata belonging to profiles not defined in the console.\n\nJust:\n- select which data to wipe\n- select titles to act on\n- and go!");
+                nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
+                break;
+            default:
+                screenTitle = "";
+                wiiUTask = "";
+                vWiiTask = "";
+                readme = "";
+                nextTask = "";
+            break;
+
+        }
+
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Batch Restore"));
+        consolePrintPosAligned(0, 4, 1,screenTitle);
         DrawUtils::setFontColor(COLOR_TEXT);
         
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
-        consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Restore Wii U (%u Title%s)"), this->wiiuTitlesCount,
+        consolePrintPos(M_OFF, 3, wiiUTask, this->wiiuTitlesCount,
                         (this->wiiuTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
-        consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Restore vWii (%u Title%s)"), this->vWiiTitlesCount,
+        consolePrintPos(M_OFF, 4, vWiiTask, this->vWiiTitlesCount,
                         (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColor(COLOR_TEXT);                
         consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPos(M_OFF, 6, LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to a different user in the same console \n* or to a different console where the games are previouly installed.\nIn the later case, it is recommended to first run the game to \n  initialize the savedata."));
+        consolePrintPos(M_OFF, 6, readme);
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Continue to batch restore  \ue001: Back"));
+        consolePrintPosAligned(17, 4, 2, nextTask);
     }
 }
 
 ApplicationState::eSubState BatchRestoreState::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
-            const std::string batchDatetime = getNowDateForFolder();
-            switch (cursorPos) {
-                case 0:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, true);
-                    break;
-                case 1:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, false);
-                    break;
-                default:
-                    return SUBSTATE_RUNNING;
+            switch (restoreType) {
+            case BACKUP_TO_STORAGE:
+                switch (cursorPos) {
+                    case 0:
+                        this->state = STATE_DO_SUBSTATE;
+                        this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, true);
+                        break;
+                    case 1:
+                        this->state = STATE_DO_SUBSTATE;
+                        this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, false);
+                        break;
+                    default:
+                        return SUBSTATE_RUNNING;
+                }
+                break;
+            case WIPE_PROFILE:
+                switch (cursorPos) {
+                    case 0:
+                        this->state = STATE_DO_SUBSTATE;
+                        this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, WIPE_PROFILE);
+                        break;
+                    case 1:
+                        this->state = STATE_DO_SUBSTATE;
+                        this->subState = std::make_unique<BatchRestoreOptions>(this->wiititles, this->vWiiTitlesCount, false, WIPE_PROFILE);
+                        break;
+                    default:
+                        return SUBSTATE_RUNNING;
+                }
+                break;
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_B))

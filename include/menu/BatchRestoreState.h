@@ -7,10 +7,11 @@
 
 class BatchRestoreState : public ApplicationState {
 public:
-    BatchRestoreState(Title *wiiutitles, Title *wiititles, int wiiuTitlesCount, int vWiiTitlesCount) : wiiutitles(wiiutitles),
+    BatchRestoreState(Title *wiiutitles, Title *wiititles, int wiiuTitlesCount, int vWiiTitlesCount, eRestoreType restoreType) : wiiutitles(wiiutitles),
                                                                                                    wiititles(wiititles),
                                                                                                    wiiuTitlesCount(wiiuTitlesCount),
-                                                                                                   vWiiTitlesCount(vWiiTitlesCount) {}
+                                                                                                   vWiiTitlesCount(vWiiTitlesCount),
+                                                                                                   restoreType {restoreType} {};
     enum eState {
         STATE_BATCH_RESTORE_MENU,
         STATE_DO_SUBSTATE,
@@ -31,4 +32,7 @@ private:
     int vWiiTitlesCount;
 
     inline static int cursorPos = 0;
+
+    eRestoreType restoreType;
+
 };

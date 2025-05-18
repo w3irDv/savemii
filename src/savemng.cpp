@@ -1860,7 +1860,7 @@ end:
     return errorCode;
 }
 
-int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*= true*/) {
+int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     copyErrorsCounter = 0;
@@ -1920,7 +1920,10 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
             default:  // wiiuuser = 0 .. n
                 doBase = true;
                 doCommon = common;
-                srcPath += "/" + std::string(wiiuacc[wiiuuser].persistentID);
+                if (accountSource == USE_WIIU_PROFILES)
+                    srcPath += "/" + std::string(wiiuacc[wiiuuser].persistentID);
+                else
+                    srcPath += "/" + std::string(sdacc[wiiuuser].persistentID);
                 break;
         }
     }
