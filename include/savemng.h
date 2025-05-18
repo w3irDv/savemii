@@ -253,7 +253,3 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath);
 bool removeFolderAndFlush(const std::string & srcPath);
 bool checkProfilesInBackupForTheTitleExists (Title *title, uint8_t slot);
 void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::string> & failedTitles);
-int removeSavedataForNonExistentProfiles(Title* titles, int titlesCount, eNEProfileWipeMode nEPWipeMode, int totalTitlesToFix, int totalProfilesToFix );
-void resetNEPWipeCounters();
-void showTitlesAndNEProfiles(Title * titles, std::vector<titlesNEProfiles> & titlesAndNEProfiles);
-int reviewTitlesWithNonExistentProfiles(Title* titles, int titlesCount);
