@@ -163,7 +163,7 @@ BatchRestoreOptions::BatchRestoreOptions(Title *titles,
         titleListInColumns(titlesWithUndefinedProfilesSummary,titlesWithNonExistentProfile);
         titlesWithUndefinedProfilesSummary.append("\n");
 
-        if (restoreType == PROFILE_TO_PROFILE)
+        if (restoreType == PROFILE_TO_PROFILE && GlobalCfg::global->getDontAllowUndefinedProfiles())
             promptMessage(COLOR_BG_WR,titlesWithUndefinedProfilesSummary.c_str());
     }
 
@@ -238,7 +238,8 @@ void BatchRestoreOptions::render() {
         if (totalNumberOfTitlesWithNonExistentProfiles == 0)
             consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
         else
-            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
+            if (GlobalCfg::global->getDontAllowUndefinedProfiles())
+                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
 
 
    }
@@ -247,7 +248,7 @@ void BatchRestoreOptions::render() {
 ApplicationState::eSubState BatchRestoreOptions::update(Input *input) {
     if (this->state == STATE_BATCH_RESTORE_OPTIONS_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {        
-            if ( restoreType == BACKUP_TO_STORAGE && (sduser == -1 && totalNumberOfTitlesWithNonExistentProfiles > 0)) {
+            if ( restoreType == BACKUP_TO_STORAGE && (sduser == -1 && totalNumberOfTitlesWithNonExistentProfiles > 0 && GlobalCfg::global->getDontAllowUndefinedProfiles())) {
                 std::string prompt = titlesWithUndefinedProfilesSummary+LanguageUtils::gettext("\nDo you want to continue?\n");
                 if (! promptConfirm((Style) (ST_YES_NO | ST_WARNING),prompt.c_str()))
                     return SUBSTATE_RUNNING;    

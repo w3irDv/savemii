@@ -34,8 +34,8 @@ void ConfigMenuState::render() {
     }
 
     DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
-    consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Ask for wipe non-existent profiles: %s"),
-        GlobalCfg::global->askForWipeNonExistentProfiles ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+    consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Warn and don't allow restore of undefined profiles: %s"),
+        GlobalCfg::global->dontAllowUndefinedProfiles ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
     DrawUtils::setFontColor(COLOR_INFO);
     consolePrintPos(M_OFF + 2, 10,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
@@ -85,6 +85,9 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
                 GlobalCfg::global->askForBackupDirConversion = GlobalCfg::global->askForBackupDirConversion ? false : true;
                 TitleListState::setCheckIdVsTitleNameBasedPath(GlobalCfg::global->askForBackupDirConversion);
                 break;
+            case 3:
+                GlobalCfg::global->dontAllowUndefinedProfiles = GlobalCfg::global->dontAllowUndefinedProfiles ? false : true;
+                break;
         }
     }
     if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
@@ -119,7 +122,7 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
                 TitleListState::setCheckIdVsTitleNameBasedPath(GlobalCfg::global->askForBackupDirConversion);
                 break;
             case 3:
-                GlobalCfg::global->askForWipeNonExistentProfiles = GlobalCfg::global->askForWipeNonExistentProfiles ? false : true;
+                GlobalCfg::global->dontAllowUndefinedProfiles = GlobalCfg::global->dontAllowUndefinedProfiles ? false : true;
                 break;
         }
     }

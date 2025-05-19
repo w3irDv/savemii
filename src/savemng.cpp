@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 #include <malloc.h>
 #include <climits>
-
+#include <cfg/GlobalCfg.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -1731,7 +1731,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
 
-    if (sduser == -1 && ! checkIfAllProfilesInFolderExists(srcPath)) {
+    if ( sduser == -1 && ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
             promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
             return -1;
     }

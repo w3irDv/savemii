@@ -13,7 +13,7 @@ GlobalCfg::GlobalCfg(const std::string & cfg) :
         Language = LanguageUtils::getSystemLanguage();
         alwaysApplyExcludes = false;
         askForBackupDirConversion = true;
-        askForWipeNonExistentProfiles = true;
+        dontAllowUndefinedProfiles = true;
     }
 
 bool GlobalCfg::mkJsonCfg()   {
@@ -28,7 +28,7 @@ bool GlobalCfg::mkJsonCfg()   {
     json_object_set_new(config, "language", json_integer(Language));
     json_object_set_new(config, "alwaysApplyExcludes", json_boolean(alwaysApplyExcludes));
     json_object_set_new(config, "askForBackupDirConversion", json_boolean(askForBackupDirConversion));
-    json_object_set_new(config, "askForWipeNonExistentProfiles", json_boolean(askForBackupDirConversion));
+    json_object_set_new(config, "dontAllowUndefinedProfiles", json_boolean(askForBackupDirConversion));
 
     configString = json_dumps(config, 0);
     json_decref(config);
@@ -71,9 +71,9 @@ bool GlobalCfg::parseJsonCfg() {
     if ( json_is_boolean(askforbackupdirconversion) )
         askForBackupDirConversion = json_boolean_value(askforbackupdirconversion);
     
-    json_t* askforwipenonexistentprofiles = json_object_get(root,"askForWipeNonExistentProfiles");
-    if ( json_is_boolean(askforwipenonexistentprofiles) )
-        askForWipeNonExistentProfiles = json_boolean_value(askforwipenonexistentprofiles);
+    json_t* dontallowundefinedprofiles = json_object_get(root,"dontAllowUndefinedProfiles");
+    if ( json_is_boolean(dontallowundefinedprofiles) )
+        dontAllowUndefinedProfiles = json_boolean_value(dontallowundefinedprofiles);
 
     json_decref(root);
 

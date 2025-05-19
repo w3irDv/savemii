@@ -21,13 +21,13 @@ public:
     inline static std::unique_ptr<GlobalCfg> global = nullptr;
 
     bool getAlwaysApplyExcludes() { return alwaysApplyExcludes;};
-    bool getAskForWipeNonExistentProfiles() { return askForWipeNonExistentProfiles;};
+    bool getDontAllowUndefinedProfiles() { return dontAllowUndefinedProfiles;};
 
 private:
 
     Swkbd_LanguageType Language;
     bool alwaysApplyExcludes;
     bool askForBackupDirConversion;
-    bool askForWipeNonExistentProfiles;
+    bool dontAllowUndefinedProfiles;
 
 };
