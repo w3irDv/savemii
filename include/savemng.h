@@ -101,6 +101,9 @@ enum eRestoreType {
     BACKUP_TO_STORAGE,
     WIPE_PROFILE,
     PROFILE_TO_PROFILE,
+    COPY_TO_OTHER_DEVICE,
+    COPY_FROM_NAND_TO_USB,
+    COPY_FROM_USB_TO_NAND
 };
 
 enum eNEProfileWipeMode {
@@ -200,7 +203,7 @@ bool isSlotEmptyInTitleBasedPath(Title *title, uint8_t slot);
 bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime);
 bool folderEmpty(const char *fPath);
 bool folderEmptyIgnoreSavemii(const char *fPath);
-int copySavedataToOtherDevice(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common) __attribute__((hot));
+int copySavedataToOtherDevice(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common, bool interactive = true) __attribute__((hot));
 std::string getNowDateForFolder() __attribute__((hot));
 std::string getNowDate() __attribute__((hot));
 void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) __attribute__((hot));

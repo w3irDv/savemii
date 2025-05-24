@@ -62,5 +62,7 @@ private:
     };
 
     eRestoreType restoreType;
-    int wiiuuser_s;
+    int wiiuuser_s = -1000;
+
+    void executeBatchProcess();
 };

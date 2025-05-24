@@ -1298,7 +1298,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
     closedir(src_dir);
 }
 
-int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common) {
+int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common, bool interactive /*= true*/) {
     int errorCode = 0;
     copyErrorsCounter = 0;
     abortCopy = false;
@@ -1317,16 +1317,18 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
     
-    if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
-        return -1;
-    if (!folderEmpty(dstPath.c_str())) {
-        int slotb = getEmptySlot(titleb);
-        // backup is always of allusers
-        if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
-            if (!( backupSavedata(titleb, slotb, -1, true, LanguageUtils::gettext("pre-copyToOtherDev backup")) == 0 )) {
-                promptError(LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
-                return -1;
-            }     
+    if (interactive) {
+        if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
+            return -1;
+        if (!folderEmpty(dstPath.c_str())) {
+            int slotb = getEmptySlot(titleb);
+            // backup is always of allusers
+            if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
+                if (!( backupSavedata(titleb, slotb, -1, true, LanguageUtils::gettext("pre-copyToOtherDev backup")) == 0 )) {
+                    promptError(LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+                    return -1;
+                }     
+            }
         }
     }
     

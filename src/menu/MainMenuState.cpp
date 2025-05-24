@@ -40,10 +40,12 @@ void MainMenuState::render() {
         consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch Wipe"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
         consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch ProfileCopy"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);   
-        consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   BackupSet Management"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);
+        consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Batch CopyToOtherDevice"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,7);   
+        consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1)?1:0) + ((cursorPos > 5)?1:0) , "\u2192");
+        consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1)?1:0) + ((cursorPos > 6)?1:0) , "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
     }
 }
@@ -81,6 +83,10 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     }
                     break;
                 case 6:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, COPY_TO_OTHER_DEVICE);
+                    break;
+                case 7:
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>();
