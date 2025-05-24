@@ -36,6 +36,13 @@ void BatchRestoreState::render() {
                 readme = LanguageUtils::gettext("Batch Wipe allows you to wipe savedata belonging to a given profile\nacross all selected titles.\nIt detects also savedata belonging to profiles not defined in the console.\n\nJust:\n- select which data to wipe\n- select titles to act on\n- and go!");
                 nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
                 break;
+            case COPY_TO_OTHER_DEVICE:
+                screenTitle = LanguageUtils::gettext("Batch CopyToOtherProfile");
+                wiiUTask = LanguageUtils::gettext("   Copy Wii U Savedata from NAND to USB");
+                vWiiTask = LanguageUtils::gettext("   Copy Wii U Savedata from USB to NAND");
+                readme = LanguageUtils::gettext("Batch CopyToOtherProfile allows you to transfer savedata \nbetween NAND and USB for all selected titles.\n\nJust:\n- select which data to copy\n- select titles to act on\n- and go!");
+                nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
+                break;
             default:
                 screenTitle = "";
                 wiiUTask = "";
@@ -91,12 +98,26 @@ ApplicationState::eSubState BatchRestoreState::update(Input *input) {
                         break;
                     case 1:
                         this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BatchRestoreOptions>(this->wiititles, this->vWiiTitlesCount, false, WIPE_PROFILE);
+                        this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, false, WIPE_PROFILE);
                         break;
                     default:
                         return SUBSTATE_RUNNING;
                 }
                 break;
+            case COPY_TO_OTHER_DEVICE:
+            switch (cursorPos) {
+                case 0:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_NAND_TO_USB);
+                    break;
+                case 1:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_USB_TO_NAND);
+                    break;
+                default:
+                    return SUBSTATE_RUNNING;
+            }
+            break;
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_B))
