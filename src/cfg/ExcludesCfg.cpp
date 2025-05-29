@@ -14,7 +14,7 @@ bool ExcludesCfg::getConfig() {
     titlesID.clear();
 
     for (int i=0;i<titlesCount;i++) {
-        if ( ! titles[i].currentBackup.selectedToBackup ) {
+        if ( ! titles[i].currentDataSource.selectedForBackup ) {
 
             titleID titleID;
             titleID.highID = titles[i].highID;
@@ -171,7 +171,7 @@ bool ExcludesCfg::applyConfig() {
                     if ( titles[i].lowID == titleID.lowID)
                         if (titles[i].highID == titleID.highID)
                             if (titles[i].isTitleOnUSB == titleID.isTitleOnUSB) {
-                                titles[i].currentBackup.selectedToBackup = false;
+                                titles[i].currentDataSource.selectedForBackup = false;
                                 break;
                             }
         }

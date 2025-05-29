@@ -9,8 +9,8 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-#include <menu/BatchRestoreState.h>
-#include <menu/BatchRestoreOptions.h>
+#include <menu/BatchJobState.h>
+#include <menu/BatchJobOptions.h>
 #include <utils/Colors.h>
 
 #define ENTRYCOUNT 7
@@ -68,23 +68,23 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     break;
                 case 3:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, BACKUP_TO_STORAGE);
+                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, RESTORE);
                     break;
                 case 4:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, WIPE_PROFILE);
+                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, WIPE_PROFILE);
                     break;
                 case 5:
                     if (getWiiUaccn() < 2 )
                         promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
                     else {
                         this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
+                        this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
                     }
                     break;
                 case 6:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchRestoreState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, COPY_TO_OTHER_DEVICE);
+                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, COPY_TO_OTHER_DEVICE);
                     break;
                 case 7:
                     this->state = STATE_DO_SUBSTATE;

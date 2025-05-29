@@ -7,12 +7,12 @@
 #include <utils/InputUtils.h>
 #include <savemng.h>
 
-class BatchRestoreOptions : public ApplicationState {
+class BatchJobOptions : public ApplicationState {
 public:
-    BatchRestoreOptions(Title *titles, int titlesCount, bool isWiiUBatchRestore, eRestoreType restoreType);
+    BatchJobOptions(Title *titles, int titlesCount, bool isWiiUBatchJob, eJobType jobType);
     
     enum eState {
-        STATE_BATCH_RESTORE_OPTIONS_MENU,
+        STATE_BATCH_JOB_OPTIONS_MENU,
         STATE_DO_SUBSTATE,
     };
 
@@ -22,15 +22,15 @@ public:
 
 private:
     std::unique_ptr<ApplicationState> subState{};
-    eState state = STATE_BATCH_RESTORE_OPTIONS_MENU;
+    eState state = STATE_BATCH_JOB_OPTIONS_MENU;
 
-    int8_t wiiuuser = -1;
-    int8_t sduser = -1;
+    int8_t wiiu_user = -1;
+    int8_t source_user = -1;
     bool common = false;
 
     bool wipeBeforeRestore = true;
     bool fullBackup = true;
-    std::set<std::string,std::less<std::string>> batchSDUsers;
+    std::set<std::string,std::less<std::string>> sourceUsers;
     std::set<std::string,std::less<std::string>> undefinedUsers;
 
     Title *titles;
@@ -39,11 +39,11 @@ private:
     int cursorPos;
     int minCursorPos;
 
-    bool isWiiUBatchRestore;
+    bool isWiiUBatchJob;
 
-    eRestoreType restoreType;
+    eJobType jobType;
     int wiiUAccountsTotalNumber;
-    int sdAccountsTotalNumber;
+    int sourceAccountsTotalNumber;
 
     bool nonExistentProfileInTitleBackup = false;
 

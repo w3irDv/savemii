@@ -15,7 +15,7 @@ std::string BackupSetList::backupSetSubPath = "/";;
 std::string BackupSetList::backupSetEntry = ROOT_BS;
 std::string BackupSetList::savedBackupSetSubPath {};
 
-std::unique_ptr<BackupSetList> BackupSetList::currentBackupSetList  = std::make_unique<BackupSetList>();
+std::unique_ptr<BackupSetList> BackupSetList::currentDataSourceSetList  = std::make_unique<BackupSetList>();
 
 extern const char *batchBackupPath;
 
@@ -119,12 +119,12 @@ void BackupSetList::add(const std::string &entryPath,const std::string &serialId
 }
 
 void BackupSetList::initBackupSetList() {
-    BackupSetList::currentBackupSetList.reset();
-    BackupSetList::currentBackupSetList = std::make_unique<BackupSetList>(batchBackupPath);
+    BackupSetList::currentDataSourceSetList.reset();
+    BackupSetList::currentDataSourceSetList = std::make_unique<BackupSetList>(batchBackupPath);
 }
 
 void BackupSetList::setBackupSetEntry(int i) {
-    backupSetEntry = currentBackupSetList->at(i);
+    backupSetEntry = currentDataSourceSetList->at(i);
 }
 
 void BackupSetList::setBackupSetSubPath() {
@@ -138,7 +138,7 @@ std::string BackupSetList::getBackupSetSubPath(int i) {
     if (i == 0)
         return "/";
     else
-        return  "/batch/"+currentBackupSetList->at(i)+"/";
+        return  "/batch/"+currentDataSourceSetList->at(i)+"/";
 }
 
 void BackupSetList::filter(BSMetadata filterDef) {
