@@ -7,13 +7,13 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
-class BatchRestoreTitleSelectState : public ApplicationState {
+class BatchJobTitleSelectState : public ApplicationState {
 public:
-    BatchRestoreTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles,
-            int titlesCount, bool isWiiUBatchRestore, eRestoreType restoreType);
+    BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles,
+            int titlesCount, bool isWiiUBatchJob, eJobType jobType);
 
     enum eState {
-        STATE_BATCH_RESTORE_TITLE_SELECT,
+        STATE_BATCH_JOB_TITLE_SELECT,
         STATE_DO_SUBSTATE,
     };
 
@@ -22,17 +22,17 @@ public:
 
 private:
     std::unique_ptr<ApplicationState> subState{};
-    eState state = STATE_BATCH_RESTORE_TITLE_SELECT;
+    eState state = STATE_BATCH_JOB_TITLE_SELECT;
 
  
-    int sduser;
-    int wiiuuser;
+    int source_user;
+    int wiiu_user;
     bool common;
     bool wipeBeforeRestore;
     bool fullBackup;
     Title *titles;
     int titlesCount;
-    bool isWiiUBatchRestore;
+    bool isWiiUBatchJob;
 
 
     std::vector<const char *> sortNames = {LanguageUtils::gettext("None"),
@@ -61,8 +61,8 @@ private:
         " > KO"
     };
 
-    eRestoreType restoreType;
-    int wiiuuser_s = -1000;
+    eJobType jobType;
+    int wiiu_user_in_source = -1000;
 
     void executeBatchProcess();
 };

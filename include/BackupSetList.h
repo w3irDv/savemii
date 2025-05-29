@@ -71,7 +71,7 @@ public:
     friend class BackupSetListFilterState;
     BackupSetList() {};
     BackupSetList(const char *backupSetListRoot);
-    static std::unique_ptr<BackupSetList> currentBackupSetList;
+    static std::unique_ptr<BackupSetList> currentDataSourceSetList;
 
     void sort(bool sortAscending = false);
     static bool getSortAscending() { return sortAscending;};
@@ -93,7 +93,7 @@ public:
         
     static const std::string ROOT_BS;
     static std::string getBackupSetSubPath() { return backupSetSubPath; };
-    static std::string getBackupSetPath() { return currentBackupSetList->backupSetListRoot+backupSetSubPath; };
+    static std::string getBackupSetPath() { return currentDataSourceSetList->backupSetListRoot+backupSetSubPath; };
     static std::string getBackupSetEntry()  { return backupSetEntry; };
     static std::string getBackupSetSubPath(int i);
     static void setBackupSetEntry(int i);

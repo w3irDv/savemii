@@ -4,13 +4,13 @@
 #include <utils/LanguageUtils.h>
 #include <utils/Colors.h>
 
-#include <menu/BatchRestoreState.h>
+#include <menu/BatchJobState.h>
 #include <menu/BackupSetListState.h>
-#include <menu/BatchRestoreOptions.h>
+#include <menu/BatchJobOptions.h>
 
 #define ENTRYCOUNT 2
 
-void BatchRestoreState::render() {
+void BatchJobState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
             OSFatal("SubState was null");
@@ -18,11 +18,11 @@ void BatchRestoreState::render() {
         this->subState->render();
         return;
     }
-    if (this->state == STATE_BATCH_RESTORE_MENU) {
+    if (this->state == STATE_BATCH_JOB_MENU) {
 
         const char *screenTitle, *wiiUTask, *vWiiTask, *readme, *nextTask;
-        switch(restoreType) {
-            case BACKUP_TO_STORAGE:
+        switch(jobType) {
+            case RESTORE:
                 screenTitle = LanguageUtils::gettext("Batch Restore");
                 wiiUTask = LanguageUtils::gettext("   Restore Wii U (%u Title%s)");
                 vWiiTask = LanguageUtils::gettext("   Restore vWii (%u Title%s)");
@@ -72,11 +72,11 @@ void BatchRestoreState::render() {
     }
 }
 
-ApplicationState::eSubState BatchRestoreState::update(Input *input) {
-    if (this->state == STATE_BATCH_RESTORE_MENU) {
+ApplicationState::eSubState BatchJobState::update(Input *input) {
+    if (this->state == STATE_BATCH_JOB_MENU) {
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
-            switch (restoreType) {
-            case BACKUP_TO_STORAGE:
+            switch (jobType) {
+            case RESTORE:
                 switch (cursorPos) {
                     case 0:
                         this->state = STATE_DO_SUBSTATE;
@@ -94,11 +94,11 @@ ApplicationState::eSubState BatchRestoreState::update(Input *input) {
                 switch (cursorPos) {
                     case 0:
                         this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, WIPE_PROFILE);
+                        this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, WIPE_PROFILE);
                         break;
                     case 1:
                         this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, false, WIPE_PROFILE);
+                        this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, false, WIPE_PROFILE);
                         break;
                     default:
                         return SUBSTATE_RUNNING;
@@ -108,11 +108,11 @@ ApplicationState::eSubState BatchRestoreState::update(Input *input) {
             switch (cursorPos) {
                 case 0:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_NAND_TO_USB);
+                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_NAND_TO_USB);
                     break;
                 case 1:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchRestoreOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_USB_TO_NAND);
+                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_USB_TO_NAND);
                     break;
                 default:
                     return SUBSTATE_RUNNING;
@@ -135,7 +135,7 @@ ApplicationState::eSubState BatchRestoreState::update(Input *input) {
             return SUBSTATE_RUNNING;
         } else if (retSubState == SUBSTATE_RETURN) {
             this->subState.reset();
-            this->state = STATE_BATCH_RESTORE_MENU;
+            this->state = STATE_BATCH_JOB_MENU;
         }
     }
     return SUBSTATE_RUNNING;

@@ -5,15 +5,15 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 
-class BatchRestoreState : public ApplicationState {
+class BatchJobState : public ApplicationState {
 public:
-    BatchRestoreState(Title *wiiutitles, Title *wiititles, int wiiuTitlesCount, int vWiiTitlesCount, eRestoreType restoreType) : wiiutitles(wiiutitles),
+    BatchJobState(Title *wiiutitles, Title *wiititles, int wiiuTitlesCount, int vWiiTitlesCount, eJobType jobType) : wiiutitles(wiiutitles),
                                                                                                    wiititles(wiititles),
                                                                                                    wiiuTitlesCount(wiiuTitlesCount),
                                                                                                    vWiiTitlesCount(vWiiTitlesCount),
-                                                                                                   restoreType {restoreType} {};
+                                                                                                   jobType {jobType} {};
     enum eState {
-        STATE_BATCH_RESTORE_MENU,
+        STATE_BATCH_JOB_MENU,
         STATE_DO_SUBSTATE,
     };
 
@@ -23,7 +23,7 @@ public:
 
 private:
     std::unique_ptr<ApplicationState> subState{};
-    eState state = STATE_BATCH_RESTORE_MENU;
+    eState state = STATE_BATCH_JOB_MENU;
 
     Title *wiiutitles;
     Title *wiititles;
@@ -33,6 +33,6 @@ private:
 
     inline static int cursorPos = 0;
 
-    eRestoreType restoreType;
+    eJobType jobType;
 
 };

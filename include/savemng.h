@@ -24,7 +24,7 @@
 #define M_OFF            1
 #define Y_OFF            1
 
-enum eBatchRestoreState {
+enum eBatchJobState {
     NOT_TRIED = 0,
     ABORTED = 1,
     OK = 2,
@@ -32,16 +32,16 @@ enum eBatchRestoreState {
     KO = 4
 };
 
-struct backupInfo {
-    bool hasBatchBackup;
-    bool candidateToBeRestored;
-    bool candidateToBeBacked;
-    bool selectedToRestore;
-    bool selectedToBackup;
+struct dataSourceInfo {
+    bool hasSavedata;
+    bool candidateToBeProcessed;
+    bool candidateForBackup;
+    bool selectedToBeProcessed;
+    bool selectedForBackup;
     bool hasUserSavedata;
     bool hasCommonSavedata;
-    eBatchRestoreState batchRestoreState;
-    eBatchRestoreState batchBackupState;
+    eBatchJobState batchJobState;
+    eBatchJobState batchBackupState;
     int lastErrCode; 
 };
 
@@ -68,7 +68,7 @@ struct Title {
     uint8_t *iconBuf;
     uint64_t accountSaveSize;
     uint32_t groupID;
-    backupInfo currentBackup;
+    dataSourceInfo currentDataSource;
     char titleNameBasedDirName[256];
     eFileNameStyle fileNameStyle;
 };
@@ -97,8 +97,8 @@ enum Style {
     ST_MULTIPLE_CHOICE = 256
 };
 
-enum eRestoreType {
-    BACKUP_TO_STORAGE,
+enum eJobType {
+    RESTORE,
     WIPE_PROFILE,
     PROFILE_TO_PROFILE,
     COPY_TO_OTHER_DEVICE,

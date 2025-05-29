@@ -1560,7 +1560,7 @@ int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= fals
             continue;
         }
         if (onlySelectedTitles)
-            if (! titles[i].currentBackup.selectedToBackup)
+            if (! titles[i].currentDataSource.selectedForBackup)
                 continue;
         titlesToSave++;
     }
@@ -1577,7 +1577,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
                 continue;
             if (onlySelectedTitles)
-                if (! titles[i].currentBackup.selectedToBackup)
+                if (! titles[i].currentDataSource.selectedForBackup)
                     continue;       
             uint32_t highID = titles[i].highID;
             uint32_t lowID = titles[i].lowID;
@@ -1596,21 +1596,21 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             if (createFolder(dstPath.c_str()))
                 if (copyDir(srcPath, dstPath)) {
                     writeMetadata(&titles[i],slot,isUSB,batchDatetime);
-                    titles[i].currentBackup.batchBackupState = OK;
-                    titles[i].currentBackup.selectedToBackup= false;
+                    titles[i].currentDataSource.batchBackupState = OK;
+                    titles[i].currentDataSource.selectedForBackup= false;
                     continue;
                 }
             // backup for this tile has failed
-            titles[i].currentBackup.batchBackupState = KO;
+            titles[i].currentDataSource.batchBackupState = KO;
             writeMetadataWithTag(&titles[i],slot,isUSB,batchDatetime,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
             promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
 #else
         if (i%2 == 0) {
-            titles[i].currentBackup.batchBackupState = OK;
-            titles[i].currentBackup.selectedToBackup= false;
+            titles[i].currentDataSource.batchBackupState = OK;
+            titles[i].currentDataSource.selectedForBackup= false;
         }
         else {
-            titles[i].currentBackup.batchBackupState = KO;
+            titles[i].currentDataSource.batchBackupState = KO;
         }
         if (i > 10)
             break;
@@ -2124,7 +2124,7 @@ void summarizeBackupCounters  (Title *titles, int titlesCount,int & titlesOK, in
             titlesNotInitialized++;
         std::string failedTitle;
 
-        switch (titles[i].currentBackup.batchBackupState) {
+        switch (titles[i].currentDataSource.batchBackupState) {
             case OK :
                 titlesOK++;
                 break;

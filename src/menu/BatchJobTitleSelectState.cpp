@@ -1,7 +1,7 @@
 #include <coreinit/debug.h>
 #include <cstring>
 #include <menu/TitleTaskState.h>
-#include <menu/BatchRestoreTitleSelectState.h>
+#include <menu/BatchJobTitleSelectState.h>
 #include <BackupSetList.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
@@ -23,32 +23,34 @@ bool testForceSaveInitFalse = true
 #define MAX_TITLE_SHOW 14
 #define MAX_WINDOW_SCROLL 6
 
-BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuuser, bool common, bool wipeBeforeRestore, bool fullBackup,
-    Title *titles, int titlesCount, bool isWiiUBatchRestore, eRestoreType restoreType) :
-    sduser(sduser),
-    wiiuuser(wiiuuser),
+BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup,
+    Title *titles, int titlesCount, bool isWiiUBatchJob, eJobType jobType) :
+    source_user(source_user),
+    wiiu_user(wiiu_user),
     common(common),
     wipeBeforeRestore(wipeBeforeRestore),
     fullBackup(fullBackup),
     titles(titles),
     titlesCount(titlesCount),
-    isWiiUBatchRestore(isWiiUBatchRestore),
-    restoreType(restoreType)
+    isWiiUBatchJob(isWiiUBatchJob),
+    jobType(jobType)
 {
     // from batchRestore to batch* -> restore variables refer to the task performed, and backup to the source data, wether in SD or NAND or USB
     // All this should be renamed in a neutral way.
 
     c2t.clear();
-    // from the subset of titles with backup data, filter out the ones without the specified user info
+    // from the subset of titles with data in source storage  (sd=backup, nand/udb), filter out the ones without the specified user info
     for (int i = 0; i < this->titlesCount; i++) {
-        this->titles[i].currentBackup.candidateToBeRestored = false;
-        this->titles[i].currentBackup.selectedToRestore = false;
-        this->titles[i].currentBackup.selectedToBackup = false;
-        this->titles[i].currentBackup.hasUserSavedata = false;
-        this->titles[i].currentBackup.hasCommonSavedata = false;
-        this->titles[i].currentBackup.batchRestoreState = NOT_TRIED;
-        this->titles[i].currentBackup.batchBackupState = NOT_TRIED;
-        if ( this->titles[i].currentBackup.hasBatchBackup == false )  // for PROFILE_TO_PROFILE and WIPE_SAVEDATA, it's true if there is savedata for the source user
+        this->titles[i].currentDataSource.candidateToBeProcessed = false;
+        this->titles[i].currentDataSource.selectedToBeProcessed = false;
+        this->titles[i].currentDataSource.selectedForBackup = false;
+        this->titles[i].currentDataSource.hasUserSavedata = false;
+        this->titles[i].currentDataSource.hasCommonSavedata = false;
+        this->titles[i].currentDataSource.batchJobState = NOT_TRIED;
+        this->titles[i].currentDataSource.batchBackupState = NOT_TRIED;
+        // for PROFILE_TO_PROFILE and WIPE_SAVEDATA, it's true if there is savedata for the source user
+        // for RESTORE , true if the backupSet contains savedata for the title 
+        if ( this->titles[i].currentDataSource.hasSavedata == false )  
             continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
@@ -57,8 +59,8 @@ BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuu
 
         std::string srcPath;
 
-        switch (restoreType) {
-            case BACKUP_TO_STORAGE:
+        switch (jobType) {
+            case RESTORE:
                 srcPath = getDynamicBackupPath(&this->titles[i], 0);
                 break;
             case WIPE_PROFILE:
@@ -72,29 +74,29 @@ BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuu
 
         if (! isWii) {
 
-            if (sduser > -1 ) {
-                std::string usersavePath = srcPath+"/"+getSDacc()[sduser].persistentID;
+            if (source_user > -1 ) {
+                std::string usersavePath = srcPath+"/"+getSDacc()[source_user].persistentID;
 
                 if (! folderEmpty(usersavePath.c_str()))
-                    this->titles[i].currentBackup.hasUserSavedata = true; 
+                    this->titles[i].currentDataSource.hasUserSavedata = true; 
             }
 
-            if (sduser != -1 ) {
+            if (source_user != -1 ) {
                 std::string commonSavePath = srcPath+"/common";
                 if (! folderEmpty(commonSavePath.c_str()))
-                    this->titles[i].currentBackup.hasCommonSavedata = true; 
+                    this->titles[i].currentDataSource.hasCommonSavedata = true; 
             }
 
-            if (sduser == -2)
-                if (! this->titles[i].currentBackup.hasCommonSavedata)
+            if (source_user == -2)
+                if (! this->titles[i].currentDataSource.hasCommonSavedata)
                     continue;
 
-            if (sduser > -1)
-                if (! this->titles[i].currentBackup.hasUserSavedata)
+            if (source_user > -1)
+                if (! this->titles[i].currentDataSource.hasUserSavedata)
                     continue;
                 
-            this->titles[i].currentBackup.candidateToBeRestored = true;  // backup has enough data to try restore, for user=-1, because hasBatchBackup is true
-            this->titles[i].currentBackup.selectedToRestore = true;  // from candidates list, user can select/deselest at wish
+            this->titles[i].currentDataSource.candidateToBeProcessed = true;  // backup has enough data to try restore, for user=-1, because hasSavedata is true
+            this->titles[i].currentDataSource.selectedToBeProcessed = true;  // from candidates list, user can select/deselest at wish
 #ifdef TESTSAVEINIT
             if (testForceSaveInitFalse) {  // first title will have fake false saveinit
                 this->titles[i].saveInit = false;
@@ -102,48 +104,48 @@ BatchRestoreTitleSelectState::BatchRestoreTitleSelectState(int sduser, int wiiuu
             }
 #endif
             if ( ! this->titles[i].saveInit )
-                this->titles[i].currentBackup.selectedToRestore = false; // we discourage a restore to a not init titles
+                this->titles[i].currentDataSource.selectedToBeProcessed = false; // we discourage a restore to a not init titles
         } 
         else
         {
             if (strcmp(this->titles[i].productCode, "OHBC") == 0)
                 continue;
-            this->titles[i].currentBackup.candidateToBeRestored = true;
-            this->titles[i].currentBackup.selectedToRestore = true; 
+            this->titles[i].currentDataSource.candidateToBeProcessed = true;
+            this->titles[i].currentDataSource.selectedToBeProcessed = true; 
         }
         // to recover title from "candidate title" index
         this->c2t.push_back(i);
-        this->titles[i].currentBackup.lastErrCode = 0;
+        this->titles[i].currentDataSource.lastErrCode = 0;
 
     }
     candidatesCount = (int) this->c2t.size();
 
-    if (sduser < 0)
-        wiiuuser_s = sduser;
+    if (source_user < 0)
+        wiiu_user_in_source = source_user;
 
-    if (sduser > -1 && (restoreType == PROFILE_TO_PROFILE || restoreType == COPY_FROM_NAND_TO_USB || restoreType == COPY_FROM_USB_TO_NAND)) {
+    if (source_user > -1 && (jobType == PROFILE_TO_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND)) {
         for (int j = 0; j < getWiiUaccn();j++) {
-            if (getSDacc()[sduser].pID == getWiiUacc()[j].pID) {
-                wiiuuser_s = j;
+            if (getSDacc()[source_user].pID == getWiiUacc()[j].pID) {
+                wiiu_user_in_source = j;
                 break;
             }
         }
     }
 
-    promptMessage(COLOR_BG_WR,"wiiiuser_s %d",wiiuuser_s);
+    promptMessage(COLOR_BG_WR,"wiiiuser_s %d",wiiu_user_in_source);
 }
 
-void BatchRestoreTitleSelectState::updateC2t()
+void BatchJobTitleSelectState::updateC2t()
 {
     int j = 0;
     for (int i = 0; i < this->titlesCount; i++) {
-        if ( ! this->titles[i].currentBackup.candidateToBeRestored )
+        if ( ! this->titles[i].currentDataSource.candidateToBeProcessed )
             continue;
         c2t[j++]=i;
     }
 }
 
-void BatchRestoreTitleSelectState::render() {
+void BatchJobTitleSelectState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
             OSFatal("SubState was null");
@@ -151,14 +153,14 @@ void BatchRestoreTitleSelectState::render() {
         this->subState->render();
         return;
     }
-    if (this->state == STATE_BATCH_RESTORE_TITLE_SELECT) {
+    if (this->state == STATE_BATCH_JOB_TITLE_SELECT) {
         int nameVWiiOffset = 0;
-        if (! isWiiUBatchRestore)
+        if (! isWiiUBatchJob)
             nameVWiiOffset = 1;
 
         const char * menuTitle, * screenOptions, *nextActionBrief, *lastActionBriefOk;    
-        switch (restoreType) {
-            case BACKUP_TO_STORAGE:
+        switch (jobType) {
+            case RESTORE:
                 menuTitle = LanguageUtils::gettext("Batch Restore - Select");
                 screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: Restore titles  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Restore");
@@ -219,54 +221,54 @@ void BatchRestoreTitleSelectState::render() {
             bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
             
             DrawUtils::setFontColor(COLOR_LIST);
-            if ( this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore)
+            if ( this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed)
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             
-            if (this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore && ! this->titles[c2t[i + this->scroll]].saveInit) {
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && ! this->titles[c2t[i + this->scroll]].saveInit) {
                 DrawUtils::setFontColor(COLOR_LIST_SELECTED_NOSAVE);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             }
 
-            if ( this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore)
+            if ( this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed)
                 DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
             else
                 DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED,COLOR_LIST_SKIPPED_AT_CURSOR,cursorPos,i);
             
-            if (this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore && ! this->titles[c2t[i + this->scroll]].saveInit) {
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && ! this->titles[c2t[i + this->scroll]].saveInit) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
             }
             if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == KO)
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == KO)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == ABORTED)
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == ABORTED)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState == OK)
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == OK)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS,COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR,cursorPos,i);
 
-            switch (this->titles[c2t[i + this->scroll]].currentBackup.batchRestoreState) {
+            switch (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState) {
                 case NOT_TRIED :
                     lastState = "";
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore ? nextActionBrief : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed ? nextActionBrief : LanguageUtils::gettext(">> Skip");
                     break;
                 case OK :
                     lastState = LanguageUtils::gettext("[OK]");
                     nxtAction = lastActionBriefOk;
                     break;
                 case ABORTED :
-                    if (this->titles[c2t[i + this->scroll]].currentBackup.batchBackupState == KO)
+                    if (this->titles[c2t[i + this->scroll]].currentDataSource.batchBackupState == KO)
                         lastState = LanguageUtils::gettext("[AB-BackupFailed]");
                     else
                         lastState = LanguageUtils::gettext("[AB]");
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 case WR :
                     lastState = LanguageUtils::gettext("[WR]");
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 case KO:
                     lastState = LanguageUtils::gettext("[KO]");
-                    nxtAction = this->titles[c2t[i + this->scroll]].currentBackup.selectedToRestore ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed ?  LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
                     break;
                 default:
                     lastState = "";
@@ -301,8 +303,8 @@ void BatchRestoreTitleSelectState::render() {
     }
 }
 
-ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
-    if (this->state == STATE_BATCH_RESTORE_TITLE_SELECT) {
+ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
+    if (this->state == STATE_BATCH_JOB_TITLE_SELECT) {
         if (input->get(TRIGGER, PAD_BUTTON_B) || noTitles)
             return SUBSTATE_RETURN;
         if (input->get(TRIGGER, PAD_BUTTON_R)) {
@@ -321,12 +323,12 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
         }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
 
-            if (sduser > -1 && wiiuuser_s == -1000 && (restoreType == PROFILE_TO_PROFILE || restoreType == COPY_FROM_NAND_TO_USB || restoreType == COPY_FROM_USB_TO_NAND)) {
-                promptError(LanguageUtils::gettext("This shouldn't happen, but I cannot find source user %08x \namong console users.\nPlease create it or select a diferent source user."),getSDacc()[sduser].pID);
+            if (source_user > -1 && wiiu_user_in_source == -1000 && (jobType == PROFILE_TO_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND)) {
+                promptError(LanguageUtils::gettext("This shouldn't happen, but I cannot find source user %08x \namong console users.\nPlease create it or select a diferent source user."),getSDacc()[source_user].pID);
                 return SUBSTATE_RETURN;
             }
             for (int i = 0; i < titlesCount ; i++) {
-                if (this->titles[i].currentBackup.selectedToRestore )
+                if (this->titles[i].currentDataSource.selectedToBeProcessed )
                     goto processSelectedTitles;
             }
             promptError(LanguageUtils::gettext("Please select some titles to work on"));
@@ -358,23 +360,23 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_Y) || input->get(TRIGGER, PAD_BUTTON_RIGHT) || input->get(TRIGGER, PAD_BUTTON_LEFT)) {
-            if (this->titles[c2t[cursorPos + this->scroll]].currentBackup.batchRestoreState != OK)
-                this->titles[c2t[cursorPos + this->scroll]].currentBackup.selectedToRestore = this->titles[c2t[cursorPos + this->scroll]].currentBackup.selectedToRestore ? false:true;
+            if (this->titles[c2t[cursorPos + this->scroll]].currentDataSource.batchJobState != OK)
+                this->titles[c2t[cursorPos + this->scroll]].currentDataSource.selectedToBeProcessed = this->titles[c2t[cursorPos + this->scroll]].currentDataSource.selectedToBeProcessed ? false:true;
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
-                if ( ! this->titles[i].currentBackup.candidateToBeRestored || ! this->titles[i].saveInit)
+                if ( ! this->titles[i].currentDataSource.candidateToBeProcessed || ! this->titles[i].saveInit)
                     continue;
-                this->titles[i].currentBackup.selectedToRestore = true;
+                this->titles[i].currentDataSource.selectedToBeProcessed = true;
             }
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_MINUS)) {
             for (int i = 0; i < this->titlesCount; i++) {
-                if ( ! this->titles[i].currentBackup.candidateToBeRestored )
+                if ( ! this->titles[i].currentDataSource.candidateToBeProcessed )
                     continue;
-                this->titles[i].currentBackup.selectedToRestore = false;
+                this->titles[i].currentDataSource.selectedToBeProcessed = false;
             }
             return SUBSTATE_RUNNING;    
         }
@@ -385,50 +387,50 @@ ApplicationState::eSubState BatchRestoreTitleSelectState::update(Input *input) {
             return SUBSTATE_RUNNING;
         } else if (retSubState == SUBSTATE_RETURN) {
             this->subState.reset();
-            this->state = STATE_BATCH_RESTORE_TITLE_SELECT;
+            this->state = STATE_BATCH_JOB_TITLE_SELECT;
         }
     }
     return SUBSTATE_RUNNING;
 }
 
-void BatchRestoreTitleSelectState::executeBatchProcess() {
+void BatchJobTitleSelectState::executeBatchProcess() {
 
     const char * menuTitle, * taskDescription, * backupDescription, *allUsersInfo, *noUsersInfo;
 
-    switch (restoreType) {
-        case BACKUP_TO_STORAGE:
+    switch (jobType) {
+        case RESTORE:
             menuTitle = LanguageUtils::gettext("Batch Restore - Review & Go");
-            taskDescription = isWiiUBatchRestore ? LanguageUtils::gettext("- Restore from %s to < %s (%s) >") : LanguageUtils::gettext("- Restore");
-            backupDescription = isWiiUBatchRestore ? LanguageUtils::gettext("pre-BatchRestore Backup (WiiU)") : LanguageUtils::gettext("pre-BatchRestore Backup (vWii)");
-            allUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Restore allusers") : LanguageUtils::gettext("- Restore");
-            noUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Restore no user") : LanguageUtils::gettext("- Restore");
+            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Restore from %s to < %s (%s) >") : LanguageUtils::gettext("- Restore");
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchJob Backup (WiiU)") : LanguageUtils::gettext("pre-BatchJob Backup (vWii)");
+            allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore allusers") : LanguageUtils::gettext("- Restore");
+            noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore no user") : LanguageUtils::gettext("- Restore");
             break;
         case PROFILE_TO_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Review & Go");
-            taskDescription = isWiiUBatchRestore ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchRestore ? LanguageUtils::gettext("pre-BatchProfileCopy Backup (WiiU)") : "";
+            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileCopy Backup (WiiU)") : "";
             allUsersInfo = "";
             noUsersInfo = "";
             break;
         case WIPE_PROFILE:
             menuTitle=LanguageUtils::gettext("Batch Wipe - Review & Go");
-            taskDescription = isWiiUBatchRestore ?LanguageUtils::gettext("- Wipe  < %s (%s)>") : LanguageUtils::gettext("- Wipe");
-            backupDescription = isWiiUBatchRestore ?LanguageUtils::gettext("pre-BatchWipe Backup (WiiU)") : LanguageUtils::gettext("pre-BatchWipe Backup (vWii)");
-            allUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Wipe allusers") : LanguageUtils::gettext("- Wipe");
-            noUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Wipe no user") : LanguageUtils::gettext("- Wipe");
+            taskDescription = isWiiUBatchJob ?LanguageUtils::gettext("- Wipe  < %s (%s)>") : LanguageUtils::gettext("- Wipe");
+            backupDescription = isWiiUBatchJob ?LanguageUtils::gettext("pre-BatchWipe Backup (WiiU)") : LanguageUtils::gettext("pre-BatchWipe Backup (vWii)");
+            allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe allusers") : LanguageUtils::gettext("- Wipe");
+            noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe no user") : LanguageUtils::gettext("- Wipe");
             break;
         case COPY_FROM_NAND_TO_USB:
             menuTitle=LanguageUtils::gettext("Batch Copy To USB - Review & Go");
-            taskDescription = isWiiUBatchRestore ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchRestore ? LanguageUtils::gettext("pre-BatchCOpyToUSB Backup (WiiU)") : "";
-            allUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Copy allusers") : "";
-            noUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Copy no user") : "";
+            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCOpyToUSB Backup (WiiU)") : "";
+            allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
+            noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
         case COPY_FROM_USB_TO_NAND:
             menuTitle=LanguageUtils::gettext("Batch Copy To NAND - Review & Go");
-            taskDescription = isWiiUBatchRestore ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchRestore ? LanguageUtils::gettext("pre-BatchCopyToNAND Backup (WiiU)") : "";
-            allUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Copy allusers") : "";
-            noUsersInfo = isWiiUBatchRestore ? LanguageUtils::gettext("- Copy no user") : "";
+            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToNAND Backup (WiiU)") : "";
+            allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
+            noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
             break;
         default:
             menuTitle ="";
@@ -442,32 +444,32 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
     const char* summaryTemplate;
     char selectedUserInfo[128];
 
-    if (isWiiUBatchRestore) {
+    if (isWiiUBatchJob) {
             summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n\n%s\n%s\n%s\n%s\n\nContinue?\n\n");
-            if (sduser > - 1) {
-                switch (restoreType) {
-                    case BACKUP_TO_STORAGE:
-                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
+            if (source_user > - 1) {
+                switch (jobType) {
+                    case RESTORE:
+                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[source_user].persistentID,getWiiUacc()[wiiu_user].miiName,getWiiUacc()[wiiu_user].persistentID);
                         break;
                     case PROFILE_TO_PROFILE:
                     case COPY_FROM_NAND_TO_USB:
                     case COPY_FROM_USB_TO_NAND:
-                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[sduser].miiName,getSDacc()[sduser].persistentID,getWiiUacc()[wiiuuser].miiName,getWiiUacc()[wiiuuser].persistentID);
+                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[source_user].miiName,getSDacc()[source_user].persistentID,getWiiUacc()[wiiu_user].miiName,getWiiUacc()[wiiu_user].persistentID);
                         break;
                     case WIPE_PROFILE:
-                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[sduser].miiName,getSDacc()[sduser].persistentID);
+                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[source_user].miiName,getSDacc()[source_user].persistentID);
                         break;
                 }                        
         }
         snprintf(summary,512,summaryTemplate,
-            (sduser > -1) ? selectedUserInfo : (sduser == -1 ? allUsersInfo : noUsersInfo), 
-            (common || sduser == -1 ) ? LanguageUtils::gettext("- Include common savedata: Yes") :  LanguageUtils::gettext("- Include common savedata: No"),
-            (wipeBeforeRestore || restoreType == WIPE_PROFILE)? LanguageUtils::gettext("- Wipe data: Yes") :  LanguageUtils::gettext("- Wipe data: No"),
+            (source_user > -1) ? selectedUserInfo : (source_user == -1 ? allUsersInfo : noUsersInfo), 
+            (common || source_user == -1 ) ? LanguageUtils::gettext("- Include common savedata: Yes") :  LanguageUtils::gettext("- Include common savedata: No"),
+            (wipeBeforeRestore || jobType == WIPE_PROFILE)? LanguageUtils::gettext("- Wipe data: Yes") :  LanguageUtils::gettext("- Wipe data: No"),
             fullBackup ? LanguageUtils::gettext("- Perform full backup: Yes") :  LanguageUtils::gettext("- Perform full backup: No"));
     } else {
             summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n\n%s\n%s\n%s\n\nContinue?\n\n");
             snprintf(summary,512,summaryTemplate,taskDescription,
-            (wipeBeforeRestore || restoreType == WIPE_PROFILE) ? LanguageUtils::gettext("- Wipe data: Yes") :  LanguageUtils::gettext("- Wipe data: No"),
+            (wipeBeforeRestore || jobType == WIPE_PROFILE) ? LanguageUtils::gettext("- Wipe data: Yes") :  LanguageUtils::gettext("- Wipe data: No"),
             fullBackup ? LanguageUtils::gettext("- Perform full backup: Yes") :  LanguageUtils::gettext("- Perform full backup: No"));
     }
 
@@ -478,7 +480,7 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
             return;
 
     for (int i = 0; i < titlesCount ; i++) {
-            if (! this->titles[i].currentBackup.selectedToRestore )
+            if (! this->titles[i].currentDataSource.selectedToBeProcessed )
                 continue;
             if (! this->titles[i].saveInit) {
                 if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?")))
@@ -489,7 +491,7 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
 
     InProgress::totalSteps = InProgress::currentStep = 0;
     for (int i = 0; i < titlesCount ; i++) {
-        if (! this->titles[i].currentBackup.selectedToRestore )
+        if (! this->titles[i].currentDataSource.selectedToBeProcessed )
             continue;
         InProgress::totalSteps++;
     }
@@ -498,11 +500,11 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
         const std::string batchDatetime = getNowDateForFolder();
         for (int i = 0; i < titlesCount ; i++) {
             Title& sourceTitle = this->titles[i];
-            Title& targetTitle = (restoreType == COPY_FROM_NAND_TO_USB || restoreType == COPY_FROM_USB_TO_NAND) ? this->titles[this->titles[i].dupeID]:this->titles[i] ;
-            if (sourceTitle.currentBackup.selectedToRestore )
-                targetTitle.currentBackup.selectedToBackup = true;
+            Title& targetTitle = (jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) ? this->titles[this->titles[i].dupeID]:this->titles[i] ;
+            if (sourceTitle.currentDataSource.selectedToBeProcessed )
+                targetTitle.currentDataSource.selectedForBackup = true;
             else
-                targetTitle.currentBackup.selectedToBackup = false;
+                targetTitle.currentDataSource.selectedForBackup = false;
         }
         InProgress::totalSteps = InProgress::totalSteps + countTitlesToSave(this->titles, this->titlesCount,true);
         backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
@@ -514,33 +516,33 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
 
     for (int i = 0; i < titlesCount ; i++) {
         Title& sourceTitle = this->titles[i];
-        Title& targetTitle = (restoreType == COPY_FROM_NAND_TO_USB || restoreType == COPY_FROM_USB_TO_NAND) ? this->titles[this->titles[i].dupeID]:this->titles[i] ;
+        Title& targetTitle = (jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) ? this->titles[this->titles[i].dupeID]:this->titles[i] ;
         
-        if (! sourceTitle.currentBackup.selectedToRestore )
+        if (! sourceTitle.currentDataSource.selectedToBeProcessed )
             continue;
         InProgress::currentStep++;
         if ( fullBackup )
-            if ( targetTitle.currentBackup.batchBackupState == KO ) {
-                sourceTitle.currentBackup.batchRestoreState = ABORTED;
+            if ( targetTitle.currentDataSource.batchBackupState == KO ) {
+                sourceTitle.currentDataSource.batchJobState = ABORTED;
                 continue;
             }
         
-        if (restoreType == BACKUP_TO_STORAGE && sduser == -1 && ! checkProfilesInBackupForTheTitleExists (&sourceTitle, 0)) {
-            sourceTitle.currentBackup.batchRestoreState = ABORTED;
+        if (jobType == RESTORE && source_user == -1 && ! checkProfilesInBackupForTheTitleExists (&sourceTitle, 0)) {
+            sourceTitle.currentDataSource.batchJobState = ABORTED;
             promptError(LanguageUtils::gettext("%s\n\nTrying to restore to a non-existent profile. Task aborted\n\nTry to restore using from/to user options"),titles[i].shortName);
             continue;
         }    
         
-        sourceTitle.currentBackup.batchRestoreState = OK;
+        sourceTitle.currentDataSource.batchJobState = OK;
         bool targetHasCommonSave = hasCommonSave(&targetTitle,false,false,0,0);
-        bool effectiveCommon = common && sourceTitle.currentBackup.hasCommonSavedata && targetHasCommonSave;
-        if ( wipeBeforeRestore || restoreType == WIPE_PROFILE) {
-            switch (sduser) {
+        bool effectiveCommon = common && sourceTitle.currentDataSource.hasCommonSavedata && targetHasCommonSave;
+        if ( wipeBeforeRestore || jobType == WIPE_PROFILE) {
+            switch (source_user) {
                 case -2:
                     if (effectiveCommon) { 
                         //retCode = wipeSavedata(&targetTitle, -2, true, false);
-                        if (restoreType == COPY_FROM_NAND_TO_USB || restoreType == COPY_FROM_USB_TO_NAND) {
-                            bool ha = sourceTitle.currentBackup.hasCommonSavedata;
+                        if (jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) {
+                            bool ha = sourceTitle.currentDataSource.hasCommonSavedata;
                             promptMessage(COLOR_BG_WR,
                                 "has common save: %s\nsource %s %s\nindex: -2 efffcommon: %s\ntarget %s %s",
                                 ha ? "yes":"no",
@@ -551,7 +553,7 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
                                 targetTitle.isTitleOnUSB ? "USB":"NAND"
                             );
                         } else {
-                            bool ha = targetTitle.currentBackup.hasCommonSavedata;
+                            bool ha = targetTitle.currentDataSource.hasCommonSavedata;
                             promptMessage(COLOR_BG_WR,
                                 "has common save: %s\n%s\nindex: -2 efffcommon: %s",
                                 ha ? "yes":"no",
@@ -570,51 +572,51 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
                             ha ? "yes":"no",
                             targetTitle.shortName,
                             targetTitle.isTitleOnUSB ? "USB":"Nand",
-                            sduser,
+                            source_user,
                             effectiveCommon ? "yes":"no"   
                         );
                     }
                     break;
-                default: //sduser > -1
+                default: //source_user > -1
                     if (effectiveCommon) {
                         //retCode = wipeSavedata(&targetTitle, -2, true, false);
                         promptMessage(COLOR_BG_WR,
                             "wipe common\n\ntarget user %08x\ntarget %s %s\ncommon: %s",
-                            getWiiUacc()[this->wiiuuser].pID,
+                            getWiiUacc()[this->wiiu_user].pID,
                             targetTitle.shortName,
                             targetTitle.isTitleOnUSB?"USB":"NAND",
                             effectiveCommon ? "yes":"no"
                         );
                     }
-                    bool targeHasUserSavedata = hasAccountSave(&targetTitle,false,false,getWiiUacc()[this->wiiuuser].pID, 0,0);
-                    if (sourceTitle.currentBackup.hasUserSavedata && targeHasUserSavedata) {
-                        switch(restoreType) {
-                            case BACKUP_TO_STORAGE:
+                    bool targeHasUserSavedata = hasAccountSave(&targetTitle,false,false,getWiiUacc()[this->wiiu_user].pID, 0,0);
+                    if (sourceTitle.currentDataSource.hasUserSavedata && targeHasUserSavedata) {
+                        switch(jobType) {
+                            case RESTORE:
                             case PROFILE_TO_PROFILE:
                             case COPY_FROM_NAND_TO_USB:
                             case COPY_FROM_USB_TO_NAND:
-                                //retCode += wipeSavedata(&targetTitle, wiiuuser, false, false);
+                                //retCode += wipeSavedata(&targetTitle, wiiu_user, false, false);
                                 promptMessage(COLOR_BG_WR,
                                     "wipe has save: %s\nuser %08x\ntarget %s %s\nindex:%d common: %s  (passem false",
                                     targeHasUserSavedata ? "yes":"no",
-                                    getWiiUacc()[this->wiiuuser].pID,
+                                    getWiiUacc()[this->wiiu_user].pID,
                                     targetTitle.shortName,
                                     targetTitle.isTitleOnUSB?"USB":"NAND",
-                                    wiiuuser,
+                                    wiiu_user,
                                     effectiveCommon ? "yes":"no"
                                 );
                                 break;
-                            case WIPE_PROFILE:  // in this case we allow to delete users not created in the console, so we use sduser.
-                                //retCode += wipeSavedata(&sourceTitle, sduser, false, false, USE_SD_OR_STORAGE_PROFILES);
-                                bool ha = hasAccountSave(&sourceTitle,false,false,getSDacc()[this->sduser].pID, 0,0);
+                            case WIPE_PROFILE:  // in this case we allow to delete users not created in the console, so we use source_user.
+                                //retCode += wipeSavedata(&sourceTitle, source_user, false, false, USE_SD_OR_STORAGE_PROFILES);
+                                bool ha = hasAccountSave(&sourceTitle,false,false,getSDacc()[this->source_user].pID, 0,0);
                                 promptMessage(COLOR_BG_WR,
                                     "has save: %s\nuser %08x\n%s\nindex:%d common: %s\nuser:%s",
                                     ha ? "yes":"no",
-                                    getSDacc()[this->sduser].pID,
+                                    getSDacc()[this->source_user].pID,
                                     sourceTitle.shortName,
-                                    sduser,
+                                    source_user,
                                     effectiveCommon ? "yes":"no",
-                                    getSDacc()[this->sduser].persistentID
+                                    getSDacc()[this->source_user].persistentID
                                 );
                             break;
                         }
@@ -622,51 +624,51 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
                     break;
             }
             if (retCode > 0)
-                this->titles[i].currentBackup.batchRestoreState = WR;
+                this->titles[i].currentDataSource.batchJobState = WR;
             else if (retCode < 0)
-                this->titles[i].currentBackup.batchRestoreState = ABORTED;
+                this->titles[i].currentDataSource.batchJobState = ABORTED;
         }
         int globalRetCode = retCode<<8;
-        switch(restoreType) {
-            case BACKUP_TO_STORAGE:
-                //retCode = restoreSavedata(&this->titles[i], 0, sduser, wiiuuser, effectiveCommon, false); //always from slot 0
-                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->sduser].pID, 0,0);
+        switch(jobType) {
+            case RESTORE:
+                //retCode = restoreSavedata(&this->titles[i], 0, source_user, wiiu_user, effectiveCommon, false); //always from slot 0
+                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->source_user].pID, 0,0);
                 promptMessage(COLOR_BG_WR,
-                    "restore\ntitle %s\nsduser %d\nwiiuuser %d\neffecivecommon %s\nsduser %s\nwiiuuser %s\n",
+                    "restore\ntitle %s\nsource_user %d\nwiiu_user %d\neffecivecommon %s\nsource_user %s\nwiiu_user %s\n",
                     titles[i].shortName,
-                    sduser,
-                    wiiuuser,
+                    source_user,
+                    wiiu_user,
                     effectiveCommon ? "yes":"no",
-                    (sduser > -1) ? getSDacc()[this->sduser].persistentID : "nop",
-                    (sduser > -1) ? getWiiUacc()[this->wiiuuser].persistentID : "noop"
+                    (source_user > -1) ? getSDacc()[this->source_user].persistentID : "nop",
+                    (source_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop"
                 );
                 break;
             case PROFILE_TO_PROFILE:
-                //retCode = copySavedataToOtherProfile(&this->titles[i], wiiuuser_s, wiiuuser, false);
-                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->sduser].pID, 0,0);
+                //retCode = copySavedataToOtherProfile(&this->titles[i], wiiu_user_in_source, wiiu_user, false);
+                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->source_user].pID, 0,0);
                 promptMessage(COLOR_BG_WR,
-                    "copy\ntitle %s\nwiiuser_s %d\nwiiuuser %d\nwiuuser_s %s\nwiiuuser %s\n",
+                    "copy\ntitle %s\nwiiuser_s %d\nwiiu_user %d\nwiuuser_s %s\nwiiu_user %s\n",
                     titles[i].shortName,
-                    wiiuuser_s,
-                    wiiuuser,
-                    (sduser > -1) ? getWiiUacc()[this->wiiuuser_s].persistentID : "noop",
-                    (sduser > -1) ? getWiiUacc()[this->wiiuuser].persistentID : "noop"
+                    wiiu_user_in_source,
+                    wiiu_user,
+                    (source_user > -1) ? getWiiUacc()[this->wiiu_user_in_source].persistentID : "noop",
+                    (source_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop"
                 );
                 break;
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                //retCode = copySavedataToOtherDevice(&sourceTitle,&targetTitle, wiiuuser_s, wiiuuser,effectiveCommon)
-                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->sduser].pID, 0,0);
+                //retCode = copySavedataToOtherDevice(&sourceTitle,&targetTitle, wiiu_user_in_source, wiiu_user,effectiveCommon)
+                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->source_user].pID, 0,0);
                 promptMessage(COLOR_BG_WR,
-                    "copy\ntitle %s %s\ntarget %s %s\nwiiuser_s %d\nwiiuuser %d\nsduser %s\nwiiuuser %s\neffetcivecommon %s",
+                    "copy\ntitle %s %s\ntarget %s %s\nwiiuser_s %d\nwiiu_user %d\nsource_user %s\nwiiu_user %s\neffetcivecommon %s",
                     sourceTitle.shortName,
                     sourceTitle.isTitleOnUSB?"usb":"nand",
                     targetTitle.shortName,
                     targetTitle.isTitleOnUSB?"usb":"nand",
-                    wiiuuser_s,
-                    wiiuuser,
-                    (wiiuuser_s != -1000)? ((sduser > -1) ? getSDacc()[this->wiiuuser_s].persistentID : "noop") : "-1000",
-                    (sduser > -1) ? getWiiUacc()[this->wiiuuser].persistentID : "noop",
+                    wiiu_user_in_source,
+                    wiiu_user,
+                    (wiiu_user_in_source != -1000)? ((source_user > -1) ? getSDacc()[this->wiiu_user_in_source].persistentID : "noop") : "-1000",
+                    (source_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop",
                     effectiveCommon ? "true":"false"
                 );
                 break;   
@@ -675,14 +677,14 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
         }
 
         if (retCode > 0)
-            this->titles[i].currentBackup.batchRestoreState = KO;
+            this->titles[i].currentDataSource.batchJobState = KO;
         else if (retCode < 0)
-            this->titles[i].currentBackup.batchRestoreState = ABORTED;
-        if (this->titles[i].currentBackup.batchRestoreState == OK || this->titles[i].currentBackup.batchRestoreState == WR )
-            this->titles[i].currentBackup.selectedToRestore = false;
+            this->titles[i].currentDataSource.batchJobState = ABORTED;
+        if (this->titles[i].currentDataSource.batchJobState == OK || this->titles[i].currentDataSource.batchJobState == WR )
+            this->titles[i].currentDataSource.selectedToBeProcessed = false;
         
         globalRetCode = globalRetCode + retCode;
-        this->titles[i].currentBackup.lastErrCode = globalRetCode;
+        this->titles[i].currentDataSource.lastErrCode = globalRetCode;
     }
 
     int titlesOK = 0;
@@ -696,7 +698,7 @@ void BatchRestoreTitleSelectState::executeBatchProcess() {
         if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 || ! this->titles[c2t[i]].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
-        switch (this->titles[c2t[i]].currentBackup.batchRestoreState) {
+        switch (this->titles[c2t[i]].currentDataSource.batchJobState) {
             case OK :
                 titlesOK++;
                 break;
