@@ -122,7 +122,10 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
 
     if (source_user < 0)
         wiiu_user_in_source = source_user;
+    
+    promptMessage(COLOR_BG_WR,"source user: %d",source_user);
 
+    //PROFILE_TO_PROFILE or COPY_FROM use index in wiiuaccounts as first argument (sorce), but source_user is the index in sdaccount. Transform it: 
     if (source_user > -1 && (jobType == PROFILE_TO_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND)) {
         for (int j = 0; j < getWiiUaccn();j++) {
             if (getSDacc()[source_user].pID == getWiiUacc()[j].pID) {
@@ -529,7 +532,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         
         if (jobType == RESTORE && source_user == -1 && ! checkProfilesInBackupForTheTitleExists (&sourceTitle, 0)) {
             sourceTitle.currentDataSource.batchJobState = ABORTED;
-            promptError(LanguageUtils::gettext("%s\n\nTrying to restore to a non-existent profile. Task aborted\n\nTry to restore using from/to user options"),titles[i].shortName);
+            promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"),titles[i].shortName);
             continue;
         }    
         

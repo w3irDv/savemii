@@ -39,9 +39,9 @@ void MainMenuState::render() {
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
         consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch Wipe"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
-        consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch ProfileCopy"));
+        consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch Copy to Other Profile"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);
-        consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Batch CopyToOtherDevice"));
+        consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Batch Copy to Other Device"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,7);   
         consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColor(COLOR_TEXT);

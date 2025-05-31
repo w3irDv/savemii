@@ -247,6 +247,7 @@ void BatchJobOptions::render() {
                 consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("all users"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPos(M_OFF, 9, commonIncluded);
+                consolePrintPos(M_OFF, 10, "   < %s >", LanguageUtils::gettext("Ok"));
             } else {
                 if (jobType == RESTORE)
                     consolePrintPos(M_OFF, 4, "   < %s >", getSDacc()[source_user].persistentID);
@@ -272,7 +273,7 @@ void BatchJobOptions::render() {
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPos(M_OFF, 9, LanguageUtils::gettext("Include 'common' save?"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
-                consolePrintPos(M_OFF, 10, "   < %s >", common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
+                consolePrintPos(M_OFF, 10, "   < %s >", common ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No "));
             }
         }
 

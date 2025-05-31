@@ -26,7 +26,7 @@ void BatchJobState::render() {
                 screenTitle = LanguageUtils::gettext("Batch Restore");
                 wiiUTask = LanguageUtils::gettext("   Restore Wii U (%u Title%s)");
                 vWiiTask = LanguageUtils::gettext("   Restore vWii (%u Title%s)");
-                readme = LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to a different user in the same console \n* or to a different console where the games are previouly installed.\nIn the later case, it is recommended to first run the game to \n  initialize the savedata.");
+                readme = LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to the same user profiles\n* to a different user in the same console \n* or to a different console where the games are already installed.\nIn the later case, it is recommended to first run the game to \n  initialize the savedata.");
                 nextTask = LanguageUtils::gettext("\ue000: Continue to BackupSet selection  \ue001: Back");
                 break;
             case WIPE_PROFILE:
@@ -37,10 +37,10 @@ void BatchJobState::render() {
                 nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
                 break;
             case COPY_TO_OTHER_DEVICE:
-                screenTitle = LanguageUtils::gettext("Batch CopyToOtherProfile");
+                screenTitle = LanguageUtils::gettext("Batch CopyToOtherDevice");
                 wiiUTask = LanguageUtils::gettext("   Copy Wii U Savedata from NAND to USB");
                 vWiiTask = LanguageUtils::gettext("   Copy Wii U Savedata from USB to NAND");
-                readme = LanguageUtils::gettext("Batch CopyToOtherProfile allows you to transfer savedata \nbetween NAND and USB for all selected titles.\n\nJust:\n- select which data to copy\n- select titles to act on\n- and go!");
+                readme = LanguageUtils::gettext("Batch CopyToOtherDevice allows you to transfer savedata \nbetween NAND and USB for all selected titles.\n\nJust:\n- select which data to copy\n- select titles to act on\n- and go!");
                 nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
                 break;
             default:

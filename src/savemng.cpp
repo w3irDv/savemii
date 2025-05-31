@@ -2153,9 +2153,9 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
     char summary[512];
     const char* summaryTemplate;
     if (titlesNotInitialized == 0 )
-        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
+        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
     else
-        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
+        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
     snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
     
     std::string summaryWithTitles;
