@@ -1298,7 +1298,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
     closedir(src_dir);
 }
 
-int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common, bool interactive /*= true*/) {
+int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
     int errorCode = 0;
     copyErrorsCounter = 0;
     abortCopy = false;
@@ -1354,7 +1354,11 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
             doBase = true;
             doCommon = common;
             singleUser = true;
-            srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+
+            if (accountSource == USE_WIIU_PROFILES)
+                srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+            else
+                srcPath.append(StringUtils::stringFormat("/%s", sdacc[wiiuuser].persistentID));
             dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser_d].persistentID));
             break;
     }
@@ -1428,7 +1432,7 @@ end:
     return errorCode;
 }
 
-int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive /*= true*/) {
+int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
     int errorCode = 0;
     copyErrorsCounter = 0;
     abortCopy = false;
@@ -1456,7 +1460,12 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
     }
     
 
-    std::string srcPath = basePath+StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID); 
+    std::string srcPath;
+    if (accountSource == USE_WIIU_PROFILES)
+        srcPath = basePath+StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID);
+    else
+        srcPath = basePath+StringUtils::stringFormat("/%s", sdacc[wiiuuser].persistentID);
+     
     std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiuacc[wiiuuser_d].persistentID);
 
     std::string errorMessage {};

@@ -62,7 +62,6 @@ private:
     };
 
     eJobType jobType;
-    int wiiu_user_in_source = -1000;
 
     void executeBatchProcess();
 };

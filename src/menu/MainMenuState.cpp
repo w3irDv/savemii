@@ -13,7 +13,7 @@
 #include <menu/BatchJobOptions.h>
 #include <utils/Colors.h>
 
-#define ENTRYCOUNT 7
+#define ENTRYCOUNT 8
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {

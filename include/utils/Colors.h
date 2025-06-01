@@ -31,3 +31,4 @@
 #define COLOR_BG_WR      Color(0xBB7F0000)
 #define COLOR_BG_KO      Color(0x7F000000)
 #define COLOR_BG_ERROR Color(0xAA0000FF)
+#define COLOR_LIST_ICON_AT_CURSOR   Color(0x55FF55FF)
