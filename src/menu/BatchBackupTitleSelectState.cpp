@@ -113,9 +113,11 @@ void BatchBackupTitleSelectState::render() {
             bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
             
             DrawUtils::setFontColor(COLOR_LIST);
-            if ( this->titles[c2t[i + this->scroll]].currentDataSource.selectedForBackup)
+            if ( this->titles[c2t[i + this->scroll]].currentDataSource.selectedForBackup) {
+                DrawUtils::setFontColorByCursor(COLOR_LIST,Color(0x99FF99ff),cursorPos,i);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
-            
+            }
+
             if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedForBackup && ! this->titles[c2t[i + this->scroll]].saveInit) {
                 DrawUtils::setFontColor(COLOR_LIST_SELECTED_NOSAVE);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
@@ -129,13 +131,20 @@ void BatchBackupTitleSelectState::render() {
             if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedForBackup && ! this->titles[c2t[i + this->scroll]].saveInit) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
             }
-            if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
+            if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchBackupState == KO)
+                if (! this->titles[c2t[i + this->scroll]].currentDataSource.selectedForBackup)
+                    consolePrintPos(M_OFF, i + 2,"\ue010");
+            }
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchBackupState == KO) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchBackupState == OK)
+                if (! this->titles[c2t[i + this->scroll]].currentDataSource.selectedForBackup)
+                    consolePrintPos(M_OFF, i + 2,"\ue00a");
+            }
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchBackupState == OK) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS,COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR,cursorPos,i);
-
+                consolePrintPos(M_OFF, i + 2,"\ue008");
+            }
             switch (this->titles[c2t[i + this->scroll]].currentDataSource.batchBackupState) {
                 case NOT_TRIED :
                     lastState = "";
