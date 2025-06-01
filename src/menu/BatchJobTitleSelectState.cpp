@@ -119,23 +119,9 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
 
     }
     candidatesCount = (int) this->c2t.size();
-
-    if (source_user < 0)
-        wiiu_user_in_source = source_user;
     
     promptMessage(COLOR_BG_WR,"source user: %d",source_user);
 
-    //PROFILE_TO_PROFILE or COPY_FROM use index in wiiuaccounts as first argument (sorce), but source_user is the index in sdaccount. Transform it: 
-    if (source_user > -1 && (jobType == PROFILE_TO_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND)) {
-        for (int j = 0; j < getWiiUaccn();j++) {
-            if (getSDacc()[source_user].pID == getWiiUacc()[j].pID) {
-                wiiu_user_in_source = j;
-                break;
-            }
-        }
-    }
-
-    promptMessage(COLOR_BG_WR,"wiiiuser_s %d",wiiu_user_in_source);
 }
 
 void BatchJobTitleSelectState::updateC2t()
@@ -222,13 +208,14 @@ void BatchJobTitleSelectState::render() {
             if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidatesCount)
                 break;
             bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
-            
-            DrawUtils::setFontColor(COLOR_LIST);
-            if ( this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed)
+                        
+            if ( this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed) {
+                DrawUtils::setFontColorByCursor(COLOR_LIST,Color(0x99FF99ff),cursorPos,i);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
-            
+            }
+
             if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && ! this->titles[c2t[i + this->scroll]].saveInit) {
-                DrawUtils::setFontColor(COLOR_LIST_SELECTED_NOSAVE);
+                DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             }
 
@@ -240,14 +227,25 @@ void BatchJobTitleSelectState::render() {
             if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && ! this->titles[c2t[i + this->scroll]].saveInit) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
             }
-            if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0)
+            if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == KO)
+                if (! this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed)
+                    consolePrintPos(M_OFF, i + 2,"\ue010");
+            }
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == KO) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == ABORTED)
+                if (! this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed)
+                    consolePrintPos(M_OFF, i + 2,"\ue00a");
+            }
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == ABORTED) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == OK)
+                if (! this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed)
+                    consolePrintPos(M_OFF, i + 2,"\ue00b");
+            }
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState == OK) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS,COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR,cursorPos,i);
+                consolePrintPos(M_OFF, i + 2,"\ue008");
+            }
 
             switch (this->titles[c2t[i + this->scroll]].currentDataSource.batchJobState) {
                 case NOT_TRIED :
@@ -325,11 +323,6 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
-
-            if (source_user > -1 && wiiu_user_in_source == -1000 && (jobType == PROFILE_TO_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND)) {
-                promptError(LanguageUtils::gettext("This shouldn't happen, but I cannot find source user %08x \namong console users.\nPlease create it or select a diferent source user."),getSDacc()[source_user].pID);
-                return SUBSTATE_RETURN;
-            }
             for (int i = 0; i < titlesCount ; i++) {
                 if (this->titles[i].currentDataSource.selectedToBeProcessed )
                     goto processSelectedTitles;
@@ -524,6 +517,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         if (! sourceTitle.currentDataSource.selectedToBeProcessed )
             continue;
         InProgress::currentStep++;
+
         if ( fullBackup )
             if ( targetTitle.currentDataSource.batchBackupState == KO ) {
                 sourceTitle.currentDataSource.batchJobState = ABORTED;
@@ -647,31 +641,31 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 );
                 break;
             case PROFILE_TO_PROFILE:
-                //retCode = copySavedataToOtherProfile(&this->titles[i], wiiu_user_in_source, wiiu_user, false);
+                //retCode = copySavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, false,false,USE_SD_OR_STORAGE_PROFILES);
                 //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->source_user].pID, 0,0);
                 promptMessage(COLOR_BG_WR,
-                    "copy\ntitle %s\nwiiuser_s %d\nwiiu_user %d\nwiuuser_s %s\nwiiu_user %s\n",
+                    "copy\ntitle %s\nsource_user %d\nwiiu_user %d\nwiuuser_s %s\nwiiu_user %s\n",
                     titles[i].shortName,
-                    wiiu_user_in_source,
+                    source_user,
                     wiiu_user,
-                    (source_user > -1) ? getWiiUacc()[this->wiiu_user_in_source].persistentID : "noop",
-                    (source_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop"
+                    (source_user > -1) ? getSDacc()[this->source_user].persistentID : "noop",
+                    (wiiu_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop"
                 );
                 break;
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                //retCode = copySavedataToOtherDevice(&sourceTitle,&targetTitle, wiiu_user_in_source, wiiu_user,effectiveCommon)
+                //retCode = copySavedataToOtherDevice(&sourceTitle,&targetTitle,source_user, wiiu_user,effectiveCommon,false,USE_SD_OR_STORAGE_PROFILES)
                 //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->source_user].pID, 0,0);
                 promptMessage(COLOR_BG_WR,
-                    "copy\ntitle %s %s\ntarget %s %s\nwiiuser_s %d\nwiiu_user %d\nsource_user %s\nwiiu_user %s\neffetcivecommon %s",
+                    "copy\ntitle %s %s\ntarget %s %s\nsource_user %d\nwiiu_user %d\nsource_user %s\nwiiu_user %s\neffetcivecommon %s",
                     sourceTitle.shortName,
                     sourceTitle.isTitleOnUSB?"usb":"nand",
                     targetTitle.shortName,
                     targetTitle.isTitleOnUSB?"usb":"nand",
-                    wiiu_user_in_source,
+                    source_user,
                     wiiu_user,
-                    (wiiu_user_in_source != -1000)? ((source_user > -1) ? getSDacc()[this->wiiu_user_in_source].persistentID : "noop") : "-1000",
-                    (source_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop",
+                    (source_user > -1) ? getSDacc()[this->source_user].persistentID : "noop",
+                    (wiiu_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop",
                     effectiveCommon ? "true":"false"
                 );
                 break;   

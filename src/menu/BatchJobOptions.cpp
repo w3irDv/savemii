@@ -81,8 +81,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                             nonExistentProfileInTitleBackup = true;
                             undefinedUsers.insert(data->d_name);
                         }
-                        if (jobType == RESTORE || jobType == WIPE_PROFILE || profileDefined)
-                            sourceUsers.insert(data->d_name);
+                        sourceUsers.insert(data->d_name);
                     }
                     this->titles[i].currentDataSource.hasSavedata=true;
                 }
@@ -161,7 +160,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
             case WIPE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored\nYou can wipe them using the 'Batch Wipe' task."));
+                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored. You can:\n* Backup it with 'allusers' option\n* wipe or move it with 'Batch Wipe/Copy to Other Profile' tasks."));
                 break;
             case RESTORE:
                 titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("The BackupSet contains savedata for profiles that don't exist in this console.\nYou can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
@@ -173,7 +172,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
         titleListInColumns(titlesWithUndefinedProfilesSummary,titlesWithNonExistentProfile);
         titlesWithUndefinedProfilesSummary.append("\n");
 
-        if ((jobType == PROFILE_TO_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) && GlobalCfg::global->getDontAllowUndefinedProfiles())
+        if ( jobType != RESTORE  && GlobalCfg::global->getDontAllowUndefinedProfiles())
             promptMessage(COLOR_BG_WR,titlesWithUndefinedProfilesSummary.c_str());
     }
 
@@ -243,6 +242,7 @@ void BatchJobOptions::render() {
                 consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("no profile user"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPos(M_OFF, 9, onlyCommon);
+                consolePrintPos(M_OFF, 10, "   < %s >", LanguageUtils::gettext("Ok"));
             } else if (source_user == -1) {
                 consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("all users"));
                 DrawUtils::setFontColor(COLOR_TEXT);
@@ -290,8 +290,7 @@ void BatchJobOptions::render() {
         if (totalNumberOfTitlesWithNonExistentProfiles == 0)
             consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
         else
-            if (GlobalCfg::global->getDontAllowUndefinedProfiles())
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
+            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
 
 
    }

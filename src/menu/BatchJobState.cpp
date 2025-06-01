@@ -37,10 +37,10 @@ void BatchJobState::render() {
                 nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
                 break;
             case COPY_TO_OTHER_DEVICE:
-                screenTitle = LanguageUtils::gettext("Batch CopyToOtherDevice");
+                screenTitle = LanguageUtils::gettext("Batch Copy To Other Device");
                 wiiUTask = LanguageUtils::gettext("   Copy Wii U Savedata from NAND to USB");
                 vWiiTask = LanguageUtils::gettext("   Copy Wii U Savedata from USB to NAND");
-                readme = LanguageUtils::gettext("Batch CopyToOtherDevice allows you to transfer savedata \nbetween NAND and USB for all selected titles.\n\nJust:\n- select which data to copy\n- select titles to act on\n- and go!");
+                readme = LanguageUtils::gettext("Batch Copy To Other Device allows you to transfer savedata \nbetween NAND and USB for all selected titles that are installed\n on both media.\n\nJust:\n- select which data to copy\n- select titles to act on\n- and go!");
                 nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
                 break;
             default:

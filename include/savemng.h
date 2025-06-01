@@ -203,7 +203,6 @@ bool isSlotEmptyInTitleBasedPath(Title *title, uint8_t slot);
 bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime);
 bool folderEmpty(const char *fPath);
 bool folderEmptyIgnoreSavemii(const char *fPath);
-int copySavedataToOtherDevice(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common, bool interactive = true) __attribute__((hot));
 std::string getNowDateForFolder() __attribute__((hot));
 std::string getNowDate() __attribute__((hot));
 void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) __attribute__((hot));
@@ -216,7 +215,8 @@ int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false)
 int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag = "") __attribute__((hot));
 int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
 int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
-int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive = true) __attribute__((hot));
+int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
+int copySavedataToOtherDevice(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 void importFromLoadiine(Title *title, bool common, int version);
 void exportToLoadiine(Title *title, bool common, int version);
 int checkEntry(const char *fPath);
