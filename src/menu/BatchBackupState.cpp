@@ -2,7 +2,7 @@
 #include <coreinit/debug.h>
 #include <menu/BatchBackupState.h>
 #include <menu/BackupSetListState.h>
-#include <menu/BatchBackupTitleSelectState.h>
+#include <menu/BatchJobTitleSelectState.h>
 #include <BackupSetList.h>
 #include <savemng.h>
 #include <utils/InputUtils.h>
@@ -41,6 +41,10 @@ void BatchBackupState::render() {
                     LanguageUtils::gettext("Reminder: Your Excludes will be applied to\n  'Backup Wii U' and 'Backup vWii' tasks"));
             }
         }
+
+        
+        DrawUtils::setFontColor(COLOR_INFO);
+        consolePrintPos(M_OFF, 11, LanguageUtils::gettext("Batch Backup allows you to backup savedata:\n* for All titles at once (WiiU+ vWii)\n* for the titles you select (individual 'Wii U' or 'vWii' tasks)"));
         
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
@@ -86,11 +90,11 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
                     break;
                 case 1: 
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchBackupTitleSelectState>(this->wiiutitles, this->wiiuTitlesCount, true,ExcludesCfg::wiiuExcludes);
+                    this->subState = std::make_unique<BatchJobTitleSelectState>(this->wiiutitles, this->wiiuTitlesCount, true,ExcludesCfg::wiiuExcludes,BACKUP);
                     break;
                 case 2:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchBackupTitleSelectState>(this->wiititles, this->vWiiTitlesCount, false,ExcludesCfg::wiiExcludes);
+                    this->subState = std::make_unique<BatchJobTitleSelectState>(this->wiititles, this->vWiiTitlesCount, false,ExcludesCfg::wiiExcludes,BACKUP);
                     break;
                 default:
                     return SUBSTATE_RUNNING;

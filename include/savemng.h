@@ -103,7 +103,8 @@ enum eJobType {
     PROFILE_TO_PROFILE,
     COPY_TO_OTHER_DEVICE,
     COPY_FROM_NAND_TO_USB,
-    COPY_FROM_USB_TO_NAND
+    COPY_FROM_USB_TO_NAND,
+    BACKUP
 };
 
 enum eNEProfileWipeMode {

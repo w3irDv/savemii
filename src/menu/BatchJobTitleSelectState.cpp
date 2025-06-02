@@ -8,6 +8,8 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
+#include <cfg/ExcludesCfg.h>
+#include <cfg/GlobalCfg.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -22,6 +24,8 @@ bool testForceSaveInitFalse = true
 
 #define MAX_TITLE_SHOW 14
 #define MAX_WINDOW_SCROLL 6
+
+extern bool firstSDWrite;
 
 BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup,
     Title *titles, int titlesCount, bool isWiiUBatchJob, eJobType jobType) :
@@ -119,10 +123,56 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
 
     }
     candidatesCount = (int) this->c2t.size();
-    
+
     promptMessage(COLOR_BG_WR,"source user: %d",source_user);
 
 }
+
+// BatchBackup constructor
+BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchJob,std::unique_ptr<ExcludesCfg> & excludes, eJobType jobType) :
+    titles(titles),
+    titlesCount(titlesCount),
+    isWiiUBatchJob(isWiiUBatchJob),
+    excludes(excludes),
+    jobType(jobType)
+{
+
+    c2t.clear();
+    // from the subset of titles with backup data, filter out the ones without the specified user info
+    for (int i = 0; i < this->titlesCount; i++) {
+        this->titles[i].currentDataSource.batchBackupState = NOT_TRIED;
+        
+        //uint32_t highID = this->titles[i].highID;
+        //uint32_t lowID = this->titles[i].lowID;
+        bool isWii = titles[i].is_Wii;
+
+        //skipped cases
+        if ((strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) ||
+            (! this->titles[i].saveInit ) ||
+            (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0))) {
+                this->titles[i].currentDataSource.selectedForBackup = false;
+                this->titles[i].currentDataSource.candidateForBackup = false;
+                continue;
+        } 
+
+        // candidates to backup
+        this->titles[i].currentDataSource.selectedForBackup = true;
+        this->titles[i].currentDataSource.candidateForBackup = true;
+
+        // to recover title from "candidate title" index
+        this->c2t.push_back(i);
+        this->titles[i].currentDataSource.lastErrCode = 0;
+
+    }
+    candidatesCount = (int) this->c2t.size();
+
+    if (GlobalCfg::global->getAlwaysApplyExcludes())
+        if(excludes->read())
+            excludes->applyConfig();
+
+    batch2job();
+
+};
 
 void BatchJobTitleSelectState::updateC2t()
 {
@@ -131,6 +181,25 @@ void BatchJobTitleSelectState::updateC2t()
         if ( ! this->titles[i].currentDataSource.candidateToBeProcessed )
             continue;
         c2t[j++]=i;
+    }
+}
+
+// BatchJobTitleSelect uses candidateToBeProcessed for UI management, but BatchBackup needs candidateForBackup for processing.
+// And all batch tasks can call a batch backup, so we need both set of variables simultaneously.
+// Quick fix - These functions move these variables back & forth so we can unify batchBackup with JobTitleSelect
+void BatchJobTitleSelectState::batch2job() {
+    for (int i = 0; i < this->titlesCount; i++) {
+        this->titles[i].currentDataSource.candidateToBeProcessed = this->titles[i].currentDataSource.candidateForBackup; 
+        this->titles[i].currentDataSource.selectedToBeProcessed = this->titles[i].currentDataSource.selectedForBackup;
+        this->titles[i].currentDataSource.batchJobState = this->titles[i].currentDataSource.batchBackupState;       
+    }
+}
+
+void BatchJobTitleSelectState::job2batch() {
+    for (int i = 0; i < this->titlesCount; i++) {
+        this->titles[i].currentDataSource.candidateForBackup  = this->titles[i].currentDataSource.candidateToBeProcessed;
+        this->titles[i].currentDataSource.selectedForBackup = this->titles[i].currentDataSource.selectedToBeProcessed;
+        this->titles[i].currentDataSource.batchBackupState = this->titles[i].currentDataSource.batchJobState;       
     }
 }
 
@@ -178,6 +247,12 @@ void BatchJobTitleSelectState::render() {
                 screenOptions=LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: CopyToNAND  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Copy");
                 lastActionBriefOk = LanguageUtils::gettext("|Copied|");
+                break;
+            case BACKUP:
+                menuTitle=LanguageUtils::gettext("Batch Backup - Select & Go");
+                screenOptions=LanguageUtils::gettext("\ue003\ue07eSet/Unset  \ue045\ue046Set/Unset All  \ue002Excludes  \ue000Backup  \ue001Back");
+                nextActionBrief = LanguageUtils::gettext(">> Backup");
+                lastActionBriefOk = LanguageUtils::gettext("|Saved|");
                 break;
             default:
                 menuTitle="";
@@ -330,7 +405,12 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
             promptError(LanguageUtils::gettext("Please select some titles to work on"));
             return SUBSTATE_RUNNING;
         processSelectedTitles:
-            executeBatchProcess();
+            if (jobType == BACKUP) {
+                job2batch();
+                executeBatchBackup();
+                batch2job();
+            } else 
+                executeBatchProcess();
             return SUBSTATE_RUNNING;
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
@@ -374,6 +454,39 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
                     continue;
                 this->titles[i].currentDataSource.selectedToBeProcessed = false;
             }
+            return SUBSTATE_RUNNING;    
+        }
+        if (input->get(TRIGGER, PAD_BUTTON_X) && jobType == BACKUP) {
+            job2batch();
+            std::string choices = LanguageUtils::gettext("\ue000  Apply saved excludes\n\ue045  Save current excludes\n\ue001  Back");
+            bool done = false;
+            while (! done) {
+                Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,choices);
+                switch (choice) {
+                    case PAD_BUTTON_A:
+                        if(excludes->read())
+                            excludes->applyConfig();
+                        done = true;
+                        break;
+                    case PAD_BUTTON_PLUS:
+                        if(excludes->getConfig()) {
+                            if (firstSDWrite)
+                                sdWriteDisclaimer();
+                            if(excludes->save())
+                                promptMessage(COLOR_BG_OK,LanguageUtils::gettext("Configuration saved"));
+                            else
+                                promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Error saving configuration"));
+                        }
+                        done = true;
+                        break;
+                    case PAD_BUTTON_B:
+                        done = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            batch2job();
             return SUBSTATE_RUNNING;    
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
@@ -717,4 +830,61 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     }
 
     showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+}
+
+
+void BatchJobTitleSelectState::executeBatchBackup() {
+
+    InProgress::totalSteps = countTitlesToSave(this->titles, this->titlesCount,true);
+    InProgress::currentStep = 0;
+    const std::string batchDatetime = getNowDateForFolder();
+    backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
+    BackupSetList::setIsInitializationRequired(true);
+   
+   int titlesOK = 0;
+   int titlesAborted = 0;
+   int titlesWarning = 0;
+   int titlesKO = 0;
+   int titlesSkipped = 0;
+   int titlesNotInitialized = 0;
+   std::vector<std::string> failedTitles;
+   for (int i = 0; i < this->candidatesCount ; i++) {
+        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 || ! this->titles[c2t[i]].saveInit)
+            titlesNotInitialized++;
+        std::string failedTitle;
+        switch (this->titles[c2t[i]].currentDataSource.batchBackupState) {
+            case OK :
+                titlesOK++;
+                break;
+            case WR :
+                titlesWarning++;
+                break;
+            case KO:
+                titlesKO++;
+                failedTitle.assign(this->titles[c2t[i]].shortName);
+                failedTitles.push_back(failedTitle);
+                break;
+            case ABORTED :
+                titlesAborted++;
+                break;
+            default:
+                titlesSkipped++;
+                break;
+        }
+   }
+   char tag[64];
+   if (titlesOK > 0) {
+     const char* tagTemplate;
+     tagTemplate = LanguageUtils::gettext("Partial Backup - %d %s title%s");
+     snprintf(tag,64,tagTemplate,
+        titlesOK,
+        isWiiUBatchJob ? "Wii U" : "vWii",
+        (titlesOK == 1) ? "" : "s");
+   }
+   else
+     snprintf(tag,64,LanguageUtils::gettext("Failed backup - No titles"));
+   writeBackupAllMetadata(batchDatetime,tag);
+
+   showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+
 }
