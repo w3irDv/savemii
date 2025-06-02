@@ -5,6 +5,7 @@
 #include <savemng.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <cfg/ExcludesCfg.h>
 #include <vector>
 
 class BatchJobTitleSelectState : public ApplicationState {
@@ -12,6 +13,8 @@ public:
     BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup,Title *titles,
             int titlesCount, bool isWiiUBatchJob, eJobType jobType);
 
+    BatchJobTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchJob,std::unique_ptr<ExcludesCfg> & excludes, eJobType jobType);
+    
     enum eState {
         STATE_BATCH_JOB_TITLE_SELECT,
         STATE_DO_SUBSTATE,
@@ -53,6 +56,9 @@ private:
 
     void updateC2t();
 
+    void batch2job();
+    void job2batch();
+
     std::vector<const char*> titleStateAfterBR = {
         " ",
         " > Aborted",
@@ -61,7 +67,11 @@ private:
         " > KO"
     };
 
+    void executeBatchProcess();
+    void executeBatchBackup();
+
+    std::unique_ptr<ExcludesCfg> & excludes = ExcludesCfg::wiiuExcludes;
+
     eJobType jobType;
 
-    void executeBatchProcess();
 };
