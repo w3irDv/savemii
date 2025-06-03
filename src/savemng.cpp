@@ -1317,6 +1317,10 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
     
+    if ( wiiuuser == -1 && ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
+        promptError(LanguageUtils::gettext("%s\n\nCopy task aborted due to non-existent profile\n\nTry to copy using from/to user options"),title->shortName);
+        return -1;
+}
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;

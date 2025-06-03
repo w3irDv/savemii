@@ -531,7 +531,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         case COPY_FROM_NAND_TO_USB:
             menuTitle=LanguageUtils::gettext("Batch Copy To USB - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCOpyToUSB Backup (WiiU)") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToUSB Backup (WiiU)") : "";
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
         case COPY_FROM_USB_TO_NAND:
