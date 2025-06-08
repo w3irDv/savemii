@@ -66,58 +66,60 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
             bool noError = true;
-            this->task = (Task) cursorPos;
+            this->task = (eJobType) cursorPos;
 
             source_user = -1;
             wiiu_user = -1;
             common = false;
 
-            if (this->task == backup) {
+            const char* noData;
+            switch (this->task) {
+                case BACKUP:
+                    noData = LanguageUtils::gettext("No save to Backup.");
+                    break;
+                case WIPE_PROFILE:
+                    noData = LanguageUtils::gettext("No save to Wipe.");
+                    break;
+                case PROFILE_TO_PROFILE:
+                    noData = LanguageUtils::gettext("No save to Replicate.");
+                    break;
+                case COPY_TO_OTHER_DEVICE: 
+                    noData = LanguageUtils::gettext("No save to Copy.");
+                    break;
+                default:
+                    break;
+            }
+
+            if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
                 if (!this->title.saveInit) {
-                    promptError(LanguageUtils::gettext("No save to Backup."));
+                    promptError(noData);
                     noError = false;
                 } else {
-                    BackupSetList::setBackupSetSubPathToRoot(); // from backup menu, always backup to root
-                    getAccountsFromVol(&this->title, slot,BACKUP);
+                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                    getAccountsFromVol(&this->title, slot, this->task);
                 }
             }
 
-            if (this->task == restore) {
+            if (this->task == RESTORE) {
                 BackupSetList::setBackupSetSubPath();
                 getAccountsFromVol(&this->title, slot,RESTORE);
             }
 
-            if (this->task == wipe) {
-                if (!this->title.saveInit) {
-                    promptError(LanguageUtils::gettext("No save to Wipe."));
-                    noError = false;
-                } else {
-                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
-                    getAccountsFromVol(&this->title, slot, WIPE_PROFILE);
-                }
-            }
-
-            if (this->task == copyToOtherProfile) {
-                if (!this->title.saveInit) {
-                    promptError(LanguageUtils::gettext("No save to Replicate."));
-                    noError = false;
-                } else {
-                    getAccountsFromVol(&this->title, slot, PROFILE_TO_PROFILE);
-                    for (int i = 0; i <  getVolAccn() ; i ++ ) {
-                        for (int j = 0; j < getWiiUAccn(); j++) {
-                            if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
-                                source_user=i;
-                                wiiu_user=j;
-                                BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
-                                goto nxtCheck;
-                            }
+            if (this->task == PROFILE_TO_PROFILE && noError) {
+                getAccountsFromVol(&this->title, slot, PROFILE_TO_PROFILE);
+                for (int i = 0; i <  getVolAccn() ; i ++ ) {
+                    for (int j = 0; j < getWiiUAccn(); j++) {
+                        if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
+                            source_user=i;
+                            wiiu_user=j;
+                            goto nxtCheck;
                         }
                     }
-                    promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
-                    noError = false;
                 }
+                promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
+                noError = false;
             }
-                
+
 nxtCheck: 
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
@@ -139,15 +141,6 @@ nxtCheck:
                 }
             }
 
-            if (this->task == copyToOtherDevice) {
-                if (!this->title.saveInit) {
-                    promptError(LanguageUtils::gettext("No save to Copy."));
-                    noError = false;
-                } else {
-                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
-                    getAccountsFromVol(&this->title, slot,COPY_TO_OTHER_DEVICE);
-                }
-            }
             if (noError) {
                 this->state = STATE_DO_SUBSTATE;
                 this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);

@@ -18,6 +18,7 @@
 #include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
 #include <vector>
+#include <ApplicationState.h>
 
 #define PATH_SIZE        0x400
 
@@ -97,15 +98,6 @@ enum Style {
     ST_MULTIPLE_CHOICE = 256
 };
 
-enum eJobType {
-    RESTORE,
-    WIPE_PROFILE,
-    PROFILE_TO_PROFILE,
-    COPY_TO_OTHER_DEVICE,
-    COPY_FROM_NAND_TO_USB,
-    COPY_FROM_USB_TO_NAND,
-    BACKUP
-};
 
 template<class It>
 void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
