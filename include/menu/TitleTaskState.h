@@ -37,7 +37,7 @@ private:
     int titlesCount;
     bool isWiiUTitle;
 
-    Task task;
+    eJobType task;
     int *versionList = (int *) malloc(0x100 * sizeof(int));
 
     inline static int cursorPos = 0;
