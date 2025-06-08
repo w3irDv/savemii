@@ -35,9 +35,9 @@ int copyErrorsCounter = 0;
 bool abortCopy = false;
 
 //static char *p1;
-Account *wiiuacc;
-Account *sdacc;
-uint8_t wiiuaccn = 0, sdaccn = 5;
+Account *wiiu_acc;
+Account *vol_acc;
+uint8_t wiiu_accn = 0, vol_accn = 5;
 
 static size_t written = 0;
 
@@ -126,20 +126,20 @@ std::string getBatchBackupPathRoot(const std::string & datetime) {
 }
 
 
-uint8_t getSDaccn() {
-    return sdaccn;
+uint8_t getVolAccn() {
+    return vol_accn;
 }
 
-uint8_t getWiiUaccn() {
-    return wiiuaccn;
+uint8_t getWiiUAccn() {
+    return wiiu_accn;
 }
 
-Account *getWiiUacc() {
-    return wiiuacc;
+Account *getWiiUAcc() {
+    return wiiu_acc;
 }
 
-Account *getSDacc() {
-    return sdacc;
+Account *getVolAcc() {
+    return vol_acc;
 }
 
 // TODO how to mock checkEntry only for restore ops
@@ -665,32 +665,32 @@ void getAccountsWiiU() {
     nn::act::Initialize();
     int i = 0;
     int accn = 0;
-    wiiuaccn = nn::act::GetNumOfAccounts();
-    wiiuacc = (Account *) malloc(wiiuaccn * sizeof(Account));
+    wiiu_accn = nn::act::GetNumOfAccounts();
+    wiiu_acc = (Account *) malloc(wiiu_accn * sizeof(Account));
     uint16_t out[11];
-    while ((accn < wiiuaccn) && (i <= 12)) {
+    while ((accn < wiiu_accn) && (i <= 12)) {
         if (nn::act::IsSlotOccupied(i)) {
             unsigned int persistentID = nn::act::GetPersistentIdEx(i);
-            wiiuacc[accn].pID = persistentID;
-            sprintf(wiiuacc[accn].persistentID, "%08x", persistentID);
+            wiiu_acc[accn].pID = persistentID;
+            sprintf(wiiu_acc[accn].persistentID, "%08x", persistentID);
             nn::act::GetMiiNameEx((int16_t *) out, i);
-            memset(wiiuacc[accn].miiName, 0, sizeof(wiiuacc[accn].miiName));
+            memset(wiiu_acc[accn].miiName, 0, sizeof(wiiu_acc[accn].miiName));
             for (int j = 0, k = 0; j < 10; j++) {
                 if (out[j] < 0x80) {
-                    wiiuacc[accn].miiName[k++] = (char) out[j];
+                    wiiu_acc[accn].miiName[k++] = (char) out[j];
                 } else if ((out[j] & 0xF000) > 0) {
-                    wiiuacc[accn].miiName[k++] = 0xE0 | ((out[j] & 0xF000) >> 12);
-                    wiiuacc[accn].miiName[k++] = 0x80 | ((out[j] & 0xFC0) >> 6);
-                    wiiuacc[accn].miiName[k++] = 0x80 | (out[j] & 0x3F);
+                    wiiu_acc[accn].miiName[k++] = 0xE0 | ((out[j] & 0xF000) >> 12);
+                    wiiu_acc[accn].miiName[k++] = 0x80 | ((out[j] & 0xFC0) >> 6);
+                    wiiu_acc[accn].miiName[k++] = 0x80 | (out[j] & 0x3F);
                 } else if (out[j] < 0x400) {
-                    wiiuacc[accn].miiName[k++] = 0xC0 | ((out[j] & 0x3C0) >> 6);
-                    wiiuacc[accn].miiName[k++] = 0x80 | (out[j] & 0x3F);
+                    wiiu_acc[accn].miiName[k++] = 0xC0 | ((out[j] & 0x3C0) >> 6);
+                    wiiu_acc[accn].miiName[k++] = 0x80 | (out[j] & 0x3F);
                 } else {
-                    wiiuacc[accn].miiName[k++] = 0xD0 | ((out[j] & 0x3C0) >> 6);
-                    wiiuacc[accn].miiName[k++] = 0x80 | (out[j] & 0x3F);
+                    wiiu_acc[accn].miiName[k++] = 0xD0 | ((out[j] & 0x3C0) >> 6);
+                    wiiu_acc[accn].miiName[k++] = 0x80 | (out[j] & 0x3F);
                 }
             }
-            wiiuacc[accn].slot = i;
+            wiiu_acc[accn].slot = i;
             accn++;
         }
         i++;
@@ -703,8 +703,8 @@ bool profileExists(const char* name) {
     uint32_t probablePersistentID = 0;
     probablePersistentID = strtoul(name,nullptr,16);
     if  ( probablePersistentID != 0 && probablePersistentID != ULONG_LONG_MAX ) {
-        for (int i = 0;i < getWiiUaccn();i++) {
-            if ( (uint32_t) probablePersistentID == getWiiUacc()[i].pID) {
+        for (int i = 0;i < getWiiUAccn();i++) {
+            if ( (uint32_t) probablePersistentID == getWiiUAcc()[i].pID) {
                 exists = true;
                 break;
             }
@@ -713,41 +713,74 @@ bool profileExists(const char* name) {
     return exists;
 }
 
+void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
+    vol_accn = 0;
+    if (vol_acc != nullptr)
+        free(vol_acc);
 
-
-void getAccountsSD(Title *title, uint8_t slot) {
-    sdaccn = 0;
-    if (sdacc != nullptr)
-        free(sdacc);
-
-    std::string path = getDynamicBackupPath(title, slot);
-    DIR *dir = opendir(path.c_str());
-    if (dir != nullptr) {
-        struct dirent *data;
-        while ((data = readdir(dir)) != nullptr) {
-            if (data->d_name[0] == '.' || data->d_name[0] == 's' || strncmp(data->d_name, "common", 6) == 0)
-                continue;
-            sdaccn++;
-        }
-        closedir(dir);
+    std::string srcPath;
+    switch (jobType) {
+        case RESTORE:
+            srcPath = getDynamicBackupPath(title, slot);
+            break;
+        case BACKUP:
+        case WIPE_PROFILE:
+        case PROFILE_TO_PROFILE:
+        case COPY_TO_OTHER_DEVICE:
+            std::string path = (title->is_Wii ? "storage_slccmpt01:/title" : (title->isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), title->highID, title->lowID, title->is_Wii ? "data" : "user");
+            break;
     }
 
-    sdacc = (Account *) malloc(sdaccn * sizeof(Account));
-    dir = opendir(path.c_str());
+    DIR *dir = opendir(srcPath.c_str());
+    if (dir != nullptr) {
+            struct dirent *data;
+            while ((data = readdir(dir)) != nullptr) {
+                if (data->d_name[0] == '8' && strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
+                    char *end;
+                    uint32_t pID_ = strtoul(data->d_name, &end, 16);
+                    if ( *end != '\0' || pID_ == ULONG_MAX)
+                        continue;
+                    vol_accn++;
+                }
+            }
+            closedir(dir);
+    }
+
+    vol_acc = (Account *) malloc(vol_accn * sizeof(Account));
+    dir = opendir(srcPath.c_str());
     if (dir != nullptr) {
         struct dirent *data;
         int i = 0;
         while ((data = readdir(dir)) != nullptr) {
-            if (data->d_name[0] == '.' || data->d_name[0] == 's' || strncmp(data->d_name, "common", 6) == 0)
-                continue;
-            sprintf(sdacc[i].persistentID, "%s", data->d_name);
-            sdacc[i].pID = strtoul(data->d_name, nullptr, 16);
-            sdacc[i].slot = i;
-            i++;
+            if (data->d_name[0] == '8' && strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
+                char *end;
+                uint32_t pID_ = strtoul(data->d_name, &end, 16);
+                if ( *end != '\0' || pID_ == ULONG_MAX)
+                    continue;
+                strcpy(vol_acc[i].persistentID, data->d_name);
+                vol_acc[i].pID = pID_;
+                vol_acc[i].slot = i;
+                i++;
+            }
         }
         closedir(dir);
     }
+
+    int sourceAccountsTotalNumber = vol_accn;
+    int wiiUAccountsTotalNumber = getWiiUAccn();
+
+    for (int i = 0; i < sourceAccountsTotalNumber; i++) {
+        strcpy(vol_acc[i].miiName,"undefined");
+        for (int j = 0; j < wiiUAccountsTotalNumber;j++) {
+            if (vol_acc[i].pID == wiiu_acc[j].pID) {
+                strcpy(vol_acc[i].miiName,wiiu_acc[j].miiName);
+                break;
+            }
+        }
+    }
 }
+
 
 int readError;
 
@@ -1316,6 +1349,14 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", pathb.c_str(), highIDb, lowIDb, "user");
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
+
+    if (accountSource == USE_WIIU_PROFILES) 
+        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s \n%s",
+            title->shortName,wiiuuser,wiiuuser > -1 ? wiiu_acc[wiiuuser].persistentID:"-", wiiuuser_d,wiiuuser_d>-1 ? wiiu_acc[wiiuuser_d].persistentID:"-",isUSB ? "USB":"NAND");
+    else 
+        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s \n%s",
+                title->shortName,wiiuuser,wiiuuser > -1 ?vol_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ? wiiu_acc[wiiuuser_d].persistentID:"-",isUSB ? "USB":"NAND");   
+    return 0;
     
     if ( wiiuuser == -1 && ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
         promptError(LanguageUtils::gettext("%s\n\nCopy task aborted due to non-existent profile\n\nTry to copy using from/to user options"),title->shortName);
@@ -1328,7 +1369,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
             int slotb = getEmptySlot(titleb);
             // backup is always of allusers
             if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
-                if (!( backupSavedata(titleb, slotb, -1, true, LanguageUtils::gettext("pre-copyToOtherDev backup")) == 0 )) {
+                if (!( backupSavedata(titleb, slotb, -1, true, accountSource, LanguageUtils::gettext("pre-copyToOtherDev backup")) == 0 )) {
                     promptError(LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
                     return -1;
                 }     
@@ -1360,10 +1401,10 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
             singleUser = true;
 
             if (accountSource == USE_WIIU_PROFILES)
-                srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID));
             else
-                srcPath.append(StringUtils::stringFormat("/%s", sdacc[wiiuuser].persistentID));
-            dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser_d].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", vol_acc[wiiuuser].persistentID));
+            dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser_d].persistentID));
             break;
     }
 
@@ -1447,6 +1488,15 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
 
     std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
     std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
+
+    if (accountSource == USE_WIIU_PROFILES) 
+        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s",
+            title->shortName,wiiuuser,wiiuuser>-1 ? wiiu_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ?wiiu_acc[wiiuuser_d].persistentID:"-");
+    else 
+        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s",
+            title->shortName,wiiuuser,wiiuuser > -1 ?vol_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ?wiiu_acc[wiiuuser_d].persistentID:"-");
+    return 0;
+
     
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
@@ -1455,7 +1505,7 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
             int slot = getEmptySlot(title);
             // backup is always of allusers
             if ((slot >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
-                if (!( backupSavedata(title, slot, -1, true, LanguageUtils::gettext("pre-copySavedataToOtherProfile backup")) == 0 )) {
+                if (!( backupSavedata(title, slot, -1, true, accountSource, LanguageUtils::gettext("pre-copySavedataToOtherProfile backup")) == 0 )) {
                     promptError(LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
                     return -1;
                 }     
@@ -1466,11 +1516,11 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
 
     std::string srcPath;
     if (accountSource == USE_WIIU_PROFILES)
-        srcPath = basePath+StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID);
+        srcPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID);
     else
-        srcPath = basePath+StringUtils::stringFormat("/%s", sdacc[wiiuuser].persistentID);
+        srcPath = basePath+StringUtils::stringFormat("/%s", vol_acc[wiiuuser].persistentID);
      
-    std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiuacc[wiiuuser_d].persistentID);
+    std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser_d].persistentID);
 
     std::string errorMessage {};
 
@@ -1634,7 +1684,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
     }
 }
 
-int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag /* = "" */) {
+int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     copyErrorsCounter = 0;
@@ -1689,8 +1739,13 @@ int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, con
             default:  // wiiuuser = 0 .. n
                 doBase = true;
                 doCommon = common;
-                srcPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
-                dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+                if (accountSource == USE_WIIU_PROFILES) {
+                    srcPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID));
+                    dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID));
+                } else {
+                    srcPath.append(StringUtils::stringFormat("/%s", vol_acc[wiiuuser].persistentID));
+                    dstPath.append(StringUtils::stringFormat("/%s", vol_acc[wiiuuser].persistentID));
+                }       
                 break;
         }
     }
@@ -1746,6 +1801,10 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
 
+    promptMessage(COLOR_BG_WR,"%s\nsduser %d\n%s\nwiiuuser %d\n%s\n common\n %s",
+    title->shortName,sduser,sduser > -1 ?vol_acc[sduser].persistentID:"-",wiiuuser,wiiuuser>-1 ?  wiiu_acc[wiiuuser].persistentID : "-",common ? "true":"false");
+    return 0;
+
     if ( sduser == -1 && ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
             promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
             return -1;
@@ -1760,7 +1819,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
             BackupSetList::setBackupSetSubPathToRoot();
             int slotb = getEmptySlot(title);
             if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
-                if (!(backupSavedata(title, slotb, -1, true , LanguageUtils::gettext("pre-Restore backup")) == 0)) {
+                if (!(backupSavedata(title, slotb, -1, true , USE_SD_OR_STORAGE_PROFILES, LanguageUtils::gettext("pre-Restore backup")) == 0)) {
                     promptError(LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
                     BackupSetList::restoreBackupSetSubPath();
                     return -1;
@@ -1799,8 +1858,8 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
                 doBase = true;
                 doCommon = common;
                 singleUser = true;
-                srcPath.append(StringUtils::stringFormat("/%s", sdacc[sduser].persistentID));
-                dstPath.append(StringUtils::stringFormat("/%s", wiiuacc[wiiuuser].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", vol_acc[sduser].persistentID));
+                dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID));
                 break;
         }
     }
@@ -1899,6 +1958,13 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         return 0;
     }
     */
+   if (accountSource == USE_WIIU_PROFILES) 
+        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\n common\n %s",
+            title->shortName,wiiuuser,wiiuuser>-1 ? wiiu_acc[wiiuuser].persistentID:"-",common ? "true":"false");
+    else 
+        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\n common\n %s",
+            title->shortName,wiiuuser,wiiuuser>-1 ? vol_acc[wiiuuser].persistentID : "-",common ? "true":"false");
+    return 0;
     
 
     if (interactive) {
@@ -1907,7 +1973,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         int slotb = getEmptySlot(title);
         // backup is always of full type
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
-            if (!(backupSavedata(title, slotb, -1, true, LanguageUtils::gettext("pre-Wipe backup")) == 0)) {
+            if (!(backupSavedata(title, slotb, -1, true, accountSource, LanguageUtils::gettext("pre-Wipe backup")) == 0)) {
                 promptError(LanguageUtils::gettext("Backup Failed - Wipe aborted !!"));
                 return -1;
             }
@@ -1936,9 +2002,9 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
                 doBase = true;
                 doCommon = common;
                 if (accountSource == USE_WIIU_PROFILES)
-                    srcPath += "/" + std::string(wiiuacc[wiiuuser].persistentID);
+                    srcPath += "/" + std::string(wiiu_acc[wiiuuser].persistentID);
                 else
-                    srcPath += "/" + std::string(sdacc[wiiuuser].persistentID);
+                    srcPath += "/" + std::string(vol_acc[wiiuuser].persistentID);
                 break;
         }
     }
@@ -2163,13 +2229,13 @@ void summarizeBackupCounters  (Title *titles, int titlesCount,int & titlesOK, in
 
 void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles) {
 
-    char summary[512];
+    char summary[768];
     const char* summaryTemplate;
     if (titlesNotInitialized == 0 )
         summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
     else
         summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
-    snprintf(summary,512,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
+    snprintf(summary,768,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
     
     std::string summaryWithTitles;
     summaryWithTitles.assign(summary);

@@ -107,12 +107,6 @@ enum eJobType {
     BACKUP
 };
 
-enum eNEProfileWipeMode {
-    DECIDE_ALL,     // can choose if wipe or backup individually
-    DECIDE_WIPE,   // can choose if wipe, then always backup
-    BATCH          // wipe and backup all titles with non-existen profiles
-};
-
 template<class It>
 void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
     switch (tsort) {
@@ -193,7 +187,7 @@ void promptError(const char *message, ...);
 void promptMessage(Color bgcolor,const char *message, ...);
 Button promptMultipleChoice(Style st, const std::string &question);
 void getAccountsWiiU();
-void getAccountsSD(Title *title, uint8_t slot);
+void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType);
 bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version);
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version);
 bool hasSavedata(Title *title, bool inSD, uint8_t slot);
@@ -213,7 +207,7 @@ void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB
 void writeBackupAllMetadata(const std::string & Date, const std::string & tag);
 void backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
-int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, const std::string &tag = "") __attribute__((hot));
+int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, eAccountSource accountSource = USE_WIIU_PROFILES,const std::string &tag = "") __attribute__((hot));
 int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
 int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
@@ -227,10 +221,10 @@ int32_t loadTitleIcon(Title *title) __attribute__((hot));
 void consolePrintPosMultiline(int x, int y, const char *format, ...) __attribute__((hot));
 void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) __attribute__((hot));
 void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...) __attribute__((hot));
-uint8_t getSDaccn();
-uint8_t getWiiUaccn();
-Account *getWiiUacc();
-Account *getSDacc();
+uint8_t getVolAccn();
+uint8_t getWiiUAccn();
+Account *getWiiUAcc();
+Account *getVolAcc();
 void deleteSlot(Title *title, uint8_t slot);
 bool wipeBackupSet(const std::string &subPath);
 void splitStringWithNewLines(const std::string &input, std::string &output);
