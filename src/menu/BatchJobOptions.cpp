@@ -17,10 +17,10 @@
 
 #define ENTRYCOUNT 5
 
-extern Account *sdacc;
-extern uint8_t sdaccn;
+extern Account *vol_acc;
+extern uint8_t vol_accn;
 
-extern Account *wiiuacc;
+extern Account *wiiu_acc;
 
 BatchJobOptions::BatchJobOptions(Title *titles, 
     int titlesCount,bool  isWiiUBatchJob, eJobType jobType) : titles(titles),
@@ -75,7 +75,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 while ((data = readdir(dir)) != nullptr) {
                     if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))
                         continue;
-                    if (data->d_name[0] == '8') {
+                    if (data->d_name[0] == '8' && strlen(data->d_name) == 8) {
                         bool profileDefined = profileExists(data->d_name);
                         if (! profileDefined) {
                             nonExistentProfileInTitleBackup = true;
@@ -109,21 +109,21 @@ BatchJobOptions::BatchJobOptions(Title *titles,
         }
     }
 
-    if (sdacc != nullptr)
-        free(sdacc);
-    sdaccn = sourceUsers.size();
+    if (vol_acc != nullptr)
+        free(vol_acc);
+    vol_accn = sourceUsers.size();
 
     int i=0;
-    sdacc = (Account *) malloc(sdaccn * sizeof(Account));
+    vol_acc = (Account *) malloc(vol_accn * sizeof(Account));
     for ( auto user : sourceUsers ) {
-        strcpy(sdacc[i].persistentID,user.substr(0,8).c_str());
-        sdacc[i].pID = strtoul(user.c_str(), nullptr, 16);
-        sdacc[i].slot = i;
+        strcpy(vol_acc[i].persistentID,user.substr(0,8).c_str());
+        vol_acc[i].pID = strtoul(user.c_str(), nullptr, 16);
+        vol_acc[i].slot = i;
         i++;
     }
 
-    sourceAccountsTotalNumber = getSDaccn();
-    wiiUAccountsTotalNumber = getWiiUaccn();
+    sourceAccountsTotalNumber = getVolAccn();
+    wiiUAccountsTotalNumber = getWiiUAccn();
 
     if (jobType == PROFILE_TO_PROFILE) {
         source_user = 0;
@@ -133,10 +133,10 @@ BatchJobOptions::BatchJobOptions(Title *titles,
 
     if (jobType == PROFILE_TO_PROFILE || jobType == WIPE_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) {
         for (int i = 0; i < sourceAccountsTotalNumber; i++) {
-            strcpy(sdacc[i].miiName,"undefined");
+            strcpy(vol_acc[i].miiName,"undefined");
             for (int j = 0; j < wiiUAccountsTotalNumber;j++) {
-                if (sdacc[i].pID == wiiuacc[j].pID) {
-                    strcpy(sdacc[i].miiName,wiiuacc[j].miiName);
+                if (vol_acc[i].pID == wiiu_acc[j].pID) {
+                    strcpy(vol_acc[i].miiName,wiiu_acc[j].miiName);
                     break;
                 }
             }
@@ -250,10 +250,10 @@ void BatchJobOptions::render() {
                 consolePrintPos(M_OFF, 10, "   < %s >", LanguageUtils::gettext("Ok"));
             } else {
                 if (jobType == RESTORE)
-                    consolePrintPos(M_OFF, 4, "   < %s >", getSDacc()[source_user].persistentID);
+                    consolePrintPos(M_OFF, 4, "   < %s >", getVolAcc()[source_user].persistentID);
                 else
                     consolePrintPos(M_OFF, 4, "   < %s (%s) >",
-                        getSDacc()[source_user].miiName, getSDacc()[source_user].persistentID);
+                        getVolAcc()[source_user].miiName, getVolAcc()[source_user].persistentID);
             }
             
             if (jobType != WIPE_PROFILE) {
@@ -266,7 +266,7 @@ void BatchJobOptions::render() {
                     consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("same user than in source"));
                 else
                     consolePrintPos(M_OFF, 7, "   < %s (%s) >",
-                                    getWiiUacc()[wiiu_user].miiName, getWiiUacc()[wiiu_user].persistentID);
+                                    getWiiUAcc()[wiiu_user].miiName, getWiiUAcc()[wiiu_user].persistentID);
             }
 
             if ((source_user != -2 && source_user != -1) && ( jobType != PROFILE_TO_PROFILE  )) {
@@ -365,12 +365,12 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                     switch (cursorPos) {
                         case 0:
                             this->source_user = ((this->source_user == 0) ? 0 : (this->source_user - 1));
-                            if (getSDacc()[source_user].pID == getWiiUacc()[wiiu_user].pID)
+                            if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = ( source_user + 1 ) % wiiUAccountsTotalNumber;
                             break;
                         case 1:
                             wiiu_user = ( --wiiu_user == - 1) ? (wiiUAccountsTotalNumber-1) : (wiiu_user);
-                            if (getSDacc()[source_user].pID == getWiiUacc()[wiiu_user].pID)
+                            if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = ( wiiu_user - 1 ) % wiiUAccountsTotalNumber;
                             wiiu_user = (wiiu_user < 0) ? (wiiUAccountsTotalNumber-1) : wiiu_user;
                             break;
@@ -424,12 +424,12 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                     switch (cursorPos) {
                         case 0:
                             source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
-                            if (getSDacc()[source_user].pID == getWiiUacc()[wiiu_user].pID)
+                            if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = ( wiiu_user + 1 ) % wiiUAccountsTotalNumber;
                             break;
                         case 1:
                             wiiu_user = ( ++ wiiu_user == wiiUAccountsTotalNumber) ? 0 : wiiu_user;
-                            if (getSDacc()[source_user].pID == getWiiUacc()[wiiu_user].pID)
+                            if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = ( wiiu_user + 1 ) % wiiUAccountsTotalNumber;
                             break;
                         default:

@@ -11,7 +11,7 @@
 
 // defaults to pass to titleTask
 static uint8_t slot = 0;
-static int8_t wiiuuser = -1, wiiuuser_d = -1, sduser = -1;
+static int8_t wiiu_user = -1, source_user = -1;
 static bool common = true;
 
 void TitleTaskState::render() {
@@ -68,40 +68,57 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             bool noError = true;
             this->task = (Task) cursorPos;
 
+            source_user = -1;
+            wiiu_user = -1;
+            common = false;
+
             if (this->task == backup) {
                 if (!this->title.saveInit) {
                     promptError(LanguageUtils::gettext("No save to Backup."));
                     noError = false;
-                } else 
+                } else {
                     BackupSetList::setBackupSetSubPathToRoot(); // from backup menu, always backup to root
+                    getAccountsFromVol(&this->title, slot,BACKUP);
+                }
             }
 
             if (this->task == restore) {
                 BackupSetList::setBackupSetSubPath();
-                getAccountsSD(&this->title, slot);
-                wiiuuser = ((sduser == -1) ? -1 : wiiuuser);
-                sduser = ((wiiuuser == -1) ? -1 : sduser);
+                getAccountsFromVol(&this->title, slot,RESTORE);
             }
 
             if (this->task == wipe) {
                 if (!this->title.saveInit) {
                     promptError(LanguageUtils::gettext("No save to Wipe."));
                     noError = false;
-                } else
+                } else {
                     BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                    getAccountsFromVol(&this->title, slot, WIPE_PROFILE);
+                }
             }
 
             if (this->task == copyToOtherProfile) {
                 if (!this->title.saveInit) {
                     promptError(LanguageUtils::gettext("No save to Replicate."));
                     noError = false;
-                } else if (getWiiUaccn() < 2 ) {
+                } else {
+                    getAccountsFromVol(&this->title, slot, PROFILE_TO_PROFILE);
+                    for (int i = 0; i <  getVolAccn() ; i ++ ) {
+                        for (int j = 0; j < getWiiUAccn(); j++) {
+                            if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
+                                source_user=i;
+                                wiiu_user=j;
+                                BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                                goto nxtCheck;
+                            }
+                        }
+                    }
                     promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
                     noError = false;
-                } else
-                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                }
             }
-
+                
+nxtCheck: 
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 char gamePath[PATH_SIZE];
@@ -126,12 +143,14 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 if (!this->title.saveInit) {
                     promptError(LanguageUtils::gettext("No save to Copy."));
                     noError = false;
-                } else
+                } else {
                     BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                    getAccountsFromVol(&this->title, slot,COPY_TO_OTHER_DEVICE);
+                }
             }
             if (noError) {
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, sduser, (task == copyToOtherProfile ) ? 0:wiiuuser, (task == copyToOtherProfile ) ? false:common, (task == copyToOtherProfile ) ? 1:wiiuuser_d, this->titles, this->titlesCount);
+                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {

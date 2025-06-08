@@ -75,7 +75,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, WIPE_PROFILE);
                     break;
                 case 5:
-                    if (getWiiUaccn() < 2 )
+                    if (getWiiUAccn() < 2 )
                         promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
                     else {
                         this->state = STATE_DO_SUBSTATE;
@@ -113,7 +113,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
         } else if (retSubState == SUBSTATE_RETURN) {
        //     if ( this->substateCalled == STATE_BACKUPSET_MENU) {
        //         slot = 0;
-       //         getAccountsSD(&this->title, slot);
+       //         getAccountsFromVol(&this->title, slot);
        //     }
             this->subState.reset();
             this->state = STATE_MAIN_MENU;

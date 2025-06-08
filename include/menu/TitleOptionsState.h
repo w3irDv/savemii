@@ -7,16 +7,16 @@
 
 class TitleOptionsState : public ApplicationState {
 public:
-    TitleOptionsState(Title title, Task task, int *versionList, int8_t sduser, int8_t wiiuuser, bool common, int8_t wiiuuser_d, Title *titles, int titleCount) : title(title),
+    TitleOptionsState(Title title, Task task, int *versionList, int8_t source_user, int8_t wiiu_user, bool common, Title *titles, int titleCount) : title(title),
                                                                                                                                                                   task(task),
                                                                                                                                                                   versionList(versionList),
-                                                                                                                                                                  sduser(sduser),
-                                                                                                                                                                  wiiuuser(wiiuuser),
+                                                                                                                                                                  source_user(source_user),
+                                                                                                                                                                  wiiu_user(wiiu_user),
                                                                                                                                                                   common(common),
-                                                                                                                                                                  wiiuuser_d(wiiuuser_d),
                                                                                                                                                                   titles(titles),
                                                                                                                                                                   titleCount(titleCount) {
-                                                                                                                                                                    wiiUAccountsTotalNumber = getWiiUaccn();
+                                                                                                                                                                    wiiUAccountsTotalNumber = getWiiUAccn();
+                                                                                                                                                                    sourceAccountsTotalNumber = getVolAccn();
                                                                                                                                                                   }
 
     enum eState {
@@ -44,10 +44,9 @@ private:
 
     int *versionList;
 
-    int8_t sduser;
-    int8_t wiiuuser;
+    int8_t source_user;
+    int8_t wiiu_user;
     bool common;
-    int8_t wiiuuser_d;
 
     Title *titles;
     int titleCount;
@@ -62,4 +61,5 @@ private:
     std::string newTag;
 
     int wiiUAccountsTotalNumber;
+    int sourceAccountsTotalNumber;
 };

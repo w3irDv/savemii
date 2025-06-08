@@ -98,7 +98,7 @@ ApplicationState::eSubState BatchJobState::update(Input *input) {
                         break;
                     case 1:
                         this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, false, WIPE_PROFILE);
+                        this->subState = std::make_unique<BatchJobOptions>(this->wiititles, this->vWiiTitlesCount, false, WIPE_PROFILE);
                         break;
                     default:
                         return SUBSTATE_RUNNING;

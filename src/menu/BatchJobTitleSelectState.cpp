@@ -79,7 +79,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
         if (! isWii) {
 
             if (source_user > -1 ) {
-                std::string usersavePath = srcPath+"/"+getSDacc()[source_user].persistentID;
+                std::string usersavePath = srcPath+"/"+getVolAcc()[source_user].persistentID;
 
                 if (! folderEmpty(usersavePath.c_str()))
                     this->titles[i].currentDataSource.hasUserSavedata = true; 
@@ -123,8 +123,6 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
 
     }
     candidatesCount = (int) this->c2t.size();
-
-    promptMessage(COLOR_BG_WR,"source user: %d",source_user);
 
 }
 
@@ -549,41 +547,41 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             noUsersInfo = "";
             break;
     }
-    char summary[512];
+    char summary[768];
     const char* summaryTemplate;
-    char selectedUserInfo[128];
+    char selectedUserInfo[256];
 
     if (isWiiUBatchJob) {
             summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n\n%s\n%s\n%s\n%s\n\nContinue?\n\n");
             if (source_user > - 1) {
                 switch (jobType) {
                     case RESTORE:
-                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[source_user].persistentID,getWiiUacc()[wiiu_user].miiName,getWiiUacc()[wiiu_user].persistentID);
+                        snprintf(selectedUserInfo,128,taskDescription,getVolAcc()[source_user].persistentID,getWiiUAcc()[wiiu_user].miiName,getWiiUAcc()[wiiu_user].persistentID);
                         break;
                     case PROFILE_TO_PROFILE:
                     case COPY_FROM_NAND_TO_USB:
                     case COPY_FROM_USB_TO_NAND:
-                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[source_user].miiName,getSDacc()[source_user].persistentID,getWiiUacc()[wiiu_user].miiName,getWiiUacc()[wiiu_user].persistentID);
+                        snprintf(selectedUserInfo,128,taskDescription,getVolAcc()[source_user].miiName,getVolAcc()[source_user].persistentID,getWiiUAcc()[wiiu_user].miiName,getWiiUAcc()[wiiu_user].persistentID);
                         break;
                     case WIPE_PROFILE:
-                        snprintf(selectedUserInfo,128,taskDescription,getSDacc()[source_user].miiName,getSDacc()[source_user].persistentID);
+                        snprintf(selectedUserInfo,128,taskDescription,getVolAcc()[source_user].miiName,getVolAcc()[source_user].persistentID);
                         break;
                 }                        
         }
-        snprintf(summary,512,summaryTemplate,
+        snprintf(summary,768,summaryTemplate,
             (source_user > -1) ? selectedUserInfo : (source_user == -1 ? allUsersInfo : noUsersInfo), 
             (common || source_user == -1 ) ? LanguageUtils::gettext("- Include common savedata: Yes") :  LanguageUtils::gettext("- Include common savedata: No"),
             (wipeBeforeRestore || jobType == WIPE_PROFILE)? LanguageUtils::gettext("- Wipe data: Yes") :  LanguageUtils::gettext("- Wipe data: No"),
             fullBackup ? LanguageUtils::gettext("- Perform full backup: Yes") :  LanguageUtils::gettext("- Perform full backup: No"));
     } else {
             summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n\n%s\n%s\n%s\n\nContinue?\n\n");
-            snprintf(summary,512,summaryTemplate,taskDescription,
+            snprintf(summary,768,summaryTemplate,taskDescription,
             (wipeBeforeRestore || jobType == WIPE_PROFILE) ? LanguageUtils::gettext("- Wipe data: Yes") :  LanguageUtils::gettext("- Wipe data: No"),
             fullBackup ? LanguageUtils::gettext("- Perform full backup: Yes") :  LanguageUtils::gettext("- Perform full backup: No"));
     }
 
-    char summaryWithTitle[612];
-    snprintf(summaryWithTitle,612,"%s\n\n%s",menuTitle,summary);
+    char summaryWithTitle[896];
+    snprintf(summaryWithTitle,896,"%s\n\n%s",menuTitle,summary);
 
     if (!promptConfirm(ST_WARNING,summaryWithTitle))
             return;
@@ -649,86 +647,28 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         if ( wipeBeforeRestore || jobType == WIPE_PROFILE) {
             switch (source_user) {
                 case -2:
-                    if (effectiveCommon) { 
-                        //retCode = wipeSavedata(&targetTitle, -2, true, false);
-                        if (jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) {
-                            bool ha = sourceTitle.currentDataSource.hasCommonSavedata;
-                            promptMessage(COLOR_BG_WR,
-                                "has common save: %s\nsource %s %s\nindex: -2 efffcommon: %s\ntarget %s %s",
-                                ha ? "yes":"no",
-                                sourceTitle.shortName,
-                                sourceTitle.isTitleOnUSB ? "USB":"NAND",
-                                effectiveCommon ? "yes":"no",
-                                targetTitle.shortName,
-                                targetTitle.isTitleOnUSB ? "USB":"NAND"
-                            );
-                        } else {
-                            bool ha = targetTitle.currentDataSource.hasCommonSavedata;
-                            promptMessage(COLOR_BG_WR,
-                                "has common save: %s\n%s\nindex: -2 efffcommon: %s",
-                                ha ? "yes":"no",
-                                targetTitle.shortName,
-                                effectiveCommon ? "yes":"no"
-                            );
-                        }
-                    }
+                    if (effectiveCommon)
+                        retCode = wipeSavedata(&targetTitle, -2, true, false);
                     break;
                 case -1:
-                    if (hasSavedata(&targetTitle, false,0)) {
-                        //retCode = wipeSavedata(&targetTitle, -1, true, false);
-                        bool ha = hasSavedata(&targetTitle, false,0);
-                        promptMessage(COLOR_BG_WR,
-                            "has save: %s\n%s %s\nindex:%d common: %s, \npassem user -1 a wipe\ni passem effec = false",
-                            ha ? "yes":"no",
-                            targetTitle.shortName,
-                            targetTitle.isTitleOnUSB ? "USB":"Nand",
-                            source_user,
-                            effectiveCommon ? "yes":"no"   
-                        );
-                    }
+                    if (hasSavedata(&targetTitle, false,0))
+                        retCode = wipeSavedata(&targetTitle, -1, true, false);
                     break;
                 default: //source_user > -1
-                    if (effectiveCommon) {
-                        //retCode = wipeSavedata(&targetTitle, -2, true, false);
-                        promptMessage(COLOR_BG_WR,
-                            "wipe common\n\ntarget user %08x\ntarget %s %s\ncommon: %s",
-                            getWiiUacc()[this->wiiu_user].pID,
-                            targetTitle.shortName,
-                            targetTitle.isTitleOnUSB?"USB":"NAND",
-                            effectiveCommon ? "yes":"no"
-                        );
-                    }
-                    bool targeHasUserSavedata = hasAccountSave(&targetTitle,false,false,getWiiUacc()[this->wiiu_user].pID, 0,0);
+                    if (effectiveCommon)
+                        retCode = wipeSavedata(&targetTitle, -2, true, false);
+                    bool targeHasUserSavedata = hasAccountSave(&targetTitle,false,false,getWiiUAcc()[this->wiiu_user].pID, 0,0);
                     if (sourceTitle.currentDataSource.hasUserSavedata && targeHasUserSavedata) {
                         switch(jobType) {
                             case RESTORE:
                             case PROFILE_TO_PROFILE:
                             case COPY_FROM_NAND_TO_USB:
                             case COPY_FROM_USB_TO_NAND:
-                                //retCode += wipeSavedata(&targetTitle, wiiu_user, false, false);
-                                promptMessage(COLOR_BG_WR,
-                                    "wipe has save: %s\nuser %08x\ntarget %s %s\nindex:%d common: %s  (passem false",
-                                    targeHasUserSavedata ? "yes":"no",
-                                    getWiiUacc()[this->wiiu_user].pID,
-                                    targetTitle.shortName,
-                                    targetTitle.isTitleOnUSB?"USB":"NAND",
-                                    wiiu_user,
-                                    effectiveCommon ? "yes":"no"
-                                );
+                                retCode += wipeSavedata(&targetTitle, wiiu_user, false, false);
                                 break;
                             case WIPE_PROFILE:  // in this case we allow to delete users not created in the console, so we use source_user.
-                                //retCode += wipeSavedata(&sourceTitle, source_user, false, false, USE_SD_OR_STORAGE_PROFILES);
-                                bool ha = hasAccountSave(&sourceTitle,false,false,getSDacc()[this->source_user].pID, 0,0);
-                                promptMessage(COLOR_BG_WR,
-                                    "has save: %s\nuser %08x\n%s\nindex:%d common: %s\nuser:%s",
-                                    ha ? "yes":"no",
-                                    getSDacc()[this->source_user].pID,
-                                    sourceTitle.shortName,
-                                    source_user,
-                                    effectiveCommon ? "yes":"no",
-                                    getSDacc()[this->source_user].persistentID
-                                );
-                            break;
+                                retCode += wipeSavedata(&sourceTitle, source_user, false, false, USE_SD_OR_STORAGE_PROFILES);
+                                break;
                         }
                     }
                     break;
@@ -741,46 +681,14 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         int globalRetCode = retCode<<8;
         switch(jobType) {
             case RESTORE:
-                //retCode = restoreSavedata(&this->titles[i], 0, source_user, wiiu_user, effectiveCommon, false); //always from slot 0
-                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->source_user].pID, 0,0);
-                promptMessage(COLOR_BG_WR,
-                    "restore\ntitle %s\nsource_user %d\nwiiu_user %d\neffecivecommon %s\nsource_user %s\nwiiu_user %s\n",
-                    titles[i].shortName,
-                    source_user,
-                    wiiu_user,
-                    effectiveCommon ? "yes":"no",
-                    (source_user > -1) ? getSDacc()[this->source_user].persistentID : "nop",
-                    (source_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop"
-                );
+                retCode = restoreSavedata(&this->titles[i], 0, source_user, wiiu_user, effectiveCommon, false); //always from slot 0
                 break;
             case PROFILE_TO_PROFILE:
-                //retCode = copySavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, false,false,USE_SD_OR_STORAGE_PROFILES);
-                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->source_user].pID, 0,0);
-                promptMessage(COLOR_BG_WR,
-                    "copy\ntitle %s\nsource_user %d\nwiiu_user %d\nwiuuser_s %s\nwiiu_user %s\n",
-                    titles[i].shortName,
-                    source_user,
-                    wiiu_user,
-                    (source_user > -1) ? getSDacc()[this->source_user].persistentID : "noop",
-                    (wiiu_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop"
-                );
+                retCode = copySavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, false, USE_SD_OR_STORAGE_PROFILES);
                 break;
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                //retCode = copySavedataToOtherDevice(&sourceTitle,&targetTitle,source_user, wiiu_user,effectiveCommon,false,USE_SD_OR_STORAGE_PROFILES)
-                //bool ha = hasAccountSave(&this->titles[i],false,false,getSDacc()[this->source_user].pID, 0,0);
-                promptMessage(COLOR_BG_WR,
-                    "copy\ntitle %s %s\ntarget %s %s\nsource_user %d\nwiiu_user %d\nsource_user %s\nwiiu_user %s\neffetcivecommon %s",
-                    sourceTitle.shortName,
-                    sourceTitle.isTitleOnUSB?"usb":"nand",
-                    targetTitle.shortName,
-                    targetTitle.isTitleOnUSB?"usb":"nand",
-                    source_user,
-                    wiiu_user,
-                    (source_user > -1) ? getSDacc()[this->source_user].persistentID : "noop",
-                    (wiiu_user > -1) ? getWiiUacc()[this->wiiu_user].persistentID : "noop",
-                    effectiveCommon ? "true":"false"
-                );
+                retCode = copySavedataToOtherDevice(&sourceTitle, &targetTitle, source_user, wiiu_user, effectiveCommon, false, USE_SD_OR_STORAGE_PROFILES);
                 break;   
             default:
                 break;
@@ -872,17 +780,17 @@ void BatchJobTitleSelectState::executeBatchBackup() {
                 break;
         }
    }
-   char tag[64];
+   char tag[128];
    if (titlesOK > 0) {
      const char* tagTemplate;
      tagTemplate = LanguageUtils::gettext("Partial Backup - %d %s title%s");
-     snprintf(tag,64,tagTemplate,
+     snprintf(tag,128,tagTemplate,
         titlesOK,
         isWiiUBatchJob ? "Wii U" : "vWii",
         (titlesOK == 1) ? "" : "s");
    }
    else
-     snprintf(tag,64,LanguageUtils::gettext("Failed backup - No titles"));
+     snprintf(tag,128,LanguageUtils::gettext("Failed backup - No titles"));
    writeBackupAllMetadata(batchDatetime,tag);
 
    showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
