@@ -698,7 +698,7 @@ void getAccountsWiiU() {
     nn::act::Finalize();
 }
 
-bool profileExists(const char* name) {
+bool checkIfProfileExistsInWiiUAccounts(const char* name) {
     bool exists = false;
     uint32_t probablePersistentID = 0;
     probablePersistentID = strtoul(name,nullptr,16);
@@ -736,10 +736,9 @@ void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
     if (dir != nullptr) {
             struct dirent *data;
             while ((data = readdir(dir)) != nullptr) {
-                if (data->d_name[0] == '8' && strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
-                    char *end;
-                    uint32_t pID_ = strtoul(data->d_name, &end, 16);
-                    if ( *end != '\0' || pID_ == ULONG_MAX)
+                if (strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
+                    uint32_t pID;
+                    if (str2uint(pID,data->d_name,16) != SUCCESS)
                         continue;
                     vol_accn++;
                 }
@@ -753,13 +752,12 @@ void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
         struct dirent *data;
         int i = 0;
         while ((data = readdir(dir)) != nullptr) {
-            if (data->d_name[0] == '8' && strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
-                char *end;
-                uint32_t pID_ = strtoul(data->d_name, &end, 16);
-                if ( *end != '\0' || pID_ == ULONG_MAX)
+            if (strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
+                uint32_t pID;
+                if (str2uint(pID,data->d_name,16) != SUCCESS)
                     continue;
                 strcpy(vol_acc[i].persistentID, data->d_name);
-                vol_acc[i].pID = pID_;
+                vol_acc[i].pID = pID;
                 vol_acc[i].slot = i;
                 i++;
             }
@@ -1212,7 +1210,7 @@ static int getEmptySlotInTitleNameBasedPath(Title *title) {
 }
 
 
-bool hasAccountSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version) {
+bool hasProfileSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -1350,6 +1348,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
 
+    /*
     if (accountSource == USE_WIIU_PROFILES) 
         promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s \n%s",
             title->shortName,wiiuuser,wiiuuser > -1 ? wiiu_acc[wiiuuser].persistentID:"-", wiiuuser_d,wiiuuser_d>-1 ? wiiu_acc[wiiuuser_d].persistentID:"-",isUSB ? "USB":"NAND");
@@ -1357,11 +1356,14 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
         promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s \n%s",
                 title->shortName,wiiuuser,wiiuuser > -1 ?vol_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ? wiiu_acc[wiiuuser_d].persistentID:"-",isUSB ? "USB":"NAND");   
     return 0;
+    */
     
-    if ( wiiuuser == -1 && ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
-        promptError(LanguageUtils::gettext("%s\n\nCopy task aborted due to non-existent profile\n\nTry to copy using from/to user options"),title->shortName);
-        return -1;
-}
+    if ( wiiuuser == -1 &&  GlobalCfg::global->getDontAllowUndefinedProfiles()) { 
+        if (  ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
+            promptError(LanguageUtils::gettext("%s\n\nCopy task aborted due to non-existent profile\n\nTry to copy using from/to user options"),title->shortName);
+            return -1;
+        }
+    }
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
@@ -1489,6 +1491,7 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
     std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
     std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
 
+    /*
     if (accountSource == USE_WIIU_PROFILES) 
         promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s",
             title->shortName,wiiuuser,wiiuuser>-1 ? wiiu_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ?wiiu_acc[wiiuuser_d].persistentID:"-");
@@ -1496,7 +1499,7 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
         promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s",
             title->shortName,wiiuuser,wiiuuser > -1 ?vol_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ?wiiu_acc[wiiuuser_d].persistentID:"-");
     return 0;
-
+*/
     
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
@@ -1801,14 +1804,19 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
 
+    /*
     promptMessage(COLOR_BG_WR,"%s\nsduser %d\n%s\nwiiuuser %d\n%s\n common\n %s",
     title->shortName,sduser,sduser > -1 ?vol_acc[sduser].persistentID:"-",wiiuuser,wiiuuser>-1 ?  wiiu_acc[wiiuuser].persistentID : "-",common ? "true":"false");
     return 0;
+    */
 
-    if ( sduser == -1 && ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
+    if ( sduser == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
+        if ( checkIfAllProfilesInFolderExists(srcPath)) {
             promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
             return -1;
+        }
     }
+            
 
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
@@ -1958,6 +1966,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         return 0;
     }
     */
+   /*
    if (accountSource == USE_WIIU_PROFILES) 
         promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\n common\n %s",
             title->shortName,wiiuuser,wiiuuser>-1 ? wiiu_acc[wiiuuser].persistentID:"-",common ? "true":"false");
@@ -1965,7 +1974,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
         promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\n common\n %s",
             title->shortName,wiiuuser,wiiuuser>-1 ? vol_acc[wiiuuser].persistentID : "-",common ? "true":"false");
     return 0;
-    
+   */ 
 
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
@@ -2461,8 +2470,9 @@ bool mergeTitleFolders(Title* title) {
         std::string sourcePath = StringUtils::stringFormat("%s/%s", idBasedPath.c_str(), data->d_name);
         std::string targetPath;
 
-        int sourceSlot = 0;
-        if ((data->d_type & DT_DIR) == 0 || str2int(sourceSlot,data->d_name,10) != SUCCESS)  {// higly improbable, is not a savemii slot, but try to move it "as is" anyway
+        uint32_t sourceSlot = 0;
+        STR2UINT_ERROR convertRC = str2uint(sourceSlot,data->d_name,10);
+        if ((data->d_type & DT_DIR) == 0 ||  convertRC != SUCCESS || sourceSlot > 255)  {// higly improbable, is not a savemii slot, but try to move it "as is" anyway
             targetPath = StringUtils::stringFormat("%s/%s", titleNameBasedPath.c_str(), data->d_name);
             if (checkEntry(targetPath.c_str()) != 0 ) {
                 mergeErrorsCounter++;
@@ -2533,17 +2543,14 @@ bool mergeTitleFolders(Title* title) {
 
 } 
 
-STR2INT_ERROR str2int (int &i, char const *s, int base /*= 0*/) // from https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c
+STR2UINT_ERROR str2uint (uint32_t &i, char const *s, int base /*= 0*/) // from https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c
 {
     char *end;
-    long  l;
+    unsigned long  l;
     errno = 0;
-    l = strtol(s, &end, base);
-    if ((errno == ERANGE && l == LONG_MAX) || l > INT_MAX) {
+    l = strtoul(s, &end, base);
+    if ((errno == ERANGE && l == ULONG_MAX) || l > UINT_MAX) {
         return OVERFLOW;
-    }
-    if ((errno == ERANGE && l == LONG_MIN) || l < INT_MIN) {
-        return UNDERFLOW;
     }
     if (*s == '\0' || *end != '\0') {
         return INCONVERTIBLE;
@@ -2559,8 +2566,11 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
         while ((data = readdir(dir)) != nullptr) {
             if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))
                 continue;
-            if (data->d_name[0] == '8') {
-                if (! profileExists(data->d_name)) {
+            if (strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
+                uint32_t pID;
+                if (str2uint(pID,data->d_name,16) != SUCCESS)
+                    continue;
+                if (! checkIfProfileExistsInWiiUAccounts(data->d_name)) {
                     promptError(LanguageUtils::gettext("Backup contains savedata for the profile '%s',\nbut the profile does not exists in this console"),data->d_name);
                     closedir(dir);
                     return false;
@@ -2593,15 +2603,12 @@ bool removeFolderAndFlush(const std::string & srcPath) {
     return result;
 }
 
-bool checkProfilesInBackupForTheTitleExists (Title *title, uint8_t slot) {
+bool checkIfProfilesInTitleBackupExist(Title *title, uint8_t slot) {
     std::string srcPath;
     srcPath = getDynamicBackupPath(title, slot);
 
-    if ( ! checkIfAllProfilesInFolderExists(srcPath)) {
-            //promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
-            return false;
-    }
-    return true;
+    return checkIfAllProfilesInFolderExists(srcPath);
+
 }
 
 

@@ -8,6 +8,7 @@
 #include <utils/Colors.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <cfg/GlobalCfg.h>
 
 #include <locale>
 
@@ -109,7 +110,7 @@ void TitleOptionsState::render() {
                     consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("all users"),
                         sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
-                    sourceHasRequestedSavedata = hasAccountSave(&this->title, task == RESTORE, false, getVolAcc()[source_user].pID,slot, 0);
+                    sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE, false, getVolAcc()[source_user].pID,slot, 0);
                     if (task == RESTORE && ! backupRestoreFromSameConsole)
                         consolePrintPos(M_OFF, 8, "   < %s > (%s)", getVolAcc()[source_user].persistentID,
                             sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
@@ -122,7 +123,7 @@ void TitleOptionsState::render() {
             DrawUtils::setFontColor(COLOR_TEXT);
             if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE)) { // manage lines related to target user data
                 entrycount++;
-                consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user%s:"), LanguageUtils::gettext(" to copy to"));
+                consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user to copy to"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                 if (wiiu_user == -2)
                     consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("no profile user"));
@@ -131,7 +132,7 @@ void TitleOptionsState::render() {
                         (hasSavedata(&this->title, false, slot)) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
                     int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
-                    bool hasTargetUserData = hasAccountSave(&(titles[targetIndex]), false, false, getWiiUAcc()[wiiu_user].pID, 0, 0);
+                    bool hasTargetUserData = hasProfileSave(&(titles[targetIndex]), false, false, getWiiUAcc()[wiiu_user].pID, 0, 0);
                     consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUAcc()[wiiu_user].miiName,
                         getWiiUAcc()[wiiu_user].persistentID,
                         hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
@@ -518,13 +519,19 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         else if (this->task == RESTORE)
                             promptError(LanguageUtils::gettext("No data selected to restore"));
                         return SUBSTATE_RUNNING;
-                    }  
+                    }
+                    if (this->task == RESTORE && source_user == -1  && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
+                        if ( ! checkIfProfilesInTitleBackupExist(&this->title, slot)) {
+                            promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"),this->title.shortName);
+                            return SUBSTATE_RUNNING;
+                        }
+                    }
                     if ((source_user > -1 && ! sourceHasRequestedSavedata))
                         source_user_ = -2;
                     else
                         source_user_ = source_user;
                     break;
-            }
+            }          
             switch (this->task) {
                 case BACKUP:
                     backupSavedata(&this->title, slot, source_user_, common,USE_SD_OR_STORAGE_PROFILES);
