@@ -48,12 +48,13 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
         this->titles[i].currentDataSource.candidateToBeProcessed = false;
         this->titles[i].currentDataSource.selectedToBeProcessed = false;
         this->titles[i].currentDataSource.selectedForBackup = false;
-        this->titles[i].currentDataSource.hasUserSavedata = false;
+        this->titles[i].currentDataSource.hasProfileSavedata = false;
         this->titles[i].currentDataSource.hasCommonSavedata = false;
         this->titles[i].currentDataSource.batchJobState = NOT_TRIED;
         this->titles[i].currentDataSource.batchBackupState = NOT_TRIED;
         // for PROFILE_TO_PROFILE and WIPE_SAVEDATA, it's true if there is savedata for the source user
         // for RESTORE , true if the backupSet contains savedata for the title 
+        // can be common or profile
         if ( this->titles[i].currentDataSource.hasSavedata == false )  
             continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
@@ -82,7 +83,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
                 std::string usersavePath = srcPath+"/"+getVolAcc()[source_user].persistentID;
 
                 if (! folderEmpty(usersavePath.c_str()))
-                    this->titles[i].currentDataSource.hasUserSavedata = true; 
+                    this->titles[i].currentDataSource.hasProfileSavedata = true; 
             }
 
             if (source_user != -1 ) {
@@ -96,7 +97,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
                     continue;
 
             if (source_user > -1)
-                if (! this->titles[i].currentDataSource.hasUserSavedata)
+                if (! this->titles[i].currentDataSource.hasProfileSavedata)
                     continue;
                 
             this->titles[i].currentDataSource.candidateToBeProcessed = true;  // backup has enough data to try restore, for user=-1, because hasSavedata is true
@@ -532,6 +533,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToUSB Backup (WiiU)") : "";
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
+            break;
         case COPY_FROM_USB_TO_NAND:
             menuTitle=LanguageUtils::gettext("Batch Copy To NAND - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
@@ -635,10 +637,12 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 continue;
             }
         
-        if (jobType == RESTORE && source_user == -1 && ! checkProfilesInBackupForTheTitleExists (&sourceTitle, 0)) {
-            sourceTitle.currentDataSource.batchJobState = ABORTED;
-            promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"),titles[i].shortName);
-            continue;
+        if (jobType == RESTORE && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
+            if ( ! checkIfProfilesInTitleBackupExist(&sourceTitle, 0) ) {
+                sourceTitle.currentDataSource.batchJobState = ABORTED;
+                promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"),titles[i].shortName);
+                continue;
+            }
         }    
         
         sourceTitle.currentDataSource.batchJobState = OK;
@@ -657,8 +661,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 default: //source_user > -1
                     if (effectiveCommon)
                         retCode = wipeSavedata(&targetTitle, -2, true, false);
-                    bool targeHasUserSavedata = hasAccountSave(&targetTitle,false,false,getWiiUAcc()[this->wiiu_user].pID, 0,0);
-                    if (sourceTitle.currentDataSource.hasUserSavedata && targeHasUserSavedata) {
+                    bool targeHasProfileSavedata = hasProfileSave(&targetTitle,false,false,getWiiUAcc()[this->wiiu_user].pID, 0,0);
+                    if (sourceTitle.currentDataSource.hasProfileSavedata && targeHasProfileSavedata) {
                         switch(jobType) {
                             case RESTORE:
                             case PROFILE_TO_PROFILE:

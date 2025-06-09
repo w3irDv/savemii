@@ -28,7 +28,7 @@ bool GlobalCfg::mkJsonCfg()   {
     json_object_set_new(config, "language", json_integer(Language));
     json_object_set_new(config, "alwaysApplyExcludes", json_boolean(alwaysApplyExcludes));
     json_object_set_new(config, "askForBackupDirConversion", json_boolean(askForBackupDirConversion));
-    json_object_set_new(config, "dontAllowUndefinedProfiles", json_boolean(askForBackupDirConversion));
+    json_object_set_new(config, "dontAllowUndefinedProfiles", json_boolean(dontAllowUndefinedProfiles));
 
     configString = json_dumps(config, 0);
     json_decref(config);

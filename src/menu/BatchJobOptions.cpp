@@ -32,7 +32,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
             .hasSavedata = false,
             .candidateToBeProcessed = false,
             .selectedToBeProcessed = false,
-            .hasUserSavedata = false,
+            .hasProfileSavedata = false,
             .hasCommonSavedata = false,
             .batchJobState = NOT_TRIED
         };
@@ -75,15 +75,18 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 while ((data = readdir(dir)) != nullptr) {
                     if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))
                         continue;
-                    if (data->d_name[0] == '8' && strlen(data->d_name) == 8) {
-                        bool profileDefined = profileExists(data->d_name);
-                        if (! profileDefined) {
+                    if (strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
+                        uint32_t pID;
+                        if (str2uint(pID,data->d_name,16) != SUCCESS)
+                            goto hasSavedata;
+                        if (! checkIfProfileExistsInWiiUAccounts(data->d_name)) {
                             nonExistentProfileInTitleBackup = true;
                             undefinedUsers.insert(data->d_name);
                         }
                         sourceUsers.insert(data->d_name);
                     }
-                    this->titles[i].currentDataSource.hasSavedata=true;
+                    // can be common , profile, or "alien" data
+hasSavedata:        this->titles[i].currentDataSource.hasSavedata=true;
                 }
             } else {
                     this->titles[i].currentDataSource.hasSavedata = ! folderEmpty (srcPath.c_str());
