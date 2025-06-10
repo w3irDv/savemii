@@ -199,11 +199,11 @@ void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB
 void writeBackupAllMetadata(const std::string & Date, const std::string & tag);
 void backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
-int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, eAccountSource accountSource = USE_WIIU_PROFILES,const std::string &tag = "") __attribute__((hot));
-int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive = true) __attribute__((hot));
-int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
-int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
-int copySavedataToOtherDevice(Title *title, Title *titled, int8_t wiiuuser, int8_t wiiuuser_d, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
+int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource = USE_WIIU_PROFILES,const std::string &tag = "") __attribute__((hot));
+int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true) __attribute__((hot));
+int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
+int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
+int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 void importFromLoadiine(Title *title, bool common, int version);
 void exportToLoadiine(Title *title, bool common, int version);
 int checkEntry(const char *fPath);
