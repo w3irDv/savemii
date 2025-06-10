@@ -1329,7 +1329,7 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
     closedir(src_dir);
 }
 
-int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_d, bool common, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
+int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, int8_t wiiu_user, bool common, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
     int errorCode = 0;
     copyErrorsCounter = 0;
     abortCopy = false;
@@ -1350,15 +1350,15 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
 
     /*
     if (accountSource == USE_WIIU_PROFILES) 
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s \n%s",
-            title->shortName,wiiuuser,wiiuuser > -1 ? wiiu_acc[wiiuuser].persistentID:"-", wiiuuser_d,wiiuuser_d>-1 ? wiiu_acc[wiiuuser_d].persistentID:"-",isUSB ? "USB":"NAND");
+        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s \n%s",
+            title->shortName,source_user,source_user > -1 ? wiiu_acc[source_user].persistentID:"-", wiiu_user,wiiu_user>-1 ? wiiu_acc[wiiu_user].persistentID:"-",isUSB ? "USB":"NAND");
     else 
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s \n%s",
-                title->shortName,wiiuuser,wiiuuser > -1 ?vol_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ? wiiu_acc[wiiuuser_d].persistentID:"-",isUSB ? "USB":"NAND");   
+        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s \n%s",
+                title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ? wiiu_acc[wiiu_user].persistentID:"-",isUSB ? "USB":"NAND");   
     return 0;
     */
     
-    if ( wiiuuser == -1 &&  GlobalCfg::global->getDontAllowUndefinedProfiles()) { 
+    if ( source_user == -1 &&  GlobalCfg::global->getDontAllowUndefinedProfiles()) { 
         if (  ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
             promptError(LanguageUtils::gettext("%s\n\nCopy task aborted due to non-existent profile\n\nTry to copy using from/to user options"),title->shortName);
             return -1;
@@ -1388,7 +1388,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
     bool doCommon;
     bool singleUser = false;
 
-    switch (wiiuuser) {
+    switch (source_user) {
         case -2: // no user
             doBase = false;
             doCommon = common;
@@ -1397,16 +1397,16 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
             doBase = true;
             doCommon = false;
             break;
-        default:  // wiiuuser = 0 .. n
+        default:  // source_user = 0 .. n
             doBase = true;
             doCommon = common;
             singleUser = true;
 
             if (accountSource == USE_WIIU_PROFILES)
-                srcPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID));
             else
-                srcPath.append(StringUtils::stringFormat("/%s", vol_acc[wiiuuser].persistentID));
-            dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser_d].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID));
+            dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiu_user].persistentID));
             break;
     }
 
@@ -1432,7 +1432,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t wiiuuser, int8
         #endif
         if (! copyDir(srcPath, dstPath)) { 
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + ((wiiuuser == -1 ) ?  LanguageUtils::gettext("Error copying savedata.") 
+                + ((source_user == -1 ) ?  LanguageUtils::gettext("Error copying savedata.") 
                                     :  LanguageUtils::gettext("Error copying profile savedata."));
             errorCode += 2;
         }         
@@ -1479,7 +1479,7 @@ end:
     return errorCode;
 }
 
-int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
+int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
     int errorCode = 0;
     copyErrorsCounter = 0;
     abortCopy = false;
@@ -1493,11 +1493,11 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
 
     /*
     if (accountSource == USE_WIIU_PROFILES) 
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s",
-            title->shortName,wiiuuser,wiiuuser>-1 ? wiiu_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ?wiiu_acc[wiiuuser_d].persistentID:"-");
+        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s",
+            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-");
     else 
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\nwiiuuser_d %d\n%s",
-            title->shortName,wiiuuser,wiiuuser > -1 ?vol_acc[wiiuuser].persistentID:"-",wiiuuser_d,wiiuuser_d > -1 ?wiiu_acc[wiiuuser_d].persistentID:"-");
+        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s",
+            title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-");
     return 0;
 */
     
@@ -1519,11 +1519,11 @@ int copySavedataToOtherProfile(Title *title, int8_t wiiuuser, int8_t wiiuuser_d,
 
     std::string srcPath;
     if (accountSource == USE_WIIU_PROFILES)
-        srcPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID);
+        srcPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID);
     else
-        srcPath = basePath+StringUtils::stringFormat("/%s", vol_acc[wiiuuser].persistentID);
+        srcPath = basePath+StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID);
      
-    std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser_d].persistentID);
+    std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[wiiu_user].persistentID);
 
     std::string errorMessage {};
 
@@ -1687,7 +1687,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
     }
 }
 
-int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
+int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     copyErrorsCounter = 0;
@@ -1730,7 +1730,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, eAc
     }
     else
     {
-        switch (wiiuuser) {
+        switch (source_user) {
             case -2: // no user
                 doBase = false;
                 doCommon = common;
@@ -1739,15 +1739,15 @@ int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, eAc
                 doBase = true;
                 doCommon = false;
                 break;
-            default:  // wiiuuser = 0 .. n
+            default:  // source_user = 0 .. n
                 doBase = true;
                 doCommon = common;
                 if (accountSource == USE_WIIU_PROFILES) {
-                    srcPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID));
-                    dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID));
+                    srcPath.append(StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID));
+                    dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID));
                 } else {
-                    srcPath.append(StringUtils::stringFormat("/%s", vol_acc[wiiuuser].persistentID));
-                    dstPath.append(StringUtils::stringFormat("/%s", vol_acc[wiiuuser].persistentID));
+                    srcPath.append(StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID));
+                    dstPath.append(StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID));
                 }       
                 break;
         }
@@ -1764,7 +1764,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, eAc
     if (doBase) 
         if (! copyDir(srcPath, dstPath)) {
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + ((wiiuuser == -1 ) ?  LanguageUtils::gettext("Error copying savedata.") 
+                + ((source_user == -1 ) ?  LanguageUtils::gettext("Error copying savedata.") 
                                     :  LanguageUtils::gettext("Error copying profile savedata."));
             errorCode += 2;
         }
@@ -1779,7 +1779,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t wiiuuser, bool common, eAc
     return errorCode;
 }
 
-int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, bool common, bool interactive /*= true*/) {
+int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_user, bool common, bool interactive /*= true*/) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     copyErrorsCounter = 0;
@@ -1805,12 +1805,12 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     std::string dstCommonPath = dstPath + "/common";
 
     /*
-    promptMessage(COLOR_BG_WR,"%s\nsduser %d\n%s\nwiiuuser %d\n%s\n common\n %s",
-    title->shortName,sduser,sduser > -1 ?vol_acc[sduser].persistentID:"-",wiiuuser,wiiuuser>-1 ?  wiiu_acc[wiiuuser].persistentID : "-",common ? "true":"false");
+    promptMessage(COLOR_BG_WR,"%s\nsource_user %d\n%s\nwiiu_user %d\n%s\n common\n %s",
+    title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user>-1 ?  wiiu_acc[wiiu_user].persistentID : "-",common ? "true":"false");
     return 0;
     */
 
-    if ( sduser == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
+    if ( source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
         if ( checkIfAllProfilesInFolderExists(srcPath)) {
             promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
             return -1;
@@ -1853,7 +1853,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
     }
     else
     {
-        switch (sduser) {
+        switch (source_user) {
             case -2: // no user
                 doBase = false;
                 doCommon = common;
@@ -1862,12 +1862,12 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
                 doBase = true;
                 doCommon = false;
                 break;
-            default:  // wiiuuser = 0 .. n
+            default:  // wiiu_user = 0 .. n
                 doBase = true;
                 doCommon = common;
                 singleUser = true;
-                srcPath.append(StringUtils::stringFormat("/%s", vol_acc[sduser].persistentID));
-                dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiuuser].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID));
+                dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[wiiu_user].persistentID));
                 break;
         }
     }
@@ -1894,7 +1894,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
         #endif
         if (! copyDir(srcPath, dstPath)) {
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + ((wiiuuser == -1 ) ?  LanguageUtils::gettext("Error restoring savedata.") 
+                + ((wiiu_user == -1 ) ?  LanguageUtils::gettext("Error restoring savedata.") 
                                     :  LanguageUtils::gettext("Error restoring profile savedata."));
             errorCode += 2;
         }         
@@ -1942,7 +1942,7 @@ end:
     return errorCode;
 }
 
-int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
+int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     copyErrorsCounter = 0;
@@ -1968,11 +1968,11 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
     */
    /*
    if (accountSource == USE_WIIU_PROFILES) 
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nwiiuuser %d\n%s\n common\n %s",
-            title->shortName,wiiuuser,wiiuuser>-1 ? wiiu_acc[wiiuuser].persistentID:"-",common ? "true":"false");
+        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\n common\n %s",
+            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",common ? "true":"false");
     else 
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nwiiuuser %d\n%s\n common\n %s",
-            title->shortName,wiiuuser,wiiuuser>-1 ? vol_acc[wiiuuser].persistentID : "-",common ? "true":"false");
+        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\n common\n %s",
+            title->shortName,source_user,source_user>-1 ? vol_acc[source_user].persistentID : "-",common ? "true":"false");
     return 0;
    */ 
 
@@ -1998,7 +1998,7 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
     }
     else
     {
-        switch (wiiuuser) {
+        switch (source_user) {
             case -2: // no user
                 doBase = false;
                 doCommon = common;
@@ -2007,13 +2007,13 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
                 doBase = true;
                 doCommon = false;
                 break;
-            default:  // wiiuuser = 0 .. n
+            default:  // source_user = 0 .. n
                 doBase = true;
                 doCommon = common;
                 if (accountSource == USE_WIIU_PROFILES)
-                    srcPath += "/" + std::string(wiiu_acc[wiiuuser].persistentID);
+                    srcPath += "/" + std::string(wiiu_acc[source_user].persistentID);
                 else
-                    srcPath += "/" + std::string(vol_acc[wiiuuser].persistentID);
+                    srcPath += "/" + std::string(vol_acc[source_user].persistentID);
                 break;
         }
     }
@@ -2041,18 +2041,18 @@ int wipeSavedata(Title *title, int8_t wiiuuser, bool common, bool interactive /*
     if (doBase) {
         if (!removeDir(srcPath)) {   
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + ((wiiuuser == -1 ) ?  LanguageUtils::gettext("Error wiping savedata.") 
+                + ((source_user == -1 ) ?  LanguageUtils::gettext("Error wiping savedata.") 
                                     :  LanguageUtils::gettext("Error wiping profile savedata."));
             errorCode += 4;
         }
-        if ((wiiuuser > -1) && !isWii) {
+        if ((source_user > -1) && !isWii) {
             #ifndef MOCK
             if (unlink(srcPath.c_str()) == -1) {
             #else
             if (!unlink_b) {
             #endif
                 errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + ((wiiuuser == -1 ) ?  LanguageUtils::gettext("Error deleting savedata folder.") 
+                + ((source_user == -1 ) ?  LanguageUtils::gettext("Error deleting savedata folder.") 
                                      :  LanguageUtils::gettext("Error deleting profile savedata folder."));
                 std::string multilinePath;
                 splitStringWithNewLines(srcPath,multilinePath);
