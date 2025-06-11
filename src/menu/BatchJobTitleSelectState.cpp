@@ -549,43 +549,43 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             noUsersInfo = "";
             break;
     }
-    char summary[768];
+    //char summary[768];
     const char* summaryTemplate;
-    char selectedUserInfo[256];
+    //char selectedUserInfo[256];
+    std::string summary;
+    std::string selectedUserInfo;
 
     if (isWiiUBatchJob) {
-            summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n\n%s\n%s\n%s\n%s\n\nContinue?\n\n");
+            summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n%s\n%s\n%s\n\nContinue?\n\n");
             if (source_user > - 1) {
                 switch (jobType) {
                     case RESTORE:
-                        snprintf(selectedUserInfo,128,taskDescription,getVolAcc()[source_user].persistentID,getWiiUAcc()[wiiu_user].miiName,getWiiUAcc()[wiiu_user].persistentID);
+                        selectedUserInfo = StringUtils::stringFormat(taskDescription,getVolAcc()[source_user].persistentID,getWiiUAcc()[wiiu_user].miiName,getWiiUAcc()[wiiu_user].persistentID);
                         break;
                     case PROFILE_TO_PROFILE:
                     case COPY_FROM_NAND_TO_USB:
                     case COPY_FROM_USB_TO_NAND:
-                        snprintf(selectedUserInfo,128,taskDescription,getVolAcc()[source_user].miiName,getVolAcc()[source_user].persistentID,getWiiUAcc()[wiiu_user].miiName,getWiiUAcc()[wiiu_user].persistentID);
+                        selectedUserInfo = StringUtils::stringFormat(taskDescription,getVolAcc()[source_user].miiName,getVolAcc()[source_user].persistentID,getWiiUAcc()[wiiu_user].miiName,getWiiUAcc()[wiiu_user].persistentID);
                         break;
                     case WIPE_PROFILE:
-                        snprintf(selectedUserInfo,128,taskDescription,getVolAcc()[source_user].miiName,getVolAcc()[source_user].persistentID);
+                        selectedUserInfo = StringUtils::stringFormat(taskDescription,getVolAcc()[source_user].miiName,getVolAcc()[source_user].persistentID);
                         break;
                 }                        
         }
-        snprintf(summary,768,summaryTemplate,
-            (source_user > -1) ? selectedUserInfo : (source_user == -1 ? allUsersInfo : noUsersInfo), 
+        summary = StringUtils::stringFormat(summaryTemplate,
+            menuTitle,
+            (source_user > -1) ? selectedUserInfo.c_str() : (source_user == -1 ? allUsersInfo : noUsersInfo), 
             (common || source_user == -1 ) ? LanguageUtils::gettext("- Include common savedata: Yes") :  LanguageUtils::gettext("- Include common savedata: No"),
             (wipeBeforeRestore || jobType == WIPE_PROFILE)? LanguageUtils::gettext("- Wipe data: Yes") :  LanguageUtils::gettext("- Wipe data: No"),
             fullBackup ? LanguageUtils::gettext("- Perform full backup: Yes") :  LanguageUtils::gettext("- Perform full backup: No"));
     } else {
-            summaryTemplate = LanguageUtils::gettext("You have selected the following options:\n\n%s\n%s\n%s\n\nContinue?\n\n");
-            snprintf(summary,768,summaryTemplate,taskDescription,
+            summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n%s\n%s\n\nContinue?\n\n");
+            summary = StringUtils::stringFormat(summaryTemplate,menuTitle,taskDescription,
             (wipeBeforeRestore || jobType == WIPE_PROFILE) ? LanguageUtils::gettext("- Wipe data: Yes") :  LanguageUtils::gettext("- Wipe data: No"),
             fullBackup ? LanguageUtils::gettext("- Perform full backup: Yes") :  LanguageUtils::gettext("- Perform full backup: No"));
     }
 
-    char summaryWithTitle[896];
-    snprintf(summaryWithTitle,896,"%s\n\n%s",menuTitle,summary);
-
-    if (!promptConfirm(ST_WARNING,summaryWithTitle))
+    if (!promptConfirm(ST_WARNING,summary))
             return;
 
     for (int i = 0; i < titlesCount ; i++) {
@@ -784,18 +784,18 @@ void BatchJobTitleSelectState::executeBatchBackup() {
                 break;
         }
    }
-   char tag[128];
+   std::string tag;
    if (titlesOK > 0) {
-     const char* tagTemplate;
-     tagTemplate = LanguageUtils::gettext("Partial Backup - %d %s title%s");
-     snprintf(tag,128,tagTemplate,
-        titlesOK,
-        isWiiUBatchJob ? "Wii U" : "vWii",
-        (titlesOK == 1) ? "" : "s");
+        const char* tagTemplate;
+        tagTemplate = LanguageUtils::gettext("Partial Backup - %d %s title%s");
+        tag = StringUtils::stringFormat(tagTemplate,
+            titlesOK,
+            isWiiUBatchJob ? "Wii U" : "vWii",
+            (titlesOK == 1) ? "" : "s");
    }
    else
-     snprintf(tag,128,LanguageUtils::gettext("Failed backup - No titles"));
-   writeBackupAllMetadata(batchDatetime,tag);
+        tag = StringUtils::stringFormat(LanguageUtils::gettext("Failed backup - No titles"));
+   writeBackupAllMetadata(batchDatetime,tag.c_str());
 
    showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
 
