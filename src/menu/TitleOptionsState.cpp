@@ -10,11 +10,16 @@
 #include <utils/LanguageUtils.h>
 #include <cfg/GlobalCfg.h>
 
+#include <utils/StringUtils.h>
+
 #include <locale>
 
 #define TAG_OFF 17
 
 bool sourceHasRequestedSavedata = false;
+
+extern FSAClientHandle handle;
+static int showFolderInfo;
 
 void TitleOptionsState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -26,7 +31,7 @@ void TitleOptionsState::render() {
     }
     if (this->state == STATE_TITLE_OPTIONS) {
         std::string slotFormat = slotFormatType(&this->title, slot);
-        if (((this->task == COPY_TO_OTHER_DEVICE) || (this->task == PROFILE_TO_PROFILE)|| (this->task == WIPE_PROFILE)) && cursorPos == 0)
+        if (((this->task == COPY_TO_OTHER_DEVICE) || (this->task == PROFILE_TO_PROFILE)|| (this->task == MOVE_PROFILE)|| (this->task == WIPE_PROFILE)) && cursorPos == 0)
             cursorPos = 1;     
         bool emptySlot = isSlotEmpty(&this->title, slot);
         if (this->task == BACKUP || this->task == RESTORE) {
@@ -46,6 +51,10 @@ void TitleOptionsState::render() {
         } else if (this->task == PROFILE_TO_PROFILE) {
             DrawUtils::setFontColor(COLOR_TEXT);
             consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Copy profile savedata to a different profile."));
+        } else if (this->task == MOVE_PROFILE) {
+            DrawUtils::setFontColor(COLOR_TEXT);
+            consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Move profile savedata to a different profile."));
+            consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   - Target profile will be wiped."));
         } else if (this->task == importLoadiine || this->task == exportLoadiine) {
             entrycount = 2;
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
@@ -55,6 +64,42 @@ void TitleOptionsState::render() {
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Delete from:"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "USB" : "NAND");
+            if (showFolderInfo) {
+                uint32_t highID = title.highID;
+                uint32_t lowID = title.lowID;
+                bool isUSB = title.isTitleOnUSB;
+
+                std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+                std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
+                
+                std::string srcPath;
+
+                uint64_t savesize = 0;
+                if (source_user == -2) {
+                    srcPath = basePath+StringUtils::stringFormat("/common", getVolAcc()[source_user].persistentID);
+                    savesize = title.commonSaveSize;
+                }
+                else if (source_user == -1) {
+                    srcPath = basePath+StringUtils::stringFormat("/");
+                    savesize = 0;
+                }
+                else if (source_user > -1) {
+                    srcPath = basePath+StringUtils::stringFormat("/%s", getVolAcc()[source_user].persistentID);
+                    savesize = title.accountSaveSize;
+                }
+
+                FSAStat fsastat;
+                FSMode fsamode;
+                FSAGetStat(handle, newlibtoFSA(srcPath).c_str(),&fsastat);
+
+                fsamode = fsastat.mode;
+
+                uint64_t quotaSize = fsastat.quotaSize;
+                DrawUtils::setFontColor(COLOR_INFO);
+                consolePrintPos(M_OFF, 12,"%s",srcPath.c_str());
+                consolePrintPos(M_OFF, 13,"Mode: %x Owner:Group %x:%x",fsamode,fsastat.owner,fsastat.group);
+                consolePrintPos(M_OFF, 14, "Savesize: %llu   quotaSize: %llu ",savesize, quotaSize);
+            }
         } else if ((task == BACKUP) || (task == RESTORE)) {
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s [%s]:"), LanguageUtils::gettext("slot"),slotFormat.c_str());
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
@@ -98,7 +143,7 @@ void TitleOptionsState::render() {
                     goto showIcon;
             } 
                     
-            if ( (task == RESTORE) || (task == BACKUP) || (task == WIPE_PROFILE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) ) { // manage lines related to source data
+            if ( (task == RESTORE) || (task == BACKUP) || (task == WIPE_PROFILE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE) ) { // manage lines related to source data
                 consolePrintPos(M_OFF, 7, (task == RESTORE) ? LanguageUtils::gettext("Select SD user to copy from:") : LanguageUtils::gettext("Select Wii U user to copy from:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                 if (source_user == -2) {
@@ -121,7 +166,7 @@ void TitleOptionsState::render() {
             }
 
             DrawUtils::setFontColor(COLOR_TEXT);
-            if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE)) { // manage lines related to target user data
+            if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE )) { // manage lines related to target user data
                 entrycount++;
                 consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user to copy to"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
@@ -250,6 +295,11 @@ showIcon:   if (this->title.iconBuf != nullptr)
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
                 break;
+            case MOVE_PROFILE:
+                consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Move to Other Profile"));
+                DrawUtils::setFontColor(COLOR_TEXT);
+                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Move  \ue001: Back"));
+                break;    
             case importLoadiine:
                 consolePrintPosAligned(0, 4, 1,LanguageUtils::gettext("Import Loadiine"));
                 DrawUtils::setFontColor(COLOR_TEXT);
@@ -281,6 +331,9 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 this->substateCalled = STATE_BACKUPSET_MENU;
                 this->subState = std::make_unique<BackupSetListState>();
             }
+        if (input->get(TRIGGER, PAD_BUTTON_Y)) {
+            showFolderInfo = showFolderInfo ? false: true;
+        }
         if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
             if (this->task == COPY_TO_OTHER_DEVICE) {
                 switch (cursorPos) {
@@ -337,18 +390,18 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if (this->task == PROFILE_TO_PROFILE) {
+            } else if ((this->task == PROFILE_TO_PROFILE) || (this->task == MOVE_PROFILE)) {
                 switch (cursorPos) {
                     case 0:
                         break;
                     case 1:
                         this->source_user = ((this->source_user == 0) ? 0 : (this->source_user - 1));
-                        if (source_user == wiiu_user)
+                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                             wiiu_user = ( source_user + 1 ) % wiiUAccountsTotalNumber;
                         break;
                     case 2:
                         wiiu_user = ( --wiiu_user == - 1) ? (wiiUAccountsTotalNumber-1) : (wiiu_user);
-                        if (source_user == wiiu_user)
+                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                             wiiu_user = ( wiiu_user - 1 ) % wiiUAccountsTotalNumber;
                         wiiu_user = (wiiu_user < 0) ? (wiiUAccountsTotalNumber-1) : wiiu_user;
                         break;
@@ -439,18 +492,18 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if (this->task == PROFILE_TO_PROFILE) {
+            } else if ( (this->task == PROFILE_TO_PROFILE) || (this->task == MOVE_PROFILE)) {
                 switch (cursorPos) {
                     case 0:
                         break;
                     case 1:
                         source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
-                        if (source_user == wiiu_user)
+                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                             wiiu_user = ( wiiu_user + 1 ) % wiiUAccountsTotalNumber;
                         break;
                     case 2:
                         wiiu_user = ( ++ wiiu_user == wiiUAccountsTotalNumber) ? 0 : wiiu_user;
-                        if (source_user == wiiu_user)
+                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                             wiiu_user = ( wiiu_user + 1 ) % wiiUAccountsTotalNumber;
                         break;
                     default:
@@ -504,6 +557,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case BACKUP:
                 case WIPE_PROFILE:
                 case PROFILE_TO_PROFILE:
+                case MOVE_PROFILE:
                 case COPY_TO_OTHER_DEVICE:
                 case RESTORE:
                     if ( ! ( common || sourceHasRequestedSavedata) )
@@ -514,6 +568,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                             promptError(LanguageUtils::gettext("No data selected to wipe"));
                         else if (this->task == PROFILE_TO_PROFILE)
                             promptError(LanguageUtils::gettext("No data selected to copyToOtherProfile"));
+                        else if (this->task == MOVE_PROFILE)
+                            promptError(LanguageUtils::gettext("No data selected to moveProfile"));    
                         else if (this->task == COPY_TO_OTHER_DEVICE)
                             promptError(LanguageUtils::gettext("No data selected to copy"));
                         else if (this->task == RESTORE)
@@ -545,6 +601,9 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 case PROFILE_TO_PROFILE:
                     copySavedataToOtherProfile(&this->title, source_user_, wiiu_user,true,USE_SD_OR_STORAGE_PROFILES);
+                    break;
+                case MOVE_PROFILE:
+                    moveSavedataToOtherProfile(&this->title, source_user_, wiiu_user,true,USE_SD_OR_STORAGE_PROFILES);
                     break;
                 case COPY_TO_OTHER_DEVICE:
                     copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common,true,USE_SD_OR_STORAGE_PROFILES);

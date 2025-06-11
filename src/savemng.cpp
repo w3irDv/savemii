@@ -41,7 +41,7 @@ uint8_t wiiu_accn = 0, vol_accn = 5;
 
 static size_t written = 0;
 
-static FSAClientHandle handle;
+FSAClientHandle handle;
 
 std::string usb;
 
@@ -1538,10 +1538,86 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
     flushVol(dstPath);
 
     if (errorCode != 0) {
-        errorMessage = LanguageUtils::gettext("%s\nReplicate failed.")+std::string("\n\n")+errorMessage;
+        errorMessage = LanguageUtils::gettext("%s\nCopy profile failed.")+std::string("\n\n")+errorMessage;
         promptError(errorMessage.c_str(),title->shortName);
     }
     return errorCode;
+}
+
+int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
+    int errorCode = 0;
+    copyErrorsCounter = 0;
+    abortCopy = false;
+    InProgress::titleName.assign(title->shortName);
+    uint32_t highID = title->highID;
+    uint32_t lowID = title->lowID;
+    bool isUSB = title->isTitleOnUSB;
+
+    std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+    std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
+    
+    if (interactive) {
+        if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
+            return -1;
+        if (!folderEmpty(basePath.c_str())) {
+            int slot = getEmptySlot(title);
+            // backup is always of allusers
+            if ((slot >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
+                if (!( backupSavedata(title, slot, -1, true, accountSource, LanguageUtils::gettext("pre-moveSavedataToOtherProfile backup")) == 0 )) {
+                    promptError(LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
+                    return -1;
+                }     
+            }
+        }
+    }
+    
+    std::string srcPath;
+    if (accountSource == USE_WIIU_PROFILES)
+        srcPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID);
+    else
+        srcPath = basePath+StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID);
+     
+    std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[wiiu_user].persistentID);
+
+/*        
+    if (accountSource == USE_WIIU_PROFILES) 
+        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s\ns %s\nd%s",
+            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-",srcPath.c_str(),dstPath.c_str());
+    else 
+        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s\ns %s\nd%s",
+            title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-",srcPath.c_str(),dstPath.c_str());
+    return 0;
+*/
+
+    std::string errorMessage {};
+    if (checkEntry(dstPath.c_str()) == 2) {
+        if ( wipeSavedata(title, wiiu_user, false, false, accountSource) != 0)
+            {
+                errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error deleting savedata folder\n%s"),dstPath.c_str());
+                errorCode = 1;
+            }
+    }
+
+    if (errorCode == 0 ) {
+        if ( rename(srcPath.c_str(),dstPath.c_str()) != 0) {
+            std::string multilinePath;
+            splitStringWithNewLines(srcPath,multilinePath);
+            errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Unable to rename folder \n'%s'to\n'%s'\n\n%s\n\nPlease restore the backup, fix errors and try again"),multilinePath.c_str(),dstPath.c_str(),strerror(errno));
+            errorCode = 2;
+        }
+    }
+
+    flushVol(dstPath);
+
+    if ( errorCode != 0 ) {
+        errorMessage = LanguageUtils::gettext("%s\nMove profile failed.")+std::string("\n\n")+errorMessage;
+        if (interactive)
+            promptMessage(COLOR_BG_OK,errorMessage.c_str(),title->shortName);
+        else
+            promptError(errorMessage.c_str(),title->shortName);
+    }
+    return errorCode;
+
 }
 
 std::string getNowDate() {

@@ -217,6 +217,11 @@ static Title *loadWiiUTitles(int run) {
             strlcpy(accountSaveSize, cptr, strcspn(cptr, "<") + 1);
             titles[wiiuTitlesCount].accountSaveSize = strtoull(accountSaveSize, nullptr, 16);
 
+            cptr = strchr(strstr(xmlBuf, "common_save_size"), '>') + 1;
+            char commonSaveSize[255];
+            strlcpy(commonSaveSize, cptr, strcspn(cptr, "<") + 1);
+            titles[wiiuTitlesCount].commonSaveSize = strtoull(commonSaveSize, nullptr, 16);
+
             cptr = strchr(strstr(xmlBuf, "group_id"), '>') + 1;
             char groupID[255];
             strlcpy(groupID, cptr, strcspn(cptr, "<") + 1);
