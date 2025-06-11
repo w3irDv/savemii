@@ -1033,7 +1033,8 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
     return false;
 }
 
-static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint64_t quotaSize) {
+static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint64_t accountSize, uint64_t commonSize) {
+    uint64_t quotaSize;
     DIR *src_dir = opendir(src_path);
     struct dirent *entry;
     while ((entry = readdir(src_dir)) != nullptr) {
@@ -1044,6 +1045,10 @@ static void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint
             snprintf(sub_src_path, sizeof(sub_src_path), "%s/%s", src_path, entry->d_name);
             char sub_dst_path[1024];
             snprintf(sub_dst_path, sizeof(sub_dst_path), "%s/%s", dst_path, entry->d_name);
+            if ( strncmp(entry->d_name, "common", 6) == 0 )
+                quotaSize = commonSize;
+            else
+                quotaSize = accountSize;
             FSAMakeQuota(handle, newlibtoFSA(sub_dst_path).c_str(), 0x666, quotaSize);
         }
     }
@@ -1080,7 +1085,7 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_
 
     if (wiiuuser > -1)  {
         if (common) {
-            FSAMakeQuota(handle, newlibtoFSA(dstPath + "/common").c_str(), 0x666, titleb->accountSaveSize);
+            FSAMakeQuota(handle, newlibtoFSA(dstPath + "/common").c_str(), 0x666, titleb->commonSaveSize);
             if (copyDir(srcPath + "/common", dstPath + "/common"))
                 commonSaved = true;
             else
@@ -1097,7 +1102,7 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_
             if (!commonSaved)
                 promptError(LanguageUtils::gettext("No save found for this user."));
     } else {
-        FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize);
+        FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize, titleb->commonSaveSize);
         if (!copyDir(srcPath, dstPath))
             promptError(LanguageUtils::gettext("Copy failed."));
     }
@@ -1378,7 +1383,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
 
     if (doCommon) {
         #ifndef MOCK
-        FSAMakeQuota(handle, newlibtoFSA(dstCommonPath).c_str(), 0x666, title->accountSaveSize);
+        FSAMakeQuota(handle, newlibtoFSA(dstCommonPath).c_str(), 0x666, title->commonSaveSize);
         #endif
         if (copyDir(srcCommonPath, dstCommonPath))
             commonSaved = true;
@@ -1407,7 +1412,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
         else
         {
             #ifndef MOCK
-            FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize);
+            FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize, title->commonSaveSize);
             #endif
             if (!copyDir(srcPath, dstPath)) {
                 promptError(LanguageUtils::gettext("%s\nRestore failed."),title->shortName);

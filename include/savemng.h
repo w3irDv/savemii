@@ -56,6 +56,7 @@ struct Title {
     uint16_t dupeID;
     uint8_t *iconBuf;
     uint64_t accountSaveSize;
+    uint64_t commonSaveSize;
     uint32_t groupID;
     backupInfo currentBackup;
 };
