@@ -964,9 +964,8 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
                     return false;
                 }
                 copyErrorsCounter++;
-                char errorMessage[256];
-                snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
-                if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+                std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+                if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str())) {
                     abortCopy=true;
                     closedir(dir);
                     return false;
@@ -975,9 +974,8 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         } else {
             if (!copyFile(pPath + StringUtils::stringFormat("/%s", data->d_name), targetPath)) {
                 copyErrorsCounter++;
-                char errorMessage[256];
-                snprintf(errorMessage,256,LanguageUtils::gettext("Error copying file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
-                if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+                std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error copying file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+                if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str())) {
                     abortCopy=true;
                     closedir(dir);
                     return false;
@@ -992,9 +990,8 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string multilinePath;
         splitStringWithNewLines(pPath,multilinePath);
         promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n%s\n\nCopy may be incomplete"),multilinePath.c_str(),strerror(errno));
-        char errorMessage[256];
-        snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
-        if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+        std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+        if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str())) {
             abortCopy=true;
             closedir(dir);
             return false;
@@ -1006,9 +1003,8 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
         std::string multilinePath;
         splitStringWithNewLines(pPath,multilinePath);
         promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
-        char errorMessage[256];
-        snprintf(errorMessage,256,LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
-        if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+        std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"),copyErrorsCounter);
+        if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str())) {
             abortCopy=true;
             return false;
         }
@@ -2314,17 +2310,15 @@ void summarizeBackupCounters  (Title *titles, int titlesCount,int & titlesOK, in
 
 void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles) {
 
-    char summary[768];
+    
     const char* summaryTemplate;
     if (titlesNotInitialized == 0 )
         summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
     else
         summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
-    snprintf(summary,768,summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
+        
+    std::string summaryWithTitles = StringUtils::stringFormat(summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
     
-    std::string summaryWithTitles;
-    summaryWithTitles.assign(summary);
-
     Color summaryColor = COLOR_BG_OK;
     if ( titlesWarning > 0 || titlesAborted > 0)
         summaryColor = COLOR_BG_WR;
@@ -2505,9 +2499,8 @@ bool renameAllTitlesFolder(Title* titles, int titlesCount) {
 
         if (! renameTitleFolder(&titles[i])) {
             errorCounter++;
-            char errorMessage[512];
-            snprintf(errorMessage,512,LanguageUtils::gettext("Error renaming/moving '%08x%08x' to \n\n'%s'\n\nConversion errors so far: %d\n\nDo you want to continue?\n"),titles[i].highID, titles[i].lowID,titles[i].titleNameBasedDirName,errorCounter);
-            if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error renaming/moving '%08x%08x' to \n\n'%s'\n\nConversion errors so far: %d\n\nDo you want to continue?\n"),titles[i].highID, titles[i].lowID,titles[i].titleNameBasedDirName,errorCounter);
+            if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str())) {
                 return false;
             }
         }
@@ -2533,9 +2526,8 @@ bool mergeTitleFolders(Title* title) {
             continue;
 
         if (mergeErrorsCounter > 0 && showAbortPrompt) {
-            char errorMessage[128];
-            snprintf(errorMessage,128,LanguageUtils::gettext("Errors so far in this (sub)task: %d\nDo you want to continue?"),mergeErrorsCounter);
-            if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage)) {
+            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Errors so far in this (sub)task: %d\nDo you want to continue?"),mergeErrorsCounter);
+            if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str())) {
                 closedir(dir);
                 return false;
             }
@@ -2709,11 +2701,7 @@ void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::
             */
         if (ctlLine > 8 ) {
             int notShown = failedTitles.size()-ctlLine-1;
-            const char* moreTitlesTemp;
-            moreTitlesTemp = LanguageUtils::gettext("... and %d more");
-            char moreTitles[64];
-            snprintf(moreTitles,64,moreTitlesTemp,notShown);
-            summaryWithTitles.append(moreTitles);
+            summaryWithTitles.append(StringUtils::stringFormat(LanguageUtils::gettext("... and %d more"),notShown));
             break;
         }
         if (++ctlLine % 2 == 0)
