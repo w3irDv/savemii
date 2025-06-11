@@ -41,12 +41,14 @@ void TitleTaskState::render() {
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
             consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Copy savedata to other profile"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
-            consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Import from loadiine"));
+            consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Move savedata to other profile"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
-            consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Export to loadiine"));
+            consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import from loadiine"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);
+            consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Export to loadiine"));
             if (this->title.isTitleDupe) {
-                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);
-                consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,7);
+                consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
                                 this->title.isTitleOnUSB ? "NAND" : "USB");
             }
             if (this->title.iconBuf != nullptr)
@@ -86,11 +88,15 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 case COPY_TO_OTHER_DEVICE: 
                     noData = LanguageUtils::gettext("No save to Copy.");
                     break;
+                case MOVE_PROFILE:
+                    noData = LanguageUtils::gettext("No save to Move.");
+                    break;
                 default:
+                    noData = "";
                     break;
             }
 
-            if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
+            if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE  ||  this->task == COPY_TO_OTHER_DEVICE) {
                 if (!this->title.saveInit) {
                     promptError(noData);
                     noError = false;
@@ -105,7 +111,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 getAccountsFromVol(&this->title, slot,RESTORE);
             }
 
-            if (this->task == PROFILE_TO_PROFILE && noError) {
+            if (( this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE) && noError) {
                 getAccountsFromVol(&this->title, slot, PROFILE_TO_PROFILE);
                 for (int i = 0; i <  getVolAccn() ; i ++ ) {
                     for (int j = 0; j < getWiiUAccn(); j++) {

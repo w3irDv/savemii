@@ -11,7 +11,7 @@ public:
                                                                   titles(titles),
                                                                   titlesCount(titlesCount) {
                 this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
-                entrycount = 3 + 3 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));
+                entrycount = 3 + 4 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));
                 if (cursorPos > entrycount -1 )
                         cursorPos = 0;
     }

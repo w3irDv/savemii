@@ -10,11 +10,12 @@ enum eJobType {
     RESTORE = 1,
     WIPE_PROFILE = 2,
     PROFILE_TO_PROFILE = 3,
-    importLoadiine = 4,
-    exportLoadiine = 5,
-    COPY_TO_OTHER_DEVICE = 6,
-    COPY_FROM_NAND_TO_USB = 7,
-    COPY_FROM_USB_TO_NAND = 8
+    MOVE_PROFILE = 4,
+    importLoadiine = 5,
+    exportLoadiine = 6,
+    COPY_TO_OTHER_DEVICE = 7,
+    COPY_FROM_NAND_TO_USB = 8,
+    COPY_FROM_USB_TO_NAND = 9
 };
 
 class ApplicationState {
