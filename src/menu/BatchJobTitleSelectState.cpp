@@ -549,9 +549,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             noUsersInfo = "";
             break;
     }
-    //char summary[768];
     const char* summaryTemplate;
-    //char selectedUserInfo[256];
     std::string summary;
     std::string selectedUserInfo;
 

@@ -64,42 +64,6 @@ void TitleOptionsState::render() {
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Delete from:"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
             consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "USB" : "NAND");
-            if (showFolderInfo) {
-                uint32_t highID = title.highID;
-                uint32_t lowID = title.lowID;
-                bool isUSB = title.isTitleOnUSB;
-
-                std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
-                std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
-                
-                std::string srcPath;
-
-                uint64_t savesize = 0;
-                if (source_user == -2) {
-                    srcPath = basePath+StringUtils::stringFormat("/common", getVolAcc()[source_user].persistentID);
-                    savesize = title.commonSaveSize;
-                }
-                else if (source_user == -1) {
-                    srcPath = basePath+StringUtils::stringFormat("/");
-                    savesize = 0;
-                }
-                else if (source_user > -1) {
-                    srcPath = basePath+StringUtils::stringFormat("/%s", getVolAcc()[source_user].persistentID);
-                    savesize = title.accountSaveSize;
-                }
-
-                FSAStat fsastat;
-                FSMode fsamode;
-                FSAGetStat(handle, newlibtoFSA(srcPath).c_str(),&fsastat);
-
-                fsamode = fsastat.mode;
-
-                uint64_t quotaSize = fsastat.quotaSize;
-                DrawUtils::setFontColor(COLOR_INFO);
-                consolePrintPos(M_OFF, 12,"%s",srcPath.c_str());
-                consolePrintPos(M_OFF, 13,"Mode: %x Owner:Group %x:%x",fsamode,fsastat.owner,fsastat.group);
-                consolePrintPos(M_OFF, 14, "Savesize: %llu   quotaSize: %llu ",savesize, quotaSize);
-            }
         } else if ((task == BACKUP) || (task == RESTORE)) {
             consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s [%s]:"), LanguageUtils::gettext("slot"),slotFormat.c_str());
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
@@ -262,6 +226,44 @@ showIcon:   if (this->title.iconBuf != nullptr)
 
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
+        }
+
+        if (this->task == WIPE_PROFILE && showFolderInfo) {
+                uint32_t highID = title.highID;
+                uint32_t lowID = title.lowID;
+                bool isUSB = title.isTitleOnUSB;
+
+                std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+                std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
+                
+                std::string srcPath;
+
+                uint64_t savesize = 0;
+                if (source_user == -2) {
+                    srcPath = basePath+StringUtils::stringFormat("/common", getVolAcc()[source_user].persistentID);
+                    savesize = title.commonSaveSize;
+                }
+                else if (source_user == -1) {
+                    srcPath = basePath+StringUtils::stringFormat("/");
+                    savesize = 0;
+                }
+                else if (source_user > -1) {
+                    srcPath = basePath+StringUtils::stringFormat("/%s", getVolAcc()[source_user].persistentID);
+                    savesize = title.accountSaveSize;
+                }
+                
+                DrawUtils::setFontColor(COLOR_INFO);
+                consolePrintPos(M_OFF, 12,"%s",srcPath.c_str());
+                uint64_t quotaSize = 0;
+                if (checkEntry(srcPath.c_str()) == 2) {
+                    FSAStat fsastat;
+                    FSMode fsamode;    
+                    FSAGetStat(handle, newlibtoFSA(srcPath).c_str(),&fsastat);
+                    fsamode = fsastat.mode;
+                    quotaSize = fsastat.quotaSize;
+                    consolePrintPos(M_OFF, 13,"Mode: %x Owner:Group %x:%x",fsamode,fsastat.owner,fsastat.group);
+                }
+                consolePrintPos(M_OFF, 14, "Savesize: %llu   quotaSize: %llu ",savesize, quotaSize);
         }
 
         DrawUtils::setFontColor(COLOR_TEXT);
