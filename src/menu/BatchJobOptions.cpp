@@ -22,6 +22,8 @@ extern uint8_t vol_accn;
 
 extern Account *wiiu_acc;
 
+static bool substate_return = false;
+
 BatchJobOptions::BatchJobOptions(Title *titles, 
     int titlesCount,bool  isWiiUBatchJob, eJobType jobType) : titles(titles),
                         titlesCount(titlesCount), isWiiUBatchJob(isWiiUBatchJob), jobType(jobType) {
@@ -41,7 +43,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
         if ( jobType != RESTORE )  // we allow restore for uninitializedTitles  ...
             if (! this->titles[i].saveInit)
                 continue;
-        if (jobType == RESTORE || jobType == PROFILE_TO_PROFILE )
+        if (jobType == RESTORE || jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE)
             if (this->titles[i].isTitleDupe && ! this->titles[i].isTitleOnUSB)
                 continue;
         if (jobType == COPY_FROM_NAND_TO_USB)
@@ -61,6 +63,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 break;
             case WIPE_PROFILE:
             case PROFILE_TO_PROFILE:
+            case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
                 std::string path = ( this->titles[i].is_Wii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
@@ -128,13 +131,28 @@ hasSavedata:        this->titles[i].currentDataSource.hasSavedata=true;
     sourceAccountsTotalNumber = getVolAccn();
     wiiUAccountsTotalNumber = getWiiUAccn();
 
-    if (jobType == PROFILE_TO_PROFILE) {
-        source_user = 0;
-        wiiu_user = 1;
+    substate_return = false;
+    if (jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE) {
         common = false;
+        for (int i = 0; i <  sourceAccountsTotalNumber ; i ++ ) {
+            for (int j = 0; j < wiiUAccountsTotalNumber; j++) {
+                if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
+                    source_user=i;
+                    wiiu_user=j;
+                    goto nxtCheck;
+                }
+            }
+        }
+        promptError(LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
+        substate_return = true;
+        return;
     }
 
-    if (jobType == PROFILE_TO_PROFILE || jobType == WIPE_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) {
+nxtCheck:
+    if (jobType == MOVE_PROFILE)
+        wipeBeforeRestore = true;
+
+    if (jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE || jobType == WIPE_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) {
         for (int i = 0; i < sourceAccountsTotalNumber; i++) {
             strcpy(vol_acc[i].miiName,"undefined");
             for (int j = 0; j < wiiUAccountsTotalNumber;j++) {
@@ -160,6 +178,7 @@ hasSavedata:        this->titles[i].currentDataSource.hasSavedata=true;
     if (totalNumberOfTitlesWithNonExistentProfiles > 0) {
         switch (jobType) {
             case PROFILE_TO_PROFILE:
+            case MOVE_PROFILE:
             case WIPE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
@@ -203,6 +222,12 @@ void BatchJobOptions::render() {
                 break;
             case PROFILE_TO_PROFILE:
                 menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Options");
+                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from");
+                onlyCommon = "";
+                commonIncluded = "";
+                break;
+            case MOVE_PROFILE:
+                menuTitle = LanguageUtils::gettext("Batch ProfileMove - Options");
                 sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from");
                 onlyCommon = "";
                 commonIncluded = "";
@@ -272,7 +297,7 @@ void BatchJobOptions::render() {
                                     getWiiUAcc()[wiiu_user].miiName, getWiiUAcc()[wiiu_user].persistentID);
             }
 
-            if ((source_user != -2 && source_user != -1) && ( jobType != PROFILE_TO_PROFILE  )) {
+            if ((source_user != -2 && source_user != -1) && ( jobType != PROFILE_TO_PROFILE ) && ( jobType != MOVE_PROFILE )) {
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPos(M_OFF, 9, LanguageUtils::gettext("Include 'common' save?"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
@@ -280,10 +305,15 @@ void BatchJobOptions::render() {
             }
         }
 
-        if (jobType != WIPE_PROFILE) {
+        if (jobType != WIPE_PROFILE && jobType != MOVE_PROFILE) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
             consolePrintPos(M_OFF, 12 - (isWiiUBatchJob ? 0 : 8) , LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         }
+        if (jobType == MOVE_PROFILE) {
+            DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
+            consolePrintPos(M_OFF, 12 - (isWiiUBatchJob ? 0 : 8) , LanguageUtils::gettext("   Target user savedata will be wiped"));
+        }
+
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
         consolePrintPos(M_OFF, 14 - (isWiiUBatchJob ? 0 : 8), LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes"):LanguageUtils::gettext("No"));
 
@@ -310,7 +340,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<BatchJobTitleSelectState>(source_user, wiiu_user, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchJob, jobType);
         }
-        if (input->get(TRIGGER, PAD_BUTTON_B))
+        if (input->get(TRIGGER, PAD_BUTTON_B) || substate_return == true)
             return SUBSTATE_RETURN;
         if (input->get(TRIGGER, PAD_BUTTON_X)) {
             promptMessage(COLOR_BG_WR,titlesWithUndefinedProfilesSummary.c_str());
@@ -320,9 +350,9 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
             if (--cursorPos < minCursorPos)
                 ++cursorPos;
             else {
-                if ( cursorPos == 3 && jobType == WIPE_PROFILE) 
+                if ( cursorPos == 3 && ( jobType == WIPE_PROFILE || jobType == MOVE_PROFILE )) 
                     --cursorPos;
-                if ( cursorPos == 2 && ( source_user == -2 || source_user == -1 || jobType == PROFILE_TO_PROFILE)) 
+                if ( cursorPos == 2 && ( source_user == -2 || source_user == -1 || jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE)) 
                     --cursorPos;
                 if ((cursorPos == 1) && ( jobType == WIPE_PROFILE || source_user < 0 )) 
                     --cursorPos;
@@ -335,9 +365,9 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
             else {
                 if ( cursorPos == 1  && ( jobType == WIPE_PROFILE || source_user < 0 )) 
                     ++cursorPos;
-                if ( cursorPos == 2 && ( source_user == -2 || source_user == -1 || jobType == PROFILE_TO_PROFILE)) 
+                if ( cursorPos == 2 && ( source_user == -2 || source_user == -1 || jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE)) 
                     ++cursorPos;
-                if ( cursorPos == 3  && jobType == WIPE_PROFILE) 
+                if ( cursorPos == 3  && (jobType == WIPE_PROFILE || jobType == MOVE_PROFILE )) 
                     ++cursorPos;    
             }
             return SUBSTATE_RUNNING;
@@ -365,6 +395,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                     }
                     break;
                 case PROFILE_TO_PROFILE:
+                case MOVE_PROFILE:
                     switch (cursorPos) {
                         case 0:
                             this->source_user = ((this->source_user == 0) ? 0 : (this->source_user - 1));
@@ -424,6 +455,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                     }
                     break;
                 case PROFILE_TO_PROFILE:
+                case MOVE_PROFILE:
                     switch (cursorPos) {
                         case 0:
                             source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));

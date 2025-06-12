@@ -726,6 +726,7 @@ void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
         case BACKUP:
         case WIPE_PROFILE:
         case PROFILE_TO_PROFILE:
+        case MOVE_PROFILE:
         case COPY_TO_OTHER_DEVICE:
             std::string path = (title->is_Wii ? "storage_slccmpt01:/title" : (title->isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), title->highID, title->lowID, title->is_Wii ? "data" : "user");
@@ -1358,13 +1359,6 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
                 title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ? wiiu_acc[wiiu_user].persistentID:"-",isUSB ? "USB":"NAND");   
     return 0;
     */
-    
-    if ( source_user == -1 &&  GlobalCfg::global->getDontAllowUndefinedProfiles()) { 
-        if (  ! checkIfAllProfilesInFolderExists(srcPath) && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
-            promptError(LanguageUtils::gettext("%s\n\nCopy task aborted due to non-existent profile\n\nTry to copy using from/to user options"),title->shortName);
-            return -1;
-        }
-    }
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
@@ -1886,15 +1880,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user>-1 ?  wiiu_acc[wiiu_user].persistentID : "-",common ? "true":"false");
     return 0;
     */
-
-    if ( source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles() ) {
-        if ( checkIfAllProfilesInFolderExists(srcPath)) {
-            promptError(LanguageUtils::gettext("%s\n\nRestore task aborted due to non-existent profile\n\nTry to restore using from/to user options"),title->shortName);
-            return -1;
-        }
-    }
-            
-
+    
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;

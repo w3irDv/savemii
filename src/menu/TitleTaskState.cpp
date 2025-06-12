@@ -39,9 +39,9 @@ void TitleTaskState::render() {
         consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Wipe savedata"));
         if (this->isWiiUTitle) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
-            consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Copy savedata to other profile"));
+            consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Move savedata to other profile"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
-            consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Move savedata to other profile"));
+            consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Copy savedata to other profile"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
             consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import from loadiine"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);
@@ -122,7 +122,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                         }
                     }
                 }
-                promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
+                promptError(LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
                 noError = false;
             }
 

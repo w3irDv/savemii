@@ -70,6 +70,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
                 break;
             case WIPE_PROFILE:
             case PROFILE_TO_PROFILE:
+            case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
                 std::string path = ( this->titles[i].is_Wii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
@@ -228,6 +229,12 @@ void BatchJobTitleSelectState::render() {
                 screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Copy");
                 lastActionBriefOk = LanguageUtils::gettext("|Copied|");
+                break;
+            case MOVE_PROFILE:
+                menuTitle = LanguageUtils::gettext("Batch ProfileMove - Select");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileMove  \ue001: Back");
+                nextActionBrief = LanguageUtils::gettext(">> Move");
+                lastActionBriefOk = LanguageUtils::gettext("|Moved|");
                 break;
             case WIPE_PROFILE:
                 menuTitle=LanguageUtils::gettext("Batch Wipe - Select");
@@ -520,6 +527,13 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             allUsersInfo = "";
             noUsersInfo = "";
             break;
+        case MOVE_PROFILE:
+            menuTitle = LanguageUtils::gettext("Batch ProfileMove - Review & Go");
+            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Move < %s (%s)> to < %s (%s) >") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileMove Backup (WiiU)") : "";
+            allUsersInfo = "";
+            noUsersInfo = "";
+            break;
         case WIPE_PROFILE:
             menuTitle=LanguageUtils::gettext("Batch Wipe - Review & Go");
             taskDescription = isWiiUBatchJob ?LanguageUtils::gettext("- Wipe  < %s (%s)>") : LanguageUtils::gettext("- Wipe");
@@ -561,6 +575,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                         selectedUserInfo = StringUtils::stringFormat(taskDescription,getVolAcc()[source_user].persistentID,getWiiUAcc()[wiiu_user].miiName,getWiiUAcc()[wiiu_user].persistentID);
                         break;
                     case PROFILE_TO_PROFILE:
+                    case MOVE_PROFILE:
                     case COPY_FROM_NAND_TO_USB:
                     case COPY_FROM_USB_TO_NAND:
                         selectedUserInfo = StringUtils::stringFormat(taskDescription,getVolAcc()[source_user].miiName,getVolAcc()[source_user].persistentID,getWiiUAcc()[wiiu_user].miiName,getWiiUAcc()[wiiu_user].persistentID);
@@ -641,6 +656,15 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"),titles[i].shortName);
                 continue;
             }
+        }
+        if ((jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
+            std::string path = (sourceTitle.isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+            std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), sourceTitle.highID, sourceTitle.lowID, "user");
+            if ( ! checkIfAllProfilesInFolderExists(srcPath) ) {
+                sourceTitle.currentDataSource.batchJobState = ABORTED;
+                promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"),titles[i].shortName);
+                continue;
+            }
         }    
         
         sourceTitle.currentDataSource.batchJobState = OK;
@@ -664,6 +688,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                         switch(jobType) {
                             case RESTORE:
                             case PROFILE_TO_PROFILE:
+                            case MOVE_PROFILE:
                             case COPY_FROM_NAND_TO_USB:
                             case COPY_FROM_USB_TO_NAND:
                                 retCode += wipeSavedata(&targetTitle, wiiu_user, false, false);
@@ -687,6 +712,9 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 break;
             case PROFILE_TO_PROFILE:
                 retCode = copySavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, false, USE_SD_OR_STORAGE_PROFILES);
+                break;
+            case MOVE_PROFILE:
+                retCode = moveSavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, false, USE_SD_OR_STORAGE_PROFILES);
                 break;
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
