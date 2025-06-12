@@ -584,6 +584,14 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                             return SUBSTATE_RUNNING;
                         }
                     }
+                    if ( this->task == COPY_TO_OTHER_DEVICE  && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
+                        std::string path = (this->title.isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+                        std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->title.highID, this->title.lowID, "user");
+                        if ( ! checkIfAllProfilesInFolderExists(srcPath) ) {
+                            promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"),this->title.shortName);
+                            return SUBSTATE_RUNNING;
+                        }
+                    }  
                     if ((source_user > -1 && ! sourceHasRequestedSavedata))
                         source_user_ = -2;
                     else
@@ -601,11 +609,11 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     wipeSavedata(&this->title, source_user_, common,true,USE_SD_OR_STORAGE_PROFILES);
                     cursorPos = 0;
                     break;
-                case PROFILE_TO_PROFILE:
-                    copySavedataToOtherProfile(&this->title, source_user_, wiiu_user,true,USE_SD_OR_STORAGE_PROFILES);
-                    break;
                 case MOVE_PROFILE:
                     moveSavedataToOtherProfile(&this->title, source_user_, wiiu_user,true,USE_SD_OR_STORAGE_PROFILES);
+                    break;
+                case PROFILE_TO_PROFILE:
+                    copySavedataToOtherProfile(&this->title, source_user_, wiiu_user,true,USE_SD_OR_STORAGE_PROFILES);
                     break;
                 case COPY_TO_OTHER_DEVICE:
                     copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common,true,USE_SD_OR_STORAGE_PROFILES);

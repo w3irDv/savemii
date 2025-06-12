@@ -13,7 +13,7 @@
 #include <menu/BatchJobOptions.h>
 #include <utils/Colors.h>
 
-#define ENTRYCOUNT 8
+#define ENTRYCOUNT 9
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -39,13 +39,15 @@ void MainMenuState::render() {
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,4);
         consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch Wipe"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,5);
-        consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch Copy to Other Profile"));
+        consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch Move to Other Profile"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);
-        consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Batch Copy to Other Device"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,7);   
-        consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   BackupSet Management"));
+        consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Batch Copy to Other Profile"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,7);
+        consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Batch Copy to Other Device"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,8);   
+        consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1)?1:0) + ((cursorPos > 6)?1:0) , "\u2192");
+        consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1)?1:0) + ((cursorPos > 7)?1:0) , "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
     }
 }
@@ -75,18 +77,18 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, WIPE_PROFILE);
                     break;
                 case 5:
-                    if (getWiiUAccn() < 2 )
-                        promptError(LanguageUtils::gettext("Cannot copyToOtherProfile data if there is only one profile."));
-                    else {
-                        this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
-                    }
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, MOVE_PROFILE);
                     break;
                 case 6:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, COPY_TO_OTHER_DEVICE);
+                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
                     break;
                 case 7:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, COPY_TO_OTHER_DEVICE);
+                    break;
+                case 8:
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>();
