@@ -113,16 +113,20 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
             if (( this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE) && noError) {
                 getAccountsFromVol(&this->title, slot, PROFILE_TO_PROFILE);
-                for (int i = 0; i <  getVolAccn() ; i ++ ) {
-                    for (int j = 0; j < getWiiUAccn(); j++) {
-                        if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
-                            source_user=i;
-                            wiiu_user=j;
-                            goto nxtCheck;
+                if (getVolAccn() == 0)
+                    promptError(LanguageUtils::gettext("Title has no profile savedata"));
+                else {    
+                    for (int i = 0; i <  getVolAccn() ; i ++ ) {
+                        for (int j = 0; j < getWiiUAccn(); j++) {
+                            if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
+                                source_user=i;
+                                wiiu_user=j;
+                                goto nxtCheck;
+                            }
                         }
                     }
+                    promptError(LanguageUtils::gettext("At least two profiles are needed to Copy/Move To OtherProfile."));
                 }
-                promptError(LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
                 noError = false;
             }
 
