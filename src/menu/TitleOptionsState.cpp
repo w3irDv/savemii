@@ -21,6 +21,9 @@ bool sourceHasRequestedSavedata = false;
 extern FSAClientHandle handle;
 static int showFolderInfo;
 
+static bool hasCommonSaveInSource = false;
+static int offsetIfRestoreOrCopyToOtherDev = 0;
+
 void TitleOptionsState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
@@ -131,7 +134,8 @@ void TitleOptionsState::render() {
 
             DrawUtils::setFontColor(COLOR_TEXT);
             if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE )) { // manage lines related to target user data
-                entrycount++;
+                if (source_user > -1)
+                    entrycount++;
                 consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user to copy to"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                 if (wiiu_user == -2)
@@ -148,12 +152,36 @@ void TitleOptionsState::render() {
                 }
             }
 
-            DrawUtils::setFontColor(COLOR_TEXT); // now is time to show common savedata status
-            switch(task) {
+            const char *onlyCommon, *commonIncluded; // now is time to show common savedata status
+            switch (this->task) {
                 case BACKUP:
+                    onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be saved");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata will also be saved");
+                    break;
                 case RESTORE:
+                    onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be restored");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata will also be restored");
+                    break;
+                case WIPE_PROFILE:
+                    onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be deleted");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata will also be deleted");
+                    break;
+                case COPY_TO_OTHER_DEVICE:
+                    onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be copied");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata will also be copied");
+                    break;
+                default:
+                    onlyCommon = "";
+                    commonIncluded = "";
+            }
+            DrawUtils::setFontColor(COLOR_TEXT);
+            offsetIfRestoreOrCopyToOtherDev = ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) ? 1 : 0;
+            switch(task) {
+                case RESTORE:
+                case BACKUP:
                 case WIPE_PROFILE:
                 case COPY_TO_OTHER_DEVICE:
+                    hasCommonSaveInSource = hasCommonSave(&this->title, task == RESTORE, false, slot,0);
                     if (this->source_user != -1) {
                         if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) {
                             bool hasCommonSaveInTarget = false;
@@ -165,28 +193,34 @@ void TitleOptionsState::render() {
                             DrawUtils::setFontColor(COLOR_TEXT);
                             consolePrintPosAligned(13, 4, 2,LanguageUtils::gettext("(Target has 'common': %s)"),
                                 hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
-                        }
-                    
-                        if (hasCommonSave(&this->title, task == RESTORE, false, slot,0)) {
-                            consolePrintPos(M_OFF, (task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) ? 13 : 10,
-                                            LanguageUtils::gettext("Include 'common' save?"));    
-                            
-                            if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) {
-                                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,3);
-                                consolePrintPos(M_OFF, 14, "   < %s >",
-                                            common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
-                            } else {
-                                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
-                                consolePrintPos(M_OFF, 11, "   < %s >",
-                                            common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
-                            }
-                            entrycount++;
+                        }                  
+                        if (hasCommonSaveInSource) {
+                            switch (source_user) {
+                                case -2:
+                                    common = true;
+                                    consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,onlyCommon);
+                                    break;
+                                case -1:
+                                    break;
+                                default:
+                                    entrycount++;
+                                    consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,LanguageUtils::gettext("Include 'common' save?"));
+                                    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2 + offsetIfRestoreOrCopyToOtherDev);
+                                    consolePrintPos(M_OFF, 11 + 3 * offsetIfRestoreOrCopyToOtherDev, "   < %s >",
+                                        common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
+                                    break;
+                             }
                         } else {
                             common = false;
-                            consolePrintPos(M_OFF, (task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) ? 13 : 10,
+                            consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
                                             LanguageUtils::gettext("No 'common' save found."));
                         }
                     } else {
+                        if (hasCommonSaveInSource)
+                            consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev, commonIncluded);
+                        else
+                            consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
+                            LanguageUtils::gettext("No 'common' save found."));       
                         common = false;
                     }
                     break;
