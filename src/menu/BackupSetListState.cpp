@@ -65,7 +65,7 @@ void BackupSetListState::render() {
     if (this->state == STATE_BACKUPSET_MENU) {
         std::string backupSetItem;
         DrawUtils::setFontColor(COLOR_INFO);
-        if (BackupSetList::currentDataSourceSetList->entriesView == BackupSetList::currentDataSourceSetList->entries) {
+        if (BackupSetList::currentBackupSetList->entriesView == BackupSetList::currentBackupSetList->entries) {
             consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets"));    
         } else {
             consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets (filter applied)"));
@@ -74,9 +74,9 @@ void BackupSetListState::render() {
         consolePrintPosAligned(0,4,2, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
                             this->sortAscending ? "\u2191" : "\u2193");
         for (int i = 0; i < MAX_ROWS_SHOW; i++) {
-            if (i + scroll < 0 || i + scroll >= BackupSetList::currentDataSourceSetList->entriesView)
+            if (i + scroll < 0 || i + scroll >= BackupSetList::currentBackupSetList->entriesView)
                 break;
-            backupSetItem = BackupSetList::currentDataSourceSetList->at(i + scroll);
+            backupSetItem = BackupSetList::currentBackupSetList->at(i + scroll);
 
 
             DrawUtils::setFontColorByCursor(COLOR_LIST_NOSAVE,COLOR_LIST_NOSAVE_AT_CURSOR,cursorPos,i);
@@ -88,8 +88,8 @@ void BackupSetListState::render() {
                 DrawUtils::setFontColorByCursor(COLOR_CURRENT_BS,COLOR_CURRENT_BS_AT_CURSOR,cursorPos,i);
 
             consolePrintPos(M_OFF-1, i + 2, "  %s", backupSetItem.substr(0,15).c_str());
-            consolePrintPos(21, i+2,"%s", BackupSetList::currentDataSourceSetList->getStretchedSerialIdAt(i+scroll).c_str());
-            consolePrintPos(33, i+2,"%s", BackupSetList::currentDataSourceSetList->getTagAt(i+scroll).c_str());
+            consolePrintPos(21, i+2,"%s", BackupSetList::currentBackupSetList->getStretchedSerialIdAt(i+scroll).c_str());
+            consolePrintPos(33, i+2,"%s", BackupSetList::currentBackupSetList->getTagAt(i+scroll).c_str());
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(-1, 2 + cursorPos, "\u2192");
@@ -117,9 +117,9 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 char message[256]; 
                 const char* messageTemplate = LanguageUtils::gettext("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
                 snprintf(message,256,messageTemplate,
-                    BackupSetList::currentDataSourceSetList->at(cursorPos + scroll).c_str(),
-                    BackupSetList::currentDataSourceSetList->getTagAt(cursorPos+scroll).c_str(),
-                    BackupSetList::currentDataSourceSetList->getSerialIdAt(cursorPos+scroll).c_str(),
+                    BackupSetList::currentBackupSetList->at(cursorPos + scroll).c_str(),
+                    BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll).c_str(),
+                    BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos+scroll).c_str(),
                     Metadata::thisConsoleSerialId.c_str());
                 promptMessage(COLOR_BG_OK,message);
                 return SUBSTATE_RETURN;
@@ -133,12 +133,12 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_Y)) {
             this->state = STATE_DO_SUBSTATE;
             this->substateCalled = STATE_BACKUPSET_FILTER;
-            this->subState = std::make_unique<BackupSetListFilterState>(BackupSetList::currentDataSourceSetList);      
+            this->subState = std::make_unique<BackupSetListFilterState>(BackupSetList::currentBackupSetList);      
         }
         if (input->get(TRIGGER, PAD_BUTTON_L)) {
             if ( this->sortAscending ) {
                 this->sortAscending = false;
-                BackupSetList::currentDataSourceSetList->sort(this->sortAscending);
+                BackupSetList::currentBackupSetList->sort(this->sortAscending);
                 cursorPos = 0;
                 scroll = 0;
             }
@@ -146,21 +146,21 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(TRIGGER, PAD_BUTTON_R)) {
             if ( ! this->sortAscending ) {
                 this->sortAscending = true;
-                BackupSetList::currentDataSourceSetList->sort(this->sortAscending);
+                BackupSetList::currentBackupSetList->sort(this->sortAscending);
                 cursorPos = 0;
                 scroll = 0;
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
-            if (BackupSetList::currentDataSourceSetList->entriesView <= MAX_ROWS_SHOW)
-                cursorPos = (cursorPos + 1) % BackupSetList::currentDataSourceSetList->entriesView;
+            if (BackupSetList::currentBackupSetList->entriesView <= MAX_ROWS_SHOW)
+                cursorPos = (cursorPos + 1) % BackupSetList::currentBackupSetList->entriesView;
             else if (cursorPos < 6)
                 cursorPos++;
-            else if (((cursorPos + scroll + 1) % BackupSetList::currentDataSourceSetList->entriesView) != 0)
+            else if (((cursorPos + scroll + 1) % BackupSetList::currentBackupSetList->entriesView) != 0)
                 scroll++;
             else
                 cursorPos = scroll = 0;
-            tag = BackupSetList::currentDataSourceSetList->getTagAt(cursorPos+scroll);
+            tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
             newTag = tag;
         }
         if (input->get(TRIGGER, PAD_BUTTON_UP)) {
@@ -168,11 +168,11 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 cursorPos -= (cursorPos > 6) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)
                 cursorPos--;
-            else if (BackupSetList::currentDataSourceSetList->entriesView > MAX_ROWS_SHOW)
-                scroll = BackupSetList::currentDataSourceSetList->entriesView - (cursorPos = 6) - 1;
+            else if (BackupSetList::currentBackupSetList->entriesView > MAX_ROWS_SHOW)
+                scroll = BackupSetList::currentBackupSetList->entriesView - (cursorPos = 6) - 1;
             else
-                cursorPos = BackupSetList::currentDataSourceSetList->entriesView - 1;
-            tag = BackupSetList::currentDataSourceSetList->getTagAt(cursorPos+scroll);
+                cursorPos = BackupSetList::currentBackupSetList->entriesView - 1;
+            tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
             newTag = tag;
         }
         if (input->get(TRIGGER, PAD_BUTTON_MINUS)) {
@@ -185,7 +185,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     BackupSetList::setBackupSetSubPath();
                 }
                 InProgress::totalSteps = InProgress::currentStep = 1;
-                InProgress::titleName.assign(BackupSetList::currentDataSourceSetList->at(entry));
+                InProgress::titleName.assign(BackupSetList::currentBackupSetList->at(entry));
                 if ( wipeBackupSet(BackupSetList::getBackupSetSubPath(entry)))
                 {
                     BackupSetList::initBackupSetList();
@@ -210,15 +210,15 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         } else if (retSubState == SUBSTATE_RETURN) {
             if (this->substateCalled == STATE_KEYBOARD) {
                 if ( tag != newTag ) {
-                    std::string entryPath = BackupSetList::currentDataSourceSetList->at(cursorPos + scroll);
+                    std::string entryPath = BackupSetList::currentBackupSetList->at(cursorPos + scroll);
                     Metadata *metadataObj = new Metadata(getBatchBackupPathRoot(entryPath));
                     metadataObj->read();
                     metadataObj->setTag(newTag);
                     metadataObj->write();
-                    BackupSetList::currentDataSourceSetList->setTagBSVAt(cursorPos + scroll,newTag);
-                    BackupSetList::currentDataSourceSetList->setTagBSAt(BackupSetList::currentDataSourceSetList->v2b[cursorPos + scroll],newTag);
+                    BackupSetList::currentBackupSetList->setTagBSVAt(cursorPos + scroll,newTag);
+                    BackupSetList::currentBackupSetList->setTagBSAt(BackupSetList::currentBackupSetList->v2b[cursorPos + scroll],newTag);
                     if (newTag != "")
-                        BackupSetList::currentDataSourceSetList->resetTagRange();
+                        BackupSetList::currentBackupSetList->resetTagRange();
                     delete metadataObj;
                 }
             }
