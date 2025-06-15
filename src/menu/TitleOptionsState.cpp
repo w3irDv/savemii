@@ -16,12 +16,9 @@
 
 #define TAG_OFF 17
 
-bool sourceHasRequestedSavedata = false;
-
 extern FSAClientHandle handle;
 static int showFolderInfo;
 
-static bool hasCommonSaveInSource = false;
 static int offsetIfRestoreOrCopyToOtherDev = 0;
 
 void TitleOptionsState::render() {
@@ -36,13 +33,14 @@ void TitleOptionsState::render() {
         std::string slotFormat = slotFormatType(&this->title, slot);
         if (((this->task == COPY_TO_OTHER_DEVICE) || (this->task == PROFILE_TO_PROFILE)|| (this->task == MOVE_PROFILE)|| (this->task == WIPE_PROFILE)) && cursorPos == 0)
             cursorPos = 1;     
-        bool emptySlot = isSlotEmpty(&this->title, slot);
         if (this->task == BACKUP || this->task == RESTORE) {
-            DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+            if (this->task == BACKUP) 
+                DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+            else
+                DrawUtils::setFontColor(BackupSetList::isRootBackupSet() ? COLOR_INFO_AT_CURSOR : COLOR_LIST_DANGER_AT_CURSOR);
             consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("BackupSet: %s"),
                 ( this->task == BACKUP ) ? BackupSetList::ROOT_BS.c_str() : BackupSetList::getBackupSetEntry().c_str());
         }
-        this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
         entrycount = 2;
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2, "[%08X-%08X] %s (%s)", this->title.highID, this->title.lowID,
@@ -80,28 +78,18 @@ void TitleOptionsState::render() {
                                         : LanguageUtils::gettext("Used"));
         }
 
-        bool backupRestoreFromSameConsole = false;
-        DrawUtils::setFontColor(COLOR_TEXT);
         if ((task == BACKUP) || (task == RESTORE)) {
             if (!emptySlot) {
-                Metadata *metadataObj = new Metadata(&this->title, slot);
-                if (metadataObj->read()) {
-                    consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Slot -> Date: %s"),
-                                metadataObj->simpleFormat().c_str());
-                    tag = metadataObj->getTag();
-                    newTag = tag;
-                    if ( tag != "" ) {
-                        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
-                        consolePrintPos(TAG_OFF, 5,"[%s]",tag.c_str());
-                    }
-                    if (Metadata::thisConsoleSerialId == metadataObj->getSerialId())
-                        backupRestoreFromSameConsole = true;
+                DrawUtils::setFontColor(COLOR_INFO);
+                consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Slot -> Date: %s"),
+                                        slotInfo.c_str());
+                if ( tag != "" ) {
+                    DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
+                    consolePrintPos(TAG_OFF, 5,"[%s]",tag.c_str());
                 }
-                delete metadataObj;
             }
         }
 
-        sourceHasRequestedSavedata = false;
         DrawUtils::setFontColor(COLOR_TEXT);
         if (this->isWiiUTitle) {
 
@@ -109,20 +97,17 @@ void TitleOptionsState::render() {
                     entrycount = 1;
                     goto showIcon;
             } 
-                    
+                
             if ( (task == RESTORE) || (task == BACKUP) || (task == WIPE_PROFILE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE) ) { // manage lines related to source data
                 consolePrintPos(M_OFF, 7, (task == RESTORE) ? LanguageUtils::gettext("Select SD user to copy from:") : LanguageUtils::gettext("Select Wii U user to copy from:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                 if (source_user == -2) {
-                    sourceHasRequestedSavedata = false;
                     consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("no profile user"));
                 }
                 else if (source_user == -1) {
-                    sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot);
                     consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("all users"),
                         sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
-                    sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE, false, getVolAcc()[source_user].pID,slot, 0);
                     if (task == RESTORE && ! backupRestoreFromSameConsole)
                         consolePrintPos(M_OFF, 8, "   < %s > (%s)", getVolAcc()[source_user].persistentID,
                             sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
@@ -142,15 +127,14 @@ void TitleOptionsState::render() {
                     consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("no profile user"));
                 else if (wiiu_user == -1) {
                     consolePrintPos(M_OFF, 11, "   < %s > (%s)", LanguageUtils::gettext("same user than in source"),
-                        (hasSavedata(&this->title, false, slot)) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                        (hasTargetUserData) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
-                    int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
-                    bool hasTargetUserData = hasProfileSave(&(titles[targetIndex]), false, false, getWiiUAcc()[wiiu_user].pID, 0, 0);
                     consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUAcc()[wiiu_user].miiName,
                         getWiiUAcc()[wiiu_user].persistentID,
                         hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 }
             }
+
 
             const char *onlyCommon, *commonIncluded; // now is time to show common savedata status
             switch (this->task) {
@@ -175,21 +159,14 @@ void TitleOptionsState::render() {
                     commonIncluded = "";
             }
             DrawUtils::setFontColor(COLOR_TEXT);
-            offsetIfRestoreOrCopyToOtherDev = ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) ? 1 : 0;
+            offsetIfRestoreOrCopyToOtherDev = ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) ? 1 : 0;   
             switch(task) {
                 case RESTORE:
                 case BACKUP:
                 case WIPE_PROFILE:
                 case COPY_TO_OTHER_DEVICE:
-                    hasCommonSaveInSource = hasCommonSave(&this->title, task == RESTORE, false, slot,0);
                     if (this->source_user != -1) {
                         if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) {
-                            bool hasCommonSaveInTarget = false;
-                            if (task == RESTORE) {
-                                hasCommonSaveInTarget = hasCommonSave(&this->title,false,false,0,0);
-                            } else if (task == COPY_TO_OTHER_DEVICE) {
-                                hasCommonSaveInTarget = hasCommonSave(&(titles[this->title.dupeID]),false,false,0,0);
-                            }
                             DrawUtils::setFontColor(COLOR_TEXT);
                             consolePrintPosAligned(13, 4, 2,LanguageUtils::gettext("(Target has 'common': %s)"),
                                 hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
@@ -220,7 +197,10 @@ void TitleOptionsState::render() {
                             consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev, commonIncluded);
                         else
                             consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
-                            LanguageUtils::gettext("No 'common' save found."));       
+                            LanguageUtils::gettext("No 'common' save found."));
+                        if (task == RESTORE)
+                            consolePrintPosAligned(13, 4, 2,LanguageUtils::gettext("(Target has 'common': %s)"),
+                                hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));       
                         common = false;
                     }
                     break;
@@ -238,6 +218,7 @@ void TitleOptionsState::render() {
                     break;
             }
 
+
 showIcon:   if (this->title.iconBuf != nullptr)
                 DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
         }
@@ -246,22 +227,16 @@ showIcon:   if (this->title.iconBuf != nullptr)
             entrycount = 1;
             common = false;
             DrawUtils::setFontColor(COLOR_TEXT);
-            bool hasUserDataInNAND = hasSavedata(&this->title, false,slot);
             consolePrintPos(M_OFF, 7, "%s", (task == BACKUP ) ?  LanguageUtils::gettext("Source:"):LanguageUtils::gettext("Target:"));
-                sourceHasRequestedSavedata = hasSavedata(&this->title, false,slot);
                 consolePrintPos(M_OFF, 8, "   %s (%s)", LanguageUtils::gettext("Savedata in NAND"),
                         hasUserDataInNAND ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
             
-            if (this->task == WIPE_PROFILE || this->task == BACKUP) {
-                sourceHasRequestedSavedata = hasUserDataInNAND;
-            } else if (this->task == RESTORE) {
-                sourceHasRequestedSavedata = emptySlot ? false : true;
-            }        
-
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
         }
 
+
+        // Folder Informations: qupta, ownership, mode, ...
         if (this->task == WIPE_PROFILE && showFolderInfo) {
                 uint32_t highID = title.highID;
                 uint32_t lowID = title.lowID;
@@ -356,7 +331,6 @@ showIcon:   if (this->title.iconBuf != nullptr)
 }
 
 ApplicationState::eSubState TitleOptionsState::update(Input *input) {
-    bool emptySlot = isSlotEmpty(&this->title, slot);
     if (this->state == STATE_TITLE_OPTIONS) {
         if (input->get(TRIGGER, PAD_BUTTON_B)) {
             return SUBSTATE_RETURN;
@@ -377,11 +351,17 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         this->source_user = ((this->source_user == -2) ? -2 : (this->source_user - 1));
-                        wiiu_user = this->source_user;
+                        wiiu_user = (source_user < getWiiUAccn() - 1) ? source_user : wiiu_user;;
+                        if (source_user < getWiiUAccn() - 1) {
+                            wiiu_user = source_user;
+                            updateHasTargetUserData();
+                        }
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         wiiu_user = ((wiiu_user == 0) ? 0 : (wiiu_user - 1));
                         wiiu_user = (source_user < 0) ? source_user : wiiu_user;
+                        updateHasTargetUserData();
                         break;
                     case 3:
                         common = common ? false : true;
@@ -397,15 +377,24 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         {
                             source_user = -1;
                             wiiu_user = -1;
+                            updateHasTargetUserData();
                         }
+                        updateSlotMetadata();
+                        updateHasCommonSaveInSource();
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 1:
                         source_user = ((source_user == -2) ? -2 : (source_user - 1));
-                        wiiu_user = ((source_user < 0) ? source_user : wiiu_user);
+                        if (source_user < 0) {
+                            wiiu_user = source_user;
+                            updateHasTargetUserData();
+                        }
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         wiiu_user = ((wiiu_user == 0) ? 0 : (wiiu_user - 1));
                         wiiu_user = (source_user < 0 ) ? source_user : wiiu_user; 
+                        updateHasTargetUserData();
                         break;
                     case 3:
                         common = common ? false : true;
@@ -419,6 +408,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         source_user = ((source_user == -2) ? -2 : (source_user - 1));
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         common = common ? false : true;
@@ -432,14 +422,18 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         this->source_user = ((this->source_user == 0) ? 0 : (this->source_user - 1));
-                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
+                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID) {
                             wiiu_user = ( source_user + 1 ) % wiiUAccountsTotalNumber;
+                            updateHasTargetUserData();
+                        }
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         wiiu_user = ( --wiiu_user == - 1) ? (wiiUAccountsTotalNumber-1) : (wiiu_user);
                         if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                             wiiu_user = ( wiiu_user - 1 ) % wiiUAccountsTotalNumber;
                         wiiu_user = (wiiu_user < 0) ? (wiiUAccountsTotalNumber-1) : wiiu_user;
+                        updateHasTargetUserData();
                         break;
                     default:
                         break;
@@ -459,9 +453,13 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 switch (cursorPos) {
                     case 0:
                         slot--;
+                        updateSlotMetadata();
+                        updateHasCommonSaveInSource();
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 1:
                         source_user = ((source_user == -2) ? -2 : (source_user - 1));
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         common = common ? false : true;
@@ -478,11 +476,16 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
-                        wiiu_user = source_user;
+                        if (source_user < getWiiUAccn() - 1) {
+                            wiiu_user = source_user;
+                            updateHasTargetUserData();
+                        }
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         wiiu_user = ((wiiu_user == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiu_user + 1));
                         wiiu_user = (source_user < 0 ) ? source_user : wiiu_user;
+                        updateHasTargetUserData();
                         break;
                     case 3:
                         common = common ? false : true;
@@ -498,16 +501,29 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         {
                             source_user = -1;
                             wiiu_user = -1;
+                            updateHasTargetUserData();
                         }
+                        updateSlotMetadata();
+                        updateHasCommonSaveInSource();
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 1:
                         source_user = ((source_user == (getVolAccn() - 1)) ? (getVolAccn() - 1) : (source_user + 1));
-                        wiiu_user = ( source_user < 0 ) ? source_user : wiiu_user;
-                        wiiu_user = ((source_user > -1 ) && ( wiiu_user < 0 )) ? 0 : wiiu_user; 
+                        if ( source_user < 0 ) {
+                            wiiu_user = source_user;
+                            updateHasTargetUserData();
+                        }
+                        if ((source_user > -1 ) && ( wiiu_user < 0 )) {
+                            wiiu_user=0;
+                            updateHasTargetUserData();
+                        }
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
-                        wiiu_user = ((wiiu_user == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiu_user + 1));
-                        wiiu_user = (source_user < 0 ) ? source_user : wiiu_user;
+                        if (source_user > -1) {
+                            wiiu_user = ((wiiu_user == (wiiUAccountsTotalNumber - 1)) ? (wiiUAccountsTotalNumber - 1) : (wiiu_user + 1));
+                            updateHasTargetUserData();
+                        }
                         break;
                     case 3:
                         common = common ? false : true;
@@ -521,6 +537,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         common = common ? false : true;
@@ -534,13 +551,17 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
-                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
+                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID) {
                             wiiu_user = ( wiiu_user + 1 ) % wiiUAccountsTotalNumber;
+                            updateHasTargetUserData();
+                        }
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         wiiu_user = ( ++ wiiu_user == wiiUAccountsTotalNumber) ? 0 : wiiu_user;
                         if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
                             wiiu_user = ( wiiu_user + 1 ) % wiiUAccountsTotalNumber;
+                        updateHasTargetUserData();
                         break;
                     default:
                         break;
@@ -560,9 +581,13 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 switch (cursorPos) {
                     case 0:
                         slot++;
+                        updateSlotMetadata();
+                        updateHasCommonSaveInSource();
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 1:
                         source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         common = common ? false : true;
@@ -584,6 +609,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 if (!isSlotEmpty(&this->title, slot)) {
                     InProgress::totalSteps = InProgress::currentStep = 1;
                     deleteSlot(&this->title, slot);
+                    updateBackupData();
                 }
             }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
@@ -635,22 +661,28 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             switch (this->task) {
                 case BACKUP:
                     backupSavedata(&this->title, slot, source_user_, common,USE_SD_OR_STORAGE_PROFILES);
+                    updateBackupData();
                     break;
                 case RESTORE:
                     restoreSavedata(&this->title, slot, source_user_, wiiu_user, common);
+                    updateRestoreData();
                     break;
                 case WIPE_PROFILE:
                     wipeSavedata(&this->title, source_user_, common,true,USE_SD_OR_STORAGE_PROFILES);
                     cursorPos = 0;
+                    updateWipeProfileData();
                     break;
                 case MOVE_PROFILE:
                     moveSavedataToOtherProfile(&this->title, source_user_, wiiu_user,true,USE_SD_OR_STORAGE_PROFILES);
+                    updateMoveCopyProfileData();
                     break;
                 case PROFILE_TO_PROFILE:
                     copySavedataToOtherProfile(&this->title, source_user_, wiiu_user,true,USE_SD_OR_STORAGE_PROFILES);
+                    updateMoveCopyProfileData();
                     break;
                 case COPY_TO_OTHER_DEVICE:
                     copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common,true,USE_SD_OR_STORAGE_PROFILES);
+                    updateCopyToOtherDeviceData();
                     break;
             }
         }
@@ -667,7 +699,6 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {
             // keep running.
-            sourceHasRequestedSavedata = false;
             return SUBSTATE_RUNNING;
         } else if (retSubState == SUBSTATE_RETURN) {
             if ( this->substateCalled == STATE_KEYBOARD) {
@@ -677,12 +708,14 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     metadataObj->setTag(newTag);
                     metadataObj->write();
                     delete metadataObj;
+                    tag = newTag;
                 }
             }
             if ( this->substateCalled == STATE_BACKUPSET_MENU) {
                 slot = 0;
                 getAccountsFromVol(&this->title, slot, RESTORE);
                 cursorPos = 0;
+                updateRestoreData();
             }
             this->subState.reset();
             this->state = STATE_TITLE_OPTIONS;
@@ -690,4 +723,106 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         }
     }
     return SUBSTATE_RUNNING;
+}
+
+
+
+void TitleOptionsState::updateSlotMetadata() {
+        
+    emptySlot = isSlotEmpty(&this->title, slot);
+    if (!emptySlot) {
+        Metadata *metadataObj = new Metadata(&this->title, slot);
+        if (metadataObj->read()) {
+            slotInfo = metadataObj->simpleFormat();
+            tag = metadataObj->getTag();
+            newTag = tag;                    
+            if (Metadata::thisConsoleSerialId == metadataObj->getSerialId())
+                backupRestoreFromSameConsole = true;
+        } else {
+            slotInfo = "";
+            tag = "";
+            newTag = "";
+        }
+        delete metadataObj;
+    }
+
+}
+
+void TitleOptionsState::updateSourceHasRequestedSavedata() {
+            
+    if (source_user == -2) {
+        sourceHasRequestedSavedata = false;
+    }
+    else if (source_user == -1) {
+        sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot);
+    } else {
+        sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE, false, getVolAcc()[source_user].pID,slot, 0); 
+    }
+}
+
+void TitleOptionsState::updateHasTargetUserData() {
+
+    switch (wiiu_user) {
+        case -2:
+            break;
+        case -1:
+            hasTargetUserData = hasSavedata(&this->title, false, slot);
+            break;
+        default:
+            int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
+            hasTargetUserData = hasProfileSave(&(titles[targetIndex]), false, false, getWiiUAcc()[wiiu_user].pID, 0, 0);
+    }
+}
+
+
+void TitleOptionsState::updateHasCommonSaveInTarget() {
+    // used by restore or copy_to_other_dev
+    
+    int targetIndex = (task == RESTORE) ? this->title.indexID : this->title.dupeID;
+    hasCommonSaveInTarget = hasCommonSave(&(titles[targetIndex]),false,false,0,0);
+
+}
+
+void TitleOptionsState::updateHasCommonSaveInSource() {
+    hasCommonSaveInSource = hasCommonSave(&this->title, task == RESTORE, false, slot,0);
+}
+
+void TitleOptionsState::updateHasVWiiSavedata() {
+    hasUserDataInNAND = hasSavedata(&this->title, false,slot);
+    if (task == RESTORE)
+        sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE ,slot);
+    else
+        sourceHasRequestedSavedata = hasUserDataInNAND;
+}
+
+
+void TitleOptionsState::updateBackupData() {
+    updateSlotMetadata();
+    updateHasCommonSaveInSource();
+    updateSourceHasRequestedSavedata();
+}
+
+void TitleOptionsState::updateRestoreData() {
+    updateSlotMetadata();
+    updateHasCommonSaveInTarget();
+    updateHasCommonSaveInSource();
+    updateSourceHasRequestedSavedata();
+    updateHasTargetUserData();
+}
+
+void TitleOptionsState::updateCopyToOtherDeviceData() {
+    updateHasCommonSaveInTarget();
+    updateHasCommonSaveInSource();
+    updateSourceHasRequestedSavedata();
+    updateHasTargetUserData();
+}
+
+void TitleOptionsState::updateWipeProfileData() {
+    updateHasCommonSaveInSource();
+    updateSourceHasRequestedSavedata();
+}
+
+void TitleOptionsState::updateMoveCopyProfileData() {
+    updateSourceHasRequestedSavedata();
+    updateHasTargetUserData();
 }
