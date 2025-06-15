@@ -7,17 +7,44 @@
 
 class TitleOptionsState : public ApplicationState {
 public:
-    TitleOptionsState(Title title, eJobType task, int *versionList, int8_t source_user, int8_t wiiu_user, bool common, Title *titles, int titleCount) : title(title),
-                                                                                                                                                                  task(task),
-                                                                                                                                                                  versionList(versionList),
-                                                                                                                                                                  source_user(source_user),
-                                                                                                                                                                  wiiu_user(wiiu_user),
-                                                                                                                                                                  common(common),
-                                                                                                                                                                  titles(titles),
-                                                                                                                                                                  titleCount(titleCount) {
-                                                                                                                                                                    wiiUAccountsTotalNumber = getWiiUAccn();
-                                                                                                                                                                    sourceAccountsTotalNumber = getVolAccn();
-                                                                                                                                                                  }
+    TitleOptionsState(Title title, eJobType task, int *versionList, int8_t source_user,int8_t wiiu_user, bool common, Title *titles, int titleCount) :
+            title(title),
+            task(task),
+            versionList(versionList),
+            source_user(source_user),
+            wiiu_user(wiiu_user),
+            common(common),
+            titles(titles),
+            titleCount(titleCount) {
+
+                wiiUAccountsTotalNumber = getWiiUAccn();
+                sourceAccountsTotalNumber = getVolAccn();
+                this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
+
+                if (isWiiUTitle) {
+                    switch (task) {
+                        case BACKUP:
+                            updateBackupData();
+                            break;
+                        case RESTORE:
+                            updateRestoreData();
+                            break;
+                        case COPY_TO_OTHER_DEVICE:
+                            updateCopyToOtherDeviceData();
+                            break;
+                        case WIPE_PROFILE:
+                            updateWipeProfileData();
+                            break;
+                        case MOVE_PROFILE:
+                        case PROFILE_TO_PROFILE:
+                            updateMoveCopyProfileData();
+                            break;
+                    }
+                } else {
+                    updateHasVWiiSavedata();
+                }
+
+            }
 
     enum eState {
         STATE_TITLE_OPTIONS,
@@ -62,4 +89,31 @@ private:
 
     int wiiUAccountsTotalNumber;
     int sourceAccountsTotalNumber;
+
+    bool emptySlot = false;
+    bool backupRestoreFromSameConsole = false;
+    std::string slotInfo {};
+    void updateSlotMetadata();
+
+    bool sourceHasRequestedSavedata = false;
+    void updateSourceHasRequestedSavedata();
+
+    bool hasTargetUserData;
+    void updateHasTargetUserData();
+
+    bool hasCommonSaveInTarget = false;
+    void updateHasCommonSaveInTarget();
+
+    bool hasCommonSaveInSource = false;
+    void updateHasCommonSaveInSource();
+
+    bool hasUserDataInNAND = false;
+    void updateHasVWiiSavedata();
+
+    void updateBackupData();
+    void updateRestoreData();
+    void updateCopyToOtherDeviceData();
+    void updateWipeProfileData();
+    void updateMoveCopyProfileData();
+
 };
