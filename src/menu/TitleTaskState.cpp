@@ -156,9 +156,9 @@ nxtCheck:
                 this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+        if (input->get(TRIGGER, PAD_BUTTON_DOWN) || input->get(HOLD, PAD_BUTTON_DOWN)) {
                 cursorPos = (cursorPos + 1) % entrycount;
-        } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+        } else if (input->get(TRIGGER, PAD_BUTTON_UP) || input->get(HOLD, PAD_BUTTON_UP)) {
             if (cursorPos > 0)
                 --cursorPos;
         }
