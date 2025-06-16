@@ -151,7 +151,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 scroll = 0;
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+        if (input->get(TRIGGER, PAD_BUTTON_DOWN) || input->get(HOLD, PAD_BUTTON_DOWN)) {
             if (BackupSetList::currentBackupSetList->entriesView <= MAX_ROWS_SHOW)
                 cursorPos = (cursorPos + 1) % BackupSetList::currentBackupSetList->entriesView;
             else if (cursorPos < 6)
@@ -163,7 +163,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
             newTag = tag;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+        if (input->get(TRIGGER, PAD_BUTTON_UP) || input->get(HOLD, PAD_BUTTON_UP)) {
             if (scroll > 0)
                 cursorPos -= (cursorPos > 6) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)

@@ -101,10 +101,10 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<ConfigMenuState>();
         }
-        if (input->get(TRIGGER, PAD_BUTTON_UP))
+        if (input->get(TRIGGER, PAD_BUTTON_UP) || input->get(HOLD, PAD_BUTTON_UP))
             if (--cursorPos == -1)
                 ++cursorPos;
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN))
+        if (input->get(TRIGGER, PAD_BUTTON_DOWN) || input->get(HOLD, PAD_BUTTON_DOWN))
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
     } else if (this->state == STATE_DO_SUBSTATE) {

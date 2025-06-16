@@ -419,7 +419,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
                 executeBatchProcess();
             return SUBSTATE_RUNNING;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+        if (input->get(TRIGGER, PAD_BUTTON_DOWN) || input->get(HOLD, PAD_BUTTON_DOWN)) {
             if (this->candidatesCount <= MAX_TITLE_SHOW )
                 cursorPos = (cursorPos + 1) % this->candidatesCount;
             else if (cursorPos < MAX_WINDOW_SCROLL)
@@ -430,7 +430,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
                 cursorPos = scroll = 0;
             return SUBSTATE_RUNNING;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+        if (input->get(TRIGGER, PAD_BUTTON_UP) || input->get(HOLD, PAD_BUTTON_UP)) {
             if (scroll > 0)
                 cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)

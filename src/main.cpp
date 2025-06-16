@@ -640,7 +640,7 @@ int main() {
 
         input.read();
 
-        if (input.get(TRIGGER, PAD_BUTTON_ANY))
+        if (input.get(TRIGGER, PAD_BUTTON_ANY) || input.get(HOLD, PAD_BUTTON_ANY))
             DrawUtils::setRedraw(true);
 
         if (DrawUtils::getRedraw()) {

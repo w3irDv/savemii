@@ -142,7 +142,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
             }
             
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+        if (input->get(TRIGGER, PAD_BUTTON_DOWN) || input->get(HOLD, PAD_BUTTON_DOWN)) {
             if (this->titlesCount <= MAX_TITLE_SHOW)
                 cursorPos = (cursorPos + 1) % this->titlesCount;
             else if (cursorPos < MAX_WINDOW_SCROLL)
@@ -151,7 +151,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                 scroll++;
             else
                 cursorPos = scroll = 0;
-        } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+        } else if (input->get(TRIGGER, PAD_BUTTON_UP) || input->get(HOLD, PAD_BUTTON_UP) ) {
             if (scroll > 0)
                 cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)
