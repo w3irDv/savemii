@@ -9,10 +9,7 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <cfg/GlobalCfg.h>
-
 #include <utils/StringUtils.h>
-
-#include <locale>
 
 #define TAG_OFF 17
 
