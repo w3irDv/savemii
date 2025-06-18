@@ -78,17 +78,17 @@ private:
     Title *titles;
     int titleCount;
 
-    bool isWiiUTitle;
+    bool isWiiUTitle = false;
 
     uint8_t slot = 0;
     int cursorPos = 0;
-    int entrycount;
+    int entrycount = 2;
 
-    std::string tag;
-    std::string newTag;
+    std::string tag {};
+    std::string newTag {};
 
-    int wiiUAccountsTotalNumber;
-    int sourceAccountsTotalNumber;
+    int wiiUAccountsTotalNumber = 0;
+    int sourceAccountsTotalNumber = 0;
 
     bool emptySlot = false;
     bool backupRestoreFromSameConsole = false;
@@ -98,7 +98,7 @@ private:
     bool sourceHasRequestedSavedata = false;
     void updateSourceHasRequestedSavedata();
 
-    bool hasTargetUserData;
+    bool hasTargetUserData = false;
     void updateHasTargetUserData();
 
     bool hasCommonSaveInTarget = false;
