@@ -112,7 +112,6 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             }
 
             if (( this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE) && noError) {
-                getAccountsFromVol(&this->title, slot, PROFILE_TO_PROFILE);
                 if (getVolAccn() == 0)
                     promptError(LanguageUtils::gettext("Title has no profile savedata"));
                 else {    

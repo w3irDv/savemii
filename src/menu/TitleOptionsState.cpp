@@ -17,7 +17,7 @@
 #define TAG_OFF 17
 
 extern FSAClientHandle handle;
-static int showFolderInfo;
+static bool showFolderInfo = false;
 
 static int offsetIfRestoreOrCopyToOtherDev = 0;
 
@@ -742,6 +742,7 @@ void TitleOptionsState::updateSlotMetadata() {
             slotInfo = "";
             tag = "";
             newTag = "";
+            backupRestoreFromSameConsole = false;
         }
         delete metadataObj;
     }
