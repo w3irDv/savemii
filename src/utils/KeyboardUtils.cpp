@@ -1,23 +1,27 @@
 #include <utils/KeyboardUtils.h>    
 #include <string>
-#include <locale>
-#include <codecvt>
 
 #define MAX_INPUT_SIZE 30
 
 void Keyboard::render() {
 }
 
-std::string Keyboard::ucs4ToUtf8(const std::u32string& in)
+std::string Keyboard::wstringToString(const std::wstring& wstr)
 {
-    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
-    return conv.to_bytes(in);
+	size_t size = wstr.length() * 4;
+	char stringContent[size+1];
+	wcstombs(stringContent, wstr.c_str(), size+1);
+	std::string str(stringContent);
+	return str;
 }
 
-std::u32string Keyboard::utf8ToUcs4(const std::string& in)
+std::wstring Keyboard::stringToWstring(const std::string& str)
 {
-    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
-    return conv.from_bytes(in);
+	size_t wsize = str.length();
+	wchar_t wideStringContent[wsize+1];
+	mbstowcs(wideStringContent,str.c_str(),wsize+1);
+	std::wstring wstr(wideStringContent);
+	return wstr;
 }
 
 int Keyboard::kbLeft() {
@@ -69,7 +73,7 @@ void Keyboard::shiftPressed() {
 
 void Keyboard::kbKeyPressed() {
     if (input.size() < MAX_INPUT_SIZE )
-        input.append(ucs4ToUtf8(currentKey));
+        input.append(wstringToString(currentKey));
 }
 
 void Keyboard::delPressed() {
@@ -82,11 +86,11 @@ void Keyboard::setCurrentKey() {
 }
 
 std::string Keyboard::getKey(int row_,int column_) {
-    return ucs4ToUtf8(currentKeyboard[row_].substr(column_,1));
+    return wstringToString(currentKeyboard[row_].substr(column_,1));
 }
 
 std::string Keyboard::getCurrentKey() {
-    return ucs4ToUtf8(currentKeyboard[row].substr(column,1));
+    return wstringToString(currentKeyboard[row].substr(column,1));
 }
 
 int Keyboard::getKeyboardRowSize(int row_) {
