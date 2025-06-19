@@ -10,8 +10,12 @@ std::string Keyboard::wstringToString(const std::wstring& wstr)
 {
 	size_t size = wstr.length() * 4;
 	char stringContent[size+1];
-	wcstombs(stringContent, wstr.c_str(), size+1);
-	std::string str(stringContent);
+    std::string str;
+	if ( wcstombs(stringContent, wstr.c_str(), size+1) > 0 ) {
+        str.assign(stringContent);
+    } else {
+        str.assign("");
+    }
 	return str;
 }
 
@@ -19,8 +23,12 @@ std::wstring Keyboard::stringToWstring(const std::string& str)
 {
 	size_t wsize = str.length();
 	wchar_t wideStringContent[wsize+1];
-	mbstowcs(wideStringContent,str.c_str(),wsize+1);
-	std::wstring wstr(wideStringContent);
+    std::wstring wstr;
+	if ( mbstowcs(wideStringContent,str.c_str(),wsize+1) > 0 ) {
+	    wstr.assign(wideStringContent);
+    } else {
+        wstr.assign(L"");
+    }
 	return wstr;
 }
 

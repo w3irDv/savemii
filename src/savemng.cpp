@@ -2406,6 +2406,9 @@ bool isTitleUsingTitleNameBasedPath(Title *title) {
 
 bool renameTitleFolder(Title* title) {
 
+    if (firstSDWrite)
+        sdWriteDisclaimer();
+
     std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->highID, title->lowID);
     std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
 

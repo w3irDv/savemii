@@ -796,16 +796,24 @@ void TitleOptionsState::updateHasVWiiSavedata() {
 
 void TitleOptionsState::updateBackupData() {
     updateSlotMetadata();
-    updateHasCommonSaveInSource();
-    updateSourceHasRequestedSavedata();
+    if (this->title.is_Wii)
+        updateHasVWiiSavedata();
+    else {   
+        updateHasCommonSaveInSource();
+        updateSourceHasRequestedSavedata();
+    }
 }
 
 void TitleOptionsState::updateRestoreData() {
     updateSlotMetadata();
-    updateHasCommonSaveInTarget();
-    updateHasCommonSaveInSource();
-    updateSourceHasRequestedSavedata();
-    updateHasTargetUserData();
+    if (this->title.is_Wii)
+        updateHasVWiiSavedata();
+    else {
+        updateHasCommonSaveInTarget();
+        updateHasCommonSaveInSource();
+        updateSourceHasRequestedSavedata();
+        updateHasTargetUserData();
+        }
 }
 
 void TitleOptionsState::updateCopyToOtherDeviceData() {
@@ -816,8 +824,12 @@ void TitleOptionsState::updateCopyToOtherDeviceData() {
 }
 
 void TitleOptionsState::updateWipeProfileData() {
-    updateHasCommonSaveInSource();
-    updateSourceHasRequestedSavedata();
+    if (this->title.is_Wii)
+        updateHasVWiiSavedata();
+    else {
+        updateHasCommonSaveInSource();
+        updateSourceHasRequestedSavedata();
+    }
 }
 
 void TitleOptionsState::updateMoveCopyProfileData() {
