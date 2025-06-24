@@ -57,7 +57,7 @@ static void getWiiUSerialId() {
             Metadata::thisConsoleSerialId = std::string(sysProd.code_id) + sysProd.serial_id;
         }
         MCP_Close(mcpHandle);
-    } 
+    }
 }
 
 static Title *loadWiiUTitles(int run) {
@@ -248,7 +248,7 @@ static Title *loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].isTitleOnUSB = isTitleOnUSB;
         titles[wiiuTitlesCount].listID = wiiuTitlesCount;
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
-            titles[wiiuTitlesCount].iconBuf = nullptr; 
+            titles[wiiuTitlesCount].iconBuf = nullptr;
 
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
                     titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
@@ -432,21 +432,62 @@ static void unloadTitles(Title *titles, int count) {
         free(titles);
 }
 
+
+std::vector<const char*> initMessageList;
+
+void addInitMessage(const char* newMessage) {
+
+    initMessageList.push_back(newMessage);
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+
+    int line = 0;
+    for (auto & message : initMessageList) {
+        consolePrintPosAligned(7 + line++, 0, 1, message);
+    }
+
+    DrawUtils::endDraw();
+}
+
+void resetMessageList() {
+    initMessageList.clear();
+}
+
+void addInitMessageWithIcon(const char* newMessage) {
+
+    initMessageList.push_back(newMessage);
+
+    DrawUtils::beginDraw();
+    DrawUtils::clear(COLOR_BLACK);
+    disclaimer();
+    DrawUtils::drawTGA(298, 144, 1, icon_tga);
+    int line = 0;
+    for (auto & message : initMessageList) {
+        consolePrintPosAligned(10 + line++, 0, 1, message);
+    }
+
+    DrawUtils::endDraw();
+
+}
+
+
 int main() {
 
-#ifdef DEBUG    
+#ifdef DEBUG
     WHBLogUdpInit();
     WHBLogPrintf("Hello from savemii!");
 #endif
 
 // freezes console to some users
 /*
-    AXInit();    
+    AXInit();
     AXQuit();
-*/    
+*/
 
     State::init();
-    
+
     if (DrawUtils::LogConsoleInit()) {
         OSFatal("Failed to initialize OSSCreen");
     }
@@ -496,10 +537,19 @@ int main() {
     Swkbd_LanguageType systemLanguage = LanguageUtils::getSystemLanguage();
     LanguageUtils::loadLanguage(systemLanguage);
 
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Initializing FS"));
-    DrawUtils::endDraw();
+    addInitMessage("Initializing global config");
+    addInitMessage("... can take several seconds on some SDs");
+
+    addInitMessage(LanguageUtils::gettext("Initializing WPAD and KAPD"));
+
+    KPADInit();
+    WPADEnableURCC(1);
+
+    addInitMessage(LanguageUtils::gettext("Initializing loadWiiU Titles"));
+
+    loadWiiUTitles(0);
+
+    addInitMessage(LanguageUtils::gettext("Initializing FS"));
 
     if (!initFS()) {
         promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
@@ -507,6 +557,8 @@ int main() {
             State::shutdown();
         return 0;
     }
+
+    resetMessageList();
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
@@ -569,5 +621,6 @@ int main() {
     DrawUtils::LogConsoleFree();
 
     State::shutdown();
+    KPADShutdown();
     return 0;
 }
