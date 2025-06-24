@@ -13,11 +13,11 @@ void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
     loadedLang = language;
     switch (language) {
         case Swkbd_LanguageType__Japanese:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
             gettextLoadLanguage("romfs:/languages/japanese.json");
             break;
         case Swkbd_LanguageType__English:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
             gettextLoadLanguage("romfs:/languages/english.json");
             break;
         /*case Swkbd_LanguageType__French:
@@ -25,23 +25,23 @@ void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
             break;
 		*/
         case Swkbd_LanguageType__German:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
             gettextLoadLanguage("romfs:/languages/german.json");
             break;
         case Swkbd_LanguageType__Italian:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
             gettextLoadLanguage("romfs:/languages/italian.json");
             break;
         case Swkbd_LanguageType__Spanish:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
             gettextLoadLanguage("romfs:/languages/spanish.json");
             break;
         case Swkbd_LanguageType__Chinese1:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_CHINESE);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_CHINESE);
             gettextLoadLanguage("romfs:/languages/TChinese.json");
             break;
         case Swkbd_LanguageType__Korean:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_KOREAN);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_KOREAN);
             gettextLoadLanguage("romfs:/languages/korean.json");
             break;
         /*
@@ -50,19 +50,19 @@ void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
             break;
         */
         case Swkbd_LanguageType__Portuguese:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
 			gettextLoadLanguage("romfs:/languages/portuguese.json");
             break;
         case Swkbd_LanguageType__Russian:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
             gettextLoadLanguage("romfs:/languages/russian.json");
             break;
         case Swkbd_LanguageType__Chinese2:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_CHINESE);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_CHINESE);
             gettextLoadLanguage("romfs:/languages/SChinese.json");
             break;
         default:
-            DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD);
+            DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
             gettextLoadLanguage("romfs:/languages/english.json");
             break;
     }

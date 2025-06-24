@@ -450,11 +450,9 @@ int main() {
 
     State::registerProcUICallbacks();
 
-    if (!DrawUtils::initFont(OS_SHAREDDATATYPE_FONT_STANDARD)) {
+    if (!DrawUtils::initFont()) {
         OSFatal("Failed to init font");
     }
-
-    DrawUtils::setFont();
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
