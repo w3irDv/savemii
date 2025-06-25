@@ -86,7 +86,7 @@ ApplicationState::eSubState vWiiTitleListState::update(Input *input) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+        if (input->get(TRIGGER, PAD_BUTTON_DOWN) || input->get(HOLD, PAD_BUTTON_DOWN)) {
             if (this->titlesCount <= 14)
                 cursorPos = (cursorPos + 1) % this->titlesCount;
             else if (cursorPos < 6)
@@ -95,7 +95,7 @@ ApplicationState::eSubState vWiiTitleListState::update(Input *input) {
                 scroll++;
             else
                 cursorPos = scroll = 0;
-        } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+        } else if (input->get(TRIGGER, PAD_BUTTON_UP) || input->get(HOLD, PAD_BUTTON_UP)) {
             if (scroll > 0)
                 cursorPos -= (cursorPos > 6) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)
