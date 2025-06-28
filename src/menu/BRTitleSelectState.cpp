@@ -286,7 +286,7 @@ ApplicationState::eSubState BRTitleSelectState::update(Input *input) {
             int retCode = 0;
 
            for (int i = 0; i < titlesCount ; i++) {
-                if (! this->titles[i].currentBackup.selected )
+                if (! this->titles[i].currentBackup.selected || this->titles[i].currentBackup.batchRestoreState == ABORTED)
                     continue;
                 this->titles[i].currentBackup.batchRestoreState = OK;
                 bool effectiveCommon = common && this->titles[i].currentBackup.hasCommonSavedata;

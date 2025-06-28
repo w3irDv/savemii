@@ -1213,6 +1213,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
                 }
             // backup has failed
             promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
+            titles[i].currentBackup.batchRestoreState = ABORTED;
         }
     }
 }
