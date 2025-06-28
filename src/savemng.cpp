@@ -1112,7 +1112,7 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_
 
         FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
         if (!shim) {
-            return;
+            goto flush_after_copy;
         }
 
         shim->clientHandle = handle;
@@ -1135,6 +1135,7 @@ void copySavedata(Title *title, Title *titleb, int8_t wiiuuser, int8_t wiiuuser_
         copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
     }
 
+flush_after_copy:
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
         FSAFlushVolume(handle, "/vol/storage_slccmpt01");
     } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
@@ -1430,7 +1431,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
         FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
         if (!shim) {
             errorCode +=8;
-            return errorCode;
+            goto flush_after_restore;
         }
 
         shim->clientHandle = handle;
@@ -1453,7 +1454,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t sduser, int8_t wiiuuser, 
         copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
     }
 #endif
-
+flush_after_restore:
     if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
         FSAFlushVolume(handle, "/vol/storage_slccmpt01");
     } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
