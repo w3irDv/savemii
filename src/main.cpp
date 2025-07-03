@@ -65,7 +65,7 @@ static void getWiiUSerialId() {
             Metadata::thisConsoleSerialId = std::string(sysProd.code_id) + sysProd.serial_id;
         }
         MCP_Close(mcpHandle);
-    } 
+    }
 }
 
 static Title *loadWiiUTitles(int run) {
@@ -266,7 +266,7 @@ static Title *loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].listID = wiiuTitlesCount;
         titles[wiiuTitlesCount].indexID = wiiuTitlesCount;
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
-            titles[wiiuTitlesCount].iconBuf = nullptr; 
+            titles[wiiuTitlesCount].iconBuf = nullptr;
 
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
                     titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
@@ -493,7 +493,7 @@ std::vector<const char*> initMessageList;
 void addInitMessage(const char* newMessage) {
 
     initMessageList.push_back(newMessage);
-    
+
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
@@ -530,19 +530,19 @@ void addInitMessageWithIcon(const char* newMessage) {
 
 int main() {
 
-#ifdef DEBUG    
+#ifdef DEBUG
     WHBLogUdpInit();
     WHBLogPrintf("Hello from savemii!");
 #endif
 
 // freezes console to some users
 /*
-    AXInit();    
+    AXInit();
     AXQuit();
-*/    
+*/
 
     State::init();
-    
+
     if (DrawUtils::LogConsoleInit()) {
         OSFatal("Failed to initialize OSSCreen");
     }
@@ -570,7 +570,7 @@ int main() {
     addInitMessage("... can take several seconds on some SDs");
 
     GlobalCfg::global = std::make_unique<GlobalCfg>("cfg");
-    
+
     if (! GlobalCfg::global->init()) {
         promptError("Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
         romfsExit();
@@ -587,7 +587,6 @@ int main() {
 
     addInitMessage(LanguageUtils::gettext("Initializing WPAD and KPAD"));
 
-    WPADInit();
     KPADInit();
     WPADEnableURCC(1);
 
@@ -631,7 +630,7 @@ int main() {
     ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes",wiititles,vWiiTitlesCount);
     ExcludesCfg::wiiuExcludes->init();
     ExcludesCfg::wiiExcludes->init();
-    
+
     resetMessageList();
 
     Input input{};
@@ -674,5 +673,6 @@ int main() {
     DrawUtils::LogConsoleFree();
 
     State::shutdown();
+    KPADShutdown();
     return 0;
 }
