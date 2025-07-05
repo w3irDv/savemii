@@ -8,6 +8,10 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/Colors.h>
+#include <cfg/ExcludesCfg.h>
+#include <menu/BatchJobTitleSelectState.h>
+#include <menu/BackupSetListState.h>
+#include <menu/BatchJobOptions.h>
 
 // defaults to pass to titleTask
 static uint8_t slot = 0;
@@ -27,10 +31,12 @@ void TitleTaskState::render() {
         consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPos(22,0,LanguageUtils::gettext("Tasks"));
-        DrawUtils::setFontColor(COLOR_TEXT);    
-        consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
-                        this->title.productCode);
-        consolePrintPos(M_OFF, 3, "   %s (%s)", this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
+        DrawUtils::setFontColor(COLOR_TEXT);
+        if (! batchJob) {   
+            consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
+                            this->title.productCode);
+            consolePrintPos(M_OFF, 3, "   %s (%s)", this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
+        }
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
         consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Backup savedata"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
@@ -46,14 +52,18 @@ void TitleTaskState::render() {
             consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import from loadiine"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,6);
             consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Export to loadiine"));
-            if (this->title.isTitleDupe) {
+            if (this->isTitleDupe && !batchJob) {
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,7);
                 consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
                                 this->title.isTitleOnUSB ? "NAND" : "USB");
             }
-            if (this->title.iconBuf != nullptr)
+            if (this->title.iconBuf != nullptr && !batchJob)
                 DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
-        } else if (this->title.iconBuf != nullptr)
+            if (batchJob & isTitleDupe) {
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,7);
+                consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Copy Savedata to Title NAND <-> >USB"));    
+            }
+        } else if (this->title.iconBuf != nullptr && !batchJob)
             DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
@@ -67,92 +77,115 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             return SUBSTATE_RETURN;
 
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
-            bool noError = true;
-            this->task = (eJobType) cursorPos;
+            if (!batchJob) {
+                bool noError = true;
+                this->task = (eJobType) cursorPos;
 
-            source_user = -1;
-            wiiu_user = -1;
-            common = false;
+                source_user = -1;
+                wiiu_user = -1;
+                common = false;
 
-            const char* noData;
-            switch (this->task) {
-                case BACKUP:
-                    noData = LanguageUtils::gettext("No save to Backup.");
-                    break;
-                case WIPE_PROFILE:
-                    noData = LanguageUtils::gettext("No save to Wipe.");
-                    break;
-                case PROFILE_TO_PROFILE:
-                    noData = LanguageUtils::gettext("No save to Replicate.");
-                    break;
-                case COPY_TO_OTHER_DEVICE: 
-                    noData = LanguageUtils::gettext("No save to Copy.");
-                    break;
-                case MOVE_PROFILE:
-                    noData = LanguageUtils::gettext("No save to Move.");
-                    break;
-                default:
-                    noData = "";
-                    break;
-            }
-
-            if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE  ||  this->task == COPY_TO_OTHER_DEVICE) {
-                if (!this->title.saveInit) {
-                    promptError(noData);
-                    noError = false;
-                } else {
-                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
-                    getAccountsFromVol(&this->title, slot, this->task);
+                const char* noData;
+                switch (this->task) {
+                    case BACKUP:
+                        noData = LanguageUtils::gettext("No save to Backup.");
+                        break;
+                    case WIPE_PROFILE:
+                        noData = LanguageUtils::gettext("No save to Wipe.");
+                        break;
+                    case PROFILE_TO_PROFILE:
+                        noData = LanguageUtils::gettext("No save to Replicate.");
+                        break;
+                    case COPY_TO_OTHER_DEVICE: 
+                        noData = LanguageUtils::gettext("No save to Copy.");
+                        break;
+                    case MOVE_PROFILE:
+                        noData = LanguageUtils::gettext("No save to Move.");
+                        break;
+                    default:
+                        noData = "";
+                        break;
                 }
-            }
 
-            if (this->task == RESTORE) {
-                BackupSetList::setBackupSetSubPath();
-                getAccountsFromVol(&this->title, slot,RESTORE);
-            }
+                if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE  ||  this->task == COPY_TO_OTHER_DEVICE) {
+                    if (!this->title.saveInit) {
+                        promptError(noData);
+                        noError = false;
+                    } else {
+                        BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                        getAccountsFromVol(&this->title, slot, this->task);
+                    }
+                }
 
-            if (( this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE) && noError) {
-                if (getVolAccn() == 0)
-                    promptError(LanguageUtils::gettext("Title has no profile savedata"));
-                else {    
-                    for (int i = 0; i <  getVolAccn() ; i ++ ) {
-                        for (int j = 0; j < getWiiUAccn(); j++) {
-                            if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
-                                source_user=i;
-                                wiiu_user=j;
-                                goto nxtCheck;
+                if (this->task == RESTORE) {
+                    BackupSetList::setBackupSetSubPath();
+                    getAccountsFromVol(&this->title, slot,RESTORE);
+                }
+
+                if (( this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE) && noError) {
+                    if (getVolAccn() == 0)
+                        promptError(LanguageUtils::gettext("Title has no profile savedata"));
+                    else {    
+                        for (int i = 0; i <  getVolAccn() ; i ++ ) {
+                            for (int j = 0; j < getWiiUAccn(); j++) {
+                                if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
+                                    source_user=i;
+                                    wiiu_user=j;
+                                    goto nxtCheck;
+                                }
                             }
                         }
+                        promptError(LanguageUtils::gettext("At least two profiles are needed to Copy/Move To OtherProfile."));
                     }
-                    promptError(LanguageUtils::gettext("At least two profiles are needed to Copy/Move To OtherProfile."));
+                    noError = false;
                 }
-                noError = false;
-            }
 
-nxtCheck: 
-            if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
-                BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
-                char gamePath[PATH_SIZE];
-                memset(versionList, 0, 0x100 * sizeof(int));
-                if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.longName, this->title.highID, this->title.lowID)) {
-                    return SUBSTATE_RUNNING;
-                }
-                getLoadiineSaveVersionList(versionList, gamePath);
-                if (this->task == importLoadiine) {
-                    importFromLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
-                }
-                if (this->task == exportLoadiine) {
-                    if (!this->title.saveInit) {
-                        promptError(LanguageUtils::gettext("No save to Export."));
-                        noError = false;
+    nxtCheck: 
+                if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
+                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                    char gamePath[PATH_SIZE];
+                    memset(versionList, 0, 0x100 * sizeof(int));
+                    if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.longName, this->title.highID, this->title.lowID)) {
+                        return SUBSTATE_RUNNING;
                     }
-                    exportToLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
+                    getLoadiineSaveVersionList(versionList, gamePath);
+                    if (this->task == importLoadiine) {
+                        importFromLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
+                    }
+                    if (this->task == exportLoadiine) {
+                        if (!this->title.saveInit) {
+                            promptError(LanguageUtils::gettext("No save to Export."));
+                            noError = false;
+                        }
+                        exportToLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
+                    }
+                }
+
+                if (noError) {
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
                 }
             }
-
-            if (noError) {
+            
+            if (batchJob) {
+                this->task = (eJobType) cursorPos;
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
+                switch(this->task) {
+                    case BACKUP:
+                        this->subState = std::make_unique<BatchJobTitleSelectState>(this->titles, this->titlesCount, isWiiUTitle, isWiiUTitle ? ExcludesCfg::wiiuExcludes : ExcludesCfg::wiiExcludes,BACKUP);
+                        break;
+                    case RESTORE:
+                        this->subState = std::make_unique<BackupSetListState>(this->titles, this->titlesCount, isWiiUTitle);
+                        break;
+                    case WIPE_PROFILE:
+                    case MOVE_PROFILE:
+                    case PROFILE_TO_PROFILE:
+                    case COPY_TO_OTHER_DEVICE:
+                        this->subState = std::make_unique<BatchJobOptions>(this->titles, this->titlesCount, isWiiUTitle, this->task);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {

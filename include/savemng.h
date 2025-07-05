@@ -35,6 +35,7 @@ enum eBatchJobState {
 
 struct dataSourceInfo {
     bool hasSavedata;
+    bool selectedInMain;
     bool candidateToBeProcessed;
     bool candidateForBackup;
     bool selectedToBeProcessed;
@@ -99,6 +100,10 @@ enum Style {
     ST_MULTIPLE_CHOICE = 256
 };
 
+enum eTitleType {
+    WII_U,
+    VWII
+};
 
 template<class It>
 void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {

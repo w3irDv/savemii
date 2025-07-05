@@ -16,6 +16,23 @@ public:
                         cursorPos = 0;
     }
 
+    TitleTaskState(Title *titles, int titlesCount) : titles(titles),
+                                                     titlesCount(titlesCount),
+                                                     batchJob(true) {
+                this->isWiiUTitle = (this->titles[0].highID == 0x00050000) || (this->titles[0].highID == 0x00050002);
+                for (int i=0;i<titlesCount;i++) {
+                    if (! titles[i].currentDataSource.selectedInMain)
+                        continue;
+                    if (titles[i].isTitleDupe) {
+                        isTitleDupe = true;
+                        break;
+                    }
+                }
+                entrycount = 3 + 4 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && isTitleDupe);
+                if (cursorPos > entrycount -1 )
+                        cursorPos = 0;
+    }
+
     ~TitleTaskState() {
         free(this->versionList);
     }
@@ -42,5 +59,7 @@ private:
 
     inline static int cursorPos = 0;
     int entrycount;
-    
+    bool isTitleDupe = false;
+    bool batchJob = false;
+
 };

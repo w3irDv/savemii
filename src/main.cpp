@@ -20,6 +20,7 @@
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
 #include <coreinit/screen.h>
+#include <menu/MainTitleSelectState.h>  
 
 //#define DEBUG
 
@@ -634,8 +635,19 @@ int main() {
     resetMessageList();
 
     Input input{};
-    std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,
-                                                                        vWiiTitlesCount);
+    //std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,vWiiTitlesCount);
+    std::unique_ptr<MainTitleSelectState> state;
+    switch(MainTitleSelectState::showTitlesType) {
+        case WII_U:
+            state = std::make_unique<MainTitleSelectState>(wiiutitles, wiiuTitlesCount, WII_U);
+            break;
+        case VWII:
+            state = std::make_unique<MainTitleSelectState>(wiititles, vWiiTitlesCount,VWII);
+            break;
+        default:
+            break;
+    }
+
     while (State::AppRunning()) {
 
         input.read();

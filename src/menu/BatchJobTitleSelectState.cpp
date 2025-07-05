@@ -59,6 +59,8 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
             continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
+        if (this->titles[i].currentDataSource.selectedInMain == false )  
+            continue;
         
         bool isWii = titles[i].is_Wii;
 
@@ -153,7 +155,9 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCoun
                 this->titles[i].currentDataSource.selectedForBackup = false;
                 this->titles[i].currentDataSource.candidateForBackup = false;
                 continue;
-        } 
+        }
+        if (this->titles[i].currentDataSource.selectedInMain == false )  
+            continue; 
 
         // candidates to backup
         this->titles[i].currentDataSource.selectedForBackup = true;
