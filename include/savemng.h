@@ -238,7 +238,7 @@ bool mkdirAndUnlink(const std::string & path);
 bool mergeTitleFolders(Title* title);
 enum STR2UINT_ERROR { SUCCESS, OVERFLOW, INCONVERTIBLE };
 STR2UINT_ERROR str2uint (uint32_t &i, char const *s, int base = 0);
-std::string slotFormatType(Title *title, uint8_t slot);
+std::string getSlotFormatType(Title *title, uint8_t slot);
 bool checkIfProfileExistsInWiiUAccounts(char const *name);
 void flushVol(const std::string & srcPath);
 bool checkIfAllProfilesInFolderExists(const std::string srcPath);

@@ -27,7 +27,7 @@ void TitleOptionsState::render() {
         return;
     }
     if (this->state == STATE_TITLE_OPTIONS) {
-        std::string slotFormat = slotFormatType(&this->title, slot);
+        std::string slotFormat = getSlotFormatType(&this->title, slot);
         if (((this->task == COPY_TO_OTHER_DEVICE) || (this->task == PROFILE_TO_PROFILE)|| (this->task == MOVE_PROFILE)|| (this->task == WIPE_PROFILE)) && cursorPos == 0)
             cursorPos = 1;     
         if (this->task == BACKUP || this->task == RESTORE) {

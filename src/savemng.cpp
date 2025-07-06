@@ -85,7 +85,7 @@ std::string newlibtoFSA(std::string path) {
     return path;
 }
 
-std::string slotFormatType(Title *title, uint8_t slot) {
+std::string getSlotFormatType(Title *title, uint8_t slot) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
 

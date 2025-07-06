@@ -20,30 +20,24 @@ public:
                 wiiUAccountsTotalNumber = getWiiUAccn();
                 sourceAccountsTotalNumber = getVolAccn();
                 this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
-
-                if (isWiiUTitle) {
-                    switch (task) {
-                        case BACKUP:
-                            updateBackupData();
-                            break;
-                        case RESTORE:
-                            updateRestoreData();
-                            break;
-                        case COPY_TO_OTHER_DEVICE:
-                            updateCopyToOtherDeviceData();
-                            break;
-                        case WIPE_PROFILE:
-                            updateWipeProfileData();
-                            break;
-                        case MOVE_PROFILE:
-                        case PROFILE_TO_PROFILE:
-                            updateMoveCopyProfileData();
-                            break;
-                    }
-                } else {
-                    updateHasVWiiSavedata();
+                switch (task) {
+                    case BACKUP:
+                        updateBackupData();
+                        break;
+                    case RESTORE:
+                        updateRestoreData();
+                        break;
+                    case COPY_TO_OTHER_DEVICE:
+                        updateCopyToOtherDeviceData();
+                        break;
+                    case WIPE_PROFILE:
+                        updateWipeProfileData();
+                        break;
+                    case MOVE_PROFILE:
+                    case PROFILE_TO_PROFILE:
+                        updateMoveCopyProfileData();
+                        break;
                 }
-
             }
 
     enum eState {
