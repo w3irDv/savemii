@@ -1,5 +1,10 @@
 # SaveMii WUT Port /ProcessMod 
 
+<p align="center"><a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="meta/wuhb/tv-splash.png"></a></p>
+<p align="center">
+<a href="https://github.com/w3irdv/savemii/releases" title="Releases"><img src="https://img.shields.io/github/v/release/w3irdv/savemii?logo=github"></a>
+</p>
+
 **WiiU/vWii Save Manager**
 
 *Original by Ryuzaki-MrL - WUT Port by xploit-U - Currently maintained by w3irDv*
