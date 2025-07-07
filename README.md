@@ -9,11 +9,11 @@
 
 *Original by Ryuzaki-MrL - WUT Port by xploit-U - Currently maintained by w3irDv*
 
-This homebrew allows you to backup your Wii U and vWii savegames to the SD card and also restore them. 
+This homebrew allows you to backup your Wii U and vWii savegames to the SD card and also restore them. This mod expands SaveMii's capabilities to manage titles in bulk.
 
-Multiple titles can be saved and restore at once using batch functions.
+Multiple titles can be saved, restored and wiped at once using batch functions.
 
-Save data can be easily moved between Wii U profiles, simplifying `Pretendo` setup. 
+Savedata can also be easily moved between Wii U profiles, simplifying `Pretendo` setup. 
 
 
 
@@ -238,26 +238,20 @@ If you follow an online guide, it will likely tell you to create/find a hexadeci
 
 ----
 
-## Reasons to use this over previous mod:
+## Reasons to use /ProcessMod over previous mods:
 
 - Fully compatible with Aroma
-- Addresses critical issues present in the previous version of the mod
+- Addresses critical issues present in previous versions of the mod
 - Includes options to move/copy profiles, very useful for finalizing `Pretendo` setups
-- Reliability checks on all backup/restore operations
+- Performs error checks on all backup and restore operations to ensure they complete successfully.
 - All operations can be performed in batches.
-
-* WUT port added:
-
+- Maintained
+- WUT port additions to the original:
   - Faster copy speeds
-
   - VC injects are shown
-
   - If VC is vWii, the user is warned to go to the vWii saves section instead
-
   - Demo support
-
   - Fixes issues present in the mod version
-
   - Shows useful info about the saves like its date and time of creation
 
 
