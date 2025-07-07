@@ -11,6 +11,8 @@ For sorting Titles press R to change sorting method and press L to change betwee
 
 Use it at your own risk and please report any issues that may occur.
 
+**Until further notice, active development and new releases have been moved to [https://github.com/w3irDv/savemii]**
+
 ## Quick Notes
 
 Move across screen by using Up/Down D-Pad buttons. Cycle between options by using Left/Right D-Pad buttons. "A" to select a task / enter a menu. "B" to go back to the previous menu. Special functions can be accessed by using "X/Y/+/-" buttons, as described at the bottom line in each menu.
