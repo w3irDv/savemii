@@ -510,7 +510,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
 
 void BatchJobTitleSelectState::executeBatchProcess() {
 
-    const char * menuTitle, * taskDescription, * backupDescription, *allUsersInfo, *noUsersInfo;
+    const char * menuTitle, * taskDescription, * backupDescription, *allUsersInfo, *noUsersInfo, *taskHasFailed;
 
     switch (jobType) {
         case RESTORE:
@@ -519,6 +519,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchJob Backup (WiiU)") : LanguageUtils::gettext("pre-BatchJob Backup (vWii)");
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore allusers") : LanguageUtils::gettext("- Restore");
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore no user") : LanguageUtils::gettext("- Restore");
+            taskHasFailed = LanguageUtils::gettext("%s\n\nRestore failed.\nErrors so far: %d\nDo you want to continue?");
             break;
         case PROFILE_TO_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Review & Go");
@@ -526,6 +527,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileCopy Backup (WiiU)") : "";
             allUsersInfo = "";
             noUsersInfo = "";
+            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy Profile failed.\nErrors so far: %d\nDo you want to continue?");
             break;
         case MOVE_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileMove - Review & Go");
@@ -533,6 +535,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileMove Backup (WiiU)") : "";
             allUsersInfo = "";
             noUsersInfo = "";
+            taskHasFailed = LanguageUtils::gettext("%s\n\nMove Profile failed.\nErrors so far: %d\nDo you want to continue?");
             break;
         case WIPE_PROFILE:
             menuTitle=LanguageUtils::gettext("Batch Wipe - Review & Go");
@@ -540,6 +543,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ?LanguageUtils::gettext("pre-BatchWipe Backup (WiiU)") : LanguageUtils::gettext("pre-BatchWipe Backup (vWii)");
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe allusers") : LanguageUtils::gettext("- Wipe");
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe no user") : LanguageUtils::gettext("- Wipe");
+            taskHasFailed = LanguageUtils::gettext("%s\n\nWipe failed.\nErrors so far: %d\nDo you want to continue?");
             break;
         case COPY_FROM_NAND_TO_USB:
             menuTitle=LanguageUtils::gettext("Batch Copy To USB - Review & Go");
@@ -547,6 +551,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToUSB Backup (WiiU)") : "";
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
+            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from NAND to USB failed.\nErrors so far: %d\nDo you want to continue?");
             break;
         case COPY_FROM_USB_TO_NAND:
             menuTitle=LanguageUtils::gettext("Batch Copy To NAND - Review & Go");
@@ -554,6 +559,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToNAND Backup (WiiU)") : "";
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
+            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from USB to NAND failed.\nErrors so far: %d\nDo you want to continue?");
             break;
         default:
             menuTitle ="";
@@ -561,6 +567,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = "";
             allUsersInfo = "";
             noUsersInfo = "";
+            taskHasFailed = "";
             break;
     }
     const char* summaryTemplate;
@@ -636,6 +643,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
 
     int retCode = 0;
 
+    int jobErrorsCounter = 0;
     for (int i = 0; i < titlesCount ; i++) {
         Title& sourceTitle = this->titles[i];
         Title& targetTitle = (jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) ? this->titles[this->titles[i].dupeID]:this->titles[i] ;
@@ -645,7 +653,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         InProgress::currentStep++;
 
         if ( fullBackup )
-            if ( targetTitle.currentDataSource.batchBackupState == KO ) {
+            if ( targetTitle.currentDataSource.batchBackupState != OK ) {
                 sourceTitle.currentDataSource.batchJobState = ABORTED;
                 continue;
             }
@@ -724,8 +732,14 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 break;
         }
 
-        if (retCode > 0)
+        if (retCode > 0) {
             this->titles[i].currentDataSource.batchJobState = KO;
+            jobErrorsCounter++;
+            std::string errorMessage = StringUtils::stringFormat(taskHasFailed,titles[i].shortName,jobErrorsCounter);
+            this->titles[i].currentDataSource.lastErrCode = (globalRetCode + retCode);
+            if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str()))
+                break;
+        }
         else if (retCode < 0)
             this->titles[i].currentDataSource.batchJobState = ABORTED;
         if (this->titles[i].currentDataSource.batchJobState == OK || this->titles[i].currentDataSource.batchJobState == WR )

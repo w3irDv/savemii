@@ -1709,6 +1709,8 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
     if (firstSDWrite)
         sdWriteDisclaimer();
 
+    int copyErrorsCounter = 0;
+
     for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
         for (int i = 0; i < count; i++) {
             if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
@@ -1738,9 +1740,12 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
                     continue;
                 }
             // backup for this tile has failed
+            copyErrorsCounter++;
             titles[i].currentDataSource.batchBackupState = KO;
             writeMetadataWithTag(&titles[i],slot,isUSB,batchDatetime,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
-            promptError(LanguageUtils::gettext("%s\nBackup failed."),titles[i].shortName);
+            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"),titles[i].shortName,copyErrorsCounter);
+            if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str()))
+                return;
 #else
         if (i%2 == 0) {
             titles[i].currentDataSource.batchBackupState = OK;
