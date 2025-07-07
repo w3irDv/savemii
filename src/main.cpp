@@ -284,7 +284,7 @@ static Title *loadWiiUTitles(int run) {
         DrawUtils::beginDraw();
         DrawUtils::clear(COLOR_BLACK);
         disclaimer();
-        DrawUtils::drawTGA(298, 144, 1, icon_tga);
+        DrawUtils::drawTGA(328, 160, 1, icon_tga);
         consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
         DrawUtils::endDraw();
     }
@@ -467,7 +467,7 @@ static Title *loadWiiTitles() {
                 DrawUtils::beginDraw();
                 DrawUtils::clear(COLOR_BLACK);
                 disclaimer();
-                DrawUtils::drawTGA(298, 144, 1, icon_tga);
+                DrawUtils::drawTGA(328, 160, 1, icon_tga);
                 consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
                 consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), i);
                 DrawUtils::endDraw();
@@ -517,7 +517,7 @@ void addInitMessageWithIcon(const char* newMessage) {
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     disclaimer();
-    DrawUtils::drawTGA(298, 144, 1, icon_tga);
+    DrawUtils::drawTGA(328, 160, 1, icon_tga);
     int line = 0;
     for (auto & message : initMessageList) {
         consolePrintPosAligned(10 + line++, 0, 1, message);

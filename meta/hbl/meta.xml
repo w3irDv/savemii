@@ -3,13 +3,14 @@
     <name>SaveMii WUT</name>
     <coder>DaThinkingChair,w3irDv</coder>
     <version>1.7.0</version>
-    <release_date>2025070800</release_date>
+    <release_date>2025070700</release_date>
     <short_description>WiiU/vWii Save Manager</short_description>
     <long_description>WiiU/vWii Save Manager
 
-        This homebrew allows you to backup your Wii U and vWii savegames to the SD card and also restore them. Can also
+        This homebrew allows you to backup your Wii U and vWii savegames to the SD card and then restore them. Can also
         copy saves from NAND<->USB if title is installed to both. Up to 256 backups can be made per title. Backups are
-        stored in sd:/wiiu/backups.
+        stored in sd:/wiiu/backups. Savedata can be moved between profiles. All operations can be performed on multiple
+        titles at once.
     </long_description>
     <category>tool</category>
     <url>https://github.com/w3irdv/savemii/releases</url>
