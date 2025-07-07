@@ -96,7 +96,9 @@ void TitleOptionsState::render() {
             } 
                 
             if ( (task == RESTORE) || (task == BACKUP) || (task == WIPE_PROFILE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE) ) { // manage lines related to source data
-                consolePrintPos(M_OFF, 7, (task == RESTORE) ? LanguageUtils::gettext("Select SD user to copy from:") : LanguageUtils::gettext("Select Wii U user to copy from:"));
+                consolePrintPos(M_OFF, 7, (task == RESTORE) ? LanguageUtils::gettext("Select SD user to copy from:") : 
+                                          (task == WIPE_PROFILE ? LanguageUtils::gettext("Select Wii U user to wipe:") :
+                                                                  LanguageUtils::gettext("Select Wii U user to copy from:")));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                 if (source_user == -2) {
                     consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("no profile user"));
@@ -118,7 +120,7 @@ void TitleOptionsState::render() {
             if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE )) { // manage lines related to target user data
                 if (source_user > -1)
                     entrycount++;
-                consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user to copy to"));
+                consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user to copy to:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
                 if (wiiu_user == -2)
                     consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("no profile user"));

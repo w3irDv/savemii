@@ -222,31 +222,31 @@ void BatchJobOptions::render() {
                 break;
             case PROFILE_TO_PROFILE:
                 menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from");
+                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
                 onlyCommon = "";
                 commonIncluded = "";
                 break;
             case MOVE_PROFILE:
                 menuTitle = LanguageUtils::gettext("Batch ProfileMove - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from");
+                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
                 onlyCommon = "";
                 commonIncluded = "";
                 break;
             case WIPE_PROFILE:
                 menuTitle = LanguageUtils::gettext("Batch Wipe - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to wipe");
+                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to wipe:");
                 onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be deleted");
                 commonIncluded = LanguageUtils::gettext("'common' savedata will also be deleted");
                 break;
             case COPY_FROM_NAND_TO_USB:
                 menuTitle = LanguageUtils::gettext("Batch CopyToUSB - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from");
+                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
                 onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be copied");
                 commonIncluded = LanguageUtils::gettext("'common' savedata will also be copied");
                 break;
             case COPY_FROM_USB_TO_NAND:
                 menuTitle = LanguageUtils::gettext("Batch CopyToNAND - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from");
+                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
                 onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be copied");
                 commonIncluded = LanguageUtils::gettext("'common' savedata will also be copied");
                 break;
@@ -286,7 +286,7 @@ void BatchJobOptions::render() {
             
             if (jobType != WIPE_PROFILE) {
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPos(M_OFF, 6 , LanguageUtils::gettext("Select Wii U user to copy to"));
+                consolePrintPos(M_OFF, 6 , LanguageUtils::gettext("Select Wii U user to copy to:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
                 if (this->wiiu_user == -2)
                     consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("no profile user"));
