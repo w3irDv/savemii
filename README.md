@@ -25,6 +25,9 @@ For sorting Titles press R to change sorting method and press L to change betwee
 
 Use it at your own risk and please report any issues that may occur.
 
+**Until further notice, active development and new releases have been moved to [https://github.com/w3irDv/savemii]**
+
+## Quick Notes
 
 
 ## Wii U Title Management / vWii Title Management
