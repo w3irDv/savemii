@@ -36,7 +36,7 @@ private:
 
     eSubstateCalled substateCalled = NONE;
 
-    Title title;
+    Title &title;
     eJobType task;
 
     int *versionList;

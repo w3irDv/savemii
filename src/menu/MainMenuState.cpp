@@ -12,6 +12,7 @@
 #include <menu/BatchJobState.h>
 #include <menu/BatchJobOptions.h>
 #include <utils/Colors.h>
+#include <utils/statDebug.h>
 
 #define ENTRYCOUNT 9
 
