@@ -239,8 +239,8 @@ void TitleOptionsState::render() {
                             consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev, commonIncluded);
                         else
                             consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
-                            LanguageUtils::gettext("No 'common' save found."));
-                        if (task == RESTORE)
+                                LanguageUtils::gettext("No 'common' save found."));
+                        if (task == RESTORE || task == COPY_TO_OTHER_DEVICE)
                             consolePrintPosAligned(13, 4, 2,LanguageUtils::gettext("(Target has 'common': %s)"),
                                 hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         common = false;
@@ -817,15 +817,15 @@ void TitleOptionsState::updateSourceHasRequestedSavedata() {
 }
 
 void TitleOptionsState::updateHasTargetUserData() {
-
+    // used by restore, move(/copy profile and copy_to_other_dev
+    int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
     switch (wiiu_user) {
         case -2:
             break;
         case -1:
-            hasTargetUserData = hasSavedata(&this->title, false, slot);
+            hasTargetUserData = hasSavedata(&(titles[targetIndex]), false, slot);
             break;
         default:
-            int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
             hasTargetUserData = hasProfileSave(&(titles[targetIndex]), false, false, getWiiUAcc()[wiiu_user].pID, 0, 0);
     }
 }
