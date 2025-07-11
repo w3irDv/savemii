@@ -7,7 +7,7 @@
 
 class TitleTaskState : public ApplicationState {
 public:
-    TitleTaskState(Title title, Title *titles, int titlesCount) : title(title),
+    TitleTaskState(Title & title, Title *titles, int titlesCount) : title(title),
                                                                   titles(titles),
                                                                   titlesCount(titlesCount) {
                 this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
@@ -32,7 +32,7 @@ private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_TITLE_TASKS;
 
-    Title title;
+    Title &title;
     Title *titles;
     int titlesCount;
     bool isWiiUTitle;

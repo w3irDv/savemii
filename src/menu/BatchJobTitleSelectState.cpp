@@ -109,8 +109,8 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
                 testForceSaveInitFalse = false;
             }
 #endif
-            if ( ! this->titles[i].saveInit )
-                this->titles[i].currentDataSource.selectedToBeProcessed = false; // we discourage a restore to a not init titles
+            if ((this->titles[i].noFwImg && ! isWii) || (!this->titles[i].saveInit && isWii))
+                this->titles[i].currentDataSource.selectedToBeProcessed = false; // we discourage a restore to injects or uninit wii titles
         } 
         else
         {
@@ -295,8 +295,8 @@ void BatchJobTitleSelectState::render() {
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             }
 
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && ! this->titles[c2t[i + this->scroll]].saveInit) {
-                DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && this->titles[c2t[i + this->scroll]].noFwImg) {
+                DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_INJECT,COLOR_LIST_SELECTED_INJECT_AT_CURSOR,cursorPos,i);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             }
 
@@ -305,8 +305,8 @@ void BatchJobTitleSelectState::render() {
             else
                 DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED,COLOR_LIST_SKIPPED_AT_CURSOR,cursorPos,i);
             
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && ! this->titles[c2t[i + this->scroll]].saveInit) {
-                DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && this->titles[c2t[i + this->scroll]].noFwImg) {
+                DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_INJECT,COLOR_LIST_SELECTED_INJECT_AT_CURSOR,cursorPos,i);
             }
             if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
@@ -611,11 +611,17 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     for (int i = 0; i < titlesCount ; i++) {
             if (! this->titles[i].currentDataSource.selectedToBeProcessed )
                 continue;
-            if (! this->titles[i].saveInit) {
+            if (this->titles[i].noFwImg) {
+                if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected injected titles (not recommended). Are you 100%% sure?")))
+                    return;
+                break;
+            }
+            if (! this->titles[i].saveInit && !isWiiUBatchJob) {
                 if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?")))
                     return;
                 break;
             }
+
     }
 
     InProgress::totalSteps = InProgress::currentStep = 0;

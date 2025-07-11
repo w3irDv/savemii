@@ -245,5 +245,5 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath);
 bool removeFolderAndFlush(const std::string & srcPath);
 bool checkIfProfilesInTitleBackupExist(Title *title, uint8_t slot);
 void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::string> & failedTitles);
-
 std::string newlibtoFSA(std::string path);
+bool setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError & fserror);

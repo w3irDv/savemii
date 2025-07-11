@@ -10,6 +10,7 @@
 #include <utils/LanguageUtils.h>
 #include <cfg/GlobalCfg.h>
 #include <utils/StringUtils.h>
+#include <utils/statDebug.h>
 
 #define TAG_OFF 17
 
@@ -603,7 +604,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             if (cursorPos > 0)
                 --cursorPos;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_MINUS))
+        if (input->get(TRIGGER, PAD_BUTTON_MINUS)) {
             if (this->task == BACKUP) {
                 if (!isSlotEmpty(&this->title, slot)) {
                     InProgress::totalSteps = InProgress::currentStep = 1;
@@ -611,6 +612,9 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateBackupData();
                 }
             }
+            if (this->task == WIPE_PROFILE && showFolderInfo)
+                statTitle(title);
+        }
         if (input->get(TRIGGER, PAD_BUTTON_A)) {
             InProgress::totalSteps = InProgress::currentStep = 1;
             int source_user_ = 0;
@@ -693,6 +697,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 this->substateCalled = STATE_KEYBOARD;
                 this->subState = std::make_unique<KeyboardState>(newTag);
             }
+            if (this->task == WIPE_PROFILE && showFolderInfo)
+                statSaves(title);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);

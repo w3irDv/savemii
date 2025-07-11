@@ -24,6 +24,9 @@
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
 #define MAXWIDTH 60
 
+const uint32_t metaOwnerId = 0x100000f6;
+const uint32_t metaGroupId = 0x400;
+
 const char *backupPath = "fs:/vol/external01/wiiu/backups";
 const char *batchBackupPath = "fs:/vol/external01/wiiu/backups/batch"; // Must be "backupPath/batch"  ~ backupSetListRoot
 const char *loadiineSavePath = "fs:/vol/external01/wiiu/saves";
@@ -1350,15 +1353,6 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
 
-    /*
-    if (accountSource == USE_WIIU_PROFILES) 
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s \n%s",
-            title->shortName,source_user,source_user > -1 ? wiiu_acc[source_user].persistentID:"-", wiiu_user,wiiu_user>-1 ? wiiu_acc[wiiu_user].persistentID:"-",isUSB ? "USB":"NAND");
-    else 
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s \n%s",
-                title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ? wiiu_acc[wiiu_user].persistentID:"-",isUSB ? "USB":"NAND");   
-    return 0;
-    */
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
@@ -1435,33 +1429,47 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
 
 #ifndef MOCK    
     if (!titleb->saveInit) {
-        std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
-        FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
-        if (!shim) {
-            errorMessage = LanguageUtils::gettext("Error creating init data");
-            errorCode += 4;
-            goto end;
-        }
-
-        shim->clientHandle = handle;
-        shim->command = FSA_COMMAND_CHANGE_OWNER;
-        shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        strcpy(shim->request.changeOwner.path, newlibtoFSA(userPath).c_str());
-        shim->request.changeOwner.owner = titleb->lowID;
-        shim->request.changeOwner.group = titleb->groupID;
-
-        __FSAShimSend(shim, 0);
-        free(shim);
         const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                     titleb->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                     highIDb, lowIDb);
-        std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
+        const std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
+        const std::string saveTitlePath = StringUtils::stringFormat("%s/%08x/%08x", pathb.c_str(), highIDb, lowIDb);
+        const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
-        FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000);
+        FSError fserror;
 
-        copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
-        copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
+        if ( FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
+            std::string multilinePath;
+            splitStringWithNewLines(metaPath,multilinePath);
+            errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+                + StringUtils::stringFormat(LanguageUtils::gettext("Error setrting quota for %s"),multilinePath.c_str());
+            errorCode += 4;
+        }
+
+        if (! copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml")) {
+            errorCode +=8;
+            goto error;
+        }
+
+        if (! copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga")) {
+            errorCode +=16;
+            goto error;
+        }
+        
+        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,saveTitlePath,fserror))
+            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath,fserror))
+                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/meta.xml",fserror))
+                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/iconTex.tga",fserror))
+                        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
+                            titleb->saveInit = true;
+                            goto end;
+                        }
+        errorCode += 32;
+        // something has gone wrong
+error:
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + LanguageUtils::gettext("Error creating init data");
     }
 #endif
 end:
@@ -1485,16 +1493,6 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
     std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
-
-    /*
-    if (accountSource == USE_WIIU_PROFILES) 
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s",
-            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-");
-    else 
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s",
-            title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-");
-    return 0;
-*/
     
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
@@ -1574,16 +1572,6 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
      
     std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[wiiu_user].persistentID);
 
-/*        
-    if (accountSource == USE_WIIU_PROFILES) 
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s\ns %s\nd%s",
-            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-",srcPath.c_str(),dstPath.c_str());
-    else 
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s\ns %s\nd%s",
-            title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-",srcPath.c_str(),dstPath.c_str());
-    return 0;
-*/
-
     std::string errorMessage {};
     if (checkEntry(dstPath.c_str()) == 2) {
         if ( wipeSavedata(title, wiiu_user, false, false, accountSource) != 0)
@@ -1628,19 +1616,6 @@ std::string getNowDateForFolder() {
                                                      now.tm_hour, now.tm_min, now.tm_sec);
 }
 
-/*
-void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) {
-    Metadata *metadataObj = new Metadata(highID, lowID, slot);
-    metadataObj->set(getNowDate(),isUSB);
-    delete metadataObj;
-}
-
-void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB, const std::string &batchDatetime) {
-    Metadata *metadataObj = new Metadata(highID, lowID, slot, batchDatetime);
-    metadataObj->set(getNowDate(),isUSB);
-    delete metadataObj;
-}
-*/
 void writeMetadata(Title *title,uint8_t slot,bool isUSB) {
     Metadata *metadataObj = new Metadata(title, slot);
     metadataObj->set(getNowDate(),isUSB);
@@ -1653,22 +1628,6 @@ void writeMetadata(Title *title,uint8_t slot,bool isUSB, const std::string &batc
     delete metadataObj;
 }
 
-/*
-void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot, bool isUSB, const std::string &tag) {
-    Metadata *metadataObj = new Metadata(highID, lowID, slot);
-    metadataObj->setTag(tag);
-    metadataObj->set(getNowDate(),isUSB);
-    delete metadataObj;
-}
-
-void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag) {
-    Metadata *metadataObj = new Metadata(highID, lowID, slot, batchDatetime);
-    metadataObj->setTag(tag);
-    metadataObj->set(getNowDate(),isUSB);
-    delete metadataObj;
-}
-
-*/
 void writeMetadataWithTag(Title *title,uint8_t slot, bool isUSB, const std::string &tag) {
     Metadata *metadataObj = new Metadata(title, slot);
     metadataObj->setTag(tag);
@@ -1879,12 +1838,6 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
-
-    /*
-    promptMessage(COLOR_BG_WR,"%s\nsource_user %d\n%s\nwiiu_user %d\n%s\n common\n %s",
-    title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user>-1 ?  wiiu_acc[wiiu_user].persistentID : "-",common ? "true":"false");
-    return 0;
-    */
     
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
@@ -1970,34 +1923,47 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     
 #ifndef MOCK
     if (!title->saveInit && !isWii) {
-        std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
 
-        FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
-        if (!shim) {
-            errorMessage = LanguageUtils::gettext("Error creating init data");
-            errorCode += 8;
-            goto end;
-        }
-
-        shim->clientHandle = handle;
-        shim->command = FSA_COMMAND_CHANGE_OWNER;
-        shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        strcpy(shim->request.changeOwner.path, newlibtoFSA(userPath).c_str());
-        shim->request.changeOwner.owner = title->lowID;
-        shim->request.changeOwner.group = title->groupID;
-
-        __FSAShimSend(shim, 0);
-        free(shim);
-      
         const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                     title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                     highID, lowID);
-        std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+        const std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+        const std::string saveTitlePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
+        const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
+        FSError fserror;
+        
+        if ( FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
+            std::string multilinePath;
+            splitStringWithNewLines(metaPath,multilinePath);
+            errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+                + StringUtils::stringFormat(LanguageUtils::gettext("Error setrting quota for \n%s"),multilinePath.c_str());
+            errorCode += 4;
+        }
 
-        FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000);
+        if (! copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml")) { 
+            errorCode += 8;
+            goto error;
+        }
 
-        copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
-        copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
+        if (! copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga")) {
+            errorCode += 16;
+            goto error;
+        }
+
+        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,saveTitlePath,fserror))
+            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath,fserror))
+                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/meta.xml",fserror))
+                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/iconTex.tga",fserror))
+                        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
+                            title->saveInit = true;
+                            goto end;
+                        }
+        errorCode += 32;
+        // something has gone wrong
+error:
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + LanguageUtils::gettext("Error creating init data");
+
     }
 #endif
 end:
@@ -2034,15 +2000,6 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         return 0;
     }
     */
-   /*
-   if (accountSource == USE_WIIU_PROFILES) 
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\n common\n %s",
-            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",common ? "true":"false");
-    else 
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\n common\n %s",
-            title->shortName,source_user,source_user>-1 ? vol_acc[source_user].persistentID : "-",common ? "true":"false");
-    return 0;
-   */ 
 
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
@@ -2321,24 +2278,7 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
     if ( titlesKO > 0 ) {
         summaryColor = COLOR_BG_KO;
         summaryWithTitles.append(LanguageUtils::gettext("\nFailed Titles:"));
-        titleListInColumns(summaryWithTitles,failedTitles);
-/*
-        int ctlLine = 0;
-        for (const std::string & failedTitle : failedTitles ) {
-            summaryWithTitles.append("  "+failedTitle+"      ");
-            if (ctlLine > 8 ) {
-                int notShown = failedTitles.size()-ctlLine-1;
-                const char* moreTitlesTemp;
-                moreTitlesTemp = LanguageUtils::gettext("... and %d more");
-                char moreTitles[30];
-                snprintf(moreTitles,30,moreTitlesTemp,notShown);
-                summaryWithTitles.append(moreTitles);
-                break;
-            }
-            if (ctlLine++ % 2 == 0)
-                summaryWithTitles.append("\n");
-        }
-*/        
+        titleListInColumns(summaryWithTitles,failedTitles);      
     }
     
     promptMessage(summaryColor,summaryWithTitles.c_str());
@@ -2706,4 +2646,42 @@ void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::
         if (++ctlLine % 2 == 0)
             summaryWithTitles.append("\n");
     }
+}
+
+bool setOwnerAndMode (uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
+
+    fserror = FSAChangeMode(handle, newlibtoFSA(path).c_str(), mode);
+    if ( fserror != FS_ERROR_OK ) {
+        std::string multilinePath;
+        splitStringWithNewLines(path,multilinePath);
+        promptError(LanguageUtils::gettext("Error -%05x setting permissions for\n%s"),- (int) fserror,multilinePath.c_str());
+        return false; 
+    }
+
+    fserror = FS_ERROR_OK;
+    FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
+    if (!shim) {
+        std::string multilinePath;
+        splitStringWithNewLines(path,multilinePath);
+        promptError(LanguageUtils::gettext("Error creating shim for change perms\n\n%s"),multilinePath.c_str());
+        return false;
+    }
+
+    shim->clientHandle = handle;
+    shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
+    strcpy(shim->request.changeOwner.path, newlibtoFSA(path).c_str());
+    shim->request.changeOwner.owner = owner;
+    shim->request.changeOwner.group = group;
+    shim->command = FSA_COMMAND_CHANGE_OWNER;
+    fserror = __FSAShimSend(shim, 0);
+    free(shim);
+    
+    if ( fserror != FS_ERROR_OK ) {
+        std::string multilinePath;
+        splitStringWithNewLines(path,multilinePath);
+        promptError(LanguageUtils::gettext("Error -%05x setting owner/group for\n%s"),- (int) fserror,multilinePath.c_str());
+        return false; 
+    }
+
+    return true;
 }

@@ -39,11 +39,12 @@ void TitleListState::render() {
                 break;
 
             DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
-            if (!this->titles[i + this->scroll].saveInit)
-                DrawUtils::setFontColorByCursor(COLOR_LIST_NOSAVE,COLOR_LIST_NOSAVE_AT_CURSOR,cursorPos,i);
-            if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
-                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
+            
             if (isWiiU) {
+                if (this->titles[i + this->scroll].noFwImg)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT,COLOR_LIST_INJECT_AT_CURSOR,cursorPos,i);
+                if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
                 consolePrintPos(M_OFF+1, i + 2, "   %s %s%s%s%s",
                                 this->titles[i + this->scroll].shortName,
                                 this->titles[i + this->scroll].isTitleOnUSB ? "(USB)" : "(NAND)",
@@ -55,6 +56,8 @@ void TitleListState::render() {
                     DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, this->titles[i + this->scroll].iconBuf);
                 }
             } else {
+                if (!this->titles[i + this->scroll].saveInit)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT,COLOR_LIST_INJECT_AT_CURSOR,cursorPos,i);
                 consolePrintPos(M_OFF + 1, i + 2, "   %s %s%s", titles[i + this->scroll].shortName,
                                 titles[i + this->scroll].isTitleDupe ? " [D]" : "",
                                 titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
@@ -101,7 +104,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                     }
             }
 
-            if (!this->titles[this->targ].saveInit)
+            if (!this->titles[this->targ].saveInit && !isWiiU )
                 if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Recommended to run Game at least one time. Continue?")) ||
                     !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?")))
                     return SUBSTATE_RUNNING;
