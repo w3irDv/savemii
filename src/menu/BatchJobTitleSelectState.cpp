@@ -802,7 +802,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     int titlesNotInitialized = 0;
     std::vector<std::string> failedTitles;
     for (int i = 0; i < this->candidatesCount ; i++) {
-        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 || ! this->titles[c2t[i]].saveInit)
+        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0)  // we will count them as "not initialized"
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchJobState) {
