@@ -72,6 +72,7 @@ static Title *loadWiiUTitles(int run) {
     static char *tList;
     static uint32_t receivedCount;
     const uint32_t highIDs[2] = {0x00050000, 0x00050002};
+    const uint32_t vWiiHighIDs[3] = {0x00010000, 0x00010001, 0x00010004};
     // Source: haxchi installer
     if (run == 0) {
         int mcp_handle = MCP_Open();
@@ -227,6 +228,11 @@ static Title *loadWiiUTitles(int run) {
             strlcpy(groupID, cptr, strcspn(cptr, "<") + 1);
             titles[wiiuTitlesCount].groupID = strtoul(groupID, nullptr, 16);
 
+            cptr = strchr(strstr(xmlBuf, "reserved_flag2"), '>') + 1;
+            char vWiiLowID[255];
+            strlcpy(vWiiLowID, cptr, strcspn(cptr, "<") + 1);
+            titles[wiiuTitlesCount].vWiiLowID = strtoul(vWiiLowID, nullptr, 16);
+
             cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
             memset(titles[wiiuTitlesCount].shortName, 0, sizeof(titles[wiiuTitlesCount].shortName));
             if (strcspn(cptr, "<") == 0)
@@ -272,8 +278,17 @@ static Title *loadWiiUTitles(int run) {
                     titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                     titles[wiiuTitlesCount].highID,
                     titles[wiiuTitlesCount].lowID);
-        if (checkEntry(fwpath.c_str()) != 0)
+        if (checkEntry(fwpath.c_str()) != 0) {
             titles[wiiuTitlesCount].noFwImg = true;
+            for (uint32_t vWiiHighID : vWiiHighIDs) {
+                std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%08x/%08x/data/banner.bin", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
+                if (checkEntry(path.c_str()) == 1) {
+                    titles[wiiuTitlesCount].saveInit=true;
+                    titles[wiiuTitlesCount].vWiiHighID = vWiiHighID;
+                    break;
+                }
+            }
+        }    
         else
             titles[wiiuTitlesCount].noFwImg = false;
 
@@ -297,6 +312,7 @@ static Title *loadWiiUTitles(int run) {
     for (int i=wiiuTitlesCount; i < MAXTITLES; i++) {
         titles[i].highID = titles[i-wiiuTitlesCount].highID;
         titles[i].lowID = titles[i-wiiuTitlesCount].lowID + i/wiiuTitlesCount;
+        titles[i].vWiiLowID = 0;
         titles[i].is_Wii = titles[i-wiiuTitlesCount].is_Wii;
         titles[i].isTitleOnUSB = titles[i-wiiuTitlesCount].isTitleOnUSB;
         titles[i].isTitleDupe = titles[i-wiiuTitlesCount].isTitleDupe;
@@ -445,6 +461,8 @@ static Title *loadWiiTitles() {
 
                 titles[i].highID = strtoul(highID, nullptr, 16);
                 titles[i].lowID = strtoul(data->d_name, nullptr, 16);
+                titles[i].vWiiHighID = titles[i].highID;
+                titles[i].vWiiLowID = titles[i].lowID;
                 titles[i].is_Wii = true;
                 titles[i].noFwImg = true;
 

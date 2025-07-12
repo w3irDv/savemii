@@ -38,7 +38,7 @@ TitleOptionsState::TitleOptionsState(Title & title,
 
     wiiUAccountsTotalNumber = getWiiUAccn();
     sourceAccountsTotalNumber = getVolAccn();
-    this->isWiiUTitle = ((this->title.highID == 0x00050000) || (this->title.highID == 0x00050002)) && && !this->title.noFwImg;
+    this->isWiiUTitle = ((this->title.highID == 0x00050000) || (this->title.highID == 0x00050002)) && !this->title.noFwImg;
     switch (task) {
         case BACKUP:
             updateBackupData();
@@ -274,13 +274,17 @@ showIcon:   if (this->title.iconBuf != nullptr)
             consolePrintPos(M_OFF, 7, "%s", (task == BACKUP ) ?  LanguageUtils::gettext("Source:"):LanguageUtils::gettext("Target:"));
                 consolePrintPos(M_OFF, 8, "   %s (%s)", LanguageUtils::gettext("Savedata in NAND"),
                         hasUserDataInNAND ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
-
-            if (this->title.iconBuf != nullptr)
-                DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
+            
+            if (this->title.iconBuf != nullptr) {
+                if (this->title.is_Wii)
+                    DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
+                else
+                    DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
+            }   
         }
 
 
-        // Folder Informations: qupta, ownership, mode, ...
+        // Folder Informations: quota, ownership, mode, ...
         if (this->task == WIPE_PROFILE && showFolderInfo) {
                 uint32_t highID = title.highID;
                 uint32_t lowID = title.lowID;
@@ -854,7 +858,7 @@ void TitleOptionsState::updateHasVWiiSavedata() {
 
 void TitleOptionsState::updateBackupData() {
     updateSlotMetadata();
-    if (this->title.is_Wii)
+    if (this->title.is_Wii || this->title.noFwImg)
         updateHasVWiiSavedata();
     else {
         updateHasCommonSaveInSource();
@@ -864,7 +868,7 @@ void TitleOptionsState::updateBackupData() {
 
 void TitleOptionsState::updateRestoreData() {
     updateSlotMetadata();
-    if (this->title.is_Wii)
+    if (this->title.is_Wii || this->title.noFwImg)
         updateHasVWiiSavedata();
     else {
         updateHasCommonSaveInTarget();
@@ -882,7 +886,7 @@ void TitleOptionsState::updateCopyToOtherDeviceData() {
 }
 
 void TitleOptionsState::updateWipeProfileData() {
-    if (this->title.is_Wii)
+    if (this->title.is_Wii || this->title.noFwImg)
         updateHasVWiiSavedata();
     else {
         updateHasCommonSaveInSource();

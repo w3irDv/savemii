@@ -51,10 +51,14 @@ void TitleTaskState::render() {
                 consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
                                 this->title.isTitleOnUSB ? "NAND" : "USB");
             }
+        }
+        
+        if (! this->title.is_Wii) {
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
         } else if (this->title.iconBuf != nullptr)
             DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
+
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
