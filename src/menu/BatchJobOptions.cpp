@@ -38,8 +38,12 @@ BatchJobOptions::BatchJobOptions(Title *titles,
             .hasCommonSavedata = false,
             .batchJobState = NOT_TRIED
         };
-        if (this->titles[i].highID == 0 || this->titles[i].lowID == 0)
+        uint32_t highID = titles[i].noFwImg ? titles[i].vWiiHighID : titles[i].highID;
+        uint32_t lowID = titles[i].noFwImg ? titles[i].vWiiLowID : titles[i].lowID;
+        if (highID == 0 ||lowID == 0)
             continue;
+        bool isUSB = titles[i].noFwImg ? false : titles[i].isTitleOnUSB;
+        bool isWii = titles[i].is_Wii || titles[i].noFwImg;
         if ( jobType != RESTORE )  // we allow restore for uninitializedTitles  ...
             if (! this->titles[i].saveInit)
                 continue;
@@ -54,8 +58,8 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) // skip CBHC savedata
             continue;
-        if (this->titles[i].is_Wii && isWiiUBatchJob) // wii titles installed as wiiU appear in vWii restore
-            continue;
+        //if (this->titles[i].is_Wii && isWiiUBatchJob) // wii titles installed as wiiU appear in vWii restore
+        //    continue;
         std::string srcPath;
         switch (jobType) {
             case RESTORE:
@@ -66,14 +70,14 @@ BatchJobOptions::BatchJobOptions(Title *titles,
             case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                std::string path = ( this->titles[i].is_Wii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
-                srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, this->titles[i].is_Wii ? "data" : "user");
+                std::string path = ( isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+                srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
                 break;
         }
 
         DIR *dir = opendir(srcPath.c_str());
         if (dir != nullptr) {
-            if (isWiiUBatchJob) {
+            if (!isWii) {
                 struct dirent *data;
                 while ((data = readdir(dir)) != nullptr) {
                     if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))

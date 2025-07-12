@@ -60,7 +60,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
         
-        bool isWii = titles[i].is_Wii;
+        bool isWii = titles[i].is_Wii || titles[i].noFwImg;
 
         std::string srcPath;
 
@@ -144,7 +144,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCoun
         
         //uint32_t highID = this->titles[i].highID;
         //uint32_t lowID = this->titles[i].lowID;
-        bool isWii = titles[i].is_Wii;
+        bool isWii = titles[i].is_Wii || titles[i].noFwImg;
 
         //skipped cases
         if ((strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) ||
@@ -288,7 +288,7 @@ void BatchJobTitleSelectState::render() {
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidatesCount)
                 break;
-            bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
+            //bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
                         
             if ( this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST,Color(0x99FF99ff),cursorPos,i);
@@ -371,7 +371,7 @@ void BatchJobTitleSelectState::render() {
                     lastState.c_str(),
                     nxtAction.c_str());
             if (this->titles[c2t[i + this->scroll]].iconBuf != nullptr) {
-                if (isWii)
+                if (!isWiiUBatchJob)
                     DrawUtils::drawRGB5A3((M_OFF + 6) * 12, (i + 3) * 24 + 8, 0.25,
                                       titles[c2t[i + this->scroll]].iconBuf);
                 else
@@ -608,20 +608,23 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     if (!promptConfirm(ST_WARNING,summary))
             return;
 
+    bool injectedFound = false;
+    bool noInitFound = false;
     for (int i = 0; i < titlesCount ; i++) {
             if (! this->titles[i].currentDataSource.selectedToBeProcessed )
                 continue;
-            if (this->titles[i].noFwImg) {
+            if (!injectedFound && this->titles[i].noFwImg) {
                 if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected injected titles (not recommended). Are you 100%% sure?")))
                     return;
-                break;
+                injectedFound = true;
             }
-            if (! this->titles[i].saveInit && !isWiiUBatchJob) {
+            if (!noInitFound && ! this->titles[i].saveInit && !isWiiUBatchJob) {
                 if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?")))
                     return;
-                break;
+                noInitFound = true;
             }
-
+            if (injectedFound && noInitFound)
+                break;
     }
 
     InProgress::totalSteps = InProgress::currentStep = 0;
@@ -807,7 +810,9 @@ void BatchJobTitleSelectState::executeBatchBackup() {
    int titlesNotInitialized = 0;
    std::vector<std::string> failedTitles;
    for (int i = 0; i < this->candidatesCount ; i++) {
-        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 || ! this->titles[c2t[i]].saveInit)
+        uint32_t highID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiHighID : this->titles[c2t[i]].highID;
+        uint32_t lowID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiLowID : this->titles[c2t[i]].lowID;
+        if (highID == 0 || lowID == 0 || ! this->titles[c2t[i]].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchBackupState) {

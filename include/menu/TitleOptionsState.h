@@ -19,7 +19,7 @@ public:
 
                 wiiUAccountsTotalNumber = getWiiUAccn();
                 sourceAccountsTotalNumber = getVolAccn();
-                this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
+                this->isWiiUTitle = ((this->title.highID == 0x00050000) || (this->title.highID == 0x00050002)) && !this->title.noFwImg;
                 switch (task) {
                     case BACKUP:
                         updateBackupData();

@@ -1294,10 +1294,10 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
 
 bool hasSavedata(Title *title, bool inSD, uint8_t slot) {
 
-    uint32_t highID = title->highID;
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
     std::string srcPath;
 
     if (!inSD) {
@@ -1672,15 +1672,17 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
 
     for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
         for (int i = 0; i < count; i++) {
-            if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
+            if (!titles[i].saveInit)
                 continue;
             if (onlySelectedTitles)
                 if (! titles[i].currentDataSource.selectedForBackup)
                     continue;       
-            uint32_t highID = titles[i].highID;
-            uint32_t lowID = titles[i].lowID;
-            bool isUSB = titles[i].isTitleOnUSB;
-            bool isWii = titles[i].is_Wii;
+            uint32_t highID = titles[i].noFwImg ? titles[i].vWiiHighID : titles[i].highID;
+            uint32_t lowID = titles[i].noFwImg ? titles[i].vWiiLowID : titles[i].lowID;
+            if (highID == 0 ||lowID == 0)
+                continue;
+            bool isUSB = titles[i].noFwImg ? false : titles[i].isTitleOnUSB;
+            bool isWii = titles[i].is_Wii || titles[i].noFwImg;
             if ((sourceStorage == 0 && !isUSB) || (sourceStorage == 1 && isUSB)) // backup first WiiU USB savedata to slot 0
                 continue;
             InProgress::titleName.assign(titles[i].shortName);     
@@ -1732,11 +1734,10 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         return -1;
     }
     InProgress::titleName.assign(title->shortName);
-    uint32_t highID = title->highID;
-
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     //std::string dstPath = getDynamicBackupPath(highID, lowID, slot);
@@ -1828,10 +1829,10 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     */
 
     InProgress::titleName.assign(title->shortName);
-    uint32_t highID = title->highID;
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
     std::string srcPath;
     srcPath = getDynamicBackupPath(title, slot);
     const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
@@ -1913,16 +1914,21 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize, title->commonSaveSize);     
         }
         #endif
+        std::string multilinePath;
+        splitStringWithNewLines(srcPath,multilinePath);
+        promptMessage(COLOR_BG_KO,StringUtils::stringFormat("src:%s\ndst:%s",multilinePath.c_str(), dstPath.c_str()).c_str());
+        /*
         if (! copyDir(srcPath, dstPath)) {
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
                 + ((wiiu_user == -1 ) ?  LanguageUtils::gettext("Error restoring savedata.") 
                                     :  LanguageUtils::gettext("Error restoring profile savedata."));
             errorCode += 2;
-        }         
+        }
+            */        
     }
     
 #ifndef MOCK
-    if (!title->saveInit && !isWii) {
+    if (!title->saveInit && ! isWii ) {
 
         const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                     title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
@@ -1982,10 +1988,10 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     copyErrorsCounter = 0;
     abortCopy = false;
     InProgress::titleName.assign(title->shortName);
-    uint32_t highID = title->highID;
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
     std::string srcPath;
     std::string commonPath;
     std::string path;
@@ -2064,12 +2070,15 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     }
 
     if (doBase) {
+        promptMessage(COLOR_BG_KO,StringUtils::stringFormat("src:%s",srcPath.c_str()).c_str());
+        /*
         if (!removeDir(srcPath)) {   
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
                 + ((source_user == -1 ) ?  LanguageUtils::gettext("Error wiping savedata.") 
                                     :  LanguageUtils::gettext("Error wiping profile savedata."));
             errorCode += 4;
         }
+        */
         if ((source_user > -1) && !isWii) {
             #ifndef MOCK
             if (unlink(srcPath.c_str()) == -1) {
