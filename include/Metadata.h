@@ -11,21 +11,25 @@ public:
  
     Metadata(Title *title, uint8_t s) : highID(title->highID),
                                                    lowID(title->lowID),
+                                                   vWiiHighID(title->vWiiHighID),
+                                                   vWiiLowID(title->vWiiLowID),
                                                    slot(s),
                                                    path (getDynamicBackupPath(title, slot).append("/savemiiMeta.json")),
                                                    Date({}),
                                                    storage({}),
                                                    serialId(this->unknownSerialId),
-                                                   tag({}) { }
+                                                   tag({}) { strlcpy(this->shortName, title->shortName,256); }
 
     Metadata(Title *title, uint8_t s, const std::string &datetime) : highID(title->highID),
                                                    lowID(title->lowID),
+                                                   vWiiHighID(title->vWiiHighID),
+                                                   vWiiLowID(title->vWiiLowID),
                                                    slot(s),
                                                    path (getBatchBackupPath(title, slot, datetime).append("/savemiiMeta.json")),
                                                    Date({}),
                                                    storage({}),
                                                    serialId(this->unknownSerialId),
-                                                   tag({}) { }
+                                                   tag({}) { strlcpy(this->shortName, title->shortName,256); }
 // guess date from batchBackupRoot, to infer a savemiiMeta.json for <1.6.4 batchBackups
     Metadata(const std::string & path) : storage({}),
                                  serialId(this->unknownSerialId),
@@ -60,6 +64,9 @@ public:
 private:
     uint32_t highID;
     uint32_t lowID;
+    uint32_t vWiiHighID;
+    uint32_t vWiiLowID;
+    char shortName[256];
     uint8_t slot;
     std::string path;
 
