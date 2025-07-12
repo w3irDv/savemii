@@ -55,6 +55,8 @@ enum eFileNameStyle {
 struct Title {
     uint32_t highID;
     uint32_t lowID;
+    uint32_t vWiiLowID;
+    uint32_t vWiiHighID;
     uint16_t listID;
     uint16_t indexID;
     char shortName[256];
