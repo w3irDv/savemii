@@ -818,6 +818,13 @@ void TitleOptionsState::updateBackupData() {
 
 void TitleOptionsState::updateRestoreData() {
     updateSlotMetadata();
+    if(!emptySlot && this->title.noFwImg && this->title.vWiiHighID == 0) {   // uninitialized injected title, let's use vWiiHighid from savemii metadata
+        Metadata *metadataObj = new Metadata(&this->title, slot);           //     or default value
+        metadataObj->read();
+        uint32_t savedVWiiHighID = metadataObj->getVWiiHighID();
+        title.vWiiHighID = ( savedVWiiHighID != 0 ) ? savedVWiiHighID : 0x00010000;    //  --> /00010000 - Disc-based games (holds save files)  
+        delete metadataObj;
+    }
     if (this->title.is_Wii || this->title.noFwImg)
         updateHasVWiiSavedata();
     else {

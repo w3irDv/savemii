@@ -274,6 +274,7 @@ static Title *loadWiiUTitles(int run) {
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr;
 
+        titles[wiiuTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
                     titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                     titles[wiiuTitlesCount].highID,

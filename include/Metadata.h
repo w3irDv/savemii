@@ -60,6 +60,7 @@ public:
     std::string getTag() { return tag;};
     void setTag(const std::string &tag_) { this->tag = tag_;};
     std::string getSerialId() { return serialId;};
+    uint32_t getVWiiHighID() {return this->vWiiHighID;};
 
 private:
     uint32_t highID;
