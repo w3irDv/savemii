@@ -8,6 +8,7 @@
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
 #include <cfg/GlobalCfg.h>
+#include <Metadata.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -31,6 +32,16 @@ BatchJobOptions::BatchJobOptions(Title *titles,
     cursorPos = minCursorPos;
     for (int i = 0; i<this->titlesCount; i++) {
         this->titles[i].currentDataSource = {};
+
+        if( jobType == RESTORE && titles[i].noFwImg && titles[i].vWiiHighID == 0) {   // uninitialized injected title, let's use vWiiHighid from savemii metadata
+            Metadata *metadataObj = new Metadata(&titles[i], 0);                        //   or a default guess ...
+            if (metadataObj->read()) {
+                uint32_t savedVWiiHighID = metadataObj->getVWiiHighID();
+                titles[i].vWiiHighID = ( savedVWiiHighID != 0 ) ? savedVWiiHighID : 0x00010000;    //  --> /00010000 - Disc-based games (holds save files)  
+            }
+            delete metadataObj;
+        }
+
         uint32_t highID = titles[i].noFwImg ? titles[i].vWiiHighID : titles[i].highID;
         uint32_t lowID = titles[i].noFwImg ? titles[i].vWiiLowID : titles[i].lowID;
         if (highID == 0 ||lowID == 0)
