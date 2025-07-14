@@ -283,7 +283,7 @@ static Title *loadWiiUTitles(int run) {
             titles[wiiuTitlesCount].noFwImg = true;
             titles[wiiuTitlesCount].is_Inject = true;
             for (uint32_t vWiiHighID : vWiiHighIDs) {
-                std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%08x/%08x/data/banner.bin", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
+                std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
                 if (checkEntry(path.c_str()) == 1) {
                     titles[wiiuTitlesCount].saveInit=true;
                     titles[wiiuTitlesCount].vWiiHighID = vWiiHighID;
@@ -408,6 +408,7 @@ static Title *loadWiiTitles() {
 
                 const std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%s/%s/data/banner.bin",
                                                                    highID, data->d_name);
+                bool hasBanner = false;
                 FILE *file = fopen(path.c_str(), "rb");
                 if (file != nullptr) {
                     fseek(file, 0x20, SEEK_SET);
@@ -451,7 +452,7 @@ static Title *loadWiiTitles() {
                                 titles[i].longName[k++] = 0x80 | (bnrBuf[j] & 0x3F);
                             }
                         }
-                        titles[i].saveInit = true;
+                        hasBanner = true;
 
                         free(bnrBuf);
                     }
@@ -460,8 +461,15 @@ static Title *loadWiiTitles() {
                     sprintf(titles[i].shortName, LanguageUtils::gettext("%s%s (No banner.bin)"), highID,
                             data->d_name);
                     memset(titles[i].longName, 0, sizeof(titles[i].longName));
-                    titles[i].saveInit = false;
+                    hasBanner = false;
                 }
+
+                const std::string tmdPath = StringUtils::stringFormat("storage_slccmpt01:/title/%s/%s/content/title.tmd",
+                                                                   highID, data->d_name);
+                if (checkEntry(tmdPath.c_str()) == 1)
+                    titles[i].saveInit = true;
+                else
+                    titles[i].saveInit = false;
 
                 titles[i].highID = strtoul(highID, nullptr, 16);
                 titles[i].lowID = strtoul(data->d_name, nullptr, 16);
@@ -481,7 +489,7 @@ static Title *loadWiiTitles() {
                 titles[i].isTitleOnUSB = false;
                 titles[i].isTitleDupe = false;
                 titles[i].dupeID = 0;
-                if (!titles[i].saveInit || (loadTitleIcon(&titles[i]) < 0))
+                if (!hasBanner || (loadTitleIcon(&titles[i]) < 0))
                     titles[i].iconBuf = nullptr;
 
                 setTitleNameBasedDirName(&titles[i]);
