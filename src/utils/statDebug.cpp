@@ -77,13 +77,24 @@ bool statDir(const std::string &entryPath,FILE *file) {
         return false;
     fsmode = fsastat.mode;
     fsstatflags = fsastat.flags;
-    if ((fsstatflags & FS_STAT_FILE) != 0) {
-        fprintf (file,"FILE %x %s - og %x %x - q %llu\n",fsmode,entryPath.c_str(),fsastat.owner,fsastat.group,fsastat.quotaSize);
-        return true;
-    }
+
+    std::string entryType = StringUtils::stringFormat("%08x ",(uint32_t) fsstatflags);
+    if ((fsstatflags & FS_STAT_DIRECTORY) != 0)
+        entryType.append("DIR ");
+    if ((fsstatflags & FS_STAT_QUOTA) != 0)
+            entryType.append("QUOTA ");
+    if ((fsstatflags & FS_STAT_FILE) != 0)
+            entryType.append("FILE ");
+    if ((fsstatflags & FS_STAT_ENCRYPTED_FILE) != 0)
+            entryType.append("ENCRYPTED ");
+    if ((fsstatflags & FS_STAT_LINK) != 0)
+            entryType.append("LINK");
+    if (fsstatflags == 0)
+            entryType.append("VWII?");
+
+    fprintf (file,"%s %x %s - og %x %x - q %llu\n",entryType.c_str(),fsmode,entryPath.c_str(),fsastat.owner,fsastat.group,fsastat.quotaSize);
 
     if ((fsstatflags & FS_STAT_DIRECTORY) != 0) {
-        fprintf (file,"DIR %x %s - og %x %x - q %llu\n",fsmode,entryPath.c_str(),fsastat.owner,fsastat.group,fsastat.quotaSize);
 
         DIR *dir = opendir(entryPath.c_str());
         if (dir == nullptr) {
@@ -135,10 +146,24 @@ void statSaves(const Title &title) {
         bool isUSB = title.isTitleOnUSB;
         bool isWii = title.is_Wii;
 
-        const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+        std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
         
         statDir(srcPath,file);
+
+
+        if (title.is_Inject) {
+            // vWii content fir injects
+            highID = title.noFwImg ? title.vWiiHighID : title.highID;
+            lowID = title.noFwImg ? title.vWiiLowID : title.lowID;
+            isUSB = title.noFwImg ? false : title.isTitleOnUSB;
+            isWii = title.is_Wii || title.noFwImg;
+
+            path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
+        
+            statDir(srcPath,file);
+        }    
 
         fclose(file); 
 

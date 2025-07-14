@@ -1914,17 +1914,12 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize, title->commonSaveSize);     
         }
         #endif
-        std::string multilinePath;
-        splitStringWithNewLines(srcPath,multilinePath);
-        promptMessage(COLOR_BG_KO,StringUtils::stringFormat("src:%s\ndst:%s",multilinePath.c_str(), dstPath.c_str()).c_str());
-        /*
         if (! copyDir(srcPath, dstPath)) {
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
                 + ((wiiu_user == -1 ) ?  LanguageUtils::gettext("Error restoring savedata.") 
                                     :  LanguageUtils::gettext("Error restoring profile savedata."));
             errorCode += 2;
-        }
-            */        
+        }        
     }
     
 #ifndef MOCK
@@ -1972,6 +1967,53 @@ error:
 
     }
 #endif
+
+    if (title->is_Inject) {
+    // for vWii injects, check is title.tmd exists. It seemes to be created when launching the ga,e even if the savedataexists, but just in case
+        std::string lowIDPath = StringUtils::stringFormat("%s/%08x/%08x",path.c_str(), highID,lowID);
+        std::string titleTmdFolder = StringUtils::stringFormat("%s/content",lowIDPath.c_str());
+        std::string titleTmdPath;
+
+        if (!createFolderUnlocked(titleTmdFolder)) {
+            errorCode += 64;
+            goto errorVWii;
+        }
+        
+        titleTmdPath = titleTmdFolder + "/title.tmd";
+
+        if (checkEntry(titleTmdPath.c_str()) != 1) {
+            uint32_t wiiUHighID = title->highID;
+            uint32_t wiiULowID = title->lowID;
+            bool wiiUisUSB = title->isTitleOnUSB;
+            
+            const std::string wiiUPath = (wiiUisUSB ? (getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title");
+            std::string sourceTitleTmdPath = StringUtils::stringFormat("%s/%08x/%08x/code/rvlt.tmd", wiiUPath.c_str(), wiiUHighID, wiiULowID);
+
+            promptMessage(COLOR_BG_KO,"s:%s\nd:%s",sourceTitleTmdPath.c_str(),titleTmdPath.c_str());
+
+            if (! copyFile(sourceTitleTmdPath,titleTmdPath)) { 
+                errorCode += 128;
+                goto errorVWii;
+            }
+
+            FSError fserror;          
+            if (setOwnerAndMode(0,0,(FSMode) 0x664,lowIDPath,fserror))
+                if (setOwnerAndMode(0,0,(FSMode) 0x660,titleTmdFolder,fserror))
+                    if (FSAChangeMode(handle, newlibtoFSA(titleTmdPath).c_str(), (FSMode) 0x660) == FS_ERROR_OK) { // setting user:group to 0:0 returns error.
+                            title->saveInit = true;
+                            goto end;
+                    }
+        } else
+            goto end;
+
+        errorCode += 256;
+        // something has gone wrong
+errorVWii:
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + LanguageUtils::gettext("Error creating vWii init data");
+    }
+
+
 end:
     flushVol(dstPath);
 
@@ -1979,6 +2021,8 @@ end:
         errorMessage = LanguageUtils::gettext("%s\nRestore failed.")+std::string("\n\n")+errorMessage;
         promptError(errorMessage.c_str(),title->shortName);
     }
+    if ( !title->saveInit && isWii && errorCode == 0)
+        title->saveInit = true; 
     return errorCode;
 }
 
@@ -2069,16 +2113,13 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         }
     }
 
-    if (doBase) {
-        promptMessage(COLOR_BG_KO,StringUtils::stringFormat("src:%s",srcPath.c_str()).c_str());
-        /*
+    if (doBase) {        
         if (!removeDir(srcPath)) {   
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
                 + ((source_user == -1 ) ?  LanguageUtils::gettext("Error wiping savedata.") 
                                     :  LanguageUtils::gettext("Error wiping profile savedata."));
             errorCode += 4;
         }
-        */
         if ((source_user > -1) && !isWii) {
             #ifndef MOCK
             if (unlink(srcPath.c_str()) == -1) {
