@@ -281,6 +281,7 @@ static Title *loadWiiUTitles(int run) {
                     titles[wiiuTitlesCount].lowID);
         if (checkEntry(fwpath.c_str()) != 0) {
             titles[wiiuTitlesCount].noFwImg = true;
+            titles[wiiuTitlesCount].is_Inject = true;
             for (uint32_t vWiiHighID : vWiiHighIDs) {
                 std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%08x/%08x/data/banner.bin", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
                 if (checkEntry(path.c_str()) == 1) {
@@ -290,8 +291,10 @@ static Title *loadWiiUTitles(int run) {
                 }
             }
         }    
-        else
+        else {
             titles[wiiuTitlesCount].noFwImg = false;
+            titles[wiiuTitlesCount].is_Inject = false;
+        }
 
         setTitleNameBasedDirName(&titles[wiiuTitlesCount]);
 
@@ -466,6 +469,7 @@ static Title *loadWiiTitles() {
                 titles[i].vWiiLowID = titles[i].lowID;
                 titles[i].is_Wii = true;
                 titles[i].noFwImg = true;
+                titles[wiiuTitlesCount].is_Inject = false;
 
                 titles[i].listID = i;
                 titles[i].indexID = i;

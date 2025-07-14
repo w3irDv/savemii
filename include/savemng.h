@@ -66,6 +66,7 @@ struct Title {
     bool isTitleOnUSB;
     bool isTitleDupe;
     bool is_Wii;
+    bool is_Inject;
     bool noFwImg;
     uint16_t dupeID;
     uint8_t *iconBuf;
