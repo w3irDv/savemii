@@ -1971,7 +1971,7 @@ error:
     }
 #endif
 
-    if (title->is_Inject) {
+    if (!title->saveInit && title->is_Inject) {
     // for vWii injects, check is title.tmd exists. It seemes to be created when launching the ga,e even if the savedataexists, but just in case
         std::string lowIDPath = StringUtils::stringFormat("%s/%08x/%08x",path.c_str(), highID,lowID);
         std::string titleTmdFolder = StringUtils::stringFormat("%s/content",lowIDPath.c_str());
@@ -2024,8 +2024,7 @@ end:
         errorMessage = LanguageUtils::gettext("%s\nRestore failed.")+std::string("\n\n")+errorMessage;
         promptError(errorMessage.c_str(),title->shortName);
     }
-    if ( !title->saveInit && isWii && errorCode == 0)
-        title->saveInit = true; 
+ 
     return errorCode;
 }
 
