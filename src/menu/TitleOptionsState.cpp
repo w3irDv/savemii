@@ -280,7 +280,7 @@ showIcon:   if (this->title.iconBuf != nullptr)
                     DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
                 else
                     DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
-            }   
+            }      
         }
 
 
