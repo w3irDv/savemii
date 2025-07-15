@@ -1446,7 +1446,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             std::string multilinePath;
             splitStringWithNewLines(metaPath,multilinePath);
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + StringUtils::stringFormat(LanguageUtils::gettext("Error setrting quota for %s"),multilinePath.c_str());
+                + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for %s"),multilinePath.c_str());
             errorCode += 4;
         }
 
@@ -1940,7 +1940,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             std::string multilinePath;
             splitStringWithNewLines(metaPath,multilinePath);
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + StringUtils::stringFormat(LanguageUtils::gettext("Error setrting quota for \n%s"),multilinePath.c_str());
+                + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for \n%s"),multilinePath.c_str());
             errorCode += 4;
         }
 

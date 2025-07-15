@@ -59,6 +59,15 @@ void TitleTaskState::render() {
         } else if (this->title.iconBuf != nullptr)
             DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
 
+
+                  
+        if (this->title.is_Inject) {
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPosAligned(11,4,1,LanguageUtils::gettext("This title is a inject (vWii or GC title packaged as a WiiU title)."));
+            consolePrintPosAligned(12,4,1,LanguageUtils::gettext("If needed, vWii saves can also be managed using\nthe vWii Save Management section."));
+        }
+  
+
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));

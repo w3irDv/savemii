@@ -99,15 +99,16 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                         return SUBSTATE_RUNNING;
                     }
                 }
+                /*
                 if(this->titles[this->targ].noFwImg)
                     if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("vWii saves are in the vWii section. Continue?"))) {
                         return SUBSTATE_RUNNING;
                     }
+                */
             }
 
-            if (!this->titles[this->targ].saveInit && !isWiiU )
-                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Recommended to run Game at least one time. Continue?")) ||
-                    !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?")))
+            if (!this->titles[this->targ].saveInit)
+                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Savedata for this title has not been initialized.\nYou can try to restore it, but in case that restore fails,\nplease run the Game to create some initial savedata \nand try again.\n\nContinue?")))
                     return SUBSTATE_RUNNING;
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
