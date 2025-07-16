@@ -21,7 +21,7 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
 <img src="images/1.png" width="50">
 
 2) Select "Batch Copy to Other Profile"
-  <img src="images/2.png" width="600">
+  <p align="center"><img src="images/2.png" width="600"></P>
 
 3) For "user to copy from" option, select your old NNID (`Gravity` in this example).
 
@@ -32,7 +32,7 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
    * Wipe target users savedata: Yes
    * Backup all data: Yes
 
-<img src="images/3.png" width="600">
+<p align="center"><img src="images/3.png" width="600"></p>
 
 4) Press `A`  "Go to title Selection".
 
