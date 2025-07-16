@@ -21,7 +21,7 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
    <img src="images/1.png" width="50">
 
 2) Select "Batch Copy to Other Profile"
-  ![](images/2.png)
+  <img src="images/2.png" width="400">
 
 3) For "user to copy from" option, select your old NNID (`Gravity` in this example).
 
@@ -32,29 +32,29 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
    * Wipe target users savedata: Yes
    * Backup all data: Yes
 
-   ![](images/3.png)
+   <img src="images/3.png" width="400">
 
 4) Press `A`  "Go to title Selection".
 
    All the titles that have savedata for the old NNID will appear. Review the list and uncheck (`Y` or `<-`,`->`) any title savedata that you don't want to copy.
-   ![](images/4.png)
+   <img src="images/4.png" width="400">
 
 5) Press `A` : ProfileCopy.
 
   The summary screen will appear, your last chance to verify that the NNID and PNID are correct.
-   ![](images/5.png)
+   <img src="images/5.png" width="400">
 
 6) If Ok, press `A`.
 
    The `Copy` process will begin. All selected titles will be backed up, the saved data from the PNID profile will be deleted, and finally, the saved data from the NNID profile will be copied to the PNID profile.
-   ![](images/6.png)
+   <img src="images/6.png" width="400">
 
 7) When the copy is complete, a summary screen will appear with the number of OKs/KOs.
 
    *Note: If the copy fails for any title, its name will appear here. The reason for the failure will have been shown in the previous copy step. Simply correct the problems with these titles and retry the process with only those titles. As a final resort, if needed, you can find an "All users" backup of all titles on the SD card.* --> `sd:/wiiu/backups/batch/<timestamp> `).
-   ![](images/7.1.png)
+   <img src="images/7.1.png" width="400">
 
-   ![](images/7.2.png)
+   <img src="images/7.2.png" width="400">
 
 END) That's all. Hope it helps!
 
