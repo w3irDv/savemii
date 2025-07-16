@@ -46,7 +46,7 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
 
 6) If Ok, press `A`.
 
-   The `Copy` process will begin. All selected titles will be backed up, the saved data from the PNID profile will be deleted, and finally, the saved data from the NNID profile will be copied to the PNID profile.
+   The `Profile Copy` process will begin. All selected titles will be backed up, the saved data from the PNID profile will be deleted, and finally, the saved data from the NNID profile will be copied to the PNID profile.
 <p align="center"><img src="images/6.png" width="600"></p>
 
 7) When the copy is complete, a summary screen will appear with the number of OKs/KOs.
