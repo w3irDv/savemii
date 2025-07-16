@@ -4,7 +4,7 @@
 
 Simplify the savedata transfer from an old NNID to a new PNID using a new feature of SaveMii 1.7.0 : `Batch Copy/Move Pofile`.
 
-The difference between Move and Copy is as follows:
+The difference between `Move Profile`and `Copy Profile` is as follows:
 * Move will delete the data from the destination user and then move the saved data from the source user to the destination user. In the end, you will only have one copy of the saved data in the new PNID profile.
 * Copy will (optionally) delete the destination data and then copy the source data to the destination profile, so you will have two copies of the saved data (the source data is not modified at all).
 
