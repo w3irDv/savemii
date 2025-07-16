@@ -52,9 +52,10 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
 7) When the copy is complete, a summary screen will appear with the number of OKs/KOs.
 
    *Note: If the copy fails for any title, its name will appear here. The reason for the failure will have been shown in the previous copy step. Simply correct the problems with these titles and retry the process with only those titles. As a final resort, if needed, you can find an "All users" backup of all titles on the SD card.* --> `sd:/wiiu/backups/batch/<timestamp> `).
-<p align="center"><img src="images/7.1.png" width="600"></p>
-
-<p align="center"><img src="images/7.2.png" width="600"></p>
+   
+<p align="center"><img src="images/7.png" width="600"></p>
 
 END) That's all. Hope it helps!
+
+<p align="center"><img src="images/8.png" width="600"></p>
 
