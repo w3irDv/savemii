@@ -18,7 +18,7 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
 
 1) Open SaveMii 1.7.0 /ProcessMod
 
-   <img src="images/1.png" width="50">
+<img src="images/1.png" width="50">
 
 2) Select "Batch Copy to Other Profile"
   <img src="images/2.png" width="600">
@@ -32,7 +32,7 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
    * Wipe target users savedata: Yes
    * Backup all data: Yes
 
-   <img src="images/3.png" width="600">
+<img src="images/3.png" width="600">
 
 4) Press `A`  "Go to title Selection".
 
