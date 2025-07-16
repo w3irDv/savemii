@@ -2,9 +2,9 @@
 
 ## Objective
 
-Simplify the savedata transfer from an old NNID to a new PNID using a new feature of SaveMii 1.7.0 : `Batch Copy/Move Pofile`.
+Simplify the savedata transfer from an old NNID to a new PNID using a new feature of SaveMii 1.7.0 : `Batch Copy/Move Profile`.
 
-The difference between `Move Profile`and `Copy Profile` is as follows:
+The difference between `Move Profile` and `Copy Profile` is as follows:
 * Move will delete the data from the destination user and then move the saved data from the source user to the destination user. In the end, you will only have one copy of the saved data in the new PNID profile.
 * Copy will (optionally) delete the destination data and then copy the source data to the destination profile, so you will have two copies of the saved data (the source data is not modified at all).
 
@@ -23,9 +23,9 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
 2) Select "Batch Copy to Other Profile"
   <p align="center"><img src="images/2.png" width="600"></p>
 
-3) For "user to copy from" option, select your old NNID (`Gravity` in this example).
+3) The `ProfileCopy Options` menu will appear. For "user to copy from" option, select your old NNID (`Gravity` in this example).
 
-   For "user to copy to", select your new PNID (`Xvr`in the picture).
+   For "user to copy to", select your new PNID (`Xvr` in the picture).
 
    Leave the other two setting as is:
 
