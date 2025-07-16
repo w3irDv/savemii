@@ -37,11 +37,11 @@ To copy all the savedata from one NNID to a new PNID for multiple titles at once
 4) Press `A`  "Go to title Selection".
 
    All the titles that have savedata for the old NNID will appear. Review the list and uncheck (`Y` or `<-`,`->`) any title savedata that you don't want to copy.
-   <img src="images/4.png" width="600">
+<img src="images/4.png" width="600">
 
 5) Press `A` : ProfileCopy.
 
-  The summary screen will appear, your last chance to verify that the NNID and PNID are correct.
+   The summary screen will appear, your last chance to verify that the NNID and PNID are correct.
    <img src="images/5.png" width="600">
 
 6) If Ok, press `A`.
