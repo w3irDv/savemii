@@ -7,13 +7,15 @@
 
 **WiiU/vWii Save Manager**
 
-*Original by Ryuzaki-MrL - WUT Port by xploit-U - Currently maintained by w3irDv*
+*Original by Ryuzaki-MrL >> WUT Port by xploit-U >> /ProcessMod and maintenance by w3irDv* 
 
-This homebrew allows you to backup your Wii U and vWii savegames to the SD card and also restore them. This mod expands SaveMii's capabilities to manage titles in bulk.
+This homebrew allows you to back up your Wii U and vWii saved games to the SD card and restore them later. 
 
-Multiple titles can be saved, restored and wiped at once using batch functions.
+This mod expands SaveMii's capabilities to manage titles in bulk: multiple titles can be saved, restored and wiped at once using batch functions.
 
-Savedata can also be easily moved between Wii U profiles, simplifying `Pretendo` setup. 
+Savedata can also be easily moved between Wii U profiles, simplifying `Pretendo` setup.
+
+Can also copy saves from NAND-USB if title is installed to both
 
 
 
@@ -25,9 +27,6 @@ For sorting Titles press R to change sorting method and press L to change betwee
 
 Use it at your own risk and please report any issues that may occur.
 
-**Until further notice, active development and new releases have been moved to [https://github.com/w3irDv/savemii]**
-
-## Quick Notes
 
 
 ## Wii U Title Management / vWii Title Management
@@ -73,7 +72,7 @@ sd:/wiiu/backups/         # Root backupSet
 ```
 
 For vWii titles, savedata is directly under the slot folder.
-**Note**: Starting with version 1.6.6, backup folders for new titles will _always_ be named after the title name. For older titles that use hexadecimal format, SaveMii will prompt you to convert them to the new format when it detects one. You can disable this prompt in the Options menu screen. If for the same title there is a backup folder using hexadecimal format and a also a backup folder using titleName format, data will always be stored inside the hexadecimal folder. If you decide to convert the hexadecimal folder to titleName format, its content will be merged with the one in the titleName folder (in a new slot), and from then on only the titleName folder will be used.
+**Note**: Starting with version 1.7.0, backup folders for new titles will _always_ be named after the title name. For older titles that use hexadecimal format, SaveMii will prompt you to convert them to the new format when it detects one. You can disable this prompt in the Options menu screen. If for the same title there is a backup folder using hexadecimal format and a also a backup folder using titleName format, data will always be stored inside the hexadecimal folder. If you decide to convert the hexadecimal folder to titleName format, its content will be merged with the one in the titleName folder (in a new slot), and from then on only the titleName folder will be used.
 ### Restore
 1. Select a slot to get the data from.  If you haven't selected any backupSet, the data from the `Root backupSet`  (the one where the manual backups are always stored) is used. But you can also use data from any batch backupSet, by pressing the `X` button and selecting the backupSet you want to use. Notice that the last backupSet you previously selected in any task (Batch Restore or BackupSet Management) will be the one used here by default. BackupSets can be tagged by pressing `+` button in the BackupSet List Menu, or from the BackupSet Management in Main menu.
    To identify which data the slot contains: If the slot has been tagged, you will see its tag next to the slot number. On the top screen line, you will see which backupSet is being used. And at the last screen line, you can see when the savedata were taken, and from which console. Finally, next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. In case that hexadecimal and titleName folder exists for the same title, save data from the hexadecimal folder will always be used. Conversion will merge slots from both savedata, and then only the new titleName folder will be used.
@@ -85,7 +84,7 @@ For vWii titles, savedata is directly under the slot folder.
    3. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console. You can specify if copy common savedata or not.
 	   If you are just copying the savedata from one profile id to a different one in the same console, choose `copy common savedata: no`. If you  are restoring to a new console with different profile ids, just choose `copy common savedata: yes` once for any of the profile ids, and copy the rest of profiles with `copy common savedata: no`
 	 4. Press `A` to initiate the restore. 
-	    **Note**: Starting with version 1.6.6, the `From: All Users` restore will detect and not allow restoring savedata to non-existent user profiles. In this case, perform specific `From: Select Source User / To: Select Destination User` restores, selecting the correct users.
+	    **Note**: Starting with version 1.7.0, the `From: All Users` restore will detect and not allow restoring savedata to non-existent user profiles. In this case, perform specific `From: Select Source User / To: Select Destination User` restores, selecting the correct users.
 ### Wipe
 Sometimes you will need to wipe savedata in the console before restoring a previous backup: If a restore is unsuccesful, you can try to wipe previous data before attempting a new restore. Options are the same than in the *Backup* task, but now refer to savedata for the specified title in the NAND or in the USB. 
 
