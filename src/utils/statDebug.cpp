@@ -1,71 +1,17 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include <coreinit/debug.h>
 #include <Metadata.h>
 #include <savemng.h>
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
 #include <ctime>
+#include <utils/Colors.h>
 
 
 extern FSAClientHandle handle;
 static int statCount = 0;
-
-/*
-bool statDir(const std::string &entryPath,FILE *file) {
-
-    DIR *dir = opendir(entryPath.c_str());
-    if (dir == nullptr) {
-//        std::string multilinePath;
-//        splitStringWithNewLines(entryPath,multilinePath);
-//        promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
-        fprintf(stdout,"Error opening source dir\n\n%s\n%s",entryPath.c_str(),strerror(errno));
-        return false;
-    }
-
-    auto *data = (dirent *) malloc(sizeof(dirent));
-
-    while ((data = readdir(dir)) != nullptr) {
-
-        if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
-            continue;
-
-        if ((data->d_type & DT_DIR) != 0) {
-            std::string dirPath = (entryPath + "/" + std::string(data->d_name));  
-            //std::cout << "dir  "<< std::oct << ( perm & 0777 ) << "  " << dirPath <<"\n";
-
-            FSAStat fsastat;
-            FSMode fsmode;
-            FSAGetStat(handle, newlibtoFSA(dirPath).c_str(), &fsastat);
-            fsmode = fsastat.mode;
-            fprintf (file,"fsadir  %x %s - og %x %x - q %llu\n",fsmode,dirPath.c_str(),fsastat.owner,fsastat.group,fsastat.quotaSize);
-
-            if (!statDir(dirPath.c_str(),file)) {
-                closedir(dir);
-                return false;
-            }
-        }
-        else
-        {
-            std::string filePath = entryPath + "/" + std::string(data->d_name);
-
-            //std::cout << "file "<< std::oct << ( perm & 0777 ) << " "<< filePath <<"\n";
-
-            FSAStat fsastat;
-            FSMode fsmode;
-            FSAGetStat(handle, newlibtoFSA(filePath).c_str(), &fsastat);
-            fsmode = fsastat.mode;
-            fprintf (file,"fsafile  %x %s - og %x %x - q %llu\n",fsmode,filePath.c_str(),fsastat.owner,fsastat.group,fsastat.quotaSize);
-
-        }
-    }
-
-    closedir(dir);
-
-
-    return true;
-}
-
-*/
-
 
 bool statDir(const std::string &entryPath,FILE *file) {
 
@@ -78,21 +24,21 @@ bool statDir(const std::string &entryPath,FILE *file) {
     fsmode = fsastat.mode;
     fsstatflags = fsastat.flags;
 
-    std::string entryType = StringUtils::stringFormat("%08x ",(uint32_t) fsstatflags);
+    std::string entryType {};
     if ((fsstatflags & FS_STAT_DIRECTORY) != 0)
-        entryType.append("DIR ");
+        entryType.append("D");
     if ((fsstatflags & FS_STAT_QUOTA) != 0)
-            entryType.append("QUOTA ");
+            entryType.append("Q");
     if ((fsstatflags & FS_STAT_FILE) != 0)
-            entryType.append("FILE ");
+            entryType.append("F");
     if ((fsstatflags & FS_STAT_ENCRYPTED_FILE) != 0)
-            entryType.append("ENCRYPTED ");
+            entryType.append("E");
     if ((fsstatflags & FS_STAT_LINK) != 0)
-            entryType.append("LINK");
+            entryType.append("L");
     if (fsstatflags == 0)
-            entryType.append("VWII?");
+            entryType.append("0");
 
-    fprintf (file,"%s %x %s - og %x %x - q %llu\n",entryType.c_str(),fsmode,entryPath.c_str(),fsastat.owner,fsastat.group,fsastat.quotaSize);
+    fprintf (file,"%s %x %x:%x %llu %s\n",entryType.c_str(),fsmode,fsastat.owner,fsastat.group,fsastat.quotaSize, entryPath.c_str());
 
     if ((fsstatflags & FS_STAT_DIRECTORY) != 0) {
 
@@ -167,8 +113,7 @@ void statSaves(const Title &title) {
 
         fclose(file); 
 
-        promptError("save stat done");
-        DrawUtils::setRedraw(true);
+        showFile(statFilePath,path);
 
 }
 
@@ -194,8 +139,39 @@ void statTitle(const Title &title) {
     statDir(srcPath,file);
     fclose(file); 
 
-    promptError("title stat done");
-    DrawUtils::setRedraw(true);
+    showFile(statFilePath,path);
 }
 
 
+void showFile(const std::string & file, const std::string & toRemove) {
+
+    FILE * fp;
+    char line[1128];
+ 
+    std::string message;
+    std::string lineString;
+
+    size_t toRemoveLength= toRemove.length();
+
+    fp = fopen(file.c_str(), "r");
+    if (fp == NULL)
+        return;
+
+    message.append(toRemove).append("\n");
+    int y = 0;
+    while (fgets(line, sizeof(line), fp) && y <12) {
+        lineString.assign(line);
+        std::size_t ind = lineString.find(toRemove);
+        if(ind !=std::string::npos){
+            lineString.erase(ind,toRemoveLength);
+        }
+        message.append(lineString);
+        y++;
+    }
+
+    fclose(fp);
+
+    promptMessage(COLOR_BG_OK, message.c_str());
+    DrawUtils::setRedraw(true);
+
+}
