@@ -8,6 +8,7 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/Colors.h>
+#include <utils/statDebug.h>
 
 // defaults to pass to titleTask
 static uint8_t slot = 0;
@@ -173,6 +174,14 @@ nxtCheck:
         } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
             if (cursorPos > 0)
                 --cursorPos;
+        }
+        if (input->get(HOLD, PAD_BUTTON_MINUS) && input->get(HOLD, PAD_BUTTON_L)) {
+                promptMessage(COLOR_BG_WR,"initiating stat title");
+                statTitle(title);
+        }
+        if (input->get(HOLD, PAD_BUTTON_PLUS) && input->get(HOLD, PAD_BUTTON_L)) {
+                promptMessage(COLOR_BG_WR,"initiating stat save");
+                statSaves(title);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
