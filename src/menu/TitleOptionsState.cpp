@@ -662,8 +662,6 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateBackupData();
                 }
             }
-            if (this->task == WIPE_PROFILE && showFolderInfo)
-                statTitle(title);
         }
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             InProgress::totalSteps = InProgress::currentStep = 1;
@@ -751,8 +749,6 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 this->substateCalled = STATE_KEYBOARD;
                 this->subState = std::make_unique<KeyboardState>(newTag);
             }
-            if (this->task == WIPE_PROFILE && showFolderInfo)
-                statSaves(title);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
