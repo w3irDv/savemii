@@ -587,8 +587,7 @@ int main() {
 
     addInitMessage(LanguageUtils::gettext("Initializing WPAD and KPAD"));
 
-    KPADInit();
-    WPADEnableURCC(1);
+    Input::initialize();
 
     addInitMessage(LanguageUtils::gettext("Initializing loadWiiU Titles"));
 
@@ -640,11 +639,11 @@ int main() {
 
         input.read();
 
-        if (input.get(TRIGGER, PAD_BUTTON_ANY) || input.get(HOLD, PAD_BUTTON_ANY))
+        if (input.get(ButtonState::TRIGGER, Button::ANY) || input.get(ButtonState::REPEAT, Button::ANY))
             DrawUtils::setRedraw(true);
 
         if (DrawUtils::getRedraw()) {
-            
+
             state->update(&input);
 
             DrawUtils::beginDraw();
@@ -673,6 +672,6 @@ int main() {
     DrawUtils::LogConsoleFree();
 
     State::shutdown();
-    KPADShutdown();
+    Input::finalize();
     return 0;
 }

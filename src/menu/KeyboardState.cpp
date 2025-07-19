@@ -21,7 +21,7 @@ void KeyboardState::render() {
 
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPosAligned(3,0,1,("["+keyboard->input+"]").c_str());
-        DrawUtils::setFontColor(COLOR_TEXT);  
+        DrawUtils::setFontColor(COLOR_TEXT);
         for (int row_=0;row_<4;row_++)
             for (int column_=0;column_<keyboard->getKeyboardRowSize(row_);column_++) {
                 kConsolePrintPos(KB_X_OFFSET+column_,KB_Y_OFFSET+row_,KB_ROW_OFFSET*row_, "%s", keyboard->getKey(row_,column_).c_str());
@@ -34,39 +34,39 @@ void KeyboardState::render() {
         kConsolePrintPos(cursorPosX+KB_X_OFFSET,cursorPosY+KB_Y_OFFSET,cursorPosY*KB_ROW_OFFSET,"%s", keyboard->getCurrentKey().c_str());
         DrawUtils::drawKey(cursorPosX+KB_X_OFFSET,cursorPosY+KB_Y_OFFSET,cursorPosY*KB_ROW_OFFSET,COLOR_KEY_C);
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Press Key  \uE003: Shift  \uE002: Del  \ue045: OK!  \ue001: Back"));      
-    }   
+        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Press Key  \uE003: Shift  \uE002: Del  \ue045: OK!  \ue001: Back"));
+    }
 }
 
 ApplicationState::eSubState KeyboardState::update(Input *input) {
-    if (input->get(TRIGGER, PAD_BUTTON_B)) {
+    if (input->get(ButtonState::TRIGGER, Button::B)) {
         return SUBSTATE_RETURN;
     }
-    if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
+    if (input->get(ButtonState::TRIGGER, Button::LEFT)) {
         cursorPosX = keyboard->kbLeft();
     }
-    if (input->get(TRIGGER, PAD_BUTTON_RIGHT)) {
+    if (input->get(ButtonState::TRIGGER, Button::RIGHT)) {
         cursorPosX = keyboard->kbRight();
     }
-    if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+    if (input->get(ButtonState::TRIGGER, Button::DOWN)) {
         cursorPosY = keyboard->kbDown();
         cursorPosX = keyboard->getColumn();
     }
-    if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+    if (input->get(ButtonState::TRIGGER, Button::UP)) {
         cursorPosY = keyboard->kbUp();
         cursorPosX = keyboard->getColumn();
     }
-    if (input->get(TRIGGER, PAD_BUTTON_A)) {
+    if (input->get(ButtonState::TRIGGER, Button::A)) {
         keyboard->kbKeyPressed();
     }
-    if (input->get(TRIGGER,PAD_BUTTON_X)) {
+    if (input->get(ButtonState::TRIGGER,Button::X)) {
         keyboard->delPressed();
     }
-    if (input->get(TRIGGER,PAD_BUTTON_Y)) {
+    if (input->get(ButtonState::TRIGGER,Button::Y)) {
         keyboard->shiftPressed();
         cursorPosX = keyboard->getColumn();
     }
-    if (input->get(TRIGGER,PAD_BUTTON_PLUS)) {
+    if (input->get(ButtonState::TRIGGER,Button::PLUS)) {
         this->input = keyboard->input;
         return SUBSTATE_RETURN;
     }

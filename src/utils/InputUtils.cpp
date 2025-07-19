@@ -1,5 +1,26 @@
 #include <utils/InputUtils.h>
 
+// Note: missing from WUT
+constexpr uint32_t my_KPAD_BUTTON_REPEAT = 0x80000000;
+constexpr uint32_t my_VPAD_BUTTON_REPEAT = 0x80000000;
+
+// Note: missing form WUT
+extern "C"
+void KPADSetBtnRepeat(KPADChan channel,
+                      float delay,
+                      float period);
+
+void Input::initialize() {
+    KPADInit();
+    WPADEnableURCC(1);
+    KPADSetBtnRepeat(WPAD_CHAN_0, 0.5f, 0.1f);
+    VPADSetBtnRepeat(VPAD_CHAN_0, 0.5f, 0.1f);
+}
+
+void Input::finalize() {
+    KPADShutdown();
+}
+
 void Input::read() {
     VPADRead(VPAD_CHAN_0, &vpad_status, 1, nullptr);
     KPADRead(WPAD_CHAN_0, &kpad_status, 1);
@@ -12,14 +33,24 @@ bool Input::get(ButtonState state, Button button) const {
     uint32_t kpadNunchukState = 0;
     uint32_t kpadProState     = 0;
 
-    auto examine = [state](const auto& status) -> uint32_t
+    auto examine = [state](const auto& status, bool is_vpad = false) -> uint32_t
     {
         switch (state) {
-            case TRIGGER:
+            case ButtonState::TRIGGER:
                 return status.trigger;
-            case HOLD:
-                return status.hold;
-            case RELEASE:
+            case ButtonState::REPEAT:
+                if (is_vpad) {
+                    if (status.hold & my_VPAD_BUTTON_REPEAT)
+                        return status.hold;
+                    else
+                        return 0;
+                } else {
+                    if (status.hold & my_KPAD_BUTTON_REPEAT)
+                        return status.hold;
+                    else
+                        return 0;
+                }
+            case ButtonState::RELEASE:
                 return status.release;
             default:
                 return 0;
@@ -27,7 +58,7 @@ bool Input::get(ButtonState state, Button button) const {
     };
 
     if (!vpad_status.error)
-        vpadState = examine(vpad_status);
+        vpadState = examine(vpad_status, true);
 
     if (!kpad_status.error) {
         switch (kpad_status.extensionType) {
@@ -56,31 +87,31 @@ bool Input::get(ButtonState state, Button button) const {
         return false;
 
     switch (button) {
-        case PAD_BUTTON_A:
+        case Button::A:
             if (vpadState        & VPAD_BUTTON_A)         return true;
             if (kpadCoreState    & WPAD_BUTTON_A)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_A) return true;
             if (kpadProState     & WPAD_PRO_BUTTON_A)     return true;
             break;
-        case PAD_BUTTON_B:
+        case Button::B:
             if (vpadState        & VPAD_BUTTON_B)         return true;
             if (kpadCoreState    & WPAD_BUTTON_B)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_B) return true;
             if (kpadProState     & WPAD_PRO_BUTTON_B)     return true;
             break;
-        case PAD_BUTTON_X:
+        case Button::X:
             if (vpadState        & VPAD_BUTTON_X)         return true;
             if (kpadCoreState    & WPAD_BUTTON_1)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_X) return true;
             if (kpadProState     & WPAD_PRO_BUTTON_X)     return true;
             break;
-        case PAD_BUTTON_Y:
+        case Button::Y:
             if (vpadState        & VPAD_BUTTON_Y)         return true;
             if (kpadCoreState    & WPAD_BUTTON_2)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_Y) return true;
             if (kpadProState     & WPAD_PRO_BUTTON_Y)     return true;
             break;
-        case PAD_BUTTON_UP:
+        case Button::UP:
             if (vpadState        & VPAD_BUTTON_UP)                    return true;
             if (vpadState        & VPAD_STICK_L_EMULATION_UP)         return true;
             if (kpadCoreState    & WPAD_BUTTON_UP)                    return true;
@@ -90,7 +121,7 @@ bool Input::get(ButtonState state, Button button) const {
             if (kpadProState     & WPAD_PRO_BUTTON_UP)                return true;
             if (kpadProState     & WPAD_PRO_STICK_L_EMULATION_UP)     return true;
             break;
-        case PAD_BUTTON_DOWN:
+        case Button::DOWN:
             if (vpadState        & VPAD_BUTTON_DOWN)                    return true;
             if (vpadState        & VPAD_STICK_L_EMULATION_DOWN)         return true;
             if (kpadCoreState    & WPAD_BUTTON_DOWN)                    return true;
@@ -100,7 +131,7 @@ bool Input::get(ButtonState state, Button button) const {
             if (kpadProState     & WPAD_PRO_BUTTON_DOWN)                return true;
             if (kpadProState     & WPAD_PRO_STICK_L_EMULATION_DOWN)     return true;
             break;
-        case PAD_BUTTON_LEFT:
+        case Button::LEFT:
             if (vpadState        & VPAD_BUTTON_LEFT)                    return true;
             if (vpadState        & VPAD_STICK_L_EMULATION_LEFT)         return true;
             if (kpadCoreState    & WPAD_BUTTON_LEFT)                    return true;
@@ -110,7 +141,7 @@ bool Input::get(ButtonState state, Button button) const {
             if (kpadProState     & WPAD_PRO_BUTTON_LEFT)                return true;
             if (kpadProState     & WPAD_PRO_STICK_L_EMULATION_LEFT)     return true;
             break;
-        case PAD_BUTTON_RIGHT:
+        case Button::RIGHT:
             if (vpadState        & VPAD_BUTTON_RIGHT)                    return true;
             if (vpadState        & VPAD_STICK_L_EMULATION_RIGHT)         return true;
             if (kpadCoreState    & WPAD_BUTTON_RIGHT)                    return true;
@@ -120,30 +151,30 @@ bool Input::get(ButtonState state, Button button) const {
             if (kpadProState     & WPAD_PRO_BUTTON_RIGHT)                return true;
             if (kpadProState     & WPAD_PRO_STICK_L_EMULATION_RIGHT)     return true;
             break;
-        case PAD_BUTTON_L:
+        case Button::L:
             if (vpadState        & VPAD_BUTTON_L)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_L) return true;
             if (kpadProState     & WPAD_PRO_BUTTON_L)     return true;
             break;
-        case PAD_BUTTON_R:
+        case Button::R:
             if (vpadState        & VPAD_BUTTON_R)         return true;
             if (kpadCoreState    & WPAD_BUTTON_PLUS)      return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_R) return true;
             if (kpadProState     & WPAD_PRO_BUTTON_R)     return true;
             break;
-        case PAD_BUTTON_PLUS:
+        case Button::PLUS:
             if (vpadState        & VPAD_BUTTON_PLUS)         return true;
             if (kpadCoreState    & WPAD_BUTTON_PLUS)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_PLUS) return true;
             if (kpadProState     & WPAD_PRO_BUTTON_PLUS)     return true;
             break;
-        case PAD_BUTTON_MINUS:
+        case Button::MINUS:
             if (vpadState        & VPAD_BUTTON_MINUS)         return true;
             if (kpadCoreState    & WPAD_BUTTON_MINUS)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_MINUS) return true;
             if (kpadProState     & WPAD_PRO_BUTTON_MINUS)     return true;
             break;
-        case PAD_BUTTON_ANY:
+        case Button::ANY:
             return vpadState
                 || kpadCoreState
                 || kpadClassicState

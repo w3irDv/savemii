@@ -56,14 +56,14 @@ void BatchJobState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPosAligned(0, 4, 1,screenTitle);
         DrawUtils::setFontColor(COLOR_TEXT);
-        
+
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
         consolePrintPos(M_OFF, 3, wiiUTask, this->wiiuTitlesCount,
                         (this->wiiuTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
         consolePrintPos(M_OFF, 4, vWiiTask, this->vWiiTitlesCount,
                         (this->vWiiTitlesCount > 1) ? "s" : "");
-        DrawUtils::setFontColor(COLOR_TEXT);                
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPos(M_OFF, 6, readme);
@@ -74,7 +74,7 @@ void BatchJobState::render() {
 
 ApplicationState::eSubState BatchJobState::update(Input *input) {
     if (this->state == STATE_BATCH_JOB_MENU) {
-        if (input->get(TRIGGER, PAD_BUTTON_A)) {
+        if (input->get(ButtonState::TRIGGER, Button::A)) {
             switch (jobType) {
             case RESTORE:
                 switch (cursorPos) {
@@ -120,12 +120,12 @@ ApplicationState::eSubState BatchJobState::update(Input *input) {
             break;
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_B))
+        if (input->get(ButtonState::TRIGGER, Button::B))
             return SUBSTATE_RETURN;
-        if (input->get(TRIGGER, PAD_BUTTON_UP))
+        if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP))
             if (--cursorPos == -1)
                 ++cursorPos;
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN))
+        if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN))
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
     } else if (this->state == STATE_DO_SUBSTATE) {

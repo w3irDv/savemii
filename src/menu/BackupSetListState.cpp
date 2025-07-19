@@ -66,7 +66,7 @@ void BackupSetListState::render() {
         std::string backupSetItem;
         DrawUtils::setFontColor(COLOR_INFO);
         if (BackupSetList::currentBackupSetList->entriesView == BackupSetList::currentBackupSetList->entries) {
-            consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets"));    
+            consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets"));
         } else {
             consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets (filter applied)"));
         }
@@ -102,9 +102,9 @@ void BackupSetListState::render() {
 
 ApplicationState::eSubState BackupSetListState::update(Input *input) {
     if (this->state == STATE_BACKUPSET_MENU) {
-        if (input->get(TRIGGER, PAD_BUTTON_B))
+        if (input->get(ButtonState::TRIGGER, Button::B))
             return SUBSTATE_RETURN;
-        if (input->get(TRIGGER, PAD_BUTTON_A)) {
+        if (input->get(ButtonState::TRIGGER, Button::A)) {
             if (! finalScreen) {
                 if (cursorPos + scroll == 0) {
                     promptError(LanguageUtils::gettext("Root BackupSet cannot be selected for batchRestore"));
@@ -114,7 +114,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
             if (finalScreen) {
-                char message[256]; 
+                char message[256];
                 const char* messageTemplate = LanguageUtils::gettext("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
                 snprintf(message,256,messageTemplate,
                     BackupSetList::currentBackupSetList->at(cursorPos + scroll).c_str(),
@@ -128,14 +128,14 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             {
                 this->state = STATE_DO_SUBSTATE;
                 this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, isWiiUBatchJob, RESTORE);
-            }      
+            }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_Y)) {
+        if (input->get(ButtonState::TRIGGER, Button::Y)) {
             this->state = STATE_DO_SUBSTATE;
             this->substateCalled = STATE_BACKUPSET_FILTER;
-            this->subState = std::make_unique<BackupSetListFilterState>(BackupSetList::currentBackupSetList);      
+            this->subState = std::make_unique<BackupSetListFilterState>(BackupSetList::currentBackupSetList);
         }
-        if (input->get(TRIGGER, PAD_BUTTON_L)) {
+        if (input->get(ButtonState::TRIGGER, Button::L)) {
             if ( this->sortAscending ) {
                 this->sortAscending = false;
                 BackupSetList::currentBackupSetList->sort(this->sortAscending);
@@ -143,7 +143,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 scroll = 0;
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_R)) {
+        if (input->get(ButtonState::TRIGGER, Button::R)) {
             if ( ! this->sortAscending ) {
                 this->sortAscending = true;
                 BackupSetList::currentBackupSetList->sort(this->sortAscending);
@@ -151,7 +151,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 scroll = 0;
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN) || input->get(HOLD, PAD_BUTTON_DOWN)) {
+        if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
             if (BackupSetList::currentBackupSetList->entriesView <= MAX_ROWS_SHOW)
                 cursorPos = (cursorPos + 1) % BackupSetList::currentBackupSetList->entriesView;
             else if (cursorPos < 6)
@@ -163,7 +163,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
             newTag = tag;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_UP) || input->get(HOLD, PAD_BUTTON_UP)) {
+        if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
             if (scroll > 0)
                 cursorPos -= (cursorPos > 6) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)
@@ -175,7 +175,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
             newTag = tag;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_MINUS)) {
+        if (input->get(ButtonState::TRIGGER, Button::MINUS)) {
             int entry = cursorPos+scroll;
             if (entry > 0)
             {
@@ -190,17 +190,17 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 {
                     BackupSetList::initBackupSetList();
                     cursorPos--;
-                }   
+                }
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
+        if (input->get(ButtonState::TRIGGER, Button::PLUS)) {
             int entry = cursorPos+scroll;
             if (entry > 0)
             {
                 this->state = STATE_DO_SUBSTATE;
                 this->substateCalled = STATE_KEYBOARD;
                 this->subState = std::make_unique<KeyboardState>(newTag);
-            }    
+            }
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);

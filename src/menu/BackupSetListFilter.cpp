@@ -15,22 +15,22 @@ void BackupSetListFilterState::render() {
         consolePrintPosAligned(0,4,1,"Filter BackupSets");
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPos(0,4,LanguageUtils::gettext("Show only BackupSets satisfying all these conditions:"));
-        DrawUtils::setFontColor(COLOR_TEXT);  
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 6, "Console: %s", (*backupSetList->bsMetadataValues.serialId.iterator).c_str());
         consolePrintPos(M_OFF, 7, "Tag: %s", (*backupSetList->bsMetadataValues.tag.iterator).c_str());
         consolePrintPos(M_OFF, 8, "Month: %s", (*backupSetList->bsMetadataValues.month.iterator).c_str());
         consolePrintPos(M_OFF, 9, "Year: %s", (*backupSetList->bsMetadataValues.year.iterator).c_str());
         consolePrintPos(-1, 6 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Apply Filter  \uE002: Reset Filters  \ue001: Back"));
-        
+
     }
 }
 
 ApplicationState::eSubState BackupSetListFilterState::update(Input *input) {
-    if (input->get(TRIGGER, PAD_BUTTON_B)) {
+    if (input->get(ButtonState::TRIGGER, Button::B)) {
         return SUBSTATE_RETURN;
     }
-    if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
+    if (input->get(ButtonState::TRIGGER, Button::LEFT)) {
             switch (cursorPos) {
                 case 0:
                     BSMetadataValues::Left(backupSetList->bsMetadataValues.serialId);
@@ -48,7 +48,7 @@ ApplicationState::eSubState BackupSetListFilterState::update(Input *input) {
                     break;
             }
     }
-    if (input->get(TRIGGER, PAD_BUTTON_RIGHT)) {
+    if (input->get(ButtonState::TRIGGER, Button::RIGHT)) {
             switch (cursorPos) {
                 case 0:
                     BSMetadataValues::Right(backupSetList->bsMetadataValues.serialId);
@@ -66,21 +66,21 @@ ApplicationState::eSubState BackupSetListFilterState::update(Input *input) {
                     break;
             }
     }
-    if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+    if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
         if (entrycount <= 14)
             cursorPos = (cursorPos + 1) % entrycount;
     }
-    if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+    if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
         if (cursorPos > 0)
             --cursorPos;
     }
-    if (input->get(TRIGGER, PAD_BUTTON_A)) {
+    if (input->get(ButtonState::TRIGGER, Button::A)) {
         backupSetList->filter();
         backupSetList->sort(BackupSetList::getSortAscending());
         BackupSetListState::resetCursorAndScroll();
         return SUBSTATE_RETURN;
     }
-    if (input->get(TRIGGER,PAD_BUTTON_X)) {
+    if (input->get(ButtonState::TRIGGER, Button::X)) {
         backupSetList->bsMetadataValues.resetFilter();
     }
     return SUBSTATE_RUNNING;

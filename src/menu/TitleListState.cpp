@@ -61,7 +61,7 @@ void TitleListState::render() {
                 if (titles[i + this->scroll].iconBuf != nullptr) {
                     DrawUtils::drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
                                       titles[i + this->scroll].iconBuf);
-                }    
+                }
             }
         }
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -72,19 +72,19 @@ void TitleListState::render() {
 
 ApplicationState::eSubState TitleListState::update(Input *input) {
     if (this->state == STATE_TITLE_LIST) {
-        if (input->get(TRIGGER, PAD_BUTTON_B) || noTitles)
+        if (input->get(ButtonState::TRIGGER, Button::B) || noTitles)
             return SUBSTATE_RETURN;
-        if (input->get(TRIGGER, PAD_BUTTON_R)) {
+        if (input->get(ButtonState::TRIGGER, Button::R)) {
             this->titleSort = (this->titleSort + 1) % 4;
             sortTitle(this->titles, this->titles + this->titlesCount, this->titleSort, this->sortAscending);
         }
-        if (input->get(TRIGGER, PAD_BUTTON_L)) {
+        if (input->get(ButtonState::TRIGGER, Button::L)) {
             if (this->titleSort > 0) {
                 this->sortAscending = !this->sortAscending;
                 sortTitle(this->titles, this->titles + this->titlesCount, this->titleSort, this->sortAscending);
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_A)) {
+        if (input->get(ButtonState::TRIGGER, Button::A)) {
             this->targ = cursorPos + this->scroll;
             if (this->titles[this->targ].highID == 0 || this->titles[this->targ].lowID == 0)
                 return SUBSTATE_RUNNING;
@@ -107,8 +107,8 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                     return SUBSTATE_RUNNING;
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
-        
-            if (isTitleUsingIdBasedPath(&this->titles[targ]) && BackupSetList::isRootBackupSet() 
+
+            if (isTitleUsingIdBasedPath(&this->titles[targ]) && BackupSetList::isRootBackupSet()
                     && checkIdVsTitleNameBasedPath) {
                 const char* choices = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders.\nInstead of using hex values, folders will be named after the title name,\nso for this title, folder '%08x%08x' would become\n'%s',\neasier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all %s\n\ue001  Not this time\n\ue002  Not in this session\n\n\n");
                 std::string message = StringUtils::stringFormat(choices,this->titles[targ].highID,this->titles[targ].lowID,this->titles[targ].titleNameBasedDirName,isWiiU ? LanguageUtils::gettext("Wii U Titles"):LanguageUtils::gettext("vWii Titles"));
@@ -116,19 +116,19 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                 while (! done) {
                     Button choice = promptMultipleChoice(ST_MULTIPLE_CHOICE,message.c_str());
                     switch (choice) {
-                        case PAD_BUTTON_A:
+                        case Button::A:
                             //rename this title
                             renameTitleFolder(&this->titles[targ]);
                             done = true;
                             break;
-                        case PAD_BUTTON_PLUS:
+                        case Button::PLUS:
                             //rename all folders
                             renameAllTitlesFolder(this->titles,this->titlesCount);
                             done = true;
                             break;
-                        case PAD_BUTTON_X:
+                        case Button::X:
                             checkIdVsTitleNameBasedPath = false;
-                        case PAD_BUTTON_B:
+                        case Button::B:
                             if (isTitleUsingTitleNameBasedPath(&this->titles[targ]))
                                 promptMessage(COLOR_BLACK,LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them"),this->titles[targ].highID,this->titles[targ].lowID,this->titles[targ].titleNameBasedDirName);
                             else
@@ -140,9 +140,9 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                     }
                 }
             }
-            
+
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN) || input->get(HOLD, PAD_BUTTON_DOWN)) {
+        if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
             if (this->titlesCount <= MAX_TITLE_SHOW)
                 cursorPos = (cursorPos + 1) % this->titlesCount;
             else if (cursorPos < MAX_WINDOW_SCROLL)
@@ -151,7 +151,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                 scroll++;
             else
                 cursorPos = scroll = 0;
-        } else if (input->get(TRIGGER, PAD_BUTTON_UP) || input->get(HOLD, PAD_BUTTON_UP) ) {
+        } else if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP) ) {
             if (scroll > 0)
                 cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
             else if (cursorPos > 0)

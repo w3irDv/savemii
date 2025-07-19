@@ -27,7 +27,7 @@ void TitleTaskState::render() {
         consolePrintPosAligned(0, 4, 2,LanguageUtils::gettext("WiiU Serial Id: %s"),Metadata::thisConsoleSerialId.c_str());
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPos(22,0,LanguageUtils::gettext("Tasks"));
-        DrawUtils::setFontColor(COLOR_TEXT);    
+        DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
                         this->title.productCode);
         consolePrintPos(M_OFF, 3, "   %s (%s)", this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
@@ -63,10 +63,10 @@ void TitleTaskState::render() {
 
 ApplicationState::eSubState TitleTaskState::update(Input *input) {
     if (this->state == STATE_TITLE_TASKS) {
-        if (input->get(TRIGGER, PAD_BUTTON_B))
+        if (input->get(ButtonState::TRIGGER, Button::B))
             return SUBSTATE_RETURN;
 
-        if (input->get(TRIGGER, PAD_BUTTON_A)) {
+        if (input->get(ButtonState::TRIGGER, Button::A)) {
             bool noError = true;
             this->task = (eJobType) cursorPos;
 
@@ -85,7 +85,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 case PROFILE_TO_PROFILE:
                     noData = LanguageUtils::gettext("No save to Replicate.");
                     break;
-                case COPY_TO_OTHER_DEVICE: 
+                case COPY_TO_OTHER_DEVICE:
                     noData = LanguageUtils::gettext("No save to Copy.");
                     break;
                 case MOVE_PROFILE:
@@ -114,7 +114,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             if (( this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE) && noError) {
                 if (getVolAccn() == 0)
                     promptError(LanguageUtils::gettext("Title has no profile savedata"));
-                else {    
+                else {
                     for (int i = 0; i <  getVolAccn() ; i ++ ) {
                         for (int j = 0; j < getWiiUAccn(); j++) {
                             if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
@@ -129,7 +129,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 noError = false;
             }
 
-nxtCheck: 
+nxtCheck:
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 char gamePath[PATH_SIZE];
@@ -155,9 +155,9 @@ nxtCheck:
                 this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+        if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
                 cursorPos = (cursorPos + 1) % entrycount;
-        } else if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+        } else if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
             if (cursorPos > 0)
                 --cursorPos;
         }

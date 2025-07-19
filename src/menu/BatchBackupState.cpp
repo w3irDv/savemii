@@ -42,27 +42,27 @@ void BatchBackupState::render() {
             }
         }
 
-        
+
         DrawUtils::setFontColor(COLOR_INFO);
         consolePrintPos(M_OFF, 11, LanguageUtils::gettext("Batch Backup allows you to backup savedata:\n* for All titles at once (WiiU+ vWii)\n* for the titles you select (individual 'Wii U' or 'vWii' tasks)"));
-        
+
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
     }
-} 
+}
 
 ApplicationState::eSubState BatchBackupState::update(Input *input) {
     if (this->state == STATE_BATCH_BACKUP_MENU) {
-        if (input->get(TRIGGER, PAD_BUTTON_UP))
+        if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP))
             if (--cursorPos == -1)
                 ++cursorPos;
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN))
+        if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN))
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
-        if (input->get(TRIGGER, PAD_BUTTON_B))
+        if (input->get(ButtonState::TRIGGER, Button::B))
             return SUBSTATE_RETURN;
-        if (input->get(TRIGGER, PAD_BUTTON_A)) {
+        if (input->get(ButtonState::TRIGGER, Button::A)) {
             const std::string batchDatetime = getNowDateForFolder();
             int titlesOK = 0;
             int titlesAborted = 0;
@@ -88,7 +88,7 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
                     showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
 
                     break;
-                case 1: 
+                case 1:
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchJobTitleSelectState>(this->wiiutitles, this->wiiuTitlesCount, true,ExcludesCfg::wiiuExcludes,BACKUP);
                     break;
