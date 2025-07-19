@@ -1972,7 +1972,7 @@ error:
 #endif
 
     if (!title->saveInit && title->is_Inject) {
-    // for vWii injects, check is title.tmd exists. It seemes to be created when launching the ga,e even if the savedataexists, but just in case
+    // for vWii injects, check is title.tmd exists. It seems to be created if it not exists when launching the game even if the savedata exists, but just in case ...
         std::string lowIDPath = StringUtils::stringFormat("%s/%08x/%08x",path.c_str(), highID,lowID);
         std::string titleTmdFolder = StringUtils::stringFormat("%s/content",lowIDPath.c_str());
         std::string titleTmdPath;
