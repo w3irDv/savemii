@@ -108,7 +108,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
             }
 
             if (!this->titles[this->targ].saveInit)
-                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Savedata for this title has not been initialized.\nYou can try to restore it, but in case that restore fails,\nplease run the Game to create some initial savedata \nand try again.\n\nContinue?")))
+                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Savedata for this title has not been initialized.\nYou can try to restore it, but in case that the restore fails,\nplease run the Game to create some initial savedata \nand try again.\n\nYou can continue to Task Selection")))
                     return SUBSTATE_RUNNING;
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
