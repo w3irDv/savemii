@@ -666,6 +666,8 @@ int main() {
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,
                                                                         vWiiTitlesCount);
+
+    InProgress::input = &input;
     while (State::AppRunning()) {
 
         input.read();

@@ -821,11 +821,12 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         globalRetCode = globalRetCode + retCode;
         this->titles[i].currentDataSource.lastErrCode = globalRetCode;
 
-        Input input{};
-        input.read();
-        if (input.get(ButtonState::HOLD, Button::L) && input.get(ButtonState::HOLD, Button::MINUS))
+       if (InProgress::abortTask) {
             if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),taskAbortedByUser))
                 break;
+            else
+                InProgress::abortTask = false;
+       }
 
     }
 
