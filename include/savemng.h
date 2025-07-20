@@ -162,6 +162,8 @@ class InProgress {
         inline static std::string titleName {};
         inline static int currentStep = 0;
         inline static int totalSteps = 0;
+        inline static bool abortTask = false;
+        inline static Input * input = nullptr;
 };
 
 struct titlesNEProfiles{

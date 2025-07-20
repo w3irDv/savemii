@@ -175,11 +175,11 @@ nxtCheck:
             if (cursorPos > 0)
                 --cursorPos;
         }
-        if (input->get(HOLD, PAD_BUTTON_MINUS) && input->get(HOLD, PAD_BUTTON_L)) {
+        if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
                 promptMessage(COLOR_BG_WR,"initiating stat title");
                 statTitle(title);
         }
-        if (input->get(HOLD, PAD_BUTTON_PLUS) && input->get(HOLD, PAD_BUTTON_L)) {
+        if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
                 promptMessage(COLOR_BG_WR,"initiating stat save");
                 statSaves(title);
         }
