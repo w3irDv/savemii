@@ -210,6 +210,8 @@ static void showFileOperation(const std::string &file_name, const std::string &f
     consolePrintPos(-2, 1, LanguageUtils::gettext("Copying file: %s"), file_name.c_str());
     consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: %s"), file_src.c_str());
     consolePrintPosMultiline(-2, 10, LanguageUtils::gettext("To: %s"), file_dest.c_str());
+    if (InProgress::totalSteps > 1 )
+        consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Abort:\ue083+\ue046"));
 }
 
 int32_t loadFile(const char *fPath, uint8_t **buf) {
@@ -1037,6 +1039,8 @@ void showDeleteOperations(bool isFolder, const char *name, const std::string & p
         consolePrintPos(-2, 1, isFolder ?
             LanguageUtils::gettext("Deleting folder %s"):LanguageUtils::gettext("Deleting file %s"), name);
         consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), path.c_str());
+        if (InProgress::totalSteps > 1 )
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Abort:\ue083+\ue046"));
 }
 
 #ifndef MOCK
@@ -1667,11 +1671,12 @@ int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= fals
 }
 
 
-void backupAllSave(Title *titles, int count, const std::string & batchDatetime, bool onlySelectedTitles /*= false*/) {
+int backupAllSave(Title *titles, int count, const std::string & batchDatetime, bool onlySelectedTitles /*= false*/) {
     if (firstSDWrite)
         sdWriteDisclaimer();
 
     int copyErrorsCounter = 0;
+    int titlesOK = 0;
 
     for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
         for (int i = 0; i < count; i++) {
@@ -1701,7 +1706,16 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
                     writeMetadata(&titles[i],slot,isUSB,batchDatetime);
                     titles[i].currentDataSource.batchBackupState = OK;
                     titles[i].currentDataSource.selectedForBackup= false;
+                    titlesOK++;
+                                    
+                    Input input{};
+                    input.read();
+                    if (input.get(ButtonState::HOLD, Button::L) && input.get(ButtonState::HOLD, Button::MINUS))
+                        if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),LanguageUtils::gettext("Do you want to cancel batch backup?")))
+                            return -1;
+
                     continue;
+
                 }
             // backup for this tile has failed
             copyErrorsCounter++;
@@ -1709,7 +1723,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             writeMetadataWithTag(&titles[i],slot,isUSB,batchDatetime,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
             std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"),titles[i].shortName,copyErrorsCounter);
             if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str()))
-                return;
+                return copyErrorsCounter;
 #else
         if (i%2 == 0) {
             titles[i].currentDataSource.batchBackupState = OK;
@@ -1725,6 +1739,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
 
         }
     }
+    return copyErrorsCounter;
 }
 
 int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
@@ -2237,13 +2252,14 @@ void deleteSlot(Title *title, uint8_t slot) {
     }
     else
     {
-        promptError(LanguageUtils::gettext("Folder does not exist."));
+        promptError(LanguageUtils::gettext("Folder $s\ndoes not exist."),path.c_str());
     }
 }
 
-bool wipeBackupSet(const std::string &subPath) {
-    if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Wipe BackupSet - Are you sure?")) || !promptConfirm(ST_WIPE, LanguageUtils::gettext("Wipe BackupSet - Hm, are you REALLY sure?")))
-        return false;
+bool wipeBackupSet(const std::string &subPath, bool force /* = false*/) {
+    if (!force)
+        if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Wipe BackupSet - Are you sure?")) || !promptConfirm(ST_WIPE, LanguageUtils::gettext("Wipe BackupSet - Hm, are you REALLY sure?")))
+            return false;
     const std::string path = StringUtils::stringFormat("%s%s", backupPath,subPath.c_str());
     if (path.find(batchBackupPath) == std::string::npos) {
         promptError(LanguageUtils::gettext("Error setting path. Aborting."));
@@ -2264,7 +2280,7 @@ bool wipeBackupSet(const std::string &subPath) {
     }
     else
     {
-        promptError(LanguageUtils::gettext("Folder does not exist."));
+        promptError(LanguageUtils::gettext("Folder %s\ndoes not exist."),path.c_str());
     }
     return true;
 }

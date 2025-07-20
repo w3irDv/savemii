@@ -48,7 +48,7 @@ void BatchBackupState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
+        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: BackupSet Management  \ue000: Backup  \ue001: Back"));
     }
 }
 
@@ -62,6 +62,11 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
                 --cursorPos;
         if (input->get(ButtonState::TRIGGER, Button::B))
             return SUBSTATE_RETURN;
+        if (input->get(ButtonState::TRIGGER, Button::X)) {
+            this->state = STATE_DO_SUBSTATE;
+            this->subState = std::make_unique<BackupSetListState>();
+            return SUBSTATE_RUNNING;
+        }
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             const std::string batchDatetime = getNowDateForFolder();
             int titlesOK = 0;
@@ -71,21 +76,46 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
             int titlesSkipped = 0;
             int titlesNotInitialized = 0;
             std::vector<std::string> failedTitles;
+            int wiiU_backup_failed_counter = 0;
+            int wii_backup_failed_counter = 0;
+            bool abortedBackup = false;
             switch (cursorPos) {
                 case 0:
                     InProgress::totalSteps = countTitlesToSave(this->wiiutitles, this->wiiuTitlesCount) + countTitlesToSave(this->wiititles, this->vWiiTitlesCount);
                     InProgress::currentStep = 0;
-
-                    backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
-                    backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime);
-
-                    summarizeBackupCounters  (this->wiiutitles, this->wiiuTitlesCount,titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
-                    summarizeBackupCounters  (this->wiititles, this->vWiiTitlesCount,titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
-
-                    writeBackupAllMetadata(batchDatetime,"WiiU and vWii titles");
+        
+                    wiiU_backup_failed_counter = backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
+                    if (wiiU_backup_failed_counter == -1)
+                        abortedBackup = true;
+                    else {
+                        wii_backup_failed_counter = backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime);
+                        if (wii_backup_failed_counter == -1)
+                            abortedBackup = true;
+                    }
+                                        
                     BackupSetList::setIsInitializationRequired(true);
+                    if (wiiU_backup_failed_counter == 0 && wii_backup_failed_counter == 0) {
+                        writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("WiiU and vWii titles"));
+                    }else if ( wiiU_backup_failed_counter > 0 || wii_backup_failed_counter > 0 ) {
+                        writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("BACKUP CONTAINS FAILED TITLES"));
+                    } else 
+                        writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("PARTIAL BACKUP - USER ABORTED"));
 
-                    showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+                    if (abortedBackup) {
+                        BackupSetList::setIsInitializationRequired(false);
+                        if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),LanguageUtils::gettext("Do you want to wipe this incomplete batch backup?"))) {
+                        InProgress::totalSteps = InProgress::currentStep = 1;
+                        InProgress::titleName.assign(batchDatetime);
+                        if ( ! wipeBackupSet("/batch/"+batchDatetime, true))
+                                BackupSetList::setIsInitializationRequired(true);
+                        }
+                    } else {
+                        summarizeBackupCounters  (this->wiiutitles, this->wiiuTitlesCount,titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+                        summarizeBackupCounters  (this->wiititles, this->vWiiTitlesCount,titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+
+                        showBatchStatusCounters(titlesOK,titlesAborted,titlesWarning,titlesKO,titlesSkipped,titlesNotInitialized,failedTitles);
+
+                    }
 
                     break;
                 case 1:
