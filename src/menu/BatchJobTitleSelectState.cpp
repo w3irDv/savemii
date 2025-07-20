@@ -641,6 +641,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     }
 
     InProgress::totalSteps = InProgress::currentStep = 0;
+    InProgress::abortTask = false;
     for (int i = 0; i < titlesCount ; i++) {
         if (! this->titles[i].currentDataSource.selectedToBeProcessed )
             continue;
@@ -786,11 +787,12 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         globalRetCode = globalRetCode + retCode;
         this->titles[i].currentDataSource.lastErrCode = globalRetCode;
 
-        Input input{};
-        input.read();
-        if (input.get(HOLD, PAD_BUTTON_L) && input.get(HOLD, PAD_BUTTON_MINUS))
+       if (InProgress::abortTask) {
             if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),taskAbortedByUser))
                 break;
+            else
+                InProgress::abortTask = false;
+       }
 
     }
 

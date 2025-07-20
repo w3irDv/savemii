@@ -83,6 +83,7 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
                 case 0:
                     InProgress::totalSteps = countTitlesToSave(this->wiiutitles, this->wiiuTitlesCount) + countTitlesToSave(this->wiititles, this->vWiiTitlesCount);
                     InProgress::currentStep = 0;
+                    InProgress::abortTask = false;
         
                     wiiU_backup_failed_counter = backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime);
                     if (wiiU_backup_failed_counter == -1)

@@ -210,8 +210,16 @@ static void showFileOperation(const std::string &file_name, const std::string &f
     consolePrintPos(-2, 1, LanguageUtils::gettext("Copying file: %s"), file_name.c_str());
     consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: %s"), file_src.c_str());
     consolePrintPosMultiline(-2, 10, LanguageUtils::gettext("To: %s"), file_dest.c_str());
-    if (InProgress::totalSteps > 1 )
-        consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Abort:\ue083+\ue046"));
+    if (InProgress::totalSteps > 1) {
+        if (InProgress::abortTask) {
+            DrawUtils::setFontColor(COLOR_LIST_DANGER);
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Will abort..."));
+        } else {
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Abort:\ue083+\ue046"));
+        } 
+    }
+    DrawUtils::setFontColor(COLOR_TEXT);
 }
 
 int32_t loadFile(const char *fPath, uint8_t **buf) {
@@ -986,9 +994,15 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
                     closedir(dir);
                     return false;
                 }
-            }
+            } 
         }
         errno = 0;
+        if (InProgress::totalSteps > 1) {
+            InProgress::input->read();
+            if (InProgress::input->get(HOLD, PAD_BUTTON_L) && InProgress::input->get(HOLD, PAD_BUTTON_MINUS)) {
+                InProgress::abortTask = true;
+            }
+        }
     }
 
     if (errno != 0) {
@@ -1029,15 +1043,23 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) {
 #endif
 
 void showDeleteOperations(bool isFolder, const char *name, const std::string & path ) {
-        DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
-        consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
-        DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPos(-2, 1, isFolder ? 
-            LanguageUtils::gettext("Deleting folder %s"):LanguageUtils::gettext("Deleting file %s"), name);
-        consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), path.c_str());
-        if (InProgress::totalSteps > 1 )
-            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Abort:\ue083+\ue046"));
+    DrawUtils::setFontColor(COLOR_INFO);
+    consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
+    consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
+    DrawUtils::setFontColor(COLOR_TEXT);
+    consolePrintPos(-2, 1, isFolder ? 
+        LanguageUtils::gettext("Deleting folder %s"):LanguageUtils::gettext("Deleting file %s"), name);
+    consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), path.c_str());
+    if (InProgress::totalSteps > 1) {
+        if (InProgress::abortTask ) {
+            DrawUtils::setFontColor(COLOR_LIST_DANGER);
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Will abort..."));
+        } else {
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Abort:\ue083+\ue046")); 
+        } 
+    }
+    DrawUtils::setFontColor(COLOR_TEXT);
 }
 
 #ifndef MOCK
@@ -1076,6 +1098,11 @@ bool removeDir(const std::string &pPath) {
                 std::string multilinePath;
                 splitStringWithNewLines(tempPath,multilinePath);
                 promptError(LanguageUtils::gettext("Failed to delete file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+            }
+            if (InProgress::totalSteps > 1) {
+                    InProgress::input->read();
+                    if (InProgress::input->get(HOLD, PAD_BUTTON_L) && InProgress::input->get(HOLD, PAD_BUTTON_MINUS))
+                        InProgress::abortTask = true;
             }
         }
     }
@@ -1592,6 +1619,12 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
             errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Unable to rename folder \n'%s'to\n'%s'\n\n%s\n\nPlease restore the backup, fix errors and try again"),multilinePath.c_str(),dstPath.c_str(),strerror(errno));
             errorCode = 2;
         }
+        if (InProgress::totalSteps > 1) { // It's so fast that is unnecessary ...
+            InProgress::input->read();
+            if (InProgress::input->get(HOLD, PAD_BUTTON_L) && InProgress::input->get(HOLD, PAD_BUTTON_MINUS)) {
+                InProgress::abortTask = true;
+            }
+        }
     }
 
     flushVol(dstPath);
@@ -1705,11 +1738,12 @@ int backupAllSave(Title *titles, int count, const std::string & batchDatetime, b
                     titles[i].currentDataSource.selectedForBackup= false;
                     titlesOK++;
                                     
-                    Input input{};
-                    input.read();
-                    if (input.get(HOLD, PAD_BUTTON_L) && input.get(HOLD, PAD_BUTTON_MINUS))
+                    if (InProgress::abortTask) {
                         if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),LanguageUtils::gettext("Do you want to cancel batch backup?")))
                             return -1;
+                        else
+                            InProgress::abortTask = false;
+                    }
 
                     continue;
 
