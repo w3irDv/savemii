@@ -43,5 +43,8 @@ private:
     int targ = 0;
 
     bool noTitles = false;
-    static inline bool checkIdVsTitleNameBasedPath = true; 
+    static inline bool checkIdVsTitleNameBasedPath = true;
+
+    void moveDown(unsigned amount = 1, bool wrap = true);
+    void moveUp(unsigned amount = 1, bool wrap = true);
 };

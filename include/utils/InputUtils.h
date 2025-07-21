@@ -17,13 +17,14 @@ enum class Button {
     R,
     PLUS,
     MINUS,
-    ANY
+    ANY,
 };
 
 enum class ButtonState {
     TRIGGER,
+    HOLD,
     REPEAT,
-    RELEASE
+    RELEASE,
 };
 
 class Input {

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <coreinit/debug.h>
 #include <cstring>
 #include <menu/TitleTaskState.h>
@@ -143,23 +144,13 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
 
         }
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
-            if (this->titlesCount <= MAX_TITLE_SHOW)
-                cursorPos = (cursorPos + 1) % this->titlesCount;
-            else if (cursorPos < MAX_WINDOW_SCROLL)
-                cursorPos++;
-            else if (((cursorPos + this->scroll + 1) % this->titlesCount) != 0)
-                scroll++;
-            else
-                cursorPos = scroll = 0;
+            moveDown();
         } else if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP) ) {
-            if (scroll > 0)
-                cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
-            else if (cursorPos > 0)
-                cursorPos--;
-            else if (this->titlesCount > MAX_TITLE_SHOW)
-                scroll = this->titlesCount - (cursorPos = MAX_WINDOW_SCROLL) - 1;
-            else
-                cursorPos = this->titlesCount - 1;
+            moveUp();
+        } else if (input->get(ButtonState::TRIGGER, Button::RIGHT) || input->get(ButtonState::REPEAT, Button::RIGHT)) {
+            moveDown(MAX_TITLE_SHOW / 2 - 1, false);
+        } else if (input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::REPEAT, Button::LEFT)) {
+            moveUp(MAX_TITLE_SHOW / 2 - 1, false);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
@@ -172,4 +163,40 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
         }
     }
     return SUBSTATE_RUNNING;
+}
+
+void TitleListState::moveDown(unsigned amount, bool wrap)
+{
+    while (amount--) {
+        if (titlesCount <= MAX_TITLE_SHOW) {
+            if (wrap)
+                cursorPos = (cursorPos + 1) % titlesCount;
+            else
+                cursorPos = std::min(cursorPos + 1, titlesCount - 1);
+        } else if (cursorPos < MAX_WINDOW_SCROLL)
+            cursorPos++;
+        else if (((cursorPos + scroll + 1) % titlesCount) != 0)
+            scroll++;
+        else if (wrap)
+            cursorPos = scroll = 0;
+    }
+}
+
+void TitleListState::moveUp(unsigned amount, bool wrap)
+{
+    while (amount--) {
+        if (scroll > 0)
+            cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
+        else if (cursorPos > 0)
+            cursorPos--;
+        else {
+            // cursorPos == 0
+            if (!wrap)
+                return;
+            if (titlesCount > MAX_TITLE_SHOW)
+                scroll = titlesCount - (cursorPos = MAX_WINDOW_SCROLL) - 1;
+            else
+                cursorPos = titlesCount - 1;
+        }
+    }
 }

@@ -38,15 +38,20 @@ bool Input::get(ButtonState state, Button button) const {
         switch (state) {
             case ButtonState::TRIGGER:
                 return status.trigger;
+            case ButtonState::HOLD:
+                if (is_vpad)
+                    return status.hold & ~my_VPAD_BUTTON_REPEAT;
+                else
+                    return status.hold & ~my_KPAD_BUTTON_REPEAT;
             case ButtonState::REPEAT:
                 if (is_vpad) {
                     if (status.hold & my_VPAD_BUTTON_REPEAT)
-                        return status.hold;
+                        return status.hold & ~my_VPAD_BUTTON_REPEAT;
                     else
                         return 0;
                 } else {
                     if (status.hold & my_KPAD_BUTTON_REPEAT)
-                        return status.hold;
+                        return status.hold & ~my_KPAD_BUTTON_REPEAT;
                     else
                         return 0;
                 }
