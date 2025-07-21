@@ -1713,11 +1713,14 @@ int backupAllSave(Title *titles, int count, const std::string & batchDatetime, b
 
     for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
         for (int i = 0; i < count; i++) {
-            if (!titles[i].saveInit)
-                continue;
             if (onlySelectedTitles)
                 if (! titles[i].currentDataSource.selectedForBackup)
-                    continue;       
+                    continue; 
+            if (!titles[i].saveInit) {
+                titles[i].currentDataSource.batchBackupState = OK;  // .. so the restore process will be tried, in case we have been called from batchRestore
+                titles[i].currentDataSource.selectedForBackup = false;
+                continue;
+            }      
             uint32_t highID = titles[i].noFwImg ? titles[i].vWiiHighID : titles[i].highID;
             uint32_t lowID = titles[i].noFwImg ? titles[i].vWiiLowID : titles[i].lowID;
             if (highID == 0 ||lowID == 0)
@@ -1738,7 +1741,7 @@ int backupAllSave(Title *titles, int count, const std::string & batchDatetime, b
                 if (copyDir(srcPath, dstPath)) {
                     writeMetadata(&titles[i],slot,isUSB,batchDatetime);
                     titles[i].currentDataSource.batchBackupState = OK;
-                    titles[i].currentDataSource.selectedForBackup= false;
+                    titles[i].currentDataSource.selectedForBackup = false;
                     titlesOK++;
                                     
                     if (InProgress::abortTask) {
