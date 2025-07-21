@@ -15,6 +15,7 @@ void Input::initialize() {
     WPADEnableURCC(1);
     KPADSetBtnRepeat(WPAD_CHAN_0, 0.5f, 0.1f);
     VPADSetBtnRepeat(VPAD_CHAN_0, 0.5f, 0.1f);
+    VPADSetCrossStickEmulationParamsL(VPAD_CHAN_0, 0.0f, 45.0f, 0.75f);
 }
 
 void Input::finalize() {
