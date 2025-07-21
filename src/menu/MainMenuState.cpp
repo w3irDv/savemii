@@ -54,7 +54,7 @@ void MainMenuState::render() {
 
 ApplicationState::eSubState MainMenuState::update(Input *input) {
     if (this->state == STATE_MAIN_MENU) {
-        if (input->get(TRIGGER, PAD_BUTTON_A)) {
+        if (input->get(ButtonState::TRIGGER, Button::A)) {
             switch (cursorPos) {
                 case 0:
                     this->state = STATE_DO_SUBSTATE;
@@ -97,14 +97,14 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     break;
             }
         }
-        if (input->get(TRIGGER, PAD_BUTTON_X)) {
+        if (input->get(ButtonState::TRIGGER, Button::X)) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<ConfigMenuState>();
         }
-        if (input->get(TRIGGER, PAD_BUTTON_UP))
+        if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP))
             if (--cursorPos == -1)
                 ++cursorPos;
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN))
+        if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN))
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
     } else if (this->state == STATE_DO_SUBSTATE) {

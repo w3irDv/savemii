@@ -331,7 +331,7 @@ void BatchJobOptions::render() {
 
 ApplicationState::eSubState BatchJobOptions::update(Input *input) {
     if (this->state == STATE_BATCH_JOB_OPTIONS_MENU) {
-        if (input->get(TRIGGER, PAD_BUTTON_A)) {        
+        if (input->get(ButtonState::TRIGGER, Button::A)) {        
             if ( (jobType == RESTORE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND)  && (source_user == -1 && totalNumberOfTitlesWithNonExistentProfiles > 0 && GlobalCfg::global->getDontAllowUndefinedProfiles())) {
                 std::string prompt = titlesWithUndefinedProfilesSummary+LanguageUtils::gettext("\nDo you want to continue?\n");
                 if (! promptConfirm((Style) (ST_YES_NO | ST_WARNING),prompt.c_str()))
@@ -340,13 +340,13 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<BatchJobTitleSelectState>(source_user, wiiu_user, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchJob, jobType);
         }
-        if (input->get(TRIGGER, PAD_BUTTON_B) || substate_return == true)
+        if (input->get(ButtonState::TRIGGER, Button::B) || substate_return == true)
             return SUBSTATE_RETURN;
-        if (input->get(TRIGGER, PAD_BUTTON_X)) {
+        if (input->get(ButtonState::TRIGGER, Button::X)) {
             promptMessage(COLOR_BG_WR,titlesWithUndefinedProfilesSummary.c_str());
             return SUBSTATE_RUNNING;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_UP)) {
+        if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
             if (--cursorPos < minCursorPos)
                 ++cursorPos;
             else {
@@ -359,7 +359,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
             }
             return SUBSTATE_RUNNING;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_DOWN)) {
+        if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
             else {
@@ -372,7 +372,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
             }
             return SUBSTATE_RUNNING;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
+        if (input->get(ButtonState::TRIGGER, Button::LEFT)) {
             switch(jobType) {
                 case RESTORE:
                 case WIPE_PROFILE:
@@ -431,7 +431,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                 common = false;
             return SUBSTATE_RUNNING;
         }
-        if (input->get(TRIGGER, PAD_BUTTON_RIGHT)) {
+        if (input->get(ButtonState::TRIGGER, Button::RIGHT)) {
             switch(jobType) {
                 case RESTORE:
                 case WIPE_PROFILE:

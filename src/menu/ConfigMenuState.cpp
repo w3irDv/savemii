@@ -26,7 +26,7 @@ void ConfigMenuState::render() {
     DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,2);
     consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Ask for backup dir conversion to titleName based format: %s"),
         GlobalCfg::global->askForBackupDirConversion ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
-    
+
     if (GlobalCfg::global->askForBackupDirConversion != TitleListState::getCheckIdVsTitleNameBasedPath()) {
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF+32, 7, LanguageUtils::gettext("   This session value: %s"),
@@ -46,15 +46,15 @@ void ConfigMenuState::render() {
 }
 
 ApplicationState::eSubState ConfigMenuState::update(Input *input) {
-    if (input->get(TRIGGER, PAD_BUTTON_B))
+    if (input->get(ButtonState::TRIGGER, Button::B))
         return SUBSTATE_RETURN;
-    if (input->get(TRIGGER, PAD_BUTTON_UP))
+    if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP))
             if (--cursorPos == -1)
                 ++cursorPos;
-    if (input->get(TRIGGER, PAD_BUTTON_DOWN))
+    if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN))
         if (++cursorPos == ENTRYCOUNT)
-                --cursorPos; 
-    if (input->get(TRIGGER, PAD_BUTTON_RIGHT)) {
+                --cursorPos;
+    if (input->get(ButtonState::TRIGGER, Button::RIGHT)) {
         switch (cursorPos) {
             case 0:
                 if (language == LanguageUtils::gettext("Japanese"))
@@ -90,7 +90,7 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
                 break;
         }
     }
-    if (input->get(TRIGGER, PAD_BUTTON_LEFT)) {
+    if (input->get(ButtonState::TRIGGER, Button::LEFT)) {
         switch (cursorPos) {
             case 0:
                 if (language == LanguageUtils::gettext("Japanese"))
@@ -126,7 +126,7 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
                 break;
         }
     }
-    if (input->get(TRIGGER, PAD_BUTTON_PLUS)) {
+    if (input->get(ButtonState::TRIGGER, Button::PLUS)) {
         if ( GlobalCfg::global->getConfig() ) {
             if (firstSDWrite)
                 sdWriteDisclaimer();
@@ -134,8 +134,8 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
                 promptMessage(COLOR_BG_OK,LanguageUtils::gettext("Configuration saved"));
             else
                 promptMessage(COLOR_BG_KO,LanguageUtils::gettext("Error saving configuration"));
-        } 
-        else 
+        }
+        else
             promptError(LanguageUtils::gettext("Error processing configuration"));
     }
     return SUBSTATE_RUNNING;
