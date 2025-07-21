@@ -9,12 +9,21 @@ extern "C"
 void KPADSetBtnRepeat(KPADChan channel,
                       float delay,
                       float period);
+extern "C"
+void KPADSetCrossStickEmulationParamsL(KPADChan channel,
+                                       float rotationDegree,
+                                       float range,
+                                       float period);
 
 void Input::initialize() {
     KPADInit();
+
     WPADEnableURCC(1);
+
     KPADSetBtnRepeat(WPAD_CHAN_0, 0.5f, 0.1f);
     VPADSetBtnRepeat(VPAD_CHAN_0, 0.5f, 0.1f);
+
+    KPADSetCrossStickEmulationParamsL(WPAD_CHAN_0, 0.0f, 45.0f, 0.75f);
     VPADSetCrossStickEmulationParamsL(VPAD_CHAN_0, 0.0f, 45.0f, 0.75f);
 }
 
