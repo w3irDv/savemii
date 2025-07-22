@@ -35,8 +35,14 @@ bool statDir(const std::string &entryPath,FILE *file) {
             entryType.append("E");
     if ((fsstatflags & FS_STAT_LINK) != 0)
             entryType.append("L");
-    if (fsstatflags == 0)
-            entryType.append("0");
+    if (fsstatflags == 0) {
+        struct stat path_stat;
+        stat(entryPath.c_str(), &path_stat);
+        if ( S_ISREG(path_stat.st_mode) != 0 )
+            entryType.append("0F");
+        else
+            entryType.append("00");
+    }
 
     fprintf (file,"%s %x %x:%x %llu %s\n",entryType.c_str(),fsmode,fsastat.owner,fsastat.group,fsastat.quotaSize, entryPath.c_str());
 
@@ -59,20 +65,6 @@ bool statDir(const std::string &entryPath,FILE *file) {
         closedir(dir);
     }
     return true;
-
-}
-
-void getStat() {
-                
-                std::string dir = "storage_usb01:/usr/save/00050000/10184e00/user/common";
-                FSAChangeMode(handle, newlibtoFSA(dir).c_str(), (FSMode) 0x642);
-                FSAFlushVolume(handle, "/vol/storage_usb01");
-                struct stat st;
-                mode_t perm;
-                stat(dir.c_str(),&st);
-                perm = st.st_mode;
-                promptError("mode %o\n%s",perm & 0777,strerror(errno));
-                DrawUtils::setRedraw(true);
 
 }
 
@@ -113,7 +105,7 @@ void statSaves(const Title &title) {
 
         fclose(file); 
 
-        showFile(statFilePath,path);
+        showFile(statFilePath,StringUtils::stringFormat("%s/%08x", path.c_str(), highID));
 
 }
 
@@ -139,7 +131,7 @@ void statTitle(const Title &title) {
     statDir(srcPath,file);
     fclose(file); 
 
-    showFile(statFilePath,path);
+    showFile(statFilePath,StringUtils::stringFormat("%s/%08x", path.c_str(), highID));
 }
 
 
