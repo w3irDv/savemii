@@ -76,8 +76,8 @@ static bool buffersInitialized = false;
 
 
 std::string newlibtoFSA(std::string path) {
-    if (path.rfind("storage_slccmpt01:", 0) == 0) {
-        StringUtils::replace(path, "storage_slccmpt01:", "/vol/storage_slccmpt01");
+    if (path.rfind("storage_slcc01:", 0) == 0) {
+        StringUtils::replace(path, "storage_slcc01:", "/vol/storage_slcc01");
     } else if (path.rfind("storage_mlc01:", 0) == 0) {
         StringUtils::replace(path, "storage_mlc01:", "/vol/storage_mlc01");
     } else if (path.rfind("storage_usb01:", 0) == 0) {
@@ -174,8 +174,7 @@ bool initFS() {
     if (ret)
         ret = Mocha_UnlockFSClientEx(handle) == MOCHA_RESULT_SUCCESS;
     if (ret) {
-        Mocha_MountFS("storage_slccmpt01", nullptr, "/vol/storage_slccmpt01"); // Fails if ftpiiu disabled
-        Mocha_MountFS("storage_slccmpt01", "/dev/slccmpt01", "/vol/storage_slccmpt01"); // Fails if ftpiiu enabled
+        Mocha_MountFS("storage_slcc01", "/dev/slccmpt01", "/vol/storage_slcc01"); // Avoid name clash with ftpiiu
         Mocha_MountFS("storage_mlc01", nullptr, "/vol/storage_mlc01");
         Mocha_MountFS("storage_usb01", nullptr, "/vol/storage_usb01");
         Mocha_MountFS("storage_usb02", nullptr, "/vol/storage_usb02");
@@ -189,7 +188,7 @@ bool initFS() {
 }
 
 void shutdownFS() {
-    Mocha_UnmountFS("storage_slccmpt01");
+    Mocha_UnmountFS("storage_slcc01");
     Mocha_UnmountFS("storage_mlc01");
     Mocha_UnmountFS("storage_usb01");
     Mocha_UnmountFS("storage_usb02");
@@ -278,7 +277,7 @@ int32_t loadTitleIcon(Title *title) {
 
     if (isWii) {
         if (title->saveInit) {
-            path = StringUtils::stringFormat("storage_slccmpt01:/title/%08x/%08x/data/banner.bin", highID, lowID);
+            path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/data/banner.bin", highID, lowID);
             return loadFilePart(path.c_str(), 0xA0, 24576, &title->iconBuf);
         }
     } else {
@@ -741,7 +740,7 @@ void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
         case PROFILE_TO_PROFILE:
         case MOVE_PROFILE:
         case COPY_TO_OTHER_DEVICE:
-            std::string path = (title->is_Wii ? "storage_slccmpt01:/title" : (title->isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            std::string path = (title->is_Wii ? "storage_slcc01:/title" : (title->isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), title->highID, title->lowID, title->is_Wii ? "data" : "user");
             break;
     }
@@ -1282,7 +1281,7 @@ bool hasProfileSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
         }
     } else {
         if (!inSD) {
-            sprintf(srcPath, "storage_slccmpt01:/title/%08x/%08x/data", highID, lowID);
+            sprintf(srcPath, "storage_slcc01:/title/%08x/%08x/data", highID, lowID);
         } else {
             strcpy(srcPath, getDynamicBackupPath(title, slot).c_str());
         }
@@ -1332,7 +1331,7 @@ bool hasSavedata(Title *title, bool inSD, uint8_t slot) {
     std::string srcPath;
 
     if (!inSD) {
-        const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+        const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     } else
         srcPath = getDynamicBackupPath(title, slot);
@@ -1729,7 +1728,7 @@ int backupAllSave(Title *titles, int count, const std::string & batchDatetime, b
             InProgress::titleName.assign(titles[i].shortName);     
             InProgress::currentStep++;
             uint8_t slot = getEmptySlot(&titles[i],batchDatetime);
-            const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
             std::string dstPath = getBatchBackupPath(&titles[i],slot,batchDatetime);
 
@@ -1790,7 +1789,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
     bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
     bool isWii = title->is_Wii || title->noFwImg;
-    const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     //std::string dstPath = getDynamicBackupPath(highID, lowID, slot);
     std::string dstPath = getDynamicBackupPath(title, slot);
@@ -1887,7 +1886,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     bool isWii = title->is_Wii || title->noFwImg;
     std::string srcPath;
     srcPath = getDynamicBackupPath(title, slot);
-    const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
@@ -2090,7 +2089,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     std::string srcPath;
     std::string commonPath;
     std::string path;
-    path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save") : "storage_mlc01:/usr/save"));
+    path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save") : "storage_mlc01:/usr/save"));
     srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     commonPath = srcPath + "/common";
  
@@ -2693,8 +2692,8 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
 
 void flushVol(const std::string & dstPath) {
 
-    if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
+    if (dstPath.rfind("storage_slcc01:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_slcc01");
     } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
         FSAFlushVolume(handle, "/vol/storage_mlc01");
     } else if (dstPath.rfind("storage_usb01:", 0) == 0) {

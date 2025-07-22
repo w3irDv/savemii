@@ -84,7 +84,7 @@ void statSaves(const Title &title) {
         bool isUSB = title.isTitleOnUSB;
         bool isWii = title.is_Wii;
 
-        std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+        std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
         
         statDir(srcPath,file);
@@ -97,7 +97,7 @@ void statSaves(const Title &title) {
             isUSB = title.noFwImg ? false : title.isTitleOnUSB;
             isWii = title.is_Wii || title.noFwImg;
 
-            path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
         
             statDir(srcPath,file);
@@ -125,7 +125,7 @@ void statTitle(const Title &title) {
     bool isUSB = title.isTitleOnUSB;
     bool isWii = title.is_Wii;
 
-    const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title"));
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
     
     statDir(srcPath,file);

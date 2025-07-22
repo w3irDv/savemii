@@ -81,7 +81,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
             case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                std::string path = ( isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+                std::string path = ( isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
                 srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
                 break;
         }

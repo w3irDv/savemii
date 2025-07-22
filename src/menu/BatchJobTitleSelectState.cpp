@@ -73,7 +73,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
             case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                std::string path = ( isWii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+                std::string path = ( isWii ? "storage_slcc01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
                 srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, isWii ? "data" : "user");
                 break;
         }
