@@ -10,6 +10,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          submodules: true
       - name: Docker Layer Caching
         uses: ScribeMD/docker-cache@0.5.0
         continue-on-error: true

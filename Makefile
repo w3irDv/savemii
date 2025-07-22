@@ -53,19 +53,19 @@ CXXFLAGS	:= -std=gnu++20 -g -Wall -Wno-switch -Wno-format-overflow -Ofast -fperm
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) $(RPXSPECS) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lwut -lmocha -ljansson
+LIBS	:= -lromfs-wiiu -lwut -lmocha -ljansson
 
-include $(PORTLIBS_PATH)/wiiu/share/romfs-wiiu.mk
-CFLAGS		+=	$(ROMFS_CFLAGS)
-CXXFLAGS	+=	$(ROMFS_CFLAGS)
-LIBS		+=	$(ROMFS_LIBS)
-OFILES		+=	$(ROMFS_TARGET)
+# Use the libromfs-wiiu submodule.
+EXTERNAL_LIBROMFS_WIIU_DIR := $(TOPDIR)/external/libromfs-wiiu
+include $(EXTERNAL_LIBROMFS_WIIU_DIR)/share/romfs-wiiu.mk
+
+OFILES += $(ROMFS_TARGET)
 
 #-------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level
 # containing include and lib
 #-------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(WUT_ROOT) $(WUT_ROOT)/usr
+LIBDIRS	:= $(EXTERNAL_LIBROMFS_WIIU_DIR) $(PORTLIBS) $(WUT_ROOT) $(WUT_ROOT)/usr
 
 #-------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -147,11 +147,13 @@ all: $(BUILD)
 
 $(BUILD):
 	@$(shell [ ! -d $(BUILD) ] && mkdir -p $(BUILD))
+	@$(MAKE) -C $(EXTERNAL_LIBROMFS_WIIU_DIR)
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 #-------------------------------------------------------------------------------
 clean:
 	@echo clean ...
+	@$(MAKE) -C $(EXTERNAL_LIBROMFS_WIIU_DIR) clean
 	@rm -fr $(BUILD) $(TARGET).wuhb $(TARGET).rpx $(TARGET).elf SaveMiiModWUTPort *.zip
 
 #-------------------------------------------------------------------------------
