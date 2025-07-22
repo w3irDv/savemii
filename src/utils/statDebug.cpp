@@ -19,9 +19,11 @@ bool statDir(const std::string &entryPath,FILE *file) {
     FSMode fsmode;
     FSStatFlags fsstatflags;
     FSError fserror = FSAGetStat(handle, newlibtoFSA(entryPath).c_str(), &fsastat);
-    if ( fserror != FS_ERROR_OK ) 
+    if ( fserror != FS_ERROR_OK )  {
+        promptMessage(COLOR_BG_ERROR,"FSAGestatst errorn\n%s\n%s",FSAGetStatusStr(fserror),newlibtoFSA(entryPath).c_str());
         return false;
-    fsmode = fsastat.mode;
+    }
+    
     fsstatflags = fsastat.flags;
 
     std::string entryType {};
@@ -43,6 +45,8 @@ bool statDir(const std::string &entryPath,FILE *file) {
         else
             entryType.append("00");
     }
+
+    fsmode = fsastat.mode;
 
     fprintf (file,"%s %x %x:%x %llu %s\n",entryType.c_str(),fsmode,fsastat.owner,fsastat.group,fsastat.quotaSize, entryPath.c_str());
 
@@ -84,7 +88,7 @@ void statSaves(const Title &title) {
         bool isUSB = title.isTitleOnUSB;
         bool isWii = title.is_Wii;
 
-        std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+        std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
         
         statDir(srcPath,file);
@@ -97,7 +101,7 @@ void statSaves(const Title &title) {
             isUSB = title.noFwImg ? false : title.isTitleOnUSB;
             isWii = title.is_Wii || title.noFwImg;
 
-            path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
         
             statDir(srcPath,file);
@@ -125,7 +129,7 @@ void statTitle(const Title &title) {
     bool isUSB = title.isTitleOnUSB;
     bool isWii = title.is_Wii;
 
-    const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title"));
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
     
     statDir(srcPath,file);
