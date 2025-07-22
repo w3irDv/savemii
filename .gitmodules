@@ -1,0 +1,6 @@
+[submodule "external/libromfs-wiiu"]
+	path = external/libromfs-wiiu
+	url = https://github.com/yawut/libromfs-wiiu.git
+[submodule "external/libmocha"]
+	path = external/libmocha
+	url = https://github.com/wiiu-env/libmocha.git
