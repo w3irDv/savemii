@@ -58,14 +58,19 @@ LIBS	:= -lromfs-wiiu -lwut -lmocha -ljansson
 # Use the libromfs-wiiu submodule.
 EXTERNAL_LIBROMFS_WIIU_DIR := $(TOPDIR)/external/libromfs-wiiu
 include $(EXTERNAL_LIBROMFS_WIIU_DIR)/share/romfs-wiiu.mk
-
 OFILES += $(ROMFS_TARGET)
+
+# Use the libmocha submodule.
+EXTERNAL_LIBMOCHA_DIR := $(TOPDIR)/external/libmocha
 
 #-------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level
 # containing include and lib
 #-------------------------------------------------------------------------------
-LIBDIRS	:= $(EXTERNAL_LIBROMFS_WIIU_DIR) $(PORTLIBS) $(WUT_ROOT) $(WUT_ROOT)/usr
+LIBDIRS	:= 	$(EXTERNAL_LIBROMFS_WIIU_DIR) \
+		$(EXTERNAL_LIBMOCHA_DIR) \
+		$(PORTLIBS) \
+		$(WUT_ROOT)
 
 #-------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -146,15 +151,17 @@ endif
 all: $(BUILD)
 
 $(BUILD):
+	@$(MAKE) --no-print-directory -C $(EXTERNAL_LIBROMFS_WIIU_DIR)
+	@$(MAKE) --no-print-directory -C $(EXTERNAL_LIBMOCHA_DIR)
 	@$(shell [ ! -d $(BUILD) ] && mkdir -p $(BUILD))
-	@$(MAKE) -C $(EXTERNAL_LIBROMFS_WIIU_DIR)
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 #-------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@$(MAKE) -C $(EXTERNAL_LIBROMFS_WIIU_DIR) clean
 	@rm -fr $(BUILD) $(TARGET).wuhb $(TARGET).rpx $(TARGET).elf SaveMiiModWUTPort *.zip
+	@$(MAKE) --no-print-directory -C $(EXTERNAL_LIBROMFS_WIIU_DIR) clean
+	@$(MAKE) --no-print-directory -C $(EXTERNAL_LIBMOCHA_DIR) clean
 
 #-------------------------------------------------------------------------------
 release: $(BUILD)
