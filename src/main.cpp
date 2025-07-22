@@ -283,7 +283,7 @@ static Title *loadWiiUTitles(int run) {
             titles[wiiuTitlesCount].noFwImg = true;
             titles[wiiuTitlesCount].is_Inject = true;
             for (uint32_t vWiiHighID : vWiiHighIDs) {
-                std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
+                std::string path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
                 if (checkEntry(path.c_str()) == 1) {
                     titles[wiiuTitlesCount].saveInit=true;
                     titles[wiiuTitlesCount].vWiiHighID = vWiiHighID;
@@ -354,7 +354,7 @@ static Title *loadWiiTitles() {
 
     std::string pathW;
     for (auto &highID : highIDs) {
-        pathW = StringUtils::stringFormat("storage_slccmpt01:/title/%s", highID);
+        pathW = StringUtils::stringFormat("storage_slcc01:/title/%s", highID);
         DIR *dir = opendir(pathW.c_str());
         if (dir != nullptr) {
             struct dirent *data;
@@ -388,7 +388,7 @@ static Title *loadWiiTitles() {
 
     int i = 0;
     for (auto &highID : highIDs) {
-        pathW = StringUtils::stringFormat("storage_slccmpt01:/title/%s", highID);
+        pathW = StringUtils::stringFormat("storage_slcc01:/title/%s", highID);
         DIR *dir = opendir(pathW.c_str());
         if (dir != nullptr) {
             struct dirent *data;
@@ -406,7 +406,7 @@ static Title *loadWiiTitles() {
                     continue;
                 }
 
-                const std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%s/%s/data/banner.bin",
+                const std::string path = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/data/banner.bin",
                                                                    highID, data->d_name);
                 bool hasBanner = false;
                 FILE *file = fopen(path.c_str(), "rb");
@@ -464,7 +464,7 @@ static Title *loadWiiTitles() {
                     hasBanner = false;
                 }
 
-                const std::string tmdPath = StringUtils::stringFormat("storage_slccmpt01:/title/%s/%s/content/title.tmd",
+                const std::string tmdPath = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/content/title.tmd",
                                                                    highID, data->d_name);
                 if (checkEntry(tmdPath.c_str()) == 1)
                     titles[i].saveInit = true;
