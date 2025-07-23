@@ -10,7 +10,8 @@
 #include <utils/Colors.h>
 #include <coreinit/debug.h>
 
-#define MAX_ROWS_SHOW 14
+#define MAX_TITLE_SHOW 14
+#define MAX_WINDOW_SCROLL 6
 
 int BackupSetListState::cursorPos = 0;
 int BackupSetListState::scroll = 0;
@@ -73,7 +74,7 @@ void BackupSetListState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPosAligned(0,4,2, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
                             this->sortAscending ? "\u2191" : "\u2193");
-        for (int i = 0; i < MAX_ROWS_SHOW; i++) {
+        for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + scroll < 0 || i + scroll >= BackupSetList::currentBackupSetList->entriesView)
                 break;
             backupSetItem = BackupSetList::currentBackupSetList->at(i + scroll);
@@ -152,26 +153,23 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
-            if (BackupSetList::currentBackupSetList->entriesView <= MAX_ROWS_SHOW)
-                cursorPos = (cursorPos + 1) % BackupSetList::currentBackupSetList->entriesView;
-            else if (cursorPos < 6)
-                cursorPos++;
-            else if (((cursorPos + scroll + 1) % BackupSetList::currentBackupSetList->entriesView) != 0)
-                scroll++;
-            else
-                cursorPos = scroll = 0;
+            moveDown();
             tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
             newTag = tag;
         }
         if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
-            if (scroll > 0)
-                cursorPos -= (cursorPos > 6) ? 1 : 0 * (scroll--);
-            else if (cursorPos > 0)
-                cursorPos--;
-            else if (BackupSetList::currentBackupSetList->entriesView > MAX_ROWS_SHOW)
-                scroll = BackupSetList::currentBackupSetList->entriesView - (cursorPos = 6) - 1;
-            else
-                cursorPos = BackupSetList::currentBackupSetList->entriesView - 1;
+            moveUp();
+            tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
+            newTag = tag;
+        }
+        if (input->get(ButtonState::TRIGGER, Button::RIGHT) || input->get(ButtonState::REPEAT, Button::RIGHT)
+                        || input->get(ButtonState::TRIGGER, Button::ZR) || input->get(ButtonState::REPEAT, Button::ZR)) {
+            moveDown(MAX_TITLE_SHOW / 2 - 1, false);
+            tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
+            newTag = tag;
+        } else if (input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::REPEAT, Button::LEFT)
+                        ||input->get(ButtonState::TRIGGER, Button::ZL) || input->get(ButtonState::REPEAT, Button::ZL)) {
+            moveUp(MAX_TITLE_SHOW / 2 - 1, false);
             tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos+scroll);
             newTag = tag;
         }
@@ -233,4 +231,40 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         }
     }
     return SUBSTATE_RUNNING;
+}
+
+void BackupSetListState::moveDown(unsigned amount, bool wrap)
+{
+    while (amount--) {
+        if (BackupSetList::currentBackupSetList->entriesView <= MAX_TITLE_SHOW) {
+            if (wrap)
+                cursorPos = (cursorPos + 1) % BackupSetList::currentBackupSetList->entriesView;
+            else
+                cursorPos = std::min(cursorPos + 1, BackupSetList::currentBackupSetList->entriesView - 1);
+        } else if (cursorPos < MAX_WINDOW_SCROLL)
+            cursorPos++;
+        else if (((cursorPos + scroll + 1) % BackupSetList::currentBackupSetList->entriesView) != 0)
+            scroll++;
+        else if (wrap)
+            cursorPos = scroll = 0;
+    }
+}
+
+void BackupSetListState::moveUp(unsigned amount, bool wrap)
+{
+    while (amount--) {
+        if (scroll > 0)
+            cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
+        else if (cursorPos > 0)
+            cursorPos--;
+        else {
+            // cursorPos == 0
+            if (!wrap)
+                return;
+            if (BackupSetList::currentBackupSetList->entriesView > MAX_TITLE_SHOW)
+                scroll = BackupSetList::currentBackupSetList->entriesView - (cursorPos = MAX_WINDOW_SCROLL) - 1;
+            else
+                cursorPos = BackupSetList::currentBackupSetList->entriesView - 1;
+        }
+    }
 }

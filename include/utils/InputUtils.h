@@ -15,6 +15,8 @@ enum class Button {
     RIGHT,
     L,
     R,
+    ZL,
+    ZR,
     PLUS,
     MINUS,
     ANY,

@@ -423,25 +423,18 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
-            if (this->candidatesCount <= MAX_TITLE_SHOW )
-                cursorPos = (cursorPos + 1) % this->candidatesCount;
-            else if (cursorPos < MAX_WINDOW_SCROLL)
-                cursorPos++;
-            else if (((cursorPos + this->scroll + 1) % this->candidatesCount) != 0)
-                scroll++;
-            else
-                cursorPos = scroll = 0;
+            moveDown();
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
-            if (scroll > 0)
-                cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
-            else if (cursorPos > 0)
-                cursorPos--;
-            else if (this->candidatesCount > MAX_TITLE_SHOW )
-                scroll = this->candidatesCount - (cursorPos = MAX_WINDOW_SCROLL) - 1;
-            else
-                cursorPos = this->candidatesCount - 1;
+            moveUp();
+            return SUBSTATE_RUNNING;
+        }
+        if (input->get(ButtonState::TRIGGER, Button::ZR) || input->get(ButtonState::REPEAT, Button::ZR)) {
+            moveDown(MAX_TITLE_SHOW / 2 - 1, false);
+            return SUBSTATE_RUNNING;
+        } else if (input->get(ButtonState::TRIGGER, Button::ZL) || input->get(ButtonState::REPEAT, Button::ZL)) {
+            moveUp(MAX_TITLE_SHOW / 2 - 1, false);
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::Y) || input->get(ButtonState::TRIGGER, Button::RIGHT) || input->get(ButtonState::TRIGGER, Button::LEFT)) {
@@ -509,6 +502,42 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
         }
     }
     return SUBSTATE_RUNNING;
+}
+
+void BatchJobTitleSelectState::moveDown(unsigned amount, bool wrap)
+{
+    while (amount--) {
+        if (candidatesCount <= MAX_TITLE_SHOW) {
+            if (wrap)
+                cursorPos = (cursorPos + 1) % candidatesCount;
+            else
+                cursorPos = std::min(cursorPos + 1, candidatesCount - 1);
+        } else if (cursorPos < MAX_WINDOW_SCROLL)
+            cursorPos++;
+        else if (((cursorPos + scroll + 1) % candidatesCount) != 0)
+            scroll++;
+        else if (wrap)
+            cursorPos = scroll = 0;
+    }
+}
+
+void BatchJobTitleSelectState::moveUp(unsigned amount, bool wrap)
+{
+    while (amount--) {
+        if (scroll > 0)
+            cursorPos -= (cursorPos > MAX_WINDOW_SCROLL) ? 1 : 0 * (scroll--);
+        else if (cursorPos > 0)
+            cursorPos--;
+        else {
+            // cursorPos == 0
+            if (!wrap)
+                return;
+            if (candidatesCount > MAX_TITLE_SHOW)
+                scroll = candidatesCount - (cursorPos = MAX_WINDOW_SCROLL) - 1;
+            else
+                cursorPos = candidatesCount - 1;
+        }
+    }
 }
 
 void BatchJobTitleSelectState::executeBatchProcess() {

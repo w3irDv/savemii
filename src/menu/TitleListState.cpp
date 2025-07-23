@@ -67,7 +67,7 @@ void TitleListState::render() {
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(isWiiU ? -1 : -3, 2 + cursorPos, "\u2192");
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Game  \ue001: Back"));
+        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Game   \ue085\ue07e\ue086: Paging   \ue001: Back"));
     }
 }
 
@@ -148,9 +148,11 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
             moveDown();
         } else if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP) ) {
             moveUp();
-        } else if (input->get(ButtonState::TRIGGER, Button::RIGHT) || input->get(ButtonState::REPEAT, Button::RIGHT)) {
+        } else if (input->get(ButtonState::TRIGGER, Button::RIGHT) || input->get(ButtonState::REPEAT, Button::RIGHT)
+                        || input->get(ButtonState::TRIGGER, Button::ZR) || input->get(ButtonState::REPEAT, Button::ZR)) {
             moveDown(MAX_TITLE_SHOW / 2 - 1, false);
-        } else if (input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::REPEAT, Button::LEFT)) {
+        } else if (input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::REPEAT, Button::LEFT)
+                        || input->get(ButtonState::TRIGGER, Button::ZL) || input->get(ButtonState::REPEAT, Button::ZL)) {
             moveUp(MAX_TITLE_SHOW / 2 - 1, false);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
