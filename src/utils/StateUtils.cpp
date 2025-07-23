@@ -23,13 +23,13 @@ void State::init() {
 }
 
 uint32_t
-State::ConsoleProcCallbackAcquired(void *context)
+State::ConsoleProcCallbackAcquired(void * /*context*/)
 {
     return DrawUtils::initScreen();
 }
 
 uint32_t
-State::ConsoleProcCallbackReleased(void *context)
+State::ConsoleProcCallbackReleased(void * /*context*/)
 {
     return DrawUtils::deinitScreen();
 }

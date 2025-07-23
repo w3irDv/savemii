@@ -7,38 +7,14 @@
 
 class TitleOptionsState : public ApplicationState {
 public:
-    TitleOptionsState(Title title, eJobType task, int *versionList, int8_t source_user,int8_t wiiu_user, bool common, Title *titles, int titleCount) :
-            title(title),
-            task(task),
-            versionList(versionList),
-            source_user(source_user),
-            wiiu_user(wiiu_user),
-            common(common),
-            titles(titles),
-            titleCount(titleCount) {
-
-                wiiUAccountsTotalNumber = getWiiUAccn();
-                sourceAccountsTotalNumber = getVolAccn();
-                this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
-                switch (task) {
-                    case BACKUP:
-                        updateBackupData();
-                        break;
-                    case RESTORE:
-                        updateRestoreData();
-                        break;
-                    case COPY_TO_OTHER_DEVICE:
-                        updateCopyToOtherDeviceData();
-                        break;
-                    case WIPE_PROFILE:
-                        updateWipeProfileData();
-                        break;
-                    case MOVE_PROFILE:
-                    case PROFILE_TO_PROFILE:
-                        updateMoveCopyProfileData();
-                        break;
-                }
-            }
+    TitleOptionsState(Title title,
+                      eJobType task,
+                      int *versionList,
+                      int8_t source_user,
+                      int8_t wiiu_user,
+                      bool common,
+                      Title *titles,
+                      int titleCount);
 
     enum eState {
         STATE_TITLE_OPTIONS,

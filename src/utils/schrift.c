@@ -5,7 +5,7 @@
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -331,8 +331,8 @@ int sft_render(const SFT *sft, SFT_Glyph glyph, SFT_Image image) {
     if (glyph_bbox(sft, outline, bbox) < 0)
         return -1;
     /* Set up the transformation matrix such that
-	 * the transformed bounding boxes min corner lines
-	 * up with the (0, 0) point. */
+         * the transformed bounding boxes min corner lines
+         * up with the (0, 0) point. */
     transform[0] = sft->xScale / sft->font->unitsPerEm;
     transform[1] = 0.0;
     transform[2] = 0.0;
@@ -702,7 +702,7 @@ cmap_fmt4(SFT_Font *font, uint_fast32_t table, SFT_UChar charCode, SFT_Glyph *gl
     if (!is_safe_offset(font, idRangeOffsets, segCountX2))
         return -1;
     /* Find the segment that contains shortCode by binary searching over
-	 * the highest codes in the segments. */
+         * the highest codes in the segments. */
     segPtr = csearch(key, font->memory + endCodes, segCountX2 / 2, 2, cmpu16);
     segIdxX2 = (uint_fast32_t) (segPtr - (font->memory + endCodes));
     /* Look up segment info from the arrays & short circuit if the spec requires. */
@@ -1011,7 +1011,7 @@ decode_contour(uint8_t *flags, uint_fast16_t basePoint, uint_fast16_t count, Out
     unsigned int gotCtrl;
 
     /* Skip contours with less than two points, since the following algorithm can't handle them and
-	 * they should appear invisible either way (because they don't have any area). */
+         * they should appear invisible either way (because they don't have any area). */
     if (count < 2) return 0;
 
     assert(basePoint <= UINT16_MAX - count);
@@ -1037,9 +1037,9 @@ decode_contour(uint8_t *flags, uint_fast16_t basePoint, uint_fast16_t count, Out
         /* cur can't overflow because we ensure that basePoint + count < 0xFFFF before calling decode_contour(). */
         cur = (uint_least16_t) (basePoint + i);
         /* NOTE clang-analyzer will often flag this and another piece of code because it thinks that flags and
-		 * outl->points + basePoint don't always get properly initialized -- even when you explicitly loop over both
-		 * and set every element to zero (but not when you use memset). This is a known clang-analyzer bug:
-		 * http://clang-developers.42468.n3.nabble.com/StaticAnalyzer-False-positive-with-loop-handling-td4053875.html */
+                 * outl->points + basePoint don't always get properly initialized -- even when you explicitly loop over both
+                 * and set every element to zero (but not when you use memset). This is a known clang-analyzer bug:
+                 * http://clang-developers.42468.n3.nabble.com/StaticAnalyzer-False-positive-with-loop-handling-td4053875.html */
         if (flags[i] & POINT_IS_ON_CURVE) {
             if (gotCtrl) {
                 if (outl->numCurves >= outl->capCurves && grow_curves(outl) < 0)
@@ -1108,11 +1108,11 @@ simple_outline(SFT_Font *font, uint_fast32_t offset, unsigned int numContours, O
             goto failure;
     }
 
-    endPts = calloc(sizeof(uint_fast16_t), numContours);
+    endPts = calloc(numContours, sizeof(uint_fast16_t));
     if (endPts == NULL) {
         goto failure;
     }
-    flags = calloc(sizeof(uint8_t), numPts);
+    flags = calloc(numPts, sizeof(uint8_t));
     if (flags == NULL) {
         goto failure;
     }
@@ -1122,8 +1122,8 @@ simple_outline(SFT_Font *font, uint_fast32_t offset, unsigned int numContours, O
         offset += 2;
     }
     /* Ensure that endPts are never falling.
-	 * Falling endPts have no sensible interpretation and most likely only occur in malicious input.
-	 * Therefore, we bail, should we ever encounter such input. */
+         * Falling endPts have no sensible interpretation and most likely only occur in malicious input.
+         * Therefore, we bail, should we ever encounter such input. */
     for (i = 0; i < numContours - 1; ++i) {
         if (endPts[i + 1] < endPts[i] + 1)
             goto failure;
@@ -1210,9 +1210,9 @@ compound_outline(SFT_Font *font, uint_fast32_t offset, int recDepth, Outline *ou
             local[3] = 1.0;
         }
         /* At this point, Apple's spec more or less tells you to scale the matrix by its own L1 norm.
-		 * But stb_truetype scales by the L2 norm. And FreeType2 doesn't scale at all.
-		 * Furthermore, Microsoft's spec doesn't even mention anything like this.
-		 * It's almost as if nobody ever uses this feature anyway. */
+                 * But stb_truetype scales by the L2 norm. And FreeType2 doesn't scale at all.
+                 * Furthermore, Microsoft's spec doesn't even mention anything like this.
+                 * It's almost as if nobody ever uses this feature anyway. */
         if (outline_offset(font, glyph, &outline) < 0)
             return -1;
         if (outline) {
@@ -1259,9 +1259,9 @@ is_flat(Outline *outl, Curve curve) {
 static int
 tesselate_curve(Curve curve, Outline *outl) {
     /* From my tests I can conclude that this stack barely reaches a top height
-	 * of 4 elements even for the largest font sizes I'm willing to support. And
-	 * as space requirements should only grow logarithmically, I think 10 is
-	 * more than enough. */
+         * of 4 elements even for the largest font sizes I'm willing to support. And
+         * as space requirements should only grow logarithmically, I think 10 is
+         * more than enough. */
 #define STACK_SIZE 10
     Curve stack[STACK_SIZE];
     unsigned int top = 0;
@@ -1433,7 +1433,7 @@ render_outline(Outline *outl, double transform[6], SFT_Image image) {
 
     numPixels = (unsigned int) image.width * (unsigned int) image.height;
 
-    cells = calloc(sizeof(Cell), numPixels);
+    cells = calloc(numPixels, sizeof(Cell));
     if (!cells) {
         return -1;
     }

@@ -72,10 +72,13 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
             case PROFILE_TO_PROFILE:
             case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
-            case COPY_FROM_USB_TO_NAND:
+            case COPY_FROM_USB_TO_NAND: {
                 std::string path = ( this->titles[i].is_Wii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
                 srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, isWii ? "data" : "user");
                 break;
+            }
+            default:
+                ;
         }
 
         if (! isWii) {
@@ -590,6 +593,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                     case WIPE_PROFILE:
                         selectedUserInfo = StringUtils::stringFormat(taskDescription,getVolAcc()[source_user].miiName,getVolAcc()[source_user].persistentID);
                         break;
+                    default:
+                        ;
                 }
         }
         summary = StringUtils::stringFormat(summaryTemplate,
@@ -693,7 +698,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                         retCode = wipeSavedata(&targetTitle, -2, true, false);
                     bool targeHasProfileSavedata = hasProfileSave(&targetTitle,false,false,getWiiUAcc()[this->wiiu_user].pID, 0,0);
                     if (sourceTitle.currentDataSource.hasProfileSavedata && targeHasProfileSavedata) {
-                        switch(jobType) {
+                        switch (jobType) {
                             case RESTORE:
                             case PROFILE_TO_PROFILE:
                             case MOVE_PROFILE:
@@ -704,6 +709,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                             case WIPE_PROFILE:  // in this case we allow to delete users not created in the console, so we use source_user.
                                 retCode += wipeSavedata(&sourceTitle, source_user, false, false, USE_SD_OR_STORAGE_PROFILES);
                                 break;
+                            default:
+                                ;
                         }
                     }
                     break;

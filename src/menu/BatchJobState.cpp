@@ -118,6 +118,8 @@ ApplicationState::eSubState BatchJobState::update(Input *input) {
                     return SUBSTATE_RUNNING;
             }
             break;
+            default:
+                ;
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::B))

@@ -33,17 +33,17 @@ enum eBatchJobState {
     KO = 4
 };
 
-struct dataSourceInfo {
-    bool hasSavedata;
-    bool candidateToBeProcessed;
-    bool candidateForBackup;
-    bool selectedToBeProcessed;
-    bool selectedForBackup;
-    bool hasProfileSavedata;
-    bool hasCommonSavedata;
-    eBatchJobState batchJobState;
-    eBatchJobState batchBackupState;
-    int lastErrCode; 
+struct DataSourceInfo {
+    bool hasSavedata            = false;
+    bool candidateToBeProcessed = false;
+    bool candidateForBackup     = false;
+    bool selectedToBeProcessed  = false;
+    bool selectedForBackup      = false;
+    bool hasProfileSavedata     = false;
+    bool hasCommonSavedata      = false;
+    eBatchJobState batchJobState    = NOT_TRIED;
+    eBatchJobState batchBackupState = NOT_TRIED;
+    int lastErrCode = 0; 
 };
 
 enum eFileNameStyle {
@@ -70,7 +70,7 @@ struct Title {
     uint64_t accountSaveSize;
     uint64_t commonSaveSize;
     uint32_t groupID;
-    dataSourceInfo currentDataSource;
+    DataSourceInfo currentDataSource;
     char titleNameBasedDirName[256];
     eFileNameStyle fileNameStyle;
 };
