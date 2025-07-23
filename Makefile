@@ -13,9 +13,9 @@ TOPDIR ?= $(CURDIR)
 # APP_SHORTNAME sets the short name of the application
 # APP_AUTHOR sets the author of the application
 #-------------------------------------------------------------------------------
-APP_NAME	    := SaveMii WUT Port
-APP_SHORTNAME	    := SaveMii
-APP_AUTHOR	    := DaThinkingChair,w3irDv
+APP_NAME	    := SaveMii /ProcessMod
+APP_SHORTNAME	:= SaveMii
+APP_AUTHOR	    := Ryuzaki-MrL (mod by w3irDv)
 
 include $(DEVKITPRO)/wut/share/wut_rules
 
@@ -159,22 +159,22 @@ $(BUILD):
 #-------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).wuhb $(TARGET).rpx $(TARGET).elf SaveMiiModWUTPort *.zip
+	@rm -fr $(BUILD) $(TARGET).wuhb $(TARGET).rpx $(TARGET).elf SaveMiiProcessMod *.zip
 	@$(MAKE) --no-print-directory -C $(EXTERNAL_LIBROMFS_WIIU_DIR) clean
 	@$(MAKE) --no-print-directory -C $(EXTERNAL_LIBMOCHA_DIR) clean
 
 #-------------------------------------------------------------------------------
 release: $(BUILD)
-	@mkdir -p build/Aroma/wiiu/apps/SaveMiiModWUTPort
-	@mkdir -p build/HBL/wiiu/apps/SaveMiiModWUTPort
-	@rm -rf build/Aroma/wiiu/apps/SaveMiiModWUTPort/*
-	@rm -rf build/HBL/wiiu/apps/SaveMiiModWUTPort/*
-	@cp savemii.rpx build/HBL/wiiu/apps/SaveMiiModWUTPort
-	@cp meta/hbl/icon.png build/HBL/wiiu/apps/SaveMiiModWUTPort
-	@cp meta/hbl/meta.xml build/HBL/wiiu/apps/SaveMiiModWUTPort
-	@cp savemii.wuhb build/Aroma/wiiu/apps/SaveMiiModWUTPort
-	@zip -9 -r SaveMiiModWUTPort-HBL.zip build/HBL
-	@zip -9 -r SaveMiiModWUTPort-Aroma.zip build/Aroma
+	@mkdir -p build/Aroma/wiiu/apps/SaveMiiProcessMod
+	@mkdir -p build/HBL/wiiu/apps/SaveMiiProcessMod
+	@rm -rf build/Aroma/wiiu/apps/SaveMiiProcessMod/*
+	@rm -rf build/HBL/wiiu/apps/SaveMiiProcessMod/*
+	@cp savemii.rpx build/HBL/wiiu/apps/SaveMiiProcessMod
+	@cp meta/hbl/icon.png build/HBL/wiiu/apps/SaveMiiProcessMod
+	@cp meta/hbl/meta.xml build/HBL/wiiu/apps/SaveMiiProcessMod
+	@cp savemii.wuhb build/Aroma/wiiu/apps/SaveMiiProcessMod
+	@zip -9 -r SaveMiiProcessMod-HBL.zip build/HBL
+	@zip -9 -r SaveMiiProcessMod-Aroma.zip build/Aroma
 #-------------------------------------------------------------------------------
 else
 .PHONY:	all

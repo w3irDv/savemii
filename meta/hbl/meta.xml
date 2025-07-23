@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <app version="1">
-    <name>SaveMii WUT</name>
-    <coder>DaThinkingChair,w3irDv</coder>
-    <version>1.7.0</version>
-    <release_date>2025070700</release_date>
+    <name>SaveMii /ProcessMod</name>
+    <coder> Ryuzaki-MrL (mod by w3irDv)</coder>
+    <version>1.7.0i</version>
+    <release_date>2025072300</release_date>
     <short_description>WiiU/vWii Save Manager</short_description>
     <long_description>WiiU/vWii Save Manager
+
+        Original by Ryuzaki-MrL - Mod by GabyPCGeek - WUT Port by DaThinkingChair - /ProcessMod by w3irDv
 
         This homebrew allows you to backup your Wii U and vWii savegames to the SD card and then restore them. Can also
         copy saves from NAND<->USB if title is installed to both. Up to 256 backups can be made per title. Backups are

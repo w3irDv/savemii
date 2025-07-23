@@ -7,7 +7,7 @@
 
 **WiiU/vWii Save Manager**
 
-*Original by Ryuzaki-MrL >> WUT Port by xploit-U >> /ProcessMod and maintenance by w3irDv* 
+`Original by Ryuzaki-MrL - Mod by GabyPCGeek - WUT Port by DaThinkingChair - /ProcessMod by w3irDv.`
 
 This homebrew allows you to back up your Wii U and vWii saved games to the SD card and restore them later. 
 
@@ -23,7 +23,7 @@ Can also copy saves from NAND-USB if title is installed to both
 
 Move across screen by using Up/Down D-Pad buttons. Cycle between options by using Left/Right D-Pad buttons. `A` to select a task / enter a menu. `B` to go back to the previous menu. Special functions can be accessed by using `X`/`Y`/`+`/`-` buttons, as described at the bottom line in each menu.
 
-For sorting Titles press R to change sorting method and press L to change between descending and ascending.
+For sorting Titles press `R` to change sorting method and press `L` to change between descending and ascending.
 
 Use it at your own risk and please report any issues that may occur.
 
