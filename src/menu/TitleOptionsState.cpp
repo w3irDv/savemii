@@ -18,6 +18,48 @@ static bool showFolderInfo = false;
 
 static int offsetIfRestoreOrCopyToOtherDev = 0;
 
+TitleOptionsState::TitleOptionsState(Title title,
+                                     eJobType task,
+                                     int *versionList,
+                                     int8_t source_user,
+                                     int8_t wiiu_user,
+                                     bool common,
+                                     Title *titles,
+                                     int titleCount) :
+    title(title),
+    task(task),
+    versionList(versionList),
+    source_user(source_user),
+    wiiu_user(wiiu_user),
+    common(common),
+    titles(titles),
+    titleCount(titleCount) {
+
+    wiiUAccountsTotalNumber = getWiiUAccn();
+    sourceAccountsTotalNumber = getVolAccn();
+    this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
+    switch (task) {
+        case BACKUP:
+            updateBackupData();
+            break;
+        case RESTORE:
+            updateRestoreData();
+            break;
+        case COPY_TO_OTHER_DEVICE:
+            updateCopyToOtherDeviceData();
+            break;
+        case WIPE_PROFILE:
+            updateWipeProfileData();
+            break;
+        case MOVE_PROFILE:
+        case PROFILE_TO_PROFILE:
+            updateMoveCopyProfileData();
+            break;
+        default:
+            ;
+    }
+}
+
 void TitleOptionsState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
@@ -159,7 +201,7 @@ void TitleOptionsState::render() {
             }
             DrawUtils::setFontColor(COLOR_TEXT);
             offsetIfRestoreOrCopyToOtherDev = ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) ? 1 : 0;
-            switch(task) {
+            switch (task) {
                 case RESTORE:
                 case BACKUP:
                 case WIPE_PROFILE:
@@ -215,6 +257,8 @@ void TitleOptionsState::render() {
                         consolePrintPos(M_OFF, 7, LanguageUtils::gettext("No 'common' save found."));
                     }
                     break;
+                default:
+                    ;
             }
 
 
@@ -325,6 +369,8 @@ showIcon:   if (this->title.iconBuf != nullptr)
                 DrawUtils::setFontColor(COLOR_TEXT);
                 consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
                 break;
+            default:
+                ;
         }
     }
 }
@@ -656,6 +702,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     else
                         source_user_ = source_user;
                     break;
+                default:
+                    ;
             }
             switch (this->task) {
                 case BACKUP:
@@ -683,6 +731,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common,true,USE_SD_OR_STORAGE_PROFILES);
                     updateCopyToOtherDeviceData();
                     break;
+                default:
+                    ;
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::PLUS)) {

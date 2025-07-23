@@ -727,10 +727,13 @@ void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
         case WIPE_PROFILE:
         case PROFILE_TO_PROFILE:
         case MOVE_PROFILE:
-        case COPY_TO_OTHER_DEVICE:
+        case COPY_TO_OTHER_DEVICE: {
             std::string path = (title->is_Wii ? "storage_slccmpt01:/title" : (title->isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), title->highID, title->lowID, title->is_Wii ? "data" : "user");
             break;
+        }
+        default:
+            ;
     }
 
     DIR *dir = opendir(srcPath.c_str());
