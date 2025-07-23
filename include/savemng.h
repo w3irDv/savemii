@@ -34,16 +34,16 @@ enum eBatchJobState {
 };
 
 struct DataSourceInfo {
-    bool           hasSavedata            = false;
-    bool           candidateToBeProcessed = false;
-    bool           candidateForBackup     = false;
-    bool           selectedToBeProcessed  = false;
-    bool           selectedForBackup      = false;
-    bool           hasProfileSavedata     = false;
-    bool           hasCommonSavedata      = false;
-    eBatchJobState batchJobState          = NOT_TRIED;
-    eBatchJobState batchBackupState       = NOT_TRIED;
-    int lastErrCode                       = 0; 
+    bool hasSavedata            = false;
+    bool candidateToBeProcessed = false;
+    bool candidateForBackup     = false;
+    bool selectedToBeProcessed  = false;
+    bool selectedForBackup      = false;
+    bool hasProfileSavedata     = false;
+    bool hasCommonSavedata      = false;
+    eBatchJobState batchJobState    = NOT_TRIED;
+    eBatchJobState batchBackupState = NOT_TRIED;
+    int lastErrCode = 0; 
 };
 
 enum eFileNameStyle {
