@@ -803,7 +803,7 @@ static bool readThread(FILE *srcFile, LockingQueue<file_buffer> *ready, LockingQ
 
 int writeError;
 
-static bool writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, LockingQueue<file_buffer> *done, size_t totalSize) {
+static bool writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, LockingQueue<file_buffer> *done, size_t /*totalSize*/) {
     uint bytes_written;
     file_buffer currentBuffer{};
     ready->waitAndPop(currentBuffer);

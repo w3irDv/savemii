@@ -30,14 +30,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
     minCursorPos = isWiiUBatchJob ? 0 : (jobType != WIPE_PROFILE ? 3 : 4);
     cursorPos = minCursorPos;
     for (int i = 0; i<this->titlesCount; i++) {
-        this->titles[i].currentDataSource= {
-            .hasSavedata = false,
-            .candidateToBeProcessed = false,
-            .selectedToBeProcessed = false,
-            .hasProfileSavedata = false,
-            .hasCommonSavedata = false,
-            .batchJobState = NOT_TRIED
-        };
+        this->titles[i].currentDataSource = {};
         if (this->titles[i].highID == 0 || this->titles[i].lowID == 0)
             continue;
         if ( jobType != RESTORE )  // we allow restore for uninitializedTitles  ...

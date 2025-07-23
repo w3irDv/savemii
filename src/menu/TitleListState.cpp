@@ -129,6 +129,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                             break;
                         case Button::X:
                             checkIdVsTitleNameBasedPath = false;
+                            [[fallthrough]];
                         case Button::B:
                             if (isTitleUsingTitleNameBasedPath(&this->titles[targ]))
                                 promptMessage(COLOR_BLACK,LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them"),this->titles[targ].highID,this->titles[targ].lowID,this->titles[targ].titleNameBasedDirName);
