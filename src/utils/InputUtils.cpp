@@ -174,7 +174,7 @@ bool Input::get(ButtonState state, Button button) const {
         case Button::R:
             if (vpadState        & VPAD_BUTTON_R)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_R) return true;
-            if (kpadProState     & WPAD_PRO_BUTTON_ZR)     return true;
+            if (kpadProState     & WPAD_PRO_BUTTON_R)     return true;
             break;
         case Button::ZL:
             if (vpadState        & VPAD_BUTTON_ZL)         return true;
@@ -184,7 +184,7 @@ bool Input::get(ButtonState state, Button button) const {
         case Button::ZR:
             if (vpadState        & VPAD_BUTTON_ZR)         return true;
             if (kpadClassicState & WPAD_CLASSIC_BUTTON_ZR) return true;
-            if (kpadProState     & WPAD_PRO_BUTTON_R)     return true;
+            if (kpadProState     & WPAD_PRO_BUTTON_ZR)     return true;
             break;
         case Button::PLUS:
             if (vpadState        & VPAD_BUTTON_PLUS)         return true;
