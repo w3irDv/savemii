@@ -661,12 +661,12 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             if (! this->titles[i].currentDataSource.selectedToBeProcessed )
                 continue;
             if (!injectedFound && this->titles[i].is_Inject && jobType == RESTORE) {
-                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("You have selected some injected titles.\nIf its restore fails, try them again as a vWii title.\n\nContinue?")))
+                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("You have selected some injected titles.\nIf its restore fails, try them again as a vWii title.\n\nYou can continue.")))
                     return;
                 injectedFound = true;
             }
             if (!noInitFound && ! this->titles[i].saveInit && jobType == RESTORE) {
-                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("You have selected uninitialized titles.\nIf its restore fails, run the Game to create \nsome initial savedata and try again.\n\nContinue?")))
+                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("You have selected uninitialized titles.\nIf its restore fails, run the Game to create \nsome initial savedata and try again.\n\nYou can continue.")))
                 return;
                 noInitFound = true;
             }

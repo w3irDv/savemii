@@ -1501,6 +1501,8 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
                             goto end;
                         }
         errorCode += 32;
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + FSAGetStatusStr(fserror);
         // something has gone wrong
 error:
         errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
@@ -2016,6 +2018,8 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
                             goto end;
                         }
         errorCode += 32;
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + FSAGetStatusStr(fserror);
         // something has gone wrong
 error:
         errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
@@ -2036,7 +2040,7 @@ error:
         }
         
         titleTmdPath = titleTmdFolder + "/title.tmd";
-
+        FSError fserror;
         if (checkEntry(titleTmdPath.c_str()) != 1) {
             uint32_t wiiUHighID = title->highID;
             uint32_t wiiULowID = title->lowID;
@@ -2051,18 +2055,22 @@ error:
                 errorCode += 128;
                 goto errorVWii;
             }
-
-            FSError fserror;          
-            if (setOwnerAndMode(0,0,(FSMode) 0x664,lowIDPath,fserror))
-                if (setOwnerAndMode(0,0,(FSMode) 0x660,titleTmdFolder,fserror))
-                    if (FSAChangeMode(handle, newlibtoFSA(titleTmdPath).c_str(), (FSMode) 0x660) == FS_ERROR_OK) { // setting user:group to 0:0 returns error.
+          
+            if (setOwnerAndMode(0,0,(FSMode) 0x664,lowIDPath,fserror)) {
+                if (setOwnerAndMode(0,0,(FSMode) 0x660,titleTmdFolder,fserror)) {
+                    fserror = FSAChangeMode(handle, newlibtoFSA(titleTmdPath).c_str(), (FSMode) 0x660);  // tom investigate: setting user:group to 0:0 returns "non empty" error.
+                    if ( fserror == FS_ERROR_OK) {
                             title->saveInit = true;
                             goto end;
                     }
+                }
+            }
         } else
             goto end;
 
         errorCode += 256;
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + FSAGetStatusStr(fserror);
         // something has gone wrong
 errorVWii:
         errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
@@ -2760,7 +2768,7 @@ bool setOwnerAndMode (uint32_t owner, uint32_t group, FSMode mode, std::string p
     if ( fserror != FS_ERROR_OK ) {
         std::string multilinePath;
         splitStringWithNewLines(path,multilinePath);
-        promptError(LanguageUtils::gettext("Error -%05x setting permissions for\n%s"),- (int) fserror,multilinePath.c_str());
+        promptError(LanguageUtils::gettext("Error\n%s\nsetting permissions for\n%s"),FSAGetStatusStr(fserror),multilinePath.c_str());
         return false; 
     }
 
@@ -2785,7 +2793,7 @@ bool setOwnerAndMode (uint32_t owner, uint32_t group, FSMode mode, std::string p
     if ( fserror != FS_ERROR_OK ) {
         std::string multilinePath;
         splitStringWithNewLines(path,multilinePath);
-        promptError(LanguageUtils::gettext("Error -%05x setting owner/group for\n%s"),- (int) fserror,multilinePath.c_str());
+        promptError(LanguageUtils::gettext("Error\n%s\nsetting owner/group for\n%s"),FSAGetStatusStr(fserror),multilinePath.c_str());
         return false; 
     }
 

@@ -64,8 +64,7 @@ void TitleTaskState::render() {
                   
         if (this->title.is_Inject) {
             DrawUtils::setFontColor(COLOR_INFO);
-            consolePrintPosAligned(11,4,1,LanguageUtils::gettext("This title is a inject (vWii or GC title packaged as a WiiU title)."));
-            consolePrintPosAligned(12,4,1,LanguageUtils::gettext("If needed, vWii saves can also be managed using\nthe vWii Save Management section."));
+            consolePrintPos(2,11,LanguageUtils::gettext("This title is a inject (vWii or GC title packaged as a WiiU title).\nIf needed, vWii saves can also be managed using\n  the vWii Save Management section."));
         }
   
 

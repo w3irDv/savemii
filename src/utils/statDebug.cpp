@@ -19,8 +19,10 @@ bool statDir(const std::string &entryPath,FILE *file) {
     FSMode fsmode;
     FSStatFlags fsstatflags;
     FSError fserror = FSAGetStat(handle, newlibtoFSA(entryPath).c_str(), &fsastat);
-    if ( fserror != FS_ERROR_OK ) 
+    if ( fserror != FS_ERROR_OK ) {
+        promptError("%s",FSAGetStatusStr(fserror));
         return false;
+    }
     fsmode = fsastat.mode;
     fsstatflags = fsastat.flags;
 
