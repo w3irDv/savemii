@@ -55,6 +55,8 @@ enum eFileNameStyle {
 struct Title {
     uint32_t highID;
     uint32_t lowID;
+    uint32_t vWiiLowID;
+    uint32_t vWiiHighID;
     uint16_t listID;
     uint16_t indexID;
     char shortName[256];
@@ -64,6 +66,7 @@ struct Title {
     bool isTitleOnUSB;
     bool isTitleDupe;
     bool is_Wii;
+    bool is_Inject;
     bool noFwImg;
     uint16_t dupeID;
     uint8_t *iconBuf;
@@ -159,6 +162,8 @@ class InProgress {
         inline static std::string titleName {};
         inline static int currentStep = 0;
         inline static int totalSteps = 0;
+        inline static bool abortTask = false;
+        inline static Input * input = nullptr;
 };
 
 struct titlesNEProfiles{
@@ -198,7 +203,7 @@ void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const 
 void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &tag) __attribute__((hot));
 void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &batchDatetime,const std::string &tag) __attribute__((hot));
 void writeBackupAllMetadata(const std::string & Date, const std::string & tag);
-void backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
+int backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
 int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource = USE_WIIU_PROFILES,const std::string &tag = "") __attribute__((hot));
 int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true) __attribute__((hot));
@@ -220,7 +225,7 @@ uint8_t getWiiUAccn();
 Account *getWiiUAcc();
 Account *getVolAcc();
 void deleteSlot(Title *title, uint8_t slot);
-bool wipeBackupSet(const std::string &subPath);
+bool wipeBackupSet(const std::string &subPath , bool force = false);
 void splitStringWithNewLines(const std::string &input, std::string &output);
 void sdWriteDisclaimer();
 void summarizeBackupCounters(Title *titles, int titlesCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles);
@@ -245,5 +250,5 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath);
 bool removeFolderAndFlush(const std::string & srcPath);
 bool checkIfProfilesInTitleBackupExist(Title *title, uint8_t slot);
 void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::string> & failedTitles);
-
 std::string newlibtoFSA(std::string path);
+bool setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError & fserror);

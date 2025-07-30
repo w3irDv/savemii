@@ -41,6 +41,31 @@ bool Metadata::read() {
             if (tag != nullptr) {
                 this->tag.assign(tag);
             }
+            char hexID[9];
+            const char* hID = json_string_value(json_object_get(root, "highID"));
+            if (hID != nullptr) {
+                snprintf(hexID,9,"%s",hID);
+                this->highID = static_cast<uint32_t>(std::stoul(hexID,nullptr,16));
+            }
+            const char* lID = json_string_value(json_object_get(root, "lowID"));
+            if (lID != nullptr) {
+                snprintf(hexID,9,"%s",lID);
+                this->lowID = static_cast<uint32_t>(std::stoul(hexID,nullptr,16));
+            }
+            const char* vWHID = json_string_value(json_object_get(root, "vWiiHighID"));
+            if (vWHID != nullptr) {
+                snprintf(hexID,9,"%s",vWHID);
+                this->vWiiHighID = static_cast<uint32_t>(std::stoul(hexID,nullptr,16));
+            }
+            const char* vWLID = json_string_value(json_object_get(root, "vWiiLowID"));
+            if (vWLID != nullptr) {
+                snprintf(hexID,9,"%s",vWLID);
+                this->vWiiLowID = static_cast<uint32_t>(std::stoul(hexID,nullptr,16));
+            }
+            const char* sName = json_string_value(json_object_get(root, "shortName"));
+            if (sName != nullptr) {
+                strlcpy(this->shortName,sName,256);
+            }
             json_decref(root);
             free(data);
             return true;
@@ -91,8 +116,19 @@ bool Metadata::write() {
     json_object_set_new(config, "serialId", json_string(this->serialId.c_str()));
     json_object_set_new(config, "storage", json_string(this->storage.c_str()));
     json_object_set_new(config, "tag", json_string(this->tag.c_str()));
+    char hID[9];
+    char lID[9];
+    snprintf(hID,9,"%08x",highID);
+    snprintf(lID,9,"%08x",lowID);
+    json_object_set_new(config, "highID", json_string(hID));
+    json_object_set_new(config, "lowID", json_string(lID));
+    snprintf(hID,9,"%08x",vWiiHighID);
+    snprintf(lID,9,"%08x",vWiiLowID);
+    json_object_set_new(config, "vWiiHighID", json_string(hID));
+    json_object_set_new(config, "vWiiLowID", json_string(lID));
+    json_object_set_new(config, "shortName", json_string(this->shortName));
 
-    char *configString = json_dumps(config, 0);
+    char *configString = json_dumps(config, JSON_INDENT(2));
     if (configString == nullptr)
         return false;
 

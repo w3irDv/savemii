@@ -10,6 +10,7 @@
 #include <utils/LanguageUtils.h>
 #include <cfg/GlobalCfg.h>
 #include <utils/StringUtils.h>
+#include <utils/statDebug.h>
 
 #define TAG_OFF 17
 
@@ -18,7 +19,7 @@ static bool showFolderInfo = false;
 
 static int offsetIfRestoreOrCopyToOtherDev = 0;
 
-TitleOptionsState::TitleOptionsState(Title title,
+TitleOptionsState::TitleOptionsState(Title & title,
                                      eJobType task,
                                      int *versionList,
                                      int8_t source_user,
@@ -37,7 +38,7 @@ TitleOptionsState::TitleOptionsState(Title title,
 
     wiiUAccountsTotalNumber = getWiiUAccn();
     sourceAccountsTotalNumber = getVolAccn();
-    this->isWiiUTitle = (this->title.highID == 0x00050000) || (this->title.highID == 0x00050002);
+    this->isWiiUTitle = ((this->title.highID == 0x00050000) || (this->title.highID == 0x00050002)) && !this->title.noFwImg;
     switch (task) {
         case BACKUP:
             updateBackupData();
@@ -238,8 +239,8 @@ void TitleOptionsState::render() {
                             consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev, commonIncluded);
                         else
                             consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
-                            LanguageUtils::gettext("No 'common' save found."));
-                        if (task == RESTORE)
+                                LanguageUtils::gettext("No 'common' save found."));
+                        if (task == RESTORE || task == COPY_TO_OTHER_DEVICE)
                             consolePrintPosAligned(13, 4, 2,LanguageUtils::gettext("(Target has 'common': %s)"),
                                 hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         common = false;
@@ -273,13 +274,17 @@ showIcon:   if (this->title.iconBuf != nullptr)
             consolePrintPos(M_OFF, 7, "%s", (task == BACKUP ) ?  LanguageUtils::gettext("Source:"):LanguageUtils::gettext("Target:"));
                 consolePrintPos(M_OFF, 8, "   %s (%s)", LanguageUtils::gettext("Savedata in NAND"),
                         hasUserDataInNAND ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
-
-            if (this->title.iconBuf != nullptr)
-                DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
+            
+            if (this->title.iconBuf != nullptr) {
+                if (this->title.is_Wii)
+                    DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
+                else
+                    DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
+            }      
         }
 
 
-        // Folder Informations: qupta, ownership, mode, ...
+        // Folder Informations: quota, ownership, mode, ...
         if (this->task == WIPE_PROFILE && showFolderInfo) {
                 uint32_t highID = title.highID;
                 uint32_t lowID = title.lowID;
@@ -649,7 +654,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             if (cursorPos > 0)
                 --cursorPos;
         }
-        if (input->get(ButtonState::TRIGGER, Button::MINUS))
+        if (input->get(ButtonState::TRIGGER, Button::MINUS)) {
             if (this->task == BACKUP) {
                 if (!isSlotEmpty(&this->title, slot)) {
                     InProgress::totalSteps = InProgress::currentStep = 1;
@@ -657,6 +662,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateBackupData();
                 }
             }
+        }
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             InProgress::totalSteps = InProgress::currentStep = 1;
             int source_user_ = 0;
@@ -811,15 +817,15 @@ void TitleOptionsState::updateSourceHasRequestedSavedata() {
 }
 
 void TitleOptionsState::updateHasTargetUserData() {
-
+    // used by restore, move(/copy profile and copy_to_other_dev
+    int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
     switch (wiiu_user) {
         case -2:
             break;
         case -1:
-            hasTargetUserData = hasSavedata(&this->title, false, slot);
+            hasTargetUserData = hasSavedata(&(titles[targetIndex]), false, slot);
             break;
         default:
-            int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
             hasTargetUserData = hasProfileSave(&(titles[targetIndex]), false, false, getWiiUAcc()[wiiu_user].pID, 0, 0);
     }
 }
@@ -848,7 +854,7 @@ void TitleOptionsState::updateHasVWiiSavedata() {
 
 void TitleOptionsState::updateBackupData() {
     updateSlotMetadata();
-    if (this->title.is_Wii)
+    if (this->title.is_Wii || this->title.noFwImg)
         updateHasVWiiSavedata();
     else {
         updateHasCommonSaveInSource();
@@ -858,7 +864,14 @@ void TitleOptionsState::updateBackupData() {
 
 void TitleOptionsState::updateRestoreData() {
     updateSlotMetadata();
-    if (this->title.is_Wii)
+    if(!emptySlot && this->title.noFwImg && this->title.vWiiHighID == 0) {   // uninitialized injected title, let's use vWiiHighid from savemii metadata
+        Metadata *metadataObj = new Metadata(&this->title, slot);           //     or default value
+        metadataObj->read();
+        uint32_t savedVWiiHighID = metadataObj->getVWiiHighID();
+        title.vWiiHighID = ( savedVWiiHighID != 0 ) ? savedVWiiHighID : 0x00010000;    //  --> /00010000 - Disc-based games (holds save files)  
+        delete metadataObj;
+    }
+    if (this->title.is_Wii || this->title.noFwImg)
         updateHasVWiiSavedata();
     else {
         updateHasCommonSaveInTarget();
@@ -876,7 +889,7 @@ void TitleOptionsState::updateCopyToOtherDeviceData() {
 }
 
 void TitleOptionsState::updateWipeProfileData() {
-    if (this->title.is_Wii)
+    if (this->title.is_Wii || this->title.noFwImg)
         updateHasVWiiSavedata();
     else {
         updateHasCommonSaveInSource();

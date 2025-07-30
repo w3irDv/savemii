@@ -8,6 +8,7 @@
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/Colors.h>
+#include <utils/statDebug.h>
 
 // defaults to pass to titleTask
 static uint8_t slot = 0;
@@ -51,10 +52,22 @@ void TitleTaskState::render() {
                 consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
                                 this->title.isTitleOnUSB ? "NAND" : "USB");
             }
+        }
+        
+        if (! this->title.is_Wii) {
             if (this->title.iconBuf != nullptr)
                 DrawUtils::drawTGA(660, 120, 1, this->title.iconBuf);
         } else if (this->title.iconBuf != nullptr)
             DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
+
+
+                  
+        if (this->title.is_Inject) {
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPos(2,11,LanguageUtils::gettext("This title is a inject (vWii or GC title packaged as a WiiU title).\nIf needed, vWii saves can also be managed using\n  the vWii Save Management section."));
+        }
+  
+
         DrawUtils::setFontColor(COLOR_TEXT);
         consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
         consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
@@ -160,6 +173,14 @@ nxtCheck:
         } else if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
             if (cursorPos > 0)
                 --cursorPos;
+        }
+        if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
+                promptMessage(COLOR_BG_WR,"initiating stat title");
+                statTitle(title);
+        }
+        if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
+                promptMessage(COLOR_BG_WR,"initiating stat save");
+                statSaves(title);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);

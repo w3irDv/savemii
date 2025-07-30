@@ -8,6 +8,7 @@
 #include <utils/StringUtils.h>
 #include <utils/Colors.h>
 #include <cfg/GlobalCfg.h>
+#include <Metadata.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -31,8 +32,22 @@ BatchJobOptions::BatchJobOptions(Title *titles,
     cursorPos = minCursorPos;
     for (int i = 0; i<this->titlesCount; i++) {
         this->titles[i].currentDataSource = {};
-        if (this->titles[i].highID == 0 || this->titles[i].lowID == 0)
+
+        if( jobType == RESTORE && titles[i].noFwImg && titles[i].vWiiHighID == 0) {   // uninitialized injected title, let's use vWiiHighid from savemii metadata
+            Metadata *metadataObj = new Metadata(&titles[i], 0);                        //   or a default guess ...
+            if (metadataObj->read()) {
+                uint32_t savedVWiiHighID = metadataObj->getVWiiHighID();
+                titles[i].vWiiHighID = ( savedVWiiHighID != 0 ) ? savedVWiiHighID : 0x00010000;    //  --> /00010000 - Disc-based games (holds save files)  
+            }
+            delete metadataObj;
+        }
+
+        uint32_t highID = titles[i].noFwImg ? titles[i].vWiiHighID : titles[i].highID;
+        uint32_t lowID = titles[i].noFwImg ? titles[i].vWiiLowID : titles[i].lowID;
+        if (highID == 0 ||lowID == 0)
             continue;
+        bool isUSB = titles[i].noFwImg ? false : titles[i].isTitleOnUSB;
+        bool isWii = titles[i].is_Wii || titles[i].noFwImg;
         if ( jobType != RESTORE )  // we allow restore for uninitializedTitles  ...
             if (! this->titles[i].saveInit)
                 continue;
@@ -47,9 +62,10 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) // skip CBHC savedata
             continue;
-        if (this->titles[i].is_Wii && isWiiUBatchJob) // wii titles installed as wiiU appear in vWii restore
-            continue;
-        std::string srcPath;
+        //if (this->titles[i].is_Wii && isWiiUBatchJob) // wii titles installed as wiiU appear in vWii restore
+        //    continue;
+        std::string srcPath {};
+        std::string path {};
         switch (jobType) {
             case RESTORE:
                 srcPath = getDynamicBackupPath(&this->titles[i], 0);
@@ -58,18 +74,17 @@ BatchJobOptions::BatchJobOptions(Title *titles,
             case PROFILE_TO_PROFILE:
             case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
-            case COPY_FROM_USB_TO_NAND: {
-                std::string path = ( this->titles[i].is_Wii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
-                srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, this->titles[i].is_Wii ? "data" : "user");
+            case COPY_FROM_USB_TO_NAND:
+                path = ( isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+                srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
                 break;
-            }
             default:
                 ;
         }
 
         DIR *dir = opendir(srcPath.c_str());
         if (dir != nullptr) {
-            if (isWiiUBatchJob) {
+            if (!isWii) {
                 struct dirent *data;
                 while ((data = readdir(dir)) != nullptr) {
                     if(strcmp(data->d_name,".") == 0 || strcmp(data->d_name,"..") == 0 || ! (data->d_type & DT_DIR))

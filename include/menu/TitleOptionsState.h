@@ -7,7 +7,7 @@
 
 class TitleOptionsState : public ApplicationState {
 public:
-    TitleOptionsState(Title title,
+    TitleOptionsState(Title & title,
                       eJobType task,
                       int *versionList,
                       int8_t source_user,
@@ -36,7 +36,7 @@ private:
 
     eSubstateCalled substateCalled = NONE;
 
-    Title title;
+    Title &title;
     eJobType task;
 
     int *versionList;

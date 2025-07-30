@@ -40,11 +40,12 @@ void TitleListState::render() {
                 break;
 
             DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
-            if (!this->titles[i + this->scroll].saveInit)
-                DrawUtils::setFontColorByCursor(COLOR_LIST_NOSAVE,COLOR_LIST_NOSAVE_AT_CURSOR,cursorPos,i);
-            if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
-                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
+            
             if (isWiiU) {
+                if (this->titles[i + this->scroll].noFwImg)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT,COLOR_LIST_INJECT_AT_CURSOR,cursorPos,i);
+                if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
                 consolePrintPos(M_OFF+1, i + 2, "   %s %s%s%s%s",
                                 this->titles[i + this->scroll].shortName,
                                 this->titles[i + this->scroll].isTitleOnUSB ? "(USB)" : "(NAND)",
@@ -56,6 +57,8 @@ void TitleListState::render() {
                     DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, this->titles[i + this->scroll].iconBuf);
                 }
             } else {
+                if (!this->titles[i + this->scroll].saveInit)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT,COLOR_LIST_INJECT_AT_CURSOR,cursorPos,i);
                 consolePrintPos(M_OFF + 1, i + 2, "   %s %s%s", titles[i + this->scroll].shortName,
                                 titles[i + this->scroll].isTitleDupe ? " [D]" : "",
                                 titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
@@ -96,15 +99,16 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                         return SUBSTATE_RUNNING;
                     }
                 }
+                /*
                 if(this->titles[this->targ].noFwImg)
                     if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("vWii saves are in the vWii section. Continue?"))) {
                         return SUBSTATE_RUNNING;
                     }
+                */
             }
 
             if (!this->titles[this->targ].saveInit)
-                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Recommended to run Game at least one time. Continue?")) ||
-                    !promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?")))
+                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Savedata for this title has not been initialized.\nYou can try to restore it, but in case that the restore fails,\nplease run the Game to create some initial savedata \nand try again.\n\nYou can continue to Task Selection")))
                     return SUBSTATE_RUNNING;
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);

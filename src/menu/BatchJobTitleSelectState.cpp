@@ -59,10 +59,11 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
             continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
-
-        bool isWii = titles[i].is_Wii;
+        
+        bool isWii = titles[i].is_Wii || titles[i].noFwImg;
 
         std::string srcPath;
+        std::string path;
 
         switch (jobType) {
             case RESTORE:
@@ -72,11 +73,10 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
             case PROFILE_TO_PROFILE:
             case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
-            case COPY_FROM_USB_TO_NAND: {
-                std::string path = ( this->titles[i].is_Wii ? "storage_slccmpt01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            case COPY_FROM_USB_TO_NAND:
+                path = ( isWii ? "storage_slcc01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
                 srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, isWii ? "data" : "user");
                 break;
-            }
             default:
                 ;
         }
@@ -112,12 +112,18 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
                 testForceSaveInitFalse = false;
             }
 #endif
-            if ( ! this->titles[i].saveInit )
-                this->titles[i].currentDataSource.selectedToBeProcessed = false; // we discourage a restore to a not init titles
-        }
+            /*
+            if ((this->titles[i].noFwImg && ! isWii) || (!this->titles[i].saveInit && isWii))
+                this->titles[i].currentDataSource.selectedToBeProcessed = false; // we discourage a restore to injects or uninit wii titles
+            */
+        } 
         else
         {
+            if ( jobType != RESTORE && jobType != WIPE_PROFILE )
+                continue; 
             if (strcmp(this->titles[i].productCode, "OHBC") == 0)
+                continue;
+            if (titles[i].is_Inject && source_user != -1)
                 continue;
             this->titles[i].currentDataSource.candidateToBeProcessed = true;
             this->titles[i].currentDataSource.selectedToBeProcessed = true;
@@ -147,7 +153,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCoun
 
         //uint32_t highID = this->titles[i].highID;
         //uint32_t lowID = this->titles[i].lowID;
-        bool isWii = titles[i].is_Wii;
+        bool isWii = titles[i].is_Wii || titles[i].noFwImg;
 
         //skipped cases
         if ((strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) ||
@@ -291,15 +297,15 @@ void BatchJobTitleSelectState::render() {
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidatesCount)
                 break;
-            bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
-
+            //bool isWii = this->titles[c2t[i + this->scroll]].is_Wii;
+                        
             if ( this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed) {
-                DrawUtils::setFontColorByCursor(COLOR_LIST,Color(0x99FF99ff),cursorPos,i);
+                DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_SELECTED_SELECT_ICON,cursorPos,i);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             }
 
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && ! this->titles[c2t[i + this->scroll]].saveInit) {
-                DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && this->titles[c2t[i + this->scroll]].is_Inject) {
+                DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT,COLOR_LIST_INJECT_AT_CURSOR,cursorPos,i);
                 consolePrintPos(M_OFF, i + 2,"\ue071");
             }
 
@@ -307,9 +313,9 @@ void BatchJobTitleSelectState::render() {
                 DrawUtils::setFontColorByCursor(COLOR_LIST,COLOR_LIST_AT_CURSOR,cursorPos,i);
             else
                 DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED,COLOR_LIST_SKIPPED_AT_CURSOR,cursorPos,i);
-
-            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && ! this->titles[c2t[i + this->scroll]].saveInit) {
-                DrawUtils::setFontColorByCursor(COLOR_LIST_SELECTED_NOSAVE,COLOR_LIST_SELECTED_NOSAVE_AT_CURSOR,cursorPos,i);
+            
+            if (this->titles[c2t[i + this->scroll]].currentDataSource.selectedToBeProcessed && this->titles[c2t[i + this->scroll]].is_Inject) {
+                DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT,COLOR_LIST_INJECT_AT_CURSOR,cursorPos,i);
             }
             if (strcmp(this->titles[c2t[i + this->scroll]].shortName, "DONT TOUCH ME") == 0) {
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER,COLOR_LIST_DANGER_AT_CURSOR,cursorPos,i);
@@ -374,7 +380,7 @@ void BatchJobTitleSelectState::render() {
                     lastState.c_str(),
                     nxtAction.c_str());
             if (this->titles[c2t[i + this->scroll]].iconBuf != nullptr) {
-                if (isWii)
+                if (!isWiiUBatchJob)
                     DrawUtils::drawRGB5A3((M_OFF + 6) * 12, (i + 3) * 24 + 8, 0.25,
                                       titles[c2t[i + this->scroll]].iconBuf);
                 else
@@ -542,7 +548,7 @@ void BatchJobTitleSelectState::moveUp(unsigned amount, bool wrap)
 
 void BatchJobTitleSelectState::executeBatchProcess() {
 
-    const char * menuTitle, * taskDescription, * backupDescription, *allUsersInfo, *noUsersInfo, *taskHasFailed;
+    const char * menuTitle, * taskDescription, * backupDescription, *allUsersInfo, *noUsersInfo, *taskHasFailed, *taskAbortedByUser;
 
     switch (jobType) {
         case RESTORE:
@@ -551,7 +557,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchJob Backup (WiiU)") : LanguageUtils::gettext("pre-BatchJob Backup (vWii)");
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore allusers") : LanguageUtils::gettext("- Restore");
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore no user") : LanguageUtils::gettext("- Restore");
-            taskHasFailed = LanguageUtils::gettext("%s\n\nRestore failed.\nErrors so far: %d\nDo you want to continue?");
+            taskHasFailed = LanguageUtils::gettext("%s\n\nRestore failed.\nErrors so far: %d\nDo you want to continue with next title?");
+            taskAbortedByUser = LanguageUtils::gettext("Batch Restore paused - Do you want to abort?");
             break;
         case PROFILE_TO_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Review & Go");
@@ -559,7 +566,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileCopy Backup (WiiU)") : "";
             allUsersInfo = "";
             noUsersInfo = "";
-            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy Profile failed.\nErrors so far: %d\nDo you want to continue?");
+            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy Profile failed.\nErrors so far: %d\nDo you want to continue with next title?");
+            taskAbortedByUser = LanguageUtils::gettext("Batch ProfileCopy paused - Do you want to abort?");
             break;
         case MOVE_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileMove - Review & Go");
@@ -567,7 +575,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileMove Backup (WiiU)") : "";
             allUsersInfo = "";
             noUsersInfo = "";
-            taskHasFailed = LanguageUtils::gettext("%s\n\nMove Profile failed.\nErrors so far: %d\nDo you want to continue?");
+            taskHasFailed = LanguageUtils::gettext("%s\n\nMove Profile failed.\nErrors so far: %d\nDo you want to continue with next title?");
+            taskAbortedByUser = LanguageUtils::gettext("Batch ProfileMove paused - Do you want to abort?");
             break;
         case WIPE_PROFILE:
             menuTitle=LanguageUtils::gettext("Batch Wipe - Review & Go");
@@ -575,7 +584,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ?LanguageUtils::gettext("pre-BatchWipe Backup (WiiU)") : LanguageUtils::gettext("pre-BatchWipe Backup (vWii)");
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe allusers") : LanguageUtils::gettext("- Wipe");
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe no user") : LanguageUtils::gettext("- Wipe");
-            taskHasFailed = LanguageUtils::gettext("%s\n\nWipe failed.\nErrors so far: %d\nDo you want to continue?");
+            taskHasFailed = LanguageUtils::gettext("%s\n\nWipe failed.\nErrors so far: %d\nDo you want to continue with next title?");
+            taskAbortedByUser = LanguageUtils::gettext("Batch Wipe paused - Do you want to abort?");
             break;
         case COPY_FROM_NAND_TO_USB:
             menuTitle=LanguageUtils::gettext("Batch Copy To USB - Review & Go");
@@ -583,7 +593,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToUSB Backup (WiiU)") : "";
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
-            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from NAND to USB failed.\nErrors so far: %d\nDo you want to continue?");
+            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from NAND to USB failed.\nErrors so far: %d\nDo you want to continue with next title?");
+            taskAbortedByUser = LanguageUtils::gettext("Batch Copy To USB paused - Do you want to abort?");
             break;
         case COPY_FROM_USB_TO_NAND:
             menuTitle=LanguageUtils::gettext("Batch Copy To NAND - Review & Go");
@@ -591,7 +602,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToNAND Backup (WiiU)") : "";
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
-            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from USB to NAND failed.\nErrors so far: %d\nDo you want to continue?");
+            taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from USB to NAND failed.\nErrors so far: %d\nDo you want to continue with next title?");
+            taskAbortedByUser = LanguageUtils::gettext("Batch Copy To NAND paused - Do you want to abort?");
             break;
         default:
             menuTitle ="";
@@ -600,6 +612,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             allUsersInfo = "";
             noUsersInfo = "";
             taskHasFailed = "";
+            taskAbortedByUser = "";
             break;
     }
     const char* summaryTemplate;
@@ -642,17 +655,28 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     if (!promptConfirm(ST_WARNING,summary))
             return;
 
+    bool injectedFound = false;
+    bool noInitFound = false;
     for (int i = 0; i < titlesCount ; i++) {
             if (! this->titles[i].currentDataSource.selectedToBeProcessed )
                 continue;
-            if (! this->titles[i].saveInit) {
-                if (!promptConfirm(ST_ERROR, LanguageUtils::gettext("You have selected uninitialized titles (not recommended). Are you 100%% sure?")))
+            if (!injectedFound && this->titles[i].is_Inject && jobType == RESTORE) {
+                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("You have selected some injected titles.\nIf its restore fails, try them again as a vWii title.\n\nYou can continue.")))
                     return;
-                break;
+                injectedFound = true;
             }
+            if (!noInitFound && ! this->titles[i].saveInit && jobType == RESTORE) {
+                if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("You have selected uninitialized titles.\nIf its restore fails, run the Game to create \nsome initial savedata and try again.\n\nYou can continue.")))
+                return;
+                noInitFound = true;
+            }
+            if (injectedFound && noInitFound)
+                break;
     }
 
     InProgress::totalSteps = InProgress::currentStep = 0;
+    int retCode = 0;
+    int jobErrorsCounter = 0;
     for (int i = 0; i < titlesCount ; i++) {
         if (! this->titles[i].currentDataSource.selectedToBeProcessed )
             continue;
@@ -670,14 +694,27 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 targetTitle.currentDataSource.selectedForBackup = false;
         }
         InProgress::totalSteps = InProgress::totalSteps + countTitlesToSave(this->titles, this->titlesCount,true);
-        backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
-        writeBackupAllMetadata(batchDatetime,backupDescription);
+        int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
+        if (titles_failed_counter == -1) {
+            writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("PARTIAL BACKUP - USER ABORTED"));
+            if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),LanguageUtils::gettext("Do you want to wipe this incomplete batch backup?"))) {
+                InProgress::totalSteps = InProgress::currentStep = 1;
+                InProgress::titleName.assign(batchDatetime);
+                if ( ! wipeBackupSet("/batch/"+batchDatetime, true))
+                    BackupSetList::setIsInitializationRequired(true);
+                for (int i = 0; i < titlesCount ; i++) {
+                    this->titles[i].currentDataSource.batchBackupState = NOT_TRIED;
+                    this->titles[i].currentDataSource.selectedForBackup = true;
+                }
+                return;
+            }
+            goto showSummary;
+            
+        }
         BackupSetList::setIsInitializationRequired(true);
-    }
+        writeBackupAllMetadata(batchDatetime,backupDescription);
+    }       
 
-    int retCode = 0;
-
-    int jobErrorsCounter = 0;
     for (int i = 0; i < titlesCount ; i++) {
         Title& sourceTitle = this->titles[i];
         Title& targetTitle = (jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) ? this->titles[this->titles[i].dupeID]:this->titles[i] ;
@@ -783,8 +820,17 @@ void BatchJobTitleSelectState::executeBatchProcess() {
 
         globalRetCode = globalRetCode + retCode;
         this->titles[i].currentDataSource.lastErrCode = globalRetCode;
+
+       if (InProgress::abortTask) {
+            if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),taskAbortedByUser))
+                break;
+            else
+                InProgress::abortTask = false;
+       }
+
     }
 
+showSummary:
     int titlesOK = 0;
     int titlesAborted = 0;
     int titlesWarning = 0;
@@ -793,7 +839,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     int titlesNotInitialized = 0;
     std::vector<std::string> failedTitles;
     for (int i = 0; i < this->candidatesCount ; i++) {
-        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 || ! this->titles[c2t[i]].saveInit)
+        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0)  // we will count them as "not initialized"
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchJobState) {
@@ -826,7 +872,22 @@ void BatchJobTitleSelectState::executeBatchBackup() {
     InProgress::totalSteps = countTitlesToSave(this->titles, this->titlesCount,true);
     InProgress::currentStep = 0;
     const std::string batchDatetime = getNowDateForFolder();
-    backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
+    int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
+    if (titles_failed_counter == -1) {
+        writeBackupAllMetadata(batchDatetime,LanguageUtils::gettext("PARTIAL BACKUP - USER ABORTED"));
+        if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),LanguageUtils::gettext("Do you want to wipe this incomplete batch backup?"))) {
+            InProgress::totalSteps = InProgress::currentStep = 1;
+            InProgress::titleName.assign(batchDatetime);
+             if ( ! wipeBackupSet("/batch/"+batchDatetime, true))
+                    BackupSetList::setIsInitializationRequired(true);
+            for (int i = 0; i < this->candidatesCount ; i++) {
+                this->titles[c2t[i]].currentDataSource.batchBackupState = NOT_TRIED;
+                this->titles[c2t[i]].currentDataSource.selectedForBackup = true;
+            }
+            return;
+        }
+     }
+
     BackupSetList::setIsInitializationRequired(true);
 
    int titlesOK = 0;
@@ -837,7 +898,9 @@ void BatchJobTitleSelectState::executeBatchBackup() {
    int titlesNotInitialized = 0;
    std::vector<std::string> failedTitles;
    for (int i = 0; i < this->candidatesCount ; i++) {
-        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 || ! this->titles[c2t[i]].saveInit)
+        uint32_t highID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiHighID : this->titles[c2t[i]].highID;
+        uint32_t lowID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiLowID : this->titles[c2t[i]].lowID;
+        if (highID == 0 || lowID == 0 || ! this->titles[c2t[i]].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchBackupState) {

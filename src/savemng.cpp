@@ -24,6 +24,9 @@
 #define IO_MAX_FILE_BUFFER (1024 * 1024) // 1 MB
 #define MAXWIDTH 60
 
+const uint32_t metaOwnerId = 0x100000f6;
+const uint32_t metaGroupId = 0x400;
+
 const char *backupPath = "fs:/vol/external01/wiiu/backups";
 const char *batchBackupPath = "fs:/vol/external01/wiiu/backups/batch"; // Must be "backupPath/batch"  ~ backupSetListRoot
 const char *loadiineSavePath = "fs:/vol/external01/wiiu/saves";
@@ -73,8 +76,8 @@ static bool buffersInitialized = false;
 
 
 std::string newlibtoFSA(std::string path) {
-    if (path.rfind("storage_slccmpt01:", 0) == 0) {
-        StringUtils::replace(path, "storage_slccmpt01:", "/vol/storage_slccmpt01");
+    if (path.rfind("storage_slcc01:", 0) == 0) {
+        StringUtils::replace(path, "storage_slcc01:", "/vol/storage_slcc01");
     } else if (path.rfind("storage_mlc01:", 0) == 0) {
         StringUtils::replace(path, "storage_mlc01:", "/vol/storage_mlc01");
     } else if (path.rfind("storage_usb01:", 0) == 0) {
@@ -171,8 +174,8 @@ bool initFS() {
     if (ret)
         ret = Mocha_UnlockFSClientEx(handle) == MOCHA_RESULT_SUCCESS;
     if (ret) {
-        Mocha_MountFS("storage_slccmpt01", nullptr, "/vol/storage_slccmpt01");
-        Mocha_MountFS("storage_slccmpt01", "/dev/slccmpt01", "/vol/storage_slccmpt01");
+        if(Mocha_MountFS("storage_slcc01", "/dev/slccmpt01", "/vol/storage_slcc01") == MOCHA_RESULT_ALREADY_EXISTS) // Avoid name clash with ftpiiu
+            Mocha_MountFS("storage_slcc01", nullptr, "/vol/storage_slcc01");
         Mocha_MountFS("storage_mlc01", nullptr, "/vol/storage_mlc01");
         Mocha_MountFS("storage_usb01", nullptr, "/vol/storage_usb01");
         Mocha_MountFS("storage_usb02", nullptr, "/vol/storage_usb02");
@@ -186,7 +189,7 @@ bool initFS() {
 }
 
 void shutdownFS() {
-    Mocha_UnmountFS("storage_slccmpt01");
+    Mocha_UnmountFS("storage_slcc01");
     Mocha_UnmountFS("storage_mlc01");
     Mocha_UnmountFS("storage_usb01");
     Mocha_UnmountFS("storage_usb02");
@@ -207,6 +210,16 @@ static void showFileOperation(const std::string &file_name, const std::string &f
     consolePrintPos(-2, 1, LanguageUtils::gettext("Copying file: %s"), file_name.c_str());
     consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: %s"), file_src.c_str());
     consolePrintPosMultiline(-2, 10, LanguageUtils::gettext("To: %s"), file_dest.c_str());
+    if (InProgress::totalSteps > 1) {
+        if (InProgress::abortTask) {
+            DrawUtils::setFontColor(COLOR_LIST_DANGER);
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Will abort..."));
+        } else {
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Abort:\ue083+\ue046"));
+        } 
+    }
+    DrawUtils::setFontColor(COLOR_TEXT);
 }
 
 int32_t loadFile(const char *fPath, uint8_t **buf) {
@@ -265,7 +278,7 @@ int32_t loadTitleIcon(Title *title) {
 
     if (isWii) {
         if (title->saveInit) {
-            path = StringUtils::stringFormat("storage_slccmpt01:/title/%08x/%08x/data/banner.bin", highID, lowID);
+            path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/data/banner.bin", highID, lowID);
             return loadFilePart(path.c_str(), 0xA0, 24576, &title->iconBuf);
         }
     } else {
@@ -719,6 +732,7 @@ void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
         free(vol_acc);
 
     std::string srcPath;
+    std::string path;
     switch (jobType) {
         case RESTORE:
             srcPath = getDynamicBackupPath(title, slot);
@@ -728,7 +742,7 @@ void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
         case PROFILE_TO_PROFILE:
         case MOVE_PROFILE:
         case COPY_TO_OTHER_DEVICE: {
-            std::string path = (title->is_Wii ? "storage_slccmpt01:/title" : (title->isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            path = (title->is_Wii ? "storage_slcc01:/title" : (title->isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), title->highID, title->lowID, title->is_Wii ? "data" : "user");
             break;
         }
@@ -984,9 +998,15 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) { // Sou
                     closedir(dir);
                     return false;
                 }
-            }
+            } 
         }
         errno = 0;
+        if (InProgress::totalSteps > 1) {
+            InProgress::input->read();
+            if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
+                InProgress::abortTask = true;
+            }
+        }
     }
 
     if (errno != 0) {
@@ -1027,13 +1047,23 @@ static bool copyDir(const std::string &pPath, const std::string &tPath) {
 #endif
 
 void showDeleteOperations(bool isFolder, const char *name, const std::string & path ) {
-        DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
-        consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
-        DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPos(-2, 1, isFolder ?
-            LanguageUtils::gettext("Deleting folder %s"):LanguageUtils::gettext("Deleting file %s"), name);
-        consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), path.c_str());
+    DrawUtils::setFontColor(COLOR_INFO);
+    consolePrintPos(-2, 0, ">> %s", InProgress::titleName.c_str());
+    consolePrintPosAligned(0,4,2, "%d/%d",InProgress::currentStep,InProgress::totalSteps);
+    DrawUtils::setFontColor(COLOR_TEXT);
+    consolePrintPos(-2, 1, isFolder ? 
+        LanguageUtils::gettext("Deleting folder %s"):LanguageUtils::gettext("Deleting file %s"), name);
+    consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), path.c_str());
+    if (InProgress::totalSteps > 1) {
+        if (InProgress::abortTask ) {
+            DrawUtils::setFontColor(COLOR_LIST_DANGER);
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Will abort..."));
+        } else {
+            DrawUtils::setFontColor(COLOR_INFO);
+            consolePrintPosAligned(17,4,2,LanguageUtils::gettext("Abort:\ue083+\ue046")); 
+        } 
+    }
+    DrawUtils::setFontColor(COLOR_TEXT);
 }
 
 #ifndef MOCK
@@ -1072,6 +1102,11 @@ bool removeDir(const std::string &pPath) {
                 std::string multilinePath;
                 splitStringWithNewLines(tempPath,multilinePath);
                 promptError(LanguageUtils::gettext("Failed to delete file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+            }
+            if (InProgress::totalSteps > 1) {
+                    InProgress::input->read();
+                    if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS))
+                        InProgress::abortTask = true;
             }
         }
     }
@@ -1251,7 +1286,7 @@ bool hasProfileSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
         }
     } else {
         if (!inSD) {
-            sprintf(srcPath, "storage_slccmpt01:/title/%08x/%08x/data", highID, lowID);
+            sprintf(srcPath, "storage_slcc01:/title/%08x/%08x/data", highID, lowID);
         } else {
             strcpy(srcPath, getDynamicBackupPath(title, slot).c_str());
         }
@@ -1294,14 +1329,14 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
 
 bool hasSavedata(Title *title, bool inSD, uint8_t slot) {
 
-    uint32_t highID = title->highID;
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
     std::string srcPath;
 
     if (!inSD) {
-        const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+        const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     } else
         srcPath = getDynamicBackupPath(title, slot);
@@ -1353,15 +1388,6 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
 
-    /*
-    if (accountSource == USE_WIIU_PROFILES)
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s \n%s",
-            title->shortName,source_user,source_user > -1 ? wiiu_acc[source_user].persistentID:"-", wiiu_user,wiiu_user>-1 ? wiiu_acc[wiiu_user].persistentID:"-",isUSB ? "USB":"NAND");
-    else
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s \n%s",
-                title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ? wiiu_acc[wiiu_user].persistentID:"-",isUSB ? "USB":"NAND");
-    return 0;
-    */
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
@@ -1438,33 +1464,49 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
 
 #ifndef MOCK
     if (!titleb->saveInit) {
-        std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
-        FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
-        if (!shim) {
-            errorMessage = LanguageUtils::gettext("Error creating init data");
-            errorCode += 4;
-            goto end;
-        }
-
-        shim->clientHandle = handle;
-        shim->command = FSA_COMMAND_CHANGE_OWNER;
-        shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        strcpy(shim->request.changeOwner.path, newlibtoFSA(userPath).c_str());
-        shim->request.changeOwner.owner = titleb->lowID;
-        shim->request.changeOwner.group = titleb->groupID;
-
-        __FSAShimSend(shim, 0);
-        free(shim);
         const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                     titleb->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                     highIDb, lowIDb);
-        std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
+        const std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
+        const std::string saveTitlePath = StringUtils::stringFormat("%s/%08x/%08x", pathb.c_str(), highIDb, lowIDb);
+        const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
-        FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000);
+        FSError fserror;
 
-        copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
-        copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
+        if ( FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
+            std::string multilinePath;
+            splitStringWithNewLines(metaPath,multilinePath);
+            errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+                + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for %s"),multilinePath.c_str());
+            errorCode += 4;
+        }
+
+        if (! copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml")) {
+            errorCode +=8;
+            goto error;
+        }
+
+        if (! copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga")) {
+            errorCode +=16;
+            goto error;
+        }
+        
+        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,saveTitlePath,fserror))
+            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath,fserror))
+                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/meta.xml",fserror))
+                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/iconTex.tga",fserror))
+                        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
+                            titleb->saveInit = true;
+                            goto end;
+                        }
+        errorCode += 32;
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + FSAGetStatusStr(fserror);
+        // something has gone wrong
+error:
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + LanguageUtils::gettext("Error creating init data");
     }
 #endif
 end:
@@ -1488,17 +1530,7 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
     std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
-
-    /*
-    if (accountSource == USE_WIIU_PROFILES)
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s",
-            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-");
-    else
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s",
-            title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-");
-    return 0;
-*/
-
+    
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
@@ -1577,16 +1609,6 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     std::string dstPath = basePath+StringUtils::stringFormat("/%s", wiiu_acc[wiiu_user].persistentID);
 
-/*
-    if (accountSource == USE_WIIU_PROFILES)
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s\ns %s\nd%s",
-            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-",srcPath.c_str(),dstPath.c_str());
-    else
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\nwiiu_user %d\n%s\ns %s\nd%s",
-            title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user > -1 ?wiiu_acc[wiiu_user].persistentID:"-",srcPath.c_str(),dstPath.c_str());
-    return 0;
-*/
-
     std::string errorMessage {};
     if (checkEntry(dstPath.c_str()) == 2) {
         if ( wipeSavedata(title, wiiu_user, false, false, accountSource) != 0)
@@ -1602,6 +1624,12 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
             splitStringWithNewLines(srcPath,multilinePath);
             errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Unable to rename folder \n'%s'to\n'%s'\n\n%s\n\nPlease restore the backup, fix errors and try again"),multilinePath.c_str(),dstPath.c_str(),strerror(errno));
             errorCode = 2;
+        }
+        if (InProgress::totalSteps > 1) { // It's so fast that is unnecessary ...
+            InProgress::input->read();
+            if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
+                InProgress::abortTask = true;
+            }
         }
     }
 
@@ -1631,19 +1659,6 @@ std::string getNowDateForFolder() {
                                                      now.tm_hour, now.tm_min, now.tm_sec);
 }
 
-/*
-void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) {
-    Metadata *metadataObj = new Metadata(highID, lowID, slot);
-    metadataObj->set(getNowDate(),isUSB);
-    delete metadataObj;
-}
-
-void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB, const std::string &batchDatetime) {
-    Metadata *metadataObj = new Metadata(highID, lowID, slot, batchDatetime);
-    metadataObj->set(getNowDate(),isUSB);
-    delete metadataObj;
-}
-*/
 void writeMetadata(Title *title,uint8_t slot,bool isUSB) {
     Metadata *metadataObj = new Metadata(title, slot);
     metadataObj->set(getNowDate(),isUSB);
@@ -1656,22 +1671,6 @@ void writeMetadata(Title *title,uint8_t slot,bool isUSB, const std::string &batc
     delete metadataObj;
 }
 
-/*
-void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot, bool isUSB, const std::string &tag) {
-    Metadata *metadataObj = new Metadata(highID, lowID, slot);
-    metadataObj->setTag(tag);
-    metadataObj->set(getNowDate(),isUSB);
-    delete metadataObj;
-}
-
-void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag) {
-    Metadata *metadataObj = new Metadata(highID, lowID, slot, batchDatetime);
-    metadataObj->setTag(tag);
-    metadataObj->set(getNowDate(),isUSB);
-    delete metadataObj;
-}
-
-*/
 void writeMetadataWithTag(Title *title,uint8_t slot, bool isUSB, const std::string &tag) {
     Metadata *metadataObj = new Metadata(title, slot);
     metadataObj->setTag(tag);
@@ -1708,29 +1707,35 @@ int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= fals
 }
 
 
-void backupAllSave(Title *titles, int count, const std::string & batchDatetime, bool onlySelectedTitles /*= false*/) {
+int backupAllSave(Title *titles, int count, const std::string & batchDatetime, bool onlySelectedTitles /*= false*/) {
     if (firstSDWrite)
         sdWriteDisclaimer();
 
     int copyErrorsCounter = 0;
+    int titlesOK = 0;
 
     for ( int sourceStorage = 0; sourceStorage < 2 ; sourceStorage++ ) {
         for (int i = 0; i < count; i++) {
-            if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
-                continue;
             if (onlySelectedTitles)
                 if (! titles[i].currentDataSource.selectedForBackup)
-                    continue;
-            uint32_t highID = titles[i].highID;
-            uint32_t lowID = titles[i].lowID;
-            bool isUSB = titles[i].isTitleOnUSB;
-            bool isWii = titles[i].is_Wii;
+                    continue; 
+            if (!titles[i].saveInit) {
+                titles[i].currentDataSource.batchBackupState = OK;  // .. so the restore process will be tried, in case we have been called from batchRestore
+                titles[i].currentDataSource.selectedForBackup = false;
+                continue;
+            }      
+            uint32_t highID = titles[i].noFwImg ? titles[i].vWiiHighID : titles[i].highID;
+            uint32_t lowID = titles[i].noFwImg ? titles[i].vWiiLowID : titles[i].lowID;
+            if (highID == 0 ||lowID == 0)
+                continue;
+            bool isUSB = titles[i].noFwImg ? false : titles[i].isTitleOnUSB;
+            bool isWii = titles[i].is_Wii || titles[i].noFwImg;
             if ((sourceStorage == 0 && !isUSB) || (sourceStorage == 1 && isUSB)) // backup first WiiU USB savedata to slot 0
                 continue;
             InProgress::titleName.assign(titles[i].shortName);
             InProgress::currentStep++;
             uint8_t slot = getEmptySlot(&titles[i],batchDatetime);
-            const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
             std::string dstPath = getBatchBackupPath(&titles[i],slot,batchDatetime);
 
@@ -1739,8 +1744,18 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
                 if (copyDir(srcPath, dstPath)) {
                     writeMetadata(&titles[i],slot,isUSB,batchDatetime);
                     titles[i].currentDataSource.batchBackupState = OK;
-                    titles[i].currentDataSource.selectedForBackup= false;
+                    titles[i].currentDataSource.selectedForBackup = false;
+                    titlesOK++;
+                                    
+                    if (InProgress::abortTask) {
+                        if (promptConfirm((Style) (ST_YES_NO | ST_ERROR),LanguageUtils::gettext("Do you want to cancel batch backup?")))
+                            return -1;
+                        else
+                            InProgress::abortTask = false;
+                    }
+
                     continue;
+
                 }
             // backup for this tile has failed
             copyErrorsCounter++;
@@ -1748,7 +1763,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
             writeMetadataWithTag(&titles[i],slot,isUSB,batchDatetime,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
             std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"),titles[i].shortName,copyErrorsCounter);
             if (!promptConfirm((Style) (ST_YES_NO | ST_ERROR),errorMessage.c_str()))
-                return;
+                return copyErrorsCounter;
 #else
         if (i%2 == 0) {
             titles[i].currentDataSource.batchBackupState = OK;
@@ -1764,6 +1779,7 @@ void backupAllSave(Title *titles, int count, const std::string & batchDatetime, 
 
         }
     }
+    return copyErrorsCounter;
 }
 
 int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
@@ -1776,12 +1792,11 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         return -1;
     }
     InProgress::titleName.assign(title->shortName);
-    uint32_t highID = title->highID;
-
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
-    const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     //std::string dstPath = getDynamicBackupPath(highID, lowID, slot);
     std::string dstPath = getDynamicBackupPath(title, slot);
@@ -1872,23 +1887,17 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     */
 
     InProgress::titleName.assign(title->shortName);
-    uint32_t highID = title->highID;
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
     std::string srcPath;
     srcPath = getDynamicBackupPath(title, slot);
-    const std::string path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
-
-    /*
-    promptMessage(COLOR_BG_WR,"%s\nsource_user %d\n%s\nwiiu_user %d\n%s\n common\n %s",
-    title->shortName,source_user,source_user > -1 ?vol_acc[source_user].persistentID:"-",wiiu_user,wiiu_user>-1 ?  wiiu_acc[wiiu_user].persistentID : "-",common ? "true":"false");
-    return 0;
-    */
-
+    
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
@@ -1968,41 +1977,107 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
                 + ((wiiu_user == -1 ) ?  LanguageUtils::gettext("Error restoring savedata.")
                                     :  LanguageUtils::gettext("Error restoring profile savedata."));
             errorCode += 2;
-        }
+        }        
     }
 
 #ifndef MOCK
-    if (!title->saveInit && !isWii) {
-        std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
-
-        FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
-        if (!shim) {
-            errorMessage = LanguageUtils::gettext("Error creating init data");
-            errorCode += 8;
-            goto end;
-        }
-
-        shim->clientHandle = handle;
-        shim->command = FSA_COMMAND_CHANGE_OWNER;
-        shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-        strcpy(shim->request.changeOwner.path, newlibtoFSA(userPath).c_str());
-        shim->request.changeOwner.owner = title->lowID;
-        shim->request.changeOwner.group = title->groupID;
-
-        __FSAShimSend(shim, 0);
-        free(shim);
+    if (!title->saveInit && ! isWii ) {
 
         const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                     title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                     highID, lowID);
-        std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+        const std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+        const std::string saveTitlePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
+        const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
+        FSError fserror;
+        
+        if ( FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
+            std::string multilinePath;
+            splitStringWithNewLines(metaPath,multilinePath);
+            errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+                + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for \n%s"),multilinePath.c_str());
+            errorCode += 4;
+        }
 
-        FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000);
+        if (! copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml")) { 
+            errorCode += 8;
+            goto error;
+        }
 
-        copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml");
-        copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga");
+        if (! copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga")) {
+            errorCode += 16;
+            goto error;
+        }
+
+        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,saveTitlePath,fserror))
+            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath,fserror))
+                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/meta.xml",fserror))
+                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/iconTex.tga",fserror))
+                        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
+                            title->saveInit = true;
+                            goto end;
+                        }
+        errorCode += 32;
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + FSAGetStatusStr(fserror);
+        // something has gone wrong
+error:
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + LanguageUtils::gettext("Error creating init data");
+
     }
 #endif
+
+    if (!title->saveInit && title->is_Inject) {
+    // for vWii injects, check is title.tmd exists. It seems to be created if it not exists when launching the game even if the savedata exists, but just in case ...
+        std::string lowIDPath = StringUtils::stringFormat("%s/%08x/%08x",path.c_str(), highID,lowID);
+        std::string titleTmdFolder = StringUtils::stringFormat("%s/content",lowIDPath.c_str());
+        std::string titleTmdPath;
+
+        if (!createFolderUnlocked(titleTmdFolder)) {
+            errorCode += 64;
+            goto errorVWii;
+        }
+        
+        titleTmdPath = titleTmdFolder + "/title.tmd";
+        FSError fserror;
+        if (checkEntry(titleTmdPath.c_str()) != 1) {
+            uint32_t wiiUHighID = title->highID;
+            uint32_t wiiULowID = title->lowID;
+            bool wiiUisUSB = title->isTitleOnUSB;
+            
+            const std::string wiiUPath = (wiiUisUSB ? (getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title");
+            std::string sourceTitleTmdPath = StringUtils::stringFormat("%s/%08x/%08x/code/rvlt.tmd", wiiUPath.c_str(), wiiUHighID, wiiULowID);
+
+            promptMessage(COLOR_BG_KO,"s:%s\nd:%s",sourceTitleTmdPath.c_str(),titleTmdPath.c_str());
+
+            if (! copyFile(sourceTitleTmdPath,titleTmdPath)) { 
+                errorCode += 128;
+                goto errorVWii;
+            }
+          
+            if (setOwnerAndMode(0,0,(FSMode) 0x664,lowIDPath,fserror)) {
+                if (setOwnerAndMode(0,0,(FSMode) 0x660,titleTmdFolder,fserror)) {
+                    fserror = FSAChangeMode(handle, newlibtoFSA(titleTmdPath).c_str(), (FSMode) 0x660);  // tom investigate: setting user:group to 0:0 returns "non empty" error.
+                    if ( fserror == FS_ERROR_OK) {
+                            title->saveInit = true;
+                            goto end;
+                    }
+                }
+            }
+        } else
+            goto end;
+
+        errorCode += 256;
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + FSAGetStatusStr(fserror);
+        // something has gone wrong
+errorVWii:
+        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
+            + LanguageUtils::gettext("Error creating vWii init data");
+    }
+
+
 end:
     flushVol(dstPath);
 
@@ -2010,6 +2085,7 @@ end:
         errorMessage = LanguageUtils::gettext("%s\nRestore failed.")+std::string("\n\n")+errorMessage;
         promptError(errorMessage.c_str(),title->shortName);
     }
+ 
     return errorCode;
 }
 
@@ -2019,14 +2095,14 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     copyErrorsCounter = 0;
     abortCopy = false;
     InProgress::titleName.assign(title->shortName);
-    uint32_t highID = title->highID;
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
     std::string srcPath;
     std::string commonPath;
     std::string path;
-    path = (isWii ? "storage_slccmpt01:/title" : (isUSB ? (getUSB() + "/usr/save") : "storage_mlc01:/usr/save"));
+    path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save") : "storage_mlc01:/usr/save"));
     srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     commonPath = srcPath + "/common";
 
@@ -2037,15 +2113,6 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         return 0;
     }
     */
-   /*
-   if (accountSource == USE_WIIU_PROFILES)
-        promptMessage(COLOR_BG_WR,"wiiu  profile \n %s\nsource_user %d\n%s\n common\n %s",
-            title->shortName,source_user,source_user>-1 ? wiiu_acc[source_user].persistentID:"-",common ? "true":"false");
-    else
-        promptMessage(COLOR_BG_WR,"sd  profile \n %s\nsource_user %d\n%s\n common\n %s",
-            title->shortName,source_user,source_user>-1 ? vol_acc[source_user].persistentID : "-",common ? "true":"false");
-    return 0;
-   */
 
     if (interactive) {
         if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
@@ -2109,8 +2176,8 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         }
     }
 
-    if (doBase) {
-        if (!removeDir(srcPath)) {
+    if (doBase) {        
+        if (!removeDir(srcPath)) {   
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
                 + ((source_user == -1 ) ?  LanguageUtils::gettext("Error wiping savedata.")
                                     :  LanguageUtils::gettext("Error wiping profile savedata."));
@@ -2231,13 +2298,14 @@ void deleteSlot(Title *title, uint8_t slot) {
     }
     else
     {
-        promptError(LanguageUtils::gettext("Folder does not exist."));
+        promptError(LanguageUtils::gettext("Folder $s\ndoes not exist."),path.c_str());
     }
 }
 
-bool wipeBackupSet(const std::string &subPath) {
-    if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Wipe BackupSet - Are you sure?")) || !promptConfirm(ST_WIPE, LanguageUtils::gettext("Wipe BackupSet - Hm, are you REALLY sure?")))
-        return false;
+bool wipeBackupSet(const std::string &subPath, bool force /* = false*/) {
+    if (!force)
+        if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Wipe BackupSet - Are you sure?")) || !promptConfirm(ST_WIPE, LanguageUtils::gettext("Wipe BackupSet - Hm, are you REALLY sure?")))
+            return false;
     const std::string path = StringUtils::stringFormat("%s%s", backupPath,subPath.c_str());
     if (path.find(batchBackupPath) == std::string::npos) {
         promptError(LanguageUtils::gettext("Error setting path. Aborting."));
@@ -2258,7 +2326,7 @@ bool wipeBackupSet(const std::string &subPath) {
     }
     else
     {
-        promptError(LanguageUtils::gettext("Folder does not exist."));
+        promptError(LanguageUtils::gettext("Folder %s\ndoes not exist."),path.c_str());
     }
     return true;
 }
@@ -2324,24 +2392,7 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
     if ( titlesKO > 0 ) {
         summaryColor = COLOR_BG_KO;
         summaryWithTitles.append(LanguageUtils::gettext("\nFailed Titles:"));
-        titleListInColumns(summaryWithTitles,failedTitles);
-/*
-        int ctlLine = 0;
-        for (const std::string & failedTitle : failedTitles ) {
-            summaryWithTitles.append("  "+failedTitle+"      ");
-            if (ctlLine > 8 ) {
-                int notShown = failedTitles.size()-ctlLine-1;
-                const char* moreTitlesTemp;
-                moreTitlesTemp = LanguageUtils::gettext("... and %d more");
-                char moreTitles[30];
-                snprintf(moreTitles,30,moreTitlesTemp,notShown);
-                summaryWithTitles.append(moreTitles);
-                break;
-            }
-            if (ctlLine++ % 2 == 0)
-                summaryWithTitles.append("\n");
-        }
-*/
+        titleListInColumns(summaryWithTitles,failedTitles);      
     }
 
     promptMessage(summaryColor,summaryWithTitles.c_str());
@@ -2654,8 +2705,8 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
 
 void flushVol(const std::string & dstPath) {
 
-    if (dstPath.rfind("storage_slccmpt01:", 0) == 0) {
-        FSAFlushVolume(handle, "/vol/storage_slccmpt01");
+    if (dstPath.rfind("storage_slcc01:", 0) == 0) {
+        FSAFlushVolume(handle, "/vol/storage_slcc01");
     } else if (dstPath.rfind("storage_mlc01:", 0) == 0) {
         FSAFlushVolume(handle, "/vol/storage_mlc01");
     } else if (dstPath.rfind("storage_usb01:", 0) == 0) {
@@ -2709,4 +2760,42 @@ void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::
         if (++ctlLine % 2 == 0)
             summaryWithTitles.append("\n");
     }
+}
+
+bool setOwnerAndMode (uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
+
+    fserror = FSAChangeMode(handle, newlibtoFSA(path).c_str(), mode);
+    if ( fserror != FS_ERROR_OK ) {
+        std::string multilinePath;
+        splitStringWithNewLines(path,multilinePath);
+        promptError(LanguageUtils::gettext("Error\n%s\nsetting permissions for\n%s"),FSAGetStatusStr(fserror),multilinePath.c_str());
+        return false; 
+    }
+
+    fserror = FS_ERROR_OK;
+    FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
+    if (!shim) {
+        std::string multilinePath;
+        splitStringWithNewLines(path,multilinePath);
+        promptError(LanguageUtils::gettext("Error creating shim for change perms\n\n%s"),multilinePath.c_str());
+        return false;
+    }
+
+    shim->clientHandle = handle;
+    shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
+    strcpy(shim->request.changeOwner.path, newlibtoFSA(path).c_str());
+    shim->request.changeOwner.owner = owner;
+    shim->request.changeOwner.group = group;
+    shim->command = FSA_COMMAND_CHANGE_OWNER;
+    fserror = __FSAShimSend(shim, 0);
+    free(shim);
+    
+    if ( fserror != FS_ERROR_OK ) {
+        std::string multilinePath;
+        splitStringWithNewLines(path,multilinePath);
+        promptError(LanguageUtils::gettext("Error\n%s\nsetting owner/group for\n%s"),FSAGetStatusStr(fserror),multilinePath.c_str());
+        return false; 
+    }
+
+    return true;
 }

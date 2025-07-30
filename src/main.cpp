@@ -72,6 +72,7 @@ static Title *loadWiiUTitles(int run) {
     static char *tList;
     static uint32_t receivedCount;
     const uint32_t highIDs[2] = {0x00050000, 0x00050002};
+    const uint32_t vWiiHighIDs[3] = {0x00010000, 0x00010001, 0x00010004};
     // Source: haxchi installer
     if (run == 0) {
         int mcp_handle = MCP_Open();
@@ -227,6 +228,11 @@ static Title *loadWiiUTitles(int run) {
             strlcpy(groupID, cptr, strcspn(cptr, "<") + 1);
             titles[wiiuTitlesCount].groupID = strtoul(groupID, nullptr, 16);
 
+            cptr = strchr(strstr(xmlBuf, "reserved_flag2"), '>') + 1;
+            char vWiiLowID[255];
+            strlcpy(vWiiLowID, cptr, strcspn(cptr, "<") + 1);
+            titles[wiiuTitlesCount].vWiiLowID = strtoul(vWiiLowID, nullptr, 16);
+
             cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
             memset(titles[wiiuTitlesCount].shortName, 0, sizeof(titles[wiiuTitlesCount].shortName));
             if (strcspn(cptr, "<") == 0)
@@ -268,14 +274,27 @@ static Title *loadWiiUTitles(int run) {
         if (loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr;
 
+        titles[wiiuTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
                     titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                     titles[wiiuTitlesCount].highID,
                     titles[wiiuTitlesCount].lowID);
-        if (checkEntry(fwpath.c_str()) != 0)
+        if (checkEntry(fwpath.c_str()) != 0) {
             titles[wiiuTitlesCount].noFwImg = true;
-        else
+            titles[wiiuTitlesCount].is_Inject = true;
+            for (uint32_t vWiiHighID : vWiiHighIDs) {
+                std::string path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
+                if (checkEntry(path.c_str()) == 1) {
+                    titles[wiiuTitlesCount].saveInit=true;
+                    titles[wiiuTitlesCount].vWiiHighID = vWiiHighID;
+                    break;
+                }
+            }
+        }    
+        else {
             titles[wiiuTitlesCount].noFwImg = false;
+            titles[wiiuTitlesCount].is_Inject = false;
+        }
 
         setTitleNameBasedDirName(&titles[wiiuTitlesCount]);
 
@@ -297,6 +316,7 @@ static Title *loadWiiUTitles(int run) {
     for (int i=wiiuTitlesCount; i < MAXTITLES; i++) {
         titles[i].highID = titles[i-wiiuTitlesCount].highID;
         titles[i].lowID = titles[i-wiiuTitlesCount].lowID + i/wiiuTitlesCount;
+        titles[i].vWiiLowID = 0;
         titles[i].is_Wii = titles[i-wiiuTitlesCount].is_Wii;
         titles[i].isTitleOnUSB = titles[i-wiiuTitlesCount].isTitleOnUSB;
         titles[i].isTitleDupe = titles[i-wiiuTitlesCount].isTitleDupe;
@@ -334,7 +354,7 @@ static Title *loadWiiTitles() {
 
     std::string pathW;
     for (auto &highID : highIDs) {
-        pathW = StringUtils::stringFormat("storage_slccmpt01:/title/%s", highID);
+        pathW = StringUtils::stringFormat("storage_slcc01:/title/%s", highID);
         DIR *dir = opendir(pathW.c_str());
         if (dir != nullptr) {
             struct dirent *data;
@@ -368,7 +388,7 @@ static Title *loadWiiTitles() {
 
     int i = 0;
     for (auto &highID : highIDs) {
-        pathW = StringUtils::stringFormat("storage_slccmpt01:/title/%s", highID);
+        pathW = StringUtils::stringFormat("storage_slcc01:/title/%s", highID);
         DIR *dir = opendir(pathW.c_str());
         if (dir != nullptr) {
             struct dirent *data;
@@ -386,8 +406,9 @@ static Title *loadWiiTitles() {
                     continue;
                 }
 
-                const std::string path = StringUtils::stringFormat("storage_slccmpt01:/title/%s/%s/data/banner.bin",
+                const std::string path = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/data/banner.bin",
                                                                    highID, data->d_name);
+                bool hasBanner = false;
                 FILE *file = fopen(path.c_str(), "rb");
                 if (file != nullptr) {
                     fseek(file, 0x20, SEEK_SET);
@@ -431,7 +452,7 @@ static Title *loadWiiTitles() {
                                 titles[i].longName[k++] = 0x80 | (bnrBuf[j] & 0x3F);
                             }
                         }
-                        titles[i].saveInit = true;
+                        hasBanner = true;
 
                         free(bnrBuf);
                     }
@@ -440,13 +461,23 @@ static Title *loadWiiTitles() {
                     sprintf(titles[i].shortName, LanguageUtils::gettext("%s%s (No banner.bin)"), highID,
                             data->d_name);
                     memset(titles[i].longName, 0, sizeof(titles[i].longName));
-                    titles[i].saveInit = false;
+                    hasBanner = false;
                 }
+
+                const std::string tmdPath = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/content/title.tmd",
+                                                                   highID, data->d_name);
+                if (checkEntry(tmdPath.c_str()) == 1)
+                    titles[i].saveInit = true;
+                else
+                    titles[i].saveInit = false;
 
                 titles[i].highID = strtoul(highID, nullptr, 16);
                 titles[i].lowID = strtoul(data->d_name, nullptr, 16);
+                titles[i].vWiiHighID = titles[i].highID;
+                titles[i].vWiiLowID = titles[i].lowID;
                 titles[i].is_Wii = true;
                 titles[i].noFwImg = true;
+                titles[wiiuTitlesCount].is_Inject = false;
 
                 titles[i].listID = i;
                 titles[i].indexID = i;
@@ -458,7 +489,7 @@ static Title *loadWiiTitles() {
                 titles[i].isTitleOnUSB = false;
                 titles[i].isTitleDupe = false;
                 titles[i].dupeID = 0;
-                if (!titles[i].saveInit || (loadTitleIcon(&titles[i]) < 0))
+                if (!hasBanner || (loadTitleIcon(&titles[i]) < 0))
                     titles[i].iconBuf = nullptr;
 
                 setTitleNameBasedDirName(&titles[i]);
@@ -635,6 +666,8 @@ int main() {
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,
                                                                         vWiiTitlesCount);
+
+    InProgress::input = &input;
     while (State::AppRunning()) {
 
         input.read();
