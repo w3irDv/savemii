@@ -143,7 +143,10 @@ void TitleOptionsState::render() {
                                           (task == WIPE_PROFILE ? LanguageUtils::gettext("Select Wii U user to wipe:") :
                                                                   LanguageUtils::gettext("Select Wii U user to copy from:")));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
-                if (source_user == -2) {
+                if (source_user == -3 && task == WIPE_PROFILE ) {
+                    consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("metadata + savedata"));
+                }
+                else if (source_user == -2) {
                     consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("no profile user"));
                 }
                 else if (source_user == -1) {
@@ -215,6 +218,8 @@ void TitleOptionsState::render() {
                         }
                         if (hasCommonSaveInSource) {
                             switch (source_user) {
+                                case -3:
+                                    break;
                                 case -2:
                                     common = true;
                                     consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,onlyCommon);
@@ -268,13 +273,28 @@ showIcon:   if (this->title.iconBuf != nullptr)
         }
 
         if (! this->isWiiUTitle) {
-            entrycount = 1;
+            if ( task == WIPE_PROFILE)
+                entrycount = 2;
+            else
+                entrycount = 1;
+
             common = false;
             DrawUtils::setFontColor(COLOR_TEXT);
-            consolePrintPos(M_OFF, 7, "%s", (task == BACKUP ) ?  LanguageUtils::gettext("Source:"):LanguageUtils::gettext("Target:"));
-                consolePrintPos(M_OFF, 8, "   %s (%s)", LanguageUtils::gettext("Savedata in NAND"),
+            consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 10 : 7, "%s", (task == BACKUP ) ?  LanguageUtils::gettext("Source:"):LanguageUtils::gettext("Target:"));
+                consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 11 : 8, "   %s (%s)", LanguageUtils::gettext("Savedata in NAND"),
                         hasUserDataInNAND ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
-            
+            if (task == WIPE_PROFILE) {
+                consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select vWii U data to wipe:"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
+                if (source_user == -3 ) {
+                    consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("full metadata + savedata"));
+                }
+                else if (source_user == -1) {
+                    consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("savedata"),
+                        sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                }
+            }
+
             if (this->title.iconBuf != nullptr) {
                 if (this->title.is_Wii)
                     DrawUtils::drawRGB5A3(600, 120, 1, this->title.iconBuf);
@@ -457,7 +477,9 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         break;
                     case 1:
-                        source_user = ((source_user == -2) ? -2 : (source_user - 1));
+                        source_user = ((source_user == -3) ? -3 : (source_user - 1));
+                        if ((! this->isWiiUTitle ) && source_user == -2 )
+                            source_user = -3; 
                         updateSourceHasRequestedSavedata();
                         break;
                     case 2:
@@ -587,6 +609,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
+                        if ((! this->isWiiUTitle ) && source_user == -2 )
+                            source_user = -1; 
                         updateSourceHasRequestedSavedata();
                         break;
                     case 2:
@@ -809,7 +833,7 @@ void TitleOptionsState::updateSourceHasRequestedSavedata() {
     if (source_user == -2) {
         sourceHasRequestedSavedata = false;
     }
-    else if (source_user == -1) {
+    else if (source_user == -1 || source_user == -3) {
         sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot);
     } else {
         sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE, false, getVolAcc()[source_user].pID,slot, 0);

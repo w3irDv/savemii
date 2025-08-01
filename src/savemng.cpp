@@ -1469,7 +1469,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
                                                                     titleb->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                     highIDb, lowIDb);
         const std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
-        const std::string saveTitlePath = StringUtils::stringFormat("%s/%08x/%08x", pathb.c_str(), highIDb, lowIDb);
+        const std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", pathb.c_str(), highIDb, lowIDb);
         const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
         FSError fserror;
@@ -1492,7 +1492,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             goto error;
         }
         
-        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,saveTitlePath,fserror))
+        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,titleSavePath,fserror))
             if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath,fserror))
                 if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/meta.xml",fserror))
                     if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/iconTex.tga",fserror))
@@ -1987,7 +1987,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
                                                                     title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                     highID, lowID);
         const std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
-        const std::string saveTitlePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
+        const std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
         const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
         FSError fserror;
         
@@ -2009,7 +2009,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             goto error;
         }
 
-        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,saveTitlePath,fserror))
+        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,titleSavePath,fserror))
             if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath,fserror))
                 if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/meta.xml",fserror))
                     if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/iconTex.tga",fserror))
@@ -2099,12 +2099,10 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
     bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
     bool isWii = title->is_Wii || title->noFwImg;
-    std::string srcPath;
-    std::string commonPath;
-    std::string path;
-    path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save") : "storage_mlc01:/usr/save"));
-    srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    commonPath = srcPath + "/common";
+    std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save") : "storage_mlc01:/usr/save"));
+    std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
+    std::string srcPath = StringUtils::stringFormat("%s/%s", titleSavePath.c_str(), isWii ? "data" : "user");
+    std::string commonPath = srcPath + "/common";
 
     // THIS NOW CANNOT HAPPEN -  CHECK FROM WHERE CAN BE CALLED
     /*
@@ -2115,8 +2113,15 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     */
 
     if (interactive) {
-        if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
-            return -1;
+        if (source_user == -3) {
+            if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("This option is a last resort in case something has gone wrong when restoring data\nIt will wipe metadata and savedata, and the title will become uninitialized.\nIt does nothing to the installed game code.\nIt's equivalent to a complete savedata wipe from the Wii U Data Management menu.\n\nContinue?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
+                return -1;
+        }
+        else
+        {
+            if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
+                return -1;
+        }
         int slotb = getEmptySlot(title);
         // backup is always of full type
         if ((slotb >= 0) && promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
@@ -2127,48 +2132,45 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
             ;
     }
 
-    bool doBase;
-    bool doCommon;
+    bool doBase = false;
+    bool doCommon = false;
+    bool doMeta = false;
 
-    if ( isWii  ) {
-        doBase = true;
-        doCommon = false;
-    }
-    else
-    {
-        switch (source_user) {
-            case -2: // no user
-                doBase = false;
-                doCommon = common;
-                break;
-            case -1: // allusers
-                doBase = true;
-                doCommon = false;
-                break;
-            default:  // source_user = 0 .. n
-                doBase = true;
-                doCommon = common;
-                if (accountSource == USE_WIIU_PROFILES)
-                    srcPath += "/" + std::string(wiiu_acc[source_user].persistentID);
-                else
-                    srcPath += "/" + std::string(vol_acc[source_user].persistentID);
-                break;
-        }
+    switch (source_user) {
+        case -3:
+            doBase = false;
+            doMeta = true;
+            doCommon = false;
+            break;
+        case -2: // no user
+            doBase = false;
+            doCommon = common;
+            doMeta = false;
+            break;
+        case -1:  // allusers
+            doBase = true;
+            doCommon = false;
+            doMeta = false;
+            break;
+        default:  // source_user = 0 .. n
+            doBase = true;
+            doCommon = common;
+            doMeta = false;
+            if (accountSource == USE_WIIU_PROFILES)
+                srcPath += "/" + std::string(wiiu_acc[source_user].persistentID);
+            else
+                srcPath += "/" + std::string(vol_acc[source_user].persistentID);
+            break;
     }
 
     std::string errorMessage {};
     if (doCommon) {
         if (!removeDir(commonPath)) {
-            errorMessage = LanguageUtils::gettext("Error wiping common savedata.");
+            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping common savedata."));
             errorCode = 1;
         }
-        #ifndef MOCK
         if (unlink(commonPath.c_str()) == -1) {
-        #else
-        if (!unlink_c) {
-        #endif
-            errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + LanguageUtils::gettext("Error deleting common folder.");
+            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting common folder."));
             std::string multilinePath;
             splitStringWithNewLines(commonPath,multilinePath);
             promptError(LanguageUtils::gettext("%s \n Failed to delete common folder:\n%s\n%s"), title->shortName,multilinePath.c_str(),strerror(errno));
@@ -2178,20 +2180,14 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
 
     if (doBase) {        
         if (!removeDir(srcPath)) {   
-            errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + ((source_user == -1 ) ?  LanguageUtils::gettext("Error wiping savedata.")
-                                    :  LanguageUtils::gettext("Error wiping profile savedata."));
+            errorMessage.append("\n" + (std::string)  ((source_user == -1 ) ?  LanguageUtils::gettext("Error wiping savedata.")
+                                    :  LanguageUtils::gettext("Error wiping profile savedata.")));
             errorCode += 4;
         }
         if ((source_user > -1) && !isWii) {
-            #ifndef MOCK
             if (unlink(srcPath.c_str()) == -1) {
-            #else
-            if (!unlink_b) {
-            #endif
-                errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + ((source_user == -1 ) ?  LanguageUtils::gettext("Error deleting savedata folder.")
-                                     :  LanguageUtils::gettext("Error deleting profile savedata folder."));
+                errorMessage.append("\n" + (std::string)  ((source_user == -1 ) ?  LanguageUtils::gettext("Error deleting savedata folder.")
+                                     :  LanguageUtils::gettext("Error deleting profile savedata folder.")));
                 std::string multilinePath;
                 splitStringWithNewLines(srcPath,multilinePath);
                 promptError(LanguageUtils::gettext("%s \n Failed to delete user folder:\n%s\n%s"), title->shortName,multilinePath.c_str(),strerror(errno));
@@ -2200,11 +2196,27 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         }
     }
 
+    if (doMeta) {   
+        promptMessage(COLOR_BG_ERROR,"source_user: %d\ncommon: %s\ncommonPath: %s\nsrcPath: %s\n titleSavePath: %s\n",source_user,common ? "true":"false",commonPath.c_str(),srcPath.c_str(),titleSavePath.c_str());
+        return 0;     
+        if (!removeDir(titleSavePath)) {   
+            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping metadata+savedata."));
+            errorCode += 16;
+        }
+        if (unlink(titleSavePath.c_str()) == -1) {
+            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting title folder."));
+            std::string multilinePath;
+            splitStringWithNewLines(titleSavePath,multilinePath);
+            promptError(LanguageUtils::gettext("%s \n Failed to delete title folder:\n%s\n%s"), title->shortName,multilinePath.c_str(),strerror(errno));
+            errorCode += 32;
+        }
+    }
+
     flushVol(srcPath);
 
     if (errorCode != 0) {
-        errorMessage = LanguageUtils::gettext("%s\nWipe failed.")+std::string("\n\n")+errorMessage;
-        promptError(errorMessage.c_str(),title->shortName);
+        errorMessage = (std::string) LanguageUtils::gettext("%s\nWipe failed.")+"\n"+errorMessage;
+        promptMessage(COLOR_BG_KO,errorMessage.c_str(),title->shortName);
     }
     return errorCode;
 
