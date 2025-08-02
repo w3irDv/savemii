@@ -882,6 +882,8 @@ static inline size_t getFilesize(FILE *fp) {
 static bool copyFile(const std::string &pPath, const std::string &oPath) {
     if (pPath.find("savemiiMeta.json") != std::string::npos)
         return true;
+    if (pPath.find("savemii_saveinfo.xml") != std::string::npos)
+        return true;
     FILE *source = fopen(pPath.c_str(), "rb");
     if (source == nullptr) {
         std::string multilinePath;
@@ -1465,37 +1467,37 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
 #ifndef MOCK
     if (!titleb->saveInit) {
 
-        const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
+        const std::string metaTitlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                     titleb->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                     highIDb, lowIDb);
-        const std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
+        const std::string metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
         const std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", pathb.c_str(), highIDb, lowIDb);
         const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
 
         FSError fserror;
 
-        if ( FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
+        if ( FSAMakeQuota(handle, newlibtoFSA(metaSavePath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
             std::string multilinePath;
-            splitStringWithNewLines(metaPath,multilinePath);
+            splitStringWithNewLines(metaSavePath,multilinePath);
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
                 + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for %s"),multilinePath.c_str());
             errorCode += 4;
         }
 
-        if (! copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml")) {
+        if (! copyFile(metaTitlePath + "/meta.xml", metaSavePath+ "/meta.xml")) {
             errorCode +=8;
             goto error;
         }
 
-        if (! copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga")) {
+        if (! copyFile(metaTitlePath + "/iconTex.tga", metaSavePath+ "/iconTex.tga")) {
             errorCode +=16;
             goto error;
         }
         
         if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,titleSavePath,fserror))
-            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath,fserror))
-                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/meta.xml",fserror))
-                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/iconTex.tga",fserror))
+            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath,fserror))
+                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/meta.xml",fserror))
+                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/iconTex.tga",fserror))
                         if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
                             titleb->saveInit = true;
                             goto end;
@@ -1737,11 +1739,14 @@ int backupAllSave(Title *titles, int count, const std::string & batchDatetime, b
             uint8_t slot = getEmptySlot(&titles[i],batchDatetime);
             const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-            std::string dstPath = getBatchBackupPath(&titles[i],slot,batchDatetime);
+            const std::string dstPath = getBatchBackupPath(&titles[i],slot,batchDatetime);
+            const std::string metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
 #ifndef MOCKALLBACKUP
             if (createFolder(dstPath.c_str()))
-                if (copyDir(srcPath, dstPath)) {
+                if (copyDir(srcPath, dstPath)) {    
+                    if (! isWii && checkEntry((metaSavePath+"/saveinfo.xml").c_str()) == 1)
+                        copyFile(metaSavePath+"/saveinfo.xml", dstPath+ "/savemii_saveinfo.xml");
                     writeMetadata(&titles[i],slot,isUSB,batchDatetime);
                     titles[i].currentDataSource.batchBackupState = OK;
                     titles[i].currentDataSource.selectedForBackup = false;
@@ -1798,10 +1803,11 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     bool isWii = title->is_Wii || title->noFwImg;
     const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    //std::string dstPath = getDynamicBackupPath(highID, lowID, slot);
-    std::string dstPath = getDynamicBackupPath(title, slot);
+    const std::string baseDstPath = getDynamicBackupPath(title, slot);
+    std::string dstPath(baseDstPath);
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
+    const std::string metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
     if (firstSDWrite)
         sdWriteDisclaimer();
@@ -1810,7 +1816,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
 
     if (! createFolder(dstPath.c_str())) {
         promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."),title->shortName);
-        return 4;
+        return 8;
     }
 
     writeMetadataWithTag(title,slot,isUSB,LanguageUtils::gettext("BACKUP IN PROGRESS"));
@@ -1818,55 +1824,55 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     bool doBase;
     bool doCommon;
 
-    if ( isWii  ) {
-        doBase = true;
-        doCommon = false;
-    }
-    else
-    {
-        switch (source_user) {
-            case -2: // no user
-                doBase = false;
-                doCommon = common;
-                break;
-            case -1: // allusers
-                doBase = true;
-                doCommon = false;
-                break;
-            default:  // source_user = 0 .. n
-                doBase = true;
-                doCommon = common;
-                if (accountSource == USE_WIIU_PROFILES) {
-                    srcPath.append(StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID));
-                    dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID));
-                } else {
-                    srcPath.append(StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID));
-                    dstPath.append(StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID));
-                }
-                break;
-        }
+    switch (source_user) {
+        case -2: // no user
+            doBase = false;
+            doCommon = common;
+            break;
+        case -1: // allusers + vWii
+            doBase = true;
+            doCommon = false;
+            break;
+        default:  // source_user = 0 .. n
+            doBase = true;
+            doCommon = common;
+            if (accountSource == USE_WIIU_PROFILES) {
+                srcPath.append(StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID));
+                dstPath.append(StringUtils::stringFormat("/%s", wiiu_acc[source_user].persistentID));
+            } else {
+                srcPath.append(StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID));
+                dstPath.append(StringUtils::stringFormat("/%s", vol_acc[source_user].persistentID));
+            }
+            break;
     }
 
     std::string errorMessage {};
     if (doCommon) {
        if (! copyDir(srcCommonPath, dstCommonPath)) {
-            errorMessage = LanguageUtils::gettext("Error copying common savedata.");
+            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying common savedata."));
             errorCode = 1 ;
         }
     }
 
     if (doBase)
         if (! copyDir(srcPath, dstPath)) {
-            errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + ((source_user == -1 ) ?  LanguageUtils::gettext("Error copying savedata.")
-                                    :  LanguageUtils::gettext("Error copying profile savedata."));
+            errorMessage.append("\n" + (std::string)  ((source_user == -1 ) ?  LanguageUtils::gettext("Error copying savedata.")
+                                    :  LanguageUtils::gettext("Error copying profile savedata.")));
             errorCode += 2;
         }
+
+    if (! isWii && checkEntry((metaSavePath+"/saveinfo.xml").c_str()) == 1)
+    {
+        if (! copyFile(metaSavePath+"/saveinfo.xml", baseDstPath+ "/savemii_saveinfo.xml")) { 
+            errorMessage.append("\n" + (std::string)  LanguageUtils::gettext("Warning - Error copying matadata saveinfo.xml. Not critical."));
+            errorCode += 0;
+        }
+    }
 
     if (errorCode == 0)
         writeMetadataWithTag(title,slot,isUSB,tag);
     else {
-        errorMessage = LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot.")+std::string("\n\n")+errorMessage;
+        errorMessage = (std::string) LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot.")+"\n"+errorMessage;
         promptError(errorMessage.c_str(),title->shortName);
         writeMetadataWithTag(title,slot,isUSB,LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
     }
@@ -1983,36 +1989,36 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
 #ifndef MOCK
     if (!title->saveInit && ! isWii ) {
 
-        const std::string titleMetaPath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
+        const std::string metaTitlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
                                                                     title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
                                                                     highID, lowID);
-        const std::string metaPath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+        const std::string metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
         const std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
         const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
         FSError fserror;
         
-        if ( FSAMakeQuota(handle, newlibtoFSA(metaPath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
+        if ( FSAMakeQuota(handle, newlibtoFSA(metaSavePath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
             std::string multilinePath;
-            splitStringWithNewLines(metaPath,multilinePath);
+            splitStringWithNewLines(metaSavePath,multilinePath);
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
                 + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for \n%s"),multilinePath.c_str());
             errorCode += 4;
         }
 
-        if (! copyFile(titleMetaPath + "/meta.xml", metaPath + "/meta.xml")) { 
+        if (! copyFile(metaTitlePath + "/meta.xml", metaSavePath+ "/meta.xml")) { 
             errorCode += 8;
             goto error;
         }
 
-        if (! copyFile(titleMetaPath + "/iconTex.tga", metaPath + "/iconTex.tga")) {
+        if (! copyFile(metaTitlePath + "/iconTex.tga", metaSavePath+ "/iconTex.tga")) {
             errorCode += 16;
             goto error;
         }
 
         if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,titleSavePath,fserror))
-            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath,fserror))
-                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/meta.xml",fserror))
-                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaPath + "/iconTex.tga",fserror))
+            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath,fserror))
+                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/meta.xml",fserror))
+                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/iconTex.tga",fserror))
                         if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
                             title->saveInit = true;
                             goto end;
@@ -2114,7 +2120,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
 
     if (interactive) {
         if (source_user == -3) {
-            if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("This option is a last resort in case something has gone wrong when restoring data\nIt will wipe metadata and savedata, and the title will become uninitialized.\nIt does nothing to the installed game code.\nIt's equivalent to a complete savedata wipe from the Wii U Data Management menu.\n\nContinue?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
+            if (!promptConfirm(ST_WARNING, LanguageUtils::gettext("This option is a last resort in case something has gone wrong when\nrestoring data. It will wipe metadata and savedata, and the title \nwill become uninitialized. It does nothing to the installed game code.\nIt's equivalent to a complete savedata wipe from \nthe Wii U Data Management menu.\n\nContinue?")) || !promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
                 return -1;
         }
         else
@@ -2147,7 +2153,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
             doCommon = common;
             doMeta = false;
             break;
-        case -1:  // allusers
+        case -1:  // allusers + vWii
             doBase = true;
             doCommon = false;
             doMeta = false;
