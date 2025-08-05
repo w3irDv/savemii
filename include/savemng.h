@@ -19,6 +19,9 @@
 #include <utils/InputUtils.h>
 #include <vector>
 #include <ApplicationState.h>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 #define PATH_SIZE        0x400
 
@@ -252,3 +255,5 @@ bool checkIfProfilesInTitleBackupExist(Title *title, uint8_t slot);
 void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::string> & failedTitles);
 std::string newlibtoFSA(std::string path);
 bool setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError & fserror);
+bool updateSaveinfo(const std::string & source_saveinfo_file, const std::string & target_saveinfo_file, std::vector<std::string> & source_persistentIDs, std::string & target_persistentID, bool is_all_users);
+bool getProfilesInPath(std::vector<std::string> & source_persistentIDs, const fs::path & source_path );
