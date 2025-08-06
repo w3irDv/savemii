@@ -1417,7 +1417,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
 
     switch (source_user) {
         case -3: // not posible
-            promptError("source_user=-3 is not allowed for this task");
+            promptError(LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
             if (removeDir(dstPath))  
                 unlink(dstPath.c_str()); 
             return -1;
@@ -1445,9 +1445,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
 
     std::string errorMessage {};
     if (doCommon) {
-        #ifndef MOCK
         FSAMakeQuota(handle, newlibtoFSA(dstCommonPath).c_str(), 0x666, titleb->commonSaveSize);
-        #endif
          if (! copyDir(srcCommonPath, dstCommonPath)) {
             errorMessage = LanguageUtils::gettext("Error copying common savedata.");
             errorCode = 1;
@@ -1474,14 +1472,14 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
         if ( initializeWiiUTitle(titleb, errorMessage, errorCode) )
             goto restoreSaveinfo;
         else
-            goto end;
+            goto flush_volume;
 
     }
         
 restoreSaveinfo:
     updateSaveinfo(titleb, source_user, wiiu_user, COPY_TO_OTHER_DEVICE, 0, title, errorMessage, errorCode);
 
-end:
+flush_volume:
     flushVol(dstPath);
 
     if (errorCode != 0) {
@@ -1529,14 +1527,16 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     std::string errorMessage {};
 
-    #ifndef MOCK
         FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
-    #endif
     if (! copyDir(srcPath, dstPath)) {
         errorMessage = LanguageUtils::gettext("Error copying profile savedata.");
         errorCode = 1;
+        goto flush_volume;
     }
+        
+    updateSaveinfo(title, source_user, wiiu_user, PROFILE_TO_PROFILE, 0, title, errorMessage, errorCode);
 
+flush_volume:    
     flushVol(dstPath);
 
     if (errorCode != 0) {
@@ -1596,6 +1596,7 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
             splitStringWithNewLines(srcPath,multilinePath);
             errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Unable to rename folder \n'%s'to\n'%s'\n\n%s\n\nPlease restore the backup, fix errors and try again"),multilinePath.c_str(),dstPath.c_str(),strerror(errno));
             errorCode = 2;
+            goto flush_volume;
         }
         if (InProgress::totalSteps > 1) { // It's so fast that is unnecessary ...
             InProgress::input->read();
@@ -1605,6 +1606,10 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
         }
     }
 
+
+    updateSaveinfo(title, source_user, wiiu_user, MOVE_PROFILE, 0, title, errorMessage, errorCode);
+
+flush_volume:
     flushVol(dstPath);
 
     if ( errorCode != 0 ) {
@@ -1796,7 +1801,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
 
     switch (source_user) {
         case -3: // not possible
-            promptError("source_user=-3 is not allowed for this task");
+            promptError(LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
             if (removeDir(dstPath))  
                 unlink(dstPath.c_str()); 
             return -1;
@@ -1913,7 +1918,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
 
     switch (source_user) {
         case -3: // not posible
-            promptError("source_user=-3 is not allowed for this task");
+            promptError(LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
             if (removeDir(dstPath))  
                 unlink(dstPath.c_str()); 
             return -1;
@@ -1937,9 +1942,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
 
     std::string errorMessage {};
     if (doCommon) {
-        #ifndef MOCK
         FSAMakeQuota(handle, newlibtoFSA(dstCommonPath).c_str(), 0x666, title->commonSaveSize);
-        #endif
         if (! copyDir(srcCommonPath, dstCommonPath)) {
             errorMessage.append("\n" + (std::string)LanguageUtils::gettext("Error restoring common savedata."));
             errorCode = 1;
@@ -1962,7 +1965,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
 
     if (!title->saveInit && title->is_Inject) {
         initializeVWiiInjectTitle(title, errorMessage, errorCode);
-        goto end;
+        goto flush_volume;
     }
 
     if (!title->saveInit && ! isWii ) {
@@ -1970,7 +1973,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
         if ( initializeWiiUTitle(title, errorMessage, errorCode) )
             goto restoreSaveinfo;
         else
-            goto end;
+            goto flush_volume;
 
     }
         
@@ -1978,7 +1981,7 @@ restoreSaveinfo:
     if (! isWii )
         updateSaveinfo(title, source_user, wiiu_user, RESTORE, slot, title, errorMessage, errorCode);
 
-end:
+flush_volume:
     flushVol(dstPath);
 
     if (errorCode != 0) {
