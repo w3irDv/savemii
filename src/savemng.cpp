@@ -1416,6 +1416,12 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
     bool singleUser = false;
 
     switch (source_user) {
+        case -3: // not posible
+            promptError("source_user=-3 is not allowed for this task");
+            if (removeDir(dstPath))  
+                unlink(dstPath.c_str()); 
+            return -1;
+            break;
         case -2: // no user
             doBase = false;
             doCommon = common;
@@ -1449,14 +1455,12 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
     }
 
     if (doBase) {
-        #ifndef MOCK
         if (singleUser)
         {
             FSAMakeQuota(handle, newlibtoFSA(dstPath).c_str(), 0x666, titleb->accountSaveSize);;
         } else {
             FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize, titleb->commonSaveSize);
         }
-        #endif
         if (! copyDir(srcPath, dstPath)) {
             errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
                 + ((source_user == -1 ) ?  LanguageUtils::gettext("Error copying savedata.")
@@ -1465,53 +1469,18 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
         }
     }
 
-#ifndef MOCK
     if (!titleb->saveInit) {
 
-        const std::string metaTitlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
-                                                                    titleb->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
-                                                                    highIDb, lowIDb);
-        const std::string metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", pathb.c_str(), highIDb, lowIDb);
-        const std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", pathb.c_str(), highIDb, lowIDb);
-        const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", pathb.c_str(), highIDb, lowIDb);
+        if ( initializeWiiUTitle(titleb, errorMessage, errorCode) )
+            goto restoreSaveinfo;
+        else
+            goto end;
 
-        FSError fserror;
-
-        if ( FSAMakeQuota(handle, newlibtoFSA(metaSavePath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
-            std::string multilinePath;
-            splitStringWithNewLines(metaSavePath,multilinePath);
-            errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-                + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for %s"),multilinePath.c_str());
-            errorCode += 4;
-        }
-
-        if (! copyFile(metaTitlePath + "/meta.xml", metaSavePath+ "/meta.xml")) {
-            errorCode +=8;
-            goto error;
-        }
-
-        if (! copyFile(metaTitlePath + "/iconTex.tga", metaSavePath+ "/iconTex.tga")) {
-            errorCode +=16;
-            goto error;
-        }
-        
-        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,titleSavePath,fserror))
-            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath,fserror))
-                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/meta.xml",fserror))
-                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/iconTex.tga",fserror))
-                        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
-                            titleb->saveInit = true;
-                            goto end;
-                        }
-        errorCode += 32;
-        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-            + FSAGetStatusStr(fserror);
-        // something has gone wrong
-error:
-        errorMessage = ((errorMessage.size()==0) ? "" : (errorMessage+"\n"))
-            + LanguageUtils::gettext("Error creating init data");
     }
-#endif
+        
+restoreSaveinfo:
+    updateSaveinfo(titleb, source_user, wiiu_user, COPY_TO_OTHER_DEVICE, 0, title, errorMessage, errorCode);
+
 end:
     flushVol(dstPath);
 
@@ -2006,7 +1975,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     }
         
 restoreSaveinfo:
-    if (! isWii && checkEntry((baseSrcPath+ "/savemii_saveinfo.xml").c_str()) == 1)
+    if (! isWii )
         updateSaveinfo(title, source_user, wiiu_user, RESTORE, slot, title, errorMessage, errorCode);
 
 end:
@@ -2772,19 +2741,6 @@ bool getProfilesInPath(std::vector<std::string> & source_persistentIDs, const fs
     return true;
 }
 
-/*
-bool updateSaveinfo(const std::string & source_saveinfo_file, const std::string & target_saveinfo_file, std::vector<std::string> & source_persistentIDs, std::string & target_persistentID, bool is_all_users) {
-    
-    promptMessage(COLOR_BG_ERROR,"s s: %s\nd s: %s\ns pid: %s\nt pid: %s\n%s",
-        source_saveinfo_file.c_str(),
-        target_saveinfo_file.c_str(),
-        source_persistentIDs.at(0).c_str(),
-        target_persistentID.c_str(),
-        is_all_users ? "allusers true":"all users false");
-    return true;
-}
-*/
-
 bool updateSaveinfoFile(const std::string & source_saveinfo_file, const std::string & target_saveinfo_file, std::vector<std::string> & source_persistentIDs, std::string & target_persistentID, bool is_all_users) {
     
     if (!is_all_users && source_persistentIDs.size() >1)
@@ -3042,6 +2998,11 @@ bool updateSaveinfo (Title * title, int8_t source_user, int8_t wiiu_user, eJobTy
             break;
         default:
             return false;
+    }
+
+    if ( checkEntry(source_saveinfo_file.c_str()) != 1 ) {
+        errorMessage.append("\n" + (std::string)  LanguageUtils::gettext("Sourcce saveinfo\n%s\n not found."));
+        return false;
     }
 
     std::string target_saveinfo_file = metaSavePath+"/saveinfo.xml";
