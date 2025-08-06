@@ -1942,7 +1942,6 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     bool doCommon = false;
     bool singleUser = false;
 
-
     switch (source_user) {
         case -3: // not posible
             promptError("source_user=-3 is not allowed for this task");
@@ -1992,146 +1991,23 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
         }        
     }
 
+    if (!title->saveInit && title->is_Inject) {
+        initializeVWiiInjectTitle(title, errorMessage, errorCode);
+        goto end;
+    }
+
     if (!title->saveInit && ! isWii ) {
 
-        const std::string metaTitlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
-                                                                    title->isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
-                                                                    highID, lowID);
-        const std::string metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
-        const std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
-        const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
-        FSError fserror;
-        
-        if ( FSAMakeQuota(handle, newlibtoFSA(metaSavePath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
-            std::string multilinePath;
-            splitStringWithNewLines(metaSavePath,multilinePath);
-            errorMessage.append("\n" + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for \n%s"),multilinePath.c_str()));
-            errorCode += 4;
-        }
-
-        if (! copyFile(metaTitlePath + "/meta.xml", metaSavePath+ "/meta.xml")) { 
-            errorCode += 8;
-            goto error;
-        }
-
-        if (! copyFile(metaTitlePath + "/iconTex.tga", metaSavePath+ "/iconTex.tga")) {
-            errorCode += 16;
-            goto error;
-        }
-
-        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,titleSavePath,fserror))
-            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath,fserror))
-                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/meta.xml",fserror))
-                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/iconTex.tga",fserror))
-                        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
-                            title->saveInit = true;
-                            goto restoreSaveinfo;
-                        }
-        errorCode += 32;
-        errorMessage.append("\n" + (std::string) FSAGetStatusStr(fserror));
-        // something has gone wrong
-error:
-        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating init data"));
-        goto end;
-
-    }
-
-    if (!title->saveInit && title->is_Inject) {
-    // for vWii injects, check is title.tmd exists. It seems to be created if it not exists when launching the game even if the savedata exists, but just in case ...
-        std::string lowIDPath = StringUtils::stringFormat("%s/%08x/%08x",path.c_str(), highID,lowID);
-        std::string titleTmdFolder = StringUtils::stringFormat("%s/content",lowIDPath.c_str());
-        std::string titleTmdPath;
-
-        if (!createFolderUnlocked(titleTmdFolder)) {
-            errorCode += 64;
-            goto errorVWii;
-        }
-        
-        titleTmdPath = titleTmdFolder + "/title.tmd";
-        FSError fserror;
-        if (checkEntry(titleTmdPath.c_str()) != 1) {
-            uint32_t wiiUHighID = title->highID;
-            uint32_t wiiULowID = title->lowID;
-            bool wiiUisUSB = title->isTitleOnUSB;
-            
-            const std::string wiiUPath = (wiiUisUSB ? (getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title");
-            std::string sourceTitleTmdPath = StringUtils::stringFormat("%s/%08x/%08x/code/rvlt.tmd", wiiUPath.c_str(), wiiUHighID, wiiULowID);
-            promptMessage(COLOR_BG_KO,"s:%s\nd:%s",sourceTitleTmdPath.c_str(),titleTmdPath.c_str());
-
-            if (! copyFile(sourceTitleTmdPath,titleTmdPath)) { 
-                errorCode += 128;
-                goto errorVWii;
-            }
-          
-            if (setOwnerAndMode(0,0,(FSMode) 0x664,lowIDPath,fserror)) {
-                if (setOwnerAndMode(0,0,(FSMode) 0x660,titleTmdFolder,fserror)) {
-                    fserror = FSAChangeMode(handle, newlibtoFSA(titleTmdPath).c_str(), (FSMode) 0x660);  // tom investigate: setting user:group to 0:0 returns "non empty" error.
-                    if ( fserror == FS_ERROR_OK) {
-                            title->saveInit = true;
-                            goto end;
-                    }
-                }
-            }
-        } else
+        if ( initializeWiiUTitle(title, errorMessage, errorCode) )
+            goto restoreSaveinfo;
+        else
             goto end;
 
-        errorCode += 256;
-        errorMessage.append("\n" + (std::string) FSAGetStatusStr(fserror));
-        // something has gone wrong
-errorVWii:
-        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating vWii init data"));
-        goto end;
     }
-
-
+        
 restoreSaveinfo:
     if (! isWii && checkEntry((baseSrcPath+ "/savemii_saveinfo.xml").c_str()) == 1)
-    {
-        std::string source_saveinfo_file = baseSrcPath+ "/savemii_saveinfo.xml";
-        std::string target_saveinfo_file = metaSavePath+"/saveinfo.xml";
-
-        std::string target_persistentID {};
-        std::vector<std::string> source_persistentIDs;
-
-        switch (source_user) {
-            case -3:
-                break;
-            case -2:
-                source_persistentIDs.push_back("\"00000000\"");
-                target_persistentID = "\"00000000\"";
-                break;
-            case -1:
-                getProfilesInPath(source_persistentIDs,baseSrcPath);
-                break;
-            default:
-                source_persistentIDs.push_back((std::string)"\""+(vol_acc[source_user].persistentID)+"\"");
-                target_persistentID = (std::string)"\""+wiiu_acc[wiiu_user].persistentID+"\"";
-                break;
-        }
-
-        FSError fserror;
-        if(updateSaveinfo(source_saveinfo_file, target_saveinfo_file, source_persistentIDs,target_persistentID,source_user == -1)) {
-            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/saveinfo.xml",fserror)) {
-                    goto end;
-            } else {
-                errorMessage.append("\n" + (std::string) FSAGetStatusStr(fserror));
-            }
-        }       
-        errorMessage.append("\n" + (std::string)  LanguageUtils::gettext("Warning - Error copying matadata saveinfo.xml. Not critical.\n"));
-        errorCode += 512;
-        }
-
-
-        /*
-        if (source_user == -1) {
-            FSError fserror;
-            if (copyFile(baseSrcPath+ "/savemii_saveinfo.xml",metaSavePath+"/saveinfo.xml"))
-                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/saveinfo.xml",fserror))
-                    goto end;
-            errorMessage.append("\n" + (std::string)  LanguageUtils::gettext("Warning - Error copying matadata saveinfo.xml. Not critical."));
-            errorCode += 512;
-        }
-            */
+        updateSaveinfo(title, source_user, wiiu_user, RESTORE, slot, title, errorMessage, errorCode);
 
 end:
     flushVol(dstPath);
@@ -2909,7 +2785,7 @@ bool updateSaveinfo(const std::string & source_saveinfo_file, const std::string 
 }
 */
 
-bool updateSaveinfo(const std::string & source_saveinfo_file, const std::string & target_saveinfo_file, std::vector<std::string> & source_persistentIDs, std::string & target_persistentID, bool is_all_users) {
+bool updateSaveinfoFile(const std::string & source_saveinfo_file, const std::string & target_saveinfo_file, std::vector<std::string> & source_persistentIDs, std::string & target_persistentID, bool is_all_users) {
     
     if (!is_all_users && source_persistentIDs.size() >1)
         return false;
@@ -3035,4 +2911,169 @@ bool updateSaveinfo(const std::string & source_saveinfo_file, const std::string 
         }
     }
     return true;
+}
+
+
+bool initializeWiiUTitle(Title * title, std::string & errorMessage, int & errorCode) {
+
+    uint32_t highID = title->highID;
+    uint32_t lowID = title->lowID;
+    bool isUSB = title->isTitleOnUSB;
+    const std::string path = isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save";
+
+
+    const std::string metaTitlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
+                                                                isUSB ? getUSB().c_str() : "storage_mlc01:",
+                                                                highID, lowID);
+    const std::string metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+    const std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
+    const std::string userPath = StringUtils::stringFormat("%s/%08x/%08x/user", path.c_str(), highID, lowID);
+    FSError fserror;
+    
+    if ( FSAMakeQuota(handle, newlibtoFSA(metaSavePath).c_str(), 0x666, 0x80000) != FS_ERROR_OK ) {
+        std::string multilinePath;
+        splitStringWithNewLines(metaSavePath,multilinePath);
+        errorMessage.append("\n" + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for \n%s"),multilinePath.c_str()));
+        errorCode += 4;
+        goto error;
+    }
+
+    if (! copyFile(metaTitlePath + "/meta.xml", metaSavePath+ "/meta.xml")) { 
+        errorCode += 8;
+        goto error;
+    }
+
+    if (! copyFile(metaTitlePath + "/iconTex.tga", metaSavePath+ "/iconTex.tga")) {
+        errorCode += 16;
+        goto error;
+    }
+
+    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,titleSavePath,fserror))
+        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath,fserror))
+            if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/meta.xml",fserror))
+                if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,metaSavePath+ "/iconTex.tga",fserror))
+                    if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x600,userPath,fserror)) {
+                        title->saveInit = true;
+                        return true;  // goto restoreSaveinfo
+                    }
+    errorCode += 32;
+    errorMessage.append("\n" + (std::string) FSAGetStatusStr(fserror));
+    // something has gone wrong
+error:
+    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating init data"));
+    return false;  // goto end
+
+}
+
+bool initializeVWiiInjectTitle(Title * title, std::string & errorMessage, int & errorCode) {
+
+    //target tmd info
+    uint32_t highID = title->vWiiHighID;
+    uint32_t lowID = title->vWiiLowID;
+  // for vWii injects, check is title.tmd exists. It seems to be created if it not exists when launching the game even if the savedata exists, but just in case ...
+    std::string lowIDPath = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x", highID,lowID);
+    std::string titleTmdFolder = StringUtils::stringFormat("%s/content",lowIDPath.c_str());
+    std::string titleTmdPath = titleTmdFolder + "/title.tmd";
+
+    if (!createFolderUnlocked(titleTmdFolder)) {
+        errorCode += 64;
+        goto errorVWii;
+    }
+    
+    FSError fserror;
+    if (checkEntry(titleTmdPath.c_str()) != 1) {
+        //source tmd info
+        uint32_t wiiUHighID = title->highID;
+        uint32_t wiiULowID = title->lowID;
+        bool wiiUisUSB = title->isTitleOnUSB;        
+        const std::string wiiUPath = (wiiUisUSB ? (getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title");
+        std::string sourceTitleTmdPath = StringUtils::stringFormat("%s/%08x/%08x/code/rvlt.tmd", wiiUPath.c_str(), wiiUHighID, wiiULowID);
+
+        if (! copyFile(sourceTitleTmdPath,titleTmdPath)) { 
+            errorCode += 128;
+            goto errorVWii;
+        }
+        
+        if (setOwnerAndMode(0,0,(FSMode) 0x664,lowIDPath,fserror)) {
+            if (setOwnerAndMode(0,0,(FSMode) 0x660,titleTmdFolder,fserror)) {
+                fserror = FSAChangeMode(handle, newlibtoFSA(titleTmdPath).c_str(), (FSMode) 0x660);  // to investigate: setting user:group to 0:0 returns "non empty" error.
+                if ( fserror == FS_ERROR_OK) {
+                        title->saveInit = true;
+                        return true;  // goto end
+                }
+            }
+        }
+    } else
+        return true;
+
+    errorCode += 256;
+    errorMessage.append("\n" + (std::string) FSAGetStatusStr(fserror));
+    // something has gone wrong
+errorVWii:
+    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating vWii init data"));
+    return false;  // we go to end anyway ...
+}
+
+bool updateSaveinfo (Title * title, int8_t source_user, int8_t wiiu_user, eJobType jobType, uint8_t slot, Title * source_title, std::string & errorMessage, int & errorCode) {
+
+    uint32_t highID = title->highID;
+    uint32_t lowID = title->lowID;
+    bool isUSB = title->isTitleOnUSB;
+    const std::string basePath = isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save";
+    const std::string metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", basePath.c_str(), highID, lowID);
+
+    std::string profilesPath {};
+    std::string source_saveinfo_file {};
+    
+    switch(jobType) {
+        case RESTORE:
+            profilesPath = getDynamicBackupPath(title, slot);
+            source_saveinfo_file = profilesPath+ "/savemii_saveinfo.xml";
+            break;
+        case COPY_TO_OTHER_DEVICE:
+        case PROFILE_TO_PROFILE:
+        case MOVE_PROFILE: {
+                bool source_isUSB = source_title->isTitleOnUSB;
+                const std::string source_basePath = source_isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save";
+                const std::string source_metaSavePath= StringUtils::stringFormat("%s/%08x/%08x/meta", source_basePath.c_str(), highID, lowID);
+                profilesPath = StringUtils::stringFormat("%s/%08x/%08x/user", source_basePath.c_str(), highID, lowID);
+                source_saveinfo_file = source_metaSavePath + "/saveinfo.xml";
+            }
+            break;
+        default:
+            return false;
+    }
+
+    std::string target_saveinfo_file = metaSavePath+"/saveinfo.xml";
+
+    std::string target_persistentID {};
+    std::vector<std::string> source_persistentIDs;
+
+    switch (source_user) {
+        case -3:
+            break;
+        case -2:
+            source_persistentIDs.push_back("\"00000000\"");
+            target_persistentID = "\"00000000\"";
+            break;
+        case -1:
+            getProfilesInPath(source_persistentIDs, profilesPath);
+            break;
+        default:
+            source_persistentIDs.push_back((std::string)"\""+(vol_acc[source_user].persistentID)+"\"");
+            target_persistentID = (std::string)"\""+wiiu_acc[wiiu_user].persistentID+"\"";
+            break;
+    }
+
+    FSError fserror;
+    if(updateSaveinfoFile(source_saveinfo_file, target_saveinfo_file, source_persistentIDs,target_persistentID,source_user == -1)) {
+        if (setOwnerAndMode(metaOwnerId,metaGroupId,(FSMode) 0x640,target_saveinfo_file,fserror)) {
+                return true; // go to end
+        } else {
+            errorMessage.append("\n" + (std::string) FSAGetStatusStr(fserror));
+        }
+    }       
+    errorMessage.append("\n" + (std::string)  LanguageUtils::gettext("Warning - Error copying matadata saveinfo.xml. Not critical.\n"));
+    errorCode += 512;
+    return false;
 }
