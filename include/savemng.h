@@ -167,6 +167,7 @@ class InProgress {
         inline static int totalSteps = 0;
         inline static bool abortTask = false;
         inline static Input * input = nullptr;
+        inline static eJobType jobType = NONE; 
 };
 
 struct titlesNEProfiles{
@@ -260,4 +261,9 @@ bool getProfilesInPath(std::vector<std::string> & source_persistentIDs, const fs
 bool updateSaveinfo (Title * title, int8_t source_user, int8_t wiiu_user, eJobType jobType, uint8_t slot, Title * source_title, std::string & errorMessage, int & errorCode);
 bool initializeWiiUTitle(Title * title, std::string & errorMessage, int & errorCode);
 bool initializeVWiiInjectTitle(Title * title, std::string & errorMessage, int & errorCode);
+
+bool copyDir(const std::string &pPath, const std::string &tPath, bool if_generate_FAT32_translation_file = false);
+bool copyFile(const std::string &pPath, const std::string &oPath, bool if_generate_FAT32_translation_file = false);
+
+
 

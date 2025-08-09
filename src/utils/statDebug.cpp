@@ -20,7 +20,7 @@ bool statDir(const std::string &entryPath,FILE *file) {
     FSStatFlags fsstatflags;
     FSError fserror = FSAGetStat(handle, newlibtoFSA(entryPath).c_str(), &fsastat);
     if ( fserror != FS_ERROR_OK ) {
-        promptError("%s",FSAGetStatusStr(fserror));
+        promptError("Error opening dir: %s",FSAGetStatusStr(fserror));
         return false;
     }
     fsmode = fsastat.mode;
