@@ -34,14 +34,14 @@ bool ExcludesCfg::mkJsonCfg()   {
 
     json_t *config = json_object();
     if (config == nullptr) {
-        promptError(LanguageUtils::gettext("Error creating JSON object: %s"),cfg.c_str());
+        Console::promptError(LanguageUtils::gettext("Error creating JSON object: %s"),cfg.c_str());
         return false;
     }
 
     json_t *excludes = json_array();
     if (excludes == nullptr) {
         json_decref(config);
-        promptError(LanguageUtils::gettext("Error creating JSON array: %s"),cfg.c_str());
+        Console::promptError(LanguageUtils::gettext("Error creating JSON array: %s"),cfg.c_str());
         return false;
     }
     
@@ -51,7 +51,7 @@ bool ExcludesCfg::mkJsonCfg()   {
         if ( element == nullptr) {
             char titleKO[23];
             snprintf(titleKO,23,"%08x-%08x-%s",titleID.highID,titleID.lowID,titleID.isTitleOnUSB?"USB ":"NAND");
-            promptError(LanguageUtils::gettext("Error creating JSON object: %s"),titleKO);
+            Console::promptError(LanguageUtils::gettext("Error creating JSON object: %s"),titleKO);
             json_decref(excludes);
             json_decref(config);
             return false;
@@ -75,7 +75,7 @@ bool ExcludesCfg::mkJsonCfg()   {
     configString = json_dumps(config, JSON_INDENT(2));
     json_decref(config);
     if (configString == nullptr) {
-        promptError(LanguageUtils::gettext("Error dumping JSON object: %s"),cfg.c_str());
+        Console::promptError(LanguageUtils::gettext("Error dumping JSON object: %s"),cfg.c_str());
         return false;
     }
 
@@ -96,13 +96,13 @@ bool ExcludesCfg::parseJsonCfg() {
     {
         std::string multilinePath;
         splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Error decoding JSON file\n %s\nin line %d:\n\n%s"),multilinePath.c_str(),error.line,error.text);
+        Console::promptError(LanguageUtils::gettext("Error decoding JSON file\n %s\nin line %d:\n\n%s"),multilinePath.c_str(),error.line,error.text);
         return false;
     }
 
     json_t* excludes = json_object_get(root,cfg.c_str());
     if (excludes == nullptr) {
-        promptError(LanguageUtils::gettext("Error: unexpected format (%s not an array)"),cfg.c_str());
+        Console::promptError(LanguageUtils::gettext("Error: unexpected format (%s not an array)"),cfg.c_str());
         json_decref(root);
         return false;
     }
@@ -157,7 +157,7 @@ bool ExcludesCfg::parseJsonCfg() {
     if (errorCount != 0 ) {
         std::string multilineError;
         splitStringWithNewLines(koElements,multilineError);
-        promptError(LanguageUtils::gettext("Error parsing values in elements:\n%s"),multilineError.c_str());
+        Console::promptError(LanguageUtils::gettext("Error parsing values in elements:\n%s"),multilineError.c_str());
     }
 
     json_decref(root);

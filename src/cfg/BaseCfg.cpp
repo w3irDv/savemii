@@ -23,7 +23,7 @@ bool BaseCfg::init() {
             else {
                 std::string multilinePath;
                 splitStringWithNewLines(cfgPath,multilinePath);
-                promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+                Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
                 initialized = false;
                 return false;
             } 
@@ -31,7 +31,7 @@ bool BaseCfg::init() {
         else {
             std::string multilinePath;
             splitStringWithNewLines(cfgPath,multilinePath);
-            promptError(LanguageUtils::gettext("Critical - Path is not a directory:\n\n%s"),multilinePath.c_str());
+            Console::promptError(LanguageUtils::gettext("Critical - Path is not a directory:\n\n%s"),multilinePath.c_str());
             initialized = false;
             return false;
         }
@@ -52,21 +52,21 @@ bool BaseCfg::saveFile() {
     if (fp == nullptr) {
         std::string multilinePath;
         splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
     }
     if ( fwrite(configString, strlen(configString), 1, fp) == 0 )
         if ( ferror(fp)) {
             std::string multilinePath;
             splitStringWithNewLines(cfgFile,multilinePath);
-            promptError(LanguageUtils::gettext("Error writing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Error writing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
             fclose(fp);
             return false;
         }
     if ( fclose(fp) != 0) {
         std::string multilinePath;
         splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
     }
 
@@ -90,7 +90,7 @@ bool BaseCfg::readFile() {
     if ( initialized == false ) {
         std::string multilinePath;
         splitStringWithNewLines(cfgPath,multilinePath);
-        promptError(LanguageUtils::gettext("cfgPath was no initialized and cannot be used:\n\n%s"),multilinePath.c_str());
+        Console::promptError(LanguageUtils::gettext("cfgPath was no initialized and cannot be used:\n\n%s"),multilinePath.c_str());
         return false;
     }
 
@@ -98,7 +98,7 @@ bool BaseCfg::readFile() {
     if (fp == nullptr) {
         std::string multilinePath;
         splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
     }
 
@@ -113,7 +113,7 @@ bool BaseCfg::readFile() {
             {
                 std::string multilinePath;
                 splitStringWithNewLines(cfgFile,multilinePath);
-                promptError(LanguageUtils::gettext("Error reading file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+                Console::promptError(LanguageUtils::gettext("Error reading file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
                 fclose(fp);
                 return false;
             }
@@ -121,7 +121,7 @@ bool BaseCfg::readFile() {
     if ( fclose(fp) != 0) {
         std::string multilinePath;
         splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
         return false;
     }
 

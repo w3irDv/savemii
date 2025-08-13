@@ -1,10 +1,11 @@
 #pragma once
 
 #include <jansson.h>
-#include <string>
-#include <vector>
 #include <memory>
 #include <savemng.h>
+#include <string>
+#include <utils/ConsoleUtils.h>
+#include <vector>
 
 class BaseCfg {
 
@@ -31,7 +32,5 @@ protected:
 
     bool initialized = false;
 
-    inline static std::string cfgPath { "fs:/vol/external01/wiiu/backups/saveMiiconfig" } ;
-    
-
+    inline static std::string cfgPath{"fs:/vol/external01/wiiu/backups/saveMiiconfig"};
 };

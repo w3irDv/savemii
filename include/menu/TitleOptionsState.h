@@ -7,7 +7,7 @@
 
 class TitleOptionsState : public ApplicationState {
 public:
-    TitleOptionsState(Title & title,
+    TitleOptionsState(Title &title,
                       eJobType task,
                       int *versionList,
                       int8_t source_user,
@@ -54,15 +54,15 @@ private:
     int cursorPos = 0;
     int entrycount = 2;
 
-    std::string tag {};
-    std::string newTag {};
+    std::string tag{};
+    std::string newTag{};
 
     int wiiUAccountsTotalNumber = 0;
     int sourceAccountsTotalNumber = 0;
 
     bool emptySlot = false;
     bool backupRestoreFromSameConsole = false;
-    std::string slotInfo {};
+    std::string slotInfo{};
     void updateSlotMetadata();
 
     bool sourceHasRequestedSavedata = false;
@@ -85,5 +85,4 @@ private:
     void updateCopyToOtherDeviceData();
     void updateWipeProfileData();
     void updateMoveCopyProfileData();
-
 };

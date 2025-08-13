@@ -1,17 +1,14 @@
 #pragma once
 
 #include <ApplicationState.h>
+#include <BackupSetList.h>
 #include <memory>
 #include <utils/InputUtils.h>
-#include <BackupSetList.h>
-
-
 
 
 class BackupSetListFilterState : public ApplicationState {
 public:
-    BackupSetListFilterState(std::unique_ptr<BackupSetList> & backupSetList) : 
-        backupSetList(backupSetList) {};
+    BackupSetListFilterState(std::unique_ptr<BackupSetList> &backupSetList) : backupSetList(backupSetList) {};
     enum eState {
         STATE_BACKUPSET_FILTER,
         STATE_DO_SUBSTATE,
@@ -24,7 +21,7 @@ private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_BACKUPSET_FILTER;
 
-    std::unique_ptr<BackupSetList> & backupSetList;
+    std::unique_ptr<BackupSetList> &backupSetList;
     int entrycount = 4;
     int cursorPos = 0;
 };

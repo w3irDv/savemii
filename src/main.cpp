@@ -1,3 +1,4 @@
+#include <Metadata.h>
 #include <cstdlib>
 #include <cstring>
 #include <icon.h>
@@ -5,27 +6,27 @@
 #include <menu/MainMenuState.h>
 #include <padscore/kpad.h>
 #include <savemng.h>
-#include <Metadata.h>
 //#include <sndcore2/core.h>
 #include <BackupSetList.h>
-#include <utils/DrawUtils.h>
+#include <cfg/ExcludesCfg.h>
+#include <cfg/GlobalCfg.h>
+#include <coreinit/debug.h>
+#include <coreinit/mcp.h>
+#include <coreinit/screen.h>
 #include <utils/Colors.h>
+#include <utils/ConsoleUtils.h>
+#include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
 #include <utils/StringUtils.h>
-#include <cfg/GlobalCfg.h>
-#include <cfg/ExcludesCfg.h>
 #include <version.h>
-#include <coreinit/debug.h>
-#include <coreinit/mcp.h>
-#include <coreinit/screen.h>
 
 //#define DEBUG
 
 #ifdef DEBUG
-#include <whb/log_udp.h>
 #include <whb/log.h>
+#include <whb/log_udp.h>
 #endif
 
 //#define STRESS
@@ -50,18 +51,19 @@ static bool contains(const T (&arr)[N], const T &element) {
 }
 
 static void disclaimer() {
-    consolePrintPosAligned(13, 0, 1,"SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+    consolePrintPosAligned(13, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
     consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
     consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
-    consolePrintPosAligned(16, 0, 1,LanguageUtils::gettext("Everything you do with this software is your own responsibility"));
+    consolePrintPosAligned(16, 0, 1, LanguageUtils::gettext("Everything you do with this software is your own responsibility"));
 }
 
 static void getWiiUSerialId() {
     // from WiiUCrashLogDumper
-    WUT_ALIGNAS(0x40) MCPSysProdSettings sysProd{};
+    WUT_ALIGNAS(0x40)
+    MCPSysProdSettings sysProd{};
     int32_t mcpHandle = MCP_Open();
-    if ( mcpHandle >= 0 ) {
-        if (MCP_GetSysProdSettings(mcpHandle,&sysProd)==0) {
+    if (mcpHandle >= 0) {
+        if (MCP_GetSysProdSettings(mcpHandle, &sysProd) == 0) {
             Metadata::thisConsoleSerialId = std::string(sysProd.code_id) + sysProd.serial_id;
         }
         MCP_Close(mcpHandle);
@@ -90,20 +92,20 @@ static Title *loadWiiUTitles(int run) {
     int j = 0;
     auto *savesl = (Saves *) malloc(receivedCount * sizeof(Saves));
     if (savesl == nullptr) {
-        promptError(LanguageUtils::gettext("Out of memory."));
+        Console::promptError(LanguageUtils::gettext("Out of memory."));
         return nullptr;
     }
     for (uint32_t i = 0; i < receivedCount; i++) {
         char *element = tList + (i * 0x61);
         savesl[j].highID = *(uint32_t *) (element);
-        bool isUSB = ( memcmp(element + 0x56, "usb", 4) == 0 );
-        bool isMLC = ( memcmp(element + 0x56, "mlc", 4) == 0 );
-        if (!contains(highIDs, savesl[j].highID) || !(isUSB || isMLC) ) {
+        bool isUSB = (memcmp(element + 0x56, "usb", 4) == 0);
+        bool isMLC = (memcmp(element + 0x56, "mlc", 4) == 0);
+        if (!contains(highIDs, savesl[j].highID) || !(isUSB || isMLC)) {
             usable--;
             continue;
         }
         savesl[j].lowID = *(uint32_t *) (element + 4);
-        savesl[j].dev = static_cast<uint8_t>(isMLC);   // 0 = usb, 1 = nand
+        savesl[j].dev = static_cast<uint8_t>(isMLC); // 0 = usb, 1 = nand
 
         savesl[j].found = false;
         j++;
@@ -131,7 +133,7 @@ static Title *loadWiiUTitles(int run) {
                             for (int ii = 0; ii < usable; ii++) {
                                 if (contains(highIDs, savesl[ii].highID) &&
                                     (strtoul(data->d_name, nullptr, 16) == savesl[ii].lowID) &&
-                                    savesl[ii].dev == i ) {
+                                    savesl[ii].dev == i) {
                                     savesl[ii].found = true;
                                     tNoSave--;
                                     break;
@@ -149,7 +151,7 @@ static Title *loadWiiUTitles(int run) {
     foundCount += tNoSave;
     auto *saves = (Saves *) malloc((foundCount) * sizeof(Saves));
     if (saves == nullptr) {
-        promptError(LanguageUtils::gettext("Out of memory."));
+        Console::promptError(LanguageUtils::gettext("Out of memory."));
         return nullptr;
     }
 
@@ -191,10 +193,10 @@ static Title *loadWiiUTitles(int run) {
 #ifndef STRESS
     auto *titles = (Title *) malloc(foundCount * sizeof(Title));
 #else
-    auto *titles = (Title *) malloc(std::max(foundCount,MAXTITLES) * sizeof(Title));
+    auto *titles = (Title *) malloc(std::max(foundCount, MAXTITLES) * sizeof(Title));
 #endif
     if (titles == nullptr) {
-        promptError(LanguageUtils::gettext("Out of memory."));
+        Console::promptError(LanguageUtils::gettext("Out of memory."));
         return nullptr;
     }
 
@@ -251,9 +253,9 @@ static Title *loadWiiUTitles(int run) {
             free(xmlBuf);
         }
         if (strlen(titles[wiiuTitlesCount].shortName) == 0u)
-            sprintf(titles[wiiuTitlesCount].shortName,"%08x%08x",
-                titles[wiiuTitlesCount].highID,
-                titles[wiiuTitlesCount].lowID);
+            sprintf(titles[wiiuTitlesCount].shortName, "%08x%08x",
+                    titles[wiiuTitlesCount].highID,
+                    titles[wiiuTitlesCount].lowID);
 
         titles[wiiuTitlesCount].isTitleDupe = false;
         for (int i = 0; i < wiiuTitlesCount; i++) {
@@ -276,22 +278,21 @@ static Title *loadWiiUTitles(int run) {
 
         titles[wiiuTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
-                    titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
-                    titles[wiiuTitlesCount].highID,
-                    titles[wiiuTitlesCount].lowID);
+                                                       titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+                                                       titles[wiiuTitlesCount].highID,
+                                                       titles[wiiuTitlesCount].lowID);
         if (checkEntry(fwpath.c_str()) != 0) {
             titles[wiiuTitlesCount].noFwImg = true;
             titles[wiiuTitlesCount].is_Inject = true;
             for (uint32_t vWiiHighID : vWiiHighIDs) {
                 std::string path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
                 if (checkEntry(path.c_str()) == 1) {
-                    titles[wiiuTitlesCount].saveInit=true;
+                    titles[wiiuTitlesCount].saveInit = true;
                     titles[wiiuTitlesCount].vWiiHighID = vWiiHighID;
                     break;
                 }
             }
-        }    
-        else {
+        } else {
             titles[wiiuTitlesCount].noFwImg = false;
             titles[wiiuTitlesCount].is_Inject = false;
         }
@@ -313,35 +314,34 @@ static Title *loadWiiUTitles(int run) {
     free(tList);
 
 #ifdef STRESS
-    for (int i=wiiuTitlesCount; i < MAXTITLES; i++) {
-        titles[i].highID = titles[i-wiiuTitlesCount].highID;
-        titles[i].lowID = titles[i-wiiuTitlesCount].lowID + i/wiiuTitlesCount;
+    for (int i = wiiuTitlesCount; i < MAXTITLES; i++) {
+        titles[i].highID = titles[i - wiiuTitlesCount].highID;
+        titles[i].lowID = titles[i - wiiuTitlesCount].lowID + i / wiiuTitlesCount;
         titles[i].vWiiLowID = 0;
-        titles[i].is_Wii = titles[i-wiiuTitlesCount].is_Wii;
-        titles[i].isTitleOnUSB = titles[i-wiiuTitlesCount].isTitleOnUSB;
-        titles[i].isTitleDupe = titles[i-wiiuTitlesCount].isTitleDupe;
-        titles[i].listID = titles[i-wiiuTitlesCount].listID;
-        titles[i].indexID = titles[i-wiiuTitlesCount].indexID;
-        titles[i].dupeID = titles[i-wiiuTitlesCount].dupeID;
-        titles[i].noFwImg = titles[i-wiiuTitlesCount].noFwImg;
-        titles[i].saveInit= titles[i-wiiuTitlesCount].saveInit;
-        sprintf(titles[i].shortName,"%s",titles[i-wiiuTitlesCount].shortName);
-        sprintf(titles[i].longName,"%s",titles[i-wiiuTitlesCount].longName);
-        sprintf(titles[i].productCode,"%s",titles[i-wiiuTitlesCount].productCode);
-        titles[i].accountSaveSize = titles[i-wiiuTitlesCount].accountSaveSize;
-        titles[i].groupID = titles[i-wiiuTitlesCount].groupID;
+        titles[i].is_Wii = titles[i - wiiuTitlesCount].is_Wii;
+        titles[i].isTitleOnUSB = titles[i - wiiuTitlesCount].isTitleOnUSB;
+        titles[i].isTitleDupe = titles[i - wiiuTitlesCount].isTitleDupe;
+        titles[i].listID = titles[i - wiiuTitlesCount].listID;
+        titles[i].indexID = titles[i - wiiuTitlesCount].indexID;
+        titles[i].dupeID = titles[i - wiiuTitlesCount].dupeID;
+        titles[i].noFwImg = titles[i - wiiuTitlesCount].noFwImg;
+        titles[i].saveInit = titles[i - wiiuTitlesCount].saveInit;
+        sprintf(titles[i].shortName, "%s", titles[i - wiiuTitlesCount].shortName);
+        sprintf(titles[i].longName, "%s", titles[i - wiiuTitlesCount].longName);
+        sprintf(titles[i].productCode, "%s", titles[i - wiiuTitlesCount].productCode);
+        titles[i].accountSaveSize = titles[i - wiiuTitlesCount].accountSaveSize;
+        titles[i].groupID = titles[i - wiiuTitlesCount].groupID;
 
-        if (titles[i-wiiuTitlesCount].iconBuf != nullptr) {
-            int tgaSize = 4 * tgaGetWidth(titles[i-wiiuTitlesCount].iconBuf) *
-                            tgaGetHeight(titles[i-wiiuTitlesCount].iconBuf);
+        if (titles[i - wiiuTitlesCount].iconBuf != nullptr) {
+            int tgaSize = 4 * tgaGetWidth(titles[i - wiiuTitlesCount].iconBuf) *
+                          tgaGetHeight(titles[i - wiiuTitlesCount].iconBuf);
             titles[i].iconBuf = (uint8_t *) malloc(tgaSize);
-            memcpy(titles[i].iconBuf,titles[i-wiiuTitlesCount].iconBuf,tgaSize);
-        }
-        else {
+            memcpy(titles[i].iconBuf, titles[i - wiiuTitlesCount].iconBuf, tgaSize);
+        } else {
             titles[i].iconBuf = nullptr;
         }
     }
-    wiiuTitlesCount = std::max(wiiuTitlesCount,MAXTITLES);
+    wiiuTitlesCount = std::max(wiiuTitlesCount, MAXTITLES);
 #endif
 
     return titles;
@@ -382,7 +382,7 @@ static Title *loadWiiTitles() {
 
     auto *titles = (Title *) malloc(vWiiTitlesCount * sizeof(Title));
     if (titles == nullptr) {
-        promptError(LanguageUtils::gettext("Out of memory."));
+        Console::promptError(LanguageUtils::gettext("Out of memory."));
         return nullptr;
     }
 
@@ -432,9 +432,9 @@ static Title *loadWiiTitles() {
                             }
                         }
                         if (strlen(titles[i].shortName) == 0u)
-                            sprintf(titles[i].shortName,"%08x%08x",
-                                titles[i].highID,
-                                titles[i].lowID);
+                            sprintf(titles[i].shortName, "%08x%08x",
+                                    titles[i].highID,
+                                    titles[i].lowID);
 
                         memset(titles[i].longName, 0, sizeof(titles[i].longName));
                         for (int j = 0x20, k = 0; j < 0x40; j++) {
@@ -465,7 +465,7 @@ static Title *loadWiiTitles() {
                 }
 
                 const std::string tmdPath = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/content/title.tmd",
-                                                                   highID, data->d_name);
+                                                                      highID, data->d_name);
                 if (checkEntry(tmdPath.c_str()) == 1)
                     titles[i].saveInit = true;
                 else
@@ -519,9 +519,9 @@ static void unloadTitles(Title *titles, int count) {
 }
 
 
-std::vector<const char*> initMessageList;
+std::vector<const char *> initMessageList;
 
-void addInitMessage(const char* newMessage) {
+void addInitMessage(const char *newMessage) {
 
     initMessageList.push_back(newMessage);
 
@@ -530,7 +530,7 @@ void addInitMessage(const char* newMessage) {
     consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
 
     int line = 0;
-    for (auto & message : initMessageList) {
+    for (auto &message : initMessageList) {
         consolePrintPosAligned(7 + line++, 0, 1, message);
     }
 
@@ -541,7 +541,7 @@ void resetMessageList() {
     initMessageList.clear();
 }
 
-void addInitMessageWithIcon(const char* newMessage) {
+void addInitMessageWithIcon(const char *newMessage) {
 
     initMessageList.push_back(newMessage);
 
@@ -550,12 +550,11 @@ void addInitMessageWithIcon(const char* newMessage) {
     disclaimer();
     DrawUtils::drawTGA(328, 160, 1, icon_tga);
     int line = 0;
-    for (auto & message : initMessageList) {
+    for (auto &message : initMessageList) {
         consolePrintPosAligned(10 + line++, 0, 1, message);
     }
 
     DrawUtils::endDraw();
-
 }
 
 
@@ -566,8 +565,8 @@ int main() {
     WHBLogPrintf("Hello from savemii!");
 #endif
 
-// freezes console to some users
-/*
+    // freezes console to some users
+    /*
     AXInit();
     AXQuit();
 */
@@ -591,7 +590,7 @@ int main() {
 
     int res = romfsInit();
     if (res) {
-        promptError("Failed to init romfs: %d", res);
+        Console::promptError("Failed to init romfs: %d", res);
         DrawUtils::endDraw();
         State::shutdown();
         return 0;
@@ -602,8 +601,8 @@ int main() {
 
     GlobalCfg::global = std::make_unique<GlobalCfg>("cfg");
 
-    if (! GlobalCfg::global->init()) {
-        promptError("Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
+    if (!GlobalCfg::global->init()) {
+        Console::promptError("Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
         romfsExit();
 
         DrawUtils::deinitFont();
@@ -627,7 +626,7 @@ int main() {
     addInitMessage(LanguageUtils::gettext("Initializing FS"));
 
     if (!initFS()) {
-        promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
+        Console::promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
         romfsExit();
         DrawUtils::deinitFont();
@@ -656,8 +655,8 @@ int main() {
 
     addInitMessageWithIcon(LanguageUtils::gettext("Initializing Excludes config."));
 
-    ExcludesCfg::wiiuExcludes = std::make_unique<ExcludesCfg>("wiiuExcludes",wiiutitles,wiiuTitlesCount);
-    ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes",wiititles,vWiiTitlesCount);
+    ExcludesCfg::wiiuExcludes = std::make_unique<ExcludesCfg>("wiiuExcludes", wiiutitles, wiiuTitlesCount);
+    ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes", wiititles, vWiiTitlesCount);
     ExcludesCfg::wiiuExcludes->init();
     ExcludesCfg::wiiExcludes->init();
 
@@ -665,7 +664,7 @@ int main() {
 
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiuTitlesCount,
-                                                                        vWiiTitlesCount);
+                                                                           vWiiTitlesCount);
 
     InProgress::input = &input;
     while (State::AppRunning()) {
@@ -682,11 +681,11 @@ int main() {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BACKGROUND);
 
-            consolePrintPos(0, 0, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
-            consolePrintPos(0, 1, "----------------------------------------------------------------------------");
+            Console::consolePrintPos(0, 0, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+            Console::consolePrintPos(0, 1, "----------------------------------------------------------------------------");
 
-            consolePrintPos(0, 16, "----------------------------------------------------------------------------");
-            consolePrintPos(0, 17, LanguageUtils::gettext("Press \ue044 to exit."));
+            Console::consolePrintPos(0, 16, "----------------------------------------------------------------------------");
+            Console::consolePrintPos(0, 17, LanguageUtils::gettext("Press \ue044 to exit."));
 
             DrawUtils::setRedraw(false);
             state->render();
