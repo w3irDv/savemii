@@ -680,8 +680,9 @@ static inline size_t getFilesize(FILE *fp) {
     return fsize;
 }
 
-bool copyFile(const std::string &sPath, const std::string &ctPath, bool if_generate_FAT32_translation_file /*= false*/) {
-    std::string tPath(ctPath);
+bool copyFile(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file /*= false*/) {
+    
+    std::string tPath(initial_tPath);
     if (sPath.find("savemiiMeta.json") != std::string::npos)
         return true;
     if (sPath.find("savemii_saveinfo.xml") != std::string::npos && tPath.find("/meta/saveinfo.xml") == std::string::npos)
@@ -696,23 +697,31 @@ bool copyFile(const std::string &sPath, const std::string &ctPath, bool if_gener
         return false;
     }
 
-FILE *dest = fopen(tPath.c_str(), "wb");
+    FILE *dest = fopen(tPath.c_str(), "wb");
     if (dest == nullptr)
     {
         if ( ( errno == EINVAL || errno == ENAMETOOLONG || errno == ENOENT ) && if_generate_FAT32_translation_file) {
-            std::string sanitized;
-            if (Escape::escapeSpecialFAT32Chars(tPath, sanitized, FULL_PATH)) // look for forbidden char in any place
+            std::string escaped_tPath{};
+            if (Escape::escapeSpecialFAT32Chars(tPath, escaped_tPath, FULL_PATH)) // look for forbidden char in any place
             {
-                tPath = sanitized;
-                dest = fopen(tPath.c_str(), "wb");
+                dest = fopen(escaped_tPath.c_str(), "wb");
                 if (dest != nullptr)
                 {
-                    Escape::escapeSpecialFAT32Chars(sPath, sanitized, ONLY_ENDNAME);   // just modify the entry name to allow easy rename task when restore content
-                    if (FAT32EscapeFileManager::active_fat32_escape_file_manager->append(sanitized,sPath))
+                    tPath = escaped_tPath;
+                    std::string bp_escaped_sPath{}, escaped_sPath{};
+                    Escape::escapeSpecialFAT32Chars(sPath, bp_escaped_sPath, ONLY_BASEPATH);   // just modify the basepath allow easy rename task when restore content
+                    Escape::escapeSpecialFAT32Chars(sPath,escaped_sPath, FULL_PATH);
+                    if (FAT32EscapeFileManager::active_fat32_escape_file_manager->append(escaped_sPath,bp_escaped_sPath,IS_FILE))
                         goto copy_file;
                     // something has gone wrong updating translation file
                     fclose(dest);
                     fclose(source);
+                    return false;
+                } else {
+                    fclose(source);
+                    std::string multilinePath;
+                    splitStringWithNewLines(escaped_tPath, multilinePath);
+                    Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
                     return false;
                 }
             }
@@ -730,7 +739,7 @@ copy_file:
 
     readError = 0;
     writeError = 0;
-    bool success =  copyFileThreaded(source, dest, sizef, sPath, tPath);
+    bool success =  copyFileThreaded(source, dest, sizef, sPath,tPath);
 
     fclose(source);
 
@@ -772,8 +781,9 @@ copy_file:
 }
 
 #ifndef MOCK
-bool copyDir(const std::string &sPath, const std::string &ctPath, bool if_generate_FAT32_translation_file /*= false*/) { // Source: ft2sd
-    std::string tPath(ctPath);
+bool copyDir(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file /*= false*/) { // Source: ft2sd
+    
+    std::string tPath(initial_tPath); 
     DIR *dir = opendir(sPath.c_str());
     if (dir == nullptr) {
         copyErrorsCounter++;
@@ -785,14 +795,17 @@ bool copyDir(const std::string &sPath, const std::string &ctPath, bool if_genera
 
     if ( (mkdir(tPath.c_str(), 0666) != 0) && errno != EEXIST) {
         if ( ( errno == EINVAL || errno == ENAMETOOLONG || errno == ENOENT ) && if_generate_FAT32_translation_file) {
-            std::string sanitized;
-            if (Escape::escapeSpecialFAT32Chars(tPath,sanitized, FULL_PATH)) {
-                tPath = sanitized;
-                if ( (mkdir(tPath.c_str(), 0666) != 0) && errno != EEXIST)
+            std::string escaped_tPath{};
+            if (Escape::escapeSpecialFAT32Chars(tPath,escaped_tPath, FULL_PATH)) {
+                if ( (mkdir(escaped_tPath.c_str(), 0666) != 0) && errno != EEXIST)
                     goto mkdir_error;
-                Escape::escapeSpecialFAT32Chars(sPath,sanitized, ONLY_ENDNAME);
-                if (FAT32EscapeFileManager::active_fat32_escape_file_manager->append(sanitized,sPath))
+                tPath = escaped_tPath;
+                std::string bp_escaped_sPath{}, escaped_sPath{};
+                Escape::escapeSpecialFAT32Chars(sPath,bp_escaped_sPath, ONLY_BASEPATH);
+                Escape::escapeSpecialFAT32Chars(sPath,escaped_sPath, FULL_PATH);
+                if (FAT32EscapeFileManager::active_fat32_escape_file_manager->append(escaped_sPath,bp_escaped_sPath,IS_DIR))
                     goto dir_created;
+
                 // something has gone wrong wrting the translation file
                 copyErrorsCounter++;
                 closedir(dir);

@@ -4,8 +4,21 @@
 #include <memory>
 #include <string>
 
-#define FULL_PATH    true
-#define ONLY_ENDNAME false
+
+#define IS_DIR  true
+#define IS_FILE false
+
+enum eEscapeScope {
+    FULL_PATH,
+    ONLY_ENDNAME,
+    ONLY_BASEPATH
+};
+
+struct RenameData {
+    std::string source{};
+    std::string target{};
+    bool fileType = false;
+};
 
 class FAT32EscapeFileManager {
 
@@ -15,11 +28,11 @@ public:
     static inline std::unique_ptr<FAT32EscapeFileManager> active_fat32_escape_file_manager = nullptr;
 
     bool open_for_write();
-    bool append(const std::string &s_path, const std::string &t_path);
+    bool append(const std::string &s_path, const std::string &t_path, bool fileType);
     bool close();
 
     static bool rename_fat32_escaped_files(const std::string &baseSrcPath, const std::string &storage_vol, std::string &errorMessage, int &errorCode);
-
+    
     static inline const std::string fat32_rename_file = "/savemii_fat32_renames.txt";
 
 private:
@@ -32,6 +45,6 @@ private:
 class Escape {
 
 public:
-    static bool escapeSpecialFAT32Chars(const std::string &originalName, std::string &escapedName, bool escape_full_path);
+    static bool escapeSpecialFAT32Chars(const std::string &originalName, std::string &escapedName, eEscapeScope escape_scope);
     static void convertToFAT32ASCIICompliant(const std::string &originalName, std::string &escapedName);
 };
