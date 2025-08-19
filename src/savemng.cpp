@@ -701,17 +701,16 @@ bool copyFile(const std::string &sPath, const std::string &initial_tPath, bool i
     if (dest == nullptr)
     {
         if ( ( errno == EINVAL || errno == ENAMETOOLONG || errno == ENOENT ) && if_generate_FAT32_translation_file) {
-            std::string escaped_tPath{};
-            if (Escape::escapeSpecialFAT32Chars(tPath, escaped_tPath, FULL_PATH)) // look for forbidden char in any place
+            std::string escaped_spath{};
+            std::string escaped_tpath{};
+            std::string only_bp_escaped_spath{};
+            if (Escape::constructEscapedSourceAndTargetPaths(sPath, initial_tPath, escaped_spath, escaped_tpath, only_bp_escaped_spath))
             {
-                dest = fopen(escaped_tPath.c_str(), "wb");
+                dest = fopen(escaped_tpath.c_str(), "wb");
                 if (dest != nullptr)
                 {
-                    tPath = escaped_tPath;
-                    std::string bp_escaped_sPath{}, escaped_sPath{};
-                    Escape::escapeSpecialFAT32Chars(sPath, bp_escaped_sPath, ONLY_BASEPATH);   // just modify the basepath allow easy rename task when restore content
-                    Escape::escapeSpecialFAT32Chars(sPath,escaped_sPath, FULL_PATH);
-                    if (FAT32EscapeFileManager::active_fat32_escape_file_manager->append(escaped_sPath,bp_escaped_sPath,IS_FILE))
+                    tPath = escaped_tpath;
+                    if (FAT32EscapeFileManager::active_fat32_escape_file_manager->append(escaped_spath, only_bp_escaped_spath, IS_FILE))
                         goto copy_file;
                     // something has gone wrong updating translation file
                     fclose(dest);
@@ -720,7 +719,7 @@ bool copyFile(const std::string &sPath, const std::string &initial_tPath, bool i
                 } else {
                     fclose(source);
                     std::string multilinePath;
-                    splitStringWithNewLines(escaped_tPath, multilinePath);
+                    splitStringWithNewLines(escaped_tpath, multilinePath);
                     Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
                     return false;
                 }
@@ -795,15 +794,14 @@ bool copyDir(const std::string &sPath, const std::string &initial_tPath, bool if
 
     if ( (mkdir(tPath.c_str(), 0666) != 0) && errno != EEXIST) {
         if ( ( errno == EINVAL || errno == ENAMETOOLONG || errno == ENOENT ) && if_generate_FAT32_translation_file) {
-            std::string escaped_tPath{};
-            if (Escape::escapeSpecialFAT32Chars(tPath,escaped_tPath, FULL_PATH)) {
-                if ( (mkdir(escaped_tPath.c_str(), 0666) != 0) && errno != EEXIST)
+            std::string escaped_spath{};
+            std::string escaped_tpath{};
+            std::string only_bp_escaped_spath{};
+            if (Escape::constructEscapedSourceAndTargetPaths(sPath, initial_tPath, escaped_spath, escaped_tpath, only_bp_escaped_spath)) {
+                if ( (mkdir(escaped_tpath.c_str(), 0666) != 0) && errno != EEXIST)
                     goto mkdir_error;
-                tPath = escaped_tPath;
-                std::string bp_escaped_sPath{}, escaped_sPath{};
-                Escape::escapeSpecialFAT32Chars(sPath,bp_escaped_sPath, ONLY_BASEPATH);
-                Escape::escapeSpecialFAT32Chars(sPath,escaped_sPath, FULL_PATH);
-                if (FAT32EscapeFileManager::active_fat32_escape_file_manager->append(escaped_sPath,bp_escaped_sPath,IS_DIR))
+                tPath = escaped_tpath;
+                if (FAT32EscapeFileManager::active_fat32_escape_file_manager->append(escaped_spath, only_bp_escaped_spath, IS_DIR))
                     goto dir_created;
 
                 // something has gone wrong wrting the translation file
@@ -1581,6 +1579,7 @@ int backupAllSave(Title *titles, int count, const std::string & batchDatetime, b
             if (createFolder(dstPath.c_str())) {
                 FAT32EscapeFileManager::active_fat32_escape_file_manager =  std::make_unique<FAT32EscapeFileManager>(dstPath );
                 if ( !FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
+                    Escape::setPrefix(srcPath,dstPath);
                     if (copyDir(srcPath, dstPath,GENERATE_FAT32_TRANSLATION_FILE)) {    
                         if (! isWii && checkEntry((metaSavePath+"/saveinfo.xml").c_str()) == 1)
                             copyFile(metaSavePath+"/saveinfo.xml", dstPath+ "/savemii_saveinfo.xml");
@@ -1704,18 +1703,21 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
 
     std::string errorMessage {};
     if (doCommon) {
-       if (! copyDir(srcCommonPath, dstCommonPath,GENERATE_FAT32_TRANSLATION_FILE)) {
+        Escape::setPrefix(srcCommonPath,dstCommonPath);
+        if (! copyDir(srcCommonPath, dstCommonPath,GENERATE_FAT32_TRANSLATION_FILE)) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying common savedata."));
             errorCode = 1 ;
         }
     }
 
-    if (doBase)
+    if (doBase) {
+        Escape::setPrefix(srcPath,dstPath);
         if (! copyDir(srcPath, dstPath,GENERATE_FAT32_TRANSLATION_FILE)) {
             errorMessage.append("\n" + (std::string)  ((source_user == -1 ) ?  LanguageUtils::gettext("Error copying savedata.")
                                     :  LanguageUtils::gettext("Error copying profile savedata.")));
             errorCode += 2;
         }
+    }
 
     if (! isWii && checkEntry((metaSavePath+"/saveinfo.xml").c_str()) == 1)
     {

@@ -1,9 +1,12 @@
-#include <savemng.h>
-#include <sys/param.h>
-#include <utils/Colors.h>
-#include <utils/ConsoleUtils.h>
+
 #include <utils/EscapeFAT32Utils.h>
+#include <utils/StringUtils.h>
+#include <utils/ConsoleUtils.h>
 #include <utils/LanguageUtils.h>
+#include <cstring>
+#include <iostream>
+#include <sys/param.h>
+#include <vector>
 
 bool FAT32EscapeFileManager::open_for_write() {
     fat32_rename.open(fat32_rename_file_path);
@@ -38,6 +41,7 @@ bool FAT32EscapeFileManager::close() {
         std::string multilinePath;
         splitStringWithNewLines(fat32_rename_file_path, multilinePath);
         Console::promptError(LanguageUtils::gettext("Error closing FAT32 chars translation file \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
+
         return false;
     }
 
@@ -95,10 +99,7 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                 goto close_and_error;
             }
         }
-        RenameData renameElement = {
-                .source = sPath,
-                .target = tPath,
-                .fileType = file_type};
+        RenameData renameElement = {.source = sPath, .target = tPath, .fileType = file_type};
         rename_vector.push_back(renameElement);
     }
 
@@ -140,7 +141,7 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
             tPath = storage_vol + entry_to_rename->target; // <escaped>/<unescaped>
 
             if (is_wii_storage) {                             // in slcc01 rename files returns invalid arguments error if target contains forbidden chars. Open/close works ok ...
-                if (copyFile(sPath.c_str(), tPath.c_str())) { // but at most only one entry in the path can contain forbiden chars. ... so we rename backwards 
+                if (copyFile(sPath.c_str(), tPath.c_str())) { // but at most only one entry in the path can contain forbiden chars. ... so we rename backwards
                     unlink(sPath.c_str());                    // target path can be 68 chars at most, including storage_slccc01:
                     continue;
                 } else {
@@ -169,7 +170,7 @@ close_and_error:
     fat32_rename_ifs.close();
 generic_error:
     errorCode += 512;
-    errorMessage.append("\n " + (std::string) LanguageUtils::gettext("Rename files with FAT32 escaped chars has failed"));
+    errorMessage.append("\n " + (std::string) "Rename files with FAT32 escaped chars has failed");
     return false;
 }
 
@@ -177,7 +178,36 @@ generic_error:
 char forbidden_in_copy[] = "\\:\"<>|"; // * and ? are excluded because FSA ren and mkdir functions returns Invalid Path
 char forbidden_char_names[] = "bcqlgp";
 
-bool Escape::escapeSpecialFAT32Chars(const std::string &originalName, std::string &escapedName, eEscapeScope escape_scope) {
+bool Escape::needsEscaping(const std::string &path, eEscapeScope scope) {
+
+    size_t begin = 0;
+    switch (scope) {
+        case FULL_PATH:
+        case ONLY_BASEPATH:
+            begin = path.find(":") + 1;
+            break;
+            ;
+        case ONLY_ENDNAME:
+            begin = 0;
+            break;
+            ;
+        default:
+            break;
+            ;
+    }
+
+    for (size_t i = begin; i < path.length(); i++) {
+        std::string currentChar = path.substr(i, 1);
+        for (int j = 0; j < FORBIDDEN_IN_COPY_LENGTH; j++)
+            if (path[i] == forbidden_in_copy[j]) {
+                return true;
+            }
+    }
+
+    return false;
+}
+
+bool Escape::escapeSpecialFAT32Chars(const std::string &originalName, std::string &escapedName, eEscapeScope escape_scope, const std::string &replacement) {
 
     bool containsForbidden = false;
     size_t len = originalName.length();
@@ -209,7 +239,7 @@ bool Escape::escapeSpecialFAT32Chars(const std::string &originalName, std::strin
         std::string currentChar = originalName.substr(i, 1);
         for (int j = 0; j < FORBIDDEN_IN_COPY_LENGTH; j++)
             if (originalName[i] == forbidden_in_copy[j]) {
-                currentChar = std::string("_") + forbidden_char_names[j] + "_";
+                currentChar = replacement;
                 containsForbidden = true;
                 break;
             }
@@ -241,7 +271,8 @@ void Escape::convertToFAT32ASCIICompliant(const std::string &originalName, std::
                 }
             escapedName.append(currentChar);
         }
-        if ((originalName[i] & 0xf8) == 0xf0) cplen = 4;
+        if ((originalName[i] & 0xf8) == 0xf0)
+            cplen = 4;
         else if ((originalName[i] & 0xf0) == 0xe0)
             cplen = 3;
         else if ((originalName[i] & 0xe0) == 0xc0)
@@ -252,4 +283,50 @@ void Escape::convertToFAT32ASCIICompliant(const std::string &originalName, std::
     }
 
     escapedName.erase(0, escapedName.find_first_not_of(" "));
+}
+
+bool Escape::genUniqueEscapedPath(const std::string &initial_spath, const std::string &initial_tpath, std::string &escaped_tpath) {
+
+    uint8_t repl = 63; // first char will be @, A, B , ...
+    std::string escaped_spath{};
+    if (escapeSpecialFAT32Chars(initial_spath, escaped_spath, ONLY_ENDNAME, "_") && escapeSpecialFAT32Chars(initial_tpath, escaped_tpath, ONLY_ENDNAME, "_")) {
+        while ((checkEntry(escaped_spath.c_str()) != 0) || (checkEntry(escaped_tpath.c_str()) != 0)) { // path exists
+            if (++repl > 123)
+                return false; // last character: z
+            if (repl == 92)   // skip "\"
+                repl++;
+            std::string replacement(1, (char) repl);
+            escapeSpecialFAT32Chars(initial_spath, escaped_spath, ONLY_ENDNAME, replacement);
+            escapeSpecialFAT32Chars(initial_tpath, escaped_tpath, ONLY_ENDNAME, replacement);
+        }
+    }
+    return true;
+}
+
+bool Escape::constructEscapedSourceAndTargetPaths(const std::string &initial_spath, const std::string &initial_tpath, std::string &escaped_spath, std::string &escaped_tpath, std::string &basepath_escaped_spath) {
+
+    // only end_path can need escaping;
+    if (!genUniqueEscapedPath(initial_spath, initial_tpath, escaped_tpath))
+        return false;
+
+    // now consture restore paths (=source)
+    //  <escaped>/<escaped>
+    //  <escaped>/<unescaped>
+
+    // strip prefix from target
+    std::string relative_target_path = initial_tpath.substr(target_prefix_size, std::string::npos);
+    std::string relative_escaped_target_path = escaped_tpath.substr(target_prefix_size, std::string::npos);
+
+    //construct source for renames
+    escaped_spath = source_prefix + relative_escaped_target_path;
+    basepath_escaped_spath = source_prefix + relative_target_path;
+
+    return true;
+}
+
+void Escape::setPrefix(const std::string &sp, const std::string &tp) {
+    source_prefix = sp;
+    target_prefix = tp;
+    source_prefix_size = sp.size();
+    target_prefix_size = tp.size();
 }
