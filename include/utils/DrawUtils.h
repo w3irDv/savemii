@@ -8,6 +8,8 @@
 #define SCREEN_WIDTH  854
 #define SCREEN_HEIGHT 480
 
+#define Y_OFF         1
+
 union Color {
     explicit Color(uint32_t color) {
         this->color = color;
@@ -58,7 +60,7 @@ public:
     static void deinitFont();
 
     static void setFontColor(Color col);
-    static void setFontColorByCursor(Color col, Color colAtCursor,int cursorPos, int line);
+    static void setFontColorByCursor(Color col, Color colAtCursor, int cursorPos, int line);
 
     static void print(uint32_t x, uint32_t y, const char *string, bool alignRight = false);
 
@@ -80,8 +82,7 @@ public:
 
     static uint32_t deinitScreen();
 
-    static void drawKey(int x,int y,int x_off,Color color);
-
+    static void drawKey(int x, int y, int x_off, Color color);
 
 
 private:

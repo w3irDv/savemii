@@ -26,7 +26,7 @@ void TitleTaskState::render() {
     }
     if (this->state == STATE_TITLE_TASKS) {
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("WiiU Serial Id: %s"), Metadata::thisConsoleSerialId.c_str());
+        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("WiiU Serial Id: %s"), Metadata::thisConsoleSerialId.c_str());
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPos(22, 0, LanguageUtils::gettext("Tasks"));
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -70,7 +70,7 @@ void TitleTaskState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
     }
 }
 

@@ -1,7 +1,10 @@
 #include <cstdarg>
+#include <sstream>
+#include <unistd.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/LanguageUtils.h>
+#include <vector>
 
 bool Console::promptConfirm(Style st, const std::string &question) {
     DrawUtils::beginDraw();
@@ -202,4 +205,90 @@ Button Console::promptMultipleChoice(Style st, const std::string &question) {
         }
     }
     return ret;
+}
+
+
+void Console::consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) {
+    char *tmp = nullptr;
+    int x = 0;
+    y += Y_OFF;
+
+    va_list va;
+    va_start(va, format);
+    if ((vasprintf(&tmp, format, va) >= 0) && tmp) {
+        switch (align) {
+            case 0:
+                x = (offset * 12);
+                break;
+            case 1:
+                x = (853 - DrawUtils::getTextWidth(tmp)) / 2;
+                break;
+            case 2:
+                x = 853 - (offset * 12) - DrawUtils::getTextWidth(tmp);
+                break;
+            default:
+                x = (853 - DrawUtils::getTextWidth(tmp)) / 2;
+                break;
+        }
+        DrawUtils::print(x, (y + 1) * 24, tmp);
+    }
+    va_end(va);
+    if (tmp) free(tmp);
+}
+
+void Console::consolePrintPos(int x, int y, const char *format, ...) { // Source: ftpiiu
+    char *tmp = nullptr;
+    y += Y_OFF;
+
+    va_list va;
+    va_start(va, format);
+    if ((vasprintf(&tmp, format, va) >= 0) && (tmp != nullptr))
+        DrawUtils::print((x + 4) * 12, (y + 1) * 24, tmp);
+    va_end(va);
+    if (tmp != nullptr)
+        free(tmp);
+}
+
+void Console::kConsolePrintPos(int x, int y, int x_offset, const char *format, ...) { // Source: ftpiiu
+    char *tmp = nullptr;
+    y += Y_OFF;
+
+    va_list va;
+    va_start(va, format);
+    if ((vasprintf(&tmp, format, va) >= 0) && (tmp != nullptr))
+        DrawUtils::print(x * 52 + x_offset, y * 50, tmp);
+    va_end(va);
+    if (tmp != nullptr)
+        free(tmp);
+}
+
+void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
+    va_list va;
+    va_start(va, format);
+
+    std::vector<char> buffer(2048);
+    vsprintf(buffer.data(), format, va);
+    std::string tmp(buffer.begin(), buffer.end());
+    buffer.clear();
+    va_end(va);
+
+    y += Y_OFF;
+
+    uint32_t maxLineLength = (60 - x);
+
+    std::string currentLine;
+    std::istringstream iss(tmp);
+    while (std::getline(iss, currentLine)) {
+        while ((DrawUtils::getTextWidth(currentLine.c_str()) / 12) > maxLineLength) {
+            std::size_t spacePos = currentLine.find_last_of(' ', maxLineLength);
+            if (spacePos == std::string::npos) {
+                spacePos = maxLineLength;
+            }
+            DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.substr(0, spacePos + 1).c_str());
+            currentLine = currentLine.substr(spacePos + 1);
+        }
+        DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.c_str());
+    }
+    tmp.clear();
+    tmp.shrink_to_fit();
 }

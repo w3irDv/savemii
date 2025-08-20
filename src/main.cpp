@@ -16,6 +16,7 @@
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
+#include <utils/FSUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StateUtils.h>
@@ -51,10 +52,10 @@ static bool contains(const T (&arr)[N], const T &element) {
 }
 
 static void disclaimer() {
-    consolePrintPosAligned(13, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
-    consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
-    consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
-    consolePrintPosAligned(16, 0, 1, LanguageUtils::gettext("Everything you do with this software is your own responsibility"));
+    Console::consolePrintPosAligned(13, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+    Console::consolePrintPosAligned(14, 0, 1, LanguageUtils::gettext("Disclaimer:"));
+    Console::consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
+    Console::consolePrintPosAligned(16, 0, 1, LanguageUtils::gettext("Everything you do with this software is your own responsibility"));
 }
 
 static void getWiiUSerialId() {
@@ -117,7 +118,7 @@ static Title *loadWiiUTitles(int run) {
     int tNoSave = usable;
     for (int i = 0; i <= 1; i++) {
         for (uint8_t a = 0; a < 2; a++) {
-            std::string path = StringUtils::stringFormat("%s/usr/save/%08x", (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a]);
+            std::string path = StringUtils::stringFormat("%s/usr/save/%08x", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a]);
             DIR *dir = opendir(path.c_str());
             if (dir != nullptr) {
                 struct dirent *data;
@@ -125,11 +126,11 @@ static Title *loadWiiUTitles(int run) {
                     if (data->d_name[0] == '.')
                         continue;
 
-                    path = StringUtils::stringFormat("%s/usr/save/%08x/%s/user", (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a], data->d_name);
-                    if (checkEntry(path.c_str()) == 2) {
-                        path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml", (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a],
+                    path = StringUtils::stringFormat("%s/usr/save/%08x/%s/user", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a], data->d_name);
+                    if (FSUtils::checkEntry(path.c_str()) == 2) {
+                        path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a],
                                                          data->d_name);
-                        if (checkEntry(path.c_str()) == 1) {
+                        if (FSUtils::checkEntry(path.c_str()) == 1) {
                             for (int ii = 0; ii < usable; ii++) {
                                 if (contains(highIDs, savesl[ii].highID) &&
                                     (strtoul(data->d_name, nullptr, 16) == savesl[ii].lowID) &&
@@ -157,7 +158,7 @@ static Title *loadWiiUTitles(int run) {
 
     for (uint8_t a = 0; a < 2; a++) {
         for (int i = 0; i <= 1; i++) {
-            std::string path = StringUtils::stringFormat("%s/usr/save/%08x", (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a]);
+            std::string path = StringUtils::stringFormat("%s/usr/save/%08x", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a]);
             DIR *dir = opendir(path.c_str());
             if (dir != nullptr) {
                 struct dirent *data;
@@ -165,9 +166,9 @@ static Title *loadWiiUTitles(int run) {
                     if (data->d_name[0] == '.')
                         continue;
 
-                    path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml", (i == 0) ? getUSB().c_str() : "storage_mlc01:", highIDs[a],
+                    path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a],
                                                      data->d_name);
-                    if (checkEntry(path.c_str()) == 1) {
+                    if (FSUtils::checkEntry(path.c_str()) == 1) {
                         saves[pos].highID = highIDs[a];
                         saves[pos].lowID = strtoul(data->d_name, nullptr, 16);
                         saves[pos].dev = i;
@@ -205,7 +206,7 @@ static Title *loadWiiUTitles(int run) {
         uint32_t lowID = saves[i].lowID;
         bool isTitleOnUSB = saves[i].dev == 0u;
 
-        const std::string path = StringUtils::stringFormat("%s/usr/%s/%08x/%08x/meta/meta.xml", isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+        const std::string path = StringUtils::stringFormat("%s/usr/%s/%08x/%08x/meta/meta.xml", isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
                                                            saves[i].found ? "title" : "save", highID, lowID);
         titles[wiiuTitlesCount].saveInit = !saves[i].found;
 
@@ -278,15 +279,15 @@ static Title *loadWiiUTitles(int run) {
 
         titles[wiiuTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
-                                                       titles[wiiuTitlesCount].isTitleOnUSB ? getUSB().c_str() : "storage_mlc01:",
+                                                       titles[wiiuTitlesCount].isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
                                                        titles[wiiuTitlesCount].highID,
                                                        titles[wiiuTitlesCount].lowID);
-        if (checkEntry(fwpath.c_str()) != 0) {
+        if (FSUtils::checkEntry(fwpath.c_str()) != 0) {
             titles[wiiuTitlesCount].noFwImg = true;
             titles[wiiuTitlesCount].is_Inject = true;
             for (uint32_t vWiiHighID : vWiiHighIDs) {
                 std::string path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
-                if (checkEntry(path.c_str()) == 1) {
+                if (FSUtils::checkEntry(path.c_str()) == 1) {
                     titles[wiiuTitlesCount].saveInit = true;
                     titles[wiiuTitlesCount].vWiiHighID = vWiiHighID;
                     break;
@@ -305,7 +306,7 @@ static Title *loadWiiUTitles(int run) {
         DrawUtils::clear(COLOR_BLACK);
         disclaimer();
         DrawUtils::drawTGA(328, 160, 1, icon_tga);
-        consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
+        Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
         DrawUtils::endDraw();
     }
 
@@ -466,7 +467,7 @@ static Title *loadWiiTitles() {
 
                 const std::string tmdPath = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/content/title.tmd",
                                                                       highID, data->d_name);
-                if (checkEntry(tmdPath.c_str()) == 1)
+                if (FSUtils::checkEntry(tmdPath.c_str()) == 1)
                     titles[i].saveInit = true;
                 else
                     titles[i].saveInit = false;
@@ -499,8 +500,8 @@ static Title *loadWiiTitles() {
                 DrawUtils::clear(COLOR_BLACK);
                 disclaimer();
                 DrawUtils::drawTGA(328, 160, 1, icon_tga);
-                consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
-                consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), i);
+                Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
+                Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), i);
                 DrawUtils::endDraw();
             }
             closedir(dir);
@@ -527,11 +528,11 @@ void addInitMessage(const char *newMessage) {
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
-    consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+    Console::consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
 
     int line = 0;
     for (auto &message : initMessageList) {
-        consolePrintPosAligned(7 + line++, 0, 1, message);
+        Console::consolePrintPosAligned(7 + line++, 0, 1, message);
     }
 
     DrawUtils::endDraw();
@@ -551,7 +552,7 @@ void addInitMessageWithIcon(const char *newMessage) {
     DrawUtils::drawTGA(328, 160, 1, icon_tga);
     int line = 0;
     for (auto &message : initMessageList) {
-        consolePrintPosAligned(10 + line++, 0, 1, message);
+        Console::consolePrintPosAligned(10 + line++, 0, 1, message);
     }
 
     DrawUtils::endDraw();
@@ -625,8 +626,8 @@ int main() {
 
     addInitMessage(LanguageUtils::gettext("Initializing FS"));
 
-    if (!initFS()) {
-        Console::promptError(LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
+    if (!FSUtils::initFS()) {
+        Console::promptError(LanguageUtils::gettext("FSUtils::initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
         romfsExit();
         DrawUtils::deinitFont();
@@ -696,7 +697,7 @@ int main() {
 
     unloadTitles(wiiutitles, wiiuTitlesCount);
     unloadTitles(wiititles, vWiiTitlesCount);
-    shutdownFS();
+    FSUtils::shutdownFS();
     LanguageUtils::gettextCleanUp();
     romfsExit();
 

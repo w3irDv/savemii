@@ -53,7 +53,7 @@ void BatchJobState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 1, screenTitle);
+        Console::consolePrintPosAligned(0, 4, 1, screenTitle);
         DrawUtils::setFontColor(COLOR_TEXT);
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -67,7 +67,7 @@ void BatchJobState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPos(M_OFF, 6, readme);
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPosAligned(17, 4, 2, nextTask);
+        Console::consolePrintPosAligned(17, 4, 2, nextTask);
     }
 }
 

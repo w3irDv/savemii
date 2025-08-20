@@ -24,7 +24,7 @@ void BatchBackupState::render() {
     }
     if (this->state == STATE_BATCH_BACKUP_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Batch Backup"));
+        Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Batch Backup"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
         Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Backup All (%u Title%s)"), this->wiiuTitlesCount + this->vWiiTitlesCount,
                                  ((this->wiiuTitlesCount + this->vWiiTitlesCount) > 1) ? "s" : "");
@@ -49,7 +49,7 @@ void BatchBackupState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: BackupSet Management  \ue000: Backup  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: BackupSet Management  \ue000: Backup  \ue001: Back"));
     }
 }
 

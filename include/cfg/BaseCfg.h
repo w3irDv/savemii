@@ -5,6 +5,8 @@
 #include <savemng.h>
 #include <string>
 #include <utils/ConsoleUtils.h>
+#include <utils/FSUtils.h>
+#include <utils/StringUtils.h>
 #include <vector>
 
 class BaseCfg {

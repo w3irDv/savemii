@@ -1,18 +1,20 @@
 
-#include <utils/EscapeFAT32Utils.h>
-#include <utils/StringUtils.h>
-#include <utils/ConsoleUtils.h>
-#include <utils/LanguageUtils.h>
 #include <cstring>
 #include <iostream>
 #include <sys/param.h>
+#include <unistd.h>
+#include <utils/ConsoleUtils.h>
+#include <utils/EscapeFAT32Utils.h>
+#include <utils/FSUtils.h>
+#include <utils/LanguageUtils.h>
+#include <utils/StringUtils.h>
 #include <vector>
 
 bool FAT32EscapeFileManager::open_for_write() {
     fat32_rename.open(fat32_rename_file_path);
     if (!fat32_rename.is_open()) {
         std::string multilinePath;
-        splitStringWithNewLines(fat32_rename_file_path, multilinePath);
+        StringUtils::splitStringWithNewLines(fat32_rename_file_path, multilinePath);
         Console::promptError(LanguageUtils::gettext("Error opening FAT32 chars translation file \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
         return false;
     }
@@ -30,7 +32,7 @@ bool FAT32EscapeFileManager::append(const std::string &s_path, const std::string
             return true;
     }
     std::string multilinePath;
-    splitStringWithNewLines(s_path, multilinePath);
+    StringUtils::splitStringWithNewLines(s_path, multilinePath);
     Console::promptError(LanguageUtils::gettext("Error updating FAT32 chars translation file for file\n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
     return false;
 }
@@ -39,7 +41,7 @@ bool FAT32EscapeFileManager::close() {
     fat32_rename.close();
     if (fat32_rename.fail()) {
         std::string multilinePath;
-        splitStringWithNewLines(fat32_rename_file_path, multilinePath);
+        StringUtils::splitStringWithNewLines(fat32_rename_file_path, multilinePath);
         Console::promptError(LanguageUtils::gettext("Error closing FAT32 chars translation file \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
 
         return false;
@@ -61,14 +63,14 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
 
     bool is_wii_storage = (storage_vol.starts_with("storage_slcc01"));
 
-    if (checkEntry(fat32_rename_file_path.c_str()) == 0) // no translation file, nothing to do
+    if (FSUtils::checkEntry(fat32_rename_file_path.c_str()) == 0) // no translation file, nothing to do
         return true;
 
     std::vector<RenameData> rename_vector;
     std::ifstream fat32_rename_ifs(fat32_rename_file_path);
     if (!fat32_rename_ifs.is_open()) {
         std::string multilinePath;
-        splitStringWithNewLines(fat32_rename_file_path, multilinePath);
+        StringUtils::splitStringWithNewLines(fat32_rename_file_path, multilinePath);
         Console::promptError(LanguageUtils::gettext("Error opening FAT32 chars translation file \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
         goto generic_error;
     }
@@ -105,21 +107,21 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
 
     if (!fat32_rename_ifs.eof()) {
         std::string multilinePath;
-        splitStringWithNewLines(fat32_rename_file_path, multilinePath);
+        StringUtils::splitStringWithNewLines(fat32_rename_file_path, multilinePath);
         Console::promptError(LanguageUtils::gettext("Error parsing FAT32 chars translation file \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
         goto close_and_error;
     }
     fat32_rename_ifs.close();
     if (errno != 0) {
         std::string multilinePath;
-        splitStringWithNewLines(fat32_rename_file_path, multilinePath);
+        StringUtils::splitStringWithNewLines(fat32_rename_file_path, multilinePath);
         Console::promptError(LanguageUtils::gettext("Error closing FAT32 chars translation file \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
         goto generic_error;
     }
 
     if (rename_vector.size() == 0) {
         std::string multilinePath;
-        splitStringWithNewLines(fat32_rename_file_path, multilinePath);
+        StringUtils::splitStringWithNewLines(fat32_rename_file_path, multilinePath);
         Console::promptError(LanguageUtils::gettext("FAT32 chars translation file is empty\n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
         goto generic_error;
     }
@@ -132,7 +134,7 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                 continue;
             else {
                 std::string multilinePath;
-                splitStringWithNewLines(sPath, multilinePath);
+                StringUtils::splitStringWithNewLines(sPath, multilinePath);
                 Console::promptError(LanguageUtils::gettext("Cannot rename folder \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
                 goto close_and_error;
             }
@@ -140,13 +142,13 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
             sPath = storage_vol + entry_to_rename->source; // <full escaped>
             tPath = storage_vol + entry_to_rename->target; // <escaped>/<unescaped>
 
-            if (is_wii_storage) {                             // in slcc01 rename files returns invalid arguments error if target contains forbidden chars. Open/close works ok ...
-                if (copyFile(sPath.c_str(), tPath.c_str())) { // but at most only one entry in the path can contain forbiden chars. ... so we rename backwards
-                    unlink(sPath.c_str());                    // target path can be 68 chars at most, including storage_slccc01:
+            if (is_wii_storage) {                                      // in slcc01 rename files returns invalid arguments error if target contains forbidden chars. Open/close works ok ...
+                if (FSUtils::copyFile(sPath.c_str(), tPath.c_str())) { // but at most only one entry in the path can contain forbiden chars. ... so we rename backwards
+                    unlink(sPath.c_str());                             // target path can be 68 chars at most, including storage_slccc01:
                     continue;
                 } else {
                     std::string multilinePath;
-                    splitStringWithNewLines(sPath, multilinePath);
+                    StringUtils::splitStringWithNewLines(sPath, multilinePath);
                     Console::promptError(LanguageUtils::gettext("Cannot rename file \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
                     goto close_and_error;
                 }
@@ -155,7 +157,7 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                     continue;
                 else {
                     std::string multilinePath;
-                    splitStringWithNewLines(sPath, multilinePath);
+                    StringUtils::splitStringWithNewLines(sPath, multilinePath);
                     Console::promptError(LanguageUtils::gettext("Cannot rename folder \n%s\n\n%s"), multilinePath.c_str(), strerror(errno));
                     goto close_and_error;
                 }
@@ -290,7 +292,7 @@ bool Escape::genUniqueEscapedPath(const std::string &initial_spath, const std::s
     uint8_t repl = 63; // first char will be @, A, B , ...
     std::string escaped_spath{};
     if (escapeSpecialFAT32Chars(initial_spath, escaped_spath, ONLY_ENDNAME, "_") && escapeSpecialFAT32Chars(initial_tpath, escaped_tpath, ONLY_ENDNAME, "_")) {
-        while ((checkEntry(escaped_spath.c_str()) != 0) || (checkEntry(escaped_tpath.c_str()) != 0)) { // path exists
+        while ((FSUtils::checkEntry(escaped_spath.c_str()) != 0) || (FSUtils::checkEntry(escaped_tpath.c_str()) != 0)) { // path exists
             if (++repl > 123)
                 return false; // last character: z
             if (repl == 92)   // skip "\"

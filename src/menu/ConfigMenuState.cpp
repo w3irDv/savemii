@@ -15,7 +15,7 @@ extern bool firstSDWrite;
 
 void ConfigMenuState::render() {
     DrawUtils::setFontColor(COLOR_INFO);
-    consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Configuration Options"));
+    Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Configuration Options"));
     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
     language = LanguageUtils::getLoadedLanguage();
     Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Language: %s"), language.c_str());
@@ -43,7 +43,7 @@ void ConfigMenuState::render() {
 
     DrawUtils::setFontColor(COLOR_TEXT);
     Console::consolePrintPos(M_OFF, 2 + cursorPos * 2, "\u2192");
-    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue045 SaveConfig  \ue001: Back"));
+    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue045 SaveConfig  \ue001: Back"));
 }
 
 ApplicationState::eSubState ConfigMenuState::update(Input *input) {

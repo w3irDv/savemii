@@ -3,30 +3,27 @@
 #define __STDC_WANT_LIB_EXT2__ 1
 
 #include <algorithm>
-#include <coreinit/filesystem_fsa.h>
 #include <coreinit/mcp.h>
 #include <coreinit/memdefaultheap.h>
 #include <coreinit/thread.h>
 #include <cstdio>
 #include <dirent.h>
 #include <fcntl.h>
-#include <mocha/mocha.h>
+#include <filesystem>
 #include <string>
 #include <sys/stat.h>
 #include <tuple>
 #include <unistd.h>
 #include <utils/DrawUtils.h>
+#include <utils/InProgress.h>
 #include <utils/InputUtils.h>
 #include <vector>
-#include <ApplicationState.h>
-#include <filesystem>
 
 namespace fs = std::filesystem;
 
-#define PATH_SIZE        0x400
+#define PATH_SIZE 0x400
 
-#define M_OFF            1
-#define Y_OFF            1
+#define M_OFF     1
 
 enum eBatchJobState {
     NOT_TRIED = 0,
@@ -37,16 +34,16 @@ enum eBatchJobState {
 };
 
 struct DataSourceInfo {
-    bool hasSavedata            = false;
+    bool hasSavedata = false;
     bool candidateToBeProcessed = false;
-    bool candidateForBackup     = false;
-    bool selectedToBeProcessed  = false;
-    bool selectedForBackup      = false;
-    bool hasProfileSavedata     = false;
-    bool hasCommonSavedata      = false;
-    eBatchJobState batchJobState    = NOT_TRIED;
+    bool candidateForBackup = false;
+    bool selectedToBeProcessed = false;
+    bool selectedForBackup = false;
+    bool hasProfileSavedata = false;
+    bool hasCommonSavedata = false;
+    eBatchJobState batchJobState = NOT_TRIED;
     eBatchJobState batchBackupState = NOT_TRIED;
-    int lastErrCode = 0; 
+    int lastErrCode = 0;
 };
 
 enum eFileNameStyle {
@@ -95,17 +92,6 @@ struct Account {
     uint8_t slot;
 };
 
-enum Style {
-    ST_YES_NO = 1,
-    ST_CONFIRM_CANCEL = 2,
-    ST_MULTILINE = 16,
-    ST_WARNING = 32,
-    ST_ERROR = 64,
-    ST_WIPE = 128,
-    ST_MULTIPLE_CHOICE = 256
-};
-
-
 template<class It>
 void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
     switch (tsort) {
@@ -146,31 +132,21 @@ void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
             break;
     }
 
-    for (Title* title = titles;title < last ;title++ ) {
-        if ( title->isTitleDupe) {
-            for (int id = 0; id < last-titles; id++) {
-                if (titles[id].indexID == title->dupeID ) {
+    for (Title *title = titles; title < last; title++) {
+        if (title->isTitleDupe) {
+            for (int id = 0; id < last - titles; id++) {
+                if (titles[id].indexID == title->dupeID) {
                     title->dupeID = id;
                     break;
                 }
             }
         }
     }
-    for (int id = 0; id < last-titles; id++)
+    for (int id = 0; id < last - titles; id++)
         titles[id].indexID = id;
 }
 
-class InProgress {
-    public:
-        inline static std::string titleName {};
-        inline static int currentStep = 0;
-        inline static int totalSteps = 0;
-        inline static bool abortTask = false;
-        inline static Input * input = nullptr;
-        inline static eJobType jobType = NONE; 
-};
-
-struct titlesNEProfiles{
+struct titlesNEProfiles {
     int index;
     std::string nEProfiles;
 };
@@ -180,9 +156,6 @@ enum eAccountSource {
     USE_SD_OR_STORAGE_PROFILES
 };
 
-bool initFS() __attribute__((__cold__));
-void shutdownFS() __attribute__((__cold__));
-std::string getUSB();
 void getAccountsWiiU();
 void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType);
 bool hasProfileSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version);
@@ -197,14 +170,14 @@ bool folderEmpty(const char *fPath);
 bool folderEmptyIgnoreSavemii(const char *fPath);
 std::string getNowDateForFolder() __attribute__((hot));
 std::string getNowDate() __attribute__((hot));
-void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB) __attribute__((hot));
-void writeMetadata(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &batchDatetime) __attribute__((hot));
-void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &tag) __attribute__((hot));
-void writeMetadataWithTag(uint32_t highID,uint32_t lowID,uint8_t slot,bool isUSB,const std::string &batchDatetime,const std::string &tag) __attribute__((hot));
-void writeBackupAllMetadata(const std::string & Date, const std::string & tag);
+void writeMetadata(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB) __attribute__((hot));
+void writeMetadata(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, const std::string &batchDatetime) __attribute__((hot));
+void writeMetadataWithTag(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, const std::string &tag) __attribute__((hot));
+void writeMetadataWithTag(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag) __attribute__((hot));
+void writeBackupAllMetadata(const std::string &Date, const std::string &tag);
 int backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
-int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource = USE_WIIU_PROFILES,const std::string &tag = "") __attribute__((hot));
+int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource = USE_WIIU_PROFILES, const std::string &tag = "") __attribute__((hot));
 int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true) __attribute__((hot));
 int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
@@ -212,23 +185,17 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 void importFromLoadiine(Title *title, bool common, int version);
 void exportToLoadiine(Title *title, bool common, int version);
-int checkEntry(const char *fPath);
-bool createFolder(const char *fPath);
 int32_t loadFile(const char *fPath, uint8_t **buf) __attribute__((hot));
 int32_t loadTitleIcon(Title *title) __attribute__((hot));
-void consolePrintPosMultiline(int x, int y, const char *format, ...) __attribute__((hot));
-void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) __attribute__((hot));
-void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...) __attribute__((hot));
 uint8_t getVolAccn();
 uint8_t getWiiUAccn();
 Account *getWiiUAcc();
 Account *getVolAcc();
 void deleteSlot(Title *title, uint8_t slot);
-bool wipeBackupSet(const std::string &subPath , bool force = false);
-void splitStringWithNewLines(const std::string &input, std::string &output);
+bool wipeBackupSet(const std::string &subPath, bool force = false);
 void sdWriteDisclaimer();
-void summarizeBackupCounters(Title *titles, int titlesCount,int & titlesOK, int & titlesAborted, int & titlesWarning, int & titlesKO, int & titlesSkipped, int & titlesNotInitialized, std::vector<std::string> & failedTitles);
-void showBatchStatusCounters (int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> & failedTitles);
+void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles);
+void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> &failedTitles);
 void setTitleNameBasedDirName(Title *title);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);
@@ -236,29 +203,21 @@ std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string &da
 std::string getBatchBackupPathRoot(const std::string &datetime);
 bool isTitleUsingIdBasedPath(Title *title);
 bool isTitleUsingTitleNameBasedPath(Title *title);
-bool renameTitleFolder(Title* title);
+bool renameTitleFolder(Title *title);
 bool renameAllTitlesFolder(Title *titles, int titlesCount);
-bool mkdirAndUnlink(const std::string & path);
-bool mergeTitleFolders(Title* title);
-enum STR2UINT_ERROR { SUCCESS, OVERFLOW, INCONVERTIBLE };
-STR2UINT_ERROR str2uint (uint32_t &i, char const *s, int base = 0);
+bool mkdirAndUnlink(const std::string &path);
+bool mergeTitleFolders(Title *title);
+enum STR2UINT_ERROR { SUCCESS,
+                      OVERFLOW,
+                      INCONVERTIBLE };
+STR2UINT_ERROR str2uint(uint32_t &i, char const *s, int base = 0);
 std::string getSlotFormatType(Title *title, uint8_t slot);
 bool checkIfProfileExistsInWiiUAccounts(char const *name);
-void flushVol(const std::string & srcPath);
 bool checkIfAllProfilesInFolderExists(const std::string srcPath);
-bool removeFolderAndFlush(const std::string & srcPath);
 bool checkIfProfilesInTitleBackupExist(Title *title, uint8_t slot);
-void titleListInColumns(std::string & summaryWithTitles, const std::vector<std::string> & failedTitles);
-std::string newlibtoFSA(std::string path);
-bool setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError & fserror);
-bool updateSaveinfoFile(const std::string & source_saveinfo_file, const std::string & target_saveinfo_file, std::vector<std::string> & source_persistentIDs, std::string & target_persistentID, bool is_all_users);
-bool getProfilesInPath(std::vector<std::string> & source_persistentIDs, const fs::path & source_path );
-bool updateSaveinfo (Title * title, int8_t source_user, int8_t wiiu_user, eJobType jobType, uint8_t slot, Title * source_title, std::string & errorMessage, int & errorCode);
-bool initializeWiiUTitle(Title * title, std::string & errorMessage, int & errorCode);
-bool initializeVWiiInjectTitle(Title * title, std::string & errorMessage, int & errorCode);
-
-bool copyDir(const std::string &pPath, const std::string &tPath, bool if_generate_FAT32_translation_file = false);
-bool copyFile(const std::string &pPath, const std::string &oPath, bool if_generate_FAT32_translation_file = false);
-
-
-
+void titleListInColumns(std::string &summaryWithTitles, const std::vector<std::string> &failedTitles);
+bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::string &target_saveinfo_file, std::vector<std::string> &source_persistentIDs, std::string &target_persistentID, bool is_all_users);
+bool getProfilesInPath(std::vector<std::string> &source_persistentIDs, const fs::path &source_path);
+bool updateSaveinfo(Title *title, int8_t source_user, int8_t wiiu_user, eJobType jobType, uint8_t slot, Title *source_title, std::string &errorMessage, int &errorCode);
+bool initializeWiiUTitle(Title *title, std::string &errorMessage, int &errorCode);
+bool initializeVWiiInjectTitle(Title *title, std::string &errorMessage, int &errorCode);

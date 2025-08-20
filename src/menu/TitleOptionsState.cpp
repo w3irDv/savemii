@@ -12,10 +12,10 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
+#include <utils/FSUtils.h>
 
 #define TAG_OFF 17
 
-extern FSAClientHandle handle;
 static bool showFolderInfo = false;
 
 static int offsetIfRestoreOrCopyToOtherDev = 0;
@@ -77,7 +77,7 @@ void TitleOptionsState::render() {
                 DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
             else
                 DrawUtils::setFontColor(BackupSetList::isRootBackupSet() ? COLOR_INFO_AT_CURSOR : COLOR_LIST_DANGER_AT_CURSOR);
-            consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BackupSet: %s"),
+            Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BackupSet: %s"),
                                    (this->task == BACKUP) ? BackupSetList::ROOT_BS.c_str() : BackupSetList::getBackupSetEntry().c_str());
         }
         entrycount = 2;
@@ -120,7 +120,7 @@ void TitleOptionsState::render() {
         if ((task == BACKUP) || (task == RESTORE)) {
             if (!emptySlot) {
                 DrawUtils::setFontColor(COLOR_INFO);
-                consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Slot -> Date: %s"),
+                Console::consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Slot -> Date: %s"),
                                        slotInfo.c_str());
                 if (tag != "") {
                     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -208,7 +208,7 @@ void TitleOptionsState::render() {
                     if (this->source_user != -1) {
                         if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) {
                             DrawUtils::setFontColor(COLOR_TEXT);
-                            consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
+                            Console::consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
                                                    hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         }
                         if (hasCommonSaveInSource) {
@@ -241,7 +241,7 @@ void TitleOptionsState::render() {
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
                                                      LanguageUtils::gettext("No 'common' save found."));
                         if (task == RESTORE || task == COPY_TO_OTHER_DEVICE)
-                            consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
+                            Console::consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
                                                    hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         common = false;
                     }
@@ -304,7 +304,7 @@ void TitleOptionsState::render() {
             uint32_t lowID = title.lowID;
             bool isUSB = title.isTitleOnUSB;
 
-            std::string path = (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+            std::string path = (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
             std::string basePath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, "user");
 
             std::string srcPath;
@@ -324,10 +324,10 @@ void TitleOptionsState::render() {
             DrawUtils::setFontColor(COLOR_INFO);
             Console::consolePrintPos(M_OFF, 12, "%s", srcPath.c_str());
             uint64_t quotaSize = 0;
-            if (checkEntry(srcPath.c_str()) == 2) {
+            if (FSUtils::checkEntry(srcPath.c_str()) == 2) {
                 FSAStat fsastat;
                 FSMode fsamode;
-                FSAGetStat(handle, newlibtoFSA(srcPath).c_str(), &fsastat);
+                FSAGetStat(FSUtils::handle, FSUtils::newlibtoFSA(srcPath).c_str(), &fsastat);
                 fsamode = fsastat.mode;
                 quotaSize = fsastat.quotaSize;
                 Console::consolePrintPos(M_OFF, 13, "Mode: %x Owner:Group %x:%x", fsamode, fsastat.owner, fsastat.group);
@@ -341,50 +341,50 @@ void TitleOptionsState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         switch (task) {
             case BACKUP:
-                consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Backup"));
+                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Backup"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
                 else
-                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
                 break;
             case RESTORE:
                 Console::consolePrintPos(20, 0, LanguageUtils::gettext("Restore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
                 else
-                    consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
                 break;
             case WIPE_PROFILE:
-                consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Wipe"));
+                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Wipe"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
                 break;
             case PROFILE_TO_PROFILE:
-                consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Copy to Other Profile"));
+                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Copy to Other Profile"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
                 break;
             case MOVE_PROFILE:
-                consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Move to Other Profile"));
+                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Move to Other Profile"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Move  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Move  \ue001: Back"));
                 break;
             case importLoadiine:
-                consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Import Loadiine"));
+                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Import Loadiine"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Import  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Import  \ue001: Back"));
                 break;
             case exportLoadiine:
-                consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Export Loadiine"));
+                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Export Loadiine"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Export  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Export  \ue001: Back"));
                 break;
             case COPY_TO_OTHER_DEVICE:
-                consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Copy to Other Device"));
+                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Copy to Other Device"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
                 break;
             default:;
         }
@@ -709,7 +709,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         }
                     }
                     if (this->task == COPY_TO_OTHER_DEVICE && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
-                        std::string path = (this->title.isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+                        std::string path = (this->title.isTitleOnUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
                         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->title.highID, this->title.lowID, "user");
                         if (!checkIfAllProfilesInFolderExists(srcPath)) {
                             Console::promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);

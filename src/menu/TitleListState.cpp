@@ -32,9 +32,9 @@ void TitleListState::render() {
             return;
         }
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 1, isWiiU ? LanguageUtils::gettext("Wii U Titles") : LanguageUtils::gettext("vWii Titles"));
+        Console::consolePrintPosAligned(0, 4, 1, isWiiU ? LanguageUtils::gettext("Wii U Titles") : LanguageUtils::gettext("vWii Titles"));
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
                                (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= this->titlesCount)
@@ -70,7 +70,7 @@ void TitleListState::render() {
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(isWiiU ? -1 : -3, 2 + cursorPos, "\u2192");
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Game   \ue085\ue07e\ue086: Paging   \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Game   \ue085\ue07e\ue086: Paging   \ue001: Back"));
     }
 }
 

@@ -76,7 +76,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
             case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                path = (isWii ? "storage_slcc01:/title" : (isUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+                path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
                 srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
                 break;
             default:;
@@ -112,7 +112,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 continue;
             }
             std::string multilinePath;
-            splitStringWithNewLines(srcPath, multilinePath);
+            StringUtils::splitStringWithNewLines(srcPath, multilinePath);
             Console::promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
             Console::promptError(LanguageUtils::gettext("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
             continue;
@@ -272,7 +272,7 @@ void BatchJobOptions::render() {
         Console::consolePrintPos(16, 0, menuTitle);
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
         if (jobType == RESTORE)
-            consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BS: %s"), BackupSetList::getBackupSetEntry().c_str());
+            Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BS: %s"), BackupSetList::getBackupSetEntry().c_str());
         DrawUtils::setFontColor(COLOR_TEXT);
         if (isWiiUBatchJob) {
             Console::consolePrintPos(M_OFF, 3, sourceUserPrompt);
@@ -332,9 +332,9 @@ void BatchJobOptions::render() {
         Console::consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3 + (cursorPos - 3) * 2 + 5) - (isWiiUBatchJob ? 0 : 8), "\u2192");
 
         if (totalNumberOfTitlesWithNonExistentProfiles == 0)
-            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
         else
-            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
     }
 }
 

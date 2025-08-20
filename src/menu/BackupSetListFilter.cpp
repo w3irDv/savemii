@@ -13,7 +13,7 @@
 void BackupSetListFilterState::render() {
     if (this->state == STATE_BACKUPSET_FILTER) {
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPosAligned(0, 4, 1, "Filter BackupSets");
+        Console::consolePrintPosAligned(0, 4, 1, "Filter BackupSets");
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPos(0, 4, LanguageUtils::gettext("Show only BackupSets satisfying all these conditions:"));
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -22,7 +22,7 @@ void BackupSetListFilterState::render() {
         Console::consolePrintPos(M_OFF, 8, "Month: %s", (*backupSetList->bsMetadataValues.month.iterator).c_str());
         Console::consolePrintPos(M_OFF, 9, "Year: %s", (*backupSetList->bsMetadataValues.year.iterator).c_str());
         Console::consolePrintPos(-1, 6 + cursorPos, "\u2192");
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Apply Filter  \uE002: Reset Filters  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Apply Filter  \uE002: Reset Filters  \ue001: Back"));
     }
 }
 

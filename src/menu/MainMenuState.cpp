@@ -16,8 +16,6 @@
 
 #define ENTRYCOUNT 9
 
-extern FSAClientHandle handle;
-
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
@@ -28,7 +26,7 @@ void MainMenuState::render() {
     }
     if (this->state == STATE_MAIN_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Main menu"));
+        Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Main menu"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
         Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Wii U Save Management (%u Title%s)"), this->wiiuTitlesCount,
                                  (this->wiiuTitlesCount > 1) ? "s" : "");
@@ -51,7 +49,7 @@ void MainMenuState::render() {
         Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1) ? 1 : 0) + ((cursorPos > 7) ? 1 : 0), "\u2192");
-        consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
+        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
     }
 }
 

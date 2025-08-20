@@ -73,7 +73,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
             case MOVE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                path = (isWii ? "storage_slcc01:/title" : (this->titles[i].isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+                path = (isWii ? "storage_slcc01:/title" : (this->titles[i].isTitleOnUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
                 srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->titles[i].highID, this->titles[i].lowID, isWii ? "data" : "user");
                 break;
             default:;
@@ -266,10 +266,10 @@ void BatchJobTitleSelectState::render() {
                 break;
         }
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 1, menuTitle);
+        Console::consolePrintPosAligned(0, 4, 1, menuTitle);
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
                                (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         if ((this->titles == nullptr) || (this->titlesCount == 0 || (this->candidatesCount == 0))) {
             DrawUtils::endDraw();
@@ -279,7 +279,7 @@ void BatchJobTitleSelectState::render() {
             DrawUtils::setRedraw(true);
             return;
         }
-        consolePrintPosAligned(39, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        Console::consolePrintPosAligned(39, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
                                (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         std::string nxtAction;
         std::string lastState;
@@ -378,7 +378,7 @@ void BatchJobTitleSelectState::render() {
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
-        consolePrintPosAligned(17, 4, 2, screenOptions);
+        Console::consolePrintPosAligned(17, 4, 2, screenOptions);
     }
 }
 
@@ -721,7 +721,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             }
         }
         if ((jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
-            std::string path = (sourceTitle.isTitleOnUSB ? (getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
+            std::string path = (sourceTitle.isTitleOnUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), sourceTitle.highID, sourceTitle.lowID, "user");
             if (!checkIfAllProfilesInFolderExists(srcPath)) {
                 sourceTitle.currentDataSource.batchJobState = ABORTED;

@@ -66,13 +66,13 @@ void BackupSetListState::render() {
         std::string backupSetItem;
         DrawUtils::setFontColor(COLOR_INFO);
         if (BackupSetList::currentBackupSetList->entriesView == BackupSetList::currentBackupSetList->entries) {
-            consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets"));
+            Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets"));
         } else {
-            consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets (filter applied)"));
+            Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets (filter applied)"));
         }
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
-                               this->sortAscending ? "\u2191" : "\u2193");
+        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
+                                        this->sortAscending ? "\u2191" : "\u2193");
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + scroll < 0 || i + scroll >= BackupSetList::currentBackupSetList->entriesView)
                 break;
@@ -94,9 +94,9 @@ void BackupSetListState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         if (cursorPos + scroll > 0)
-            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BS  \ue045: Tag BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BS  \ue045: Tag BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back"));
         else
-            consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back"));
     }
 }
 

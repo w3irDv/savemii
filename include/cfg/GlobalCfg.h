@@ -3,14 +3,12 @@
 #include <cfg/BaseCfg.h>
 #include <utils/LanguageUtils.h>
 
-
 class GlobalCfg : public BaseCfg {
 
-friend class ConfigMenuState;
+    friend class ConfigMenuState;
 
 public:
-
-    GlobalCfg(const std::string & cfg);
+    GlobalCfg(const std::string &cfg);
 
     virtual bool mkJsonCfg();
     virtual bool parseJsonCfg();
@@ -20,14 +18,12 @@ public:
 
     inline static std::unique_ptr<GlobalCfg> global = nullptr;
 
-    bool getAlwaysApplyExcludes() { return alwaysApplyExcludes;};
-    bool getDontAllowUndefinedProfiles() { return dontAllowUndefinedProfiles;};
+    bool getAlwaysApplyExcludes() { return alwaysApplyExcludes; };
+    bool getDontAllowUndefinedProfiles() { return dontAllowUndefinedProfiles; };
 
 private:
-
     Swkbd_LanguageType Language;
     bool alwaysApplyExcludes;
     bool askForBackupDirConversion;
     bool dontAllowUndefinedProfiles;
-
 };
