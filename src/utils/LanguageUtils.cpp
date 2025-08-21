@@ -3,6 +3,7 @@
 #include <savemng.h>
 #include <utils/DrawUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/FSUtils.h>
 
 MSG *LanguageUtils::baseMSG = nullptr;
 
@@ -169,7 +170,7 @@ void LanguageUtils::gettextCleanUp() {
 
 bool LanguageUtils::gettextLoadLanguage(const char *langFile) {
     uint8_t *buffer;
-    int32_t size = loadFile(langFile, &buffer);
+    int32_t size = FSUtils::loadFile(langFile, &buffer);
     if (buffer == nullptr)
         return false;
 

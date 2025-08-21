@@ -1,7 +1,5 @@
 #pragma once
 
-#define __STDC_WANT_LIB_EXT2__ 1
-
 #include <algorithm>
 #include <coreinit/mcp.h>
 #include <coreinit/memdefaultheap.h>
@@ -17,6 +15,7 @@
 #include <utils/DrawUtils.h>
 #include <utils/InProgress.h>
 #include <utils/InputUtils.h>
+#include <utils/TitleUtils.h>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -25,126 +24,12 @@ namespace fs = std::filesystem;
 
 #define M_OFF     1
 
-enum eBatchJobState {
-    NOT_TRIED = 0,
-    ABORTED = 1,
-    OK = 2,
-    WR = 3,
-    KO = 4
-};
-
-struct DataSourceInfo {
-    bool hasSavedata = false;
-    bool candidateToBeProcessed = false;
-    bool candidateForBackup = false;
-    bool selectedToBeProcessed = false;
-    bool selectedForBackup = false;
-    bool hasProfileSavedata = false;
-    bool hasCommonSavedata = false;
-    eBatchJobState batchJobState = NOT_TRIED;
-    eBatchJobState batchBackupState = NOT_TRIED;
-    int lastErrCode = 0;
-};
-
-enum eFileNameStyle {
-    Unknown,
-    HiLo,
-    titleName
-};
-
-struct Title {
-    uint32_t highID;
-    uint32_t lowID;
-    uint32_t vWiiLowID;
-    uint32_t vWiiHighID;
-    uint16_t listID;
-    uint16_t indexID;
-    char shortName[256];
-    char longName[512];
-    char productCode[5];
-    bool saveInit;
-    bool isTitleOnUSB;
-    bool isTitleDupe;
-    bool is_Wii;
-    bool is_Inject;
-    bool noFwImg;
-    uint16_t dupeID;
-    uint8_t *iconBuf;
-    uint64_t accountSaveSize;
-    uint64_t commonSaveSize;
-    uint32_t groupID;
-    DataSourceInfo currentDataSource;
-    char titleNameBasedDirName[256];
-    eFileNameStyle fileNameStyle;
-};
-
-struct Saves {
-    uint32_t highID;
-    uint32_t lowID;
-    uint8_t dev;
-    bool found;
-};
-
 struct Account {
     char persistentID[9];
     uint32_t pID;
     char miiName[50];
     uint8_t slot;
 };
-
-template<class It>
-void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true) {
-    switch (tsort) {
-        case 0:
-            std::ranges::sort(titles, last, std::ranges::less{}, &Title::listID);
-            break;
-        case 1: {
-            const auto proj = [](const Title &title) {
-                return std::string_view(title.shortName);
-            };
-            if (sortAscending) {
-                std::ranges::sort(titles, last, std::ranges::less{}, proj);
-            } else {
-                std::ranges::sort(titles, last, std::ranges::greater{}, proj);
-            }
-            break;
-        }
-        case 2:
-            if (sortAscending) {
-                std::ranges::sort(titles, last, std::ranges::less{}, &Title::isTitleOnUSB);
-            } else {
-                std::ranges::sort(titles, last, std::ranges::greater{}, &Title::isTitleOnUSB);
-            }
-            break;
-        case 3: {
-            const auto proj = [](const Title &title) {
-                return std::make_tuple(title.isTitleOnUSB,
-                                       std::string_view(title.shortName));
-            };
-            if (sortAscending) {
-                std::ranges::sort(titles, last, std::ranges::less{}, proj);
-            } else {
-                std::ranges::sort(titles, last, std::ranges::greater{}, proj);
-            }
-            break;
-        }
-        default:
-            break;
-    }
-
-    for (Title *title = titles; title < last; title++) {
-        if (title->isTitleDupe) {
-            for (int id = 0; id < last - titles; id++) {
-                if (titles[id].indexID == title->dupeID) {
-                    title->dupeID = id;
-                    break;
-                }
-            }
-        }
-    }
-    for (int id = 0; id < last - titles; id++)
-        titles[id].indexID = id;
-}
 
 struct titlesNEProfiles {
     int index;
@@ -185,8 +70,6 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 void importFromLoadiine(Title *title, bool common, int version);
 void exportToLoadiine(Title *title, bool common, int version);
-int32_t loadFile(const char *fPath, uint8_t **buf) __attribute__((hot));
-int32_t loadTitleIcon(Title *title) __attribute__((hot));
 uint8_t getVolAccn();
 uint8_t getWiiUAccn();
 Account *getWiiUAcc();
@@ -196,7 +79,6 @@ bool wipeBackupSet(const std::string &subPath, bool force = false);
 void sdWriteDisclaimer();
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles);
 void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> &failedTitles);
-void setTitleNameBasedDirName(Title *title);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);
 std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string &datetime);

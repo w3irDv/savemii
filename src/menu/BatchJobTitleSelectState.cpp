@@ -388,14 +388,14 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::R)) {
             this->titleSort = (this->titleSort + 1) % 4;
-            sortTitle(this->titles, this->titles + this->titlesCount, this->titleSort, this->sortAscending);
+            TitleUtils::sortTitle(this->titles, this->titles + this->titlesCount, this->titleSort, this->sortAscending);
             this->updateC2t();
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::L)) {
             if (this->titleSort > 0) {
                 this->sortAscending = !this->sortAscending;
-                sortTitle(this->titles, this->titles + this->titlesCount, this->titleSort, this->sortAscending);
+                TitleUtils::sortTitle(this->titles, this->titles + this->titlesCount, this->titleSort, this->sortAscending);
                 this->updateC2t();
             }
             return SUBSTATE_RUNNING;

@@ -53,5 +53,7 @@ namespace FSUtils {
 
     void showFileOperation(const std::string &file_name, const std::string &file_src, const std::string &file_dest);
     void showDeleteOperations(bool isFolder, const char *name, const std::string &path);
+    int32_t loadFile(const char *fPath, uint8_t **buf) __attribute__((hot));
+    int32_t loadFilePart(const char *fPath, uint32_t start, uint32_t size, uint8_t **buf);
 
 } // namespace FSUtils

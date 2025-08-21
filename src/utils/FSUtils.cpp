@@ -584,3 +584,50 @@ void FSUtils::showDeleteOperations(bool isFolder, const char *name, const std::s
     }
     DrawUtils::setFontColor(COLOR_TEXT);
 }
+
+int32_t FSUtils::loadFile(const char *fPath, uint8_t **buf) {
+    int ret = 0;
+    FILE *file = fopen(fPath, "rb");
+    if (file != nullptr) {
+        struct stat st{};
+        stat(fPath, &st);
+        int size = st.st_size;
+
+        *buf = (uint8_t *) malloc(size);
+        if (*buf != nullptr) {
+            if (fread(*buf, size, 1, file) == 1)
+                ret = size;
+            else
+                free(*buf);
+        }
+        fclose(file);
+    }
+    return ret;
+}
+
+int32_t FSUtils::loadFilePart(const char *fPath, uint32_t start, uint32_t size, uint8_t **buf) {
+    int ret = 0;
+    FILE *file = fopen(fPath, "rb");
+    if (file != nullptr) {
+        struct stat st{};
+        stat(fPath, &st);
+        if ((start + size) > st.st_size) {
+            fclose(file);
+            return -43;
+        }
+        if (fseek(file, start, SEEK_SET) == -1) {
+            fclose(file);
+            return -43;
+        }
+
+        *buf = (uint8_t *) malloc(size);
+        if (*buf != nullptr) {
+            if (fread(*buf, size, 1, file) == 1)
+                ret = size;
+            else
+                free(*buf);
+        }
+        fclose(file);
+    }
+    return ret;
+}

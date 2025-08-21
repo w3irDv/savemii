@@ -110,76 +110,6 @@ Account *getVolAcc() {
     return vol_acc;
 }
 
-int32_t loadFile(const char *fPath, uint8_t **buf) {
-    int ret = 0;
-    FILE *file = fopen(fPath, "rb");
-    if (file != nullptr) {
-        struct stat st{};
-        stat(fPath, &st);
-        int size = st.st_size;
-
-        *buf = (uint8_t *) malloc(size);
-        if (*buf != nullptr) {
-            if (fread(*buf, size, 1, file) == 1)
-                ret = size;
-            else
-                free(*buf);
-        }
-        fclose(file);
-    }
-    return ret;
-}
-
-static int32_t loadFilePart(const char *fPath, uint32_t start, uint32_t size, uint8_t **buf) {
-    int ret = 0;
-    FILE *file = fopen(fPath, "rb");
-    if (file != nullptr) {
-        struct stat st{};
-        stat(fPath, &st);
-        if ((start + size) > st.st_size) {
-            fclose(file);
-            return -43;
-        }
-        if (fseek(file, start, SEEK_SET) == -1) {
-            fclose(file);
-            return -43;
-        }
-
-        *buf = (uint8_t *) malloc(size);
-        if (*buf != nullptr) {
-            if (fread(*buf, size, 1, file) == 1)
-                ret = size;
-            else
-                free(*buf);
-        }
-        fclose(file);
-    }
-    return ret;
-}
-
-int32_t loadTitleIcon(Title *title) {
-    uint32_t highID = title->highID;
-    uint32_t lowID = title->lowID;
-    bool isUSB = title->isTitleOnUSB;
-    bool isWii = title->is_Wii;
-    std::string path;
-
-    if (isWii) {
-        if (title->saveInit) {
-            path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/data/banner.bin", highID, lowID);
-            return loadFilePart(path.c_str(), 0xA0, 24576, &title->iconBuf);
-        }
-    } else {
-        if (title->saveInit)
-            path = StringUtils::stringFormat("%s/usr/save/%08x/%08x/meta/iconTex.tga", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
-        else
-            path = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta/iconTex.tga", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
-
-        return loadFile(path.c_str(), &title->iconBuf);
-    }
-    return -23;
-}
-
 bool folderEmpty(const char *fPath) {
     DIR *dir = opendir(fPath);
     if (dir == nullptr)
@@ -1521,24 +1451,6 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BACKGROUND);
     DrawUtils::endDraw();
-}
-
-#define FILENAME_BUFF_SIZE 256
-#define ID_STR_BUFF_SIZE   21
-
-void setTitleNameBasedDirName(Title *title) {
-
-    std::string shortName(title->shortName);
-    std::string titleNameBasedDirName{};
-
-    Escape::convertToFAT32ASCIICompliant(shortName, titleNameBasedDirName);
-
-    strncpy(title->titleNameBasedDirName, titleNameBasedDirName.c_str(), FILENAME_BUFF_SIZE - 1);
-
-    char idstr[ID_STR_BUFF_SIZE];
-    sprintf(idstr, " [%08x-%08x]", title->highID, title->lowID);
-    int insert_point = std::min((int) strlen(title->titleNameBasedDirName), FILENAME_BUFF_SIZE - ID_STR_BUFF_SIZE);
-    strcpy(&(title->titleNameBasedDirName[insert_point]), idstr);
 }
 
 bool isTitleUsingIdBasedPath(Title *title) {
