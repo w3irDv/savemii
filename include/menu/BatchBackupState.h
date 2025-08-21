@@ -31,5 +31,4 @@ private:
     int vWiiTitlesCount;
 
     inline static int cursorPos = 0;
-
 };

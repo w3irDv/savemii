@@ -1,14 +1,15 @@
 #include <Metadata.h>
-#include <utils/LanguageUtils.h>
 #include <cstring>
+#include <utils/FSUtils.h>
+#include <utils/LanguageUtils.h>
 
 #define FS_ALIGN(x) ((x + 0x3F) & ~(0x3F))
 
-std::string Metadata::unknownSerialId { "_WIIU_" };
+std::string Metadata::unknownSerialId{"_WIIU_"};
 std::string Metadata::thisConsoleSerialId = Metadata::unknownSerialId;
 
 bool Metadata::read() {
-    if (checkEntry(this->path.c_str()) != 0) {
+    if (FSUtils::checkEntry(this->path.c_str()) != 0) {
         FILE *f = fopen(this->path.c_str(), "rb");
         fseek(f, 0, SEEK_END);
         long len = ftell(f);
@@ -24,47 +25,47 @@ bool Metadata::read() {
         json_t *root = json_loads(data, 0, &error);
 
         if (root) {
-            std::string metadata {};
-            const char* Date = json_string_value(json_object_get(root, "Date"));
+            std::string metadata{};
+            const char *Date = json_string_value(json_object_get(root, "Date"));
             if (Date != nullptr) {
                 this->Date.assign(Date);
             }
-            const char* storage = json_string_value(json_object_get(root, "storage"));
+            const char *storage = json_string_value(json_object_get(root, "storage"));
             if (storage != nullptr) {
                 this->storage.assign(storage);
             }
-            const char* serialId = json_string_value(json_object_get(root, "serialId"));
+            const char *serialId = json_string_value(json_object_get(root, "serialId"));
             if (serialId != nullptr) {
                 this->serialId.assign(serialId);
             }
-            const char* tag = json_string_value(json_object_get(root, "tag"));
+            const char *tag = json_string_value(json_object_get(root, "tag"));
             if (tag != nullptr) {
                 this->tag.assign(tag);
             }
             char hexID[9];
-            const char* hID = json_string_value(json_object_get(root, "highID"));
+            const char *hID = json_string_value(json_object_get(root, "highID"));
             if (hID != nullptr) {
-                snprintf(hexID,9,"%s",hID);
-                this->highID = static_cast<uint32_t>(std::stoul(hexID,nullptr,16));
+                snprintf(hexID, 9, "%s", hID);
+                this->highID = static_cast<uint32_t>(std::stoul(hexID, nullptr, 16));
             }
-            const char* lID = json_string_value(json_object_get(root, "lowID"));
+            const char *lID = json_string_value(json_object_get(root, "lowID"));
             if (lID != nullptr) {
-                snprintf(hexID,9,"%s",lID);
-                this->lowID = static_cast<uint32_t>(std::stoul(hexID,nullptr,16));
+                snprintf(hexID, 9, "%s", lID);
+                this->lowID = static_cast<uint32_t>(std::stoul(hexID, nullptr, 16));
             }
-            const char* vWHID = json_string_value(json_object_get(root, "vWiiHighID"));
+            const char *vWHID = json_string_value(json_object_get(root, "vWiiHighID"));
             if (vWHID != nullptr) {
-                snprintf(hexID,9,"%s",vWHID);
-                this->vWiiHighID = static_cast<uint32_t>(std::stoul(hexID,nullptr,16));
+                snprintf(hexID, 9, "%s", vWHID);
+                this->vWiiHighID = static_cast<uint32_t>(std::stoul(hexID, nullptr, 16));
             }
-            const char* vWLID = json_string_value(json_object_get(root, "vWiiLowID"));
+            const char *vWLID = json_string_value(json_object_get(root, "vWiiLowID"));
             if (vWLID != nullptr) {
-                snprintf(hexID,9,"%s",vWLID);
-                this->vWiiLowID = static_cast<uint32_t>(std::stoul(hexID,nullptr,16));
+                snprintf(hexID, 9, "%s", vWLID);
+                this->vWiiLowID = static_cast<uint32_t>(std::stoul(hexID, nullptr, 16));
             }
-            const char* sName = json_string_value(json_object_get(root, "shortName"));
+            const char *sName = json_string_value(json_object_get(root, "shortName"));
             if (sName != nullptr) {
-                strlcpy(this->shortName,sName,256);
+                strlcpy(this->shortName, sName, 256);
             }
             json_decref(root);
             free(data);
@@ -76,24 +77,24 @@ bool Metadata::read() {
 
 std::string Metadata::get() {
     if (read()) {
-        std::string metadataMessage {};
+        std::string metadataMessage{};
         metadataMessage.assign(this->Date);
         if (this->storage != "")
             metadataMessage.append(LanguageUtils::gettext(", from ")).append(this->storage);
         metadataMessage.append(" | ").append(this->serialId);
-        return metadataMessage;   
+        return metadataMessage;
     }
     return "";
 }
 
 std::string Metadata::simpleFormat() {
     if (this->Date != "") {
-        std::string metadataMessage {};
+        std::string metadataMessage{};
         metadataMessage.assign(this->Date);
         if (this->storage != "")
             metadataMessage.append(LanguageUtils::gettext(", from ")).append(this->storage);
         metadataMessage.append(" | ").append(this->serialId);
-        return metadataMessage;   
+        return metadataMessage;
     }
     return "";
 }
@@ -118,12 +119,12 @@ bool Metadata::write() {
     json_object_set_new(config, "tag", json_string(this->tag.c_str()));
     char hID[9];
     char lID[9];
-    snprintf(hID,9,"%08x",highID);
-    snprintf(lID,9,"%08x",lowID);
+    snprintf(hID, 9, "%08x", highID);
+    snprintf(lID, 9, "%08x", lowID);
     json_object_set_new(config, "highID", json_string(hID));
     json_object_set_new(config, "lowID", json_string(lID));
-    snprintf(hID,9,"%08x",vWiiHighID);
-    snprintf(lID,9,"%08x",vWiiLowID);
+    snprintf(hID, 9, "%08x", vWiiHighID);
+    snprintf(lID, 9, "%08x", vWiiLowID);
     json_object_set_new(config, "vWiiHighID", json_string(hID));
     json_object_set_new(config, "vWiiLowID", json_string(lID));
     json_object_set_new(config, "shortName", json_string(this->shortName));

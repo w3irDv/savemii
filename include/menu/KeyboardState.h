@@ -7,7 +7,7 @@
 
 class KeyboardState : public ApplicationState {
 public:
-    KeyboardState(std::string & input) : input(input) {
+    KeyboardState(std::string &input) : input(input) {
         this->keyboard = std::make_unique<Keyboard>();
         this->cursorPosX = this->keyboard->column;
         this->cursorPosY = this->keyboard->row;
@@ -29,5 +29,5 @@ private:
     int entrycount = 4;
     int cursorPosX = 0;
     int cursorPosY = 0;
-    std::string & input;
+    std::string &input;
 };

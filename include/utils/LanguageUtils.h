@@ -1,10 +1,10 @@
 #pragma once
 
 #include <coreinit/memdefaultheap.h>
-#include <coreinit/time.h>
-#include <coreinit/userconfig.h>
-#include <cstring>
-#include <romfs-wiiu.h>
+//#include <coreinit/time.h>
+
+//#include <cstring>
+//#include <string>
 #include <string>
 #include <wut_types.h>
 

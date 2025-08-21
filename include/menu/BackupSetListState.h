@@ -30,9 +30,9 @@ private:
     eState state = STATE_BACKUPSET_MENU;
     eSubstateCalled substateCalled = NONE;
     bool finalScreen;
-    
+
     bool sortAscending;
-    
+
     static int cursorPos;
     static int scroll;
 
@@ -48,5 +48,4 @@ private:
 
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);
-
 };

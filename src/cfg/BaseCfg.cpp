@@ -1,72 +1,69 @@
-#include <fcntl.h>
-#include <cstring>
-#include <savemng.h>
 #include <Metadata.h>
-#include <utils/LanguageUtils.h>
 #include <cfg/BaseCfg.h>
+#include <cstring>
+#include <fcntl.h>
+#include <savemng.h>
+#include <utils/LanguageUtils.h>
 
 
-BaseCfg::BaseCfg(const std::string & cfg) : cfg(cfg) {
-    
-    cfgFile = cfgPath+"/savemii-"+Metadata::thisConsoleSerialId+"-"+cfg+".json";
- 
+BaseCfg::BaseCfg(const std::string &cfg) : cfg(cfg) {
+
+    cfgFile = cfgPath + "/savemii-" + Metadata::thisConsoleSerialId + "-" + cfg + ".json";
 }
 
 bool BaseCfg::init() {
-    int checkCfgPath = checkEntry(cfgPath.c_str());
-    if ( checkCfgPath == 2 )
+    int checkCfgPath = FSUtils::checkEntry(cfgPath.c_str());
+    if (checkCfgPath == 2)
         goto backupPathExists;
     else {
-        if ( checkCfgPath == 0 ) {
-            if ( createFolder(cfgPath.c_str()))
+        if (checkCfgPath == 0) {
+            if (FSUtils::createFolder(cfgPath.c_str()))
                 goto backupPathExists;
             else {
                 std::string multilinePath;
-                splitStringWithNewLines(cfgPath,multilinePath);
-                promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+                StringUtils::splitStringWithNewLines(cfgPath, multilinePath);
+                Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
                 initialized = false;
                 return false;
-            } 
-        }
-        else {
+            }
+        } else {
             std::string multilinePath;
-            splitStringWithNewLines(cfgPath,multilinePath);
-            promptError(LanguageUtils::gettext("Critical - Path is not a directory:\n\n%s"),multilinePath.c_str());
+            StringUtils::splitStringWithNewLines(cfgPath, multilinePath);
+            Console::promptError(LanguageUtils::gettext("Critical - Path is not a directory:\n\n%s"), multilinePath.c_str());
             initialized = false;
             return false;
         }
     }
 
 backupPathExists:
-    if ( checkEntry(cfgFile.c_str()) != 1 )  // no cfg file, create it with default values
+    if (FSUtils::checkEntry(cfgFile.c_str()) != 1) // no cfg file, create it with default values
         save();
 
     initialized = true;
-        
-    return true;
 
+    return true;
 }
 
 bool BaseCfg::saveFile() {
     FILE *fp = fopen(cfgFile.c_str(), "wb");
     if (fp == nullptr) {
         std::string multilinePath;
-        splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        StringUtils::splitStringWithNewLines(cfgFile, multilinePath);
+        Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
         return false;
     }
-    if ( fwrite(configString, strlen(configString), 1, fp) == 0 )
-        if ( ferror(fp)) {
+    if (fwrite(configString, strlen(configString), 1, fp) == 0)
+        if (ferror(fp)) {
             std::string multilinePath;
-            splitStringWithNewLines(cfgFile,multilinePath);
-            promptError(LanguageUtils::gettext("Error writing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+            StringUtils::splitStringWithNewLines(cfgFile, multilinePath);
+            Console::promptError(LanguageUtils::gettext("Error writing file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
             fclose(fp);
             return false;
         }
-    if ( fclose(fp) != 0) {
+    if (fclose(fp) != 0) {
         std::string multilinePath;
-        splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        StringUtils::splitStringWithNewLines(cfgFile, multilinePath);
+        Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
         return false;
     }
 
@@ -74,31 +71,29 @@ bool BaseCfg::saveFile() {
 }
 
 
-
 bool BaseCfg::save() {
-    if(mkJsonCfg())
-        if(saveFile())
+    if (mkJsonCfg())
+        if (saveFile())
             return true;
 
     return false;
 }
 
 
-
 bool BaseCfg::readFile() {
 
-    if ( initialized == false ) {
+    if (initialized == false) {
         std::string multilinePath;
-        splitStringWithNewLines(cfgPath,multilinePath);
-        promptError(LanguageUtils::gettext("cfgPath was no initialized and cannot be used:\n\n%s"),multilinePath.c_str());
+        StringUtils::splitStringWithNewLines(cfgPath, multilinePath);
+        Console::promptError(LanguageUtils::gettext("cfgPath was no initialized and cannot be used:\n\n%s"), multilinePath.c_str());
         return false;
     }
 
     FILE *fp = fopen(cfgFile.c_str(), "rb");
     if (fp == nullptr) {
         std::string multilinePath;
-        splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        StringUtils::splitStringWithNewLines(cfgFile, multilinePath);
+        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
         return false;
     }
 
@@ -106,34 +101,31 @@ bool BaseCfg::readFile() {
     long len = ftell(fp);
     fseek(fp, 0, SEEK_SET);
 
-    configString = (char *) malloc(len+1);
+    configString = (char *) malloc(len + 1);
 
-    if ( fread(configString, 1, len, fp) == 0 )
-        if ( ferror(fp))
-            {
-                std::string multilinePath;
-                splitStringWithNewLines(cfgFile,multilinePath);
-                promptError(LanguageUtils::gettext("Error reading file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
-                fclose(fp);
-                return false;
-            }
+    if (fread(configString, 1, len, fp) == 0)
+        if (ferror(fp)) {
+            std::string multilinePath;
+            StringUtils::splitStringWithNewLines(cfgFile, multilinePath);
+            Console::promptError(LanguageUtils::gettext("Error reading file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+            fclose(fp);
+            return false;
+        }
     configString[len] = '\0';
-    if ( fclose(fp) != 0) {
+    if (fclose(fp) != 0) {
         std::string multilinePath;
-        splitStringWithNewLines(cfgFile,multilinePath);
-        promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"),multilinePath.c_str(),strerror(errno));
+        StringUtils::splitStringWithNewLines(cfgFile, multilinePath);
+        Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
         return false;
     }
 
     return true;
-
 }
 
 bool BaseCfg::read() {
-    if(readFile())
-        if(parseJsonCfg())
+    if (readFile())
+        if (parseJsonCfg())
             return true;
 
     return false;
 }
-

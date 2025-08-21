@@ -15,7 +15,9 @@ enum eJobType {
     exportLoadiine = 6,
     COPY_TO_OTHER_DEVICE = 7,
     COPY_FROM_NAND_TO_USB = 8,
-    COPY_FROM_USB_TO_NAND = 9
+    COPY_FROM_USB_TO_NAND = 9,
+    WIPE_BACKUPSET = 10,
+    NONE = 11
 };
 
 class ApplicationState {

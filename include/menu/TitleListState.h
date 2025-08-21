@@ -10,7 +10,7 @@
 class TitleListState : public ApplicationState {
 public:
     explicit TitleListState(Title *titles, int titlesCount, bool isWiiU) : titles(titles),
-                                                    titlesCount(titlesCount),isWiiU(isWiiU) {}
+                                                                           titlesCount(titlesCount), isWiiU(isWiiU) {}
     enum eState {
         STATE_TITLE_LIST,
         STATE_DO_SUBSTATE,
@@ -18,8 +18,8 @@ public:
 
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
-    static void setCheckIdVsTitleNameBasedPath(bool value) {checkIdVsTitleNameBasedPath = value;};
-    static bool getCheckIdVsTitleNameBasedPath() {return checkIdVsTitleNameBasedPath;};
+    static void setCheckIdVsTitleNameBasedPath(bool value) { checkIdVsTitleNameBasedPath = value; };
+    static bool getCheckIdVsTitleNameBasedPath() { return checkIdVsTitleNameBasedPath; };
 
 private:
     std::unique_ptr<ApplicationState> subState{};

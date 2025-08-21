@@ -1,16 +1,16 @@
 #pragma once
 
 #include <ApplicationState.h>
-#include <memory>
-#include <set>
 #include <algorithm>
-#include <utils/InputUtils.h>
+#include <memory>
 #include <savemng.h>
+#include <set>
+#include <utils/InputUtils.h>
 
 class BatchJobOptions : public ApplicationState {
 public:
     BatchJobOptions(Title *titles, int titlesCount, bool isWiiUBatchJob, eJobType jobType);
-    
+
     enum eState {
         STATE_BATCH_JOB_OPTIONS_MENU,
         STATE_DO_SUBSTATE,
@@ -30,8 +30,8 @@ private:
 
     bool wipeBeforeRestore = true;
     bool fullBackup = true;
-    std::set<std::string,std::less<std::string>> sourceUsers;
-    std::set<std::string,std::less<std::string>> undefinedUsers;
+    std::set<std::string, std::less<std::string>> sourceUsers;
+    std::set<std::string, std::less<std::string>> undefinedUsers;
 
     Title *titles;
     int titlesCount = 0;
@@ -50,5 +50,4 @@ private:
     std::vector<std::string> titlesWithNonExistentProfile;
     int totalNumberOfTitlesWithNonExistentProfiles = 0;
     std::string titlesWithUndefinedProfilesSummary = "";
-
 };

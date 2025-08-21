@@ -1,12 +1,12 @@
 #include <coreinit/debug.h>
-#include <savemng.h>
-#include <utils/InputUtils.h>
-#include <utils/LanguageUtils.h>
-#include <utils/Colors.h>
-
-#include <menu/BatchJobState.h>
 #include <menu/BackupSetListState.h>
 #include <menu/BatchJobOptions.h>
+#include <menu/BatchJobState.h>
+#include <savemng.h>
+#include <utils/Colors.h>
+#include <utils/ConsoleUtils.h>
+#include <utils/InputUtils.h>
+#include <utils/LanguageUtils.h>
 
 #define ENTRYCOUNT 2
 
@@ -21,7 +21,7 @@ void BatchJobState::render() {
     if (this->state == STATE_BATCH_JOB_MENU) {
 
         const char *screenTitle, *wiiUTask, *vWiiTask, *readme, *nextTask;
-        switch(jobType) {
+        switch (jobType) {
             case RESTORE:
                 screenTitle = LanguageUtils::gettext("Batch Restore");
                 wiiUTask = LanguageUtils::gettext("   Restore Wii U (%u Title%s)");
@@ -49,26 +49,25 @@ void BatchJobState::render() {
                 vWiiTask = "";
                 readme = "";
                 nextTask = "";
-            break;
-
+                break;
         }
 
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPosAligned(0, 4, 1,screenTitle);
+        Console::consolePrintPosAligned(0, 4, 1, screenTitle);
         DrawUtils::setFontColor(COLOR_TEXT);
 
-        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,0);
-        consolePrintPos(M_OFF, 3, wiiUTask, this->wiiuTitlesCount,
-                        (this->wiiuTitlesCount > 1) ? "s" : "");
-        DrawUtils::setFontColorByCursor(COLOR_TEXT,COLOR_TEXT_AT_CURSOR,cursorPos,1);
-        consolePrintPos(M_OFF, 4, vWiiTask, this->vWiiTitlesCount,
-                        (this->vWiiTitlesCount > 1) ? "s" : "");
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
+        Console::consolePrintPos(M_OFF, 3, wiiUTask, this->wiiuTitlesCount,
+                                 (this->wiiuTitlesCount > 1) ? "s" : "");
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
+        Console::consolePrintPos(M_OFF, 4, vWiiTask, this->vWiiTitlesCount,
+                                 (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
+        Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
         DrawUtils::setFontColor(COLOR_INFO);
-        consolePrintPos(M_OFF, 6, readme);
+        Console::consolePrintPos(M_OFF, 6, readme);
         DrawUtils::setFontColor(COLOR_TEXT);
-        consolePrintPosAligned(17, 4, 2, nextTask);
+        Console::consolePrintPosAligned(17, 4, 2, nextTask);
     }
 }
 
@@ -76,50 +75,49 @@ ApplicationState::eSubState BatchJobState::update(Input *input) {
     if (this->state == STATE_BATCH_JOB_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             switch (jobType) {
-            case RESTORE:
-                switch (cursorPos) {
-                    case 0:
-                        this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, true);
-                        break;
-                    case 1:
-                        this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, false);
-                        break;
-                    default:
-                        return SUBSTATE_RUNNING;
-                }
-                break;
-            case WIPE_PROFILE:
-                switch (cursorPos) {
-                    case 0:
-                        this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, WIPE_PROFILE);
-                        break;
-                    case 1:
-                        this->state = STATE_DO_SUBSTATE;
-                        this->subState = std::make_unique<BatchJobOptions>(this->wiititles, this->vWiiTitlesCount, false, WIPE_PROFILE);
-                        break;
-                    default:
-                        return SUBSTATE_RUNNING;
-                }
-                break;
-            case COPY_TO_OTHER_DEVICE:
-            switch (cursorPos) {
-                case 0:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_NAND_TO_USB);
+                case RESTORE:
+                    switch (cursorPos) {
+                        case 0:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, true);
+                            break;
+                        case 1:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, false);
+                            break;
+                        default:
+                            return SUBSTATE_RUNNING;
+                    }
                     break;
-                case 1:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_USB_TO_NAND);
+                case WIPE_PROFILE:
+                    switch (cursorPos) {
+                        case 0:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, WIPE_PROFILE);
+                            break;
+                        case 1:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<BatchJobOptions>(this->wiititles, this->vWiiTitlesCount, false, WIPE_PROFILE);
+                            break;
+                        default:
+                            return SUBSTATE_RUNNING;
+                    }
                     break;
-                default:
-                    return SUBSTATE_RUNNING;
-            }
-            break;
-            default:
-                ;
+                case COPY_TO_OTHER_DEVICE:
+                    switch (cursorPos) {
+                        case 0:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_NAND_TO_USB);
+                            break;
+                        case 1:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_USB_TO_NAND);
+                            break;
+                        default:
+                            return SUBSTATE_RUNNING;
+                    }
+                    break;
+                default:;
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::B))

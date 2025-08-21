@@ -1,25 +1,24 @@
-#include <utils/DrawUtils.h>
-#include <utils/Colors.h>
-#include <savemng.h>
+#include <coreinit/cache.h>
+#include <coreinit/debug.h>
+#include <coreinit/memfrmheap.h>
+#include <coreinit/memheap.h>
+#include <coreinit/memory.h>
+#include <coreinit/screen.h>
 #include <cstdlib>
 #include <cstring>
-#include <memory>
 #include <malloc.h>
-#include <tga_reader.h>
-#include <coreinit/debug.h>
-#include <coreinit/cache.h>
-#include <coreinit/screen.h>
-#include <coreinit/memheap.h>
-#include <coreinit/memfrmheap.h>
-#include <coreinit/memory.h>
+#include <memory>
 #include <proc_ui/procui.h>
+#include <tga_reader.h>
+#include <utils/Colors.h>
+#include <utils/DrawUtils.h>
 
-#include <whb/log_udp.h>
 #include <whb/log.h>
+#include <whb/log_udp.h>
 
 // buffer width
-#define TV_WIDTH  0x500
-#define DRC_WIDTH 0x380
+#define TV_WIDTH               0x500
+#define DRC_WIDTH              0x380
 
 #define CONSOLE_FRAME_HEAP_TAG (0x000DECAF)
 
@@ -36,67 +35,59 @@ static SFT pFont = {};
 static Color font_col(0xFFFFFFFF);
 
 uint32_t
-DrawUtils::initScreen()
-{
-   MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
-   MEMRecordStateForFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
+DrawUtils::initScreen() {
+    MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
+    MEMRecordStateForFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
 
-   if (sBufferSizeTV) {
-      DrawUtils::tvBuffer = static_cast<uint8_t *>(MEMAllocFromFrmHeapEx(heap, sBufferSizeTV, 4));
-   }
+    if (sBufferSizeTV) {
+        DrawUtils::tvBuffer = static_cast<uint8_t *>(MEMAllocFromFrmHeapEx(heap, sBufferSizeTV, 4));
+    }
 
-   if (sBufferSizeDRC) {
-      DrawUtils::drcBuffer = static_cast<uint8_t *>(MEMAllocFromFrmHeapEx(heap, sBufferSizeDRC, 4));
-   }
+    if (sBufferSizeDRC) {
+        DrawUtils::drcBuffer = static_cast<uint8_t *>(MEMAllocFromFrmHeapEx(heap, sBufferSizeDRC, 4));
+    }
 
-    
-   sConsoleHasForeground = TRUE;
 
-   OSScreenSetBufferEx(SCREEN_TV, DrawUtils::tvBuffer);
-   OSScreenSetBufferEx(SCREEN_DRC, DrawUtils::drcBuffer);
+    sConsoleHasForeground = TRUE;
 
-   DrawUtils::endDraw(); // flip buffers
+    OSScreenSetBufferEx(SCREEN_TV, DrawUtils::tvBuffer);
+    OSScreenSetBufferEx(SCREEN_DRC, DrawUtils::drcBuffer);
 
-   DrawUtils::setRedraw(true); // force a redraw when reentering
+    DrawUtils::endDraw(); // flip buffers
 
-   return 0;
+    DrawUtils::setRedraw(true); // force a redraw when reentering
 
+    return 0;
 }
 
 uint32_t
-DrawUtils::deinitScreen()
-{
+DrawUtils::deinitScreen() {
 
-   MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
-   MEMFreeByStateToFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
-   sConsoleHasForeground = FALSE;
-   return 0;
-
+    MEMHeapHandle heap = MEMGetBaseHeapHandle(MEM_BASE_HEAP_MEM1);
+    MEMFreeByStateToFrmHeap(heap, CONSOLE_FRAME_HEAP_TAG);
+    sConsoleHasForeground = FALSE;
+    return 0;
 }
 
 
-BOOL
-DrawUtils::LogConsoleInit()
-{
-   OSScreenInit();
-   sBufferSizeTV = OSScreenGetBufferSizeEx(SCREEN_TV);
-   sBufferSizeDRC = OSScreenGetBufferSizeEx(SCREEN_DRC);
+BOOL DrawUtils::LogConsoleInit() {
+    OSScreenInit();
+    sBufferSizeTV = OSScreenGetBufferSizeEx(SCREEN_TV);
+    sBufferSizeDRC = OSScreenGetBufferSizeEx(SCREEN_DRC);
 
-   initScreen();
+    initScreen();
 
-   OSScreenEnableEx(SCREEN_TV, 1);
-   OSScreenEnableEx(SCREEN_DRC, 1);
+    OSScreenEnableEx(SCREEN_TV, 1);
+    OSScreenEnableEx(SCREEN_DRC, 1);
 
-   return FALSE;
+    return FALSE;
 }
 
-void
-DrawUtils::LogConsoleFree()
-{
-   if (sConsoleHasForeground) {
-      deinitScreen();
-      OSScreenShutdown();
-   }
+void DrawUtils::LogConsoleFree() {
+    if (sConsoleHasForeground) {
+        deinitScreen();
+        OSScreenShutdown();
+    }
 }
 
 
@@ -242,7 +233,7 @@ void DrawUtils::setFontColor(Color col) {
     font_col = col;
 }
 
-void DrawUtils::setFontColorByCursor(Color col, Color colAtCursor,int cursorPos, int line)  {
+void DrawUtils::setFontColorByCursor(Color col, Color colAtCursor, int cursorPos, int line) {
     if (cursorPos == line)
         font_col = colAtCursor;
     else
@@ -277,8 +268,7 @@ void DrawUtils::print(uint32_t x, uint32_t y, const char *string, bool alignRigh
         buffer[num] = 0;
     } else {
         wchar_t *tmp = buffer;
-        while ((*tmp++ = *string++))
-            ;
+        while ((*tmp++ = *string++));
     }
 
     print(x, y, buffer, alignRight);
@@ -303,15 +293,13 @@ void DrawUtils::print(uint32_t x, uint32_t y, const wchar_t *string, bool alignR
             }
 
 
-
             if (*string == '\n') {
                 //penY += mtx.minHeight;
-                penY += 30; // temporal fix for multiline output 
+                penY += 30; // temporal fix for multiline output
                 penX = x;
                 continue;
             }
 
-            
 
             textureWidth = (mtx.minWidth + 3) & ~3;
             textureHeight = mtx.minHeight;
@@ -352,8 +340,7 @@ uint32_t DrawUtils::getTextWidth(const char *string) {
         buffer[num] = 0;
     } else {
         wchar_t *tmp = buffer;
-        while ((*tmp++ = *string++))
-            ;
+        while ((*tmp++ = *string++));
     }
 
     uint32_t width = getTextWidth(buffer);
@@ -478,9 +465,8 @@ void DrawUtils::drawRGB5A3(int x, int y, float scale, uint8_t *fileContent) {
     }
 }
 
-void DrawUtils::drawKey(int x,int y,int x_off,Color color) {
-    int xtop = x*52-26+x_off+5;
-    int ytop = (y+Y_OFF)*50-25-5;
-    drawRect(xtop,ytop,xtop+52,ytop+50,color.r,color.g,color.b,color.a);
-
+void DrawUtils::drawKey(int x, int y, int x_off, Color color) {
+    int xtop = x * 52 - 26 + x_off + 5;
+    int ytop = (y + Y_OFF) * 50 - 25 - 5;
+    drawRect(xtop, ytop, xtop + 52, ytop + 50, color.r, color.g, color.b, color.a);
 }

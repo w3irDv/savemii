@@ -1,7 +1,9 @@
 #include <coreinit/memdefaultheap.h>
+#include <coreinit/userconfig.h>
+#include <cstring>
 #include <jansson.h>
-#include <savemng.h>
 #include <utils/DrawUtils.h>
+#include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
 
 MSG *LanguageUtils::baseMSG = nullptr;
@@ -51,7 +53,7 @@ void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
         */
         case Swkbd_LanguageType__Portuguese:
             DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
-			gettextLoadLanguage("romfs:/languages/portuguese.json");
+            gettextLoadLanguage("romfs:/languages/portuguese.json");
             break;
         case Swkbd_LanguageType__Russian:
             DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
@@ -169,7 +171,7 @@ void LanguageUtils::gettextCleanUp() {
 
 bool LanguageUtils::gettextLoadLanguage(const char *langFile) {
     uint8_t *buffer;
-    int32_t size = loadFile(langFile, &buffer);
+    int32_t size = FSUtils::loadFile(langFile, &buffer);
     if (buffer == nullptr)
         return false;
 
