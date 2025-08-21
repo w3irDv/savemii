@@ -4,7 +4,9 @@
 #include <Metadata.h>
 #include <coreinit/debug.h>
 #include <ctime>
+#include <dirent.h>
 #include <savemng.h>
+#include <sys/stat.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>

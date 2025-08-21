@@ -2,6 +2,7 @@
 #include <Metadata.h>
 #include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
+#include <dirent.h>
 #include <menu/BatchJobOptions.h>
 #include <menu/BatchJobTitleSelectState.h>
 #include <savemng.h>

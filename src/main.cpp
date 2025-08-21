@@ -13,7 +13,7 @@
 #include <utils/StateUtils.h>
 #include <utils/TitleUtils.h>
 #include <version.h>
-
+#include <romfs-wiiu.h>
 
 //#define DEBUG
 

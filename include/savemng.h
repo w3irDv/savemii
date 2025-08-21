@@ -1,22 +1,12 @@
 #pragma once
 
-#include <algorithm>
-#include <coreinit/mcp.h>
-#include <coreinit/memdefaultheap.h>
-#include <coreinit/thread.h>
-#include <cstdio>
-#include <dirent.h>
-#include <fcntl.h>
 #include <filesystem>
 #include <string>
-#include <sys/stat.h>
-#include <tuple>
-#include <unistd.h>
-#include <utils/DrawUtils.h>
-#include <utils/InProgress.h>
-#include <utils/InputUtils.h>
+#include <stdint.h>
 #include <utils/TitleUtils.h>
+#include <ApplicationState.h>
 #include <vector>
+#include <utils/InProgress.h>
 
 namespace fs = std::filesystem;
 

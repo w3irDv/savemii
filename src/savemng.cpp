@@ -1,16 +1,15 @@
 #include <BackupSetList.h>
-#include <LockingQueue.h>
 #include <Metadata.h>
-#include <cfg/GlobalCfg.h>
-#include <chrono>
+#include <algorithm>
 #include <climits>
-#include <cstring>
+#include <coreinit/filesystem_fsa.h>
+#include <dirent.h>
 #include <fstream>
-#include <malloc.h>
+#include <memory>
 #include <nn/act/client_cpp.h>
 #include <savemng.h>
 #include <sys/stat.h>
-#include <utils/Colors.h>
+#include <unistd.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/EscapeFAT32Utils.h>
 #include <utils/FSUtils.h>
@@ -51,7 +50,6 @@ int f_FSUtils::removeDir = 1;
 bool unlink_c = true;
 bool unlink_b = true;
 #endif
-
 
 std::string getSlotFormatType(Title *title, uint8_t slot) {
     uint32_t highID = title->highID;
