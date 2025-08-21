@@ -140,7 +140,7 @@ int main() {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BACKGROUND);
 
-            Console::consolePrintPos(0, 0, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+            Console::consolePrintPos(0, 0, "SaveMii v%u.%u.%u%s", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
             Console::consolePrintPos(0, 1, "----------------------------------------------------------------------------");
 
             Console::consolePrintPos(0, 16, "----------------------------------------------------------------------------");

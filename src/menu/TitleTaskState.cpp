@@ -176,11 +176,11 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
         }
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
             Console::promptMessage(COLOR_BG_WR, "initiating stat title");
-            statTitle(title);
+            statDebugUtils::statTitle(title);
         }
         if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
             Console::promptMessage(COLOR_BG_WR, "initiating stat save");
-            statSaves(title);
+            statDebugUtils::statSaves(title);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);

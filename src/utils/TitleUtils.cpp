@@ -441,7 +441,7 @@ Title *TitleUtils::loadWiiTitles() {
                 titles[i].vWiiLowID = titles[i].lowID;
                 titles[i].is_Wii = true;
                 titles[i].noFwImg = true;
-                titles[wiiuTitlesCount].is_Inject = false;
+                titles[i].is_Inject = false;
 
                 titles[i].listID = i;
                 titles[i].indexID = i;

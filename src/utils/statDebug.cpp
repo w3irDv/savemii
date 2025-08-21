@@ -1,13 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <Metadata.h>
-#include <coreinit/debug.h>
+#include <coreinit/filesystem_fsa.h>
+#include <cstring>
 #include <ctime>
 #include <dirent.h>
-#include <savemng.h>
 #include <sys/stat.h>
-#include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/StringUtils.h>
@@ -15,7 +10,7 @@
 
 static int statCount = 0;
 
-bool statDir(const std::string &entryPath, FILE *file) {
+bool statDebugUtils::statDir(const std::string &entryPath, FILE *file) {
 
     FSAStat fsastat;
     FSMode fsmode;
@@ -71,7 +66,7 @@ bool statDir(const std::string &entryPath, FILE *file) {
     return true;
 }
 
-void statSaves(const Title &title) {
+void statDebugUtils::statSaves(const Title &title) {
 
     time_t timestamp = time(&timestamp);
     struct tm datetime = *localtime(&timestamp);
@@ -111,7 +106,7 @@ void statSaves(const Title &title) {
     showFile(statFilePath, StringUtils::stringFormat("%s/%08x", path.c_str(), highID));
 }
 
-void statTitle(const Title &title) {
+void statDebugUtils::statTitle(const Title &title) {
 
     time_t timestamp = time(&timestamp);
     struct tm datetime = *localtime(&timestamp);
@@ -137,7 +132,7 @@ void statTitle(const Title &title) {
 }
 
 
-void showFile(const std::string &file, const std::string &toRemove) {
+void statDebugUtils::showFile(const std::string &file, const std::string &toRemove) {
 
     FILE *fp;
     char line[1128];
