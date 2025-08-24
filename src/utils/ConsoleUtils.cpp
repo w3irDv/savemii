@@ -6,6 +6,64 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
+#define MAX_PROMPT_WIDTH   64 * 12
+
+#define ASK_CONFIRMATION   -1
+#define DEFAULT_ERROR_WAIT 4
+
+void Console::promptMessage(Color bgcolor, const char *message, int wait) {
+    DrawUtils::beginDraw();
+    DrawUtils::clear(bgcolor);
+
+    size_t nLines = 0;
+    size_t maxLineWidth = 0;
+    std::string formatted_message{};
+    splitMessage(message, formatted_message, maxLineWidth, nLines);
+
+    int initialYPos = 7 - nLines / 2;
+    initialYPos = initialYPos > 0 ? initialYPos : 0;
+
+    int x = 31 - (maxLineWidth / 24);
+    x = (x < -4 ? -4 : x);
+    DrawUtils::print((x + 4) * 12, (initialYPos + 1) * 24, formatted_message.c_str());
+    if (wait == ASK_CONFIRMATION)
+        DrawUtils::print((x + 4) * 12, (initialYPos + 1 + 4 + nLines) * 24, LanguageUtils::gettext("Press \ue000 to continue"));
+    DrawUtils::endDraw();
+    if (wait > 0)
+        sleep(wait);
+}
+
+void Console::promptError(const char *message, ...) {
+    va_list va;
+    va_start(va, message);
+    char *tmp = nullptr;
+    if ((vasprintf(&tmp, message, va) >= 0) && (tmp != nullptr)) {
+        promptMessage(COLOR_BG_KO, tmp, DEFAULT_ERROR_WAIT);
+    }
+    if (tmp != nullptr)
+        free(tmp);
+    va_end(va);
+}
+
+void Console::promptMessageWithConfirm(Color bgcolor, const char *message, ...) {
+
+    va_list va;
+    va_start(va, message);
+    char *tmp = nullptr;
+    if ((vasprintf(&tmp, message, va) >= 0) && (tmp != nullptr)) {
+        promptMessage(bgcolor, tmp, ASK_CONFIRMATION);
+    }
+    if (tmp != nullptr)
+        free(tmp);
+    va_end(va);
+    Input input{};
+    while (true) {
+        input.read();
+        if (input.get(ButtonState::TRIGGER, Button::A))
+            break;
+    }
+}
+
 bool Console::promptConfirm(Style st, const std::string &question) {
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
@@ -34,19 +92,15 @@ bool Console::promptConfirm(Style st, const std::string &question) {
         DrawUtils::clear(Color(0x007F0000));
     }
     if (!(st & ST_MULTILINE)) {
-        std::string splitted;
-        std::stringstream question_ss(question);
-        int nLines = 0;
-        int maxLineSize = 0;
-        int lineSize = 0;
-        while (getline(question_ss, splitted, '\n')) {
-            lineSize = DrawUtils::getTextWidth((char *) splitted.c_str());
-            maxLineSize = lineSize > maxLineSize ? lineSize : maxLineSize;
-            nLines++;
-        }
+
+        size_t nLines = 0;
+        size_t maxLineWidth = 0;
+        std::string formatted_message{};
+        splitMessage(question.c_str(), formatted_message, maxLineWidth, nLines);
+
         int initialYPos = 6 - nLines / 2;
         initialYPos = initialYPos > 0 ? initialYPos : 0;
-        Console::consolePrintPos(31 - (maxLineSize / 24), initialYPos, question.c_str());
+        Console::consolePrintPos(31 - (maxLineWidth / 24), initialYPos, question.c_str());
         Console::consolePrintPos(31 - (DrawUtils::getTextWidth((char *) msg.c_str()) / 24), initialYPos + 2 + nLines, msg.c_str());
     }
 
@@ -74,75 +128,6 @@ bool Console::promptConfirm(Style st, const std::string &question) {
     return ret != 0;
 }
 
-void Console::promptError(const char *message, ...) {
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BG_KO);
-    va_list va;
-    va_start(va, message);
-    char *tmp = nullptr;
-    if ((vasprintf(&tmp, message, va) >= 0) && (tmp != nullptr)) {
-        std::string splitted;
-        std::stringstream message_ss(tmp);
-        int nLines = 0;
-        int maxLineSize = 0;
-        int lineSize = 0;
-        while (getline(message_ss, splitted, '\n')) {
-            lineSize = DrawUtils::getTextWidth((char *) splitted.c_str());
-            maxLineSize = lineSize > maxLineSize ? lineSize : maxLineSize;
-            nLines++;
-        }
-        int initialYPos = 8 - nLines / 2;
-        initialYPos = initialYPos > 0 ? initialYPos : 0;
-
-        int x = 31 - (maxLineSize / 24);
-        x = (x < -4 ? -4 : x);
-        DrawUtils::print((x + 4) * 12, (initialYPos + 1) * 24, tmp);
-    }
-    if (tmp != nullptr)
-        free(tmp);
-    va_end(va);
-    DrawUtils::endDraw();
-    sleep(4);
-}
-
-void Console::promptMessage(Color bgcolor, const char *message, ...) {
-    DrawUtils::beginDraw();
-    DrawUtils::clear(bgcolor);
-    va_list va;
-    va_start(va, message);
-    char *tmp = nullptr;
-    if ((vasprintf(&tmp, message, va) >= 0) && (tmp != nullptr)) {
-        std::string splitted;
-        std::stringstream message_ss(tmp);
-        int nLines = 0;
-        int maxLineSize = 0;
-        int lineSize = 0;
-        while (getline(message_ss, splitted, '\n')) {
-            lineSize = DrawUtils::getTextWidth((char *) splitted.c_str());
-            maxLineSize = lineSize > maxLineSize ? lineSize : maxLineSize;
-            nLines++;
-        }
-        int initialYPos = 7 - nLines / 2;
-        initialYPos = initialYPos > 0 ? initialYPos : 0;
-
-        int x = 31 - (maxLineSize / 24);
-        x = (x < -4 ? -4 : x);
-        DrawUtils::print((x + 4) * 12, (initialYPos + 1) * 24, tmp);
-        DrawUtils::print((x + 4) * 12, (initialYPos + 1 + 4 + nLines) * 24, LanguageUtils::gettext("Press \ue000 to continue"));
-    }
-    if (tmp != nullptr)
-        free(tmp);
-    DrawUtils::endDraw();
-    va_end(va);
-    Input input{};
-    while (true) {
-        input.read();
-        if (input.get(ButtonState::TRIGGER, Button::A))
-            break;
-    }
-}
-
-
 Button Console::promptMultipleChoice(Style st, const std::string &question) {
     DrawUtils::beginDraw();
     DrawUtils::setFontColor(COLOR_TEXT);
@@ -158,21 +143,15 @@ Button Console::promptMultipleChoice(Style st, const std::string &question) {
 
     const std::string msg = LanguageUtils::gettext("Choose your option");
 
-    std::string splitted;
-    std::stringstream question_ss(question);
-    int nLines = 0;
-    int maxLineSize = 0;
-    int lineSize = 0;
-    while (getline(question_ss, splitted, '\n')) {
-        lineSize = DrawUtils::getTextWidth((char *) splitted.c_str());
-        maxLineSize = lineSize > maxLineSize ? lineSize : maxLineSize;
-        nLines++;
-    }
+    size_t nLines = 0;
+    size_t maxLineWidth = 0;
+    std::string formatted_message{};
+    splitMessage(question.c_str(), formatted_message, maxLineWidth, nLines);
+
     int initialYPos = 6 - nLines / 2;
     initialYPos = initialYPos > 0 ? initialYPos : 0;
-    Console::consolePrintPos(31 - (maxLineSize / 24), initialYPos, question.c_str());
+    Console::consolePrintPos(31 - (maxLineWidth / 24), initialYPos, question.c_str());
     Console::consolePrintPos(31 - (DrawUtils::getTextWidth((char *) msg.c_str()) / 24), initialYPos + 2 + nLines, msg.c_str());
-
 
     Button ret;
     DrawUtils::endDraw();
@@ -291,4 +270,71 @@ void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
     }
     tmp.clear();
     tmp.shrink_to_fit();
+}
+
+size_t stringWidth(const std::string &word) {
+
+    return (size_t) DrawUtils::getTextWidth((char *) word.c_str());
+}
+
+void Console::splitMessage(const char *tmp, std::string &formatted_message, size_t &maxLineWidth, size_t &nLines) {
+
+    std::string splitted;
+    std::stringstream message_ss(tmp);
+    size_t whitespace_width = stringWidth(" ");
+    while (getline(message_ss, splitted, '\n')) {
+        nLines++;
+        std::stringstream splitted_ss(splitted);
+        std::string word;
+        size_t last_line_width = 0;
+        std::string multiline{};
+        while (getline(splitted_ss, word, ' ')) {
+            size_t word_width = stringWidth(word);
+            last_line_width += word_width;
+            if (last_line_width + whitespace_width <= MAX_PROMPT_WIDTH) {
+                if (!multiline.empty())
+                    last_line_width += whitespace_width;
+                multiline += multiline.empty() ? word : " " + word;
+                maxLineWidth = last_line_width > maxLineWidth ? last_line_width : maxLineWidth;
+            } else {
+                last_line_width -= word_width;
+                if (word_width > MAX_PROMPT_WIDTH) {
+                    std::string splitted_word;
+                    size_t cp_count = 0;
+                    for (unsigned i = 0; i < word.length();) {
+                        size_t cplen;
+                        if ((word[i] & 0xf8) == 0xf0)
+                            cplen = 4;
+                        else if ((word[i] & 0xf0) == 0xe0)
+                            cplen = 3;
+                        else if ((word[i] & 0xe0) == 0xc0)
+                            cplen = 2;
+                        else
+                            cplen = 1;
+                        std::string current_cp = word.substr(i, cplen);
+                        i += cplen;
+                        size_t current_cp_width = stringWidth(current_cp);
+                        cp_count += current_cp_width;
+                        if (cp_count <= MAX_PROMPT_WIDTH) {
+                            splitted_word += current_cp;
+                            maxLineWidth = cp_count > maxLineWidth ? cp_count : maxLineWidth;
+                        } else {
+                            splitted_word += "\n" + current_cp;
+                            cp_count = current_cp_width;
+                            maxLineWidth = MAX_PROMPT_WIDTH;
+                            nLines++;
+                        }
+                    }
+                    word = splitted_word;
+                    word_width = cp_count;
+                }
+                maxLineWidth = last_line_width > maxLineWidth ? last_line_width : maxLineWidth;
+                if (!multiline.empty())
+                    nLines++;
+                multiline += multiline.empty() ? word : "\n" + word;
+                last_line_width = word_width;
+            }
+        }
+        formatted_message += formatted_message.empty() ? multiline : "\n" + multiline;
+    }
 }

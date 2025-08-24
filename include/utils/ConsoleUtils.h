@@ -20,13 +20,16 @@ enum Style {
 namespace Console {
 
     void consolePrintPos(int x, int y, const char *format, ...) __attribute__((hot));
-    bool promptConfirm(Style st, const std::string &question);
+    void promptMessage(Color bgcolor, const char *message, int wait);
     void promptError(const char *message, ...);
-    void promptMessage(Color bgcolor, const char *message, ...);
+    void promptMessageWithConfirm(Color bgcolor, const char *message, ...);
+    bool promptConfirm(Style st, const std::string &question);
     Button promptMultipleChoice(Style st, const std::string &question);
 
     void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...);
     void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...);
     void consolePrintPosMultiline(int x, int y, const char *format, ...);
+
+    void splitMessage(const char *tmp, std::string & formatted_message, size_t & maxLineWidth, size_t & nLines);
 
 } // namespace Console

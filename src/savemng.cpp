@@ -731,7 +731,7 @@ flush_volume:
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nMove profile failed.") + std::string("\n\n") + errorMessage;
         if (interactive)
-            Console::promptMessage(COLOR_BG_OK, errorMessage.c_str(), title->shortName);
+            Console::promptMessageWithConfirm(COLOR_BG_OK, errorMessage.c_str(), title->shortName);
         else
             Console::promptError(errorMessage.c_str(), title->shortName);
     }
@@ -1242,7 +1242,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     }
 
     if (doMeta) {
-        //Console::promptMessage(COLOR_BG_ERROR,"source_user: %d\ncommon: %s\ncommonPath: %s\nsrcPath: %s\n titleSavePath: %s\n",source_user,common ? "true":"false",commonPath.c_str(),srcPath.c_str(),titleSavePath.c_str());
+        //Console::promptMessageWithConfirm(COLOR_BG_ERROR,"source_user: %d\ncommon: %s\ncommonPath: %s\nsrcPath: %s\n titleSavePath: %s\n",source_user,common ? "true":"false",commonPath.c_str(),srcPath.c_str(),titleSavePath.c_str());
         //return 0;
         if (!FSUtils::removeDir(titleSavePath)) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping metadata+savedata."));
@@ -1265,7 +1265,7 @@ flush:
 
     if (errorCode != 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nWipe failed.") + "\n" + errorMessage;
-        Console::promptMessage(COLOR_BG_KO, errorMessage.c_str(), title->shortName);
+        Console::promptMessageWithConfirm(COLOR_BG_KO, errorMessage.c_str(), title->shortName);
     }
     return errorCode;
 }
@@ -1444,7 +1444,7 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
         titleListInColumns(summaryWithTitles, failedTitles);
     }
 
-    Console::promptMessage(summaryColor, summaryWithTitles.c_str());
+    Console::promptMessageWithConfirm(summaryColor, summaryWithTitles.c_str());
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BACKGROUND);
@@ -1479,7 +1479,7 @@ bool renameTitleFolder(Title *title) {
 
     if (FSUtils::checkEntry(titleNameBasedPath.c_str()) == 2) {
         if (!mergeTitleFolders(title)) {
-            Console::promptMessage(COLOR_BG_KO, LanguageUtils::gettext("Unable to merge folder '%08x%08x' with existent folder\n'%s'\n\nSome backups may have been moved to this last folder.\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, title->highID, title->lowID);
+            Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to merge folder '%08x%08x' with existent folder\n'%s'\n\nSome backups may have been moved to this last folder.\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, title->highID, title->lowID);
             return false;
         }
         return true;
@@ -1488,14 +1488,14 @@ bool renameTitleFolder(Title *title) {
     if (!mkdirAndUnlink(titleNameBasedPath)) {
         std::string multilinePath;
         StringUtils::splitStringWithNewLines(titleNameBasedPath, multilinePath);
-        Console::promptMessage(COLOR_BG_KO, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"), multilinePath.c_str(), strerror(errno), title->highID, title->lowID);
+        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"), multilinePath.c_str(), strerror(errno), title->highID, title->lowID);
         return false;
     }
 
     if (rename(idBasedPath.c_str(), titleNameBasedPath.c_str()) != 0) {
         std::string multilinePath;
         StringUtils::splitStringWithNewLines(titleNameBasedPath, multilinePath);
-        Console::promptMessage(COLOR_BG_KO, LanguageUtils::gettext("Unable to rename folder '%08x%08x' to\n'%s'\n\n%s\n\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, strerror(errno), title->highID, title->lowID);
+        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to rename folder '%08x%08x' to\n'%s'\n\n%s\n\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, strerror(errno), title->highID, title->lowID);
         return false;
     }
 

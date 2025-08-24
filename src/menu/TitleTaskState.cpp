@@ -175,11 +175,11 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 --cursorPos;
         }
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
-            Console::promptMessage(COLOR_BG_WR, "initiating stat title");
+            Console::promptMessageWithConfirm(COLOR_BG_WR, "initiating stat title");
             statDebugUtils::statTitle(title);
         }
         if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
-            Console::promptMessage(COLOR_BG_WR, "initiating stat save");
+            Console::promptMessageWithConfirm(COLOR_BG_WR, "initiating stat save");
             statDebugUtils::statSaves(title);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {

@@ -208,7 +208,7 @@ nxtCheck:
         titlesWithUndefinedProfilesSummary.append("\n");
 
         if (jobType != RESTORE && GlobalCfg::global->getDontAllowUndefinedProfiles())
-            Console::promptMessage(COLOR_BG_WR, titlesWithUndefinedProfilesSummary.c_str());
+            Console::promptMessageWithConfirm(COLOR_BG_WR, titlesWithUndefinedProfilesSummary.c_str());
     }
 }
 
@@ -353,7 +353,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::B) || substate_return == true)
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::X)) {
-            Console::promptMessage(COLOR_BG_WR, titlesWithUndefinedProfilesSummary.c_str());
+            Console::promptMessageWithConfirm(COLOR_BG_WR, titlesWithUndefinedProfilesSummary.c_str());
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {

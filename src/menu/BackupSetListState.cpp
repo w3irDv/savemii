@@ -121,7 +121,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                          BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll).c_str(),
                          BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos + scroll).c_str(),
                          Metadata::thisConsoleSerialId.c_str());
-                Console::promptMessage(COLOR_BG_OK, message);
+                Console::promptMessageWithConfirm(COLOR_BG_OK, message);
                 return SUBSTATE_RETURN;
             } else // is a step in batchRestore
             {

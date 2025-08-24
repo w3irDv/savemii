@@ -469,9 +469,9 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
                             if (firstSDWrite)
                                 sdWriteDisclaimer();
                             if (excludes->save())
-                                Console::promptMessage(COLOR_BG_OK, LanguageUtils::gettext("Configuration saved"));
+                                Console::promptMessageWithConfirm(COLOR_BG_OK, LanguageUtils::gettext("Configuration saved"));
                             else
-                                Console::promptMessage(COLOR_BG_KO, LanguageUtils::gettext("Error saving configuration"));
+                                Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error saving configuration"));
                         }
                         done = true;
                         break;

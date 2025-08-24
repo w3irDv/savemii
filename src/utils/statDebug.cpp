@@ -160,6 +160,6 @@ void statDebugUtils::showFile(const std::string &file, const std::string &toRemo
 
     fclose(fp);
 
-    Console::promptMessage(COLOR_BG_OK, message.c_str());
+    Console::promptMessageWithConfirm(COLOR_BG_OK, message.c_str());
     DrawUtils::setRedraw(true);
 }
