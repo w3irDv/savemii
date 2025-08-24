@@ -89,9 +89,7 @@ bool ExcludesCfg::parseJsonCfg() {
     free(configString);
 
     if (!root) {
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(cfgFile, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Error decoding JSON file\n %s\nin line %d:\n\n%s"), multilinePath.c_str(), error.line, error.text);
+        Console::promptError(LanguageUtils::gettext("Error decoding JSON file\n %s\nin line %d:\n\n%s"), cfgFile.c_str(), error.line, error.text);
         return false;
     }
 

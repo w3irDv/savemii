@@ -708,9 +708,7 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     if (errorCode == 0) {
         if (rename(srcPath.c_str(), dstPath.c_str()) != 0) {
-            std::string multilinePath;
-            StringUtils::splitStringWithNewLines(srcPath, multilinePath);
-            errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Unable to rename folder \n'%s'to\n'%s'\n\n%s\n\nPlease restore the backup, fix errors and try again"), multilinePath.c_str(), dstPath.c_str(), strerror(errno));
+            errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Unable to rename folder \n'%s'to\n'%s'\n\n%s\n\nPlease restore the backup, fix errors and try again"), srcPath.c_str(), dstPath.c_str(), strerror(errno));
             errorCode = 2;
             goto flush_volume;
         }
@@ -1216,9 +1214,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         }
         if (unlink(commonPath.c_str()) == -1) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting common folder."));
-            std::string multilinePath;
-            StringUtils::splitStringWithNewLines(commonPath, multilinePath);
-            Console::promptError(LanguageUtils::gettext("%s \n Failed to delete common folder:\n%s\n%s"), title->shortName, multilinePath.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("%s \n Failed to delete common folder:\n%s\n%s"), title->shortName, commonPath.c_str(), strerror(errno));
             errorCode += 2;
         }
     }
@@ -1233,9 +1229,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
             if (unlink(srcPath.c_str()) == -1) {
                 errorMessage.append("\n" + (std::string) ((source_user == -1) ? LanguageUtils::gettext("Error deleting savedata folder.")
                                                                               : LanguageUtils::gettext("Error deleting profile savedata folder.")));
-                std::string multilinePath;
-                StringUtils::splitStringWithNewLines(srcPath, multilinePath);
-                Console::promptError(LanguageUtils::gettext("%s \n Failed to delete user folder:\n%s\n%s"), title->shortName, multilinePath.c_str(), strerror(errno));
+                Console::promptError(LanguageUtils::gettext("%s \n Failed to delete user folder:\n%s\n%s"), title->shortName, srcPath.c_str(), strerror(errno));
                 errorCode += 8;
             }
         }
@@ -1251,9 +1245,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         }
         if (unlink(titleSavePath.c_str()) == -1) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting title folder."));
-            std::string multilinePath;
-            StringUtils::splitStringWithNewLines(titleSavePath, multilinePath);
-            Console::promptError(LanguageUtils::gettext("%s \n Failed to delete title folder:\n%s\n%s"), title->shortName, multilinePath.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("%s \n Failed to delete title folder:\n%s\n%s"), title->shortName, titleSavePath.c_str(), strerror(errno));
             errorCode += 32;
             goto flush;
         }
@@ -1486,15 +1478,11 @@ bool renameTitleFolder(Title *title) {
     }
 
     if (!mkdirAndUnlink(titleNameBasedPath)) {
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(titleNameBasedPath, multilinePath);
-        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"), multilinePath.c_str(), strerror(errno), title->highID, title->lowID);
+        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"), titleNameBasedPath.c_str(), strerror(errno), title->highID, title->lowID);
         return false;
     }
 
     if (rename(idBasedPath.c_str(), titleNameBasedPath.c_str()) != 0) {
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(titleNameBasedPath, multilinePath);
         Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to rename folder '%08x%08x' to\n'%s'\n\n%s\n\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, strerror(errno), title->highID, title->lowID);
         return false;
     }
@@ -1509,16 +1497,12 @@ bool mkdirAndUnlink(const std::string &path) {
         sdWriteDisclaimer();
 
     if (mkdir(path.c_str(), 0666) != 0) {
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(path, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"), path.c_str(), strerror(errno));
         return false;
     }
 
     if (unlink(path.c_str()) == -1) {
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(path, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Failed to delete (test) folder \n\n%s \n%s"), multilinePath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Failed to delete (test) folder \n\n%s \n%s"), path.c_str(), strerror(errno));
         return false;
     }
 
@@ -1601,9 +1585,7 @@ bool mergeTitleFolders(Title *title) {
             targetPath = StringUtils::stringFormat("%s/%s", titleNameBasedPath.c_str(), data->d_name);
             if (FSUtils::checkEntry(targetPath.c_str()) != 0) {
                 mergeErrorsCounter++;
-                std::string multilinePath;
-                StringUtils::splitStringWithNewLines(targetPath, multilinePath);
-                Console::promptError(LanguageUtils::gettext("Cannot move %s from '%08x%08x' to\n\n%s\nfile already exists in target folder."), data->d_name, title->highID, title->lowID, multilinePath.c_str());
+                Console::promptError(LanguageUtils::gettext("Cannot move %s from '%08x%08x' to\n\n%s\nfile already exists in target folder."), data->d_name, title->highID, title->lowID, targetPath.c_str());
                 showAbortPrompt = true;
                 continue;
             }
@@ -1611,9 +1593,7 @@ bool mergeTitleFolders(Title *title) {
             targetPath = StringUtils::stringFormat("%s/%d", titleNameBasedPath.c_str(), getEmptySlotInTitleNameBasedPath(title));
             if (!mkdirAndUnlink(targetPath)) {
                 mergeErrorsCounter++;
-                std::string multilinePath;
-                StringUtils::splitStringWithNewLines(targetPath, multilinePath);
-                Console::promptError(LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!"), multilinePath.c_str(), strerror(errno));
+                Console::promptError(LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!"), targetPath.c_str(), strerror(errno));
                 showAbortPrompt = true;
                 continue;
             }
@@ -1621,9 +1601,7 @@ bool mergeTitleFolders(Title *title) {
 
         if (rename(sourcePath.c_str(), targetPath.c_str()) != 0) {
             mergeErrorsCounter++;
-            std::string multilinePath;
-            StringUtils::splitStringWithNewLines(targetPath, multilinePath);
-            Console::promptError(LanguageUtils::gettext("Cannot rename folder '%08x%08x/%s' to\n\n%s\n%s"), title->highID, title->lowID, data->d_name, multilinePath.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Cannot rename folder '%08x%08x/%s' to\n\n%s\n%s"), title->highID, title->lowID, data->d_name, targetPath.c_str(), strerror(errno));
             showAbortPrompt = true;
             continue;
         }
@@ -1632,34 +1610,26 @@ bool mergeTitleFolders(Title *title) {
 
     if (errno != 0) {
         mergeErrorsCounter++;
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(idBasedPath, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n%s\n\nMigration may be incomplete"), multilinePath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n%s\n\nMigration may be incomplete"), idBasedPath.c_str(), strerror(errno));
         closedir(dir);
         return false;
     }
 
     if (closedir(dir) != 0) {
         mergeErrorsCounter++;
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(idBasedPath, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n%s"), idBasedPath.c_str(), strerror(errno));
         return false;
     }
 
     if (!folderEmpty(idBasedPath.c_str())) {
         mergeErrorsCounter++;
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(idBasedPath, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Error merging folders: after moving all slots, folder\n\n%s\nis still not empty and cannot be deleted."), multilinePath.c_str());
+        Console::promptError(LanguageUtils::gettext("Error merging folders: after moving all slots, folder\n\n%s\nis still not empty and cannot be deleted."), idBasedPath.c_str());
         return false;
     }
 
     if (unlink(idBasedPath.c_str()) == -1) {
         mergeErrorsCounter++;
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(idBasedPath, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n%s"), idBasedPath.c_str(), strerror(errno));
         return false;
     }
 
@@ -1754,9 +1724,7 @@ bool getProfilesInPath(std::vector<std::string> &source_persistentIDs, const fs:
             }
         }
     } catch (fs::filesystem_error const &ex) {
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(source_path, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Error while reading folder content\n\n%s\n%s"), multilinePath.c_str(), ex.what());
+        Console::promptError(LanguageUtils::gettext("Error while reading folder content\n\n%s\n%s"), source_path.c_str(), ex.what());
         return false;
     }
     return true;
@@ -1780,9 +1748,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
             source_saveinfo.push_back(line);
         ifsSaveinfo.close();
     } else {
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(source_saveinfo_file, multilinePath);
-        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"), source_saveinfo_file.c_str(), strerror(errno));
         return false;
     }
 
@@ -1836,9 +1802,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
                     target_saveinfo.push_back(source_timestamp_end);
                     continue;
                 } else {
-                    std::string multilinePath;
-                    StringUtils::splitStringWithNewLines(target_saveinfo_file, multilinePath);
-                    Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+                    Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"), target_saveinfo_file.c_str(), strerror(errno));
                     return false;
                 }
             }
@@ -1869,9 +1833,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
 
         std::ofstream ofsDstSaveinfo(target_saveinfo_file);
         if (!ofsDstSaveinfo.is_open()) {
-            std::string multilinePath;
-            StringUtils::splitStringWithNewLines(target_saveinfo_file, multilinePath);
-            Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"), target_saveinfo_file.c_str(), strerror(errno));
             return false;
         }
 
@@ -1880,9 +1842,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
         ofsDstSaveinfo.close();
 
         if (ofsDstSaveinfo.fail()) {
-            std::string multilinePath;
-            StringUtils::splitStringWithNewLines(target_saveinfo_file, multilinePath);
-            Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"), target_saveinfo_file.c_str(), strerror(errno));
         }
     }
     return true;
@@ -1906,9 +1866,7 @@ bool initializeWiiUTitle(Title *title, std::string &errorMessage, int &errorCode
     FSError fserror;
 
     if (FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(metaSavePath).c_str(), 0x666, 0x80000) != FS_ERROR_OK) {
-        std::string multilinePath;
-        StringUtils::splitStringWithNewLines(metaSavePath, multilinePath);
-        errorMessage.append("\n" + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for \n%s"), multilinePath.c_str()));
+        errorMessage.append("\n" + StringUtils::stringFormat(LanguageUtils::gettext("Error setting quota for \n%s"), metaSavePath.c_str()));
         errorCode += 4;
         goto error;
     }
