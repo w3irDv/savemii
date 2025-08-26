@@ -467,6 +467,6 @@ void DrawUtils::drawRGB5A3(int x, int y, float scale, uint8_t *fileContent) {
 
 void DrawUtils::drawKey(int x, int y, int x_off, Color color) {
     int xtop = x * 52 - 26 + x_off + 5;
-    int ytop = (y + Y_OFF) * 50 - 25 - 5;
+    int ytop = (y + Y_OFFSET) * 50 - 25 - 5;
     drawRect(xtop, ytop, xtop + 52, ytop + 50, color.r, color.g, color.b, color.a);
 }

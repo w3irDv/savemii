@@ -1471,7 +1471,7 @@ bool renameTitleFolder(Title *title) {
 
     if (FSUtils::checkEntry(titleNameBasedPath.c_str()) == 2) {
         if (!mergeTitleFolders(title)) {
-            Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to merge folder '%08x%08x' with existent folder\n'%s'\n\nSome backups may have been moved to this last folder.\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, title->highID, title->lowID);
+            Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to merge folder '%08x%08x' with existent folder\n'%s'\n\nSome backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, title->highID, title->lowID);
             return false;
         }
         return true;
@@ -1483,7 +1483,7 @@ bool renameTitleFolder(Title *title) {
     }
 
     if (rename(idBasedPath.c_str(), titleNameBasedPath.c_str()) != 0) {
-        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to rename folder '%08x%08x' to\n'%s'\n\n%s\n\nPlease fix errors and try again, or manually move contents\nfrom one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, strerror(errno), title->highID, title->lowID);
+        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to rename folder '%08x%08x' to\n'%s'\n\n%s\n\nPlease fix errors and try again, or manually move contents from one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, strerror(errno), title->highID, title->lowID);
         return false;
     }
 

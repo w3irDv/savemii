@@ -13,44 +13,6 @@
 #define ASK_CONFIRMATION   -1
 #define DEFAULT_ERROR_WAIT 4
 
-#define X_OFFSET           2
-
-void Console::promptDebug(Color bgcolor, const char *message) {
-    DrawUtils::beginDraw();
-    DrawUtils::clear(bgcolor);
-
-    size_t nLines = 0;
-    size_t maxLineWidth = 0;
-    std::string formatted_message{};
-    splitMessage(message, formatted_message, maxLineWidth, nLines);
-
-    std::string max = StringUtils::stringFormat("%d", maxLineWidth);
-
-    DrawUtils::print(100, 100, formatted_message.c_str());
-    DrawUtils::print(200, 100, max.c_str());
-
-    DrawUtils::print(124, 124, formatted_message.c_str());
-
-    std::string two = formatted_message + formatted_message;
-    splitMessage(two.c_str(), formatted_message, maxLineWidth, nLines);
-
-    max = StringUtils::stringFormat("%d", maxLineWidth);
-
-    DrawUtils::print(100, 148, formatted_message.c_str());
-    DrawUtils::print(200, 148, max.c_str());
-
-    DrawUtils::print(100 + maxLineWidth, 172, formatted_message.c_str());
-
-    DrawUtils::endDraw();
-
-    Input input{};
-    while (true) {
-        input.read();
-        if (input.get(ButtonState::TRIGGER, Button::A))
-            break;
-    }
-}
-
 void Console::promptMessage(Color bgcolor, const char *message, int wait) {
     DrawUtils::beginDraw();
     DrawUtils::clear(bgcolor);
@@ -65,9 +27,9 @@ void Console::promptMessage(Color bgcolor, const char *message, int wait) {
 
     int x = 31 - (maxLineWidth / 24);
     x = (x < -X_OFFSET ? -X_OFFSET : x);
-    DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + 1) * 24, formatted_message.c_str());
+    DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + Y_OFFSET) * 24, formatted_message.c_str());
     if (wait == ASK_CONFIRMATION)
-        DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + 1 + 4 + nLines) * 24, LanguageUtils::gettext("Press \ue000 to continue"));
+        DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + Y_OFFSET + 4 + nLines) * 24, LanguageUtils::gettext("Press \ue000 to continue"));
     DrawUtils::endDraw();
     if (wait > 0)
         sleep(wait);
@@ -231,7 +193,7 @@ Button Console::promptMultipleChoice(Style st, const std::string &question) {
 void Console::consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...) {
     char *tmp = nullptr;
     int x = 0;
-    y += Y_OFF;
+    y += Y_OFFSET;
 
     va_list va;
     va_start(va, format);
@@ -258,7 +220,7 @@ void Console::consolePrintPosAligned(int y, uint16_t offset, uint8_t align, cons
 
 void Console::consolePrintPos(int x, int y, const char *format, ...) { // Source: ftpiiu
     char *tmp = nullptr;
-    y += Y_OFF;
+    y += Y_OFFSET;
 
     va_list va;
     va_start(va, format);
@@ -271,7 +233,7 @@ void Console::consolePrintPos(int x, int y, const char *format, ...) { // Source
 
 void Console::consolePrintPosAutoFormat(int x, int y, const char *format, ...) {
     char *tmp = nullptr;
-    y += Y_OFF;
+    y += Y_OFFSET;
 
     va_list va;
     va_start(va, format);
@@ -289,7 +251,7 @@ void Console::consolePrintPosAutoFormat(int x, int y, const char *format, ...) {
 
 void Console::kConsolePrintPos(int x, int y, int x_offset, const char *format, ...) { // Source: ftpiiu
     char *tmp = nullptr;
-    y += Y_OFF;
+    y += Y_OFFSET;
 
     va_list va;
     va_start(va, format);
@@ -310,7 +272,7 @@ void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
     buffer.clear();
     va_end(va);
 
-    y += Y_OFF;
+    y += Y_OFFSET;
 
     uint32_t maxLineLength = (60 - x);
 

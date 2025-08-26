@@ -54,7 +54,7 @@ void TitleListState::render() {
                                          this->titles[i + this->scroll].noFwImg ? LanguageUtils::gettext(" [vWiiInject]") : "",
                                          this->titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
                 if (this->titles[i + this->scroll].iconBuf != nullptr) {
-                    DrawUtils::drawTGA((M_OFF + 4) * 12 - 2, (i + 3) * 24, 0.18, this->titles[i + this->scroll].iconBuf);
+                    DrawUtils::drawTGA((M_OFF + X_OFFSET) * 12 - 2, (i + 3) * 24, 0.18, this->titles[i + this->scroll].iconBuf);
                 }
             } else {
                 if (!this->titles[i + this->scroll].saveInit)
@@ -63,7 +63,7 @@ void TitleListState::render() {
                                          titles[i + this->scroll].isTitleDupe ? " [D]" : "",
                                          titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
                 if (titles[i + this->scroll].iconBuf != nullptr) {
-                    DrawUtils::drawRGB5A3((M_OFF + 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
+                    DrawUtils::drawRGB5A3((M_OFF + X_OFFSET - 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
                                           titles[i + this->scroll].iconBuf);
                 }
             }
@@ -114,7 +114,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
 
             if (isTitleUsingIdBasedPath(&this->titles[targ]) && BackupSetList::isRootBackupSet() && checkIdVsTitleNameBasedPath) {
-                const char *choices = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders.\nInstead of using hex values, folders will be named after the title name,\nso for this title, folder '%08x%08x' would become\n'%s',\neasier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all %s\n\ue001  Not this time\n\ue002  Not in this session\n\n\n");
+                const char *choices = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all %s\n\ue001  Not this time\n\ue002  Not in this session\n\n\n");
                 std::string message = StringUtils::stringFormat(choices, this->titles[targ].highID, this->titles[targ].lowID, this->titles[targ].titleNameBasedDirName, isWiiU ? LanguageUtils::gettext("Wii U Titles") : LanguageUtils::gettext("vWii Titles"));
                 bool done = false;
                 while (!done) {

@@ -370,10 +370,10 @@ void BatchJobTitleSelectState::render() {
                                      nxtAction.c_str());
             if (this->titles[c2t[i + this->scroll]].iconBuf != nullptr) {
                 if (!isWiiUBatchJob)
-                    DrawUtils::drawRGB5A3((M_OFF + 6) * 12, (i + 3) * 24 + 8, 0.25,
+                    DrawUtils::drawRGB5A3((M_OFF + 2 + X_OFFSET) * 12, (i + 3) * 24 + 8, 0.25,
                                           titles[c2t[i + this->scroll]].iconBuf);
                 else
-                    DrawUtils::drawTGA((M_OFF + 7) * 12 - 5, (i + 3) * 24 + 4, 0.18, this->titles[c2t[i + this->scroll]].iconBuf);
+                    DrawUtils::drawTGA((M_OFF + 3 + X_OFFSET) * 12 - 5, (i + 3) * 24 + 4, 0.18, this->titles[c2t[i + this->scroll]].iconBuf);
             }
         }
         DrawUtils::setFontColor(COLOR_TEXT);

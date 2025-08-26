@@ -22,7 +22,6 @@ namespace Console {
     void consolePrintPos(int x, int y, const char *format, ...) __attribute__((hot));
     void consolePrintPosAutoFormat(int x, int y, const char *format, ...);
     void promptMessage(Color bgcolor, const char *message, int wait);
-    void promptDebug(Color bgcolor, const char *message);
     void promptError(const char *message, ...);
     void promptMessageWithConfirm(Color bgcolor, const char *message, ...);
     bool promptConfirm(Style st, const std::string &question);

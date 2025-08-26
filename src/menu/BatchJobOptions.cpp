@@ -195,7 +195,7 @@ nxtCheck:
                 titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored. You can:\n* Backup it with 'allusers' option or with Batch Backup\n* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."));
                 break;
             case RESTORE:
-                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("The BackupSet contains savedata for profiles that don't exist in this console.\nYou can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
+                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
                 break;
             default:;
         }
