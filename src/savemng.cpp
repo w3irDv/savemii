@@ -1478,7 +1478,7 @@ bool renameTitleFolder(Title *title) {
     }
 
     if (!mkdirAndUnlink(titleNameBasedPath)) {
-        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"), titleNameBasedPath.c_str(), strerror(errno), title->highID, title->lowID);
+        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"), titleNameBasedPath.c_str(), strerror(errno), title->highID, title->lowID);
         return false;
     }
 
@@ -1497,12 +1497,12 @@ bool mkdirAndUnlink(const std::string &path) {
         sdWriteDisclaimer();
 
     if (mkdir(path.c_str(), 0666) != 0) {
-        Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"), path.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), path.c_str(), strerror(errno));
         return false;
     }
 
     if (unlink(path.c_str()) == -1) {
-        Console::promptError(LanguageUtils::gettext("Failed to delete (test) folder \n\n%s \n%s"), path.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Failed to delete (test) folder \n\n%s\n\n%s"), path.c_str(), strerror(errno));
         return false;
     }
 
@@ -1585,7 +1585,7 @@ bool mergeTitleFolders(Title *title) {
             targetPath = StringUtils::stringFormat("%s/%s", titleNameBasedPath.c_str(), data->d_name);
             if (FSUtils::checkEntry(targetPath.c_str()) != 0) {
                 mergeErrorsCounter++;
-                Console::promptError(LanguageUtils::gettext("Cannot move %s from '%08x%08x' to\n\n%s\nfile already exists in target folder."), data->d_name, title->highID, title->lowID, targetPath.c_str());
+                Console::promptError(LanguageUtils::gettext("Cannot move %s from '%08x%08x' to\n\n%s\n\nfile already exists in target folder."), data->d_name, title->highID, title->lowID, targetPath.c_str());
                 showAbortPrompt = true;
                 continue;
             }
@@ -1593,7 +1593,7 @@ bool mergeTitleFolders(Title *title) {
             targetPath = StringUtils::stringFormat("%s/%d", titleNameBasedPath.c_str(), getEmptySlotInTitleNameBasedPath(title));
             if (!mkdirAndUnlink(targetPath)) {
                 mergeErrorsCounter++;
-                Console::promptError(LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!"), targetPath.c_str(), strerror(errno));
+                Console::promptError(LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n\n%s\n\nMove not tried!"), targetPath.c_str(), strerror(errno));
                 showAbortPrompt = true;
                 continue;
             }
@@ -1601,7 +1601,7 @@ bool mergeTitleFolders(Title *title) {
 
         if (rename(sourcePath.c_str(), targetPath.c_str()) != 0) {
             mergeErrorsCounter++;
-            Console::promptError(LanguageUtils::gettext("Cannot rename folder '%08x%08x/%s' to\n\n%s\n%s"), title->highID, title->lowID, data->d_name, targetPath.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Cannot rename folder '%08x%08x/%s' to\n\n%s\n\n%s"), title->highID, title->lowID, data->d_name, targetPath.c_str(), strerror(errno));
             showAbortPrompt = true;
             continue;
         }
@@ -1610,26 +1610,26 @@ bool mergeTitleFolders(Title *title) {
 
     if (errno != 0) {
         mergeErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n%s\n\nMigration may be incomplete"), idBasedPath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n\n%s\n\nMigration may be incomplete"), idBasedPath.c_str(), strerror(errno));
         closedir(dir);
         return false;
     }
 
     if (closedir(dir) != 0) {
         mergeErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n%s"), idBasedPath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n\n%s"), idBasedPath.c_str(), strerror(errno));
         return false;
     }
 
     if (!folderEmpty(idBasedPath.c_str())) {
         mergeErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error merging folders: after moving all slots, folder\n\n%s\nis still not empty and cannot be deleted."), idBasedPath.c_str());
+        Console::promptError(LanguageUtils::gettext("Error merging folders: after moving all slots, folder\n\n%s\n\nis still not empty and cannot be deleted."), idBasedPath.c_str());
         return false;
     }
 
     if (unlink(idBasedPath.c_str()) == -1) {
         mergeErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n%s"), idBasedPath.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n\n%s"), idBasedPath.c_str(), strerror(errno));
         return false;
     }
 
@@ -1724,7 +1724,7 @@ bool getProfilesInPath(std::vector<std::string> &source_persistentIDs, const fs:
             }
         }
     } catch (fs::filesystem_error const &ex) {
-        Console::promptError(LanguageUtils::gettext("Error while reading folder content\n\n%s\n%s"), source_path.c_str(), ex.what());
+        Console::promptError(LanguageUtils::gettext("Error while reading folder content\n\n%s\n\n%s"), source_path.c_str(), ex.what());
         return false;
     }
     return true;
@@ -1748,7 +1748,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
             source_saveinfo.push_back(line);
         ifsSaveinfo.close();
     } else {
-        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"), source_saveinfo_file.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), source_saveinfo_file.c_str(), strerror(errno));
         return false;
     }
 
@@ -1802,7 +1802,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
                     target_saveinfo.push_back(source_timestamp_end);
                     continue;
                 } else {
-                    Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"), target_saveinfo_file.c_str(), strerror(errno));
+                    Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
                     return false;
                 }
             }
@@ -1833,7 +1833,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
 
         std::ofstream ofsDstSaveinfo(target_saveinfo_file);
         if (!ofsDstSaveinfo.is_open()) {
-            Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"), target_saveinfo_file.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
             return false;
         }
 
@@ -1842,7 +1842,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
         ofsDstSaveinfo.close();
 
         if (ofsDstSaveinfo.fail()) {
-            Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"), target_saveinfo_file.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
         }
     }
     return true;

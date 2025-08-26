@@ -49,7 +49,7 @@ bool statDebugUtils::statDir(const std::string &entryPath, FILE *file) {
 
         DIR *dir = opendir(entryPath.c_str());
         if (dir == nullptr) {
-            fprintf(file, "Error opening source dir\n\n%s\n%s", entryPath.c_str(), strerror(errno));
+            fprintf(file, "Error opening source dir\n\n%s\n\n%s", entryPath.c_str(), strerror(errno));
             return false;
         }
 

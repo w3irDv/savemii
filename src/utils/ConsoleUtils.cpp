@@ -6,10 +6,50 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
+#include <utils/StringUtils.h>
+
 #define MAX_PROMPT_WIDTH   64 * 12
 
 #define ASK_CONFIRMATION   -1
 #define DEFAULT_ERROR_WAIT 4
+
+#define X_OFFSET           2
+
+void Console::promptDebug(Color bgcolor, const char *message) {
+    DrawUtils::beginDraw();
+    DrawUtils::clear(bgcolor);
+
+    size_t nLines = 0;
+    size_t maxLineWidth = 0;
+    std::string formatted_message{};
+    splitMessage(message, formatted_message, maxLineWidth, nLines);
+
+    std::string max = StringUtils::stringFormat("%d", maxLineWidth);
+
+    DrawUtils::print(100, 100, formatted_message.c_str());
+    DrawUtils::print(200, 100, max.c_str());
+
+    DrawUtils::print(124, 124, formatted_message.c_str());
+
+    std::string two = formatted_message + formatted_message;
+    splitMessage(two.c_str(), formatted_message, maxLineWidth, nLines);
+
+    max = StringUtils::stringFormat("%d", maxLineWidth);
+
+    DrawUtils::print(100, 148, formatted_message.c_str());
+    DrawUtils::print(200, 148, max.c_str());
+
+    DrawUtils::print(100 + maxLineWidth, 172, formatted_message.c_str());
+
+    DrawUtils::endDraw();
+
+    Input input{};
+    while (true) {
+        input.read();
+        if (input.get(ButtonState::TRIGGER, Button::A))
+            break;
+    }
+}
 
 void Console::promptMessage(Color bgcolor, const char *message, int wait) {
     DrawUtils::beginDraw();
@@ -24,10 +64,10 @@ void Console::promptMessage(Color bgcolor, const char *message, int wait) {
     initialYPos = initialYPos > 0 ? initialYPos : 0;
 
     int x = 31 - (maxLineWidth / 24);
-    x = (x < -4 ? -4 : x);
-    DrawUtils::print((x + 4) * 12, (initialYPos + 1) * 24, formatted_message.c_str());
+    x = (x < -X_OFFSET ? -X_OFFSET : x);
+    DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + 1) * 24, formatted_message.c_str());
     if (wait == ASK_CONFIRMATION)
-        DrawUtils::print((x + 4) * 12, (initialYPos + 1 + 4 + nLines) * 24, LanguageUtils::gettext("Press \ue000 to continue"));
+        DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + 1 + 4 + nLines) * 24, LanguageUtils::gettext("Press \ue000 to continue"));
     DrawUtils::endDraw();
     if (wait > 0)
         sleep(wait);
@@ -100,7 +140,8 @@ bool Console::promptConfirm(Style st, const std::string &question) {
 
         int initialYPos = 6 - nLines / 2;
         initialYPos = initialYPos > 0 ? initialYPos : 0;
-        Console::consolePrintPos(31 - (maxLineWidth / 24), initialYPos, question.c_str());
+
+        Console::consolePrintPos(31 - (maxLineWidth / 24), initialYPos, formatted_message.c_str());
         Console::consolePrintPos(31 - (DrawUtils::getTextWidth((char *) msg.c_str()) / 24), initialYPos + 2 + nLines, msg.c_str());
     }
 
@@ -150,7 +191,7 @@ Button Console::promptMultipleChoice(Style st, const std::string &question) {
 
     int initialYPos = 6 - nLines / 2;
     initialYPos = initialYPos > 0 ? initialYPos : 0;
-    Console::consolePrintPos(31 - (maxLineWidth / 24), initialYPos, question.c_str());
+    Console::consolePrintPos(31 - (maxLineWidth / 24), initialYPos, formatted_message.c_str());
     Console::consolePrintPos(31 - (DrawUtils::getTextWidth((char *) msg.c_str()) / 24), initialYPos + 2 + nLines, msg.c_str());
 
     Button ret;
@@ -222,7 +263,25 @@ void Console::consolePrintPos(int x, int y, const char *format, ...) { // Source
     va_list va;
     va_start(va, format);
     if ((vasprintf(&tmp, format, va) >= 0) && (tmp != nullptr))
-        DrawUtils::print((x + 4) * 12, (y + 1) * 24, tmp);
+        DrawUtils::print((x + X_OFFSET) * 12, (y + 1) * 24, tmp);
+    va_end(va);
+    if (tmp != nullptr)
+        free(tmp);
+}
+
+void Console::consolePrintPosAutoFormat(int x, int y, const char *format, ...) {
+    char *tmp = nullptr;
+    y += Y_OFF;
+
+    va_list va;
+    va_start(va, format);
+    if ((vasprintf(&tmp, format, va) >= 0) && (tmp != nullptr)) {
+        size_t nLines = 0;
+        size_t maxLineWidth = 0;
+        std::string formatted_message{};
+        splitMessage(tmp, formatted_message, maxLineWidth, nLines);
+        DrawUtils::print((x + X_OFFSET) * 12, (y + 1) * 24, formatted_message.c_str());
+    }
     va_end(va);
     if (tmp != nullptr)
         free(tmp);
@@ -263,10 +322,10 @@ void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
             if (spacePos == std::string::npos) {
                 spacePos = maxLineLength;
             }
-            DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.substr(0, spacePos + 1).c_str());
+            DrawUtils::print((x + X_OFFSET) * 12, y++ * 24, currentLine.substr(0, spacePos + 1).c_str());
             currentLine = currentLine.substr(spacePos + 1);
         }
-        DrawUtils::print((x + 4) * 12, y++ * 24, currentLine.c_str());
+        DrawUtils::print((x + X_OFFSET) * 12, y++ * 24, currentLine.c_str());
     }
     tmp.clear();
     tmp.shrink_to_fit();

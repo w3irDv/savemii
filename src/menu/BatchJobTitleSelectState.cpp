@@ -606,7 +606,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     std::string selectedUserInfo;
 
     if (isWiiUBatchJob) {
-        summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n%s\n%s\n%s\n\nContinue?\n\n");
+        summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n\n%s\n%s\n%s\n\nContinue?\n\n");
         if (source_user > -1) {
             switch (jobType) {
                 case RESTORE:
@@ -631,7 +631,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                                             (wipeBeforeRestore || jobType == WIPE_PROFILE) ? LanguageUtils::gettext("- Wipe data: Yes") : LanguageUtils::gettext("- Wipe data: No"),
                                             fullBackup ? LanguageUtils::gettext("- Perform full backup: Yes") : LanguageUtils::gettext("- Perform full backup: No"));
     } else {
-        summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n%s\n%s\n\nContinue?\n\n");
+        summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n\n%s\n%s\n\nContinue?\n\n");
         summary = StringUtils::stringFormat(summaryTemplate, menuTitle, taskDescription,
                                             (wipeBeforeRestore || jobType == WIPE_PROFILE) ? LanguageUtils::gettext("- Wipe data: Yes") : LanguageUtils::gettext("- Wipe data: No"),
                                             fullBackup ? LanguageUtils::gettext("- Perform full backup: Yes") : LanguageUtils::gettext("- Perform full backup: No"));

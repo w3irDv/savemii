@@ -20,7 +20,7 @@ bool BaseCfg::init() {
             if (FSUtils::createFolder(cfgPath.c_str()))
                 goto backupPathExists;
             else {
-                Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n%s"), cfgPath.c_str(), strerror(errno));
+                Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), cfgPath.c_str(), strerror(errno));
                 initialized = false;
                 return false;
             }
@@ -43,17 +43,17 @@ backupPathExists:
 bool BaseCfg::saveFile() {
     FILE *fp = fopen(cfgFile.c_str(), "wb");
     if (fp == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n%s"), cfgFile.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
         return false;
     }
     if (fwrite(configString, strlen(configString), 1, fp) == 0)
         if (ferror(fp)) {
-            Console::promptError(LanguageUtils::gettext("Error writing file\n\n%s\n%s"), cfgFile.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
             fclose(fp);
             return false;
         }
     if (fclose(fp) != 0) {
-        Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"), cfgFile.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
         return false;
     }
 
@@ -79,7 +79,7 @@ bool BaseCfg::readFile() {
 
     FILE *fp = fopen(cfgFile.c_str(), "rb");
     if (fp == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n%s"), cfgFile.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
         return false;
     }
 
@@ -91,13 +91,13 @@ bool BaseCfg::readFile() {
 
     if (fread(configString, 1, len, fp) == 0)
         if (ferror(fp)) {
-            Console::promptError(LanguageUtils::gettext("Error reading file\n\n%s\n%s"), cfgFile.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Error reading file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
             fclose(fp);
             return false;
         }
     configString[len] = '\0';
     if (fclose(fp) != 0) {
-        Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n%s"), cfgFile.c_str(), strerror(errno));
+        Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
         return false;
     }
 

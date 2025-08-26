@@ -112,9 +112,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 this->titles[i].currentDataSource.hasSavedata = false;
                 continue;
             }
-            std::string multilinePath;
-            StringUtils::splitStringWithNewLines(srcPath, multilinePath);
-            Console::promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), srcPath.c_str(), strerror(errno));
             Console::promptError(LanguageUtils::gettext("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
             continue;
         }

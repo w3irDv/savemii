@@ -65,7 +65,7 @@ void BatchJobState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPos(M_OFF, 6, readme);
+        Console::consolePrintPosAutoFormat(M_OFF, 6, readme);
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(17, 4, 2, nextTask);
     }

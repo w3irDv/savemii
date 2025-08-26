@@ -111,18 +111,31 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
         if (input->get(ButtonState::TRIGGER, Button::Y) || input->get(ButtonState::REPEAT, Button::Y)) {
+
+            /*
             Console::promptMessageWithConfirm(COLOR_BG_OK,"easy peasy");
             Console::promptMessageWithConfirm(COLOR_BG_OK,"easy peasy\nsecondline");
             Console::promptMessageWithConfirm(COLOR_BG_OK,"En un lugar de la mancha, de cuyo nombre no quiero acordarme, vivia no hace mucho \nha un locuelo bergantin, con cien cañones por bada, viento en popa a toda vela unficheromuylrgoquedeeriarepartirseenvariaslineassiesqetodoestoestafuncionando\n\ny el final");
             std::string path="sd:/usr/save/perico/de/los/palotes/como/vas/aaserparar/este/path/tan/laaaargo/loharasbien/porqueantes/lohaciasMal";
-            Console::promptMessageWithConfirm(COLOR_BG_OK,LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!"), path.c_str(), strerror(errno));
-            Console::promptError(LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n%s\n\nMove not tried!"), path.c_str(), strerror(errno));
-            Console::promptMessageWithConfirm(COLOR_BG_KO,LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n%s"),path.c_str(), strerror(errno));
-            Console::promptError(LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n%s"),path.c_str(), strerror(errno));
-            
+            Console::promptMessageWithConfirm(COLOR_BG_OK,LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n\n%s\n\nMove not tried!"), path.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n\n%s\n\nMove not tried!"), path.c_str(), strerror(errno));
+            Console::promptMessageWithConfirm(COLOR_BG_KO,LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n\n%s"),path.c_str(), strerror(errno));
+            Console::promptError(LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n\n%s"),path.c_str(), strerror(errno));
+            */
             const char *choices = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders.Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all %s\n\ue001  Not this time\n\ue002  Not in this session");
             std::string message = StringUtils::stringFormat(choices, 2345612, 232345, "smash bros", "Wii U Titles");
             Console::promptMessageWithConfirm(COLOR_BG_OK,message.c_str());
+
+            const char *choices2 = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders.\nInstead of using hex values, folders will be named after the title name,\nso for this title, folder '%08x%08x' would become\n'%s',\neasier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all %s\n\ue001  Not this time\n\ue002  Not in this session\n\n\n");
+            message = StringUtils::stringFormat(choices2, 2345612, 232345, "smash bros", "Wii U Titles");
+            Console::promptMessageWithConfirm(COLOR_BG_OK,message.c_str());
+
+            Console::promptMultipleChoice(ST_MULTIPLE_CHOICE, message.c_str());
+            
+            Console::promptDebug(COLOR_BG_OK,LanguageUtils::gettext("one"));
+
+            Console::promptDebug(COLOR_BG_OK,LanguageUtils::gettext("two"));
+
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
