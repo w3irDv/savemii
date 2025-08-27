@@ -1389,7 +1389,7 @@ void sdWriteDisclaimer() {
 
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles) {
     for (int i = 0; i < titlesCount; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit)
+        if (titles[i].highID == 0 || titles[i].lowID == 0 ) // || !titles[i].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
 
@@ -1423,9 +1423,9 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
     if (titlesNotInitialized == 0)
         summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
     else
-        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
+        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d (including %d notInitialized)\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
 
-    std::string summaryWithTitles = StringUtils::stringFormat(summaryTemplate, titlesOK, titlesWarning, titlesKO, titlesAborted, titlesSkipped, titlesNotInitialized);
+    std::string summaryWithTitles = StringUtils::stringFormat(summaryTemplate, titlesOK, titlesNotInitialized, titlesWarning, titlesKO, titlesAborted, titlesSkipped);
 
     Color summaryColor = COLOR_BG_OK;
     if (titlesWarning > 0 || titlesAborted > 0)
