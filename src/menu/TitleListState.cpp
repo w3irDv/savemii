@@ -54,7 +54,7 @@ void TitleListState::render() {
                                          this->titles[i + this->scroll].noFwImg ? LanguageUtils::gettext(" [vWiiInject]") : "",
                                          this->titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
                 if (this->titles[i + this->scroll].iconBuf != nullptr) {
-                    DrawUtils::drawTGA((M_OFF + X_OFFSET) * 12 - 2, (i + 3) * 24, 0.18, this->titles[i + this->scroll].iconBuf);
+                    DrawUtils::drawTGA((M_OFF + X_OFFSET) * 12 + 4, (i + 3) * 24 + 4, 0.18, this->titles[i + this->scroll].iconBuf);
                 }
             } else {
                 if (!this->titles[i + this->scroll].saveInit)
@@ -63,7 +63,7 @@ void TitleListState::render() {
                                          titles[i + this->scroll].isTitleDupe ? " [D]" : "",
                                          titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
                 if (titles[i + this->scroll].iconBuf != nullptr) {
-                    DrawUtils::drawRGB5A3((M_OFF + X_OFFSET - 2) * 12 - 2, (i + 3) * 24 + 3, 0.25,
+                    DrawUtils::drawRGB5A3((M_OFF + X_OFFSET - 2) * 12 + 3, (i + 3) * 24 + 3 + 6, 0.25,
                                           titles[i + this->scroll].iconBuf);
                 }
             }

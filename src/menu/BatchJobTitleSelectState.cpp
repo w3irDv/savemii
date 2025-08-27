@@ -820,7 +820,7 @@ showSummary:
     int titlesNotInitialized = 0;
     std::vector<std::string> failedTitles;
     for (int i = 0; i < this->candidatesCount; i++) {
-        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0) // we will count them as "not initialized"
+        if (this->titles[c2t[i]].highID == 0 ) // || this->titles[c2t[i]].lowID == 0) // we will count them as "not initialized"
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchJobState) {
@@ -881,7 +881,7 @@ void BatchJobTitleSelectState::executeBatchBackup() {
     for (int i = 0; i < this->candidatesCount; i++) {
         uint32_t highID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiHighID : this->titles[c2t[i]].highID;
         uint32_t lowID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiLowID : this->titles[c2t[i]].lowID;
-        if (highID == 0 || lowID == 0 || !this->titles[c2t[i]].saveInit)
+        if (highID == 0 || lowID == 0 ) //|| !this->titles[c2t[i]].saveInit)  - notInit will we markes as backup OK
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchBackupState) {
