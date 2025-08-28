@@ -270,7 +270,7 @@ void BatchJobTitleSelectState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
-                               (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
+                                        (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         if ((this->titles == nullptr) || (this->titlesCount == 0 || (this->candidatesCount == 0))) {
             DrawUtils::endDraw();
             Console::promptError(LanguageUtils::gettext("There are no titles matching selected filters."));
@@ -280,7 +280,7 @@ void BatchJobTitleSelectState::render() {
             return;
         }
         Console::consolePrintPosAligned(39, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
-                               (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
+                                        (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         std::string nxtAction;
         std::string lastState;
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
@@ -540,7 +540,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         case RESTORE:
             menuTitle = LanguageUtils::gettext("Batch Restore - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Restore from %s to < %s (%s) >") : LanguageUtils::gettext("- Restore");
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchJob Backup (WiiU)") : LanguageUtils::gettext("pre-BatchJob Backup (vWii)");
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchRestore Backup (WiiU)") : LanguageUtils::gettext("pre-BatchRestore Backup (vWii)");
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore allusers") : LanguageUtils::gettext("- Restore");
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore no user") : LanguageUtils::gettext("- Restore");
             taskHasFailed = LanguageUtils::gettext("%s\n\nRestore failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -660,6 +660,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     }
 
     InProgress::totalSteps = InProgress::currentStep = 0;
+    InProgress::abortTask = false;
     int retCode = 0;
     int jobErrorsCounter = 0;
     for (int i = 0; i < titlesCount; i++) {
@@ -680,8 +681,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         }
         InProgress::totalSteps = InProgress::totalSteps + countTitlesToSave(this->titles, this->titlesCount, true);
         int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
-        if (titles_failed_counter == -1) {
-            writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("PARTIAL BACKUP - USER ABORTED"));
+        if (InProgress::abortTask) {
             if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), LanguageUtils::gettext("Do you want to wipe this incomplete batch backup?"))) {
                 InProgress::totalSteps = InProgress::currentStep = 1;
                 InProgress::titleName.assign(batchDatetime);
@@ -693,10 +693,16 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 }
                 return;
             }
+            BackupSetList::setIsInitializationRequired(true);
+            if (titles_failed_counter > 0 ) {
+                writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("BACKUP CONTAINS FAILED TITLES"));
+            } else {
+                writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("PARTIAL BACKUP - USER ABORTED"));
+            }
             goto showSummary;
         }
         BackupSetList::setIsInitializationRequired(true);
-        writeBackupAllMetadata(batchDatetime, backupDescription);
+        writeBackupAllMetadata(batchDatetime, titles_failed_counter == 0 ? backupDescription : LanguageUtils::gettext("BACKUP CONTAINS FAILED TITLES" ));
     }
 
     for (int i = 0; i < titlesCount; i++) {
@@ -730,7 +736,6 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             }
         }
 
-        sourceTitle.currentDataSource.batchJobState = OK;
         bool targetHasCommonSave = hasCommonSave(&targetTitle, false, false, 0, 0);
         bool effectiveCommon = common && sourceTitle.currentDataSource.hasCommonSavedata && targetHasCommonSave;
         if (wipeBeforeRestore || jobType == WIPE_PROFILE) {
@@ -764,11 +769,12 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                     }
                     break;
             }
-            if (retCode > 0)
-                this->titles[i].currentDataSource.batchJobState = WR;
-            else if (retCode < 0)
-                this->titles[i].currentDataSource.batchJobState = ABORTED;
         }
+        if (wipeBeforeRestore && retCode != 0 && jobType != WIPE_PROFILE) {
+            this->titles[i].currentDataSource.batchJobState = ABORTED;
+            continue;
+        }
+
         int globalRetCode = retCode << 8;
         switch (jobType) {
             case RESTORE:
@@ -788,7 +794,9 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 break;
         }
 
-        if (retCode > 0) {
+        if (retCode == 0) {
+            sourceTitle.currentDataSource.batchJobState = OK;
+        } else if (retCode > 0) {
             this->titles[i].currentDataSource.batchJobState = KO;
             jobErrorsCounter++;
             std::string errorMessage = StringUtils::stringFormat(taskHasFailed, titles[i].shortName, jobErrorsCounter);
@@ -797,7 +805,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 break;
         } else if (retCode < 0)
             this->titles[i].currentDataSource.batchJobState = ABORTED;
-        if (this->titles[i].currentDataSource.batchJobState == OK || this->titles[i].currentDataSource.batchJobState == WR)
+
+        if (this->titles[i].currentDataSource.batchJobState == OK) // || this->titles[i].currentDataSource.batchJobState == WR)
             this->titles[i].currentDataSource.selectedToBeProcessed = false;
 
         globalRetCode = globalRetCode + retCode;
@@ -820,7 +829,7 @@ showSummary:
     int titlesNotInitialized = 0;
     std::vector<std::string> failedTitles;
     for (int i = 0; i < this->candidatesCount; i++) {
-        if (this->titles[c2t[i]].highID == 0 ) // || this->titles[c2t[i]].lowID == 0) // we will count them as "not initialized"
+        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0) // we will count them as "not initialized"
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchJobState) {
@@ -852,15 +861,17 @@ void BatchJobTitleSelectState::executeBatchBackup() {
 
     InProgress::totalSteps = countTitlesToSave(this->titles, this->titlesCount, true);
     InProgress::currentStep = 0;
+    InProgress::abortTask = false;
     const std::string batchDatetime = getNowDateForFolder();
     int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
-    if (titles_failed_counter == -1) {
-        writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("PARTIAL BACKUP - USER ABORTED"));
+    if (InProgress::abortTask) {
         if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), LanguageUtils::gettext("Do you want to wipe this incomplete batch backup?"))) {
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
-            if (!wipeBackupSet("/batch/" + batchDatetime, true))
+            if (!wipeBackupSet("/batch/" + batchDatetime, true)) {
+                writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("ERROR WIPING BACKUPSET"));
                 BackupSetList::setIsInitializationRequired(true);
+            }
             for (int i = 0; i < this->candidatesCount; i++) {
                 this->titles[c2t[i]].currentDataSource.batchBackupState = NOT_TRIED;
                 this->titles[c2t[i]].currentDataSource.selectedForBackup = true;
@@ -881,7 +892,7 @@ void BatchJobTitleSelectState::executeBatchBackup() {
     for (int i = 0; i < this->candidatesCount; i++) {
         uint32_t highID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiHighID : this->titles[c2t[i]].highID;
         uint32_t lowID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiLowID : this->titles[c2t[i]].lowID;
-        if (highID == 0 || lowID == 0 ) //|| !this->titles[c2t[i]].saveInit)  - notInit will we markes as backup OK
+        if (highID == 0 || lowID == 0) //|| !this->titles[c2t[i]].saveInit)  - notInit have been marked with backup OK
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchBackupState) {
@@ -904,16 +915,21 @@ void BatchJobTitleSelectState::executeBatchBackup() {
                 break;
         }
     }
+
     std::string tag;
-    if (titlesOK > 0) {
+    if (titlesOK > 0 && titles_failed_counter == 0) {
         const char *tagTemplate;
         tagTemplate = LanguageUtils::gettext("Partial Backup - %d %s title%s");
         tag = StringUtils::stringFormat(tagTemplate,
                                         titlesOK,
                                         isWiiUBatchJob ? "Wii U" : "vWii",
                                         (titlesOK == 1) ? "" : "s");
-    } else
+    } else if (titlesOK == 0) {
         tag = StringUtils::stringFormat(LanguageUtils::gettext("Failed backup - No titles"));
+    } else if (titles_failed_counter > 0) {
+        tag = StringUtils::stringFormat(LanguageUtils::gettext("BACKUP CONTAINS FAILED TITLES"));
+    }
+
     writeBackupAllMetadata(batchDatetime, tag.c_str());
 
     showBatchStatusCounters(titlesOK, titlesAborted, titlesWarning, titlesKO, titlesSkipped, titlesNotInitialized, failedTitles);

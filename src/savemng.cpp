@@ -808,6 +808,10 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, bo
 
     InProgress::jobType = BACKUP;
 
+    for (int i = 0; i < count; i++) {
+        titles[i].currentDataSource.batchBackupState = NOT_TRIED;
+    }
+
     for (int sourceStorage = 0; sourceStorage < 2; sourceStorage++) {
         for (int i = 0; i < count; i++) {
             if (onlySelectedTitles)
@@ -851,7 +855,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, bo
 
                             if (InProgress::abortTask) {
                                 if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), LanguageUtils::gettext("Do you want to cancel batch backup?")))
-                                    return -1;
+                                    return titlesKO;
                                 else
                                     InProgress::abortTask = false;
                             }
@@ -867,8 +871,10 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, bo
             FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
             writeMetadataWithTag(&titles[i], slot, isUSB, batchDatetime, LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
             std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), titles[i].shortName, titlesKO);
-            if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str()))
+            if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+                InProgress::abortTask = true;
                 return titlesKO;
+            }
 #else
             if (i % 2 == 0) {
                 titles[i].currentDataSource.batchBackupState = OK;
@@ -881,7 +887,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, bo
 #endif
         }
     }
-    return InProgress::copyErrorsCounter;
+    return titlesKO;
 }
 
 int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
