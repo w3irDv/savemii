@@ -132,11 +132,11 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
             if (firstSDWrite)
                 sdWriteDisclaimer();
             if (GlobalCfg::global->save())
-                Console::promptMessageWithConfirm(COLOR_BG_OK, LanguageUtils::gettext("Configuration saved"));
+                Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("Configuration saved"));
             else
-                Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error saving configuration"));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error saving configuration"));
         } else
-            Console::promptError(LanguageUtils::gettext("Error processing configuration"));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error processing configuration"));
     }
     return SUBSTATE_RUNNING;
 }

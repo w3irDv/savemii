@@ -689,22 +689,22 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case RESTORE:
                     if (!(common || sourceHasRequestedSavedata)) {
                         if (this->task == BACKUP)
-                            Console::promptError(LanguageUtils::gettext("No data selected to backup"));
+                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to backup"));
                         else if (this->task == WIPE_PROFILE)
-                            Console::promptError(LanguageUtils::gettext("No data selected to wipe"));
+                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to wipe"));
                         else if (this->task == PROFILE_TO_PROFILE)
-                            Console::promptError(LanguageUtils::gettext("No data selected to copyToOtherProfile"));
+                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to copyToOtherProfile"));
                         else if (this->task == MOVE_PROFILE)
-                            Console::promptError(LanguageUtils::gettext("No data selected to moveProfile"));
+                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to moveProfile"));
                         else if (this->task == COPY_TO_OTHER_DEVICE)
-                            Console::promptError(LanguageUtils::gettext("No data selected to copy"));
+                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to copy"));
                         else if (this->task == RESTORE)
-                            Console::promptError(LanguageUtils::gettext("No data selected to restore"));
+                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to restore"));
                         return SUBSTATE_RUNNING;
                     }
                     if (this->task == RESTORE && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
                         if (!checkIfProfilesInTitleBackupExist(&this->title, slot)) {
-                            Console::promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
                             return SUBSTATE_RUNNING;
                         }
                     }
@@ -712,7 +712,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         std::string path = (this->title.isTitleOnUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
                         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->title.highID, this->title.lowID, "user");
                         if (!checkIfAllProfilesInFolderExists(srcPath)) {
-                            Console::promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
                             return SUBSTATE_RUNNING;
                         }
                     }

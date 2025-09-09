@@ -111,7 +111,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
             if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
                 if (!this->title.saveInit) {
-                    Console::promptError(noData);
+                    Console::showMessage(ERROR_SHOW, noData);
                     noError = false;
                 } else {
                     BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
@@ -126,7 +126,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
             if ((this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE) && noError) {
                 if (getVolAccn() == 0)
-                    Console::promptError(LanguageUtils::gettext("Title has no profile savedata"));
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Title has no profile savedata"));
                 else {
                     for (int i = 0; i < getVolAccn(); i++) {
                         for (int j = 0; j < getWiiUAccn(); j++) {
@@ -137,7 +137,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                             }
                         }
                     }
-                    Console::promptError(LanguageUtils::gettext("At least two profiles are needed to Copy/Move To OtherProfile."));
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("At least two profiles are needed to Copy/Move To OtherProfile."));
                 }
                 noError = false;
             }
@@ -156,7 +156,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 }
                 if (this->task == exportLoadiine) {
                     if (!this->title.saveInit) {
-                        Console::promptError(LanguageUtils::gettext("No save to Export."));
+                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No save to Export."));
                         noError = false;
                     }
                     exportToLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
@@ -175,11 +175,11 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 --cursorPos;
         }
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
-            Console::promptMessageWithConfirm(COLOR_BG_WR, "initiating stat title");
+            Console::showMessage(WARNING_CONFIRM, "initiating stat title");
             statDebugUtils::statTitle(title);
         }
         if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
-            Console::promptMessageWithConfirm(COLOR_BG_WR, "initiating stat save");
+            Console::showMessage(WARNING_CONFIRM, "initiating stat save");
             statDebugUtils::statSaves(title);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {

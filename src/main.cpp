@@ -49,7 +49,7 @@ int main() {
 
     int res = romfsInit();
     if (res) {
-        Console::promptError("Failed to init romfs: %d", res);
+        Console::showMessage(ERROR_SHOW, "Failed to init romfs: %d", res);
         DrawUtils::endDraw();
         State::shutdown();
         return 0;
@@ -61,7 +61,7 @@ int main() {
     GlobalCfg::global = std::make_unique<GlobalCfg>("cfg");
 
     if (!GlobalCfg::global->init()) {
-        Console::promptError("Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
+        Console::showMessage(ERROR_SHOW, "Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
         romfsExit();
 
         DrawUtils::deinitFont();
@@ -85,7 +85,7 @@ int main() {
     StartupUtils::addInitMessage(LanguageUtils::gettext("Initializing FS"));
 
     if (!FSUtils::initFS()) {
-        Console::promptError(LanguageUtils::gettext("FSUtils::initFS failed. Please make sure your MochaPayload is up-to-date"));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("FSUtils::initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
         romfsExit();
         DrawUtils::deinitFont();

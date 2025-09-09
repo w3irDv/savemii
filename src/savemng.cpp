@@ -296,7 +296,7 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *long
         }
     }
 
-    Console::promptError(LanguageUtils::gettext("Loadiine game folder not found."));
+    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Loadiine game folder not found."));
     closedir(dir);
     return false;
 }
@@ -305,7 +305,7 @@ bool getLoadiineSaveVersionList(int *out, const char *gamePath) {
     DIR *dir = opendir(gamePath);
 
     if (dir == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Loadiine game folder not found."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Loadiine game folder not found."));
         return false;
     }
 
@@ -323,7 +323,7 @@ static bool getLoadiineUserDir(char *out, const char *fullSavePath, const char *
     DIR *dir = opendir(fullSavePath);
 
     if (dir == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Failed to open Loadiine game save directory."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to open Loadiine game save directory."));
         return false;
     }
 
@@ -516,7 +516,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             // backup is always of allusers
             if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
                 if (!(backupSavedata(titleb, slotb, -1, true, accountSource, LanguageUtils::gettext("pre-copyToOtherDev backup")) == 0)) {
-                    Console::promptError(LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
                     return -1;
                 }
             }
@@ -524,7 +524,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
     }
 
     if (!FSUtils::createFolderUnlocked(dstPath)) {
-        Console::promptError(LanguageUtils::gettext("Copy failed."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Copy failed."));
         return 16;
     }
 
@@ -534,7 +534,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
 
     switch (source_user) {
         case -3: // not posible
-            Console::promptError(LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
             if (FSUtils::removeDir(dstPath))
                 unlink(dstPath.c_str());
             return -1;
@@ -599,7 +599,7 @@ flush_volume:
 
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nCopy failed.") + std::string("\n\n") + errorMessage;
-        Console::promptError(errorMessage.c_str(), title->shortName);
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
     }
     return errorCode;
 }
@@ -625,7 +625,7 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
             // backup is always of allusers
             if ((slot >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
                 if (!(backupSavedata(title, slot, -1, true, accountSource, LanguageUtils::gettext("pre-copySavedataToOtherProfile backup")) == 0)) {
-                    Console::promptError(LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
                     return -1;
                 }
             }
@@ -657,7 +657,7 @@ flush_volume:
 
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nCopy profile failed.") + std::string("\n\n") + errorMessage;
-        Console::promptError(errorMessage.c_str(), title->shortName);
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
     }
     return errorCode;
 }
@@ -683,7 +683,7 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
             // backup is always of allusers
             if ((slot >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
                 if (!(backupSavedata(title, slot, -1, true, accountSource, LanguageUtils::gettext("pre-moveSavedataToOtherProfile backup")) == 0)) {
-                    Console::promptError(LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Replicate aborted !!"));
                     return -1;
                 }
             }
@@ -729,9 +729,9 @@ flush_volume:
     if (errorCode != 0) {
         errorMessage = LanguageUtils::gettext("%s\nMove profile failed.") + std::string("\n\n") + errorMessage;
         if (interactive)
-            Console::promptMessageWithConfirm(COLOR_BG_OK, errorMessage.c_str(), title->shortName);
+            Console::showMessage(OK_CONFIRM, errorMessage.c_str(), title->shortName);
         else
-            Console::promptError(errorMessage.c_str(), title->shortName);
+            Console::showMessage(ERROR_SHOW, errorMessage.c_str(), title->shortName);
     }
     return errorCode;
 }
@@ -797,20 +797,16 @@ int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= fals
 }
 
 
-int backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles /*= false*/) {
+int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles /*= false*/) {
     if (firstSDWrite)
         sdWriteDisclaimer();
 
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
     int titlesKO = 0;
-    int titlesOK = 0;
+    titlesOK = 0;
 
     InProgress::jobType = BACKUP;
-
-    for (int i = 0; i < count; i++) {
-        titles[i].currentDataSource.batchBackupState = NOT_TRIED;
-    }
 
     for (int sourceStorage = 0; sourceStorage < 2; sourceStorage++) {
         for (int i = 0; i < count; i++) {
@@ -919,7 +915,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     // code to check if data exist must be done before this point.
 
     if (!FSUtils::createFolder(dstPath.c_str())) {
-        Console::promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."), title->shortName);
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."), title->shortName);
         return 8;
     }
 
@@ -927,7 +923,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
 
     FAT32EscapeFileManager::active_fat32_escape_file_manager = std::make_unique<FAT32EscapeFileManager>(baseDstPath);
     if (!FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
-        Console::promptError(LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."), title->shortName);
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."), title->shortName);
         return 16;
     }
 
@@ -937,7 +933,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
 
     switch (source_user) {
         case -3: // not possible
-            Console::promptError(LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
             if (FSUtils::removeDir(dstPath))
                 unlink(dstPath.c_str());
             return -1;
@@ -998,7 +994,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         writeMetadataWithTag(title, slot, isUSB, tag);
     else {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
-        Console::promptError(errorMessage.c_str(), title->shortName);
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
         writeMetadataWithTag(title, slot, isUSB, LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
     }
     return errorCode;
@@ -1012,7 +1008,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     // THIS NOW CANNOT HAPPEN CHECK IF THIS IS STILL NEEEDED!!!!
     /*
     if (isSlotEmpty(title->highID, title->lowID, slot)) {
-        Console::promptError(LanguageUtils::gettext("%s\nNo backup found on selected slot."),title->shortName);
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nNo backup found on selected slot."),title->shortName);
         return -2;
     }
     */
@@ -1042,7 +1038,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             int slotb = getEmptySlot(title);
             if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
                 if (!(backupSavedata(title, slotb, -1, true, USE_SD_OR_STORAGE_PROFILES, LanguageUtils::gettext("pre-Restore backup")) == 0)) {
-                    Console::promptError(LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
                     BackupSetList::restoreBackupSetSubPath();
                     return -1;
                 }
@@ -1052,7 +1048,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     }
 
     if (!FSUtils::createFolderUnlocked(dstPath)) {
-        Console::promptError(LanguageUtils::gettext("%s\nRestore failed."), title->shortName);
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nRestore failed."), title->shortName);
         errorCode = 16;
         return errorCode;
     }
@@ -1063,7 +1059,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
 
     switch (source_user) {
         case -3: // not posible
-            Console::promptError(LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("source_user=-3 is not allowed for this task"));
             if (FSUtils::removeDir(dstPath))
                 unlink(dstPath.c_str());
             return -1;
@@ -1134,11 +1130,13 @@ flush_volume:
 
     if (errorCode != 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
-        Console::promptError(errorMessage.c_str(), title->shortName);
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
     }
 
     return errorCode;
 }
+
+
 
 int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
@@ -1159,7 +1157,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     // THIS NOW CANNOT HAPPEN -  CHECK FROM WHERE CAN BE CALLED
     /*
     if (folderEmpty(srcPath.c_str())) {
-        Console::promptError(LanguageUtils::gettext("There is no Savedata to wipe!"));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("There is no Savedata to wipe!"));
         return 0;
     }
     */
@@ -1176,7 +1174,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         // backup is always of full type
         if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first?")))
             if (!(backupSavedata(title, slotb, -1, true, accountSource, LanguageUtils::gettext("pre-Wipe backup")) == 0)) {
-                Console::promptError(LanguageUtils::gettext("Backup Failed - Wipe aborted !!"));
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Wipe aborted !!"));
                 return -1;
             };
     }
@@ -1220,7 +1218,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         }
         if (unlink(commonPath.c_str()) == -1) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting common folder."));
-            Console::promptError(LanguageUtils::gettext("%s \n Failed to delete common folder:\n%s\n%s"), title->shortName, commonPath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete common folder:\n%s\n%s"), title->shortName, commonPath.c_str(), strerror(errno));
             errorCode += 2;
         }
     }
@@ -1235,14 +1233,14 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
             if (unlink(srcPath.c_str()) == -1) {
                 errorMessage.append("\n" + (std::string) ((source_user == -1) ? LanguageUtils::gettext("Error deleting savedata folder.")
                                                                               : LanguageUtils::gettext("Error deleting profile savedata folder.")));
-                Console::promptError(LanguageUtils::gettext("%s \n Failed to delete user folder:\n%s\n%s"), title->shortName, srcPath.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete user folder:\n%s\n%s"), title->shortName, srcPath.c_str(), strerror(errno));
                 errorCode += 8;
             }
         }
     }
 
     if (doMeta) {
-        //Console::promptMessageWithConfirm(COLOR_BG_ERROR,"source_user: %d\ncommon: %s\ncommonPath: %s\nsrcPath: %s\n titleSavePath: %s\n",source_user,common ? "true":"false",commonPath.c_str(),srcPath.c_str(),titleSavePath.c_str());
+        //Console::showMessage(ERROR_CONFIRM,"source_user: %d\ncommon: %s\ncommonPath: %s\nsrcPath: %s\n titleSavePath: %s\n",source_user,common ? "true":"false",commonPath.c_str(),srcPath.c_str(),titleSavePath.c_str());
         //return 0;
         if (!FSUtils::removeDir(titleSavePath)) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping metadata+savedata."));
@@ -1251,7 +1249,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         }
         if (unlink(titleSavePath.c_str()) == -1) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting title folder."));
-            Console::promptError(LanguageUtils::gettext("%s \n Failed to delete title folder:\n%s\n%s"), title->shortName, titleSavePath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete title folder:\n%s\n%s"), title->shortName, titleSavePath.c_str(), strerror(errno));
             errorCode += 32;
             goto flush;
         }
@@ -1263,7 +1261,7 @@ flush:
 
     if (errorCode != 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nWipe failed.") + "\n" + errorMessage;
-        Console::promptMessageWithConfirm(COLOR_BG_KO, errorMessage.c_str(), title->shortName);
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
     }
     return errorCode;
 }
@@ -1290,18 +1288,18 @@ void importFromLoadiine(Title *title, bool common, int version) {
     getLoadiineUserDir(srcPath, srcPath, usrPath);
     sprintf(dstPath, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
     if (!FSUtils::createFolder(dstPath)) {
-        Console::promptError(LanguageUtils::gettext("Failed to import savedata from loadiine."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to import savedata from loadiine."));
         return;
     }
     uint32_t dstOffset = strlen(dstPath);
     sprintf(dstPath + dstOffset, "/%s", usrPath);
     if (!FSUtils::copyDir(srcPath, dstPath))
-        Console::promptError(LanguageUtils::gettext("Failed to import savedata from loadiine."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to import savedata from loadiine."));
     if (common) {
         strcpy(srcPath + srcOffset, "/c\0");
         strcpy(dstPath + dstOffset, "/common\0");
         if (!FSUtils::copyDir(srcPath, dstPath))
-            Console::promptError(LanguageUtils::gettext("Common save not found."));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Common save not found."));
     }
 }
 
@@ -1326,16 +1324,16 @@ void exportToLoadiine(Title *title, bool common, int version) {
     uint32_t srcOffset = strlen(srcPath);
     sprintf(srcPath + srcOffset, "/%s", usrPath);
     if (!FSUtils::createFolder(dstPath)) {
-        Console::promptError(LanguageUtils::gettext("Failed to export savedata to loadiine."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to export savedata to loadiine."));
         return;
     }
     if (!FSUtils::copyDir(srcPath, dstPath))
-        Console::promptError(LanguageUtils::gettext("Failed to export savedata to loadiine."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to export savedata to loadiine."));
     if (common) {
         strcpy(dstPath + dstOffset, "/c\0");
         strcpy(srcPath + srcOffset, "/common\0");
         if (!FSUtils::copyDir(srcPath, dstPath))
-            Console::promptError(LanguageUtils::gettext("Common save not found."));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Common save not found."));
     }
 }
 
@@ -1345,17 +1343,17 @@ void deleteSlot(Title *title, uint8_t slot) {
     InProgress::titleName.assign(title->shortName);
     const std::string path = getDynamicBackupPath(title, slot);
     if (path.find(backupPath) == std::string::npos) {
-        Console::promptError(LanguageUtils::gettext("Error setting path. Aborting."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error setting path. Aborting."));
         return;
     }
     if (FSUtils::checkEntry(path.c_str()) == 2) {
         if (FSUtils::removeDir(path)) {
             if (unlink(path.c_str()) == -1)
-                Console::promptError(LanguageUtils::gettext("Failed to delete slot %u."), slot);
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to delete slot %u."), slot);
         } else
-            Console::promptError(LanguageUtils::gettext("Failed to delete slot %u."), slot);
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to delete slot %u."), slot);
     } else {
-        Console::promptError(LanguageUtils::gettext("Folder $s\ndoes not exist."), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Folder $s\ndoes not exist."), path.c_str());
     }
 }
 
@@ -1366,21 +1364,21 @@ bool wipeBackupSet(const std::string &subPath, bool force /* = false*/) {
             return false;
     const std::string path = StringUtils::stringFormat("%s%s", backupPath, subPath.c_str());
     if (path.find(batchBackupPath) == std::string::npos) {
-        Console::promptError(LanguageUtils::gettext("Error setting path. Aborting."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error setting path. Aborting."));
         return false;
     }
     if (FSUtils::checkEntry(path.c_str()) == 2) {
         if (FSUtils::removeDir(path)) {
             if (unlink(path.c_str()) == -1) {
-                Console::promptError(LanguageUtils::gettext("Failed to delete backupSet %s."), subPath.c_str());
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to delete backupSet %s."), subPath.c_str());
                 return false;
             }
         } else {
-            Console::promptError(LanguageUtils::gettext("Failed to delete backupSet %s."), subPath.c_str());
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to delete backupSet %s."), subPath.c_str());
             return false;
         }
     } else {
-        Console::promptError(LanguageUtils::gettext("Folder %s\ndoes not exist."), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Folder %s\ndoes not exist."), path.c_str());
     }
     return true;
 }
@@ -1421,7 +1419,6 @@ void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int 
     }
 }
 
-
 void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> &failedTitles) {
 
 
@@ -1429,20 +1426,20 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
     if (titlesNotInitialized == 0)
         summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
     else
-        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d (including %d notInitialized)\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d\n");
+        summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
 
-    std::string summaryWithTitles = StringUtils::stringFormat(summaryTemplate, titlesOK, titlesNotInitialized, titlesWarning, titlesKO, titlesAborted, titlesSkipped);
+    std::string summaryWithTitles = StringUtils::stringFormat(summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
 
-    Color summaryColor = COLOR_BG_OK;
+    Style summaryStyle = OK_CONFIRM;
     if (titlesWarning > 0 || titlesAborted > 0)
-        summaryColor = COLOR_BG_WR;
+        summaryStyle = WARNING_CONFIRM;
     if (titlesKO > 0) {
-        summaryColor = COLOR_BG_KO;
+        summaryStyle = ERROR_CONFIRM;
         summaryWithTitles.append(LanguageUtils::gettext("\nFailed Titles:"));
         titleListInColumns(summaryWithTitles, failedTitles);
     }
 
-    Console::promptMessageWithConfirm(summaryColor, summaryWithTitles.c_str());
+    Console::showMessage(summaryStyle, summaryWithTitles.c_str());
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BACKGROUND);
@@ -1477,19 +1474,19 @@ bool renameTitleFolder(Title *title) {
 
     if (FSUtils::checkEntry(titleNameBasedPath.c_str()) == 2) {
         if (!mergeTitleFolders(title)) {
-            Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to merge folder '%08x%08x' with existent folder\n'%s'\n\nSome backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, title->highID, title->lowID);
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unable to merge folder '%08x%08x' with existent folder\n'%s'\n\nSome backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, title->highID, title->lowID);
             return false;
         }
         return true;
     }
 
     if (!mkdirAndUnlink(titleNameBasedPath)) {
-        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"), titleNameBasedPath.c_str(), strerror(errno), title->highID, title->lowID);
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n\n%s\n\nMove not tried!\n\nBackup/restore operations will still use old '%08x%08x' folder"), titleNameBasedPath.c_str(), strerror(errno), title->highID, title->lowID);
         return false;
     }
 
     if (rename(idBasedPath.c_str(), titleNameBasedPath.c_str()) != 0) {
-        Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Unable to rename folder '%08x%08x' to\n'%s'\n\n%s\n\nPlease fix errors and try again, or manually move contents from one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, strerror(errno), title->highID, title->lowID);
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unable to rename folder '%08x%08x' to\n'%s'\n\n%s\n\nPlease fix errors and try again, or manually move contents from one folder to the other.\n\nBackup/restore operations will still use old '%08x%08x' folder"), title->highID, title->lowID, title->titleNameBasedDirName, strerror(errno), title->highID, title->lowID);
         return false;
     }
 
@@ -1503,12 +1500,12 @@ bool mkdirAndUnlink(const std::string &path) {
         sdWriteDisclaimer();
 
     if (mkdir(path.c_str(), 0666) != 0) {
-        Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), path.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), path.c_str(), strerror(errno));
         return false;
     }
 
     if (unlink(path.c_str()) == -1) {
-        Console::promptError(LanguageUtils::gettext("Failed to delete (test) folder \n\n%s\n\n%s"), path.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Failed to delete (test) folder \n\n%s\n\n%s"), path.c_str(), strerror(errno));
         return false;
     }
 
@@ -1591,7 +1588,7 @@ bool mergeTitleFolders(Title *title) {
             targetPath = StringUtils::stringFormat("%s/%s", titleNameBasedPath.c_str(), data->d_name);
             if (FSUtils::checkEntry(targetPath.c_str()) != 0) {
                 mergeErrorsCounter++;
-                Console::promptError(LanguageUtils::gettext("Cannot move %s from '%08x%08x' to\n\n%s\n\nfile already exists in target folder."), data->d_name, title->highID, title->lowID, targetPath.c_str());
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot move %s from '%08x%08x' to\n\n%s\n\nfile already exists in target folder."), data->d_name, title->highID, title->lowID, targetPath.c_str());
                 showAbortPrompt = true;
                 continue;
             }
@@ -1599,7 +1596,7 @@ bool mergeTitleFolders(Title *title) {
             targetPath = StringUtils::stringFormat("%s/%d", titleNameBasedPath.c_str(), getEmptySlotInTitleNameBasedPath(title));
             if (!mkdirAndUnlink(targetPath)) {
                 mergeErrorsCounter++;
-                Console::promptError(LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n\n%s\n\nMove not tried!"), targetPath.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error creating/removing (test) target folder\n\n%s\n\n%s\n\nMove not tried!"), targetPath.c_str(), strerror(errno));
                 showAbortPrompt = true;
                 continue;
             }
@@ -1607,7 +1604,7 @@ bool mergeTitleFolders(Title *title) {
 
         if (rename(sourcePath.c_str(), targetPath.c_str()) != 0) {
             mergeErrorsCounter++;
-            Console::promptError(LanguageUtils::gettext("Cannot rename folder '%08x%08x/%s' to\n\n%s\n\n%s"), title->highID, title->lowID, data->d_name, targetPath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot rename folder '%08x%08x/%s' to\n\n%s\n\n%s"), title->highID, title->lowID, data->d_name, targetPath.c_str(), strerror(errno));
             showAbortPrompt = true;
             continue;
         }
@@ -1616,26 +1613,26 @@ bool mergeTitleFolders(Title *title) {
 
     if (errno != 0) {
         mergeErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n\n%s\n\nMigration may be incomplete"), idBasedPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while parsing folder content\n\n%s\n\n%s\n\nMigration may be incomplete"), idBasedPath.c_str(), strerror(errno));
         closedir(dir);
         return false;
     }
 
     if (closedir(dir) != 0) {
         mergeErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n\n%s"), idBasedPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while closing folder\n\n%s\n\n%s"), idBasedPath.c_str(), strerror(errno));
         return false;
     }
 
     if (!folderEmpty(idBasedPath.c_str())) {
         mergeErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error merging folders: after moving all slots, folder\n\n%s\n\nis still not empty and cannot be deleted."), idBasedPath.c_str());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error merging folders: after moving all slots, folder\n\n%s\n\nis still not empty and cannot be deleted."), idBasedPath.c_str());
         return false;
     }
 
     if (unlink(idBasedPath.c_str()) == -1) {
         mergeErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n\n%s"), idBasedPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Failed to delete (legacy) folder\n\n%s\n\n%s"), idBasedPath.c_str(), strerror(errno));
         return false;
     }
 
@@ -1670,7 +1667,7 @@ bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
                 if (str2uint(pID, data->d_name, 16) != SUCCESS)
                     continue;
                 if (!checkIfProfileExistsInWiiUAccounts(data->d_name)) {
-                    Console::promptError(LanguageUtils::gettext("Backup contains savedata for the profile '%s',\nbut the profile does not exists in this console"), data->d_name);
+                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Backup contains savedata for the profile '%s',\nbut the profile does not exists in this console"), data->d_name);
                     closedir(dir);
                     return false;
                 }
@@ -1730,7 +1727,7 @@ bool getProfilesInPath(std::vector<std::string> &source_persistentIDs, const fs:
             }
         }
     } catch (fs::filesystem_error const &ex) {
-        Console::promptError(LanguageUtils::gettext("Error while reading folder content\n\n%s\n\n%s"), source_path.c_str(), ex.what());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while reading folder content\n\n%s\n\n%s"), source_path.c_str(), ex.what());
         return false;
     }
     return true;
@@ -1754,7 +1751,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
             source_saveinfo.push_back(line);
         ifsSaveinfo.close();
     } else {
-        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), source_saveinfo_file.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), source_saveinfo_file.c_str(), strerror(errno));
         return false;
     }
 
@@ -1808,7 +1805,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
                     target_saveinfo.push_back(source_timestamp_end);
                     continue;
                 } else {
-                    Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
+                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
                     return false;
                 }
             }
@@ -1839,7 +1836,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
 
         std::ofstream ofsDstSaveinfo(target_saveinfo_file);
         if (!ofsDstSaveinfo.is_open()) {
-            Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
             return false;
         }
 
@@ -1848,7 +1845,7 @@ bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::stri
         ofsDstSaveinfo.close();
 
         if (ofsDstSaveinfo.fail()) {
-            Console::promptError(LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), target_saveinfo_file.c_str(), strerror(errno));
         }
     }
     return true;

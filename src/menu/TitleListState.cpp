@@ -25,7 +25,7 @@ void TitleListState::render() {
     if (this->state == STATE_TITLE_LIST) {
         if ((this->titles == nullptr) || (this->titlesCount == 0)) {
             DrawUtils::endDraw();
-            Console::promptError(isWiiU ? LanguageUtils::gettext("No Wii U titles found.") : LanguageUtils::gettext("No vWii titles found."));
+            Console::showMessage(ERROR_SHOW, isWiiU ? LanguageUtils::gettext("No Wii U titles found.") : LanguageUtils::gettext("No vWii titles found."));
             this->noTitles = true;
             DrawUtils::beginDraw();
             DrawUtils::setRedraw(true);
@@ -135,9 +135,9 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                             [[fallthrough]];
                         case Button::B:
                             if (isTitleUsingTitleNameBasedPath(&this->titles[targ]))
-                                Console::promptMessageWithConfirm(COLOR_BLACK, LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them"), this->titles[targ].highID, this->titles[targ].lowID, this->titles[targ].titleNameBasedDirName);
+                                Console::showMessage(MULTIPLE_CHOICE_CONFIRM, LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them"), this->titles[targ].highID, this->titles[targ].lowID, this->titles[targ].titleNameBasedDirName);
                             else
-                                Console::promptMessageWithConfirm(COLOR_BLACK, LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used."), this->titles[targ].highID, this->titles[targ].lowID);
+                                Console::showMessage(MULTIPLE_CHOICE_CONFIRM, LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used."), this->titles[targ].highID, this->titles[targ].lowID);
                             done = true;
                             break;
                         default:

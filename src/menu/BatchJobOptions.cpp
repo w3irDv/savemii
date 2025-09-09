@@ -112,8 +112,8 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 this->titles[i].currentDataSource.hasSavedata = false;
                 continue;
             }
-            Console::promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), srcPath.c_str(), strerror(errno));
-            Console::promptError(LanguageUtils::gettext("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), srcPath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
             continue;
         }
         closedir(dir);
@@ -153,7 +153,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 }
             }
         }
-        Console::promptError(LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
         substate_return = true;
         return;
     }
@@ -206,7 +206,7 @@ nxtCheck:
         titlesWithUndefinedProfilesSummary.append("\n");
 
         if (jobType != RESTORE && GlobalCfg::global->getDontAllowUndefinedProfiles())
-            Console::promptMessageWithConfirm(COLOR_BG_WR, titlesWithUndefinedProfilesSummary.c_str());
+            Console::showMessage(WARNING_CONFIRM, titlesWithUndefinedProfilesSummary.c_str());
     }
 }
 
@@ -351,7 +351,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::B) || substate_return == true)
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::X)) {
-            Console::promptMessageWithConfirm(COLOR_BG_WR, titlesWithUndefinedProfilesSummary.c_str());
+            Console::showMessage(WARNING_CONFIRM, titlesWithUndefinedProfilesSummary.c_str());
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {

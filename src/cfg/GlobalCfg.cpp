@@ -20,7 +20,7 @@ bool GlobalCfg::mkJsonCfg() {
 
     json_t *config = json_object();
     if (config == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Error creating JSON object: %s"), cfg.c_str());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error creating JSON object: %s"), cfg.c_str());
         return false;
     }
 
@@ -32,7 +32,7 @@ bool GlobalCfg::mkJsonCfg() {
     configString = json_dumps(config, 0);
     json_decref(config);
     if (configString == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Error dumping JSON object: %s"), cfg.c_str());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error dumping JSON object: %s"), cfg.c_str());
         return false;
     }
 
@@ -48,7 +48,7 @@ bool GlobalCfg::parseJsonCfg() {
     free(configString);
 
     if (!root) {
-        Console::promptError(LanguageUtils::gettext("Error decoding JSON file\n %s\nin line %d:\n\n%s"), cfgFile.c_str(), error.line, error.text);
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error decoding JSON file\n %s\nin line %d:\n\n%s"), cfgFile.c_str(), error.line, error.text);
         return false;
     }
 

@@ -14,6 +14,8 @@ namespace fs = std::filesystem;
 
 #define M_OFF     1
 
+#define ONLY_SELECTED_TITLES true
+
 struct Account {
     char persistentID[9];
     uint32_t pID;
@@ -50,7 +52,7 @@ void writeMetadata(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, co
 void writeMetadataWithTag(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, const std::string &tag) __attribute__((hot));
 void writeMetadataWithTag(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag) __attribute__((hot));
 void writeBackupAllMetadata(const std::string &Date, const std::string &tag);
-int backupAllSave(Title *titles, int count, const std::string &batchDatetime, bool onlySelectedTitles = false) __attribute__((hot));
+int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles = false) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
 int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource = USE_WIIU_PROFILES, const std::string &tag = "") __attribute__((hot));
 int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true) __attribute__((hot));

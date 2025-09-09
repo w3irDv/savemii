@@ -8,62 +8,66 @@
 
 #include <utils/StringUtils.h>
 
-#define MAX_PROMPT_WIDTH   64 * 12
+#define MAX_PROMPT_WIDTH 64 * 12
 
-#define ASK_CONFIRMATION   -1
-#define DEFAULT_ERROR_WAIT 4
+void Console::showMessage(Style St, const char *message, ...) {
 
-void Console::promptMessage(Color bgcolor, const char *message, int wait) {
     DrawUtils::beginDraw();
-    DrawUtils::clear(bgcolor);
 
-    size_t nLines = 0;
-    size_t maxLineWidth = 0;
-    std::string formatted_message{};
-    splitMessage(message, formatted_message, maxLineWidth, nLines);
+    if (St & ST_OK) {
+        DrawUtils::clear(COLOR_BG_OK);
+    } else if (St & ST_WARNING) {
+        DrawUtils::clear(COLOR_BG_WR);
+    } else if (St & ST_ERROR) {
+        DrawUtils::clear(COLOR_BG_KO);
+    } else if (St & ST_MULTIPLE_CHOICE) { // same color than real MultipleChoice prompt
+        DrawUtils::clear(COLOR_BLACK);
+    } else {
+        DrawUtils::clear(COLOR_BG_OK);
+    }
 
-    int initialYPos = 7 - nLines / 2;
-    initialYPos = initialYPos > 0 ? initialYPos : 0;
 
-    int x = 31 - (maxLineWidth / 24);
-    x = (x < -X_OFFSET ? -X_OFFSET : x);
-    DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + Y_OFFSET) * 24, formatted_message.c_str());
-    if (wait == ASK_CONFIRMATION)
-        DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + Y_OFFSET + 4 + nLines) * 24, LanguageUtils::gettext("Press \ue000 to continue"));
+    va_list va;
+    va_start(va, message);
+    char *aggregated_message = nullptr;
+    if ((vasprintf(&aggregated_message, message, va) >= 0) && (aggregated_message != nullptr)) {
+
+        size_t nLines = 0;
+        size_t maxLineWidth = 0;
+        std::string formatted_message{};
+        splitMessage(aggregated_message, formatted_message, maxLineWidth, nLines);
+
+        int initialYPos = 7 - nLines / 2;
+        initialYPos = initialYPos > 0 ? initialYPos : 0;
+
+        int x = 31 - (maxLineWidth / 24);
+        x = (x < -X_OFFSET) ? -X_OFFSET : x;
+        DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + Y_OFFSET) * 24, formatted_message.c_str());
+        if (St & ST_CONFIRM) {
+            size_t press_nLines;
+            size_t maxLineWidth;
+            const char *press_to_continue = LanguageUtils::gettext("Press \ue000 to continue");
+            splitMessage(press_to_continue, formatted_message, maxLineWidth, press_nLines);
+            int x = 31 - (maxLineWidth / 24);
+            x = (x < -X_OFFSET) ? -X_OFFSET : x;
+            DrawUtils::print((x + X_OFFSET) * 12, (initialYPos + Y_OFFSET + 4 + nLines) * 24, formatted_message.c_str());
+        }
+    }
+    if (aggregated_message != nullptr)
+        free(aggregated_message);
+    va_end(va);
+
     DrawUtils::endDraw();
-    if (wait > 0)
-        sleep(wait);
-}
 
-void Console::promptError(const char *message, ...) {
-    va_list va;
-    va_start(va, message);
-    char *tmp = nullptr;
-    if ((vasprintf(&tmp, message, va) >= 0) && (tmp != nullptr)) {
-        promptMessage(COLOR_BG_KO, tmp, DEFAULT_ERROR_WAIT);
-    }
-    if (tmp != nullptr)
-        free(tmp);
-    va_end(va);
-}
-
-void Console::promptMessageWithConfirm(Color bgcolor, const char *message, ...) {
-
-    va_list va;
-    va_start(va, message);
-    char *tmp = nullptr;
-    if ((vasprintf(&tmp, message, va) >= 0) && (tmp != nullptr)) {
-        promptMessage(bgcolor, tmp, ASK_CONFIRMATION);
-    }
-    if (tmp != nullptr)
-        free(tmp);
-    va_end(va);
-    Input input{};
-    while (true) {
-        input.read();
-        if (input.get(ButtonState::TRIGGER, Button::A))
-            break;
-    }
+    if (St & ST_CONFIRM) {
+        Input input{};
+        while (true) {
+            input.read();
+            if (input.get(ButtonState::TRIGGER, Button::A))
+                break;
+        }
+    } else if (St & ST_SHOW)
+        sleep(DEFAULT_ERROR_WAIT);
 }
 
 bool Console::promptConfirm(Style st, const std::string &question) {
@@ -87,11 +91,11 @@ bool Console::promptConfirm(Style st, const std::string &question) {
     if (st & ST_WIPE) // for wipe bakupSet operation, we will ask that the user press X
         msg = msg3;
     if (st & ST_WARNING || st & ST_WIPE) {
-        DrawUtils::clear(Color(0x7F7F0000));
+        DrawUtils::clear(COLOR_BG_WR);
     } else if (st & ST_ERROR) {
-        DrawUtils::clear(Color(0x7F000000));
+        DrawUtils::clear(COLOR_BG_KO);
     } else {
-        DrawUtils::clear(Color(0x007F0000));
+        DrawUtils::clear(COLOR_BG_OK);
     }
     if (!(st & ST_MULTILINE)) {
 
@@ -135,13 +139,13 @@ Button Console::promptMultipleChoice(Style st, const std::string &question) {
     DrawUtils::beginDraw();
     DrawUtils::setFontColor(COLOR_TEXT);
     if (st & ST_WARNING || st & ST_WIPE) {
-        DrawUtils::clear(Color(0x7F7F0000));
+        DrawUtils::clear(COLOR_BG_WR);
     } else if (st & ST_ERROR) {
-        DrawUtils::clear(Color(0x7F000000));
+        DrawUtils::clear(COLOR_BG_KO);
     } else if (st & ST_MULTIPLE_CHOICE) {
         DrawUtils::clear(COLOR_BLACK);
     } else {
-        DrawUtils::clear(Color(0x007F0000));
+        DrawUtils::clear(COLOR_BG_OK);
     }
 
     const std::string msg = LanguageUtils::gettext("Choose your option");
@@ -302,6 +306,10 @@ void Console::splitMessage(const char *tmp, std::string &formatted_message, size
 
     std::string splitted;
     std::stringstream message_ss(tmp);
+    maxLineWidth = 0;
+    nLines = 0;
+    formatted_message.clear();
+
     size_t whitespace_width = stringWidth(" ");
     while (getline(message_ss, splitted, '\n')) {
         nLines++;

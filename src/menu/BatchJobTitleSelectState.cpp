@@ -273,7 +273,7 @@ void BatchJobTitleSelectState::render() {
                                         (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         if ((this->titles == nullptr) || (this->titlesCount == 0 || (this->candidatesCount == 0))) {
             DrawUtils::endDraw();
-            Console::promptError(LanguageUtils::gettext("There are no titles matching selected filters."));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("There are no titles matching selected filters."));
             this->noTitles = true;
             DrawUtils::beginDraw();
             DrawUtils::setRedraw(true);
@@ -405,7 +405,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
                 if (this->titles[i].currentDataSource.selectedToBeProcessed)
                     goto processSelectedTitles;
             }
-            Console::promptError(LanguageUtils::gettext("Please select some titles to work on"));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Please select some titles to work on"));
             return SUBSTATE_RUNNING;
         processSelectedTitles:
             if (jobType == BACKUP) {
@@ -469,9 +469,9 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
                             if (firstSDWrite)
                                 sdWriteDisclaimer();
                             if (excludes->save())
-                                Console::promptMessageWithConfirm(COLOR_BG_OK, LanguageUtils::gettext("Configuration saved"));
+                                Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("Configuration saved"));
                             else
-                                Console::promptMessageWithConfirm(COLOR_BG_KO, LanguageUtils::gettext("Error saving configuration"));
+                                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error saving configuration"));
                         }
                         done = true;
                         break;
@@ -540,7 +540,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         case RESTORE:
             menuTitle = LanguageUtils::gettext("Batch Restore - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Restore from %s to < %s (%s) >") : LanguageUtils::gettext("- Restore");
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchRestore Backup (WiiU)") : LanguageUtils::gettext("pre-BatchRestore Backup (vWii)");
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchRestore Backup (WiiU: %d%s") : LanguageUtils::gettext("pre-BatchRestore Backup (vWii: %d%s");
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore allusers") : LanguageUtils::gettext("- Restore");
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore no user") : LanguageUtils::gettext("- Restore");
             taskHasFailed = LanguageUtils::gettext("%s\n\nRestore failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -549,7 +549,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         case PROFILE_TO_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileCopy Backup (WiiU)") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileCopy Backup (WiiU: %d%s") : "";
             allUsersInfo = "";
             noUsersInfo = "";
             taskHasFailed = LanguageUtils::gettext("%s\n\nCopy Profile failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -558,7 +558,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         case MOVE_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileMove - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Move < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileMove Backup (WiiU)") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileMove Backup (WiiU: %d%s") : "";
             allUsersInfo = "";
             noUsersInfo = "";
             taskHasFailed = LanguageUtils::gettext("%s\n\nMove Profile failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -567,7 +567,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         case WIPE_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch Wipe - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe  < %s (%s)>") : LanguageUtils::gettext("- Wipe");
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchWipe Backup (WiiU)") : LanguageUtils::gettext("pre-BatchWipe Backup (vWii)");
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchWipe Backup (WiiU: %d%s") : LanguageUtils::gettext("pre-BatchWipe Backup (vWii: %d%s");
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe allusers") : LanguageUtils::gettext("- Wipe");
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe no user") : LanguageUtils::gettext("- Wipe");
             taskHasFailed = LanguageUtils::gettext("%s\n\nWipe failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -576,7 +576,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         case COPY_FROM_NAND_TO_USB:
             menuTitle = LanguageUtils::gettext("Batch Copy To USB - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToUSB Backup (WiiU)") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToUSB Backup (WiiU: %d%s") : "";
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
             taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from NAND to USB failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -585,7 +585,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         case COPY_FROM_USB_TO_NAND:
             menuTitle = LanguageUtils::gettext("Batch Copy To NAND - Review & Go");
             taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToNAND Backup (WiiU)") : "";
+            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToNAND Backup (WiiU: %d%s") : "";
             allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
             noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
             taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from USB to NAND failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -680,29 +680,19 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 targetTitle.currentDataSource.selectedForBackup = false;
         }
         InProgress::totalSteps = InProgress::totalSteps + countTitlesToSave(this->titles, this->titlesCount, true);
-        int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
-        if (InProgress::abortTask) {
-            if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), LanguageUtils::gettext("Do you want to wipe this incomplete batch backup?"))) {
-                InProgress::totalSteps = InProgress::currentStep = 1;
-                InProgress::titleName.assign(batchDatetime);
-                if (!wipeBackupSet("/batch/" + batchDatetime, true))
-                    BackupSetList::setIsInitializationRequired(true);
-                for (int i = 0; i < titlesCount; i++) {
-                    this->titles[i].currentDataSource.batchBackupState = NOT_TRIED;
-                    this->titles[i].currentDataSource.selectedForBackup = true;
-                }
-                return;
-            }
+        int titles_ok_counter = 0;
+        int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, titles_ok_counter, ONLY_SELECTED_TITLES);
+        if (InProgress::abortTask) { // user has aborted job in the backup phase, we can safely remove the backupset
+            InProgress::totalSteps = InProgress::currentStep = 1;
+            InProgress::titleName.assign(batchDatetime);
+            if (!wipeBackupSet("/batch/" + batchDatetime, true))
+                writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("ERROR WIPING BACKUPSET"));
             BackupSetList::setIsInitializationRequired(true);
-            if (titles_failed_counter > 0 ) {
-                writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("BACKUP CONTAINS FAILED TITLES"));
-            } else {
-                writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("PARTIAL BACKUP - USER ABORTED"));
-            }
-            goto showSummary;
+            return;
         }
         BackupSetList::setIsInitializationRequired(true);
-        writeBackupAllMetadata(batchDatetime, titles_failed_counter == 0 ? backupDescription : LanguageUtils::gettext("BACKUP CONTAINS FAILED TITLES" ));
+        std::string tag = StringUtils::stringFormat(backupDescription,titles_ok_counter, titles_failed_counter == 0 ? ")" : "+E)");
+        writeBackupAllMetadata(batchDatetime, tag.c_str());
     }
 
     for (int i = 0; i < titlesCount; i++) {
@@ -715,14 +705,14 @@ void BatchJobTitleSelectState::executeBatchProcess() {
 
         if (fullBackup)
             if (targetTitle.currentDataSource.batchBackupState != OK) {
-                sourceTitle.currentDataSource.batchJobState = ABORTED;
+                sourceTitle.currentDataSource.batchJobState = ABORTED;   // job task will only be executed if the title backup has been OK
                 continue;
             }
 
         if (jobType == RESTORE && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
             if (!checkIfProfilesInTitleBackupExist(&sourceTitle, 0)) {
                 sourceTitle.currentDataSource.batchJobState = ABORTED;
-                Console::promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), titles[i].shortName);
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), titles[i].shortName);
                 continue;
             }
         }
@@ -731,7 +721,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), sourceTitle.highID, sourceTitle.lowID, "user");
             if (!checkIfAllProfilesInFolderExists(srcPath)) {
                 sourceTitle.currentDataSource.batchJobState = ABORTED;
-                Console::promptError(LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), titles[i].shortName);
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), titles[i].shortName);
                 continue;
             }
         }
@@ -820,7 +810,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         }
     }
 
-showSummary:
+//showSummary:
     int titlesOK = 0;
     int titlesAborted = 0;
     int titlesWarning = 0;
@@ -863,7 +853,8 @@ void BatchJobTitleSelectState::executeBatchBackup() {
     InProgress::currentStep = 0;
     InProgress::abortTask = false;
     const std::string batchDatetime = getNowDateForFolder();
-    int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, true);
+    int titles_ok_counter = 0;
+    int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, titles_ok_counter, ONLY_SELECTED_TITLES);
     if (InProgress::abortTask) {
         if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), LanguageUtils::gettext("Do you want to wipe this incomplete batch backup?"))) {
             InProgress::totalSteps = InProgress::currentStep = 1;
@@ -872,9 +863,11 @@ void BatchJobTitleSelectState::executeBatchBackup() {
                 writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("ERROR WIPING BACKUPSET"));
                 BackupSetList::setIsInitializationRequired(true);
             }
-            for (int i = 0; i < this->candidatesCount; i++) {
-                this->titles[c2t[i]].currentDataSource.batchBackupState = NOT_TRIED;
-                this->titles[c2t[i]].currentDataSource.selectedForBackup = true;
+            for (int i = 0; i < this->candidatesCount; i++) {                            // we have deleted the backup, so we must reset title state
+                if (this->titles[i].currentDataSource.selectedToBeProcessed) {           // backup all save has (partially) unset selectedForBackup,
+                    this->titles[c2t[i]].currentDataSource.batchBackupState = NOT_TRIED; // but we can use selectedTobeProcessed to reset only
+                    this->titles[c2t[i]].currentDataSource.selectedForBackup = true;     // titles belonging to the las task execution
+                }
             }
             return;
         }
@@ -918,16 +911,17 @@ void BatchJobTitleSelectState::executeBatchBackup() {
 
     std::string tag;
     if (titlesOK > 0 && titles_failed_counter == 0) {
-        const char *tagTemplate;
-        tagTemplate = LanguageUtils::gettext("Partial Backup - %d %s title%s");
-        tag = StringUtils::stringFormat(tagTemplate,
+        tag = StringUtils::stringFormat(LanguageUtils::gettext("PARTIAL - %d %s title%s OK"),
                                         titlesOK,
                                         isWiiUBatchJob ? "Wii U" : "vWii",
                                         (titlesOK == 1) ? "" : "s");
     } else if (titlesOK == 0) {
-        tag = StringUtils::stringFormat(LanguageUtils::gettext("Failed backup - No titles"));
+        tag = StringUtils::stringFormat(LanguageUtils::gettext("FAILED - No titles"));
     } else if (titles_failed_counter > 0) {
-        tag = StringUtils::stringFormat(LanguageUtils::gettext("BACKUP CONTAINS FAILED TITLES"));
+        tag = StringUtils::stringFormat(LanguageUtils::gettext("FAILED - OK/KO > %s: %d/%d"),
+                                        isWiiUBatchJob ? "Wii U" : "vWii",
+                                        titles_failed_counter,
+                                        titles_failed_counter);
     }
 
     writeBackupAllMetadata(batchDatetime, tag.c_str());

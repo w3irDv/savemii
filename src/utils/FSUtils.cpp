@@ -77,13 +77,13 @@ bool FSUtils::createFolder(const char *path) {
     while ((pos = strPath.find('/', pos + 1)) != std::string::npos) {
         dir = strPath.substr(0, pos);
         if (mkdir(dir.c_str(), 0666) != 0 && errno != EEXIST) {
-            Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), dir.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), dir.c_str(), strerror(errno));
             return false;
         }
         FSAChangeMode(handle, FSUtils::newlibtoFSA(dir).c_str(), (FSMode) 0x666);
     }
     if (mkdir(strPath.c_str(), 0666) != 0 && errno != EEXIST) {
-        Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), dir.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), dir.c_str(), strerror(errno));
         return false;
     }
     FSAChangeMode(handle, FSUtils::newlibtoFSA(strPath).c_str(), (FSMode) 0x666);
@@ -112,7 +112,7 @@ bool FSUtils::removeDir(const std::string &pPath) {
             showDeleteOperations(true, data->d_name, origPath);
             DrawUtils::endDraw();
             if (unlink(origPath.c_str()) == -1) {
-                Console::promptError(LanguageUtils::gettext("Failed to delete folder\n\n%s\n\n%s"), origPath.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Failed to delete folder\n\n%s\n\n%s"), origPath.c_str(), strerror(errno));
             }
         } else {
             DrawUtils::beginDraw();
@@ -120,7 +120,7 @@ bool FSUtils::removeDir(const std::string &pPath) {
             showDeleteOperations(false, data->d_name, tempPath);
             DrawUtils::endDraw();
             if (unlink(tempPath.c_str()) == -1) {
-                Console::promptError(LanguageUtils::gettext("Failed to delete file\n\n%s\n\n%s"), tempPath.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Failed to delete file\n\n%s\n\n%s"), tempPath.c_str(), strerror(errno));
             }
             if (InProgress::totalSteps > 1) {
                 InProgress::input->read();
@@ -131,7 +131,7 @@ bool FSUtils::removeDir(const std::string &pPath) {
     }
 
     if (closedir(dir) != 0) {
-        Console::promptError(LanguageUtils::gettext("Error while reading folder content\n\n%s\n\n%s"), pPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while reading folder content\n\n%s\n\n%s"), pPath.c_str(), strerror(errno));
         return false;
     }
     return true;
@@ -145,15 +145,15 @@ bool FSUtils::createFolderUnlocked(const std::string &path) {
         dir = _path.substr(0, pos);
         if ((dir == "/vol") || (dir == "/vol/storage_mlc01" || (dir == FSUtils::newlibtoFSA(getUSB()))))
             continue;
-        FSError createdDir = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
-        if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
-            Console::promptError(LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%lx"), dir.c_str(), createdDir);
+        FSError createdDirStatus = FSAMakeDir(handle, dir.c_str(), (FSMode) 0x666);
+        if ((createdDirStatus != FS_ERROR_ALREADY_EXISTS) && (createdDirStatus != FS_ERROR_OK)) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), dir.c_str(), FSAGetStatusStr(createdDirStatus));
             return false;
         }
     }
-    FSError createdDir = FSAMakeDir(handle, _path.c_str(), (FSMode) 0x666);
-    if ((createdDir != FS_ERROR_ALREADY_EXISTS) && (createdDir != FS_ERROR_OK)) {
-        Console::promptError(LanguageUtils::gettext("Error while creating final folder:\n\n%s\n\n%lx"), dir.c_str(), createdDir);
+    FSError createdDirStatus = FSAMakeDir(handle, _path.c_str(), (FSMode) 0x666);
+    if ((createdDirStatus != FS_ERROR_ALREADY_EXISTS) && (createdDirStatus != FS_ERROR_OK)) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while creating final folder:\n\n%s\n\n%s"), dir.c_str(), FSAGetStatusStr(createdDirStatus));
         return false;
     }
     return true;
@@ -198,14 +198,14 @@ bool FSUtils::setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::
 
     fserror = FSAChangeMode(handle, FSUtils::newlibtoFSA(path).c_str(), mode);
     if (fserror != FS_ERROR_OK) {
-        Console::promptError(LanguageUtils::gettext("Error\n%s\nsetting permissions for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error\n%s\nsetting permissions for\n%s"), FSAGetStatusStr(fserror), path.c_str());
         return false;
     }
 
     fserror = FS_ERROR_OK;
     FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
     if (!shim) {
-        Console::promptError(LanguageUtils::gettext("Error creating shim for change perms\n\n%s"), path.c_str());
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error creating shim for change perms\n\n%s"), path.c_str());
         return false;
     }
 
@@ -219,7 +219,7 @@ bool FSUtils::setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::
     free(shim);
 
     if (fserror != FS_ERROR_OK) {
-        Console::promptError(LanguageUtils::gettext("Error\n%s\nsetting owner/group for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error\n%s\nsetting owner/group for\n%s"), FSAGetStatusStr(fserror), path.c_str());
         return false;
     }
 
@@ -320,7 +320,7 @@ bool FSUtils::copyFile(const std::string &sPath, const std::string &initial_tPat
         return true;
     FILE *source = fopen(sPath.c_str(), "rb");
     if (source == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), sPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), sPath.c_str(), strerror(errno));
         return false;
     }
 
@@ -342,13 +342,13 @@ bool FSUtils::copyFile(const std::string &sPath, const std::string &initial_tPat
                     return false;
                 } else {
                     fclose(source);
-                    Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), escaped_tpath.c_str(), strerror(errno));
+                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), escaped_tpath.c_str(), strerror(errno));
                     return false;
                 }
             }
         }
         fclose(source);
-        Console::promptError(LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), tPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), tPath.c_str(), strerror(errno));
         return false;
     }
 
@@ -385,10 +385,10 @@ copy_file:
 
     if (!success) {
         if (readError > 0) {
-            Console::promptError(LanguageUtils::gettext("Read error\n\n%s\n\n reading from %s"), strerror(readError), sPath.c_str());
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Read error\n\n%s\n\n reading from %s"), strerror(readError), sPath.c_str());
         }
         if (writeError > 0) {
-            Console::promptError(LanguageUtils::gettext("Write error\n\n%s\n\n copying to %s"), writeErrorStr.c_str(), sPath.c_str());
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Write error\n\n%s\n\n copying to %s"), writeErrorStr.c_str(), sPath.c_str());
         }
     }
 
@@ -402,7 +402,7 @@ bool FSUtils::copyDir(const std::string &sPath, const std::string &initial_tPath
     DIR *dir = opendir(sPath.c_str());
     if (dir == nullptr) {
         InProgress::copyErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), sPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), sPath.c_str(), strerror(errno));
         return false;
     }
 
@@ -426,7 +426,7 @@ bool FSUtils::copyDir(const std::string &sPath, const std::string &initial_tPath
         }
     mkdir_error:
         InProgress::copyErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error creating folder\n\n%s\n\n%s"), tPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error creating folder\n\n%s\n\n%s"), tPath.c_str(), strerror(errno));
         closedir(dir);
         return false;
     }
@@ -477,7 +477,7 @@ dir_created:
 
     if (errno != 0) {
         InProgress::copyErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error while parsing folder content\n\n%s\n\n%s\n\nCopy may be incomplete"), sPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while parsing folder content\n\n%s\n\n%s\n\nCopy may be incomplete"), sPath.c_str(), strerror(errno));
         std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
         if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
             InProgress::abortCopy = true;
@@ -488,7 +488,7 @@ dir_created:
 
     if (closedir(dir) != 0) {
         InProgress::copyErrorsCounter++;
-        Console::promptError(LanguageUtils::gettext("Error while closing folder\n\n%s\n\n%s"), sPath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while closing folder\n\n%s\n\n%s"), sPath.c_str(), strerror(errno));
         std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
         if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
             InProgress::abortCopy = true;
