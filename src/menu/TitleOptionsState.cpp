@@ -735,23 +735,23 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateRestoreData();
                     break;
                 case WIPE_PROFILE:
-                    if (wipeSavedata(&this->title, source_user_, common, true, USE_SD_OR_STORAGE_PROFILES) == 0)
+                    if (wipeSavedata(&this->title, source_user_, common, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully wiped!"));
                     cursorPos = 0;
                     updateWipeProfileData();
                     break;
                 case MOVE_PROFILE:
-                    if (moveSavedataToOtherProfile(&this->title, source_user_, wiiu_user, true, USE_SD_OR_STORAGE_PROFILES) == 0)
+                    if (moveSavedataToOtherProfile(&this->title, source_user_, wiiu_user, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully moved!"));
                     updateMoveCopyProfileData();
                     break;
                 case PROFILE_TO_PROFILE:
-                    if (copySavedataToOtherProfile(&this->title, source_user_, wiiu_user, true, USE_SD_OR_STORAGE_PROFILES) == 0)
+                    if (copySavedataToOtherProfile(&this->title, source_user_, wiiu_user, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
                     updateMoveCopyProfileData();
                     break;
                 case COPY_TO_OTHER_DEVICE:
-                    if (copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common, true, USE_SD_OR_STORAGE_PROFILES) == 0)
+                    if (copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
                     updateCopyToOtherDeviceData();
                     break;

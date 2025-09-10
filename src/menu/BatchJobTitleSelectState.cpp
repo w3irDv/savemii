@@ -606,7 +606,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     std::string selectedUserInfo;
 
     if (isWiiUBatchJob) {
-        summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n\n%s\n%s\n%s\n\nContinue?\n\n");
+        summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n\n%s\n%s\n%s\n\nContinue?\n\n\n");
         if (source_user > -1) {
             switch (jobType) {
                 case RESTORE:
@@ -732,15 +732,15 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             switch (source_user) {
                 case -2:
                     if (effectiveCommon)
-                        retCode = wipeSavedata(&targetTitle, -2, true, false);
+                        retCode = wipeSavedata(&targetTitle, -2, INCLUDE_COMMON, NON_INTERACTIVE);
                     break;
                 case -1:
                     if (hasSavedata(&targetTitle, false, 0))
-                        retCode = wipeSavedata(&targetTitle, -1, true, false);
+                        retCode = wipeSavedata(&targetTitle, -1, INCLUDE_COMMON, NON_INTERACTIVE);
                     break;
                 default: //source_user > -1
                     if (effectiveCommon)
-                        retCode = wipeSavedata(&targetTitle, -2, true, false);
+                        retCode = wipeSavedata(&targetTitle, -2, INCLUDE_COMMON, NON_INTERACTIVE);
                     bool targeHasProfileSavedata = hasProfileSave(&targetTitle, false, false, getWiiUAcc()[this->wiiu_user].pID, 0, 0);
                     if (sourceTitle.currentDataSource.hasProfileSavedata && targeHasProfileSavedata) {
                         switch (jobType) {
@@ -749,10 +749,10 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                             case MOVE_PROFILE:
                             case COPY_FROM_NAND_TO_USB:
                             case COPY_FROM_USB_TO_NAND:
-                                retCode += wipeSavedata(&targetTitle, wiiu_user, false, false);
+                                retCode += wipeSavedata(&targetTitle, wiiu_user, SKIP_COMMON, NON_INTERACTIVE);
                                 break;
                             case WIPE_PROFILE: // in this case we allow to delete users not created in the console, so we use source_user.
-                                retCode += wipeSavedata(&sourceTitle, source_user, false, false, USE_SD_OR_STORAGE_PROFILES);
+                                retCode += wipeSavedata(&sourceTitle, source_user, SKIP_COMMON, NON_INTERACTIVE, USE_SD_OR_STORAGE_PROFILES);
                                 break;
                             default:;
                         }
@@ -768,17 +768,17 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         int globalRetCode = retCode << 8;
         switch (jobType) {
             case RESTORE:
-                retCode = restoreSavedata(&this->titles[i], 0, source_user, wiiu_user, effectiveCommon, false); //always from slot 0
+                retCode = restoreSavedata(&this->titles[i], 0, source_user, wiiu_user, effectiveCommon, NON_INTERACTIVE); //always from slot 0
                 break;
             case PROFILE_TO_PROFILE:
-                retCode = copySavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, false, USE_SD_OR_STORAGE_PROFILES);
+                retCode = copySavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, NON_INTERACTIVE, USE_SD_OR_STORAGE_PROFILES);
                 break;
             case MOVE_PROFILE:
-                retCode = moveSavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, false, USE_SD_OR_STORAGE_PROFILES);
+                retCode = moveSavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, NON_INTERACTIVE, USE_SD_OR_STORAGE_PROFILES);
                 break;
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                retCode = copySavedataToOtherDevice(&sourceTitle, &targetTitle, source_user, wiiu_user, effectiveCommon, false, USE_SD_OR_STORAGE_PROFILES);
+                retCode = copySavedataToOtherDevice(&sourceTitle, &targetTitle, source_user, wiiu_user, effectiveCommon, NON_INTERACTIVE, USE_SD_OR_STORAGE_PROFILES);
                 break;
             default:
                 break;

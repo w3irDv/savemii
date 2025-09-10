@@ -15,6 +15,10 @@ namespace fs = std::filesystem;
 #define M_OFF     1
 
 #define ONLY_SELECTED_TITLES true
+#define INTERACTIVE true
+#define NON_INTERACTIVE false
+#define INCLUDE_COMMON true
+#define SKIP_COMMON false
 
 struct Account {
     char persistentID[9];
