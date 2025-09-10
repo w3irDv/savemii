@@ -4,7 +4,7 @@
 
 #include <string>
 #include <utils/Colors.h>
-#include <utils/DrawUtils.h> 
+#include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
 
 enum Style {
@@ -15,15 +15,16 @@ enum Style {
     ST_MULTILINE = 16,
     ST_OK = 32,
     OK_CONFIRM = 36,
+    OK_SHOW = 40,
     ST_WARNING = 64,
     WARNING_CONFIRM = 68,
     WARNING_SHOW = 72,
     ST_ERROR = 128,
-    ERROR_CONFIRM = 132, 
+    ERROR_CONFIRM = 132,
     ERROR_SHOW = 136,
     ST_WIPE = 256,
     ST_MULTIPLE_CHOICE = 512,
-    MULTIPLE_CHOICE_CONFIRM = 516   // used to show a 2nd message after a promptMultipleChoice call
+    MULTIPLE_CHOICE_CONFIRM = 516 // used to show a 2nd message after a promptMultipleChoice call
 };
 
 #define DEFAULT_ERROR_WAIT 2
@@ -40,6 +41,6 @@ namespace Console {
     void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...);
     void consolePrintPosMultiline(int x, int y, const char *format, ...);
 
-    void splitMessage(const char *tmp, std::string & formatted_message, size_t & maxLineWidth, size_t & nLines);
+    void splitMessage(const char *tmp, std::string &formatted_message, size_t &maxLineWidth, size_t &nLines);
 
 } // namespace Console

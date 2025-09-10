@@ -8,11 +8,11 @@
 #include <savemng.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/FSUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
-#include <utils/FSUtils.h>
 
 #define TAG_OFF 17
 
@@ -78,7 +78,7 @@ void TitleOptionsState::render() {
             else
                 DrawUtils::setFontColor(BackupSetList::isRootBackupSet() ? COLOR_INFO_AT_CURSOR : COLOR_LIST_DANGER_AT_CURSOR);
             Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BackupSet: %s"),
-                                   (this->task == BACKUP) ? BackupSetList::ROOT_BS.c_str() : BackupSetList::getBackupSetEntry().c_str());
+                                            (this->task == BACKUP) ? BackupSetList::ROOT_BS.c_str() : BackupSetList::getBackupSetEntry().c_str());
         }
         entrycount = 2;
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -121,7 +121,7 @@ void TitleOptionsState::render() {
             if (!emptySlot) {
                 DrawUtils::setFontColor(COLOR_INFO);
                 Console::consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Slot -> Date: %s"),
-                                       slotInfo.c_str());
+                                                slotInfo.c_str());
                 if (tag != "") {
                     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
                     Console::consolePrintPos(TAG_OFF, 5, "[%s]", tag.c_str());
@@ -209,7 +209,7 @@ void TitleOptionsState::render() {
                         if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) {
                             DrawUtils::setFontColor(COLOR_TEXT);
                             Console::consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
-                                                   hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
+                                                            hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         }
                         if (hasCommonSaveInSource) {
                             switch (source_user) {
@@ -242,7 +242,7 @@ void TitleOptionsState::render() {
                                                      LanguageUtils::gettext("No 'common' save found."));
                         if (task == RESTORE || task == COPY_TO_OTHER_DEVICE)
                             Console::consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
-                                                   hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
+                                                            hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         common = false;
                     }
                     break;
@@ -725,28 +725,34 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             }
             switch (this->task) {
                 case BACKUP:
-                    backupSavedata(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES);
+                    if (backupSavedata(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES) == 0)
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully backed up!"));
                     updateBackupData();
                     break;
                 case RESTORE:
-                    restoreSavedata(&this->title, slot, source_user_, wiiu_user, common);
+                    if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common) == 0)
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully restored!"));
                     updateRestoreData();
                     break;
                 case WIPE_PROFILE:
-                    wipeSavedata(&this->title, source_user_, common, true, USE_SD_OR_STORAGE_PROFILES);
+                    if (wipeSavedata(&this->title, source_user_, common, true, USE_SD_OR_STORAGE_PROFILES) == 0)
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully wiped!"));
                     cursorPos = 0;
                     updateWipeProfileData();
                     break;
                 case MOVE_PROFILE:
-                    moveSavedataToOtherProfile(&this->title, source_user_, wiiu_user, true, USE_SD_OR_STORAGE_PROFILES);
+                    if (moveSavedataToOtherProfile(&this->title, source_user_, wiiu_user, true, USE_SD_OR_STORAGE_PROFILES) == 0)
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully moved!"));
                     updateMoveCopyProfileData();
                     break;
                 case PROFILE_TO_PROFILE:
-                    copySavedataToOtherProfile(&this->title, source_user_, wiiu_user, true, USE_SD_OR_STORAGE_PROFILES);
+                    if (copySavedataToOtherProfile(&this->title, source_user_, wiiu_user, true, USE_SD_OR_STORAGE_PROFILES) == 0)
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
                     updateMoveCopyProfileData();
                     break;
                 case COPY_TO_OTHER_DEVICE:
-                    copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common, true, USE_SD_OR_STORAGE_PROFILES);
+                    if (copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common, true, USE_SD_OR_STORAGE_PROFILES) == 0)
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
                     updateCopyToOtherDeviceData();
                     break;
                 default:;
