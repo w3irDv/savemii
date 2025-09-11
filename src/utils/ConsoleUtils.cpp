@@ -266,35 +266,53 @@ void Console::kConsolePrintPos(int x, int y, int x_offset, const char *format, .
         free(tmp);
 }
 
+//! multiline print with automatic newline split, words can also be splitted
 void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
     va_list va;
     va_start(va, format);
+    char *aggregated_message = nullptr;
+    if ((vasprintf(&aggregated_message, format, va) >= 0) && (aggregated_message != nullptr)) {
 
-    std::vector<char> buffer(2048);
-    vsprintf(buffer.data(), format, va);
-    std::string tmp(buffer.begin(), buffer.end());
-    buffer.clear();
-    va_end(va);
+        y += Y_OFFSET;
 
-    y += Y_OFFSET;
-
-    uint32_t maxLineLength = (60 - x);
-
-    std::string currentLine;
-    std::istringstream iss(tmp);
-    while (std::getline(iss, currentLine)) {
-        while ((DrawUtils::getTextWidth(currentLine.c_str()) / 12) > maxLineLength) {
-            std::size_t spacePos = currentLine.find_last_of(' ', maxLineLength);
-            if (spacePos == std::string::npos) {
-                spacePos = maxLineLength;
-            }
-            DrawUtils::print((x + X_OFFSET) * 12, y++ * 24, currentLine.substr(0, spacePos + 1).c_str());
-            currentLine = currentLine.substr(spacePos + 1);
+        uint32_t maxLineLength = (MAX_PROMPT_WIDTH/12 - x - X_OFFSET) ;
+        if (maxLineLength < 1) {
+            DrawUtils::print((x + X_OFFSET) * 12, y * 24, "overflow");
+            return;   
         }
-        DrawUtils::print((x + X_OFFSET) * 12, y++ * 24, currentLine.c_str());
+
+        std::string currentLine;
+        std::istringstream iss(aggregated_message);
+        while (std::getline(iss, currentLine)) {
+            while ((DrawUtils::getTextWidth(currentLine.c_str()) / 12) > maxLineLength) {
+                std::size_t splitPoint = 0;
+                size_t subLength = 0;
+                for (unsigned i = 0; i < currentLine.length();) {
+                    size_t cplen;
+                    if ((currentLine[i] & 0xf8) == 0xf0)
+                        cplen = 4;
+                    else if ((currentLine[i] & 0xf0) == 0xe0)
+                        cplen = 3;
+                    else if ((currentLine[i] & 0xe0) == 0xc0)
+                        cplen = 2;
+                    else
+                        cplen = 1;
+                    i += cplen;
+                    subLength = DrawUtils::getTextWidth(currentLine.substr(0,i).c_str()) / 12;
+                    splitPoint = i;
+                    if (subLength > maxLineLength) {
+                        break;
+                    }
+                }
+                DrawUtils::print((x + X_OFFSET) * 12, y++ * 24, currentLine.substr(0, splitPoint).c_str());
+                currentLine = currentLine.substr(splitPoint);
+            }
+            DrawUtils::print((x + X_OFFSET) * 12, y++ * 24, currentLine.c_str());
+        }
     }
-    tmp.clear();
-    tmp.shrink_to_fit();
+    if (aggregated_message != nullptr)
+        free(aggregated_message);
+    va_end(va);
 }
 
 size_t stringWidth(const std::string &word) {
@@ -302,6 +320,7 @@ size_t stringWidth(const std::string &word) {
     return (size_t) DrawUtils::getTextWidth((char *) word.c_str());
 }
 
+//! split string in multiple lines, trying not to split words
 void Console::splitMessage(const char *tmp, std::string &formatted_message, size_t &maxLineWidth, size_t &nLines) {
 
     std::string splitted;
