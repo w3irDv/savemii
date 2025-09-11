@@ -107,7 +107,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             if (!finalScreen) {
                 if (cursorPos + scroll == 0) {
-                    Console::promptError(LanguageUtils::gettext("Root BackupSet cannot be selected for batchRestore"));
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Root BackupSet cannot be selected for batchRestore"));
                     return SUBSTATE_RUNNING;
                 }
             }
@@ -121,7 +121,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                          BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll).c_str(),
                          BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos + scroll).c_str(),
                          Metadata::thisConsoleSerialId.c_str());
-                Console::promptMessage(COLOR_BG_OK, message);
+                Console::showMessage(OK_CONFIRM, message);
                 return SUBSTATE_RETURN;
             } else // is a step in batchRestore
             {

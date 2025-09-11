@@ -17,7 +17,7 @@ bool statDebugUtils::statDir(const std::string &entryPath, FILE *file) {
     FSStatFlags fsstatflags;
     FSError fserror = FSAGetStat(FSUtils::handle, FSUtils::newlibtoFSA(entryPath).c_str(), &fsastat);
     if (fserror != FS_ERROR_OK) {
-        Console::promptError("Error opening dir: %s", FSAGetStatusStr(fserror));
+        Console::showMessage(ERROR_SHOW, "Error opening dir: %s", FSAGetStatusStr(fserror));
         return false;
     }
     fsmode = fsastat.mode;
@@ -49,7 +49,7 @@ bool statDebugUtils::statDir(const std::string &entryPath, FILE *file) {
 
         DIR *dir = opendir(entryPath.c_str());
         if (dir == nullptr) {
-            fprintf(file, "Error opening source dir\n\n%s\n%s", entryPath.c_str(), strerror(errno));
+            fprintf(file, "Error opening source dir\n\n%s\n\n%s", entryPath.c_str(), strerror(errno));
             return false;
         }
 
@@ -160,6 +160,6 @@ void statDebugUtils::showFile(const std::string &file, const std::string &toRemo
 
     fclose(fp);
 
-    Console::promptMessage(COLOR_BG_OK, message.c_str());
+    Console::showMessage(OK_CONFIRM, message.c_str());
     DrawUtils::setRedraw(true);
 }

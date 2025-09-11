@@ -8,7 +8,8 @@
 #define SCREEN_WIDTH  854
 #define SCREEN_HEIGHT 480
 
-#define Y_OFF         1
+#define X_OFFSET      2
+#define Y_OFFSET      1
 
 union Color {
     explicit Color(uint32_t color) {

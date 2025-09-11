@@ -112,10 +112,8 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 this->titles[i].currentDataSource.hasSavedata = false;
                 continue;
             }
-            std::string multilinePath;
-            StringUtils::splitStringWithNewLines(srcPath, multilinePath);
-            Console::promptError(LanguageUtils::gettext("Error opening source dir\n\n%s\n%s"), multilinePath.c_str(), strerror(errno));
-            Console::promptError(LanguageUtils::gettext("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), srcPath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
             continue;
         }
         closedir(dir);
@@ -155,7 +153,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 }
             }
         }
-        Console::promptError(LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
         substate_return = true;
         return;
     }
@@ -197,7 +195,7 @@ nxtCheck:
                 titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored. You can:\n* Backup it with 'allusers' option or with Batch Backup\n* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."));
                 break;
             case RESTORE:
-                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("The BackupSet contains savedata for profiles that don't exist in this console.\nYou can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
+                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
                 break;
             default:;
         }
@@ -208,7 +206,7 @@ nxtCheck:
         titlesWithUndefinedProfilesSummary.append("\n");
 
         if (jobType != RESTORE && GlobalCfg::global->getDontAllowUndefinedProfiles())
-            Console::promptMessage(COLOR_BG_WR, titlesWithUndefinedProfilesSummary.c_str());
+            Console::showMessage(WARNING_CONFIRM, titlesWithUndefinedProfilesSummary.c_str());
     }
 }
 
@@ -353,7 +351,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::B) || substate_return == true)
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::X)) {
-            Console::promptMessage(COLOR_BG_WR, titlesWithUndefinedProfilesSummary.c_str());
+            Console::showMessage(WARNING_CONFIRM, titlesWithUndefinedProfilesSummary.c_str());
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {

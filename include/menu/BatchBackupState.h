@@ -31,4 +31,6 @@ private:
     int vWiiTitlesCount;
 
     inline static int cursorPos = 0;
+
+    void backup_all_saves();
 };

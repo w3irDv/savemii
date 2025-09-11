@@ -43,17 +43,17 @@ ApplicationState::eSubState KeyboardState::update(Input *input) {
     if (input->get(ButtonState::TRIGGER, Button::B)) {
         return SUBSTATE_RETURN;
     }
-    if (input->get(ButtonState::TRIGGER, Button::LEFT)) {
+    if (input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::REPEAT, Button::LEFT)) {
         cursorPosX = keyboard->kbLeft();
     }
-    if (input->get(ButtonState::TRIGGER, Button::RIGHT)) {
+    if (input->get(ButtonState::TRIGGER, Button::RIGHT) || input->get(ButtonState::REPEAT, Button::RIGHT)) {
         cursorPosX = keyboard->kbRight();
     }
-    if (input->get(ButtonState::TRIGGER, Button::DOWN)) {
+    if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
         cursorPosY = keyboard->kbDown();
         cursorPosX = keyboard->getColumn();
     }
-    if (input->get(ButtonState::TRIGGER, Button::UP)) {
+    if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
         cursorPosY = keyboard->kbUp();
         cursorPosX = keyboard->getColumn();
     }

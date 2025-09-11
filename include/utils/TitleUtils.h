@@ -80,6 +80,8 @@ namespace TitleUtils {
 
     void setTitleNameBasedDirName(Title *title);
 
+    void reset_backup_state(Title *titles,int title_count);
+
     template<class It>
     void sortTitle(It titles, It last, int tsort /*= 1*/, bool sortAscending /*= true*/) {
         switch (tsort) {

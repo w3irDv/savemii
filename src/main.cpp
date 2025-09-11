@@ -49,7 +49,7 @@ int main() {
 
     int res = romfsInit();
     if (res) {
-        Console::promptError("Failed to init romfs: %d", res);
+        Console::showMessage(ERROR_SHOW, "Failed to init romfs: %d", res);
         DrawUtils::endDraw();
         State::shutdown();
         return 0;
@@ -61,7 +61,7 @@ int main() {
     GlobalCfg::global = std::make_unique<GlobalCfg>("cfg");
 
     if (!GlobalCfg::global->init()) {
-        Console::promptError("Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
+        Console::showMessage(ERROR_SHOW, "Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
         romfsExit();
 
         DrawUtils::deinitFont();
@@ -85,7 +85,7 @@ int main() {
     StartupUtils::addInitMessage(LanguageUtils::gettext("Initializing FS"));
 
     if (!FSUtils::initFS()) {
-        Console::promptError(LanguageUtils::gettext("FSUtils::initFS failed. Please make sure your MochaPayload is up-to-date"));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("FSUtils::initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
         romfsExit();
         DrawUtils::deinitFont();
@@ -141,9 +141,12 @@ int main() {
             DrawUtils::clear(COLOR_BACKGROUND);
 
             Console::consolePrintPos(0, 0, "SaveMii v%u.%u.%u%s", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
-            Console::consolePrintPos(0, 1, "----------------------------------------------------------------------------");
+            //Console::consolePrintPos(0, 1, "----------------------------------------------------------------------------");
+            DrawUtils::drawLine(16, 60, 812, 60, COLOR_TEXT_AT_CURSOR.r , COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
+            DrawUtils::drawLine(16, 62, 812, 62, COLOR_TEXT_AT_CURSOR.r , COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
 
-            Console::consolePrintPos(0, 16, "----------------------------------------------------------------------------");
+            //Console::consolePrintPos(0, 16, "----------------------------------------------------------------------------");
+            DrawUtils::drawLine(16, 420, 812, 420, COLOR_TEXT_AT_CURSOR.r , COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
             Console::consolePrintPos(0, 17, LanguageUtils::gettext("Press \ue044 to exit."));
 
             DrawUtils::setRedraw(false);

@@ -56,7 +56,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
     int j = 0;
     auto *savesl = (Saves *) malloc(receivedCount * sizeof(Saves));
     if (savesl == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
         return nullptr;
     }
     for (uint32_t i = 0; i < receivedCount; i++) {
@@ -115,7 +115,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
     foundCount += tNoSave;
     auto *saves = (Saves *) malloc((foundCount) * sizeof(Saves));
     if (saves == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
         return nullptr;
     }
 
@@ -160,7 +160,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
     auto *titles = (Title *) malloc(std::max(foundCount, MAXTITLES) * sizeof(Title));
 #endif
     if (titles == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
         return nullptr;
     }
 
@@ -346,7 +346,7 @@ Title *TitleUtils::loadWiiTitles() {
 
     auto *titles = (Title *) malloc(vWiiTitlesCount * sizeof(Title));
     if (titles == nullptr) {
-        Console::promptError(LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
         return nullptr;
     }
 
@@ -521,4 +521,10 @@ void TitleUtils::setTitleNameBasedDirName(Title *title) {
     sprintf(idstr, " [%08x-%08x]", title->highID, title->lowID);
     int insert_point = std::min((int) strlen(title->titleNameBasedDirName), FILENAME_BUFF_SIZE - ID_STR_BUFF_SIZE);
     strcpy(&(title->titleNameBasedDirName[insert_point]), idstr);
+}
+
+void TitleUtils::reset_backup_state(Title *titles,int title_count) {
+    for (int i = 0; i < title_count; i++) {
+        titles[i].currentDataSource.batchBackupState = NOT_TRIED;
+    }
 }

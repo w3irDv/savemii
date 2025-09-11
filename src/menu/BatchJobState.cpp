@@ -26,21 +26,21 @@ void BatchJobState::render() {
                 screenTitle = LanguageUtils::gettext("Batch Restore");
                 wiiUTask = LanguageUtils::gettext("   Restore Wii U (%u Title%s)");
                 vWiiTask = LanguageUtils::gettext("   Restore vWii (%u Title%s)");
-                readme = LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to the same user profiles\n* to a different user in the same console \n* or to a different console where the games are already installed.\nIn the later case, it is recommended to first run the game to \n  initialize the savedata.");
+                readme = LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to the same user profiles\n* to a different user in the same console \n* or to a different console where the games are already installed.\nIn the later case, it is recommended to first run the game to initialize the savedata.");
                 nextTask = LanguageUtils::gettext("\ue000: Continue to BackupSet selection  \ue001: Back");
                 break;
             case WIPE_PROFILE:
                 screenTitle = LanguageUtils::gettext("Batch Wipe");
                 wiiUTask = LanguageUtils::gettext("   Wipe Wii U Profiles (%u Title%s)");
                 vWiiTask = LanguageUtils::gettext("   Wipe vWii Savedata (%u Title%s)");
-                readme = LanguageUtils::gettext("Batch Wipe allows you to wipe savedata belonging to a given profile\nacross all selected titles.\nIt detects also savedata belonging to profiles not defined in the console.\n\nJust:\n- select which data to wipe\n- select titles to act on\n- and go!");
+                readme = LanguageUtils::gettext("Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n\nJust:\n- select which data to wipe\n- select titles to act on\n- and go!");
                 nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
                 break;
             case COPY_TO_OTHER_DEVICE:
                 screenTitle = LanguageUtils::gettext("Batch Copy To Other Device");
                 wiiUTask = LanguageUtils::gettext("   Copy Wii U Savedata from NAND to USB");
                 vWiiTask = LanguageUtils::gettext("   Copy Wii U Savedata from USB to NAND");
-                readme = LanguageUtils::gettext("Batch Copy To Other Device allows you to transfer savedata \nbetween NAND and USB for all selected titles that already\n have savadata on both media.\n\nJust:\n- select which data to copy\n- select titles to act on\n- and go!");
+                readme = LanguageUtils::gettext("Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n\nJust:\n- select which data to copy\n- select titles to act on\n- and go!");
                 nextTask = LanguageUtils::gettext("\ue000: Continue to savedata selection  \ue001: Back");
                 break;
             default:
@@ -65,7 +65,7 @@ void BatchJobState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPos(M_OFF, 6, readme);
+        Console::consolePrintPosAutoFormat(M_OFF, 6, readme);
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(17, 4, 2, nextTask);
     }

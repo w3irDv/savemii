@@ -14,6 +14,8 @@
 #include <utils/LanguageUtils.h>
 #include <utils/statDebug.h>
 
+#include <utils/StringUtils.h>
+
 #define ENTRYCOUNT 9
 
 void MainMenuState::render() {
@@ -108,6 +110,9 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN))
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
+        if (input->get(ButtonState::TRIGGER, Button::Y) || input->get(ButtonState::REPEAT, Button::Y)) {
+            return SUBSTATE_RUNNING;
+        }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {
