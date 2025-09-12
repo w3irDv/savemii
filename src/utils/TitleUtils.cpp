@@ -20,7 +20,7 @@
 //#define STRESS
 #ifdef STRESS
 #include <algorithm>
-#include <tga_reader.h>
+#include <tga_reader/tga_reader.h>
 #define MAXTITLES 300
 #endif
 

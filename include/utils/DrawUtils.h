@@ -1,6 +1,6 @@
 #pragma once
 
-#include "schrift.h"
+#include <schrift/schrift.h>
 #include <coreinit/memory.h>
 #include <cstdint>
 

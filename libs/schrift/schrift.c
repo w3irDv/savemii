@@ -34,7 +34,7 @@
 #include <unistd.h>
 #endif
 
-#include <utils/schrift.h>
+#include "schrift.h"
 
 #define SCHRIFT_VERSION           "0.10.2"
 

@@ -9,7 +9,7 @@
 #include <malloc.h>
 #include <memory>
 #include <proc_ui/procui.h>
-#include <tga_reader.h>
+#include <tga_reader/tga_reader.h>
 #include <utils/Colors.h>
 #include <utils/DrawUtils.h>
 
