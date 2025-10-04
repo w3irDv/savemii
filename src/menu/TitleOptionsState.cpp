@@ -279,7 +279,7 @@ void TitleOptionsState::render() {
             Console::consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 11 : 8, "   %s (%s)", LanguageUtils::gettext("Savedata in NAND"),
                                      hasUserDataInNAND ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
             if (task == WIPE_PROFILE) {
-                Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select vWii U data to wipe:"));
+                Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select vWii data to wipe:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 if (source_user == -3) {
                     Console::consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("full metadata + savedata"));

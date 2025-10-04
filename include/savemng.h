@@ -12,8 +12,6 @@ namespace fs = std::filesystem;
 
 #define PATH_SIZE 0x400
 
-#define M_OFF     1
-
 #define ONLY_SELECTED_TITLES true
 #define INTERACTIVE true
 #define NON_INTERACTIVE false

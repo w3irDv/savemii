@@ -7,6 +7,8 @@
 #include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
 
+#define M_OFF     1
+
 enum Style {
     ST_YES_NO = 1,
     ST_CONFIRM_CANCEL = 2,

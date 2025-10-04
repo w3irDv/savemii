@@ -4,6 +4,7 @@
 #include <coreinit/debug.h>
 #include <memory>
 #include <menu/MainMenuState.h>
+#include <romfs-wiiu.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
 #include <utils/FSUtils.h>
@@ -13,7 +14,6 @@
 #include <utils/StateUtils.h>
 #include <utils/TitleUtils.h>
 #include <version.h>
-#include <romfs-wiiu.h>
 
 //#define DEBUG
 
@@ -21,7 +21,6 @@
 #include <whb/log.h>
 #include <whb/log_udp.h>
 #endif
-
 
 int main() {
 
@@ -142,11 +141,11 @@ int main() {
 
             Console::consolePrintPos(0, 0, "SaveMii v%u.%u.%u%s", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
             //Console::consolePrintPos(0, 1, "----------------------------------------------------------------------------");
-            DrawUtils::drawLine(16, 60, 812, 60, COLOR_TEXT_AT_CURSOR.r , COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
-            DrawUtils::drawLine(16, 62, 812, 62, COLOR_TEXT_AT_CURSOR.r , COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
+            DrawUtils::drawLine(16, 60, 812, 60, COLOR_TEXT_AT_CURSOR.r, COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
+            DrawUtils::drawLine(16, 62, 812, 62, COLOR_TEXT_AT_CURSOR.r, COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
 
             //Console::consolePrintPos(0, 16, "----------------------------------------------------------------------------");
-            DrawUtils::drawLine(16, 420, 812, 420, COLOR_TEXT_AT_CURSOR.r , COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
+            DrawUtils::drawLine(16, 420, 812, 420, COLOR_TEXT_AT_CURSOR.r, COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
             Console::consolePrintPos(0, 17, LanguageUtils::gettext("Press \ue044 to exit."));
 
             DrawUtils::setRedraw(false);

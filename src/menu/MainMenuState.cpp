@@ -6,19 +6,19 @@
 #include <menu/BatchJobState.h>
 #include <menu/ConfigMenuState.h>
 #include <menu/MainMenuState.h>
+#include <menu/MiiTasksState.h>
 #include <menu/TitleListState.h>
 #include <savemng.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
-#include <utils/statDebug.h>
-
 #include <utils/StringUtils.h>
+#include <utils/statDebug.h>
 
 #include <segher-s_wii/segher.h>
 
-#define ENTRYCOUNT 9
+#define ENTRYCOUNT 11
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -51,8 +51,13 @@ void MainMenuState::render() {
         Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Batch Copy to Other Device"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 8);
         Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   BackupSet Management"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 9);
+        Console::consolePrintPos(M_OFF, 14, LanguageUtils::gettext("   WiiU Mii Management"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 10);
+        Console::consolePrintPos(M_OFF, 15, LanguageUtils::gettext("   vWii Mii Management"));
+
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1) ? 1 : 0) + ((cursorPos > 7) ? 1 : 0), "\u2192");
+        Console::consolePrintPos(M_OFF, 2 + cursorPos + (cursorPos > 1 ? 1 : 0) + (cursorPos > 7 ? 1 : 0) + (cursorPos > 8 ? 1 : 0), "\u2192");
         Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
     }
 }
@@ -98,6 +103,16 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>();
                     break;
+                case 9:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->substateCalled = STATE_BACKUPSET_MENU;
+                    this->subState = std::make_unique<MiiTasksState>(WIIU_MII);
+                    break;
+                case 10:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->substateCalled = STATE_BACKUPSET_MENU;
+                    this->subState = std::make_unique<MiiTasksState>(VWII_MII);
+                    break;
                 default:
                     break;
             }
@@ -113,9 +128,9 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
         if (input->get(ButtonState::TRIGGER, Button::Y) || input->get(ButtonState::REPEAT, Button::Y)) {
-            char* arg[] = {(char *)"just to compile"};
-            pack(1,arg);
-            unpack(1,arg);
+            char *arg[] = {(char *) "just to compile"};
+            pack(1, arg);
+            unpack(1, arg);
             return SUBSTATE_RUNNING;
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
