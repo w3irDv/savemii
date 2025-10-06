@@ -38,7 +38,7 @@ void StartupUtils::addInitMessage(const char *newMessage) {
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
-    Console::consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%c", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
+    Console::consolePrintPosAligned(5, 0, 1, "SaveMii v%u.%u.%u%s", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
 
     int line = 0;
     for (auto &message : initMessageList) {

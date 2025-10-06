@@ -32,7 +32,7 @@ include $(DEVKITPRO)/wut/share/wut_rules
 #-------------------------------------------------------------------------------
 TARGET		:=	savemii
 BUILD		:=	build
-SOURCES		:=	src src/utils src/menu src/cfg 
+SOURCES		:=	src src/utils src/menu src/cfg src/mii 
 DATA		:=	data
 INCLUDES	:=	include
 CONTENT		:=

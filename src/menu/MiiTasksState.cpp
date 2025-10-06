@@ -1,8 +1,8 @@
 #include <coreinit/debug.h>
 #include <cstring>
-//#include <menu/MiiDBOptionsState.h>
+#include <menu/MiiDBOptionsState.h>
 #include <menu/MiiTasksState.h>
-//#include <utils/MiiUtils.h>
+#include <utils/MiiUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
@@ -83,15 +83,15 @@ ApplicationState::eSubState MiiTasksState::update(Input *input) {
             switch (cursorPos) {
                 case 0:
                     this->state = STATE_DO_SUBSTATE;
-                    //this->subState = std::make_unique<MiiDBOptionsState>(*mii_repo, BACKUP, is_wiiu_mii);
+                    this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, BACKUP, is_wiiu_mii);
                     break;
                 case 1:
                     this->state = STATE_DO_SUBSTATE;
-                    //this->subState = std::make_unique<MiiDBOptionsState>(*mii_repo, RESTORE, is_wiiu_mii);
+                    this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, RESTORE, is_wiiu_mii);
                     break;
                 case 2:
                     this->state = STATE_DO_SUBSTATE;
-                    //this->subState = std::make_unique<MiiDBOptionsState>(*mii_repo, WIPE_PROFILE, is_wiiu_mii);
+                    this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, WIPE_PROFILE, is_wiiu_mii);
                     break;
                 case 3:
                     this->state = STATE_DO_SUBSTATE;

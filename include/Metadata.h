@@ -1,7 +1,9 @@
 #pragma once
 
+#include "miisavemng.h"
 #include <BackupSetList.h>
 #include <jansson.h>
+#include <mii/Mii.h>
 #include <savemng.h>
 #include <string>
 
@@ -45,6 +47,9 @@ public:
         path = getBatchBackupPathRoot(datetime) + "/savemiiMeta.json";
     }
 
+    Metadata(MiiRepo *mii_repo, uint8_t slot) : slot(slot),
+                                                      path(MiiSaveMng::getMiiRepoBackupPath(mii_repo, slot).append("/savemiiMeta.json")),
+                                                      serialId(this->thisConsoleSerialId),repo_name(mii_repo->repo_name) {};
 
     bool read();
     bool write();
@@ -59,6 +64,11 @@ public:
     std::string getSerialId() { return serialId; };
     uint32_t getVWiiHighID() { return this->vWiiHighID; };
 
+    bool read_mii();
+    bool write_mii();
+    void setDate(const std::string &Date) {this->Date = Date;};
+    void setStorage(const std::string &storage) {this->storage = storage;};
+
 private:
     uint32_t highID;
     uint32_t lowID;
@@ -72,4 +82,7 @@ private:
     std::string storage;
     std::string serialId;
     std::string tag;
+    
+    std::string repo_name;
+
 };

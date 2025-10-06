@@ -10,10 +10,13 @@
 #include <utils/FSUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/MiiUtils.h>
 #include <utils/StartupUtils.h>
 #include <utils/StateUtils.h>
 #include <utils/TitleUtils.h>
 #include <version.h>
+
+#include <unistd.h>
 
 //#define DEBUG
 
@@ -117,6 +120,10 @@ int main() {
     ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes", wiititles, TitleUtils::vWiiTitlesCount);
     ExcludesCfg::wiiuExcludes->init();
     ExcludesCfg::wiiExcludes->init();
+
+    StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing Mii repos."));
+
+    MiiUtils::initMiiRepos();
 
     StartupUtils::resetMessageList();
 

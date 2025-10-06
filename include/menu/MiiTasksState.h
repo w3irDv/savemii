@@ -4,7 +4,7 @@
 #include <memory>
 //#include <savemng.h>
 //#include <utils/InputUtils.h>
-//#include <utils/MiiUtils.h>
+#include <utils/MiiUtils.h>
 
 #define WIIU_MII true
 #define VWII_MII false
@@ -14,7 +14,7 @@ public:
     MiiTasksState(bool is_wiiu_mii) : is_wiiu_mii(is_wiiu_mii) {
         entrycount = is_wiiu_mii ? 6 : 4;
 
-        //mii_repo = is_wiiu_mii ? MiiUtils::MiiRepos["FFL"] : MiiUtils::MiiRepos["RFL"]; 
+        mii_repo = is_wiiu_mii ? MiiUtils::MiiRepos["FFL"] : MiiUtils::MiiRepos["RFL"];
     };
 
     //    ~MiiTasksState() {
@@ -37,5 +37,5 @@ private:
     int entrycount = 5;
     bool is_wiiu_mii = true;
 
-    //MiiRepo *mii_repo;
+    MiiRepo *mii_repo;
 };
