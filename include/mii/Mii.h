@@ -70,8 +70,8 @@ public:
     std::vector<Mii *> miis;
     std::map<std::string, std::vector<size_t> *> owners;
 
-    //const static inline std::string BACKUP_ROOT = "fs:/vol/external01/backups/MiiRepoBckp";
-    const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii";
+    const static inline std::string BACKUP_ROOT = "fs:/vol/external01/wiiu/backups/MiiRepoBckp";
+    //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii";
 };
 
 struct MiiStatus {

@@ -63,7 +63,7 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
 
 int MiiRepo::restore(int slot) {
 
-    // todo: copy if repo is one file, createfolderunlocked
+    // todo: copy if repo is one file, createfolderunlocked, backup if non-empty slot
 
     if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
         return -1;

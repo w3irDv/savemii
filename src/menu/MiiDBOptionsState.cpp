@@ -18,10 +18,22 @@
 
 #define TAG_OFF 17
 
+
+#include <bitset>
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <nn/ffl/miidata.h>
+#include <string>
+#include <vector>
+#include <utils/MiiUtils.h>
+
+
 MiiDBOptionsState::MiiDBOptionsState(MiiRepo *mii_repo, eJobType task, bool is_wiiu_mii) : mii_repo(mii_repo), task(task), is_wiiu_mii(is_wiiu_mii) {
 
     db_type = mii_repo->db_type;
-    
+
     entrycount = 1;
     switch (task) {
         case BACKUP:
@@ -120,6 +132,18 @@ void MiiDBOptionsState::render() {
                 Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
                 break;
             default:;
+        }
+
+        {
+
+            std::ifstream MyReadFile;
+            const char *fichero = "fs:/vol/external01/wiiu/lbtest.bin";
+            MyReadFile.open(fichero, std::ios_base::binary);
+            size_t size = std::filesystem::file_size(std::filesystem::path(fichero));
+            FFLCreateID DatFileBuf;
+            MyReadFile.read((char *) &DatFileBuf, size);
+            MyReadFile.close();
+            Console::consolePrintPos(4, 15, "flags: %01x   ts: %07x ", DatFileBuf.flags, DatFileBuf.timestamp);
         }
     }
 }
@@ -222,7 +246,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
         }
         switch (this->task) {
             case BACKUP:
-                if ( mii_repo->backup(slot) == 0 )
+                if (mii_repo->backup(slot) == 0)
                     Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully backed up!"));
                 updateBackupData();
                 break;
@@ -249,7 +273,26 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
             this->substateCalled = STATE_KEYBOARD;
             //this->subState = std::make_unique<KeyboardState>(newTag);
         }
-    } else if (this->state == STATE_DO_SUBSTATE) {
+
+    }
+    if (input->get(ButtonState::TRIGGER, Button::Y)) {
+            Console::showMessage(OK_CONFIRM,"bckp slot 1");
+            MiiUtils::MiiRepos["FFL"]->backup(1);
+            Console::showMessage(OK_CONFIRM,"bckp slot 0");
+            MiiUtils::MiiRepos["FFL"]->backup(0,"tag me up");
+
+            Console::showMessage(OK_CONFIRM,"populate repo FFL");
+            MiiUtils::MiiRepos["FFL"]->populate_repo();
+            Console::showMessage(OK_CONFIRM,"populate repo RFL");
+            MiiUtils::MiiRepos["RFL"]->populate_repo();
+
+            Console::showMessage(OK_CONFIRM,"extract mii");
+             MiiData *miidata = MiiUtils::MiiRepos["FFL"]->extract_mii(0);
+             Console::showMessage(OK_CONFIRM,"import mii");
+             MiiUtils::MiiRepos["RFL"]->import_miidata(miidata);
+             Console::showMessage(OK_CONFIRM,"DONE!");
+    }
+    if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {
             // keep running.

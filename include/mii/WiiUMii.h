@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#define MII_NAMES_SIZE 10
+#define DEVHASH_SIZE 6
 
 class WiiUMii : public Mii {
 public:
@@ -29,6 +31,7 @@ public:
     bool import_mii(Mii &mii) { return ( mii.mii_name == ""); }; // from (temp)mem to the repo
     bool import_miidata(MiiData *mii_data);
     MiiData *extract_mii(size_t index); // from the repo to (tmp)mem
+    bool find_name(std::string &newname);
 
     std::vector<std::string> mii_filepath;
 
