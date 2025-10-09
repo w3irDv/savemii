@@ -270,8 +270,12 @@ void Escape::convertToFAT32ASCIICompliant(const std::string &originalName, std::
 bool Escape::genUniqueEscapedPath(const std::string &initial_spath, const std::string &initial_tpath, std::string &escaped_tpath) {
 
     uint8_t repl = 63; // first char will be @, A, B , ...
-    std::string escaped_spath{};
+    // let's assume the initial path and escape path may be alredy ok
+    std::string escaped_spath{initial_spath};
+    escaped_tpath = initial_tpath;
+    bool containsForbidden = false;
     if (escapeSpecialFAT32Chars(initial_spath, escaped_spath, ONLY_ENDNAME, "_") && escapeSpecialFAT32Chars(initial_tpath, escaped_tpath, ONLY_ENDNAME, "_")) {
+        containsForbidden = true;
         while ((FSUtils::checkEntry(escaped_spath.c_str()) != 0) || (FSUtils::checkEntry(escaped_tpath.c_str()) != 0)) { // path exists
             if (++repl > 123)
                 return false; // last character: z
@@ -282,12 +286,13 @@ bool Escape::genUniqueEscapedPath(const std::string &initial_spath, const std::s
             escapeSpecialFAT32Chars(initial_tpath, escaped_tpath, ONLY_ENDNAME, replacement);
         }
     }
-    return true;
+    return containsForbidden;
 }
 
 bool Escape::constructEscapedSourceAndTargetPaths(const std::string &initial_spath, const std::string &initial_tpath, std::string &escaped_spath, std::string &escaped_tpath, std::string &basepath_escaped_spath) {
 
-    // only end_path can need escaping;
+    // by construction, wen we call the function only the end_path can need escaping, the basepath is already FAT32 compliant
+    // if path does not contains forbidden chars or we cannot generate an escaped name, we return false
     if (!genUniqueEscapedPath(initial_spath, initial_tpath, escaped_tpath))
         return false;
 

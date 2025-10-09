@@ -407,14 +407,12 @@ bool FSUtils::copyDir(const std::string &sPath, const std::string &initial_tPath
     }
 
     if ((mkdir(tPath.c_str(), 0666) != 0) && errno != EEXIST) {
-        Console::showMessage(ERROR_CONFIRM,"1st mkdir - %s",strerror(errno));
         if ((errno == EINVAL || errno == ENAMETOOLONG || errno == ENOENT) && if_generate_FAT32_translation_file) {
             std::string escaped_spath{};
             std::string escaped_tpath{};
             std::string only_bp_escaped_spath{};
             if (Escape::constructEscapedSourceAndTargetPaths(sPath, initial_tPath, escaped_spath, escaped_tpath, only_bp_escaped_spath)) {
                 if ((mkdir(escaped_tpath.c_str(), 0666) != 0) && errno != EEXIST) {
-                    Console::showMessage(ERROR_CONFIRM,"2nd mkdir - %s",strerror(errno));
                     goto mkdir_error;
                 }
                 tPath = escaped_tpath;
