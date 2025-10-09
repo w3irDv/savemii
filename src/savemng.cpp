@@ -108,45 +108,6 @@ Account *getVolAcc() {
     return vol_acc;
 }
 
-bool folderEmpty(const char *fPath) {
-    DIR *dir = opendir(fPath);
-    if (dir == nullptr)
-        return true; // if empty or non-existant, return true.
-
-    bool empty = true;
-    struct dirent *data;
-    while ((data = readdir(dir)) != nullptr) {
-        // rewritten to work wether ./.. are returned or not
-        if (strcmp(data->d_name, ".") == 0 || strcmp(data->d_name, "..") == 0)
-            continue;
-        empty = false;
-        break;
-    }
-
-    closedir(dir);
-    return empty;
-}
-
-
-bool folderEmptyIgnoreSavemii(const char *fPath) {
-    DIR *dir = opendir(fPath);
-    if (dir == nullptr)
-        return true; // if empty or non-existant, return true.
-
-    bool empty = true;
-    struct dirent *data;
-    while ((data = readdir(dir)) != nullptr) {
-        // rewritten to work wether ./.. are returned or not
-        if (strcmp(data->d_name, ".") == 0 || strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, "savemiiMeta.json") == 0)
-            continue;
-        empty = false;
-        break;
-    }
-
-    closedir(dir);
-    return empty;
-}
-
 void getAccountsWiiU() {
     /* get persistent ID - thanks to Maschell */
     nn::act::Initialize();
@@ -433,7 +394,7 @@ bool hasProfileSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t s
         }
     }
     if (FSUtils::checkEntry(srcPath) == 2)
-        if (!folderEmpty(srcPath))
+        if (!FSUtils::folderEmpty(srcPath))
             return true;
     return false;
 }
@@ -463,7 +424,7 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
         }
     }
     if (FSUtils::checkEntry(srcPath.c_str()) == 2)
-        if (!folderEmpty(srcPath.c_str()))
+        if (!FSUtils::folderEmpty(srcPath.c_str()))
             return true;
     return false;
 }
@@ -483,7 +444,7 @@ bool hasSavedata(Title *title, bool inSD, uint8_t slot) {
         srcPath = getDynamicBackupPath(title, slot);
 
     if (FSUtils::checkEntry(srcPath.c_str()) == 2)
-        if (!folderEmptyIgnoreSavemii(srcPath.c_str()))
+        if (!FSUtils::folderEmptyIgnoreSavemii(srcPath.c_str()))
             return true;
     return false;
 }
@@ -511,7 +472,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
     if (interactive) {
         if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
-        if (!folderEmpty(dstPath.c_str())) {
+        if (!FSUtils::folderEmpty(dstPath.c_str())) {
             int slotb = getEmptySlot(titleb);
             // backup is always of allusers
             if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
@@ -620,7 +581,7 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
     if (interactive) {
         if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
-        if (!folderEmpty(basePath.c_str())) {
+        if (!FSUtils::folderEmpty(basePath.c_str())) {
             int slot = getEmptySlot(title);
             // backup is always of allusers
             if ((slot >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
@@ -678,7 +639,7 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
     if (interactive) {
         if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
-        if (!folderEmpty(basePath.c_str())) {
+        if (!FSUtils::folderEmpty(basePath.c_str())) {
             int slot = getEmptySlot(title);
             // backup is always of allusers
             if ((slot >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?"))) {
@@ -1031,7 +992,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     if (interactive) {
         if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
             return -1;
-        if (!folderEmpty(dstPath.c_str())) {
+        if (!FSUtils::folderEmpty(dstPath.c_str())) {
             // individual backups always to ROOT backupSet and always allusers
             BackupSetList::saveBackupSetSubPath();
             BackupSetList::setBackupSetSubPathToRoot();
@@ -1156,7 +1117,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
 
     // THIS NOW CANNOT HAPPEN -  CHECK FROM WHERE CAN BE CALLED
     /*
-    if (folderEmpty(srcPath.c_str())) {
+    if (FSUtils::folderEmpty(srcPath.c_str())) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("There is no Savedata to wipe!"));
         return 0;
     }
@@ -1624,7 +1585,7 @@ bool mergeTitleFolders(Title *title) {
         return false;
     }
 
-    if (!folderEmpty(idBasedPath.c_str())) {
+    if (!FSUtils::folderEmpty(idBasedPath.c_str())) {
         mergeErrorsCounter++;
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error merging folders: after moving all slots, folder\n\n%s\n\nis still not empty and cannot be deleted."), idBasedPath.c_str());
         return false;

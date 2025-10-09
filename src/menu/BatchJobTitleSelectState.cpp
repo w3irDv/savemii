@@ -84,13 +84,13 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
             if (source_user > -1) {
                 std::string usersavePath = srcPath + "/" + getVolAcc()[source_user].persistentID;
 
-                if (!folderEmpty(usersavePath.c_str()))
+                if (!FSUtils::folderEmpty(usersavePath.c_str()))
                     this->titles[i].currentDataSource.hasProfileSavedata = true;
             }
 
             if (source_user != -1) {
                 std::string commonSavePath = srcPath + "/common";
-                if (!folderEmpty(commonSavePath.c_str()))
+                if (!FSUtils::folderEmpty(commonSavePath.c_str()))
                     this->titles[i].currentDataSource.hasCommonSavedata = true;
             }
 

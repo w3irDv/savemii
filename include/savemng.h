@@ -45,8 +45,6 @@ bool getLoadiineSaveVersionList(int *out, const char *gamePath);
 bool isSlotEmpty(Title *title, uint8_t slot);
 bool isSlotEmptyInTitleBasedPath(Title *title, uint8_t slot);
 bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime);
-bool folderEmpty(const char *fPath);
-bool folderEmptyIgnoreSavemii(const char *fPath);
 std::string getNowDateForFolder() __attribute__((hot));
 std::string getNowDate() __attribute__((hot));
 void writeMetadata(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB) __attribute__((hot));

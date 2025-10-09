@@ -105,7 +105,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                     this->titles[i].currentDataSource.hasSavedata = true;
                 }
             } else {
-                this->titles[i].currentDataSource.hasSavedata = !folderEmpty(srcPath.c_str());
+                this->titles[i].currentDataSource.hasSavedata = !FSUtils::folderEmpty(srcPath.c_str());
             }
         } else {
             if (errno == ENOENT) {
