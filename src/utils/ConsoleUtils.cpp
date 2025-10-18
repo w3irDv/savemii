@@ -348,7 +348,7 @@ void Console::splitMessage(const char *tmp, std::string &formatted_message, size
                 last_line_width -= word_width;
                 if (word_width > MAX_PROMPT_WIDTH) {
                     std::string splitted_word;
-                    size_t cp_count = 0;
+                    size_t total_cp_width = 0;
                     for (unsigned i = 0; i < word.length();) {
                         size_t cplen;
                         if ((word[i] & 0xf8) == 0xf0)
@@ -362,21 +362,21 @@ void Console::splitMessage(const char *tmp, std::string &formatted_message, size
                         std::string current_cp = word.substr(i, cplen);
                         i += cplen;
                         size_t current_cp_width = stringWidth(current_cp);
-                        cp_count += current_cp_width;
-                        if (cp_count <= MAX_PROMPT_WIDTH) {
+                        total_cp_width += current_cp_width;
+                        if (total_cp_width <= MAX_PROMPT_WIDTH) {
                             splitted_word += current_cp;
-                            maxLineWidth = cp_count > maxLineWidth ? cp_count : maxLineWidth;
+                            maxLineWidth = total_cp_width > maxLineWidth ? total_cp_width : maxLineWidth;
                         } else {
                             splitted_word += "\n" + current_cp;
-                            cp_count = current_cp_width;
+                            total_cp_width = current_cp_width;
                             maxLineWidth = MAX_PROMPT_WIDTH;
                             nLines++;
                         }
                     }
                     word = splitted_word;
-                    word_width = cp_count;
+                    word_width = total_cp_width;
                 }
-                maxLineWidth = last_line_width > maxLineWidth ? last_line_width : maxLineWidth;
+                maxLineWidth = word_width > maxLineWidth ? word_width : maxLineWidth;
                 if (!multiline.empty())
                     nLines++;
                 multiline += multiline.empty() ? word : "\n" + word;
