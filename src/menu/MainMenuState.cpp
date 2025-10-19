@@ -6,19 +6,22 @@
 #include <menu/BatchJobState.h>
 #include <menu/ConfigMenuState.h>
 #include <menu/MainMenuState.h>
-#include <menu/MiiTasksState.h>
+#include <menu/MiiProcessSharedState.h>
+#include <menu/MiiRepoSelectState.h>
+#include <menu/MiiTypeDeclarations.h>
 #include <menu/TitleListState.h>
 #include <savemng.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/MiiUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
 
 #include <segher-s_wii/segher.h>
 
-#define ENTRYCOUNT 11
+#define ENTRYCOUNT 10
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -52,9 +55,7 @@ void MainMenuState::render() {
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 8);
         Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 9);
-        Console::consolePrintPos(M_OFF, 14, LanguageUtils::gettext("   WiiU Mii Management"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 10);
-        Console::consolePrintPos(M_OFF, 15, LanguageUtils::gettext("   vWii Mii Management"));
+        Console::consolePrintPos(M_OFF, 14, LanguageUtils::gettext("   Mii Management"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + cursorPos + (cursorPos > 1 ? 1 : 0) + (cursorPos > 7 ? 1 : 0) + (cursorPos > 8 ? 1 : 0), "\u2192");
@@ -65,6 +66,8 @@ void MainMenuState::render() {
 ApplicationState::eSubState MainMenuState::update(Input *input) {
     if (this->state == STATE_MAIN_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
+            MiiProcessSharedState mii_process_shared_state;
+            std::vector<bool> mii_repos_candidates;
             switch (cursorPos) {
                 case 0:
                     this->state = STATE_DO_SUBSTATE;
@@ -106,12 +109,9 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                 case 9:
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
-                    this->subState = std::make_unique<MiiTasksState>(WIIU_MII);
-                    break;
-                case 10:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->substateCalled = STATE_BACKUPSET_MENU;
-                    this->subState = std::make_unique<MiiTasksState>(VWII_MII);
+                    for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)
+                        mii_repos_candidates.push_back(true);
+                    this->subState = std::make_unique<MiiRepoSelectState>(&mii_repos_candidates, MiiProcess::SELECT_SOURCE_REPO, &mii_process_shared_state);
                     break;
                 default:
                     break;

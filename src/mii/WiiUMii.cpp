@@ -3,42 +3,50 @@
 #include <malloc.h>
 #include <mii/Mii.h>
 #include <mii/WiiUMii.h>
-//#include <mii/WiiUMiiStruct.h>
 #include <utf8.h>
 #include <utils/ConsoleUtils.h>
-#include <utils/LanguageUtils.h>
 #include <utils/FSUtils.h>
-#include <nn/ffl/miidata.h>
+#include <utils/LanguageUtils.h>
+#include <utils/MiiUtils.h>
+
+//#define BYTE_ORDER__LITTLE_ENDIAN
 
 namespace fs = std::filesystem;
 
-WiiUFolderRepo::WiiUFolderRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, path_to_repo, backup_folder) {
+WiiUFolderRepo::WiiUFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, db_kind, path_to_repo, backup_folder) {
     db_type = FFL;
 };
 
-
-std::string epoch_to_utc(int temp) {
-    // long temp = stol(epoch);
-    const time_t old = (time_t) temp;
-    struct tm *oldt = gmtime(&old);
-    return asctime(oldt);
-}
-
 WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp,
-                 std::string device_hash, uint64_t author_id, MiiRepo *mii_repo, size_t index) : Mii(mii_name, creator_name, timestamp,
-                                                                                                     device_hash, author_id, mii_repo, index) {};
+                 std::string device_hash, uint64_t author_id, bool copyable,
+                 FFLCreateIDFlags mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
+                 size_t index) : Mii(mii_name, creator_name, timestamp, device_hash, author_id, WIIU, mii_repo, index),
+                                 copyable(copyable), mii_id_flags(mii_id_flags), birth_platform(birth_platform) {};
 
 bool WiiUFolderRepo::populate_repo() {
 
+    this->miis.clear();
     size_t index = 0;
+    
 
-    for (const auto &entry : fs::directory_iterator(path_to_repo)) {
+    //printf("c: %d\n",FSUtils::checkEntry(path_to_repo.c_str()));
+    //if (FSUtils::checkEntry(path_to_repo.c_str()) != 2) {
+    //    Console::showMessage(ERROR_CONFIRM,"error accessing %s:\n %s",path_to_repo.c_str(),strerror(errno));
+    //    return false;
+    //}
+
+    std::error_code ec;
+    for (const auto &entry : fs::directory_iterator(path_to_repo, ec)) {
 
         std::filesystem::path filename = entry.path();
         std::string filename_str = filename.string();
 
         std::ifstream mii_file;
         mii_file.open(filename, std::ios_base::binary);
+        if (!mii_file.is_open()) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            continue;
+        }
         size_t size = std::filesystem::file_size(std::filesystem::path(filename));
 
         if (size != 92 && size != 96) // Allow "bare" mii or mii+CRC
@@ -52,12 +60,20 @@ bool WiiUFolderRepo::populate_repo() {
         size = sizeof(FFLiMiiDataOfficial); // we will ignore last two checkum bytes, if there
 
         mii_file.read((char *) &mii_data, size);
+        if (mii_file.fail()) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            continue;
+        }
         mii_file.close();
+        if (mii_file.fail()) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            continue;
+        }
 
-        //uint8_t birth_platform = mii_data.core.birth_platform;
-        //bool copyable = mii_data.core.copyable == 1;
+        uint8_t birth_platform = mii_data.core.birth_platform;
+        bool copyable = mii_data.core.copyable == 1;
         uint64_t author_id = mii_data.core.author_id;
-       // uint8_t mii_id_flags = mii_data.core.mii_id.flags;
+        uint8_t mii_id_flags_u8 = mii_data.core.mii_id.flags;
         uint32_t mii_id_timestamp = mii_data.core.mii_id.timestamp;
         uint8_t mii_id_deviceHash[DEVHASH_SIZE];
         for (size_t i = 0; i < DEVHASH_SIZE; i++)
@@ -71,12 +87,30 @@ bool WiiUFolderRepo::populate_repo() {
             creator_name[i] = mii_data.creator_name[i];
         creator_name[10] = 0;
 
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+        // just for testing purposes in a linux box
+        birth_platform = mii_data.core.unk_0x00_b4;
+        copyable = (mii_data.core.font_region & 1) == 1;
+        author_id = __builtin_bswap64(author_id);
+        uint32_t h_ts = mii_id_flags_u8 << 24;
+        mii_id_flags_u8 = (uint8_t) mii_id_timestamp & 0x0F;
+        mii_id_timestamp = (__builtin_bswap32((mii_id_timestamp >> 4)) >> 8) + h_ts;
+
+        for (size_t i = 0; i < MII_NAMES_SIZE; i++) {
+            mii_name[i] = __builtin_bswap16(mii_name[i]);
+        }
+        for (size_t i = 0; i < MII_NAMES_SIZE; i++) {
+            creator_name[i] = __builtin_bswap16(creator_name[i]);
+        }
+#endif
         std::u16string name16;
         name16 = std::u16string(mii_name);
         std::string miiName = utf8::utf16to8(name16);
 
         name16 = std::u16string(creator_name);
         std::string creatorName = utf8::utf16to8(name16);
+
+        FFLCreateIDFlags mii_id_flags = (FFLCreateIDFlags) mii_id_flags_u8;
 
         struct tm tm = {
                 .tm_sec = 0,
@@ -91,7 +125,7 @@ bool WiiUFolderRepo::populate_repo() {
         };
         time_t base = mktime(&tm);
 
-        std::string timestamp = epoch_to_utc(mii_id_timestamp * 2 + base);
+        std::string timestamp = MiiUtils::epoch_to_utc(mii_id_timestamp * 2 + base);
 
         std::string deviceHash{};
         for (size_t i = 0; i < DEVHASH_SIZE; i++) {
@@ -100,7 +134,7 @@ bool WiiUFolderRepo::populate_repo() {
             deviceHash.append(hexhex);
         }
 
-        WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, deviceHash, author_id, this, index);
+        WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, mii_id_flags, birth_platform, this, index);
         this->miis.push_back(wiiu_mii);
         this->mii_filepath.push_back(filename_str);
 
@@ -114,6 +148,10 @@ bool WiiUFolderRepo::populate_repo() {
         index++;
     }
 
+    if (ec.value() != 0) {
+        Console::showMessage(ERROR_CONFIRM, "Error accessing Mii repo  %s at %s:\n\n %s", repo_name.c_str(), path_to_repo.c_str(), ec.message().c_str());
+        return false;
+    }
 
     return true;
 };
@@ -134,6 +172,10 @@ MiiData *WiiUFolderRepo::extract_mii(size_t index) {
 
     std::ifstream mii_file;
     mii_file.open(mii_filepath.c_str(), std::ios_base::binary);
+    if (!mii_file.is_open()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        return nullptr;
+    }
     size_t size = std::filesystem::file_size(std::filesystem::path(mii_filepath));
 
     if (size != 92 && size != 96) // Allow "bare" mii or mii+CRC
@@ -151,7 +193,15 @@ MiiData *WiiUFolderRepo::extract_mii(size_t index) {
 
     // we allow files with or without CRC
     mii_file.read((char *) mii_buffer, size);
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        return nullptr;
+    }
     mii_file.close();
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        return nullptr;
+    }
 
     WiiUMiiData *wiiu_miidata = new WiiUMiiData();
 
@@ -162,7 +212,7 @@ MiiData *WiiUFolderRepo::extract_mii(size_t index) {
 }
 
 bool WiiUFolderRepo::find_name(std::string &newname) {
-    if ( FSUtils::checkEntry( this->path_to_repo.c_str()  ) != 2) {
+    if (FSUtils::checkEntry(this->path_to_repo.c_str()) != 2) {
         newname = this->path_to_repo; // so the error will show the path
         return false;
     }
@@ -170,34 +220,49 @@ bool WiiUFolderRepo::find_name(std::string &newname) {
     size_t repo_entries = this->miis.size();
     // todo: decide naming schema
     newname = this->path_to_repo + "/WIIU-" + std::to_string(repo_entries);
-    while ( FSUtils::checkEntry(newname.c_str()) != 0 ) {
-        newname = this->path_to_repo + "/WIIU-" + std::to_string(++repo_entries);
+    while ((FSUtils::checkEntry(newname.c_str()) != 0) && repo_entries < 3000) {
+        newname = this->path_to_repo + "/WIIU-" + std::to_string(++repo_entries)+".mii";
     }
-    if (errno != ENOENT) {
+    if (errno != ENOENT || repo_entries == 3000) {
         // probably an unrecoverable error
         return false;
     }
-    
-    return true;
 
+    return true;
 }
 
 bool WiiUFolderRepo::import_miidata(MiiData *miidata) {
 
+    if (miidata == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import null data") );
+        return false;
+    }
+
     size_t size = miidata->mii_data_size;
-    
+
     std::string newname{};
-    if (! this->find_name(newname)) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find a name for the mii file:\n%s\n%s"), newname.c_str(),strerror(errno));
+    if (!this->find_name(newname)) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find a name for the mii file:\n%s\n%s"), newname.c_str(), strerror(errno));
         return false;
     }
 
     std::ofstream mii_file;
     mii_file.open(newname.c_str(), std::ios_base::binary);
-
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), newname.c_str(), strerror(errno));
+        return false;
+    }
     mii_file.write((char *) miidata->mii_data, size);
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), newname.c_str(), strerror(errno));
+        return false;
+    }
 
     mii_file.close();
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), newname.c_str(), strerror(errno));
+        return false;
+    }
 
     return true;
 }

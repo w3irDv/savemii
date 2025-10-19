@@ -2,13 +2,12 @@
 
 #include <ApplicationState.h>
 #include <memory>
-//#include <savemng.h>
-#include <utils/InputUtils.h>
 #include <mii/Mii.h>
+//#include <utils/InputUtils.h>
+#include <menu/MiiTypeDeclarations.h>
 
 class MiiDBOptionsState : public ApplicationState {
 public:
-    
     enum eState {
         STATE_MII_DB_OPTIONS,
         STATE_DO_SUBSTATE,
@@ -19,11 +18,10 @@ public:
         STATE_KEYBOARD
     };
 
-    MiiDBOptionsState(MiiRepo *mii_repo, eJobType task, bool is_wiiu_mii);
+    MiiDBOptionsState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action);
 
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
-
 
 
 private:
@@ -34,13 +32,14 @@ private:
 
     MiiRepo::eDBType db_type;
     MiiRepo *mii_repo;
-    eJobType task;
-    bool is_wiiu_mii;
-    const char* db_name;
+    MiiProcess::eMiiProcessActions action;
+    const char *db_name;
+
+    bool unsupported_action = false;
 
     uint8_t slot = 0;
     int cursorPos = 0;
-    int entrycount = 2;
+    int entrycount = 1;
 
     std::string tag{};
     std::string newTag{};
@@ -50,15 +49,17 @@ private:
     std::string slotInfo{};
     void updateSlotMetadata();
 
-    bool sourceHasData = false;
-    void updateSourceHasData();
+    bool repoHasData = false;
+    void updateRepoHasData();
 
     bool targetHasData = false;
     void updateTargethasData();
+
+    bool sourceSelectionHasData = false;
+    void passiveUpdateSourceSelectionHasData();
 
     void updateBackupData();
     void updateRestoreData();
     void updateWipeData();
 
-    void updateHasSourceData();
 };

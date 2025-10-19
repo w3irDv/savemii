@@ -9,17 +9,24 @@
 class MiiRepo;
 
 class Mii {
+
 public:
-    Mii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, MiiRepo *mii_repo, size_t index);
-    std::string mii_name;
-    std::string creator_name;
+    enum eMiiType {
+        WII,
+        WIIU
+    };
+
+    Mii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, eMiiType mii_type, MiiRepo *mii_repo, size_t index);
+    std::string mii_name{};
+    std::string creator_name{};
     //uint8_t mii_id[4]; // flag + tstamp
     //uint8_t mac[6];    // wiiu: mac wiiu, wii: hash + 3 bytes from mac + 2 0
-    std::string timestamp;
-    std::string device_hash;
-    uint64_t author_id; // only for wii u
-    MiiRepo *mii_repo;
-    size_t index;
+    std::string timestamp{};
+    std::string device_hash{};
+    uint64_t author_id = 0x0; // only for wii u
+    eMiiType mii_type = WIIU;
+    MiiRepo *mii_repo = nullptr;
+    size_t index = 0;
 };
 
 class MiiData {
@@ -38,12 +45,15 @@ public:
     enum eDBType {
         FFL,
         RFL,
-        ACCOUNT,
+        ACCOUNT
+    };
+
+    enum eDBKind {
+        FILE,
         FOLDER
     };
 
-    MiiRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
-
+    MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
 
     virtual bool populate_repo() = 0;
 
@@ -63,18 +73,16 @@ public:
 
     const std::string repo_name;
     eDBType db_type;
+    eDBKind db_kind;
     const std::string path_to_repo;
     const std::string backup_base_path;
-
+    MiiRepo* stage_repo;
 
     std::vector<Mii *> miis;
     std::map<std::string, std::vector<size_t> *> owners;
 
-    const static inline std::string BACKUP_ROOT = "fs:/vol/external01/wiiu/backups/MiiRepoBckp";
-    //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii";
-};
+    void setStageRepo(MiiRepo *stage_repo) {this->stage_repo = stage_repo;};
 
-struct MiiStatus {
-    bool selected;
-    bool status;
+    const static inline std::string BACKUP_ROOT = "fs:vol/external01/wiiu/backups/MiiRepoBckp";
+    //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii";
 };

@@ -11,14 +11,15 @@
 #include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
 
-MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder) : repo_name(repo_name), db_type(db_type), path_to_repo(path_to_repo), backup_base_path(BACKUP_ROOT + "/" + backup_folder) {};
+MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder) : repo_name(repo_name), db_type(db_type), db_kind(db_kind), path_to_repo(path_to_repo), backup_base_path(BACKUP_ROOT + "/" + backup_folder) {};
 
 Mii::Mii(std::string mii_name, std::string creator_name, std::string timestamp,
-         std::string device_hash, uint64_t author_id, MiiRepo *mii_repo, size_t index) : mii_name(mii_name),
+         std::string device_hash, uint64_t author_id, eMiiType mii_type, MiiRepo *mii_repo, size_t index) : mii_name(mii_name),
                                                                                          creator_name(creator_name),
                                                                                          timestamp(timestamp),
                                                                                          device_hash(device_hash),
                                                                                          author_id(author_id),
+                                                                                         mii_type(mii_type),
                                                                                          mii_repo(mii_repo),
                                                                                          index(index) {};
 
@@ -36,7 +37,6 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
         return -1;
     }
 
-
     std::string errorMessage{};
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
@@ -46,9 +46,32 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
     std::string srcPath = this->path_to_repo;
     std::string dstPath = this->backup_base_path + "/" + std::to_string(slot);
 
-    if (!FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE)) {
-        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
-        errorCode = 1;
+    //if (firstSDWrite)
+    //    sdWriteDisclaimer();
+
+
+    if (!FSUtils::createFolder(dstPath.c_str())) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."), this->repo_name.c_str());
+        return 8;
+    }
+
+    switch (this->db_kind) {
+        case FOLDER: {
+            if (!FSUtils::copyDir(srcPath, dstPath)) {
+                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                errorCode = 1;
+            }
+        } break;
+        case FILE: {
+            size_t last_slash = srcPath.find_last_of("/");
+            std::string filename = srcPath.substr(last_slash, std::string::npos);
+            dstPath = dstPath + filename;
+            if (!FSUtils::copyFile(srcPath, dstPath)) {
+                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                errorCode = 1;
+            }
+        } break;
+        default:;
     }
 
     if (errorCode == 0)
@@ -63,10 +86,11 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
 
 int MiiRepo::restore(int slot) {
 
-    // todo: copy if repo is one file, createfolderunlocked, backup if non-empty slot
+    // todo: createfolderunlocked, backup if non-empty slot
 
     if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
         return -1;
+
 
     std::string errorMessage{};
     int errorCode = 0;
@@ -77,9 +101,37 @@ int MiiRepo::restore(int slot) {
     std::string srcPath = this->backup_base_path + "/" + std::to_string(slot);
     std::string dstPath = this->path_to_repo;
 
-    if (!FSUtils::copyDir(srcPath, dstPath)) {
-        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
-        errorCode = 1;
+    if (!FSUtils::folderEmpty(dstPath.c_str())) {
+        int slotb = MiiSaveMng::getEmptySlot(this);
+        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
+            if (!(this->backup(slotb, LanguageUtils::gettext("pre-Restore backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+                return -1;
+            }
+    }
+
+    switch (this->db_kind) {
+        case FOLDER: {
+            if (!FSUtils::createFolderUnlocked(dstPath)) {
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nRestore failed."), this->repo_name);
+                errorCode = 16;
+                return errorCode;
+            }
+            if (!FSUtils::copyDir(srcPath, dstPath)) {
+                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                errorCode = 1;
+            }
+        } break;
+        case FILE: {
+            size_t last_slash = dstPath.find_last_of("/");
+            std::string filename = dstPath.substr(last_slash, std::string::npos);
+            srcPath = srcPath + filename;
+            if (!FSUtils::copyFile(srcPath, dstPath)) {
+                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                errorCode = 1;
+            }
+        } break;
+        default:;
     }
 
     if (errorCode != 0) {
@@ -103,14 +155,26 @@ int MiiRepo::wipe() {
 
     std::string path = this->path_to_repo;
 
-    if (!FSUtils::removeDir(path)) {
-        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
-        errorCode = 1;
-    }
-    if (rmdir(path.c_str()) == -1) {
-        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting folder."));
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete folder:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
-        errorCode += 2;
+    switch (this->db_kind) {
+        case FOLDER: {
+            if (!FSUtils::removeDir(path)) {
+                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
+                errorCode = 1;
+            }
+            if (rmdir(path.c_str()) == -1) {
+                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting folder."));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete folder:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
+                errorCode += 2;
+            }
+        } break;
+        case FILE: {
+            if (unlink(path.c_str()) == -1) {
+                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting file."));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete filer:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
+                errorCode += 2;
+            }
+        } break;
+        default:;
     }
 
     return errorCode;

@@ -4,6 +4,7 @@
 #include <memory>
 //#include <savemng.h>
 //#include <utils/InputUtils.h>
+#include <menu/MiiProcessSharedState.h>
 #include <utils/MiiUtils.h>
 
 #define WIIU_MII true
@@ -11,11 +12,14 @@
 
 class MiiTasksState : public ApplicationState {
 public:
-    MiiTasksState(bool is_wiiu_mii) : is_wiiu_mii(is_wiiu_mii) {
-        entrycount = is_wiiu_mii ? 6 : 4;
+    MiiTasksState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action,
+                  MiiProcessSharedState *mii_process_shared_state) : mii_repo(mii_repo),
+                                                                     action(action),
+                                                                     mii_process_shared_state(mii_process_shared_state) {
 
-        mii_repo = is_wiiu_mii ? MiiUtils::MiiRepos["FFL"] : MiiUtils::MiiRepos["RFL"];
-    };
+                                                                         entrycount = (mii_repo->db_type == MiiRepo::eDBType::ACCOUNT) ? 4 : 7;
+
+                                                                     };
 
     //    ~MiiTasksState() {
     //        free(this->versionList);
@@ -33,9 +37,10 @@ private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_MII_TASKS;
 
-    inline static int cursorPos = 0;
-    int entrycount = 5;
-    bool is_wiiu_mii = true;
+    int cursorPos = 0;
+    int entrycount = 0;
 
     MiiRepo *mii_repo;
+    MiiProcess::eMiiProcessActions action;
+    MiiProcessSharedState *mii_process_shared_state;
 };

@@ -17,7 +17,13 @@ enum eJobType {
     COPY_FROM_NAND_TO_USB = 8,
     COPY_FROM_USB_TO_NAND = 9,
     WIPE_BACKUPSET = 10,
-    NONE = 11
+    LIST_MIIS = 11,
+    IMPORT_MIIS = 12,
+    EXPORT_MIIS = 13,
+    TRANSFORM_MIIS = 14,
+    TRANSFORM_MIIS_APPERANCE = 15,
+    TRANSFOMR_MIIS_OWNERSHIP = 16,    
+    NONE = 17
 };
 
 class ApplicationState {
