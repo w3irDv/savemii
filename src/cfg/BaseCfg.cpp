@@ -50,13 +50,15 @@ bool BaseCfg::saveFile() {
         if (ferror(fp)) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
             fclose(fp);
+            free(configString);
             return false;
         }
     if (fclose(fp) != 0) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+        free(configString);
         return false;
     }
-
+    free(configString);
     return true;
 }
 

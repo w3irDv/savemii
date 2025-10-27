@@ -142,6 +142,9 @@ bool Metadata::write() {
     fwrite(configString, strlen(configString), 1, fp);
 
     fclose(fp);
+
+    free(configString);
+
     return true;
 }
 
@@ -170,6 +173,9 @@ bool Metadata::write_mii() {
     fwrite(configString, strlen(configString), 1, fp);
 
     fclose(fp);
+
+    free(configString);
+    
     return true;
 }
 
