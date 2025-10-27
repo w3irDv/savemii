@@ -283,7 +283,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
             MiiUtils::MiiRepos["RFL"]->populate_repo();
 
             Console::showMessage(OK_CONFIRM,"extract mii");
-             MiiData *miidata = MiiUtils::MiiRepos["FFL"]->extract_mii(0);
+             MiiData *miidata = MiiUtils::MiiRepos["FFL"]->extract_mii_data(0);
              Console::showMessage(OK_CONFIRM,"import mii");
              MiiUtils::MiiRepos["RFL"]->import_miidata(miidata);
              Console::showMessage(OK_CONFIRM,"DONE!");

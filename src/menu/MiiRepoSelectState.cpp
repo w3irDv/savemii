@@ -113,14 +113,19 @@ ApplicationState::eSubState MiiRepoSelectState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             switch (action) {
                 case MiiProcess::SELECT_SOURCE_REPO: {
-                    mii_process_shared_state->source_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
-                    this->subState = std::make_unique<MiiTasksState>(mii_process_shared_state->source_mii_repo, MiiProcess::SELECT_TASK, mii_process_shared_state);
+                    mii_process_shared_state->primary_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
+                    this->subState = std::make_unique<MiiTasksState>(mii_process_shared_state->primary_mii_repo, MiiProcess::SELECT_TASK, mii_process_shared_state);
                     this->state = STATE_DO_SUBSTATE;
                 } break;
                 case MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE: {
-                    this->subState = std::make_unique<MiiSelectState>(MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]), MiiProcess::SELECT_MII_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
+                    mii_process_shared_state->auxiliar_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
+                    this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
                     this->state = STATE_DO_SUBSTATE;
                 } break;
+                case MiiProcess::SELECT_IMPORT_REPO:
+                    mii_process_shared_state->auxiliar_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
+                    this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
+                    this->state = STATE_DO_SUBSTATE;
                 default:;
             }
             return SUBSTATE_RUNNING;

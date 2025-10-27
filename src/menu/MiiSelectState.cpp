@@ -25,7 +25,7 @@ extern bool firstSDWrite;
 
 MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repo(mii_repo), action(action), mii_process_shared_state(mii_process_shared_state) {
 
-    if (action == MiiProcess::SELECT_MII_FOR_XFER_ATTRIBUTE)
+    if (action == MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE)
         selectOnlyOneMii = true;
 
     c2a.clear();
@@ -90,7 +90,7 @@ void MiiSelectState::render() {
                 nextActionBrief = LanguageUtils::gettext(">> Transform");
                 lastActionBriefOk = LanguageUtils::gettext("|Transformed|");
                 break;
-            case MiiProcess::SELECT_MII_FOR_XFER_ATTRIBUTE:
+            case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
                 menuTitle = LanguageUtils::gettext("Select Mii to copy attrs from");
                 screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Template  \ue000: Transform Miis  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Use as template");
@@ -218,24 +218,33 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
             uint8_t errorCounter = 0;
             switch (action) {
                 case MiiProcess::SELECT_MIIS_FOR_EXPORT:
-                    if (export_miis(errorCounter))
+                    mii_process_shared_state->primary_mii_view = &this->mii_view;
+                    mii_process_shared_state->primary_c2a = &this->c2a;
+                    if (MiiUtils::export_miis(errorCounter, mii_process_shared_state))
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis extraction Ok"));
                     else
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Extraction has failed for %d miis"), errorCounter);
                     break;
                 case MiiProcess::SELECT_MIIS_FOR_IMPORT:
-                    if (import_miis(errorCounter))
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis extraction Ok"));
+                    mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
+                    mii_process_shared_state->auxiliar_c2a = &this->c2a;
+                    if (MiiUtils::import_miis(errorCounter, mii_process_shared_state))
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis import Ok"));
                     else
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
                     break;
                 case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
-                    mii_process_shared_state->source_mii_view = &this->mii_view;
+                    mii_process_shared_state->primary_mii_view = &this->mii_view;
+                    mii_process_shared_state->primary_c2a = &this->c2a;
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<MiiTransformTasksState>(mii_repo, MiiProcess::SELECT_TRANSFORM_TASK, mii_process_shared_state);
                     break;
-                case MiiProcess::SELECT_MII_FOR_XFER_ATTRIBUTE:
-                    xfer_attribute();
+                case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
+                    mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
+                    if (mii_process_shared_state->template_mii_data != nullptr)
+                        MiiUtils::xfer_attribute(mii_process_shared_state);
+                    else
+                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), this->mii_repo->miis[c2a[currentlySelectedMii]]->mii_name, mii_repo->miis[c2a[currentlySelectedMii]]->creator_name);
                     break;
                 default:;
             }
@@ -337,87 +346,17 @@ void MiiSelectState::moveUp(unsigned amount, bool wrap) {
     }
 }
 
-bool MiiSelectState::export_miis(uint8_t &errorCounter) {
-    MiiRepo *target_repo = mii_repo->stage_repo;
-    InProgress::totalSteps = candidate_miis_count;
-    InProgress::currentStep = 0;
-    InProgress::abortTask = false;
-    for (size_t i = 0; i < candidate_miis_count; i++) {
-        if (mii_view.at(c2a[i]).selected) {
-            showMiiOperations(mii_repo, target_repo);
-            mii_view.at(c2a[i]).state = MiiStatus::KO;
-            if (target_repo != nullptr) {
-                MiiData *mii_data = mii_repo->extract_mii(c2a[i]);
-                if (mii_data != nullptr)
-                    if (target_repo->import_miidata(mii_data))
-                        mii_view.at(c2a[i]).state = MiiStatus::OK;
-            }
-            if (mii_view.at(c2a[i]).state == MiiStatus::KO)
-                errorCounter++;
-
-            InProgress::currentStep++;
-        }
-    }
-    return (errorCounter == 0);
-}
-
-bool MiiSelectState::import_miis(uint8_t &errorCounter) {
-    MiiRepo *receiving_repo = mii_process_shared_state->source_mii_repo;
-    InProgress::totalSteps = candidate_miis_count;
-    InProgress::currentStep = 0;
-    InProgress::abortTask = false;
-    for (size_t i = 0; i < candidate_miis_count; i++) {
-        if (mii_view.at(c2a[i]).selected) {
-            showMiiOperations(mii_repo, receiving_repo);
-            mii_view.at(c2a[i]).state = MiiStatus::KO;
-            if (receiving_repo != nullptr) {
-                MiiData *mii_data = mii_repo->extract_mii(c2a[i]);
-                if (mii_data != nullptr)
-                    if (receiving_repo->import_miidata(mii_data))
-                        mii_view.at(c2a[i]).state = MiiStatus::OK;
-            }
-            if (mii_view.at(c2a[i]).state == MiiStatus::KO)
-                errorCounter++;
-
-            InProgress::currentStep++;
-            if (InProgress::totalSteps > 1) { // It's so fast that is unnecessary ...
-                InProgress::input->read();
-                if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
-                    InProgress::abortTask = true;
-                }
-            }
-        }
-    }
-    return (errorCounter == 0);
-}
-
-// show InProgress::currentStep mii
-void MiiSelectState::showMiiOperations(MiiRepo *source_repo, MiiRepo *target_repo) {
-    DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BACKGROUND);
-    DrawUtils::setFontColor(COLOR_INFO);
-    Console::consolePrintPos(-2, 6, ">> %s (by %s)", source_repo->miis[c2a[InProgress::currentStep]]->mii_name.c_str(), source_repo->miis[c2a[InProgress::currentStep]]->creator_name.c_str());
-    Console::consolePrintPosAligned(6, 4, 2, "%d/%d", InProgress::currentStep, InProgress::totalSteps);
-    DrawUtils::setFontColor(COLOR_TEXT);
-    Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Copying from: %s"), source_repo->repo_name.c_str());
-    Console::consolePrintPos(-2, 11, LanguageUtils::gettext("To: %s"), target_repo->repo_name.c_str());
-    if (InProgress::totalSteps > 1) {
-        if (InProgress::abortTask) {
-            DrawUtils::setFontColor(COLOR_LIST_DANGER);
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("Will abort..."));
-        } else {
-            DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("Abort:\ue083+\ue046"));
-        }
-    }
-    DrawUtils::endDraw();
-}
 
 bool MiiSelectState::test_select_some_miis() {
+
     for (size_t i = 0; i < candidate_miis_count; i++) {
-        if (i % 3 == 0) {
-            mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
+        if (i % 3 != 0) {
+            mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED);
         }
+
+        mii_process_shared_state->primary_mii_view = &this->mii_view;
+        mii_process_shared_state->primary_c2a = &this->c2a;
+
         //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
     }
     return true;
@@ -440,7 +379,39 @@ bool MiiSelectState::test_candidate_some_miis() {
     return true;
 }
 
-void MiiSelectState::xfer_attribute() {
-    Console::showMessage(OK_SHOW, "xfer attribute");
-    return;
+bool MiiSelectState::test_select_template_mii(size_t index) {
+    for (size_t i = 0; i < all_miis_count; i++) {
+        if (i == index) {
+            mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
+        } else {
+            mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED);
+        }
+        //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
+    }
+
+    currentlySelectedMii = index;
+
+    return true;
+}
+
+
+void MiiSelectState::test_xfer_attr() {
+
+    mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
+    mii_process_shared_state->auxiliar_c2a = &this->c2a;
+    mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
+    MiiUtils::xfer_attribute(mii_process_shared_state);
+    delete mii_process_shared_state->template_mii_data;
+}
+
+
+void MiiSelectState::test_import() {
+
+    uint8_t errorCounter = 0;
+    mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
+    mii_process_shared_state->auxiliar_c2a = &this->c2a;
+    if (MiiUtils::import_miis(errorCounter, mii_process_shared_state))
+        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis import Ok"));
+    else
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
 }

@@ -52,5 +52,5 @@ private:
     bool transfer_ownership = false;
     bool set_copy_flag = false;
 
-    void setCopyOn();
+    //void set_copy_flag_on();
 };

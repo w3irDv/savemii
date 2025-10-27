@@ -27,11 +27,14 @@ public:
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
 
-    bool export_miis(uint8_t &errorCounter);
-    bool import_miis(uint8_t &errorCounter);
-
+    // TO BE REMOVED
     bool test_select_some_miis();
     bool test_candidate_some_miis();
+    bool test_select_template_mii(size_t index);
+    void test_xfer_attr();
+    void test_import();
+    //
+
 
 private:
     std::unique_ptr<ApplicationState> subState{};
@@ -58,11 +61,7 @@ private:
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);
 
-    void showMiiOperations(MiiRepo *source_repo, MiiRepo *target_repo);
-
     std::vector<MiiStatus::MiiStatus> mii_view;
-
-    void xfer_attribute();
 
     bool selectOnlyOneMii = false;
     int currentlySelectedMii = 0;

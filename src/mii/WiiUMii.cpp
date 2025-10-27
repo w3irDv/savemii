@@ -17,6 +17,10 @@ WiiUFolderRepo::WiiUFolderRepo(const std::string &repo_name, eDBType db_type, eD
     db_type = FFL;
 };
 
+WiiUFolderRepo::~WiiUFolderRepo() {
+    this->empty_repo();
+};
+
 WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp,
                  std::string device_hash, uint64_t author_id, bool copyable,
                  FFLCreateIDFlags mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
@@ -25,9 +29,10 @@ WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string tim
 
 bool WiiUFolderRepo::populate_repo() {
 
-    this->miis.clear();
+    if (this->miis.size() !=0)
+        empty_repo();
+
     size_t index = 0;
-    
 
     //printf("c: %d\n",FSUtils::checkEntry(path_to_repo.c_str()));
     //if (FSUtils::checkEntry(path_to_repo.c_str()) != 2) {
@@ -75,15 +80,15 @@ bool WiiUFolderRepo::populate_repo() {
         uint64_t author_id = mii_data.core.author_id;
         uint8_t mii_id_flags_u8 = mii_data.core.mii_id.flags;
         uint32_t mii_id_timestamp = mii_data.core.mii_id.timestamp;
-        uint8_t mii_id_deviceHash[DEVHASH_SIZE];
-        for (size_t i = 0; i < DEVHASH_SIZE; i++)
+        uint8_t mii_id_deviceHash[WiiUMiiData::DEVICE_HASH_SIZE];
+        for (size_t i = 0; i < WiiUMiiData::DEVICE_HASH_SIZE; i++)
             mii_id_deviceHash[i] = mii_data.core.mii_id.deviceHash[i];
-        char16_t mii_name[MII_NAMES_SIZE + 1];
-        for (size_t i = 0; i < MII_NAMES_SIZE; i++)
+        char16_t mii_name[MiiData::MII_NAME_SIZE + 1];
+        for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++)
             mii_name[i] = mii_data.core.mii_name[i];
         mii_name[10] = 0;
-        char16_t creator_name[MII_NAMES_SIZE + 1];
-        for (size_t i = 0; i < MII_NAMES_SIZE; i++)
+        char16_t creator_name[MiiData::MII_NAME_SIZE + 1];
+        for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++)
             creator_name[i] = mii_data.creator_name[i];
         creator_name[10] = 0;
 
@@ -96,10 +101,10 @@ bool WiiUFolderRepo::populate_repo() {
         mii_id_flags_u8 = (uint8_t) mii_id_timestamp & 0x0F;
         mii_id_timestamp = (__builtin_bswap32((mii_id_timestamp >> 4)) >> 8) + h_ts;
 
-        for (size_t i = 0; i < MII_NAMES_SIZE; i++) {
+        for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++) {
             mii_name[i] = __builtin_bswap16(mii_name[i]);
         }
-        for (size_t i = 0; i < MII_NAMES_SIZE; i++) {
+        for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++) {
             creator_name[i] = __builtin_bswap16(creator_name[i]);
         }
 #endif
@@ -128,17 +133,21 @@ bool WiiUFolderRepo::populate_repo() {
         std::string timestamp = MiiUtils::epoch_to_utc(mii_id_timestamp * 2 + base);
 
         std::string deviceHash{};
-        for (size_t i = 0; i < DEVHASH_SIZE; i++) {
+        for (size_t i = 0; i < WiiUMiiData::DEVICE_HASH_SIZE; i++) {
             char hexhex[3];
             snprintf(hexhex, 3, "%02x", mii_id_deviceHash[i]);
             deviceHash.append(hexhex);
         }
 
+    
         WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, mii_id_flags, birth_platform, this, index);
+
         this->miis.push_back(wiiu_mii);
+
         this->mii_filepath.push_back(filename_str);
 
         // to test, we will use creator_name
+        
         std::vector<size_t> *owners_v = owners[creatorName];
         if (owners_v == nullptr) {
             owners_v = new std::vector<size_t>;
@@ -146,6 +155,7 @@ bool WiiUFolderRepo::populate_repo() {
         }
         owners_v->push_back(index);
         index++;
+        
     }
 
     if (ec.value() != 0) {
@@ -156,6 +166,25 @@ bool WiiUFolderRepo::populate_repo() {
     return true;
 };
 
+bool WiiUFolderRepo::empty_repo() {
+
+    for (auto &mii : this->miis) {
+        delete mii;
+    }
+
+    for (auto it = owners.begin(); it != owners.end(); ++it)
+    {
+        owners[it->first]->clear();
+        delete owners[it->first];
+    }
+
+    this->miis.clear();
+    this->owners.clear();
+    this->mii_filepath.clear();
+
+    return true;
+
+}
 
 bool WiiUFolderRepo::list_repo() {
 
@@ -166,7 +195,7 @@ bool WiiUFolderRepo::list_repo() {
     return true;
 }
 
-MiiData *WiiUFolderRepo::extract_mii(size_t index) {
+MiiData *WiiUFolderRepo::extract_mii_data(size_t index) {
 
     std::string mii_filepath = this->mii_filepath[index];
 
@@ -219,9 +248,9 @@ bool WiiUFolderRepo::find_name(std::string &newname) {
 
     size_t repo_entries = this->miis.size();
     // todo: decide naming schema
-    newname = this->path_to_repo + "/WIIU-" + std::to_string(repo_entries);
+    newname = this->path_to_repo + "/WIIU-" + std::to_string(repo_entries) + ".new_mii";
     while ((FSUtils::checkEntry(newname.c_str()) != 0) && repo_entries < 3000) {
-        newname = this->path_to_repo + "/WIIU-" + std::to_string(++repo_entries)+".mii";
+        newname = this->path_to_repo + "/WIIU-" + std::to_string(++repo_entries) + ".new_mii";
     }
     if (errno != ENOENT || repo_entries == 3000) {
         // probably an unrecoverable error
@@ -234,7 +263,7 @@ bool WiiUFolderRepo::find_name(std::string &newname) {
 bool WiiUFolderRepo::import_miidata(MiiData *miidata) {
 
     if (miidata == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import null data") );
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import from null mii data"));
         return false;
     }
 
@@ -265,4 +294,31 @@ bool WiiUFolderRepo::import_miidata(MiiData *miidata) {
     }
 
     return true;
+}
+
+bool WiiUMiiData::set_copy_flag() {
+
+    uint8_t copyable = this->mii_data[COPY_FLAG_OFFSET] | 0x1;
+
+    memcpy(this->mii_data + COPY_FLAG_OFFSET, &copyable, 1);
+
+    return true;
+}
+
+bool WiiUMiiData::transfer_ownership_from(MiiData *mii_data_template) {
+
+    memcpy(this->mii_data + AUTHOR_ID_OFFSET, mii_data_template->mii_data + AUTHOR_ID_OFFSET, AUTHOR_ID_SIZE);
+    memcpy(this->mii_data + DEVICE_HASH_OFFSET, mii_data_template->mii_data + DEVICE_HASH_OFFSET, DEVICE_HASH_SIZE);
+
+    return true;
+
+}
+
+bool WiiUMiiData::transfer_appearance_from(MiiData *mii_data_template) {
+
+    memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // gender, color, birth 
+    memcpy(this->mii_data + APPEARANCE_OFFSET_2, mii_data_template->mii_data + APPEARANCE_OFFSET_2, APPEARANCE_SIZE_2); // after name till the end
+
+    return true;
+
 }

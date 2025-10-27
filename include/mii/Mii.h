@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-
 class MiiRepo;
 
 class Mii {
@@ -17,6 +16,8 @@ public:
     };
 
     Mii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, eMiiType mii_type, MiiRepo *mii_repo, size_t index);
+    virtual ~Mii()  {};
+
     std::string mii_name{};
     std::string creator_name{};
     //uint8_t mii_id[4]; // flag + tstamp
@@ -30,13 +31,23 @@ public:
 };
 
 class MiiData {
+
 public:
-    virtual bool set_copy_flag() = 0;                   // for Wii U
-    virtual bool transfer_ownership_from(Mii &mii) = 0; // wii -> device, wiiu -> device+author_id
+
+    virtual ~MiiData() {
+        if (mii_data != nullptr)
+            free(mii_data);
+    }
+
+    virtual bool set_copy_flag() = 0;                                     // for Wii U
+    virtual bool transfer_ownership_from(MiiData *mii_data_template) = 0; // wii -> device, wiiu -> device+author_id
+    virtual bool transfer_appearance_from(MiiData *mii_data_template) = 0;
     static void *allocate_memory(size_t size);
 
-    uint8_t *mii_data;
+    uint8_t *mii_data = nullptr;
     size_t mii_data_size;
+
+    const static inline size_t MII_NAME_SIZE = 0xA;
 };
 
 
@@ -54,17 +65,19 @@ public:
     };
 
     MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
+    virtual ~MiiRepo() {};
 
     virtual bool populate_repo() = 0;
+    virtual bool empty_repo() = 0;
 
     virtual bool list_repo() = 0;
 
     virtual void open_and_load_repo() = 0; // copy repo to mem
     virtual void close_repo() = 0;         // save repro from mem to wherever
 
-    virtual bool import_mii(Mii &mii) = 0;              // from (temp)mem to the repo
-    virtual bool import_miidata(MiiData *mii_data) = 0; // from (temp)mem to the repo
-    virtual MiiData *extract_mii(size_t index) = 0;     // from the repo to (tmp)mem
+    virtual bool import_mii(Mii &mii) = 0;               // from (temp)mem to the repo
+    virtual bool import_miidata(MiiData *mii_data) = 0;  // from (temp)mem to the repo
+    virtual MiiData *extract_mii_data(size_t index) = 0; // from the repo to (tmp)mem
 
     virtual std::string getBackupBasePath() { return backup_base_path; };
     int backup(int slot, std::string tag = "");
@@ -76,13 +89,13 @@ public:
     eDBKind db_kind;
     const std::string path_to_repo;
     const std::string backup_base_path;
-    MiiRepo* stage_repo;
+    MiiRepo *stage_repo;
 
     std::vector<Mii *> miis;
     std::map<std::string, std::vector<size_t> *> owners;
 
-    void setStageRepo(MiiRepo *stage_repo) {this->stage_repo = stage_repo;};
+    void setStageRepo(MiiRepo *stage_repo) { this->stage_repo = stage_repo; };
 
     const static inline std::string BACKUP_ROOT = "fs:vol/external01/wiiu/backups/MiiRepoBckp";
-    //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii";
+    //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
 };

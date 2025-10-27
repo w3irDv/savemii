@@ -9,10 +9,15 @@
 class MiiProcessSharedState {
 
 public:
-    MiiRepo *source_mii_repo = nullptr;
-    MiiRepo *target_mii_repo = nullptr;
+    
+    MiiRepo *primary_mii_repo = nullptr;
+    std::vector<MiiStatus::MiiStatus> *primary_mii_view = nullptr;
+    std::vector<int> *primary_c2a = nullptr;
 
-    std::vector<MiiStatus::MiiStatus> *source_mii_view = nullptr;
+    MiiRepo *auxiliar_mii_repo = nullptr;
+    std::vector<MiiStatus::MiiStatus> *auxiliar_mii_view = nullptr;
+    std::vector<int> *auxiliar_c2a = nullptr;
+
     MiiData *template_mii_data = nullptr;
 
     MiiProcess::eMiiProcessActions state = MiiProcess::SELECT_SOURCE_REPO;

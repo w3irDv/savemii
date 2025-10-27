@@ -88,7 +88,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                 this->subState = std::make_unique<MiiRepoSelectState>(&mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
             } else {
                 if (set_copy_flag)
-                    setCopyOn();
+                    MiiUtils::set_copy_flag_on(mii_process_shared_state);
                 else
                     Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Please select an option"));
             }
@@ -130,8 +130,3 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
     }
     return SUBSTATE_RUNNING;
 }
-
-void MiiTransformTasksState::setCopyOn() {
-    printf("todo: set copy on");
-    return;
-};
