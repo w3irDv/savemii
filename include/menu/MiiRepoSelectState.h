@@ -41,7 +41,7 @@ private:
     bool no_repos = false;
 
     std::vector<int> c2a;
-    size_t candiate_repos_count;
+    size_t candidate_repos_count;
     size_t repos_count;
 
     void update_c2a();

@@ -30,7 +30,7 @@ MiiRepoSelectState::MiiRepoSelectState(std::vector<bool> *mii_repos_candidates, 
 
     repos_count = MiiUtils::mii_repos.size();
 
-    // mii_repos_candidates >> is the caller who decides which repos to show or not (1st selectio, all repos,
+    // mii_repos_candidates >> is the caller who decides which repos to show or not (1st selection, all repos,
     // but for import or transform, only compatible repos should be shown)
     // just in case later we add filtering, sorting ...
     for (size_t i = 0; i < repos_count; i++) {
@@ -38,7 +38,7 @@ MiiRepoSelectState::MiiRepoSelectState(std::vector<bool> *mii_repos_candidates, 
             c2a.push_back(i);
     }
 
-    candiate_repos_count = c2a.size();
+    candidate_repos_count = c2a.size();
 }
 
 
@@ -60,9 +60,7 @@ void MiiRepoSelectState::render() {
     }
     if (this->state == STATE_MII_REPO_SELECT) {
 
-
         DrawUtils::setFontColor(COLOR_INFO);
-
 
         const char *menuTitle, *screenOptions;
         switch (action) {
@@ -79,7 +77,7 @@ void MiiRepoSelectState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
 
-        if ((this->repos_count == 0 || (this->candiate_repos_count == 0))) {
+        if ((this->repos_count == 0 || (this->candidate_repos_count == 0))) {
             DrawUtils::endDraw();
             Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("There are no repos matching selected filters."));
             this->no_repos = true;
@@ -89,7 +87,7 @@ void MiiRepoSelectState::render() {
         }
 
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
-            if (i + this->scroll < 0 || i + this->scroll >= (int) this->candiate_repos_count)
+            if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidate_repos_count)
                 break;
 
             //if (this->mii_repos_candidates->at(c2a[i + this->scroll]))
@@ -160,14 +158,14 @@ ApplicationState::eSubState MiiRepoSelectState::update(Input *input) {
 
 void MiiRepoSelectState::moveDown(unsigned amount, bool wrap) {
     while (amount--) {
-        if (candiate_repos_count <= MAX_TITLE_SHOW) {
+        if (candidate_repos_count <= MAX_TITLE_SHOW) {
             if (wrap)
-                cursorPos = (cursorPos + 1) % candiate_repos_count;
+                cursorPos = (cursorPos + 1) % candidate_repos_count;
             else
-                cursorPos = std::min(cursorPos + 1, (int) candiate_repos_count - 1);
+                cursorPos = std::min(cursorPos + 1, (int) candidate_repos_count - 1);
         } else if (cursorPos < MAX_WINDOW_SCROLL)
             cursorPos++;
-        else if (((cursorPos + scroll + 1) % candiate_repos_count) != 0)
+        else if (((cursorPos + scroll + 1) % candidate_repos_count) != 0)
             scroll++;
         else if (wrap)
             cursorPos = scroll = 0;
@@ -184,10 +182,10 @@ void MiiRepoSelectState::moveUp(unsigned amount, bool wrap) {
             // cursorPos == 0
             if (!wrap)
                 return;
-            if (candiate_repos_count > MAX_TITLE_SHOW)
-                scroll = candiate_repos_count - (cursorPos = MAX_WINDOW_SCROLL) - 1;
+            if (candidate_repos_count > MAX_TITLE_SHOW)
+                scroll = candidate_repos_count - (cursorPos = MAX_WINDOW_SCROLL) - 1;
             else
-                cursorPos = candiate_repos_count - 1;
+                cursorPos = candidate_repos_count - 1;
         }
     }
 }

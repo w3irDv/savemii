@@ -1,4 +1,5 @@
 #include <ctime>
+#include <mii/MiiRepo.h>
 #include <mii/WiiUMii.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
@@ -16,7 +17,7 @@ bool MiiUtils::initMiiRepos() {
     const std::string pathaccount_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_Stage");
 
     MiiRepos["FFL"] = new WiiUFolderRepo("FFL", MiiRepo::eDBType::FFL, MiiRepo::eDBKind::FOLDER, pathffl, "mii_bckp_ffl");
-    MiiRepos["FFL_Stage"] = new WiiUFolderRepo("FFL_Stage", MiiRepo::eDBType::RFL, MiiRepo::eDBKind::FOLDER, pathffl_Stage, "mii_bckp_ffl_Stage");
+    MiiRepos["FFL_Stage"] = new WiiUFolderRepo("FFL_Stage", MiiRepo::eDBType::FFL, MiiRepo::eDBKind::FOLDER, pathffl_Stage, "mii_bckp_ffl_Stage");
     MiiRepos["RFL"] = new WiiUFolderRepo("RFL", MiiRepo::eDBType::RFL, MiiRepo::eDBKind::FOLDER, pathrfl, "mii_bckp_rfl");
     MiiRepos["RFL_Stage"] = new WiiUFolderRepo("RFL_Stage", MiiRepo::eDBType::RFL, MiiRepo::eDBKind::FOLDER, pathrfl_Stage, "mii_bckp_rfl_Stage");
     MiiRepos["ACCOUNT"] = new WiiUFolderRepo("ACCOUNT", MiiRepo::eDBType::ACCOUNT, MiiRepo::eDBKind::FOLDER, pathaccount, "mii_bckp_account");
@@ -58,18 +59,19 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     InProgress::abortTask = false;
     for (size_t i = 0; i < candidate_miis_count; i++) {
         if (mii_view->at(c2a->at(i)).selected) {
+            size_t mii_index = c2a->at(i);
             showMiiOperations(mii_process_shared_state);
-            mii_view->at(c2a->at(i)).state = MiiStatus::KO;
+            mii_view->at(mii_index).state = MiiStatus::KO;
             if (target_repo != nullptr) {
-                MiiData *mii_data = mii_repo->extract_mii_data(c2a->at(i));
+                MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
                 if (mii_data != nullptr) {
                     if (target_repo->import_miidata(mii_data))
-                        mii_view->at(c2a->at(i)).state = MiiStatus::OK;
+                        mii_view->at(mii_index).state = MiiStatus::OK;
                     delete mii_data;
                 } else
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"),mii_repo->miis[c2a->at(i)]->mii_name,mii_repo->miis[c2a->at(i)]->creator_name);
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             }
-            if (mii_view->at(c2a->at(i)).state == MiiStatus::KO)
+            if (mii_view->at(mii_index).state == MiiStatus::KO)
                 errorCounter++;
 
             InProgress::currentStep++;
@@ -92,18 +94,19 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     InProgress::abortTask = false;
     for (size_t i = 0; i < candidate_miis_count; i++) {
         if (mii_view->at(c2a->at(i)).selected) {
+            size_t mii_index = c2a->at(i);
             showMiiOperations(mii_process_shared_state);
-            mii_view->at(c2a->at(i)).state = MiiStatus::KO;
+            mii_view->at(mii_index).state = MiiStatus::KO;
             if (receiving_repo != nullptr) {
-                MiiData *mii_data = mii_repo->extract_mii_data(c2a->at(i));
+                MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
                 if (mii_data != nullptr) {
                     if (receiving_repo->import_miidata(mii_data))
-                        mii_view->at(c2a->at(i)).state = MiiStatus::OK;
+                        mii_view->at(mii_index).state = MiiStatus::OK;
                     delete mii_data;
                 } else
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"),mii_repo->miis[c2a->at(i)]->mii_name,mii_repo->miis[c2a->at(i)]->creator_name);
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             }
-            if (mii_view->at(c2a->at(i)).state == MiiStatus::KO)
+            if (mii_view->at(mii_index).state == MiiStatus::KO)
                 errorCounter++;
 
             InProgress::currentStep++;
@@ -150,14 +153,14 @@ void MiiUtils::xfer_attribute(MiiProcessSharedState *mii_process_shared_state) {
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
     auto mii_view = mii_process_shared_state->primary_mii_view;
     auto c2a = mii_process_shared_state->primary_c2a;
-    auto candidate_miis_count = mii_process_shared_state->primary_c2a->size();
+    auto candidate_miis_count = c2a->size();
     auto template_mii_data = mii_process_shared_state->template_mii_data;
 
 
     if (mii_view != nullptr && c2a != nullptr && mii_repo != nullptr) {
         for (size_t i = 0; i < candidate_miis_count; i++) {
-            if (mii_view->at(i).selected) {
-                int mii_index = c2a->at(i);
+            if (mii_view->at(c2a->at(i)).selected) {
+                size_t mii_index = c2a->at(i);
                 mii_view->at(mii_index).state = MiiStatus::KO;
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
                 if (mii_data != nullptr) {
@@ -168,10 +171,10 @@ void MiiUtils::xfer_attribute(MiiProcessSharedState *mii_process_shared_state) {
                     if (mii_process_shared_state->primary_mii_repo->import_miidata(mii_data))
                         mii_view->at(mii_index).state = MiiStatus::OK;
                     else
-                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error importing Mii in repo %s"), mii_process_shared_state->primary_mii_repo->miis[mii_index]->mii_name.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
+                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error importing Mii %s in repo %s"), mii_process_shared_state->primary_mii_repo->miis[mii_index]->mii_name.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
                     delete mii_data;
                 } else
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"),mii_repo->miis[c2a->at(i)]->mii_name,mii_repo->miis[c2a->at(i)]->creator_name);
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             }
         }
     } else {
@@ -184,11 +187,12 @@ void MiiUtils::set_copy_flag_on(MiiProcessSharedState *mii_process_shared_state)
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
     auto mii_view = mii_process_shared_state->primary_mii_view;
     auto c2a = mii_process_shared_state->primary_c2a;
+    auto candidate_miis_count = c2a->size();
 
     if (mii_view != nullptr && c2a != nullptr && mii_repo != nullptr) {
-        for (size_t i = 0; i < mii_view->size(); i++) {
-            if (mii_view->at(i).selected) {
-                int mii_index = c2a->at(i);
+        for (size_t i = 0; i < candidate_miis_count; i++) {
+            if (mii_view->at(c2a->at(i)).selected) {
+                size_t mii_index = c2a->at(i);
                 mii_view->at(mii_index).state = MiiStatus::KO;
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
                 if (mii_data != nullptr) {
@@ -197,7 +201,7 @@ void MiiUtils::set_copy_flag_on(MiiProcessSharedState *mii_process_shared_state)
                         mii_view->at(mii_index).state = MiiStatus::OK;
                     delete mii_data;
                 } else
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"),mii_repo->miis[c2a->at(i)]->mii_name,mii_repo->miis[c2a->at(i)]->creator_name);
+                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             }
         }
     } else {

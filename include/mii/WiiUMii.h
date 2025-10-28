@@ -2,10 +2,8 @@
 
 
 #include <mii/Mii.h>
-//#include <mii/WiiUMiiStruct.h>
 #include <string>
 #include <vector>
-#include <nn/ffl/miidata.h>
 
 class WiiUMii : public Mii {
 public:
@@ -31,25 +29,6 @@ public:
     const static inline size_t APPEARANCE_SIZE_1 = 0x2;
     const static inline size_t APPEARANCE_OFFSET_2 = 0x2E;
     const static inline size_t APPEARANCE_SIZE_2 = 0x1A;
-};
 
-class WiiUFolderRepo : public MiiRepo {
-
-public:
-    WiiUFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
-
-    ~WiiUFolderRepo();
-    bool populate_repo();
-    bool empty_repo();
-
-    void open_and_load_repo() {};                               // not-needed for folder based repos
-    void close_repo() {};                                       // not-needed for folder based repos
-    bool import_mii(Mii &mii) { return (mii.mii_name == ""); }; // from (temp)mem to the repo
-    bool import_miidata(MiiData *mii_data);
-    MiiData *extract_mii_data(size_t index); // from the repo to (tmp)mem
-    bool find_name(std::string &newname);
-
-    std::vector<std::string> mii_filepath;
-
-    bool list_repo();
+    const static inline size_t MII_DATA_SIZE = 0x5C;
 };

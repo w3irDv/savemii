@@ -36,12 +36,17 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
     all_miis_count = mii_repo->miis.size();
 
     // just in case later we add filtering, sorting ...
+    // MVP , candidates = all
+    // candidates => filtered subset of all miss that will appear and can be managed on the menu
+    // mii_view[i] => state of mii[i] --> is candidate or not (i.e. will appear in the current menu), is selected or not. 0 < i < all_miis
+    // c2a[j] = i ==> candidate j is mii[i]. 0 < j < candidate_miis
     for (size_t i = 0; i < all_miis_count; i++) {
         if (selectOnlyOneMii)
             mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED));
         else
             mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED));
-        c2a.push_back(i);
+        if (mii_view[i].candidate)
+            c2a.push_back(i);
     }
 
     candidate_miis_count = c2a.size();
@@ -280,7 +285,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::PLUS)) {
             if (!selectOnlyOneMii) {
                 if (action != MiiProcess::LIST_MIIS) {
-                    for (size_t i = 0; i < this->all_miis_count; i++) {
+                    for (size_t i = 0; i < this->candidate_miis_count; i++) {
                         if (this->mii_view[c2a[i]].candidate)
                             this->mii_view[c2a[i]].selected = true;
                     }
@@ -291,7 +296,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::MINUS)) {
             if (!selectOnlyOneMii) {
                 if (action != MiiProcess::LIST_MIIS) {
-                    for (size_t i = 0; i < this->all_miis_count; i++) {
+                    for (size_t i = 0; i < this->candidate_miis_count; i++) {
                         if (this->mii_view[c2a[i]].candidate)
                             this->mii_view[c2a[i]].selected = false;
                     }
@@ -376,11 +381,13 @@ bool MiiSelectState::test_candidate_some_miis() {
     }
     //update_c2a();
     candidate_miis_count = c2a.size();
+    mii_process_shared_state->primary_mii_view = &this->mii_view;
+    mii_process_shared_state->primary_c2a = &this->c2a;
     return true;
 }
 
 bool MiiSelectState::test_select_template_mii(size_t index) {
-    for (size_t i = 0; i < all_miis_count; i++) {
+    for (size_t i = 0; i < candidate_miis_count; i++) {
         if (i == index) {
             mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
         } else {
