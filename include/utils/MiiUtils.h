@@ -21,6 +21,6 @@ namespace MiiUtils {
 
     void set_copy_flag_on(MiiProcessSharedState *mii_process_shared_state);
 
-    void showMiiOperations(MiiProcessSharedState *mii_process_shared_state);
+    void showMiiOperations(MiiProcessSharedState *mii_process_shared_state, size_t mii_index);
 
 } // namespace MiiUtils

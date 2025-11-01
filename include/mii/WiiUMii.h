@@ -1,9 +1,11 @@
 #pragma once
 
-
+#include <cstdint>
 #include <mii/Mii.h>
 #include <string>
 #include <vector>
+#include <nn/ffl/miidata.h>
+//#include <mii/WiiUMiiStruct.h>
 
 class WiiUMii : public Mii {
 public:

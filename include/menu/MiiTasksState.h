@@ -16,10 +16,9 @@ public:
                   MiiProcessSharedState *mii_process_shared_state) : mii_repo(mii_repo),
                                                                      action(action),
                                                                      mii_process_shared_state(mii_process_shared_state) {
-
-                                                                         entrycount = (mii_repo->db_type == MiiRepo::eDBType::ACCOUNT) ? 4 : 7;
-
-                                                                     };
+        mii_process_shared_state->state = action;
+        entrycount = (mii_repo->db_type == MiiRepo::eDBType::ACCOUNT) ? 4 : 7;
+    };
 
     //    ~MiiTasksState() {
     //        free(this->versionList);

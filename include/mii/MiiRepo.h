@@ -5,8 +5,6 @@
 #include <mii/Mii.h>
 #include <string>
 #include <vector>
-#include <nn/ffl/miidata.h>
-//#include <mii/WiiUMiiStruct.h>
 
 class Mii;
 class MiiData;
@@ -29,6 +27,7 @@ public:
 
     virtual bool populate_repo() = 0;
     virtual bool empty_repo() = 0;
+    virtual bool populate_mii(size_t index, uint8_t *raw_mii_data) = 0;
 
     virtual bool test_list_repo() = 0;
 
@@ -45,7 +44,7 @@ public:
     int wipe();
 
     const std::string repo_name;
-    eDBType db_type;
+    eDBType db_type = FFL;
     eDBKind db_kind;
     const std::string path_to_repo;
     const std::string backup_base_path;
@@ -59,36 +58,4 @@ public:
     size_t mii_data_size = 0;
     //const static inline std::string BACKUP_ROOT = "fs:vol/external01/wiiu/backups/MiiRepoBckp";
     const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
-};
-
-class MiiFolderRepo : public MiiRepo {
-
-public:
-    MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
-    virtual ~MiiFolderRepo();
-
-    void open_and_load_repo() {};                               // not-needed for folder based repos
-    void close_repo() {};                                       // not-needed for folder based repos
-    //bool import_mii(Mii &mii) { return (mii.mii_name == ""); }; 
-    bool import_miidata(MiiData *mii_data);   // from (temp)mem to the repo
-    MiiData *extract_mii_data(size_t index); // from the repo to (tmp)mem
-    bool find_name(std::string &newname);
-
-    std::vector<std::string> mii_filepath;
-
-    virtual bool populate_repo() = 0;
-    virtual bool empty_repo() = 0;
-
-    bool test_list_repo();
-};
-
-class WiiUFolderRepo : public MiiFolderRepo {
-
-public:
-    WiiUFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
-    ~WiiUFolderRepo();
-
-    bool populate_repo();
-    bool empty_repo();
-
 };

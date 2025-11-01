@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <endian.h>
+//#include <endian.h>
 #include <wchar.h>
 
 #ifdef __cplusplus

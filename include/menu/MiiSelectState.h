@@ -29,6 +29,7 @@ public:
 
     // TO BE REMOVED
     bool test_select_some_miis();
+    bool test_select_all_miis();
     bool test_candidate_some_miis();
     bool test_select_template_mii(size_t index);
     void test_xfer_attr();

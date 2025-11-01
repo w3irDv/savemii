@@ -1,0 +1,229 @@
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <mii/MiiFolderRepo.h>
+#include <mii/WiiMii.h>
+#include <mii/WiiUMii.h>
+#include <utils/ConsoleUtils.h>
+#include <utils/FSUtils.h>
+#include <utils/LanguageUtils.h>
+
+namespace fs = std::filesystem;
+
+MiiFolderRepo::MiiFolderRepo() {
+    
+    switch (this->db_type) {
+        case FFL:
+            filename_prefix = "WIIU-";
+            break;
+        case RFL:
+            filename_prefix = "WII-";
+            break;
+        default:;
+    }
+        
+};
+MiiFolderRepo::~MiiFolderRepo() {};
+
+MiiData *MiiFolderRepo::extract_mii_data(size_t index) {
+
+    std::string mii_filepath = this->mii_filepath[index];
+
+    std::ifstream mii_file;
+    mii_file.open(mii_filepath.c_str(), std::ios_base::binary);
+    if (!mii_file.is_open()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        return nullptr;
+    }
+    size_t size = std::filesystem::file_size(std::filesystem::path(mii_filepath));
+
+    if (size != mii_data_size && size != (mii_data_size + 4)) // Allow "bare" mii or mii+CRC
+    {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), mii_filepath.c_str(), size, mii_data_size, mii_data_size + 4);
+        return nullptr;
+    }
+
+    unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(size);
+
+    if (mii_buffer == NULL) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for reading the mii data"), mii_filepath.c_str());
+        return nullptr;
+    }
+
+    // we allow files with or without CRC
+    mii_file.read((char *) mii_buffer, size);
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        return nullptr;
+    }
+    mii_file.close();
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        return nullptr;
+    }
+
+
+    MiiData *miidata = nullptr;
+
+    switch (db_type) {
+        case FFL:
+            miidata = new WiiUMiiData();
+            break;
+        case RFL:
+            miidata = new WiiMiiData();
+            break;
+        default:;
+    }
+
+    miidata->mii_data = mii_buffer;
+    miidata->mii_data_size = size;
+
+    return miidata;
+}
+
+
+bool MiiFolderRepo::import_miidata(MiiData *miidata) {
+
+    if (miidata == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import from null mii data"));
+        return false;
+    }
+
+    size_t size = miidata->mii_data_size;
+
+    std::string newname{};
+    if (!this->find_name(newname)) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find a name for the mii file:\n%s\n%s"), newname.c_str(), strerror(errno));
+        return false;
+    }
+
+    std::ofstream mii_file;
+    mii_file.open(newname.c_str(), std::ios_base::binary);
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), newname.c_str(), strerror(errno));
+        return false;
+    }
+    mii_file.write((char *) miidata->mii_data, size);
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), newname.c_str(), strerror(errno));
+        return false;
+    }
+
+    mii_file.close();
+    if (mii_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), newname.c_str(), strerror(errno));
+        return false;
+    }
+
+    return true;
+}
+
+
+bool MiiFolderRepo::populate_repo() {
+
+    if (this->miis.size() != 0)
+        empty_repo();
+
+    size_t index = 0;
+
+    //printf("c: %d\n",FSUtils::checkEntry(path_to_repo.c_str()));
+    //if (FSUtils::checkEntry(path_to_repo.c_str()) != 2) {
+    //    Console::showMessage(ERROR_CONFIRM,"error accessing %s:\n %s",path_to_repo.c_str(),strerror(errno));
+    //    return false;
+    //}
+
+    std::error_code ec;
+    for (const auto &entry : fs::directory_iterator(path_to_repo, ec)) {
+
+        std::filesystem::path filename = entry.path();
+        std::string filename_str = filename.string();
+
+        std::ifstream mii_file;
+        mii_file.open(filename, std::ios_base::binary);
+        if (!mii_file.is_open()) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            continue;
+        }
+        size_t size = std::filesystem::file_size(std::filesystem::path(filename));
+
+        if ((size != mii_data_size) && (size != mii_data_size + 4)) // Allow "bare" mii or mii+CRC
+        {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), filename_str.c_str(), size, mii_data_size, mii_data_size + 4);
+            continue;
+        }
+
+        uint8_t raw_mii_data[mii_data_size];
+
+        size = mii_data_size; // we will ignore last two checkum bytes, if there
+
+        mii_file.read((char *) &raw_mii_data, mii_data_size);
+        if (mii_file.fail()) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            continue;
+        }
+        mii_file.close();
+        if (mii_file.fail()) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            continue;
+        }
+
+        if (populate_mii(index, raw_mii_data)) {
+            this->mii_filepath.push_back(filename_str);
+            index++;
+        }
+    }
+
+    if (ec.value() != 0) {
+        Console::showMessage(ERROR_CONFIRM, "Error accessing Mii repo  %s at %s:\n\n %s", repo_name.c_str(), path_to_repo.c_str(), ec.message().c_str());
+        return false;
+    }
+
+    return true;
+};
+
+bool MiiFolderRepo::empty_repo() {
+
+    for (auto &mii : this->miis) {
+        delete mii;
+    }
+
+    for (auto it = owners.begin(); it != owners.end(); ++it) {
+        owners[it->first]->clear();
+        delete owners[it->first];
+    }
+
+    this->miis.clear();
+    this->owners.clear();
+    this->mii_filepath.clear();
+
+    return true;
+}
+
+bool MiiFolderRepo::find_name(std::string &newname) {
+    if (FSUtils::checkEntry(this->path_to_repo.c_str()) != 2) {
+        newname = this->path_to_repo; // so the error will show the path
+        return false;
+    }
+
+    size_t repo_entries = this->miis.size();
+    // todo: decide naming schema
+    newname = this->path_to_repo + "/" + filename_prefix + std::to_string(repo_entries) + ".new_mii";
+    while ((FSUtils::checkEntry(newname.c_str()) != 0) && repo_entries < 3000) {
+        newname = this->path_to_repo + "/" + filename_prefix + std::to_string(++repo_entries) + ".new_mii";
+    }
+    if (errno != ENOENT || repo_entries == 3000) {
+        // probably an unrecoverable error
+        return false;
+    }
+
+    return true;
+}
+
+bool MiiFolderRepo::test_list_repo() {
+
+    for (const auto &mii : this->miis) {
+        Console::showMessage(OK_SHOW, "name: %s - creator: %s - ts: %s\n", mii->mii_name.c_str(), mii->creator_name.c_str(), mii->timestamp.c_str());
+    }
+
+    return true;
+}

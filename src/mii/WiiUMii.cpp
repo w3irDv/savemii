@@ -1,13 +1,5 @@
-#include <filesystem>
-#include <fstream>
-#include <malloc.h>
-#include <mii/Mii.h>
+#include <cstring>
 #include <mii/WiiUMii.h>
-#include <utf8.h>
-#include <utils/ConsoleUtils.h>
-#include <utils/FSUtils.h>
-#include <utils/LanguageUtils.h>
-#include <utils/MiiUtils.h>
 
 WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp,
                  std::string device_hash, uint64_t author_id, bool copyable,

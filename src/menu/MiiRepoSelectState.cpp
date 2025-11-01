@@ -25,6 +25,8 @@ extern bool firstSDWrite;
 
 MiiRepoSelectState::MiiRepoSelectState(std::vector<bool> *mii_repos_candidates, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repos_candidates(mii_repos_candidates), action(action), mii_process_shared_state(mii_process_shared_state) {
 
+    mii_process_shared_state->state = action;
+    
     c2a.clear();
     repos_view.clear();
 

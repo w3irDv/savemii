@@ -25,6 +25,8 @@ extern bool firstSDWrite;
 
 MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repo(mii_repo), action(action), mii_process_shared_state(mii_process_shared_state) {
 
+    mii_process_shared_state->state = action;
+
     if (action == MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE)
         selectOnlyOneMii = true;
 
@@ -358,6 +360,20 @@ bool MiiSelectState::test_select_some_miis() {
         if (i % 3 != 0) {
             mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED);
         }
+
+        mii_process_shared_state->primary_mii_view = &this->mii_view;
+        mii_process_shared_state->primary_c2a = &this->c2a;
+
+        //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
+    }
+    return true;
+}
+
+bool MiiSelectState::test_select_all_miis() {
+
+    for (size_t i = 0; i < candidate_miis_count; i++) {
+        mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
+
 
         mii_process_shared_state->primary_mii_view = &this->mii_view;
         mii_process_shared_state->primary_c2a = &this->c2a;

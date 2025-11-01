@@ -1,5 +1,6 @@
 #include <ctime>
-#include <mii/MiiRepo.h>
+#include <menu/MiiTypeDeclarations.h>
+#include <mii/WiiUFolderRepo.h>
 #include <mii/WiiUMii.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
@@ -54,23 +55,31 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     auto candidate_miis_count = c2a->size();
 
     MiiRepo *target_repo = mii_repo->stage_repo;
-    InProgress::totalSteps = candidate_miis_count;
-    InProgress::currentStep = 0;
+    if (target_repo == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Target repo is null"));
+        return false;
+    }
+
+    InProgress::totalSteps = 0;
+    InProgress::currentStep = 1;
     InProgress::abortTask = false;
+    for (size_t i = 0; i < candidate_miis_count; i++) {
+        if (mii_view->at(c2a->at(i)).selected)
+            InProgress::totalSteps++;
+    }
+
     for (size_t i = 0; i < candidate_miis_count; i++) {
         if (mii_view->at(c2a->at(i)).selected) {
             size_t mii_index = c2a->at(i);
-            showMiiOperations(mii_process_shared_state);
+            showMiiOperations(mii_process_shared_state, c2a->at(i));
             mii_view->at(mii_index).state = MiiStatus::KO;
-            if (target_repo != nullptr) {
-                MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
-                if (mii_data != nullptr) {
-                    if (target_repo->import_miidata(mii_data))
-                        mii_view->at(mii_index).state = MiiStatus::OK;
-                    delete mii_data;
-                } else
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
-            }
+            MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
+            if (mii_data != nullptr) {
+                if (target_repo->import_miidata(mii_data))
+                    mii_view->at(mii_index).state = MiiStatus::OK;
+                delete mii_data;
+            } else
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             if (mii_view->at(mii_index).state == MiiStatus::KO)
                 errorCounter++;
 
@@ -89,23 +98,31 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
 
     auto receiving_repo = mii_process_shared_state->primary_mii_repo;
 
-    InProgress::totalSteps = candidate_miis_count;
-    InProgress::currentStep = 0;
+    if (receiving_repo == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Receiving repo is null"));
+        return false;
+    }
+
+    InProgress::totalSteps = 0;
+    InProgress::currentStep = 1;
     InProgress::abortTask = false;
+    for (size_t i = 0; i < candidate_miis_count; i++) {
+        if (mii_view->at(c2a->at(i)).selected)
+            InProgress::totalSteps++;
+    }
+
     for (size_t i = 0; i < candidate_miis_count; i++) {
         if (mii_view->at(c2a->at(i)).selected) {
             size_t mii_index = c2a->at(i);
-            showMiiOperations(mii_process_shared_state);
+            showMiiOperations(mii_process_shared_state, c2a->at(i));
             mii_view->at(mii_index).state = MiiStatus::KO;
-            if (receiving_repo != nullptr) {
-                MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
-                if (mii_data != nullptr) {
-                    if (receiving_repo->import_miidata(mii_data))
-                        mii_view->at(mii_index).state = MiiStatus::OK;
-                    delete mii_data;
-                } else
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
-            }
+            MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
+            if (mii_data != nullptr) {
+                if (receiving_repo->import_miidata(mii_data))
+                    mii_view->at(mii_index).state = MiiStatus::OK;
+                delete mii_data;
+            } else
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             if (mii_view->at(mii_index).state == MiiStatus::KO)
                 errorCounter++;
 
@@ -122,16 +139,26 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
 }
 
 // show InProgress::currentStep mii
-void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state) {
+void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state, size_t mii_index) {
 
-    auto source_mii_repo = mii_process_shared_state->primary_mii_repo;
-    auto target_mii_repo = mii_process_shared_state->auxiliar_mii_repo;
-    auto c2a = mii_process_shared_state->primary_c2a;
+    MiiRepo *source_mii_repo = nullptr;
+    MiiRepo *target_mii_repo = nullptr;
+
+    switch (mii_process_shared_state->state) {
+        case MiiProcess::SELECT_MIIS_FOR_IMPORT:
+            source_mii_repo = mii_process_shared_state->auxiliar_mii_repo;
+            target_mii_repo = mii_process_shared_state->primary_mii_repo;
+            break;
+        default:
+            source_mii_repo = mii_process_shared_state->primary_mii_repo;
+            target_mii_repo = mii_process_shared_state->auxiliar_mii_repo;
+    }
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BACKGROUND);
     DrawUtils::setFontColor(COLOR_INFO);
-    Console::consolePrintPos(-2, 6, ">> %s (by %s)", source_mii_repo->miis[c2a->at(InProgress::currentStep)]->mii_name.c_str(), source_mii_repo->miis[c2a->at(InProgress::currentStep)]->creator_name.c_str());
+
+    Console::consolePrintPos(-2, 6, ">> %s (by %s)", source_mii_repo->miis[mii_index]->mii_name.c_str(), source_mii_repo->miis[mii_index]->creator_name.c_str());
     Console::consolePrintPosAligned(6, 4, 2, "%d/%d", InProgress::currentStep, InProgress::totalSteps);
     DrawUtils::setFontColor(COLOR_TEXT);
     Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Copying from: %s"), source_mii_repo->repo_name.c_str());
