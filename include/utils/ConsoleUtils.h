@@ -26,7 +26,8 @@ enum Style {
     ERROR_SHOW = 136,
     ST_WIPE = 256,
     ST_MULTIPLE_CHOICE = 512,
-    MULTIPLE_CHOICE_CONFIRM = 516 // used to show a 2nd message after a promptMultipleChoice call
+    MULTIPLE_CHOICE_CONFIRM = 516, // used to show a 2nd message after a promptMultipleChoice call
+    ST_DEBUG = 1024
 };
 
 #define DEFAULT_ERROR_WAIT 2

@@ -23,10 +23,10 @@
 
 extern bool firstSDWrite;
 
-MiiRepoSelectState::MiiRepoSelectState(std::vector<bool> *mii_repos_candidates, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repos_candidates(mii_repos_candidates), action(action), mii_process_shared_state(mii_process_shared_state) {
+MiiRepoSelectState::MiiRepoSelectState(std::vector<bool> mii_repos_candidates, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repos_candidates(mii_repos_candidates), action(action), mii_process_shared_state(mii_process_shared_state) {
 
     mii_process_shared_state->state = action;
-    
+
     c2a.clear();
     repos_view.clear();
 
@@ -36,7 +36,7 @@ MiiRepoSelectState::MiiRepoSelectState(std::vector<bool> *mii_repos_candidates, 
     // but for import or transform, only compatible repos should be shown)
     // just in case later we add filtering, sorting ...
     for (size_t i = 0; i < repos_count; i++) {
-        if (mii_repos_candidates->at(i))
+        if (mii_repos_candidates.at(i))
             c2a.push_back(i);
     }
 
@@ -123,8 +123,9 @@ ApplicationState::eSubState MiiRepoSelectState::update(Input *input) {
                     this->state = STATE_DO_SUBSTATE;
                 } break;
                 case MiiProcess::SELECT_IMPORT_REPO:
+                // MVP - NOT YET USED
                     mii_process_shared_state->auxiliar_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
-                    this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
+                    this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_MIIS_FOR_IMPORT, mii_process_shared_state);
                     this->state = STATE_DO_SUBSTATE;
                 default:;
             }
@@ -153,6 +154,8 @@ ApplicationState::eSubState MiiRepoSelectState::update(Input *input) {
         } else if (retSubState == SUBSTATE_RETURN) {
             this->subState.reset();
             this->state = STATE_MII_REPO_SELECT;
+            if (mii_process_shared_state->state == MiiProcess::MIIS_TRANSFORMED)
+                return SUBSTATE_RETURN;
         }
     }
     return SUBSTATE_RUNNING;

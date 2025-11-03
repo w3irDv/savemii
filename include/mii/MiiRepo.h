@@ -27,7 +27,6 @@ public:
 
     virtual bool populate_repo() = 0;
     virtual bool empty_repo() = 0;
-    virtual bool populate_mii(size_t index, uint8_t *raw_mii_data) = 0;
 
     virtual bool test_list_repo() = 0;
 
@@ -56,6 +55,6 @@ public:
     void setStageRepo(MiiRepo *stage_repo) { this->stage_repo = stage_repo; };
 
     size_t mii_data_size = 0;
-    //const static inline std::string BACKUP_ROOT = "fs:vol/external01/wiiu/backups/MiiRepoBckp";
-    const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
+    const static inline std::string BACKUP_ROOT = "fs:vol/external01/wiiu/backups/MiiRepoBckp";
+    //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
 };

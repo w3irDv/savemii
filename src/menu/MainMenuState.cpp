@@ -66,7 +66,6 @@ void MainMenuState::render() {
 ApplicationState::eSubState MainMenuState::update(Input *input) {
     if (this->state == STATE_MAIN_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
-            MiiProcessSharedState mii_process_shared_state;
             std::vector<bool> mii_repos_candidates;
             switch (cursorPos) {
                 case 0:
@@ -109,9 +108,10 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                 case 9:
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
+                    // TO DO -- REPO CANDIDATES 
                     for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)
                         mii_repos_candidates.push_back(true);
-                    this->subState = std::make_unique<MiiRepoSelectState>(&mii_repos_candidates, MiiProcess::SELECT_SOURCE_REPO, &mii_process_shared_state);
+                    this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_SOURCE_REPO, &MiiUtils::mii_process_shared_state);
                     break;
                 default:
                     break;

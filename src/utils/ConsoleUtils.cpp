@@ -25,6 +25,7 @@ void Console::showMessage(Style St, const char *message, ...) {
     } else {
         DrawUtils::clear(COLOR_BG_OK);
     }
+    DrawUtils::setFontColor(COLOR_TEXT);
 
 
     va_list va;
@@ -68,6 +69,8 @@ void Console::showMessage(Style St, const char *message, ...) {
         }
     } else if (St & ST_SHOW)
         sleep(DEFAULT_ERROR_WAIT);
+    else if (St & ST_DEBUG)
+        sleep(0);
 }
 
 bool Console::promptConfirm(Style st, const std::string &question) {
@@ -275,10 +278,10 @@ void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
 
         y += Y_OFFSET;
 
-        uint32_t maxLineLength = (MAX_PROMPT_WIDTH/12 - x - X_OFFSET) ;
+        uint32_t maxLineLength = (MAX_PROMPT_WIDTH / 12 - x - X_OFFSET);
         if (maxLineLength < 1) {
             DrawUtils::print((x + X_OFFSET) * 12, y * 24, "overflow");
-            return;   
+            return;
         }
 
         std::string currentLine;
@@ -298,7 +301,7 @@ void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
                     else
                         cplen = 1;
                     i += cplen;
-                    subLength = DrawUtils::getTextWidth(currentLine.substr(0,i).c_str()) / 12;
+                    subLength = DrawUtils::getTextWidth(currentLine.substr(0, i).c_str()) / 12;
                     splitPoint = i;
                     if (subLength > maxLineLength) {
                         break;

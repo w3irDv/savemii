@@ -29,6 +29,7 @@ public:
     eMiiType mii_type = WIIU;
     MiiRepo *mii_repo = nullptr;
     size_t index = 0;
+
 };
 
 class MiiData {

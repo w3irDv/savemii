@@ -71,6 +71,8 @@ void MiiSelectState::render() {
         return;
     }
     if (this->state == STATE_MII_SELECT) {
+        if (mii_process_shared_state->state == MiiProcess::MIIS_TRANSFORMED)             // We have already perform one transformation task, and rwe have eturned from the menus setting all the parameters,
+            mii_process_shared_state->state = MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED; // so reset the state so we can repeat the tasks
         const char *menuTitle, *screenOptions, *nextActionBrief, *lastActionBriefOk;
         switch (action) {
             case MiiProcess::LIST_MIIS:
@@ -133,9 +135,26 @@ void MiiSelectState::render() {
             if (i + this->scroll < 0 || i + this->scroll >= (int) this->candidate_miis_count)
                 break;
 
-            if (this->mii_view[c2a[i + this->scroll]].selected && action != MiiProcess::LIST_MIIS) {
-                DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_SELECTED_SELECT_ICON, cursorPos, i);
-                Console::consolePrintPos(M_OFF, i + 2, "\ue071");
+            switch (action) {
+                case MiiProcess::LIST_MIIS:
+                    DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
+                    break;
+                default: {
+                    if (this->mii_view[c2a[i + this->scroll]].selected) {
+                        DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_SELECTED_SELECT_ICON, cursorPos, i);
+                        Console::consolePrintPos(M_OFF, i + 2, "\ue071"); // Cros Icon
+                    } else {
+                        if (this->mii_view[c2a[i + this->scroll]].state == MiiStatus::KO) {
+                            DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER, COLOR_LIST_DANGER_AT_CURSOR, cursorPos, i);
+                            Console::consolePrintPos(M_OFF, i + 2, "\ue00a"); // Sad
+                        } else if (this->mii_view[c2a[i + this->scroll]].state == MiiStatus::OK) {
+                            DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS, COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR, cursorPos, i);
+                            Console::consolePrintPos(M_OFF, i + 2, "\ue008"); // Happy
+                        } else {
+                            DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED, COLOR_LIST_SKIPPED_AT_CURSOR, cursorPos, i);
+                        }
+                    }
+                };
             }
 
             //if (this->mii_repo->miis[c2a[i + this->scroll]]->mii_type == Mii::eMiiType::WIIU) {
@@ -144,24 +163,6 @@ void MiiSelectState::render() {
             //       Console::consolePrintPos(M_OFF, i + 2, "\ue071");
             //    }
             //}
-
-            if (this->mii_view[c2a[i + this->scroll]].selected || action == MiiProcess::LIST_MIIS)
-                DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
-            else
-                DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED, COLOR_LIST_SKIPPED_AT_CURSOR, cursorPos, i);
-
-            //if (this->mii_view[c2a[i + this->scroll]].selected && this->mii_repo->miis[c2a[i + this->scroll]].) {
-            //    DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT, COLOR_LIST_INJECT_AT_CURSOR, cursorPos, i);
-            //}
-            if (this->mii_view[c2a[i + this->scroll]].state == MiiStatus::KO) {
-                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER, COLOR_LIST_DANGER_AT_CURSOR, cursorPos, i);
-                if (!this->mii_view[c2a[i + this->scroll]].selected)
-                    Console::consolePrintPos(M_OFF, i + 2, "\ue00a");
-            }
-            if (this->mii_view[c2a[i + this->scroll]].state == MiiStatus::OK) {
-                DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS, COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR, cursorPos, i);
-                Console::consolePrintPos(M_OFF, i + 2, "\ue008");
-            }
 
             switch (this->mii_view[c2a[i + this->scroll]].state) {
                 case MiiStatus::NOT_TRIED:
@@ -248,10 +249,15 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     break;
                 case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
                     mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
-                    if (mii_process_shared_state->template_mii_data != nullptr)
-                        MiiUtils::xfer_attribute(mii_process_shared_state);
-                    else
+                    if (mii_process_shared_state->template_mii_data != nullptr) {
+                        if (MiiUtils::xfer_attribute(errorCounter, mii_process_shared_state))
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Miis transform ok"), errorCounter);
+                        else
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
+                    } else
                         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), this->mii_repo->miis[c2a[currentlySelectedMii]]->mii_name, mii_repo->miis[c2a[currentlySelectedMii]]->creator_name);
+                    mii_process_shared_state->state = MiiProcess::MIIS_TRANSFORMED;
+                    return SUBSTATE_RETURN;
                     break;
                 default:;
             }
@@ -288,7 +294,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
             if (!selectOnlyOneMii) {
                 if (action != MiiProcess::LIST_MIIS) {
                     for (size_t i = 0; i < this->candidate_miis_count; i++) {
-                        if (this->mii_view[c2a[i]].candidate)
+                        if (this->mii_view[c2a[i]].candidate && this->mii_view[c2a[i]].state != MiiStatus::OK)
                             this->mii_view[c2a[i]].selected = true;
                     }
                 }
@@ -299,7 +305,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
             if (!selectOnlyOneMii) {
                 if (action != MiiProcess::LIST_MIIS) {
                     for (size_t i = 0; i < this->candidate_miis_count; i++) {
-                        if (this->mii_view[c2a[i]].candidate)
+                        if (this->mii_view[c2a[i]].candidate && this->mii_view[c2a[i]].state != MiiStatus::OK)
                             this->mii_view[c2a[i]].selected = false;
                     }
                 }
@@ -420,10 +426,11 @@ bool MiiSelectState::test_select_template_mii(size_t index) {
 
 void MiiSelectState::test_xfer_attr() {
 
+    uint8_t errorCounter = 0;
     mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
     mii_process_shared_state->auxiliar_c2a = &this->c2a;
     mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
-    MiiUtils::xfer_attribute(mii_process_shared_state);
+    MiiUtils::xfer_attribute(errorCounter, mii_process_shared_state);
     delete mii_process_shared_state->template_mii_data;
 }
 

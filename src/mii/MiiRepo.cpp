@@ -8,17 +8,7 @@
 #include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
 
-MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder) : repo_name(repo_name), db_type(db_type), db_kind(db_kind), path_to_repo(path_to_repo), backup_base_path(BACKUP_ROOT + "/" + backup_folder) {
-    switch (this->db_type) {
-        case FFL:
-            mii_data_size = WiiUMiiData::MII_DATA_SIZE;
-            break;
-        case RFL:
-            mii_data_size = WiiMiiData::MII_DATA_SIZE;
-            break;
-        default:;
-    }
-};
+MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder) : repo_name(repo_name), db_type(db_type), db_kind(db_kind), path_to_repo(path_to_repo), backup_base_path(BACKUP_ROOT + "/" + backup_folder) {};
 MiiRepo::~MiiRepo() {};
 
 int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
@@ -103,8 +93,8 @@ int MiiRepo::restore(int slot) {
 
     switch (this->db_kind) {
         case FOLDER: {
-            if (!FSUtils::createFolderUnlocked(dstPath)) {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nRestore failed."), this->repo_name);
+            if (!FSUtils::createFolder(dstPath.c_str())) {
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nRestore failed."), this->repo_name.c_str());
                 errorCode = 16;
                 return errorCode;
             }

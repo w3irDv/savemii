@@ -10,22 +10,23 @@
 
 namespace fs = std::filesystem;
 
-MiiFolderRepo::MiiFolderRepo() {
-    
-    switch (this->db_type) {
-        case FFL:
-            filename_prefix = "WIIU-";
-            break;
-        case RFL:
-            filename_prefix = "WII-";
-            break;
-        default:;
-    }
-        
+template<typename MII, typename MIIDATA>
+MiiFolderRepo<MII, MIIDATA>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, db_kind, path_to_repo, backup_folder) {
+    filename_prefix = MII::file_name_prefix;
+    mii_data_size =MIIDATA::MII_DATA_SIZE;
 };
-MiiFolderRepo::~MiiFolderRepo() {};
 
-MiiData *MiiFolderRepo::extract_mii_data(size_t index) {
+template<typename MII, typename MIIDATA>
+MiiFolderRepo<MII, MIIDATA>::~MiiFolderRepo(){
+        this->empty_repo();
+};
+
+template MiiFolderRepo<WiiMii, WiiMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
+template MiiFolderRepo<WiiUMii, WiiUMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
+
+
+template<typename MII, typename MIIDATA>
+MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
 
     std::string mii_filepath = this->mii_filepath[index];
 
@@ -62,18 +63,7 @@ MiiData *MiiFolderRepo::extract_mii_data(size_t index) {
         return nullptr;
     }
 
-
-    MiiData *miidata = nullptr;
-
-    switch (db_type) {
-        case FFL:
-            miidata = new WiiUMiiData();
-            break;
-        case RFL:
-            miidata = new WiiMiiData();
-            break;
-        default:;
-    }
+    MiiData *miidata = new MIIDATA();
 
     miidata->mii_data = mii_buffer;
     miidata->mii_data_size = size;
@@ -81,8 +71,8 @@ MiiData *MiiFolderRepo::extract_mii_data(size_t index) {
     return miidata;
 }
 
-
-bool MiiFolderRepo::import_miidata(MiiData *miidata) {
+template<typename MII, typename MIIDATA>
+bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata) {
 
     if (miidata == nullptr) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import from null mii data"));
@@ -118,8 +108,8 @@ bool MiiFolderRepo::import_miidata(MiiData *miidata) {
     return true;
 }
 
-
-bool MiiFolderRepo::populate_repo() {
+template<typename MII, typename MIIDATA>
+bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
 
     if (this->miis.size() != 0)
         empty_repo();
@@ -167,8 +157,20 @@ bool MiiFolderRepo::populate_repo() {
             continue;
         }
 
-        if (populate_mii(index, raw_mii_data)) {
+        Mii *mii = MII::populate_mii(index, raw_mii_data);
+
+        if (mii != nullptr) {
+            this->miis.push_back(mii);
             this->mii_filepath.push_back(filename_str);
+            std::string creatorName = mii->creator_name;
+            // to test, we will use creator_name
+            std::vector<size_t> *owners_v = owners[creatorName];
+            if (owners_v == nullptr) {
+                owners_v = new std::vector<size_t>;
+                owners[creatorName] = owners_v;
+            }
+            owners_v->push_back(index);
+
             index++;
         }
     }
@@ -181,7 +183,8 @@ bool MiiFolderRepo::populate_repo() {
     return true;
 };
 
-bool MiiFolderRepo::empty_repo() {
+template<typename MII, typename MIIDATA>
+bool MiiFolderRepo<MII, MIIDATA>::empty_repo() {
 
     for (auto &mii : this->miis) {
         delete mii;
@@ -199,7 +202,8 @@ bool MiiFolderRepo::empty_repo() {
     return true;
 }
 
-bool MiiFolderRepo::find_name(std::string &newname) {
+template<typename MII, typename MIIDATA>
+bool MiiFolderRepo<MII, MIIDATA>::find_name(std::string &newname) {
     if (FSUtils::checkEntry(this->path_to_repo.c_str()) != 2) {
         newname = this->path_to_repo; // so the error will show the path
         return false;
@@ -219,7 +223,8 @@ bool MiiFolderRepo::find_name(std::string &newname) {
     return true;
 }
 
-bool MiiFolderRepo::test_list_repo() {
+template<typename MII, typename MIIDATA>
+bool MiiFolderRepo<MII, MIIDATA>::test_list_repo() {
 
     for (const auto &mii : this->miis) {
         Console::showMessage(OK_SHOW, "name: %s - creator: %s - ts: %s\n", mii->mii_name.c_str(), mii->creator_name.c_str(), mii->timestamp.c_str());
@@ -227,3 +232,4 @@ bool MiiFolderRepo::test_list_repo() {
 
     return true;
 }
+

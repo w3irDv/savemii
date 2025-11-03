@@ -9,11 +9,15 @@
 
 class WiiUMii : public Mii {
 public:
-    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, FFLCreateIDFlags mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
+    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
 
     bool copyable = false;
-    FFLCreateIDFlags mii_id_flags = (FFLCreateIDFlags) (FFL_CREATE_ID_FLAG_NORMAL | FFL_CREATE_ID_FLAG_WII_U);
+    uint8_t mii_id_flags = (FFLCreateIDFlags) (FFL_CREATE_ID_FLAG_NORMAL | FFL_CREATE_ID_FLAG_WII_U);
     uint8_t birth_platform = 0x4;
+
+    static WiiUMii *populate_mii(size_t index, uint8_t *raw_mii_data);
+
+    const static inline std::string file_name_prefix = "WII-";
 };
 
 class WiiUMiiData : public MiiData {

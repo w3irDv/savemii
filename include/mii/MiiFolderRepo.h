@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 
-
-class MiiFolderRepo : virtual public MiiRepo {
+template <typename MII,typename MIIDATA>
+class MiiFolderRepo : public MiiRepo {
 
 public:
-    MiiFolderRepo();
+    MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
     virtual ~MiiFolderRepo();
 
     void open_and_load_repo() {}; // not-needed for folder based repos

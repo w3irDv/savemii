@@ -159,11 +159,13 @@ ApplicationState::eSubState MiiTasksState::update(Input *input) {
                             break;
                         case 4:
                             this->state = STATE_DO_SUBSTATE;
+                            mii_process_shared_state->auxiliar_mii_repo = mii_repo->stage_repo;
                             this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_FOR_EXPORT, mii_process_shared_state);
                             break;
                         case 5:
                             this->state = STATE_DO_SUBSTATE;
                             // MVP - Import only from the alt (stage) folder
+                            mii_process_shared_state->auxiliar_mii_repo = mii_repo->stage_repo;
                             this->subState = std::make_unique<MiiSelectState>(mii_repo->stage_repo, MiiProcess::SELECT_MIIS_FOR_IMPORT, mii_process_shared_state);
                             break;
                         case 6:

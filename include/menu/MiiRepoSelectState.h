@@ -13,7 +13,7 @@ class MiiRepoSelectState : public ApplicationState {
     friend class MiiProcessSharedState;
 
 public:
-    MiiRepoSelectState(std::vector<bool> *mii_repos_candidates, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state);
+    MiiRepoSelectState(std::vector<bool> mii_repos_candidates, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state);
 
     enum eState {
         STATE_MII_REPO_SELECT,
@@ -27,7 +27,7 @@ private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_MII_REPO_SELECT;
 
-    std::vector<bool> *mii_repos_candidates;
+    std::vector<bool> mii_repos_candidates;
     MiiProcess::eMiiProcessActions action;
     MiiProcessSharedState *mii_process_shared_state;
 

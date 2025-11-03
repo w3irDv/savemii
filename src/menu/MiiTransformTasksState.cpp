@@ -49,7 +49,7 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("All selected miis will get the system ownership attributes of the mi you will select in the next menu.");
                 break;
             case 2:
-                info = LanguageUtils::gettext("So people that does no won the mii can modifiy it by creating a copy of the original");
+                info = LanguageUtils::gettext("So people that does not own the mii can modifiy it by creating a copy of the original");
                 break;
             default:
                 info = "";
@@ -85,11 +85,16 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                 mii_process_shared_state->transfer_physical_appearance = transfer_physical_appearance;
                 mii_process_shared_state->transfer_ownership = transfer_ownership;
                 mii_process_shared_state->set_copy_flag = set_copy_flag;
-                this->subState = std::make_unique<MiiRepoSelectState>(&mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
+                this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
             } else {
-                if (set_copy_flag)
-                    MiiUtils::set_copy_flag_on(mii_process_shared_state);
-                else
+                if (set_copy_flag) {
+                    uint8_t errorCounter = 0;
+                    if (MiiUtils::set_copy_flag_on(errorCounter, mii_process_shared_state))
+                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Miis transform ok"), errorCounter);
+                    else
+                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
+                    return SUBSTATE_RETURN;
+                } else
                     Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Please select an option"));
             }
         }
@@ -126,6 +131,8 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             //     }
             this->subState.reset();
             this->state = STATE_MII_TRANSFORM_TASKS;
+            if (mii_process_shared_state->state == MiiProcess::MIIS_TRANSFORMED)
+                return SUBSTATE_RETURN;
         }
     }
     return SUBSTATE_RUNNING;
