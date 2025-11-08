@@ -2,6 +2,7 @@
 #include <menu/MiiTypeDeclarations.h>
 
 #include <mii/MiiFolderRepo.h>
+#include <mii/MiiFileRepo.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
 #include <utils/Colors.h>
@@ -49,6 +50,20 @@ std::string MiiUtils::epoch_to_utc(int temp) {
     return std::string(buffer);
 }
 
+unsigned short MiiUtils::getCrc(unsigned char *buf, int size) {
+    unsigned int crc = 0x0000;
+    int byteIndex, bitIndex, counter;
+    for (byteIndex = 0; byteIndex < size; byteIndex++) {
+        for (bitIndex = 7; bitIndex >= 0; bitIndex--) {
+            crc = (((crc << 1) | ((buf[byteIndex] >> bitIndex) & 0x1)) ^
+                   (((crc & 0x8000) != 0) ? 0x1021 : 0));
+        }
+    }
+    for (counter = 16; counter > 0; counter--) {
+        crc = ((crc << 1) ^ (((crc & 0x8000) != 0) ? 0x1021 : 0));
+    }
+    return (unsigned short) (crc & 0xFFFF);
+}
 
 bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
@@ -94,6 +109,14 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
             InProgress::currentStep++;
         }
     }
+    if (errorCounter != 0 && target_repo->db_kind == MiiRepo::eDBKind::FILE)
+        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
+            target_repo->open_and_load_repo();
+            target_repo->populate_repo();
+            return false;
+        }
+
+    target_repo->persist_repo();
     return (errorCounter == 0);
 }
 
@@ -122,7 +145,7 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     for (size_t i = 0; i < candidate_miis_count; i++) {
         if (mii_view->at(c2a->at(i)).selected) {
             size_t mii_index = c2a->at(i);
-            showMiiOperations(mii_process_shared_state, c2a->at(i));
+            showMiiOperations(mii_process_shared_state, mii_index);
             mii_view->at(mii_index).selected = false;
             mii_view->at(mii_index).state = MiiStatus::KO;
             MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
@@ -144,6 +167,15 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
             }
         }
     }
+
+    if (errorCounter != 0 && receiving_repo->db_kind == MiiRepo::eDBKind::FILE)
+        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
+            receiving_repo->open_and_load_repo();
+            receiving_repo->populate_repo();
+            return false;
+        }
+
+    receiving_repo->persist_repo();
     return (errorCounter == 0);
 }
 
@@ -158,6 +190,10 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
             source_mii_repo = mii_process_shared_state->auxiliar_mii_repo;
             target_mii_repo = mii_process_shared_state->primary_mii_repo;
             break;
+        case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
+        case MiiProcess::SELECT_TRANSFORM_TASK:
+            source_mii_repo = mii_process_shared_state->primary_mii_repo;
+            break;
         default:
             source_mii_repo = mii_process_shared_state->primary_mii_repo;
             target_mii_repo = mii_process_shared_state->auxiliar_mii_repo;
@@ -170,8 +206,17 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
     Console::consolePrintPos(-2, 6, ">> %s (by %s)", source_mii_repo->miis[mii_index]->mii_name.c_str(), source_mii_repo->miis[mii_index]->creator_name.c_str());
     Console::consolePrintPosAligned(6, 4, 2, "%d/%d", InProgress::currentStep, InProgress::totalSteps);
     DrawUtils::setFontColor(COLOR_TEXT);
-    Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Copying from: %s"), source_mii_repo->repo_name.c_str());
-    Console::consolePrintPos(-2, 11, LanguageUtils::gettext("To: %s"), target_mii_repo->repo_name.c_str());
+
+    switch (mii_process_shared_state->state) {
+        case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
+        case MiiProcess::SELECT_TRANSFORM_TASK:
+            Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Transforming mii"));
+            break;
+        default:
+            Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Copying from: %s"), source_mii_repo->repo_name.c_str());
+            Console::consolePrintPos(-2, 11, LanguageUtils::gettext("To: %s"), target_mii_repo->repo_name.c_str());
+    }
+
     if (InProgress::totalSteps > 1) {
         if (InProgress::abortTask) {
             DrawUtils::setFontColor(COLOR_LIST_DANGER);
@@ -197,6 +242,7 @@ bool MiiUtils::xfer_attribute(uint8_t &errorCounter, MiiProcessSharedState *mii_
         for (size_t i = 0; i < candidate_miis_count; i++) {
             if (mii_view->at(c2a->at(i)).selected) {
                 size_t mii_index = c2a->at(i);
+                showMiiOperations(mii_process_shared_state, mii_index);
                 mii_view->at(mii_index).state = MiiStatus::KO;
                 mii_view->at(mii_index).selected = false;
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
@@ -205,7 +251,7 @@ bool MiiUtils::xfer_attribute(uint8_t &errorCounter, MiiProcessSharedState *mii_
                         mii_data->transfer_ownership_from(template_mii_data);
                     if (mii_process_shared_state->transfer_physical_appearance)
                         mii_data->transfer_appearance_from(template_mii_data);
-                    if (mii_process_shared_state->primary_mii_repo->import_miidata(mii_data))
+                    if (mii_repo->import_miidata(mii_data))
                         mii_view->at(mii_index).state = MiiStatus::OK;
                     else {
                         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error importing Mii %s in repo %s"), mii_process_shared_state->primary_mii_repo->miis[mii_index]->mii_name.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
@@ -221,7 +267,14 @@ bool MiiUtils::xfer_attribute(uint8_t &errorCounter, MiiProcessSharedState *mii_
     } else {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Transform - MiiProcesSharedState is not completely initialized"));
     }
+    if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
+        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
+            mii_repo->open_and_load_repo();
+            mii_repo->populate_repo();
+            return false;
+        }
 
+    mii_repo->persist_repo();
     return errorCounter == 0;
 }
 
@@ -236,6 +289,7 @@ bool MiiUtils::set_copy_flag_on(uint8_t &errorCounter, MiiProcessSharedState *mi
         for (size_t i = 0; i < candidate_miis_count; i++) {
             if (mii_view->at(c2a->at(i)).selected) {
                 size_t mii_index = c2a->at(i);
+                showMiiOperations(mii_process_shared_state, mii_index);
                 mii_view->at(mii_index).state = MiiStatus::KO;
                 mii_view->at(mii_index).selected = false;
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
@@ -253,6 +307,13 @@ bool MiiUtils::set_copy_flag_on(uint8_t &errorCounter, MiiProcessSharedState *mi
     } else {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Transform - MiiProcesSharedState is not completely initialized"));
     }
+    if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
+        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
+            mii_repo->open_and_load_repo();
+            mii_repo->populate_repo();
+            return false;
+        }
 
+    mii_repo->persist_repo();
     return errorCounter == 0;
 }

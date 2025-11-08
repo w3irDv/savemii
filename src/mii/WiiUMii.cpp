@@ -86,7 +86,6 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         deviceHash.append(hexhex);
     }
 
-
     WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, mii_id_flags, birth_platform, nullptr, index);
 
     return wiiu_mii;
@@ -117,3 +116,71 @@ bool WiiUMiiData::transfer_appearance_from(MiiData *mii_data_template) {
 
     return true;
 }
+
+
+#include <chrono>
+
+uint32_t mk_ts() {
+
+    uint32_t timeSinceEpochMilliseconds = (uint32_t) std::chrono::duration_cast<std::chrono::seconds>(
+                                                  std::chrono::system_clock::now().time_since_epoch())
+                                                  .count();
+
+    struct tm tm = {
+            .tm_sec = 0,
+            .tm_min = 0,
+            .tm_hour = 0,
+            .tm_mday = 1,
+            .tm_mon = 0,
+            .tm_year = 2010 - 1900,
+            .tm_wday = 0,
+            .tm_yday = 0,
+            .tm_isdst = -1,
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+            .tm_gmtoff = 0,
+            .tm_zone = "",
+#endif
+    };
+    time_t base = mktime(&tm);
+
+    return (timeSinceEpochMilliseconds - base) / 2;
+}
+
+void view_ts(uint8_t *data, uint8_t length) {
+    std::string hex_ascii{};
+    for (size_t i = 0; i < length; i++) {
+        char hexhex[3];
+        snprintf(hexhex, 3, "%02x", data[i]);
+        hex_ascii.append(hexhex);
+    }
+    printf("%s\n", hex_ascii.c_str());
+}
+
+bool WiiUMiiData::update_timestamp(size_t delay) {
+
+    uint32_t ts = mk_ts() + delay;
+    uint32_t flags_and_ts;
+    uint32_t flags;
+    uint32_t updated_flags_and_ts;
+
+    memcpy(&flags_and_ts, this->mii_data + TIMESTAMP_OFFSET, 4);
+    flags = flags_and_ts & 0xF0000000; 
+    updated_flags_and_ts = flags | ts;
+
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    flags = flags_and_ts & 0xF0;
+    //printf("flags %01x\n", flags);
+    updated_flags_and_ts = __builtin_bswap32(ts) | flags;
+#endif
+
+
+    //printf("in mii before\n");
+    //view_ts(this->mii_data + TIMESTAMP_OFFSET, 4);
+
+    memcpy(this->mii_data + TIMESTAMP_OFFSET, &updated_flags_and_ts, 4);
+
+    //printf("in mii after\n");
+    //view_ts(this->mii_data + TIMESTAMP_OFFSET, 4);
+    return true;
+
+};

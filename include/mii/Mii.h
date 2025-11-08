@@ -43,6 +43,7 @@ public:
     virtual bool set_copy_flag() = 0;                                     // for Wii U
     virtual bool transfer_ownership_from(MiiData *mii_data_template) = 0; // wii -> device, wiiu -> device+author_id
     virtual bool transfer_appearance_from(MiiData *mii_data_template) = 0;
+    virtual bool update_timestamp(size_t delay) = 0;
     static void *allocate_memory(size_t size);
 
     uint8_t *mii_data = nullptr;

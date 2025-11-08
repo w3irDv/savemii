@@ -33,6 +33,8 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
     c2a.clear();
     mii_view.clear();
 
+
+    mii_repo->open_and_load_repo();
     mii_repo->populate_repo();
 
     all_miis_count = mii_repo->miis.size();
@@ -251,7 +253,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
                     if (mii_process_shared_state->template_mii_data != nullptr) {
                         if (MiiUtils::xfer_attribute(errorCounter, mii_process_shared_state))
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Miis transform ok"), errorCounter);
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"), errorCounter);
                         else
                             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
                     } else
@@ -375,6 +377,20 @@ bool MiiSelectState::test_select_some_miis() {
     return true;
 }
 
+bool MiiSelectState::test_select_all_miis_but_first() {
+
+    mii_view.at(c2a[0]) = MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED);
+    for (size_t i = 1; i < candidate_miis_count; i++) {
+        mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
+
+        mii_process_shared_state->primary_mii_view = &this->mii_view;
+        mii_process_shared_state->primary_c2a = &this->c2a;
+
+        //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
+    }
+    return true;
+}
+
 bool MiiSelectState::test_select_all_miis() {
 
     for (size_t i = 0; i < candidate_miis_count; i++) {
@@ -427,6 +443,7 @@ bool MiiSelectState::test_select_template_mii(size_t index) {
 void MiiSelectState::test_xfer_attr() {
 
     uint8_t errorCounter = 0;
+    mii_process_shared_state->auxiliar_mii_repo = this->mii_repo;
     mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
     mii_process_shared_state->auxiliar_c2a = &this->c2a;
     mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
@@ -438,6 +455,7 @@ void MiiSelectState::test_xfer_attr() {
 void MiiSelectState::test_import() {
 
     uint8_t errorCounter = 0;
+    mii_process_shared_state->auxiliar_mii_repo = this->mii_repo;
     mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
     mii_process_shared_state->auxiliar_c2a = &this->c2a;
     if (MiiUtils::import_miis(errorCounter, mii_process_shared_state))

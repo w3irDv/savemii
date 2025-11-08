@@ -90,7 +90,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                 if (set_copy_flag) {
                     uint8_t errorCounter = 0;
                     if (MiiUtils::set_copy_flag_on(errorCounter, mii_process_shared_state))
-                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Miis transform ok"), errorCounter);
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"), errorCounter);
                     else
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
                     return SUBSTATE_RETURN;

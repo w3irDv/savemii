@@ -23,4 +23,6 @@ namespace MiiUtils {
 
     void showMiiOperations(MiiProcessSharedState *mii_process_shared_state, size_t mii_index);
 
+    unsigned short getCrc(unsigned char *buf, int size);
+
 } // namespace MiiUtils

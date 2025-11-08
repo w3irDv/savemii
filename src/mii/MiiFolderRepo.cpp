@@ -13,12 +13,12 @@ namespace fs = std::filesystem;
 template<typename MII, typename MIIDATA>
 MiiFolderRepo<MII, MIIDATA>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, db_kind, path_to_repo, backup_folder) {
     filename_prefix = MII::file_name_prefix;
-    mii_data_size =MIIDATA::MII_DATA_SIZE;
+    mii_data_size = MIIDATA::MII_DATA_SIZE;
 };
 
 template<typename MII, typename MIIDATA>
-MiiFolderRepo<MII, MIIDATA>::~MiiFolderRepo(){
-        this->empty_repo();
+MiiFolderRepo<MII, MIIDATA>::~MiiFolderRepo() {
+    this->empty_repo();
 };
 
 template MiiFolderRepo<WiiMii, WiiMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
@@ -125,6 +125,8 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
     std::error_code ec;
     for (const auto &entry : fs::directory_iterator(path_to_repo, ec)) {
 
+        Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Reading Miis: %d"), index + 1);
+
         std::filesystem::path filename = entry.path();
         std::string filename_str = filename.string();
 
@@ -222,14 +224,3 @@ bool MiiFolderRepo<MII, MIIDATA>::find_name(std::string &newname) {
 
     return true;
 }
-
-template<typename MII, typename MIIDATA>
-bool MiiFolderRepo<MII, MIIDATA>::test_list_repo() {
-
-    for (const auto &mii : this->miis) {
-        Console::showMessage(OK_SHOW, "name: %s - creator: %s - ts: %s\n", mii->mii_name.c_str(), mii->creator_name.c_str(), mii->timestamp.c_str());
-    }
-
-    return true;
-}
-

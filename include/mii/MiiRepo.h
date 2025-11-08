@@ -28,14 +28,13 @@ public:
     virtual bool populate_repo() = 0;
     virtual bool empty_repo() = 0;
 
-    virtual bool test_list_repo() = 0;
-
-    virtual void open_and_load_repo() = 0; // copy repo to mem
-    virtual void close_repo() = 0;         // save repro from mem to wherever
+    virtual bool open_and_load_repo() = 0; // copy repo to mem
+    virtual bool persist_repo() = 0;         // save repro from mem to wherever
 
     //virtual bool import_mii(Mii &mii) = 0;               // from (temp)mem to the repo
     virtual bool import_miidata(MiiData *mii_data) = 0;  // from (temp)mem to the repo
     virtual MiiData *extract_mii_data(size_t index) = 0; // from the repo to (tmp)mem
+    virtual bool remove_miidata(size_t index) = 0;
 
     virtual std::string getBackupBasePath() { return backup_base_path; };
     int backup(int slot, std::string tag = "");
@@ -57,4 +56,9 @@ public:
     size_t mii_data_size = 0;
     const static inline std::string BACKUP_ROOT = "fs:vol/external01/wiiu/backups/MiiRepoBckp";
     //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
+
+    virtual uint16_t get_crc() = 0;
+
+    bool test_list_repo();
+
 };

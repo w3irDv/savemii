@@ -118,3 +118,8 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     return wii_mii;
 }
+
+
+bool WiiMiiData::update_timestamp(size_t delay) {
+    return delay == 0;
+};

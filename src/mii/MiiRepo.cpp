@@ -151,7 +151,7 @@ int MiiRepo::wipe() {
         case FILE: {
             if (unlink(path.c_str()) == -1) {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting file."));
-                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete filer:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete file:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
                 errorCode += 2;
             }
         } break;
@@ -159,4 +159,13 @@ int MiiRepo::wipe() {
     }
 
     return errorCode;
+}
+
+bool MiiRepo::test_list_repo() {
+
+    for (const auto &mii : this->miis) {
+        Console::showMessage(OK_SHOW, "name: %s - creator: %s - ts: %s\n", mii->mii_name.c_str(), mii->creator_name.c_str(), mii->timestamp.c_str());
+    }
+
+    return true;
 }
