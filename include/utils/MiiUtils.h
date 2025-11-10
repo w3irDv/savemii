@@ -2,6 +2,7 @@
 
 #include <mii/Mii.h>
 #include <menu/MiiProcessSharedState.h>
+#include <ctime>
 
 namespace MiiUtils {
 
@@ -14,12 +15,17 @@ namespace MiiUtils {
     inline MiiProcessSharedState mii_process_shared_state;
 
     std::string epoch_to_utc(int temp);
+    time_t year_zero_offset(int year_zero); 
+    uint32_t generate_timestamp(int year_zero, uint8_t ticks_per_sec); 
 
     bool export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
     bool import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
+    bool wipe_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
 
     bool xfer_attribute(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
     bool set_copy_flag_on(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
+    bool update_timestamp(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
+
 
     void showMiiOperations(MiiProcessSharedState *mii_process_shared_state, size_t mii_index);
 

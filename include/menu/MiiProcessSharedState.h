@@ -25,5 +25,6 @@ public:
     bool transfer_physical_appearance = false;
     bool transfer_ownership = false;
     bool set_copy_flag = false;
+    bool in_place = true;
 
 };

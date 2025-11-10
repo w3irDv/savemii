@@ -58,6 +58,8 @@ void MiiTasksState::render() {
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
                 Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Import Miis (from %s)"),mii_repo->stage_repo->repo_name.c_str());
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
+                Console::consolePrintPos(M_OFF, 13, LanguageUtils::gettext("   Wipe Miis"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
                 Console::consolePrintPos(M_OFF, 13, LanguageUtils::gettext("   Transform Miis"));
                 Console::consolePrintPos(M_OFF, cursorPos + 5 + (cursorPos > 2 ? 2 : 0), "\u2192");
             };
@@ -91,7 +93,7 @@ void MiiTasksState::render() {
                 case 4:
                 case 5:
                 case 6:
-                    info = LanguageUtils::gettext("Import/Export Miis between internel DBs and SD Stage folders");
+                    info = LanguageUtils::gettext("Import/Export/Wipe Miis between internel DBs and SD Stage folders");
                     break;
                 case 7:
                     info = LanguageUtils::gettext("Change attributes or appareance of miis");
@@ -169,6 +171,10 @@ ApplicationState::eSubState MiiTasksState::update(Input *input) {
                             this->subState = std::make_unique<MiiSelectState>(mii_repo->stage_repo, MiiProcess::SELECT_MIIS_FOR_IMPORT, mii_process_shared_state);
                             break;
                         case 6:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_TO_WIPE, mii_process_shared_state);
+                            break;
+                        case 7:
                             this->state = STATE_DO_SUBSTATE;
                             this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED, mii_process_shared_state);
                             break;

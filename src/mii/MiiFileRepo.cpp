@@ -85,7 +85,7 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
     std::string db_filepath = this->path_to_repo;
 
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
-    
+
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
 #endif
@@ -135,7 +135,7 @@ MiiData *MiiFileRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
 }
 
 template<typename MII, typename MIIDATA>
-bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata) {
+bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, size_t index) {
 
     if (miidata == nullptr) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import from null mii data"));
@@ -148,32 +148,69 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata) {
 
 
     size_t target_location;
-    if (!this->find_empty_location(target_location)) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find aN EMPTY location for the mii in the db"));
-        return false;
+
+    if (in_place) {
+        target_location = this->mii_location.at(index);
+    } else {
+        index = this->miis.size();
+        if (!this->find_empty_location(target_location)) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find aN EMPTY location for the mii in the db"));
+            return false;
+        }
     }
 
-    size_t index = this->miis.size();
-    miidata->update_timestamp(index);
+    //size_t index = this->miis.size();
+    //TODO: DECIDE WHEN TO CREATE A NEW TIMESTAMP = ID
+    //printf("adding index: %ld",index);
+    //miidata->update_timestamp(index);
 
     memcpy(db_buffer + MIIDATA::DB::OFFSET + target_location * MIIDATA::MII_DATA_SIZE, miidata->mii_data, MIIDATA::MII_DATA_SIZE);
 
-    Mii *mii = MII::populate_mii(index, miidata->mii_data);
-
-    if (mii != nullptr) {
-        this->miis.push_back(mii);
-        this->mii_location.push_back(target_location);
-        std::string creatorName = mii->creator_name;
-        // to test, we will use creator_name
-        std::vector<size_t> *owners_v = owners[creatorName];
-        if (owners_v == nullptr) {
-            owners_v = new std::vector<size_t>;
-            owners[creatorName] = owners_v;
+    //////// Seems better to perform all operations, and then update globally this information
+    /*
+    if (inplace) {
+        delete miis.at(index);
+        miis.at(index) = MII::populate_mii(index, miidata->mii_data);
+    } else {
+        Mii *mii = MII::populate_mii(index, miidata->mii_data);
+        //// WRONG FOR INPLACE!!!!
+        if (mii != nullptr) {
+            this->miis.push_back(mii);
+            this->mii_location.push_back(target_location);
+            std::string creatorName = mii->creator_name;
+            // to test, we will use creator_name
+            std::vector<size_t> *owners_v = owners[creatorName];
+            if (owners_v == nullptr) {
+                owners_v = new std::vector<size_t>;
+                owners[creatorName] = owners_v;
+            }
+            owners_v->push_back(index);
         }
-        owners_v->push_back(index);
+            
     }
+    */
+    //printf("timestamp >> %s\n", mii->timestamp.c_str());
+    ///////// 
 
-    printf("timestamp >> %s\n",mii->timestamp.c_str());
+    return true;
+}
+
+template<typename MII, typename MIIDATA>
+bool MiiFileRepo<MII, MIIDATA>::wipe_miidata(size_t index) {
+
+    size_t target_location = this->mii_location.at(index);
+
+    memset(this->db_buffer + MIIDATA::DB::OFFSET + target_location * MIIDATA::MII_DATA_SIZE, 0, MIIDATA::MII_DATA_SIZE);
+
+    /*
+    // the caller should delete element at index for other related vectors
+    delete miis.at(index);
+    this->miis.erase(this->miis.begin() + index);
+    this->mii_location.erase(this->mii_location.begin() + index);
+        
+    if (last_empty_location > index)
+        last_empty_location = index;
+    */
     return true;
 }
 
@@ -267,11 +304,11 @@ template<typename MII, typename MIIDATA>
 uint16_t MiiFileRepo<MII, MIIDATA>::get_crc() {
 
     uint16_t crc;
-    memcpy(&crc,db_buffer+MIIDATA::DB::CRC_OFFSET,2);
-//    uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
-//#ifdef BYTE_ORDER__LITTLE_ENDIAN
-//    crc = __builtin_bswap16(crc);
-//#endif
+    memcpy(&crc, db_buffer + MIIDATA::DB::CRC_OFFSET, 2);
+    //    uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
+    //#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    //    crc = __builtin_bswap16(crc);
+    //#endif
 
     return crc;
 }

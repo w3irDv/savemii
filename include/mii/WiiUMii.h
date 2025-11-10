@@ -38,6 +38,9 @@ public:
     const static size_t APPEARANCE_OFFSET_2 = 0x2E;
     const static size_t APPEARANCE_SIZE_2 = 0x1A;
 
+    const static size_t YEAR_ZERO = 2010;
+    const static uint8_t TICKS_PER_SEC = 2;
+
     const static inline size_t MII_DATA_SIZE = 0x5C;
 
     //FFL_ODB.dat

@@ -4,6 +4,7 @@
 #include <mii/MiiFolderRepo.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
+#include <unistd.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
@@ -72,7 +73,7 @@ MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
 }
 
 template<typename MII, typename MIIDATA>
-bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata) {
+bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, size_t index) {
 
     if (miidata == nullptr) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import from null mii data"));
@@ -82,9 +83,13 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata) {
     size_t size = miidata->mii_data_size;
 
     std::string newname{};
-    if (!this->find_name(newname)) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find a name for the mii file:\n%s\n%s"), newname.c_str(), strerror(errno));
-        return false;
+    if (in_place) {
+        newname = this->mii_filepath.at(index);
+    } else {
+        if (!this->find_name(newname)) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find a name for the mii file:\n%s\n%s"), newname.c_str(), strerror(errno));
+            return false;
+        }
     }
 
     std::ofstream mii_file;
@@ -107,6 +112,17 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata) {
 
     return true;
 }
+
+template<typename MII, typename MIIDATA>
+bool MiiFolderRepo<MII, MIIDATA>::wipe_miidata(size_t index) {
+
+    if (unlink(this->mii_filepath.at(index).c_str()) == -1) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete file:\n%s\n%s"), this->repo_name.c_str(), this->mii_filepath.at(index).c_str(), strerror(errno));
+        return false;
+    }
+    return true;
+}
+
 
 template<typename MII, typename MIIDATA>
 bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {

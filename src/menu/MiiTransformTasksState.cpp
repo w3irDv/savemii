@@ -76,10 +76,13 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             return SUBSTATE_RETURN;
         }
         if (input->get(ButtonState::TRIGGER, Button::A)) {
-            // TO DO: real repo_candidates computation
             std::vector<bool> mii_repos_candidates;
-            for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)
-                mii_repos_candidates.push_back(true);
+            for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++) {
+                if (mii_process_shared_state->primary_mii_repo->db_kind ==  MiiUtils::mii_repos.at(i)->db_kind) 
+                    mii_repos_candidates.push_back(true);
+                else
+                    mii_repos_candidates.push_back(false);
+            }
             if (transfer_physical_appearance || transfer_ownership) {
                 this->state = STATE_DO_SUBSTATE;
                 mii_process_shared_state->transfer_physical_appearance = transfer_physical_appearance;

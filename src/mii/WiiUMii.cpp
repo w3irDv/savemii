@@ -3,6 +3,7 @@
 #include <mii/WiiUMii.h>
 #include <utf8.h>
 #include <utils/MiiUtils.h>
+#include <utils/ConsoleUtils.h>
 
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
@@ -51,6 +52,11 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         creator_name[i] = __builtin_bswap16(creator_name[i]);
     }
 #endif
+
+    if (birth_platform != 4) {
+        Console::showMessage(ERROR_SHOW,"This does not seems a Wii U mii_data. Birth plaform %x is not allowed",birth_platform);
+        return nullptr;
+    }
     std::u16string name16;
     name16 = std::u16string(mii_name);
     std::string miiName = utf8::utf16to8(name16);
@@ -60,22 +66,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     //FFLCreateIDFlags mii_id_flags = (FFLCreateIDFlags) mii_id_flags_u8;
 
-    struct tm tm = {
-            .tm_sec = 0,
-            .tm_min = 0,
-            .tm_hour = 0,
-            .tm_mday = 1,
-            .tm_mon = 0,
-            .tm_year = 2010 - 1900,
-            .tm_wday = 0,
-            .tm_yday = 0,
-            .tm_isdst = -1,
-#ifdef BYTE_ORDER__LITTLE_ENDIAN
-            .tm_gmtoff = 0,
-            .tm_zone = "",
-#endif
-    };
-    time_t base = mktime(&tm);
+    time_t base = MiiUtils::year_zero_offset(WiiUMiiData::YEAR_ZERO);
 
     std::string timestamp = MiiUtils::epoch_to_utc(mii_id_timestamp * 2 + base);
 
@@ -117,48 +108,9 @@ bool WiiUMiiData::transfer_appearance_from(MiiData *mii_data_template) {
     return true;
 }
 
-
-#include <chrono>
-
-uint32_t mk_ts() {
-
-    uint32_t timeSinceEpochMilliseconds = (uint32_t) std::chrono::duration_cast<std::chrono::seconds>(
-                                                  std::chrono::system_clock::now().time_since_epoch())
-                                                  .count();
-
-    struct tm tm = {
-            .tm_sec = 0,
-            .tm_min = 0,
-            .tm_hour = 0,
-            .tm_mday = 1,
-            .tm_mon = 0,
-            .tm_year = 2010 - 1900,
-            .tm_wday = 0,
-            .tm_yday = 0,
-            .tm_isdst = -1,
-#ifdef BYTE_ORDER__LITTLE_ENDIAN
-            .tm_gmtoff = 0,
-            .tm_zone = "",
-#endif
-    };
-    time_t base = mktime(&tm);
-
-    return (timeSinceEpochMilliseconds - base) / 2;
-}
-
-void view_ts(uint8_t *data, uint8_t length) {
-    std::string hex_ascii{};
-    for (size_t i = 0; i < length; i++) {
-        char hexhex[3];
-        snprintf(hexhex, 3, "%02x", data[i]);
-        hex_ascii.append(hexhex);
-    }
-    printf("%s\n", hex_ascii.c_str());
-}
-
 bool WiiUMiiData::update_timestamp(size_t delay) {
 
-    uint32_t ts = mk_ts() + delay;
+    uint32_t ts = MiiUtils::generate_timestamp(YEAR_ZERO,TICKS_PER_SEC) + delay;
     uint32_t flags_and_ts;
     uint32_t flags;
     uint32_t updated_flags_and_ts;

@@ -14,9 +14,9 @@ public:
     bool open_and_load_repo();
     bool persist_repo();
     //bool import_mii(Mii &mii) { return (mii.mii_name == ""); };
-    bool import_miidata(MiiData *mii_data);  // from (temp)mem to the repo
+    bool import_miidata(MiiData *mii_data, bool in_place, size_t location);  // from (temp)mem to the repo
     MiiData *extract_mii_data(size_t index); // from the repo to (tmp)mem
-    bool remove_miidata(size_t index) { return index == 0;};    //TODO
+    bool wipe_miidata(size_t index);
 
     std::vector<size_t> mii_location; //index of the mii inside the db
 

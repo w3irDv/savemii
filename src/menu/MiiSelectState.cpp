@@ -95,6 +95,12 @@ void MiiSelectState::render() {
                 nextActionBrief = LanguageUtils::gettext(">> Export");
                 lastActionBriefOk = LanguageUtils::gettext("|Exported|");
                 break;
+            case MiiProcess::SELECT_MIIS_TO_WIPE:
+                menuTitle = LanguageUtils::gettext("Select which Miis to Wipe");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: Wipe Miis  \ue001: Back");
+                nextActionBrief = LanguageUtils::gettext(">> Wipe");
+                lastActionBriefOk = LanguageUtils::gettext("|Wiped|");
+                break;
             case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
                 menuTitle = LanguageUtils::gettext("Select which Miis to Transform");
                 screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: Select Transformation  \ue001: Back");
@@ -243,6 +249,14 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     else
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
                     break;
+                case MiiProcess::SELECT_MIIS_TO_WIPE:
+                    mii_process_shared_state->primary_mii_view = &this->mii_view;
+                    mii_process_shared_state->primary_c2a = &this->c2a;
+                    if (MiiUtils::wipe_miis(errorCounter, mii_process_shared_state))
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis wipe Ok"));
+                    else
+                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Wipe has failed for %d miis"), errorCounter);
+                    break;
                 case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
                     mii_process_shared_state->primary_mii_view = &this->mii_view;
                     mii_process_shared_state->primary_c2a = &this->c2a;
@@ -257,7 +271,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         else
                             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
                     } else
-                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), this->mii_repo->miis[c2a[currentlySelectedMii]]->mii_name, mii_repo->miis[c2a[currentlySelectedMii]]->creator_name);
+                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), this->mii_repo->miis[c2a[currentlySelectedMii]]->mii_name.c_str(), mii_repo->miis[c2a[currentlySelectedMii]]->creator_name.c_str());
                     mii_process_shared_state->state = MiiProcess::MIIS_TRANSFORMED;
                     return SUBSTATE_RETURN;
                     break;
