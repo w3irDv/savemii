@@ -10,8 +10,8 @@
 WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string timestamp,
                std::string device_hash, uint64_t author_id, bool copyable,
                uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
-               size_t index) : Mii(mii_name, creator_name, timestamp, device_hash, author_id, WIIU, mii_repo, index),
-                               copyable(copyable), mii_id_flags(mii_id_flags), birth_platform(birth_platform) {};
+               size_t index) : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, mii_id_flags, WII, mii_repo, index),
+                               birth_platform(birth_platform) {};
 
 
 bool WiiMiiData::set_copy_flag() {
@@ -104,6 +104,11 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     return wii_mii;
 }
 
+WiiMii *WiiMii::v_populate_mii(uint8_t *mii_data) {
+    WiiMii *new_mii = WiiMii::populate_mii(this->index, mii_data);
+    return new_mii;
+}
+
 /*
 void view_ts(uint8_t *data, uint8_t length) {
     std::string hex_ascii{};
@@ -118,13 +123,13 @@ void view_ts(uint8_t *data, uint8_t length) {
 
 bool WiiMiiData::update_timestamp(size_t delay) {
 
-    uint32_t ts = MiiUtils::generate_timestamp(YEAR_ZERO,TICKS_PER_SEC) + delay;
+    uint32_t ts = MiiUtils::generate_timestamp(YEAR_ZERO, TICKS_PER_SEC) + delay;
     uint32_t flags_and_ts;
     uint32_t flags;
     uint32_t updated_flags_and_ts;
 
     memcpy(&flags_and_ts, this->mii_data + TIMESTAMP_OFFSET, 4);
-    flags = flags_and_ts & 0xE0000000; 
+    flags = flags_and_ts & 0xE0000000;
     updated_flags_and_ts = flags | ts;
 
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
@@ -142,7 +147,4 @@ bool WiiMiiData::update_timestamp(size_t delay) {
     //printf("in mii after\n");
     //view_ts(this->mii_data + TIMESTAMP_OFFSET, 4);
     return true;
-    
-
 };
-

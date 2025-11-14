@@ -16,7 +16,7 @@ public:
         WIIU
     };
 
-    Mii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, eMiiType mii_type, MiiRepo *mii_repo, size_t index);
+    Mii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, uint8_t mii_id_flags, eMiiType mii_type, MiiRepo *mii_repo, size_t index);
     virtual ~Mii() {};
 
     std::string mii_name{};
@@ -26,10 +26,14 @@ public:
     std::string timestamp{};
     std::string device_hash{};
     uint64_t author_id = 0x0; // only for wii u
+    bool copyable = false;
+    uint8_t mii_id_flags =  0;
     eMiiType mii_type = WIIU;
     MiiRepo *mii_repo = nullptr;
     size_t index = 0;
+    std::string device_hash_lite{};
 
+    virtual Mii *v_populate_mii(uint8_t* mii_data) = 0;
 };
 
 class MiiData {

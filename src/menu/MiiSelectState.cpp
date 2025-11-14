@@ -30,20 +30,34 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
     if (action == MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE)
         selectOnlyOneMii = true;
 
-    c2a.clear();
-    mii_view.clear();
+    if (mii_repo->needs_populate) {
+        mii_repo->open_and_load_repo();
+        mii_repo->populate_repo();
+        mii_repo->needs_populate = false;
+    }
+    initialize_view();
+}
 
+void MiiSelectState::update_c2a() {
+    int j = 0;
+    for (size_t i = 0; i < all_miis_count; i++) {
+        if (mii_view[i].candidate)
+            c2a[j++] = i;
+    }
+}
 
-    mii_repo->open_and_load_repo();
-    mii_repo->populate_repo();
-
-    all_miis_count = mii_repo->miis.size();
-
+void MiiSelectState::initialize_view() {
     // just in case later we add filtering, sorting ...
     // MVP , candidates = all
     // candidates => filtered subset of all miss that will appear and can be managed on the menu
     // mii_view[i] => state of mii[i] --> is candidate or not (i.e. will appear in the current menu), is selected or not. 0 < i < all_miis
     // c2a[j] = i ==> candidate j is mii[i]. 0 < j < candidate_miis
+
+    c2a.clear();
+    mii_view.clear();
+
+    all_miis_count = mii_repo->miis.size();
+
     for (size_t i = 0; i < all_miis_count; i++) {
         if (selectOnlyOneMii)
             mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED));
@@ -56,13 +70,6 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
     candidate_miis_count = c2a.size();
 }
 
-void MiiSelectState::update_c2a() {
-    int j = 0;
-    for (size_t i = 0; i < all_miis_count; i++) {
-        if (mii_view[i].candidate)
-            c2a[j++] = i;
-    }
-}
 
 void MiiSelectState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -73,6 +80,16 @@ void MiiSelectState::render() {
         return;
     }
     if (this->state == STATE_MII_SELECT) {
+
+        /* Not neeed, in all usecases the repo modified will ebe shown after going to a new selectMiiState menu that will check i re-populate is needed
+        if (mii_repo->needs_populate) {
+            mii_repo->empty_repo();
+            mii_repo->populate_repo();
+            initialize_view();
+            mii_repo->needs_populate = false;
+        }
+        */
+
         if (mii_process_shared_state->state == MiiProcess::MIIS_TRANSFORMED)             // We have already perform one transformation task, and rwe have eturned from the menus setting all the parameters,
             mii_process_shared_state->state = MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED; // so reset the state so we can repeat the tasks
         const char *menuTitle, *screenOptions, *nextActionBrief, *lastActionBriefOk;
@@ -191,10 +208,12 @@ void MiiSelectState::render() {
                     break;
             }
 
-
-            Console::consolePrintPos(M_OFF, i + 2, "    %s (by %s)   [%s]   %s%s",
+            Console::consolePrintPos(M_OFF, i + 2, "    %s (by %s) C:%s A:%02x D:%s [%s]   %s%s",
                                      this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str(),
                                      this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str(),
+                                     this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? "Y" : "N",
+                                     (uint8_t) (this->mii_repo->miis[c2a[i + this->scroll]]->author_id & 0xFF),
+                                     this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str(),
                                      this->mii_repo->miis[c2a[i + this->scroll]]->timestamp.c_str(),
                                      lastState.c_str(),
                                      nxtAction.c_str());
@@ -266,12 +285,14 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                 case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
                     mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
                     if (mii_process_shared_state->template_mii_data != nullptr) {
-                        if (MiiUtils::xfer_attribute(errorCounter, mii_process_shared_state))
+                        if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state))
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"), errorCounter);
                         else
                             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
                     } else
                         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), this->mii_repo->miis[c2a[currentlySelectedMii]]->mii_name.c_str(), mii_repo->miis[c2a[currentlySelectedMii]]->creator_name.c_str());
+                    delete mii_process_shared_state->template_mii_data;
+                    mii_process_shared_state->template_mii_data = nullptr;
                     mii_process_shared_state->state = MiiProcess::MIIS_TRANSFORMED;
                     return SUBSTATE_RETURN;
                     break;
@@ -461,7 +482,7 @@ void MiiSelectState::test_xfer_attr() {
     mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
     mii_process_shared_state->auxiliar_c2a = &this->c2a;
     mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
-    MiiUtils::xfer_attribute(errorCounter, mii_process_shared_state);
+    MiiUtils::xform_miis(errorCounter, mii_process_shared_state);
     delete mii_process_shared_state->template_mii_data;
 }
 

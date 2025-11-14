@@ -1,5 +1,5 @@
-#include <menu/MiiTypeDeclarations.h>
 #include <chrono>
+#include <menu/MiiTypeDeclarations.h>
 #include <mii/MiiFileRepo.h>
 #include <mii/MiiFolderRepo.h>
 #include <mii/WiiMii.h>
@@ -151,6 +151,7 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
         }
 
     target_repo->persist_repo();
+    target_repo->needs_populate = true;
     return (errorCounter == 0);
 }
 
@@ -210,6 +211,7 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
         }
 
     receiving_repo->persist_repo();
+    receiving_repo->needs_populate = true;
     return (errorCounter == 0);
 }
 
@@ -257,6 +259,7 @@ bool MiiUtils::wipe_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proce
         }
 
     mii_repo->persist_repo();
+    mii_repo->needs_populate = true;
     return (errorCounter == 0);
 }
 
@@ -315,7 +318,7 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
     DrawUtils::endDraw();
 }
 
-bool MiiUtils::xfer_attribute(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
 
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
     auto mii_view = mii_process_shared_state->primary_mii_view;
@@ -336,92 +339,17 @@ bool MiiUtils::xfer_attribute(uint8_t &errorCounter, MiiProcessSharedState *mii_
                         mii_data->transfer_ownership_from(template_mii_data);
                     if (mii_process_shared_state->transfer_physical_appearance)
                         mii_data->transfer_appearance_from(template_mii_data);
-                    if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index))
+                    if (mii_process_shared_state->set_copy_flag)
+                        mii_data->set_copy_flag();
+                    if (mii_process_shared_state->update_timestamp)
+                        mii_data->update_timestamp(mii_index);
+                    if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
-                    else {
-                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error importing Mii %s in repo %s"), mii_process_shared_state->primary_mii_repo->miis[mii_index]->mii_name.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
-                        errorCounter++;
+                        Mii *temp = mii_repo->miis.at(mii_index);
+                        mii_repo->miis.at(mii_index) = temp->v_populate_mii(mii_data->mii_data);
+                        mii_repo->miis.at(mii_index)->mii_repo = mii_repo;
+                        delete temp;
                     }
-                    delete mii_data;
-                } else {
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
-                    errorCounter++;
-                }
-            }
-        }
-    } else {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
-    }
-    if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
-        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
-            mii_repo->open_and_load_repo();
-            mii_repo->populate_repo();
-            return false;
-        }
-
-    mii_repo->persist_repo();
-    return errorCounter == 0;
-}
-
-bool MiiUtils::set_copy_flag_on(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
-
-    auto mii_repo = mii_process_shared_state->primary_mii_repo;
-    auto mii_view = mii_process_shared_state->primary_mii_view;
-    auto c2a = mii_process_shared_state->primary_c2a;
-    auto candidate_miis_count = c2a->size();
-
-    if (mii_view != nullptr && c2a != nullptr && mii_repo != nullptr) {
-        for (size_t i = 0; i < candidate_miis_count; i++) {
-            if (mii_view->at(c2a->at(i)).selected) {
-                size_t mii_index = c2a->at(i);
-                showMiiOperations(mii_process_shared_state, mii_index);
-                mii_view->at(mii_index).state = MiiStatus::KO;
-                mii_view->at(mii_index).selected = false;
-                MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
-                if (mii_data != nullptr) {
-                    mii_data->set_copy_flag();
-                    if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index))
-                        mii_view->at(mii_index).state = MiiStatus::OK;
-                    delete mii_data;
-                } else {
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
-                    errorCounter++;
-                }
-            }
-        }
-    } else {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
-    }
-    if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
-        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
-            mii_repo->open_and_load_repo();
-            mii_repo->populate_repo();
-            return false;
-        }
-
-    mii_repo->persist_repo();
-    return errorCounter == 0;
-}
-
-bool MiiUtils::update_timestamp(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
-
-    auto mii_repo = mii_process_shared_state->primary_mii_repo;
-    auto mii_view = mii_process_shared_state->primary_mii_view;
-    auto c2a = mii_process_shared_state->primary_c2a;
-    auto candidate_miis_count = c2a->size();
-
-    if (mii_view != nullptr && c2a != nullptr && mii_repo != nullptr) {
-        for (size_t i = 0; i < candidate_miis_count; i++) {
-            if (mii_view->at(c2a->at(i)).selected) {
-                size_t mii_index = c2a->at(i);
-                showMiiOperations(mii_process_shared_state, mii_index);
-                mii_view->at(mii_index).state = MiiStatus::KO;
-                mii_view->at(mii_index).selected = false;
-                MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
-                if (mii_data != nullptr) {
-                    mii_data->update_timestamp(mii_index);
-                    if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index))
-                        mii_view->at(mii_index).state = MiiStatus::OK;
                     delete mii_data;
                 } else {
                     Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());

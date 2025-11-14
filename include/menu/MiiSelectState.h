@@ -63,6 +63,8 @@ private:
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);
 
+    void initialize_view();
+
     std::vector<MiiStatus::MiiStatus> mii_view;
 
     bool selectOnlyOneMii = false;

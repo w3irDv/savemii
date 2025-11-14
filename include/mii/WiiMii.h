@@ -8,11 +8,10 @@ class WiiMii : public Mii {
 public:
     WiiMii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
 
-    bool copyable = false;
-    uint8_t mii_id_flags = 0;
     uint8_t birth_platform = 0;
 
     static WiiMii *populate_mii(size_t index, uint8_t *raw_mii_data);
+    WiiMii *v_populate_mii(uint8_t* mii_data);
 
     const static inline std::string file_name_prefix = "WII-";
 };

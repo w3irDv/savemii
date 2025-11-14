@@ -32,6 +32,7 @@ public:
     virtual bool populate_repo() = 0;
     virtual bool empty_repo() = 0;
 
+
     virtual bool open_and_load_repo() = 0; // copy repo to mem
     virtual bool persist_repo() = 0;         // save repro from mem to wherever
 
@@ -63,7 +64,7 @@ public:
     const static inline std::string BACKUP_ROOT = "fs:vol/external01/wiiu/backups/MiiRepoBckp";
     //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
 
-    bool repopulate = false;
+    bool needs_populate = true;
 
     bool test_list_repo();
 

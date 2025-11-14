@@ -23,8 +23,8 @@ public:
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
 
-
 private:
+
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_MII_DB_OPTIONS;
 

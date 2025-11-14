@@ -22,9 +22,7 @@ namespace MiiUtils {
     bool import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
     bool wipe_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
 
-    bool xfer_attribute(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
-    bool set_copy_flag_on(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
-    bool update_timestamp(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
+    bool xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
 
 
     void showMiiOperations(MiiProcessSharedState *mii_process_shared_state, size_t mii_index);

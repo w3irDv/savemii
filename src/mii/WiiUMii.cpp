@@ -2,17 +2,17 @@
 #include <ctime>
 #include <mii/WiiUMii.h>
 #include <utf8.h>
-#include <utils/MiiUtils.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/MiiUtils.h>
 
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp,
-                 std::string device_hash, uint64_t author_id, bool copyable,
-                 uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
-                 size_t index) : Mii(mii_name, creator_name, timestamp, device_hash, author_id, WIIU, mii_repo, index),
-                                 copyable(copyable), mii_id_flags(mii_id_flags), birth_platform(birth_platform) {};
+                 std::string device_hash, uint64_t author_id, uint8_t birth_platform, bool copyable,
+                 uint8_t mii_id_flags, MiiRepo *mii_repo, size_t index)
+    : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, mii_id_flags, WIIU, mii_repo, index),
+      birth_platform(birth_platform) {};
 
 WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
@@ -54,7 +54,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 #endif
 
     if (birth_platform != 4) {
-        Console::showMessage(ERROR_SHOW,"This does not seems a Wii U mii_data. Birth plaform %x is not allowed",birth_platform);
+        Console::showMessage(ERROR_SHOW, "This does not seems a Wii U mii_data. Birth plaform %x is not allowed", birth_platform);
         return nullptr;
     }
     std::u16string name16;
@@ -82,6 +82,10 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     return wiiu_mii;
 }
 
+WiiUMii *WiiUMii::v_populate_mii(uint8_t *mii_data) {
+    WiiUMii *new_mii = WiiUMii::populate_mii(this->index, mii_data);
+    return new_mii;
+}
 
 bool WiiUMiiData::set_copy_flag() {
 
@@ -110,13 +114,13 @@ bool WiiUMiiData::transfer_appearance_from(MiiData *mii_data_template) {
 
 bool WiiUMiiData::update_timestamp(size_t delay) {
 
-    uint32_t ts = MiiUtils::generate_timestamp(YEAR_ZERO,TICKS_PER_SEC) + delay;
+    uint32_t ts = MiiUtils::generate_timestamp(YEAR_ZERO, TICKS_PER_SEC) + delay;
     uint32_t flags_and_ts;
     uint32_t flags;
     uint32_t updated_flags_and_ts;
 
     memcpy(&flags_and_ts, this->mii_data + TIMESTAMP_OFFSET, 4);
-    flags = flags_and_ts & 0xF0000000; 
+    flags = flags_and_ts & 0xF0000000;
     updated_flags_and_ts = flags | ts;
 
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
@@ -134,5 +138,4 @@ bool WiiUMiiData::update_timestamp(size_t delay) {
     //printf("in mii after\n");
     //view_ts(this->mii_data + TIMESTAMP_OFFSET, 4);
     return true;
-
 };
