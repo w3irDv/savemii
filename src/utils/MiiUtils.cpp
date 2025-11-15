@@ -169,6 +169,8 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
         return false;
     }
 
+    receiving_repo->open_and_load_repo();
+
     InProgress::totalSteps = 0;
     InProgress::currentStep = 1;
     InProgress::abortTask = false;
@@ -326,6 +328,14 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
     auto candidate_miis_count = c2a->size();
     auto template_mii_data = mii_process_shared_state->template_mii_data;
 
+    InProgress::totalSteps = 0;
+    InProgress::currentStep = 1;
+    InProgress::abortTask = false;
+    for (size_t i = 0; i < candidate_miis_count; i++) {
+        if (mii_view->at(c2a->at(i)).selected)
+            InProgress::totalSteps++;
+    }
+
     if (mii_view != nullptr && c2a != nullptr && mii_repo != nullptr) {
         for (size_t i = 0; i < candidate_miis_count; i++) {
             if (mii_view->at(c2a->at(i)).selected) {
@@ -356,17 +366,18 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
                     errorCounter++;
                 }
             }
+            InProgress::currentStep++;
         }
+        if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
+            if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
+                mii_repo->open_and_load_repo();
+                mii_repo->populate_repo();
+                return false;
+            }
+        mii_repo->persist_repo();
+        return errorCounter == 0;
     } else {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
+        return false;
     }
-    if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
-        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
-            mii_repo->open_and_load_repo();
-            mii_repo->populate_repo();
-            return false;
-        }
-
-    mii_repo->persist_repo();
-    return errorCounter == 0;
 }

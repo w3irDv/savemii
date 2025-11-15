@@ -18,10 +18,10 @@ public:
                 entrycount = 1;
                 break;
             case MiiRepo::eDBType::RFL:
-                entrycount = 2;
+                entrycount = 3;
                 break;
             case MiiRepo::eDBType::FFL:
-                entrycount = 3;
+                entrycount = 4;
                 break;
             default:;
         }

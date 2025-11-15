@@ -9,8 +9,8 @@
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp,
-                 std::string device_hash, uint64_t author_id, uint8_t birth_platform, bool copyable,
-                 uint8_t mii_id_flags, MiiRepo *mii_repo, size_t index)
+                 std::string device_hash, uint64_t author_id, bool copyable,
+                 uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index)
     : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, mii_id_flags, WIIU, mii_repo, index),
       birth_platform(birth_platform) {};
 

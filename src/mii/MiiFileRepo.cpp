@@ -146,7 +146,6 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), "", miidata->mii_data_size, MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE + 4);
     }
 
-
     size_t target_location;
 
     if (in_place) {

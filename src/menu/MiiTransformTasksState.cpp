@@ -33,9 +33,11 @@ void MiiTransformTasksState::render() {
             goto all_tasks_shown;
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
         Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Transfer Ownership: %s"), transfer_ownership ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
+        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Update Timestamp: %s"), transfer_ownership ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
             goto all_tasks_shown;
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
         Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Set Copy Flag On: %s"), set_copy_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
     all_tasks_shown:
@@ -49,6 +51,9 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("All selected miis will get the system ownership attributes of the mi you will select in the next menu.");
                 break;
             case 2:
+                info = LanguageUtils::gettext("So the mii has a new unique MiiId (needed if an imported mii does not appear in MiiMaker)");
+                break;
+            case 3:
                 info = LanguageUtils::gettext("So people that does not own the mii can modifiy it by creating a copy of the original");
                 break;
             default:
@@ -82,7 +87,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             mii_process_shared_state->update_timestamp = update_timestamp;
             std::vector<bool> mii_repos_candidates;
             for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++) {
-                if (mii_process_shared_state->primary_mii_repo->db_kind == MiiUtils::mii_repos.at(i)->db_kind)
+                if (mii_process_shared_state->primary_mii_repo->db_type == MiiUtils::mii_repos.at(i)->db_type)
                     mii_repos_candidates.push_back(true);
                 else
                     mii_repos_candidates.push_back(false);
@@ -117,6 +122,9 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                     transfer_ownership = transfer_ownership ? false : true;
                     break;
                 case 2:
+                    update_timestamp = update_timestamp ? false : true;
+                    break;
+                case 3:
                     set_copy_flag = set_copy_flag ? false : true;
                     break;
                 default:

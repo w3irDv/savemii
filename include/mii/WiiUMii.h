@@ -9,7 +9,7 @@
 
 class WiiUMii : public Mii {
 public:
-    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, uint8_t birth_platform, bool copyable, uint8_t mii_id_flags, MiiRepo *mii_repo, size_t index);
+    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
 
     uint8_t birth_platform = 0x4;
 
