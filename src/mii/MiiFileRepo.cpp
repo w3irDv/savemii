@@ -4,6 +4,7 @@
 #include <mii/MiiFileRepo.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
+#include <string>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
@@ -14,7 +15,10 @@
 namespace fs = std::filesystem;
 
 template<typename MII, typename MIIDATA>
-MiiFileRepo<MII, MIIDATA>::MiiFileRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, db_kind, path_to_repo, backup_folder){};
+MiiFileRepo<MII, MIIDATA>::MiiFileRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind,
+                                       const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, db_kind, path_to_repo, backup_folder) {
+    set_db_fsa_metadata();
+};
 
 template<typename MII, typename MIIDATA>
 MiiFileRepo<MII, MIIDATA>::~MiiFileRepo() {
@@ -23,8 +27,44 @@ MiiFileRepo<MII, MIIDATA>::~MiiFileRepo() {
         free(db_buffer);
 };
 
+
 template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
 template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
+
+//template<typename MII, typename MIIDATA>
+template<>
+bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
+    db_owner = WiiMiiData::DB::DB_OWNER;
+    db_group = WiiMiiData::DB::DB_GROUP;
+    db_fsmode = (FSMode) WiiMiiData::DB::DB_FSMODE;
+    return true;
+}
+
+template<>
+bool MiiFileRepo<WiiUMii, WiiUMiiData>::set_db_fsa_metadata() {
+    db_group = WiiUMiiData::DB::DB_GROUP;
+    db_fsmode = (FSMode) WiiUMiiData::DB::DB_FSMODE;
+    db_owner = WiiUMiiData::DB::DB_OWNER; // defaults to 0, we will change it to the right uid only if updating the miimaker db
+                                         // othewise, default savemii uid will be fine
+
+    if (path_to_repo.find("fs:/vol/") != std::string::npos) // default is ok for SD  (probably it is a test file)
+        return false;
+    size_t mii_make_id_pos = path_to_repo.find("/save/00050010/1004a"); // mii maker savepath, region independent part
+    if (mii_make_id_pos == std::string::npos)
+        mii_make_id_pos = path_to_repo.find("/save/00050010/1004A"); // just in case ...
+    if (mii_make_id_pos != std::string::npos) {
+        std::string mii_maker_id = path_to_repo.substr(mii_make_id_pos + 15, 8);
+        uint64_t owner;
+        try {
+            owner = stoull(mii_maker_id, nullptr, 16);
+        } catch (...) {
+            return false;
+        }
+        db_owner = owner;
+        return true;
+    }
+    return false; // no matching, we let db_owner be 0
+}
 
 template<typename MII, typename MIIDATA>
 bool MiiFileRepo<MII, MIIDATA>::open_and_load_repo() {
@@ -110,6 +150,10 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
         return false;
     }
 
+    FSError fserror;
+    if (db_owner != 0)
+        FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, db_filepath, fserror);
+
     return true;
 }
 
@@ -189,7 +233,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
     }
     */
     //printf("timestamp >> %s\n", mii->timestamp.c_str());
-    ///////// 
+    /////////
 
     return true;
 }

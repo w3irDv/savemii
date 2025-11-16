@@ -111,6 +111,11 @@ int MiiRepo::restore(int slot) {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
                 errorCode = 1;
             }
+            
+            FSError fserror;
+            if (db_owner != 0)
+                FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, dstPath, fserror);
+            
         } break;
         default:;
     }

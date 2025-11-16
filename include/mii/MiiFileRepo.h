@@ -18,17 +18,17 @@ public:
     MiiData *extract_mii_data(size_t index); // from the repo to (tmp)mem
     bool wipe_miidata(size_t index);
 
-    std::vector<size_t> mii_location; //index of the mii inside the db
-
     bool populate_repo();
     bool empty_repo();
 
     bool find_empty_location(size_t &target_location);
     bool has_a_mii(uint8_t *raw_mii_data);
 
+    std::vector<size_t> mii_location; //index of the mii inside the db
     uint8_t *db_buffer = nullptr;
-
     size_t last_empty_location = 0;
+
+    bool set_db_fsa_metadata();
 
     uint16_t get_crc();
 

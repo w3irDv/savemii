@@ -60,7 +60,7 @@ void MiiTasksState::render() {
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
                 Console::consolePrintPos(M_OFF, 13, LanguageUtils::gettext("   Wipe Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
-                Console::consolePrintPos(M_OFF, 13, LanguageUtils::gettext("   Transform Miis"));
+                Console::consolePrintPos(M_OFF, 14, LanguageUtils::gettext("   Transform Miis"));
                 Console::consolePrintPos(M_OFF, cursorPos + 5 + (cursorPos > 2 ? 2 : 0), "\u2192");
             };
         }

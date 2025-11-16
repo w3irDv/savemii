@@ -15,16 +15,16 @@
 bool MiiUtils::initMiiRepos() {
 
 
-    const std::string pathffl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL");
+    const std::string pathffl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL/FFL_ODB.dat");
     const std::string pathffl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_Stage");
-    const std::string pathrfl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL");
+    const std::string pathrfl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL/");
     const std::string pathrfl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL_Stage");
     const std::string pathaccount("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT");
     const std::string pathaccount_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_Stage");
 
-    MiiRepos["FFL"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL", MiiRepo::eDBType::FFL, MiiRepo::eDBKind::FOLDER, pathffl, "mii_bckp_ffl");
+    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", MiiRepo::eDBType::FFL, MiiRepo::eDBKind::FILE, pathffl, "mii_bckp_ffl");
     MiiRepos["FFL_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_Stage", MiiRepo::eDBType::FFL, MiiRepo::eDBKind::FOLDER, pathffl_Stage, "mii_bckp_ffl_Stage");
-    MiiRepos["RFL"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL", MiiRepo::eDBType::RFL, MiiRepo::eDBKind::FOLDER, pathrfl, "mii_bckp_rfl");
+    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", MiiRepo::eDBType::RFL, MiiRepo::eDBKind::FILE, pathrfl, "mii_bckp_rfl");
     MiiRepos["RFL_Stage"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_Stage", MiiRepo::eDBType::RFL, MiiRepo::eDBKind::FOLDER, pathrfl_Stage, "mii_bckp_rfl_Stage");
     MiiRepos["ACCOUNT"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT", MiiRepo::eDBType::ACCOUNT, MiiRepo::eDBKind::FOLDER, pathaccount, "mii_bckp_account");
     MiiRepos["ACCOUNT_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_Stage", MiiRepo::eDBType::ACCOUNT, MiiRepo::eDBKind::FOLDER, pathaccount_Stage, "mii_bckp_account_Stage");
@@ -365,8 +365,8 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
                     Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
                     errorCounter++;
                 }
+                InProgress::currentStep++;
             }
-            InProgress::currentStep++;
         }
         if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
             if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {

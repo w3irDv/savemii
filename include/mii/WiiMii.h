@@ -49,5 +49,9 @@ public:
         const static uint32_t DB_SIZE = 0xBE6C0;
         const static size_t MAX_MIIS = 100;
         const static inline char MAGIC[4] = {'R', 'N', 'O', 'D'};
+
+        const static uint32_t DB_OWNER = 0x1003;
+        const static uint32_t DB_GROUP = 0x3031;
+        const static uint32_t DB_FSMODE = 0x666;
     };
 };
