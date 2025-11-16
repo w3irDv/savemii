@@ -245,7 +245,7 @@ bool FSUtils::readThread(FILE *srcFile, LockingQueue<file_buffer> *ready, Lockin
         ready->waitAndPop(currentBuffer);
     }
     done->push(currentBuffer);
-    if (!ferror(srcFile) == 0) {
+    if (ferror(srcFile) != 0) {
         readError = errno;
         return false;
     }
@@ -264,7 +264,7 @@ bool FSUtils::writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, Locki
         written += bytes_written;
     }
     done->push(currentBuffer);
-    if (!ferror(dstFile) == 0) {
+    if (ferror(dstFile) != 0) {
         writeError = errno;
         return false;
     }

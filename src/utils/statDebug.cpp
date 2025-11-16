@@ -163,3 +163,55 @@ void statDebugUtils::showFile(const std::string &file, const std::string &toRemo
     Console::showMessage(OK_CONFIRM, message.c_str());
     DrawUtils::setRedraw(true);
 }
+
+
+
+
+void statDebugUtils::statMiiMaker() {
+
+    time_t timestamp = time(&timestamp);
+    struct tm datetime = *localtime(&timestamp);
+    std::string timeStamp = StringUtils::stringFormat("%d-%d", datetime.tm_hour, datetime.tm_min);
+
+    statCount++;
+
+    std::string statFilePath = "fs:/vol/external01/wiiu/backups/statSave-" + std::string("miiMaker") + "-" + std::to_string(statCount) + "-" + timeStamp + ".out";
+    FILE *file = fopen(statFilePath.c_str(), "w");
+
+    uint32_t highID = 0x00050010;
+    uint32_t lowID = 0x1004A200 ;
+    bool isUSB = false;
+    bool isWii = false;
+
+    std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
+
+    statDir(srcPath, file);
+
+    fclose(file);
+
+    showFile(statFilePath, StringUtils::stringFormat("%s/%08x", path.c_str(), highID));
+}
+
+
+void statDebugUtils::statMiiEdit() {
+
+    time_t timestamp = time(&timestamp);
+    struct tm datetime = *localtime(&timestamp);
+    std::string timeStamp = StringUtils::stringFormat("%d-%d", datetime.tm_hour, datetime.tm_min);
+
+    statCount++;
+
+    std::string statFilePath = "fs:/vol/external01/wiiu/backups/statSave-" + std::string("miiEdit") + "-" + std::to_string(statCount) + "-" + timeStamp + ".out";
+    FILE *file = fopen(statFilePath.c_str(), "w");
+
+    std::string srcPath = "storage_slcc01:/shared2/menu";
+
+    statDir(srcPath, file);
+
+    fclose(file);
+
+    showFile(statFilePath, "storage_slcc01:/shared2/menu");
+
+}
+

@@ -128,9 +128,11 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
         if (input->get(ButtonState::TRIGGER, Button::Y) || input->get(ButtonState::REPEAT, Button::Y)) {
-            char *arg[] = {(char *) "just to compile"};
-            pack(1, arg);
-            unpack(1, arg);
+            //char *arg[] = {(char *) "just to compile"};
+            //pack(1, arg);
+            //unpack(1, arg);
+            statDebugUtils::statMiiEdit();
+            statDebugUtils::statMiiMaker();
             return SUBSTATE_RUNNING;
         }
     } else if (this->state == STATE_DO_SUBSTATE) {

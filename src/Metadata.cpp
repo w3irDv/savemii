@@ -11,6 +11,8 @@ std::string Metadata::thisConsoleSerialId = Metadata::unknownSerialId;
 bool Metadata::read() {
     if (FSUtils::checkEntry(this->path.c_str()) != 0) {
         FILE *f = fopen(this->path.c_str(), "rb");
+        if (f == nullptr)
+            return false;
         fseek(f, 0, SEEK_END);
         long len = ftell(f);
         fseek(f, 0, SEEK_SET);
@@ -183,6 +185,8 @@ bool Metadata::write_mii() {
 bool Metadata::read_mii() {
     if (FSUtils::checkEntry(this->path.c_str()) != 0) {
         FILE *f = fopen(this->path.c_str(), "rb");
+        if (f == nullptr)
+            return false;
         fseek(f, 0, SEEK_END);
         long len = ftell(f);
         fseek(f, 0, SEEK_SET);
