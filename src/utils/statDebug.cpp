@@ -165,8 +165,6 @@ void statDebugUtils::showFile(const std::string &file, const std::string &toRemo
 }
 
 
-
-
 void statDebugUtils::statMiiMaker() {
 
     time_t timestamp = time(&timestamp);
@@ -179,7 +177,7 @@ void statDebugUtils::statMiiMaker() {
     FILE *file = fopen(statFilePath.c_str(), "w");
 
     uint32_t highID = 0x00050010;
-    uint32_t lowID = 0x1004A200 ;
+    uint32_t lowID = 0x1004A200;
     bool isUSB = false;
     bool isWii = false;
 
@@ -212,6 +210,22 @@ void statDebugUtils::statMiiEdit() {
     fclose(file);
 
     showFile(statFilePath, "storage_slcc01:/shared2/menu");
-
 }
 
+
+void statDebugUtils::statVol() {
+    FSADirectoryHandle fsadh;
+    FSError fserror;
+    fserror = FSAOpenDir(FSUtils::handle, "/vol/storage_mlc01/", &fsadh);
+    if (fserror != FS_ERROR_OK) {
+        Console::showMessage(ERROR_SHOW, "Error opening dir: %s", FSAGetStatusStr(fserror));
+        return;
+    }
+
+    FSADirectoryEntry entry;
+    while (FSAReadDir(FSUtils::handle, fsadh, &entry) != FS_ERROR_END_OF_DIR) {
+        Console::showMessage(OK_CONFIRM, "%s", entry.name);
+    }
+
+    FSACloseDir(FSUtils::handle, fsadh);
+}

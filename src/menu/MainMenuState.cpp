@@ -131,6 +131,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             //char *arg[] = {(char *) "just to compile"};
             //pack(1, arg);
             //unpack(1, arg);
+            statDebugUtils::statVol();
             statDebugUtils::statMiiEdit();
             statDebugUtils::statMiiMaker();
             return SUBSTATE_RUNNING;

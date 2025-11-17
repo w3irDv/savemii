@@ -12,7 +12,7 @@
 namespace fs = std::filesystem;
 
 template<typename MII, typename MIIDATA>
-MiiFolderRepo<MII, MIIDATA>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, db_kind, path_to_repo, backup_folder) {
+MiiFolderRepo<MII, MIIDATA>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, eDBKind::FOLDER, path_to_repo, backup_folder) {
     filename_prefix = MII::file_name_prefix;
     mii_data_size = MIIDATA::MII_DATA_SIZE;
 };
@@ -22,8 +22,8 @@ MiiFolderRepo<MII, MIIDATA>::~MiiFolderRepo() {
     this->empty_repo();
 };
 
-template MiiFolderRepo<WiiMii, WiiMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
-template MiiFolderRepo<WiiUMii, WiiUMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
+template MiiFolderRepo<WiiMii, WiiMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
+template MiiFolderRepo<WiiUMii, WiiUMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
 
 
 template<typename MII, typename MIIDATA>

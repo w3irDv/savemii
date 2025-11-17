@@ -162,8 +162,10 @@ int main() {
         }
     }
 
+    MiiUtils::deinitMiiRepos();
     TitleUtils::unloadTitles(wiiutitles, TitleUtils::wiiuTitlesCount);
     TitleUtils::unloadTitles(wiititles, TitleUtils::vWiiTitlesCount);
+    FSUtils::deinit_fs_buffers();
     FSUtils::shutdownFS();
     LanguageUtils::gettextCleanUp();
     romfsExit();

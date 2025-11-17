@@ -50,6 +50,20 @@ void FSUtils::shutdownFS() {
     FSAShutdown();
 }
 
+void FSUtils::deinit_fs_buffers() {
+    if (buffersInitialized) {
+        for (auto &buffer : buffers) {
+            if (buffer.buf != nullptr)
+                free(buffer.buf);
+        }
+        for (auto &buffer : fileBuf) {
+            if (buffer != nullptr)
+                free(buffer);
+        }
+        buffersInitialized = false;
+    }
+}
+
 std::string FSUtils::getUSB() {
     return usb;
 }

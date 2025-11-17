@@ -22,12 +22,12 @@ bool MiiUtils::initMiiRepos() {
     const std::string pathaccount("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT");
     const std::string pathaccount_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_Stage");
 
-    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", MiiRepo::eDBType::FFL, MiiRepo::eDBKind::FILE, pathffl, "mii_bckp_ffl");
-    MiiRepos["FFL_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_Stage", MiiRepo::eDBType::FFL, MiiRepo::eDBKind::FOLDER, pathffl_Stage, "mii_bckp_ffl_Stage");
-    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", MiiRepo::eDBType::RFL, MiiRepo::eDBKind::FILE, pathrfl, "mii_bckp_rfl");
-    MiiRepos["RFL_Stage"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_Stage", MiiRepo::eDBType::RFL, MiiRepo::eDBKind::FOLDER, pathrfl_Stage, "mii_bckp_rfl_Stage");
-    MiiRepos["ACCOUNT"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT", MiiRepo::eDBType::ACCOUNT, MiiRepo::eDBKind::FOLDER, pathaccount, "mii_bckp_account");
-    MiiRepos["ACCOUNT_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_Stage", MiiRepo::eDBType::ACCOUNT, MiiRepo::eDBKind::FOLDER, pathaccount_Stage, "mii_bckp_account_Stage");
+    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", MiiRepo::eDBType::FFL, pathffl, "mii_bckp_ffl");
+    MiiRepos["FFL_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_Stage", MiiRepo::eDBType::FFL, pathffl_Stage, "mii_bckp_ffl_Stage");
+    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", MiiRepo::eDBType::RFL, pathrfl, "mii_bckp_rfl");
+    MiiRepos["RFL_Stage"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_Stage", MiiRepo::eDBType::RFL, pathrfl_Stage, "mii_bckp_rfl_Stage");
+    MiiRepos["ACCOUNT"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT", MiiRepo::eDBType::ACCOUNT, pathaccount, "mii_bckp_account");
+    MiiRepos["ACCOUNT_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_Stage", MiiRepo::eDBType::ACCOUNT, pathaccount_Stage, "mii_bckp_account_Stage");
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_Stage"]);
     MiiRepos["FFL_Stage"]->setStageRepo(MiiRepos["FFL"]);
 
@@ -42,6 +42,14 @@ bool MiiUtils::initMiiRepos() {
     return true;
 }
 
+void MiiUtils::deinitMiiRepos() {
+    delete MiiUtils::MiiRepos["FFL"];
+    delete MiiUtils::MiiRepos["FFL_STAGE"];
+    delete MiiUtils::MiiRepos["RFL"];
+    delete MiiUtils::MiiRepos["RFL_STAGE"];
+    delete MiiUtils::MiiRepos["ACCOUNT"];
+    delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
+}
 
 std::string MiiUtils::epoch_to_utc(int temp) {
     const time_t old = (time_t) temp;

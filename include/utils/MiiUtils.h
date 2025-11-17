@@ -7,6 +7,7 @@
 namespace MiiUtils {
 
     bool initMiiRepos();
+    void deinitMiiRepos();
 
     inline std::map<std::string, MiiRepo *> MiiRepos;
 

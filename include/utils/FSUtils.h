@@ -24,6 +24,7 @@ namespace FSUtils {
 
     bool initFS() __attribute__((__cold__));
     void shutdownFS() __attribute__((__cold__));
+    void deinit_fs_buffers();
 
     void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint64_t accountSize, uint64_t commonSize);
     std::string getUSB();

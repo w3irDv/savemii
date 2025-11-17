@@ -8,7 +8,7 @@ template <typename MII,typename MIIDATA>
 class MiiFolderRepo : public MiiRepo {
 
 public:
-    MiiFolderRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);
+    MiiFolderRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
     virtual ~MiiFolderRepo();
 
     bool open_and_load_repo() { return true; }; // not-needed for folder based repos
