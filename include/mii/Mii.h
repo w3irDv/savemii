@@ -16,6 +16,7 @@ public:
         WIIU
     };
 
+    Mii() {};
     Mii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, uint8_t mii_id_flags, eMiiType mii_type, MiiRepo *mii_repo, size_t index);
     virtual ~Mii() {};
 
@@ -32,6 +33,7 @@ public:
     MiiRepo *mii_repo = nullptr;
     size_t index = 0;
     std::string device_hash_lite{};
+    bool is_valid = false;
 
     virtual Mii *v_populate_mii(uint8_t* mii_data) = 0;
 };

@@ -40,7 +40,7 @@ bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
         db_owner = WiiMiiData::DB::DB_OWNER;
         return true;
     } else {
-        db_owner = 0;   // if we are persistig to SD, we will not set the owner, and defaults are OK.
+        db_owner = 0; // if we are persistig to SD, we will not set the owner, and defaults are OK.
         return false;
     }
 }
@@ -209,38 +209,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
         }
     }
 
-    //size_t index = this->miis.size();
-    //TODO: DECIDE WHEN TO CREATE A NEW TIMESTAMP = ID
-    //printf("adding index: %ld",index);
-    //miidata->update_timestamp(index);
-
     memcpy(db_buffer + MIIDATA::DB::OFFSET + target_location * MIIDATA::MII_DATA_SIZE, miidata->mii_data, MIIDATA::MII_DATA_SIZE);
-
-    //////// Seems better to perform all operations, and then update globally this information
-    /*
-    if (inplace) {
-        delete miis.at(index);
-        miis.at(index) = MII::populate_mii(index, miidata->mii_data);
-    } else {
-        Mii *mii = MII::populate_mii(index, miidata->mii_data);
-        //// WRONG FOR INPLACE!!!!
-        if (mii != nullptr) {
-            this->miis.push_back(mii);
-            this->mii_location.push_back(target_location);
-            std::string creatorName = mii->creator_name;
-            // to test, we will use creator_name
-            std::vector<size_t> *owners_v = owners[creatorName];
-            if (owners_v == nullptr) {
-                owners_v = new std::vector<size_t>;
-                owners[creatorName] = owners_v;
-            }
-            owners_v->push_back(index);
-        }
-            
-    }
-    */
-    //printf("timestamp >> %s\n", mii->timestamp.c_str());
-    /////////
 
     return true;
 }
@@ -289,8 +258,6 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         if (has_a_mii(raw_mii_data)) {
             Mii *mii = MII::populate_mii(index, raw_mii_data);
             if (mii != nullptr) {
-                this->miis.push_back(mii);
-                this->mii_location.push_back(i);
                 std::string creatorName = mii->creator_name;
                 // to test, we will use creator_name
                 std::vector<size_t> *owners_v = owners[creatorName];
@@ -299,9 +266,16 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
                     owners[creatorName] = owners_v;
                 }
                 owners_v->push_back(index);
-
-                index++;
+            } else {
+                mii = new MII();
+                mii->is_valid = false;
+                mii->index = index;
+                mii->mii_name = "<slot " + std::to_string(i) + " >";
             }
+            mii->mii_repo = this;
+            this->miis.push_back(mii);
+            this->mii_location.push_back(i);
+            index++;
         }
     }
 

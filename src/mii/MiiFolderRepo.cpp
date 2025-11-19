@@ -132,12 +132,6 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
 
     size_t index = 0;
 
-    //printf("c: %d\n",FSUtils::checkEntry(path_to_repo.c_str()));
-    //if (FSUtils::checkEntry(path_to_repo.c_str()) != 2) {
-    //    Console::showMessage(ERROR_CONFIRM,"error accessing %s:\n %s",path_to_repo.c_str(),strerror(errno));
-    //    return false;
-    //}
-
     std::error_code ec;
     for (const auto &entry : fs::directory_iterator(path_to_repo, ec)) {
 
@@ -150,6 +144,8 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         mii_file.open(filename, std::ios_base::binary);
         if (!mii_file.is_open()) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            push_back_invalid_mii(filename_str,index);
+            index++;
             continue;
         }
         size_t size = std::filesystem::file_size(std::filesystem::path(filename));
@@ -157,6 +153,8 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         if ((size != mii_data_size) && (size != mii_data_size + 4)) // Allow "bare" mii or mii+CRC
         {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), filename_str.c_str(), size, mii_data_size, mii_data_size + 4);
+            push_back_invalid_mii(filename_str,index);
+            index++;
             continue;
         }
 
@@ -167,31 +165,38 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         mii_file.read((char *) &raw_mii_data, mii_data_size);
         if (mii_file.fail()) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            push_back_invalid_mii(filename_str,index);
+            index++;
             continue;
         }
         mii_file.close();
         if (mii_file.fail()) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), filename.c_str(), strerror(errno));
+            push_back_invalid_mii(filename_str,index);
+            index++;
             continue;
         }
 
         Mii *mii = MII::populate_mii(index, raw_mii_data);
 
         if (mii != nullptr) {
+            mii->mii_repo = this;
             this->miis.push_back(mii);
             this->mii_filepath.push_back(filename_str);
-            std::string creatorName = mii->creator_name;
             // to test, we will use creator_name
+            std::string creatorName = mii->creator_name;
             std::vector<size_t> *owners_v = owners[creatorName];
             if (owners_v == nullptr) {
                 owners_v = new std::vector<size_t>;
                 owners[creatorName] = owners_v;
             }
             owners_v->push_back(index);
-
-            index++;
+        } else {
+            push_back_invalid_mii(filename_str,index);
         }
+        index++;
     }
+
 
     if (ec.value() != 0) {
         Console::showMessage(ERROR_CONFIRM, "Error accessing Mii repo  %s at %s:\n\n %s", repo_name.c_str(), path_to_repo.c_str(), ec.message().c_str());
@@ -200,6 +205,17 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
 
     return true;
 };
+
+template<typename MII, typename MIIDATA>
+void MiiFolderRepo<MII, MIIDATA>::push_back_invalid_mii(const std::string &filename_str, size_t index) {
+    MII *mii = new MII();
+    mii->is_valid = false;
+    mii->mii_name = filename_str.substr(filename_str.find_last_of("/") + 1, std::string::npos);
+    mii->mii_repo = this;
+    mii->index = index;
+    this->miis.push_back(mii);
+    this->mii_filepath.push_back(filename_str);
+}
 
 template<typename MII, typename MIIDATA>
 bool MiiFolderRepo<MII, MIIDATA>::empty_repo() {

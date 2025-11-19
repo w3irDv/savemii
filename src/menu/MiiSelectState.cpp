@@ -59,10 +59,17 @@ void MiiSelectState::initialize_view() {
     all_miis_count = mii_repo->miis.size();
 
     for (size_t i = 0; i < all_miis_count; i++) {
-        if (selectOnlyOneMii)
-            mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED));
-        else
-            mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED));
+        if (mii_repo->miis.at(i)->is_valid) {
+            if (selectOnlyOneMii)
+                mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED));
+            else
+                mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED));
+        } else {
+            if (action == MiiProcess::SELECT_MIIS_TO_WIPE)
+                mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::INVALID));
+            else
+                mii_view.push_back(MiiStatus::MiiStatus(NOT_CANDIDATE, UNSELECTED, MiiStatus::INVALID));
+        }
         if (mii_view[i].candidate)
             c2a.push_back(i);
     }
@@ -175,6 +182,9 @@ void MiiSelectState::render() {
                         } else if (this->mii_view[c2a[i + this->scroll]].state == MiiStatus::OK) {
                             DrawUtils::setFontColorByCursor(COLOR_LIST_RESTORE_SUCCESS, COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR, cursorPos, i);
                             Console::consolePrintPos(M_OFF, i + 2, "\ue008"); // Happy
+                        } else if (this->mii_view[c2a[i + this->scroll]].state == MiiStatus::INVALID) {
+                            DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER, COLOR_LIST_DANGER_AT_CURSOR, cursorPos, i);
+                            Console::consolePrintPos(M_OFF, i + 2, "\ue00a"); // Sad
                         } else {
                             DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED, COLOR_LIST_SKIPPED_AT_CURSOR, cursorPos, i);
                         }
@@ -191,6 +201,7 @@ void MiiSelectState::render() {
 
             switch (this->mii_view[c2a[i + this->scroll]].state) {
                 case MiiStatus::NOT_TRIED:
+                case MiiStatus::INVALID:
                     lastState = "";
                     nxtAction = this->mii_view[c2a[i + this->scroll]].selected ? nextActionBrief : LanguageUtils::gettext(">> Skip");
                     break;
@@ -208,15 +219,22 @@ void MiiSelectState::render() {
                     break;
             }
 
-            Console::consolePrintPos(M_OFF, i + 2, "    %s (by %s) C:%s A:%02x D:%s [%s]   %s%s",
-                                     this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str(),
-                                     this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str(),
-                                     this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? "Y" : "N",
-                                     (uint8_t) (this->mii_repo->miis[c2a[i + this->scroll]]->author_id & 0xFF),
-                                     this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str(),
-                                     this->mii_repo->miis[c2a[i + this->scroll]]->timestamp.c_str(),
-                                     lastState.c_str(),
-                                     nxtAction.c_str());
+            if (this->mii_repo->miis[c2a[i + this->scroll]]->is_valid) {
+                Console::consolePrintPos(M_OFF, i + 2, "    %s (by %s) C:%s A:%02x D:%s [%s]   %s%s",
+                                         this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str(),
+                                         this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str(),
+                                         this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? "Y" : "N",
+                                         (uint8_t) (this->mii_repo->miis[c2a[i + this->scroll]]->author_id & 0xFF),
+                                         this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str(),
+                                         this->mii_repo->miis[c2a[i + this->scroll]]->timestamp.c_str(),
+                                         lastState.c_str(),
+                                         nxtAction.c_str());
+            } else {
+                Console::consolePrintPos(M_OFF, i + 2, "    INVALID: %s  %s%s",
+                                         this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str(),                                        
+                                         lastState.c_str(),
+                                         nxtAction.c_str());
+            }
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");

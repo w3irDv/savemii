@@ -100,7 +100,9 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
 
     WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, mii_id_flags, birth_platform, nullptr, index);
-
+    
+    wii_mii->is_valid = true;
+    
     return wii_mii;
 }
 

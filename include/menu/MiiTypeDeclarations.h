@@ -6,7 +6,8 @@ namespace MiiStatus {
         NOT_TRIED,
         SKIPPED,
         OK,
-        KO
+        KO,
+        INVALID
     };
 
 #define SELECTED      true
