@@ -34,6 +34,8 @@ public:
     size_t index = 0;
     std::string device_hash_lite{};
     bool is_valid = false;
+    std::string location_name{};
+    bool normal = true;
 
     virtual Mii *v_populate_mii(uint8_t* mii_data) = 0;
 };

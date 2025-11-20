@@ -11,7 +11,17 @@ WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string times
                std::string device_hash, uint64_t author_id, bool copyable,
                uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
                size_t index) : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, mii_id_flags, WII, mii_repo, index),
-                               birth_platform(birth_platform) {};
+                               birth_platform(birth_platform) {
+    switch (mii_id_flags) {
+        case 0:
+        case 2:
+        case 6:
+            normal = false;
+            break;
+        default:
+            normal = true;
+    }
+};
 
 
 bool WiiMiiData::set_copy_flag() {
@@ -100,9 +110,9 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
 
     WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, mii_id_flags, birth_platform, nullptr, index);
-    
+
     wii_mii->is_valid = true;
-    
+
     return wii_mii;
 }
 

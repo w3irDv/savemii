@@ -258,8 +258,9 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         if (has_a_mii(raw_mii_data)) {
             Mii *mii = MII::populate_mii(index, raw_mii_data);
             if (mii != nullptr) {
-                std::string creatorName = mii->creator_name;
+                mii->location_name = "slot " + std::to_string(i);
                 // to test, we will use creator_name
+                std::string creatorName = mii->creator_name;
                 std::vector<size_t> *owners_v = owners[creatorName];
                 if (owners_v == nullptr) {
                     owners_v = new std::vector<size_t>;
@@ -270,7 +271,8 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
                 mii = new MII();
                 mii->is_valid = false;
                 mii->index = index;
-                mii->mii_name = "<slot " + std::to_string(i) + " >";
+                mii->location_name = "slot " + std::to_string(i);
+                mii->mii_name = mii->location_name;
             }
             mii->mii_repo = this;
             this->miis.push_back(mii);

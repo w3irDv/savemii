@@ -12,6 +12,11 @@
 
 class MiiProcessSharedState;
 
+enum eViewType {
+    BASIC,
+    LOCATION
+};
+
 class MiiSelectState : public ApplicationState {
 
     friend class MiiProcessSharedState;
@@ -69,4 +74,6 @@ private:
 
     bool selectOnlyOneMii = false;
     int currentlySelectedMii = 0;
+
+    eViewType view_type = BASIC;
 };

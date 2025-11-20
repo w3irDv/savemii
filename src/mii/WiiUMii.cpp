@@ -12,7 +12,9 @@ WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string tim
                  std::string device_hash, uint64_t author_id, bool copyable,
                  uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index)
     : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, mii_id_flags, WIIU, mii_repo, index),
-      birth_platform(birth_platform) {};
+      birth_platform(birth_platform) {
+    normal = ((mii_id_flags & 0x8) == 0x8);
+};
 
 WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 

@@ -181,6 +181,7 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
 
         if (mii != nullptr) {
             mii->mii_repo = this;
+            mii->location_name = filename_str.substr(filename_str.find_last_of("/") + 1, std::string::npos);
             this->miis.push_back(mii);
             this->mii_filepath.push_back(filename_str);
             // to test, we will use creator_name
@@ -197,7 +198,6 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         index++;
     }
 
-
     if (ec.value() != 0) {
         Console::showMessage(ERROR_CONFIRM, "Error accessing Mii repo  %s at %s:\n\n %s", repo_name.c_str(), path_to_repo.c_str(), ec.message().c_str());
         return false;
@@ -210,7 +210,8 @@ template<typename MII, typename MIIDATA>
 void MiiFolderRepo<MII, MIIDATA>::push_back_invalid_mii(const std::string &filename_str, size_t index) {
     MII *mii = new MII();
     mii->is_valid = false;
-    mii->mii_name = filename_str.substr(filename_str.find_last_of("/") + 1, std::string::npos);
+    mii->location_name = filename_str.substr(filename_str.find_last_of("/") + 1, std::string::npos);
+    mii->mii_name = mii->location_name;
     mii->mii_repo = this;
     mii->index = index;
     this->miis.push_back(mii);
