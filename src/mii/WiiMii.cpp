@@ -8,9 +8,9 @@
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string timestamp,
-               std::string device_hash, uint64_t author_id, bool copyable,
+               std::string device_hash, uint64_t author_id, bool copyable, bool shareable,
                uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
-               size_t index) : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, mii_id_flags, WII, mii_repo, index),
+               size_t index) : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WII, mii_repo, index),
                                birth_platform(birth_platform) {
     switch (mii_id_flags) {
         case 0:
@@ -24,7 +24,7 @@ WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string times
 };
 
 
-bool WiiMiiData::set_copy_flag() {
+bool WiiMiiData::toggle_copy_flag() {
     return true;
 }
 
@@ -65,6 +65,7 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     mii_id_deviceHash[2] = mii_data->systemID2;
     mii_id_deviceHash[3] = mii_data->systemID3;
 
+    uint16_t mingleOff = mii_data->mingleOff;
 
     char16_t mii_name[MiiData::MII_NAME_SIZE + 1];
     for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++)
@@ -82,6 +83,8 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     copyable = (mii_data->core.font_region & 1) == 1;
     author_id = __builtin_bswap64(author_id);
     */
+    uint16_t faceShape = mii_data->faceShape;
+    mingleOff = (faceShape & 0x4) >>2;
 
     for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++) {
         mii_name[i] = __builtin_bswap16(mii_name[i]);
@@ -108,8 +111,9 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         deviceHash.append(hexhex);
     }
 
+    bool shareable = (mingleOff == 1);
 
-    WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, mii_id_flags, birth_platform, nullptr, index);
+    WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
 
     wii_mii->is_valid = true;
 
@@ -120,18 +124,6 @@ WiiMii *WiiMii::v_populate_mii(uint8_t *mii_data) {
     WiiMii *new_mii = WiiMii::populate_mii(this->index, mii_data);
     return new_mii;
 }
-
-/*
-void view_ts(uint8_t *data, uint8_t length) {
-    std::string hex_ascii{};
-    for (size_t i = 0; i < length; i++) {
-        char hexhex[3];
-        snprintf(hexhex, 3, "%02x", data[i]);
-        hex_ascii.append(hexhex);
-    }
-    printf("%s\n", hex_ascii.c_str());
-}
-*/
 
 bool WiiMiiData::update_timestamp(size_t delay) {
 
@@ -146,17 +138,85 @@ bool WiiMiiData::update_timestamp(size_t delay) {
 
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     flags = flags_and_ts & 0xE0;
-    //printf("flags %01x\n", flags);
     updated_flags_and_ts = __builtin_bswap32(ts) | flags;
 #endif
 
-
-    //printf("in mii before\n");
-    //view_ts(this->mii_data + TIMESTAMP_OFFSET, 4);
-
     memcpy(this->mii_data + TIMESTAMP_OFFSET, &updated_flags_and_ts, 4);
 
-    //printf("in mii after\n");
-    //view_ts(this->mii_data + TIMESTAMP_OFFSET, 4);
+    return true;
+};
+
+bool WiiMiiData::toggle_normal_special_flag() {
+
+    uint8_t flags;
+
+    memcpy(&flags, this->mii_data + TIMESTAMP_OFFSET, 1);
+    uint8_t toggled = flags ^ 0x80; // lets simplify in this first version and simply assume that just the first bit controls wether is normal or special
+    memcpy(this->mii_data + TIMESTAMP_OFFSET, &toggled, 1);
+
+    uint8_t mingleOff;  // if false, Mii is shareable.
+    memcpy(&mingleOff, this->mii_data + APPEARANCE_OFFSET_3 + 1, 1);
+    mingleOff = mingleOff | 0x04;  // if mingle bit is off and the special bit is on, MiiChannel will delete the mii. We let it on ...
+    memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);   
+
+    return true;
+}
+
+
+
+//// TEST FUNCTIONS
+bool WiiMiiData::set_normal_special_flag(size_t fold) {
+
+    //set_name
+    memset(this->mii_data + 3, 48 + (uint8_t) fold, 1);
+
+    uint8_t flags;
+    memcpy(&flags, this->mii_data + TIMESTAMP_OFFSET, 1);
+
+    //fold = fold << 4;
+    fold = fold << 5;
+
+    //uint8_t folded = (flags & 0x0f) + fold;
+    uint8_t folded = (flags & 0x1f) + fold;
+
+    memcpy(this->mii_data + TIMESTAMP_OFFSET, &folded, 1);
+
+    return true;
+};
+
+#include <bitset>
+#include <iostream>
+
+bool WiiMiiData::copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t end) {
+
+    ///// TEST FUNCTION, set a especific value  (end is the value)
+    //set value
+
+    printf("value to set: %02x\n",(uint8_t) end);
+    uint8_t value;
+    memcpy(&value,mii_data_template->mii_data + offset, 1);
+    std::cout<< "template: " <<std::bitset<8>(value)<<std::endl;
+    printf("template: %02x\n",value);
+    std::cout<<std::endl;
+
+    memcpy(&value, this->mii_data + offset, 1);
+    std::cout<< "mii: " <<std::bitset<8>(value)<<std::endl;
+    printf("mii: %02x\n",value);
+
+
+    memset(this->mii_data + offset, (uint8_t) end, 1);
+
+    memcpy(&value,this->mii_data + offset, 1);
+    std::cout<< "value set: " <<std::bitset<8>(value)<<std::endl;
+    printf("value set: %02x\n",value);
+    ///////
+
+    ///////TEST FUNCTIOM , if copy is needed  (end is the last byte to copy)
+    //copy
+    //memcpy(this->mii_data + offset, mii_data_template->mii_data + offset, end-offset);
+
+     //set_name
+    memset(this->mii_data + 5, name, 1);
+
     return true;
 };

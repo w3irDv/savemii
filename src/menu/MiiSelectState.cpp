@@ -222,10 +222,12 @@ void MiiSelectState::render() {
             if (this->mii_repo->miis[c2a[i + this->scroll]]->is_valid) {
                 switch (view_type) {
                     case BASIC:
-                        Console::consolePrintPos(M_OFF, i + 2, "    %s (by %s) C:%s A:%02x D:%s [%s]   %s%s",
+                        Console::consolePrintPos(M_OFF, i + 2, "    %s (by %s) C:%s S:%s %s A:%02x D:%s [%s] %s%s",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str(),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str(),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? "Y" : "N",
+                                                 this->mii_repo->miis[c2a[i + this->scroll]]->shareable ? "Y" : "N",
+                                                 this->mii_repo->miis[c2a[i + this->scroll]]->normal ? "N" : "S",
                                                  (uint8_t) (this->mii_repo->miis[c2a[i + this->scroll]]->author_id & 0xFF),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str(),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->timestamp.c_str(),
@@ -316,6 +318,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                             case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
                                 mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
                                 if (mii_process_shared_state->template_mii_data != nullptr) {
+                                    //if (MiiUtils::copy_some_bytes_from_miis(errorCounter, mii_process_shared_state))
                                     if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state))
                                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"), errorCounter);
                                     else

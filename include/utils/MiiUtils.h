@@ -25,6 +25,9 @@ namespace MiiUtils {
 
     bool xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
 
+    bool eight_fold_mii(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
+    bool copy_some_bytes_from_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
+
 
     void showMiiOperations(MiiProcessSharedState *mii_process_shared_state, size_t mii_index);
 

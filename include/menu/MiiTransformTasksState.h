@@ -18,10 +18,10 @@ public:
                 entrycount = 1;
                 break;
             case MiiRepo::eDBType::RFL:
-                entrycount = 3;
+                entrycount = 4;
                 break;
             case MiiRepo::eDBType::FFL:
-                entrycount = 4;
+                entrycount = 5;
                 break;
             default:;
         }
@@ -44,7 +44,7 @@ private:
     eState state = STATE_MII_TRANSFORM_TASKS;
 
     inline static int cursorPos = 0;
-    int entrycount = 3;
+    int entrycount = 4;
 
     MiiRepo *mii_repo;
     MiiProcess::eMiiProcessActions action;
@@ -52,8 +52,10 @@ private:
 
     bool transfer_physical_appearance = false;
     bool transfer_ownership = false;
-    bool set_copy_flag = false;
+    bool toggle_copy_flag = false;
     bool update_timestamp = false;
+    bool toggle_normal_special_flag = false;
 
-    //void set_copy_flag_on();
+
+    //void toggle_copy_flag_on();
 };

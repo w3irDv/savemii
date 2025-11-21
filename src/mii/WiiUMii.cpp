@@ -9,9 +9,9 @@
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp,
-                 std::string device_hash, uint64_t author_id, bool copyable,
+                 std::string device_hash, uint64_t author_id, bool copyable, bool shareable,
                  uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index)
-    : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, mii_id_flags, WIIU, mii_repo, index),
+    : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WIIU, mii_repo, index),
       birth_platform(birth_platform) {
     normal = ((mii_id_flags & 0x8) == 0x8);
 };
@@ -23,6 +23,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     uint8_t birth_platform = mii_data->core.birth_platform;
     bool copyable = mii_data->core.copyable == 1;
+    bool shareable = mii_data->core.local_only == 0;
     uint64_t author_id = mii_data->core.author_id;
     uint8_t mii_id_flags = mii_data->core.mii_id.flags;
     uint32_t mii_id_timestamp = mii_data->core.mii_id.timestamp;
@@ -42,6 +43,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     // just for testing purposes in a linux box
     birth_platform = mii_data->core.unk_0x00_b4;
     copyable = (mii_data->core.font_region & 1) == 1;
+    shareable = (mii_data->core.face_color & 1) == 0;
     author_id = __builtin_bswap64(author_id);
     uint32_t h_ts = mii_id_flags << 24;
     mii_id_flags = (uint8_t) mii_id_timestamp & 0x0F;
@@ -79,7 +81,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         deviceHash.append(hexhex);
     }
 
-    WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, mii_id_flags, birth_platform, nullptr, index);
+    WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
 
     wiiu_mii->is_valid = true;
     return wiiu_mii;
@@ -90,9 +92,9 @@ WiiUMii *WiiUMii::v_populate_mii(uint8_t *mii_data) {
     return new_mii;
 }
 
-bool WiiUMiiData::set_copy_flag() {
+bool WiiUMiiData::toggle_copy_flag() {
 
-    uint8_t copyable = this->mii_data[COPY_FLAG_OFFSET] | 0x1;
+    uint8_t copyable = this->mii_data[COPY_FLAG_OFFSET] ^ 0x1;
 
     memcpy(this->mii_data + COPY_FLAG_OFFSET, &copyable, 1);
 
@@ -128,17 +130,36 @@ bool WiiUMiiData::update_timestamp(size_t delay) {
 
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     flags = flags_and_ts & 0xF0;
-    //printf("flags %01x\n", flags);
+
     updated_flags_and_ts = __builtin_bswap32(ts) | flags;
 #endif
 
-
-    //printf("in mii before\n");
-    //view_ts(this->mii_data + TIMESTAMP_OFFSET, 4);
-
     memcpy(this->mii_data + TIMESTAMP_OFFSET, &updated_flags_and_ts, 4);
 
-    //printf("in mii after\n");
-    //view_ts(this->mii_data + TIMESTAMP_OFFSET, 4);
+    return true;
+};
+
+bool WiiUMiiData::toggle_normal_special_flag() {
+
+    uint8_t flags;
+    memcpy(&flags, this->mii_data + TIMESTAMP_OFFSET, 1);
+    uint8_t toggled = flags ^ 0x80;
+    memcpy(this->mii_data + TIMESTAMP_OFFSET, &toggled, 1);
+
+    uint8_t local_only;  // if false, Mii is shareable.
+    memcpy(&local_only, this->mii_data + SHAREABLE_OFFSET, 1);
+    local_only = local_only | 0x01;  // if loal_lonly  bit is off and the special bit is on, MiiMaker win't show the Mii. We let it on ...
+    memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);   
+
+    return true;
+
+    return true;
+}
+
+bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
+    return true;
+};
+
+bool WiiUMiiData::copy_some_bytes([[maybe_unused]] MiiData *mii_data_template, [[maybe_unused]] char name, [[maybe_unused]] size_t offset, [[maybe_unused]] size_t bytes) {
     return true;
 };

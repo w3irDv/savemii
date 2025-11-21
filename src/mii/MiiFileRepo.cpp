@@ -204,7 +204,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
     } else {
         index = this->miis.size();
         if (!this->find_empty_location(target_location)) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find aN EMPTY location for the mii in the db"));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find an EMPTY location for the mii in the db"));
             return false;
         }
     }

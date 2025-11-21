@@ -11,7 +11,7 @@ class WiiUMii : public Mii {
 public:
 
     WiiUMii() {};
-    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
+    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, bool shareable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
 
     uint8_t birth_platform = 0x4;
 
@@ -23,10 +23,14 @@ public:
 
 class WiiUMiiData : public MiiData {
 public:
-    bool set_copy_flag();
+    bool toggle_copy_flag();
     bool transfer_ownership_from(MiiData *mii_data_template);
     bool transfer_appearance_from(MiiData *mii_data_template);
-    bool update_timestamp(size_t delay); 
+    bool update_timestamp(size_t delay);
+    bool toggle_normal_special_flag();
+
+    bool set_normal_special_flag(size_t fold);
+    bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes);
 
     const static size_t COPY_FLAG_OFFSET = 0x2;
     const static size_t AUTHOR_ID_OFFSET = 0x4;
@@ -38,6 +42,7 @@ public:
     const static size_t APPEARANCE_SIZE_1 = 0x2;
     const static size_t APPEARANCE_OFFSET_2 = 0x2E;
     const static size_t APPEARANCE_SIZE_2 = 0x1A;
+    const static size_t SHAREABLE_OFFSET = 0x31;
 
     const static size_t YEAR_ZERO = 2010;
     const static uint8_t TICKS_PER_SEC = 2;
