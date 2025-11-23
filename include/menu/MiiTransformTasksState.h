@@ -18,10 +18,10 @@ public:
                 entrycount = 1;
                 break;
             case MiiRepo::eDBType::RFL:
-                entrycount = 4;
+                entrycount = 5;
                 break;
             case MiiRepo::eDBType::FFL:
-                entrycount = 5;
+                entrycount = 6;
                 break;
             default:;
         }
@@ -55,6 +55,7 @@ private:
     bool toggle_copy_flag = false;
     bool update_timestamp = false;
     bool toggle_normal_special_flag = false;
+    bool toggle_share_flag = false;
 
 
     //void toggle_copy_flag_on();

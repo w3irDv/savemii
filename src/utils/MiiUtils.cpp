@@ -273,8 +273,9 @@ bool MiiUtils::wipe_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proce
     return (errorCounter == 0);
 }
 
-
-// show InProgress::currentStep mii
+/// @brief show InProgress::currentStep mii
+/// @param mii_process_shared_state
+/// @param mii_index
 void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state, size_t mii_index) {
 
     MiiRepo *source_mii_repo = nullptr;
@@ -353,16 +354,18 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
                 mii_view->at(mii_index).selected = false;
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
                 if (mii_data != nullptr) {
-                    if (mii_process_shared_state->transfer_ownership)
-                        mii_data->transfer_ownership_from(template_mii_data);
                     if (mii_process_shared_state->transfer_physical_appearance)
                         mii_data->transfer_appearance_from(template_mii_data);
-                    if (mii_process_shared_state->toggle_copy_flag)
-                        mii_data->toggle_copy_flag();
+                    if (mii_process_shared_state->transfer_ownership)
+                        mii_data->transfer_ownership_from(template_mii_data);
                     if (mii_process_shared_state->update_timestamp)
                         mii_data->update_timestamp(mii_index);
+                    if (mii_process_shared_state->toggle_share_flag)
+                        mii_data->toggle_share_flag();
                     if (mii_process_shared_state->toggle_normal_special_flag)
                         mii_data->toggle_normal_special_flag();
+                    if (mii_process_shared_state->toggle_copy_flag)
+                        mii_data->toggle_copy_flag();
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
                         Mii *temp = mii_repo->miis.at(mii_index);
@@ -392,7 +395,7 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
     }
 }
 
-
+///// TEST FUNCTIONS
 bool MiiUtils::eight_fold_mii(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
 
     auto mii_repo = mii_process_shared_state->primary_mii_repo;

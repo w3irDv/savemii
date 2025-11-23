@@ -148,10 +148,18 @@ bool WiiUMiiData::toggle_normal_special_flag() {
 
     uint8_t local_only;  // if false, Mii is shareable.
     memcpy(&local_only, this->mii_data + SHAREABLE_OFFSET, 1);
-    local_only = local_only | 0x01;  // if loal_lonly  bit is off and the special bit is on, MiiMaker win't show the Mii. We let it on ...
+    local_only = local_only | 0x01;  // if local_lonly  bit is off and the special bit is on, MiiMaker win't show the Mii. We let it on ...
     memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);   
 
     return true;
+}
+
+bool WiiUMiiData::toggle_share_flag() {
+
+    uint8_t local_only;  // if false, Mii is shareable.
+    memcpy(&local_only, this->mii_data + SHAREABLE_OFFSET, 1);
+    local_only = local_only ^ 0x01;
+    memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);   
 
     return true;
 }

@@ -28,6 +28,7 @@ public:
     bool transfer_appearance_from(MiiData *mii_data_template);
     bool update_timestamp(size_t delay);
     bool toggle_normal_special_flag();
+    bool toggle_share_flag();
 
     bool set_normal_special_flag(size_t fold);
     bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes);

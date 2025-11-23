@@ -83,8 +83,8 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     copyable = (mii_data->core.font_region & 1) == 1;
     author_id = __builtin_bswap64(author_id);
     */
-    uint16_t faceShape = mii_data->faceShape;
-    mingleOff = (faceShape & 0x4) >>2;
+    uint16_t unknown1 = mii_data->unknown1;
+    mingleOff = (unknown1 & 0x1);
 
     for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++) {
         mii_name[i] = __builtin_bswap16(mii_name[i]);
@@ -111,7 +111,7 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         deviceHash.append(hexhex);
     }
 
-    bool shareable = (mingleOff == 1);
+    bool shareable = (mingleOff == 0);
 
     WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
 
@@ -155,16 +155,27 @@ bool WiiMiiData::toggle_normal_special_flag() {
     memcpy(this->mii_data + TIMESTAMP_OFFSET, &toggled, 1);
 
     uint8_t mingleOff;  // if false, Mii is shareable.
-    memcpy(&mingleOff, this->mii_data + APPEARANCE_OFFSET_3 + 1, 1);
+    memcpy(&mingleOff, this->mii_data + SHAREABLE_OFFSET, 1);
     mingleOff = mingleOff | 0x04;  // if mingle bit is off and the special bit is on, MiiChannel will delete the mii. We let it on ...
     memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);   
 
     return true;
 }
 
+bool WiiMiiData::toggle_share_flag() {
+
+    uint8_t mingleOff;  // if false, Mii is shareable.
+    memcpy(&mingleOff, this->mii_data + SHAREABLE_OFFSET, 1);
+    mingleOff = mingleOff ^ 0x04;
+    memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);   
+
+    return true;
+}
 
 
-//// TEST FUNCTIONS
+/// @brief Debug function to set arbitrary values in flag offset
+/// @param fold 
+/// @return 
 bool WiiMiiData::set_normal_special_flag(size_t fold) {
 
     //set_name
@@ -187,6 +198,12 @@ bool WiiMiiData::set_normal_special_flag(size_t fold) {
 #include <bitset>
 #include <iostream>
 
+/// @brief Debug function to get/set some values , or copy from template miidata to miidata
+/// @param mii_data_template 
+/// @param name 
+/// @param offset 
+/// @param end 
+/// @return 
 bool WiiMiiData::copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t end) {
 
     ///// TEST FUNCTION, set a especific value  (end is the value)

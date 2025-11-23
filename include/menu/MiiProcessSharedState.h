@@ -26,7 +26,8 @@ public:
     bool transfer_ownership = false;
     bool toggle_copy_flag = false;
     bool update_timestamp = false;
-    bool toggle_normal_special_flag = false;;
+    bool toggle_normal_special_flag = false;
+    bool toggle_share_flag = false;
     bool in_place = true;
 
 

@@ -24,6 +24,7 @@ public:
     bool transfer_appearance_from(MiiData *mii_data_template);
     bool update_timestamp(size_t delay);
     bool toggle_normal_special_flag();
+    bool toggle_share_flag();
 
     bool set_normal_special_flag(size_t fold);
     bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes);
@@ -40,6 +41,7 @@ public:
     const static size_t TIMESTAMP_OFFSET = 0x18;
     const static size_t APPEARANCE_OFFSET_3 = 0x20;
     const static size_t APPEARANCE_SIZE_3 = 0x16;
+    const static size_t SHAREABLE_OFFSET = 0x21;
 
     const static size_t YEAR_ZERO = 2006;
     const static uint8_t TICKS_PER_SEC = 4;
