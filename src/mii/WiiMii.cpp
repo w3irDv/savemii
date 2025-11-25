@@ -44,6 +44,27 @@ bool WiiMiiData::transfer_appearance_from(MiiData *mii_data_template) {
     return true;
 }
 
+std::string WiiMiiData::get_mii_name() {
+
+    MII_DATA_STRUCT *mii_data = (MII_DATA_STRUCT *) this->mii_data;
+
+    char16_t mii_name[MiiData::MII_NAME_SIZE + 1];
+    for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++)
+        mii_name[i] = mii_data->name[i];
+    mii_name[MiiData::MII_NAME_SIZE] = 0;
+
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++) {
+        mii_name[i] = __builtin_bswap16(mii_name[i]);
+    }
+#endif
+    std::u16string name16;
+    name16 = std::u16string(mii_name);
+    std::string miiName = utf8::utf16to8(name16);
+
+    return miiName;
+}
+
 
 WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
@@ -154,28 +175,28 @@ bool WiiMiiData::toggle_normal_special_flag() {
     uint8_t toggled = flags ^ 0x80; // lets simplify in this first version and simply assume that just the first bit controls wether is normal or special
     memcpy(this->mii_data + TIMESTAMP_OFFSET, &toggled, 1);
 
-    uint8_t mingleOff;  // if false, Mii is shareable.
+    uint8_t mingleOff; // if false, Mii is shareable.
     memcpy(&mingleOff, this->mii_data + SHAREABLE_OFFSET, 1);
-    mingleOff = mingleOff | 0x04;  // if mingle bit is off and the special bit is on, MiiChannel will delete the mii. We let it on ...
-    memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);   
+    mingleOff = mingleOff | 0x04; // if mingle bit is off and the special bit is on, MiiChannel will delete the mii. We let it on ...
+    memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);
 
     return true;
 }
 
 bool WiiMiiData::toggle_share_flag() {
 
-    uint8_t mingleOff;  // if false, Mii is shareable.
+    uint8_t mingleOff; // if false, Mii is shareable.
     memcpy(&mingleOff, this->mii_data + SHAREABLE_OFFSET, 1);
     mingleOff = mingleOff ^ 0x04;
-    memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);   
+    memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);
 
     return true;
 }
 
 
 /// @brief Debug function to set arbitrary values in flag offset
-/// @param fold 
-/// @return 
+/// @param fold
+/// @return
 bool WiiMiiData::set_normal_special_flag(size_t fold) {
 
     //set_name
@@ -199,40 +220,40 @@ bool WiiMiiData::set_normal_special_flag(size_t fold) {
 #include <iostream>
 
 /// @brief Debug function to get/set some values , or copy from template miidata to miidata
-/// @param mii_data_template 
-/// @param name 
-/// @param offset 
-/// @param end 
-/// @return 
+/// @param mii_data_template
+/// @param name
+/// @param offset
+/// @param end
+/// @return
 bool WiiMiiData::copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t end) {
 
     ///// TEST FUNCTION, set a especific value  (end is the value)
     //set value
 
-    printf("value to set: %02x\n",(uint8_t) end);
+    printf("value to set: %02x\n", (uint8_t) end);
     uint8_t value;
-    memcpy(&value,mii_data_template->mii_data + offset, 1);
-    std::cout<< "template: " <<std::bitset<8>(value)<<std::endl;
-    printf("template: %02x\n",value);
-    std::cout<<std::endl;
+    memcpy(&value, mii_data_template->mii_data + offset, 1);
+    std::cout << "template: " << std::bitset<8>(value) << std::endl;
+    printf("template: %02x\n", value);
+    std::cout << std::endl;
 
     memcpy(&value, this->mii_data + offset, 1);
-    std::cout<< "mii: " <<std::bitset<8>(value)<<std::endl;
-    printf("mii: %02x\n",value);
+    std::cout << "mii: " << std::bitset<8>(value) << std::endl;
+    printf("mii: %02x\n", value);
 
 
     memset(this->mii_data + offset, (uint8_t) end, 1);
 
-    memcpy(&value,this->mii_data + offset, 1);
-    std::cout<< "value set: " <<std::bitset<8>(value)<<std::endl;
-    printf("value set: %02x\n",value);
+    memcpy(&value, this->mii_data + offset, 1);
+    std::cout << "value set: " << std::bitset<8>(value) << std::endl;
+    printf("value set: %02x\n", value);
     ///////
 
     ///////TEST FUNCTIOM , if copy is needed  (end is the last byte to copy)
     //copy
     //memcpy(this->mii_data + offset, mii_data_template->mii_data + offset, end-offset);
 
-     //set_name
+    //set_name
     memset(this->mii_data + 5, name, 1);
 
     return true;

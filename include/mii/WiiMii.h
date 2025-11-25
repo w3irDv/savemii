@@ -12,13 +12,14 @@ public:
     uint8_t birth_platform = 0;
 
     static WiiMii *populate_mii(size_t index, uint8_t *raw_mii_data);
-    WiiMii *v_populate_mii(uint8_t* mii_data);
+    WiiMii *v_populate_mii(uint8_t *mii_data);
 
     const static inline std::string file_name_prefix = "WII-";
 };
 
 class WiiMiiData : public MiiData {
 public:
+    std::string get_mii_name();
     bool toggle_copy_flag();
     bool transfer_ownership_from(MiiData *mii_data_template);
     bool transfer_appearance_from(MiiData *mii_data_template);

@@ -270,27 +270,6 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
             this->subState = std::make_unique<KeyboardState>(newTag);
         }
     }
-    if (input->get(ButtonState::TRIGGER, Button::Y)) {
-        /*
-            Console::showMessage(OK_CONFIRM,"bckp slot 1");
-            MiiUtils::MiiRepos["FFL"]->backup(1);
-            Console::showMessage(OK_CONFIRM,"bckp slot 0");
-            MiiUtils::MiiRepos["FFL"]->backup(0,"tag me up");
-
-            Console::showMessage(OK_CONFIRM,"populate repo FFL");
-            MiiUtils::MiiRepos["FFL"]->populate_repo();
-            Console::showMessage(OK_CONFIRM,"populate repo RFL");
-            MiiUtils::MiiRepos["RFL"]->populate_repo();
-
-            Console::showMessage(OK_CONFIRM,"extract mii");
-             MiiData *miidata = MiiUtils::MiiRepos["FFL"]->extract_mii_data(0);
-             Console::showMessage(OK_CONFIRM,"import mii");
-             MiiUtils::MiiRepos["RFL"]->import_miidata(miidata);
-             Console::showMessage(OK_CONFIRM,"DONE!");
-             */
-        Console::showMessage(OK_CONFIRM, "bckp slot 1");
-        MiiUtils::MiiRepos["FFL"]->backup(2);
-    }
     if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {

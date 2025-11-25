@@ -96,7 +96,7 @@ void MiiTasksState::render() {
                     info = LanguageUtils::gettext("Import/Export/Wipe Miis between internel DBs and SD Stage folders");
                     break;
                 case 7:
-                    info = LanguageUtils::gettext("Change attributes or appareance of miis");
+                    info = LanguageUtils::gettext("Change attributes (share/copy/miiid/owner) or appareance of miis");
                     break;
                 default:
                     info = "";

@@ -103,7 +103,7 @@ void MiiSelectState::render() {
         switch (action) {
             case MiiProcess::LIST_MIIS:
                 menuTitle = LanguageUtils::gettext("List Miis");
-                screenOptions = LanguageUtils::gettext("\ue001: Back");
+                screenOptions = LanguageUtils::gettext("\uE002: Info  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext("");
                 lastActionBriefOk = LanguageUtils::gettext("");
                 break;
@@ -242,7 +242,7 @@ void MiiSelectState::render() {
                                                  lastState.c_str(),
                                                  nxtAction.c_str());
                     break;
-                    default:;
+                    default:;    
                 }
             } else {
                 Console::consolePrintPos(M_OFF, i + 2, "    INVALID: <%s>  %s%s",

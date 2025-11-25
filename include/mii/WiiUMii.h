@@ -9,20 +9,20 @@
 
 class WiiUMii : public Mii {
 public:
-
     WiiUMii() {};
     WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, std::string device_hash, uint64_t author_id, bool copyable, bool shareable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
 
     uint8_t birth_platform = 0x4;
 
     static WiiUMii *populate_mii(size_t index, uint8_t *raw_mii_data);
-    WiiUMii *v_populate_mii(uint8_t* mii_data);
+    WiiUMii *v_populate_mii(uint8_t *mii_data);
 
-    const static inline std::string file_name_prefix = "WII-";
+    const static inline std::string file_name_prefix = "WIIU-";
 };
 
 class WiiUMiiData : public MiiData {
 public:
+    std::string get_mii_name();
     bool toggle_copy_flag();
     bool transfer_ownership_from(MiiData *mii_data_template);
     bool transfer_appearance_from(MiiData *mii_data_template);
@@ -60,7 +60,7 @@ public:
         const static size_t MAX_MIIS = 100; //ENOUGH FOR TEST
         const static inline char MAGIC[4] = {'F', 'F', 'O', 'C'};
 
-        const static uint32_t DB_OWNER = 0;   // region dependent, we will find it during  run time
+        const static uint32_t DB_OWNER = 0; // region dependent, we will find it during  run time
         const static uint32_t DB_GROUP = 0x400;
         const static uint32_t DB_FSMODE = 0x666;
     };

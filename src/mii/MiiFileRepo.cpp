@@ -223,13 +223,12 @@ bool MiiFileRepo<MII, MIIDATA>::wipe_miidata(size_t index) {
 
     /*
     // the caller should delete element at index for other related vectors
-    delete miis.at(index);
-    this->miis.erase(this->miis.begin() + index);
-    this->mii_location.erase(this->mii_location.begin() + index);
-        
+    it is ienough to force a lazy repopulate, because the menus do not allow to do anythin with a deleted mii
+    */
+
     if (last_empty_location > index)
         last_empty_location = index;
-    */
+    
     return true;
 }
 

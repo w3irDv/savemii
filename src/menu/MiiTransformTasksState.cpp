@@ -72,7 +72,7 @@ void MiiTransformTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF, 10, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 12, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, cursorPos + 5, "\u2192");
@@ -96,7 +96,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             mii_process_shared_state->toggle_copy_flag = toggle_copy_flag;
             mii_process_shared_state->update_timestamp = update_timestamp;
             mii_process_shared_state->toggle_normal_special_flag = toggle_normal_special_flag;
-             mii_process_shared_state->toggle_share_flag = toggle_share_flag;
+            mii_process_shared_state->toggle_share_flag = toggle_share_flag;
             std::vector<bool> mii_repos_candidates;
             for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++) {
                 if (mii_process_shared_state->primary_mii_repo->db_type == MiiUtils::mii_repos.at(i)->db_type)

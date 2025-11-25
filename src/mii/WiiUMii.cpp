@@ -92,6 +92,24 @@ WiiUMii *WiiUMii::v_populate_mii(uint8_t *mii_data) {
     return new_mii;
 }
 
+std::string WiiUMiiData::get_mii_name() {
+    FFLiMiiDataOfficial *mii_data = (FFLiMiiDataOfficial *) this->mii_data;
+    char16_t mii_name[MiiData::MII_NAME_SIZE + 1];
+    for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++)
+        mii_name[i] = mii_data->core.mii_name[i];
+    mii_name[MiiData::MII_NAME_SIZE] = 0;
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    for (size_t i = 0; i < MiiData::MII_NAME_SIZE; i++) {
+        mii_name[i] = __builtin_bswap16(mii_name[i]);
+    }
+#endif
+    std::u16string name16;
+    name16 = std::u16string(mii_name);
+    std::string miiName = utf8::utf16to8(name16);
+
+    return miiName;
+}
+
 bool WiiUMiiData::toggle_copy_flag() {
 
     uint8_t copyable = this->mii_data[COPY_FLAG_OFFSET] ^ 0x1;
@@ -146,20 +164,20 @@ bool WiiUMiiData::toggle_normal_special_flag() {
     uint8_t toggled = flags ^ 0x80;
     memcpy(this->mii_data + TIMESTAMP_OFFSET, &toggled, 1);
 
-    uint8_t local_only;  // if false, Mii is shareable.
+    uint8_t local_only; // if false, Mii is shareable.
     memcpy(&local_only, this->mii_data + SHAREABLE_OFFSET, 1);
-    local_only = local_only | 0x01;  // if local_lonly  bit is off and the special bit is on, MiiMaker win't show the Mii. We let it on ...
-    memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);   
+    local_only = local_only | 0x01; // if local_lonly  bit is off and the special bit is on, MiiMaker win't show the Mii. We let it on ...
+    memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);
 
     return true;
 }
 
 bool WiiUMiiData::toggle_share_flag() {
 
-    uint8_t local_only;  // if false, Mii is shareable.
+    uint8_t local_only; // if false, Mii is shareable.
     memcpy(&local_only, this->mii_data + SHAREABLE_OFFSET, 1);
     local_only = local_only ^ 0x01;
-    memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);   
+    memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);
 
     return true;
 }

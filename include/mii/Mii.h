@@ -49,6 +49,7 @@ public:
             free(mii_data);
     }
 
+    virtual std::string get_mii_name() = 0;
     virtual bool toggle_copy_flag() = 0;                                     // for Wii U
     virtual bool transfer_ownership_from(MiiData *mii_data_template) = 0; // wii -> device, wiiu -> device+author_id
     virtual bool transfer_appearance_from(MiiData *mii_data_template) = 0;

@@ -8,6 +8,7 @@
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/EscapeFAT32Utils.h>
 
 namespace fs = std::filesystem;
 
@@ -86,6 +87,7 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
     if (in_place) {
         newname = this->mii_filepath.at(index);
     } else {
+        newname = miidata->get_mii_name();
         if (!this->find_name(newname)) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find a name for the mii file:\n%s\n%s"), newname.c_str(), strerror(errno));
             return false;
@@ -144,7 +146,7 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         mii_file.open(filename, std::ios_base::binary);
         if (!mii_file.is_open()) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), filename.c_str(), strerror(errno));
-            push_back_invalid_mii(filename_str,index);
+            push_back_invalid_mii(filename_str, index);
             index++;
             continue;
         }
@@ -153,7 +155,7 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         if ((size != mii_data_size) && (size != mii_data_size + 4)) // Allow "bare" mii or mii+CRC
         {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), filename_str.c_str(), size, mii_data_size, mii_data_size + 4);
-            push_back_invalid_mii(filename_str,index);
+            push_back_invalid_mii(filename_str, index);
             index++;
             continue;
         }
@@ -165,14 +167,14 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         mii_file.read((char *) &raw_mii_data, mii_data_size);
         if (mii_file.fail()) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), filename.c_str(), strerror(errno));
-            push_back_invalid_mii(filename_str,index);
+            push_back_invalid_mii(filename_str, index);
             index++;
             continue;
         }
         mii_file.close();
         if (mii_file.fail()) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), filename.c_str(), strerror(errno));
-            push_back_invalid_mii(filename_str,index);
+            push_back_invalid_mii(filename_str, index);
             index++;
             continue;
         }
@@ -193,7 +195,7 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
             }
             owners_v->push_back(index);
         } else {
-            push_back_invalid_mii(filename_str,index);
+            push_back_invalid_mii(filename_str, index);
         }
         index++;
     }
@@ -244,14 +246,24 @@ bool MiiFolderRepo<MII, MIIDATA>::find_name(std::string &newname) {
         return false;
     }
 
-    size_t repo_entries = this->miis.size();
-    // todo: decide naming schema
-    newname = this->path_to_repo + "/" + filename_prefix + std::to_string(repo_entries) + ".new_mii";
-    while ((FSUtils::checkEntry(newname.c_str()) != 0) && repo_entries < 3000) {
-        newname = this->path_to_repo + "/" + filename_prefix + std::to_string(++repo_entries) + ".new_mii";
+    std::string sanitized;
+    Escape::convertToFAT32ASCIICompliant(newname, sanitized);
+
+    size_t incarnation = 1;
+    std::string mii_basepathname = this->path_to_repo + "/" + filename_prefix + sanitized;
+    newname = mii_basepathname + ".mii";
+    if (FSUtils::checkEntry(newname.c_str()) == 0) {
+        return true;
+    } else {
+        newname = mii_basepathname + "-" + std::to_string(incarnation) + ".mii";
+        while ((FSUtils::checkEntry(newname.c_str()) != 0) && incarnation < 3000) {
+            newname = mii_basepathname + "-" + std::to_string(++incarnation) + ".mii";
+        }
     }
-    if (errno != ENOENT || repo_entries == 3000) {
+
+    if (errno != ENOENT || incarnation == 3000) {
         // probably an unrecoverable error
+        newname = this->path_to_repo; // so the error will show the path
         return false;
     }
 

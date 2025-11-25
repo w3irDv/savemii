@@ -149,6 +149,13 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
                 errorCounter++;
 
             InProgress::currentStep++;
+            if (InProgress::totalSteps > 1) {
+                InProgress::input->read();
+                if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
+                    InProgress::abortTask = true;
+                    break;
+                }
+            }
         }
     }
     if (errorCounter != 0 && target_repo->db_kind == MiiRepo::eDBKind::FILE)
@@ -204,10 +211,11 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
                 errorCounter++;
 
             InProgress::currentStep++;
-            if (InProgress::totalSteps > 1) { // It's so fast that is unnecessary ...
+            if (InProgress::totalSteps > 1) {
                 InProgress::input->read();
                 if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
                     InProgress::abortTask = true;
+                    break;
                 }
             }
         }
@@ -258,6 +266,13 @@ bool MiiUtils::wipe_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proce
                 errorCounter++;
             }
             InProgress::currentStep++;
+            if (InProgress::totalSteps > 1) {
+                InProgress::input->read();
+                if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
+                    InProgress::abortTask = true;
+                    break;
+                }
+            }
         }
     }
 
@@ -371,6 +386,7 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
                         Mii *temp = mii_repo->miis.at(mii_index);
                         mii_repo->miis.at(mii_index) = temp->v_populate_mii(mii_data->mii_data);
                         mii_repo->miis.at(mii_index)->mii_repo = mii_repo;
+                        mii_repo->miis.at(mii_index)->location_name = temp->location_name;
                         delete temp;
                     }
                     delete mii_data;
@@ -379,6 +395,13 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
                     errorCounter++;
                 }
                 InProgress::currentStep++;
+                if (InProgress::totalSteps > 1) {
+                    InProgress::input->read();
+                    if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
+                        InProgress::abortTask = true;
+                        break;
+                    }
+                }
             }
         }
         if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
