@@ -13,10 +13,14 @@
 class MiiProcessSharedState;
 
 enum eViewType {
-    BASIC,
-    LOCATION
+    BASIC = 0,
+    CREATORS = 1,
+    LOCATION = 2,
+    TIMESTAMP = 3
 };
 
+#define EVIEWTYPESIZE 4
+        
 class MiiSelectState : public ApplicationState {
 
     friend class MiiProcessSharedState;

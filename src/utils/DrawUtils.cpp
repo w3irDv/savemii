@@ -240,6 +240,20 @@ void DrawUtils::setFontColorByCursor(Color col, Color colAtCursor, int cursorPos
         font_col = col;
 }
 
+void DrawUtils::setFontColorForToggles(Color col, bool toggle) {
+    if (toggle) {
+        col.a = 0xff;
+        col.g = (0xff - col.g) / 2 + col.g;
+        col.r = (0xff - col.r) / 2 + col.r;
+    } else {
+        col.a = 0xcc;
+        col.g = col.g * 4 / 5;
+        col.r = col.r * 4 / 5;
+    }
+
+    font_col = col;
+}
+
 static void draw_freetype_bitmap(SFT_Image *bmp, int32_t x, int32_t y) {
     int32_t i, j, p, q;
 

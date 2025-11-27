@@ -8,10 +8,10 @@
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
-WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp,
+WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp,
                  std::string device_hash, uint64_t author_id, bool copyable, bool shareable,
                  uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index)
-    : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WIIU, mii_repo, index),
+    : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WIIU, mii_repo, index),
       birth_platform(birth_platform) {
     normal = ((mii_id_flags & 0x8) == 0x8);
 };
@@ -81,7 +81,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         deviceHash.append(hexhex);
     }
 
-    WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
+    WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
 
     wiiu_mii->is_valid = true;
     return wiiu_mii;

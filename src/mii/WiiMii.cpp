@@ -7,10 +7,10 @@
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
-WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string timestamp,
+WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp,
                std::string device_hash, uint64_t author_id, bool copyable, bool shareable,
                uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
-               size_t index) : Mii(mii_name, creator_name, timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WII, mii_repo, index),
+               size_t index) : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WII, mii_repo, index),
                                birth_platform(birth_platform) {
     switch (mii_id_flags) {
         case 0:
@@ -134,7 +134,7 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     bool shareable = (mingleOff == 0);
 
-    WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
+    WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
 
     wii_mii->is_valid = true;
 

@@ -62,6 +62,7 @@ public:
 
     static void setFontColor(Color col);
     static void setFontColorByCursor(Color col, Color colAtCursor, int cursorPos, int line);
+    static void setFontColorForToggles(Color col,  bool toggle);
 
     static void print(uint32_t x, uint32_t y, const char *string, bool alignRight = false);
 
