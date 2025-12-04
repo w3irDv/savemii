@@ -33,24 +33,25 @@
 
 MiiDBOptionsState::MiiDBOptionsState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action) : mii_repo(mii_repo), action(action) {
 
-    db_type = mii_repo->db_type;
-
     entrycount = 1;
     updateSlotMetadata();
     updateRepoHasData();
     passiveUpdateSourceSelectionHasData();
 
-    switch (db_type) {
-        case MiiRepo::FFL:
-            db_name = "cafe Face Lib DB";
-            break;
-        case MiiRepo::RFL:
-            db_name = "Revolution Face Lib DB";
-            break;
+    switch (mii_repo -> db_kind) {
         case MiiRepo::ACCOUNT:
-            db_name = "WiiU Accunt data";
+            db_name = "WiiU Account data";
             break;
-        default:;
+        default:
+            switch (mii_repo -> db_type) {
+                case MiiRepo::FFL:
+                    db_name = "cafe Face Lib DB";
+                    break;
+                case MiiRepo::RFL:
+                    db_name = "Revolution Face Lib DB";
+                    break;
+                default:;
+            };
     }
 }
 
@@ -65,7 +66,7 @@ void MiiDBOptionsState::render() {
     if (this->state == STATE_MII_DB_OPTIONS) {
 
         // Account data can only be backed up
-        if ((mii_repo->db_type == MiiRepo::eDBType::ACCOUNT) && (action != MiiProcess::BACKUP_DB)) {
+        if ((mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) && (action != MiiProcess::BACKUP_DB)) {
             DrawUtils::endDraw();
             Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("This action is not supported on the selected repo."));
             this->unsupported_action = true;

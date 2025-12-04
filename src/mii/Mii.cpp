@@ -16,12 +16,39 @@ Mii::Mii(std::string mii_name, std::string creator_name, std::string timestamp, 
                                                                                      mii_type(mii_type),
                                                                                      mii_repo(mii_repo),
                                                                                      index(index) {
-    if (device_hash.length() > 3)
-        device_hash_lite = device_hash.substr(device_hash.length() - 4);
+    if (device_hash.length() > 7)
+        device_hash_lite = device_hash.substr(device_hash.length() - 8);
 };
 
 void *MiiData::allocate_memory(size_t size) {
     void *buf = memalign(32, (size + 31) & (~31));
     memset(buf, 0, (size + 31) & (~31));
     return buf;
+}
+
+bool MiiData::str_2_raw_mii_data(const std::string &mii_data_str, unsigned char *mii_buffer, size_t buffer_size) {
+
+
+    if (mii_data_str.length() != 2 * buffer_size) {
+        return false;
+    }
+
+    for (unsigned int i = 0; i < buffer_size; i++) {
+        std::string byteString = mii_data_str.substr(2*i, 2);
+        char byte = (char) strtol(byteString.c_str(), NULL, 16);
+        memset(mii_buffer + i, byte, 1);
+    }
+
+    return true;
+}
+
+bool MiiData::raw_mii_data_2_str(std::string &mii_data_str, unsigned char *mii_buffer, size_t mii_data_size) {
+    mii_data_str = "";
+    for (size_t i = 0; i < mii_data_size; i++) {
+        char hexhex[3];
+        snprintf(hexhex, 3, "%02x", ((uint8_t *) mii_buffer)[i]);
+        mii_data_str.append(hexhex);
+    }
+
+    return true;
 }

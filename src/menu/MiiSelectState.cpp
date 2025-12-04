@@ -1,6 +1,7 @@
 
 #include <coreinit/debug.h>
 #include <cstring>
+#include <menu/MiiRepoSelectState.h>
 #include <menu/MiiSelectState.h>
 #include <menu/MiiTransformTasksState.h>
 //#include <mockWUT.h>
@@ -27,7 +28,9 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
 
     mii_process_shared_state->state = action;
 
-    if (action == MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE)
+    if ((action == MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE) ||
+        (action == MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN) ||
+        (action == MiiProcess::SELECT_MIIS_FOR_IMPORT && mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT))
         selectOnlyOneMii = true;
 
     if (mii_repo->needs_populate) {
@@ -109,7 +112,10 @@ void MiiSelectState::render() {
                 break;
             case MiiProcess::SELECT_MIIS_FOR_IMPORT:
                 menuTitle = LanguageUtils::gettext("Select which Miis to Import");
-                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \uE002: View  \ue000: Import Miis  \ue001: Back");
+                if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT)
+                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \uE002: View  \ue000: Import Miis  \ue001: Back");
+                else
+                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \uE002: View  \ue000: Import Miis  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Import");
                 lastActionBriefOk = LanguageUtils::gettext("|Imported|");
                 break;
@@ -133,8 +139,14 @@ void MiiSelectState::render() {
                 break;
             case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
                 menuTitle = LanguageUtils::gettext("Select Mii to copy attrs from");
-                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Template  \ue000: Transform Miis  \uE002: View  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Template  \uE002: View  \ue000: Transform Miis  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Use as template");
+                lastActionBriefOk = LanguageUtils::gettext("");
+                break;
+            case MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN:
+                menuTitle = LanguageUtils::gettext("Select Mii to be overwritten");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \uE002: View   \ue000: Continue  \ue001: Back");
+                nextActionBrief = LanguageUtils::gettext(">> Import here");
                 lastActionBriefOk = LanguageUtils::gettext("");
                 break;
             default:
@@ -289,17 +301,17 @@ void MiiSelectState::render() {
                     */
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 12, i + 2, LanguageUtils::gettext("[COPY"));
-                        DrawUtils::setFontColorForToggles(color_text,this->mii_repo->miis[c2a[i + this->scroll]]->copyable);
+                        DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->copyable);
                         Console::consolePrintPos(MM_OFF + 18, i + 2, LanguageUtils::gettext("%s"),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 22, i + 2, LanguageUtils::gettext("| SHARE"));
-                        DrawUtils::setFontColorForToggles(color_text,this->mii_repo->miis[c2a[i + this->scroll]]->shareable);
+                        DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->shareable);
                         Console::consolePrintPos(MM_OFF + 30, i + 2, LanguageUtils::gettext("%s"),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->shareable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 34, i + 2, LanguageUtils::gettext("|"));
-                        DrawUtils::setFontColorForToggles(color_text,this->mii_repo->miis[c2a[i + this->scroll]]->normal);
+                        DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->normal);
                         Console::consolePrintPos(MM_OFF + 36, i + 2, LanguageUtils::gettext("%s"),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->normal ? LanguageUtils::gettext("NORMAL") : LanguageUtils::gettext("SPECIAL"));
                         DrawUtils::setFontColor(color_text);
@@ -371,6 +383,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
             return SUBSTATE_RUNNING;
         processSelectedMiis:
             uint8_t errorCounter = 0;
+            std::vector<bool> mii_repos_candidates;
             switch (action) {
                 case MiiProcess::SELECT_MIIS_FOR_EXPORT:
                     mii_process_shared_state->primary_mii_view = &this->mii_view;
@@ -417,6 +430,13 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     mii_process_shared_state->state = MiiProcess::MIIS_TRANSFORMED;
                     return SUBSTATE_RETURN;
                     break;
+                case MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN:
+                    mii_process_shared_state->mii_index_to_overwrite = c2a[currentlySelectedMii];
+                    this->state = STATE_DO_SUBSTATE;
+                    for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)
+                        mii_repos_candidates.push_back(true);
+                    this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_IMPORT_REPO, mii_process_shared_state);
+
                 default:;
             }
             return SUBSTATE_RUNNING;

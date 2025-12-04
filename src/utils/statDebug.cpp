@@ -229,3 +229,24 @@ void statDebugUtils::statVol() {
 
     FSACloseDir(FSUtils::handle, fsadh);
 }
+
+
+void statDebugUtils::statAct() {
+
+    time_t timestamp = time(&timestamp);
+    struct tm datetime = *localtime(&timestamp);
+    std::string timeStamp = StringUtils::stringFormat("%d-%d", datetime.tm_hour, datetime.tm_min);
+
+    statCount++;
+
+    std::string statFilePath = "fs:/vol/external01/wiiu/backups/statSave-" + std::string("Act") + "-" + std::to_string(statCount) + "-" + timeStamp + ".out";
+    FILE *file = fopen(statFilePath.c_str(), "w");
+
+    std::string srcPath = "storage_mlc01:/usr/save/system/act";
+
+    statDir(srcPath, file);
+
+    fclose(file);
+
+    showFile(statFilePath, "storage_mlc01:/usr/save/system/act");
+}

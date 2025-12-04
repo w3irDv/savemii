@@ -13,5 +13,6 @@ namespace statDebugUtils {
 
     void statMiiEdit();
     void statVol();
+    void statAct();
 } // namespace statDebug
 

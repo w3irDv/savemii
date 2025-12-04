@@ -62,6 +62,8 @@ public:
     virtual bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes) = 0;
 
     static void *allocate_memory(size_t size);
+    static bool str_2_raw_mii_data(const std::string & mii_data_str, unsigned char *mii_buffer, size_t mii_data_size);
+    static bool raw_mii_data_2_str(std::string & mii_data_str, unsigned char *mii_buffer, size_t buffer_size);
 
     uint8_t *mii_data = nullptr;
     size_t mii_data_size;

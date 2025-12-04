@@ -20,6 +20,8 @@ public:
 
     MiiData *template_mii_data = nullptr;
 
+    int mii_index_to_overwrite = 0;
+
     MiiProcess::eMiiProcessActions state = MiiProcess::SELECT_SOURCE_REPO;
 
     bool transfer_physical_appearance = false;

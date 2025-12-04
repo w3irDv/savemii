@@ -17,13 +17,13 @@ class MiiRepo {
 public:
     enum eDBType {
         FFL,
-        RFL,
-        ACCOUNT
+        RFL
     };
 
     enum eDBKind {
         FILE,
-        FOLDER
+        FOLDER,
+        ACCOUNT
     };
 
     MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder);

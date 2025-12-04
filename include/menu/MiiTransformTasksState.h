@@ -12,18 +12,21 @@ public:
     MiiTransformTasksState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repo(mii_repo), action(action), mii_process_shared_state(mii_process_shared_state) {
 
         mii_process_shared_state->state = action;
-        
-        switch (mii_repo->db_type) {
-            case MiiRepo::eDBType::ACCOUNT:
-                entrycount = 1;
-                break;
-            case MiiRepo::eDBType::RFL:
-                entrycount = 5;
-                break;
-            case MiiRepo::eDBType::FFL:
+
+        switch (mii_repo->db_kind) {
+            case MiiRepo::eDBKind::ACCOUNT:
                 entrycount = 6;
                 break;
-            default:;
+            default:
+                switch (mii_repo->db_type) {
+                    case MiiRepo::eDBType::RFL:
+                        entrycount = 5;
+                        break;
+                    case MiiRepo::eDBType::FFL:
+                        entrycount = 6;
+                        break;
+                    default:;
+                };
         }
     };
 

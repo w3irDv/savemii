@@ -107,7 +107,6 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     break;
                 case 9:
                     this->state = STATE_DO_SUBSTATE;
-                    this->substateCalled = STATE_BACKUPSET_MENU;
                     // TO DO -- REPO CANDIDATES 
                     for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)
                         mii_repos_candidates.push_back(true);
@@ -134,6 +133,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             statDebugUtils::statVol();
             statDebugUtils::statMiiEdit();
             statDebugUtils::statMiiMaker();
+            statDebugUtils::statAct();
             return SUBSTATE_RUNNING;
         }
     } else if (this->state == STATE_DO_SUBSTATE) {

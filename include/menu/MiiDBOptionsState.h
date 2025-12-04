@@ -29,8 +29,7 @@ private:
     eState state = STATE_MII_DB_OPTIONS;
 
     eSubstateCalled substateCalled = NONE;
-
-    MiiRepo::eDBType db_type;
+    
     MiiRepo *mii_repo;
     MiiProcess::eMiiProcessActions action;
     const char *db_name;

@@ -5,6 +5,8 @@
 #include <utils/ConsoleUtils.h>
 #include <utils/MiiUtils.h>
 
+#include <bitset>
+#include <iostream>
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -20,6 +22,11 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     FFLiMiiDataOfficial *mii_data = (FFLiMiiDataOfficial *) raw_mii_data;
 
+    //TEMP
+    //printf("size: %02x\n",mii_data->core.);
+    //printf("value: %02x\n", ((uint8_t *) raw_mii_data)[0x03]);
+    //std::cout << "value: " << std::bitset<8>(raw_mii_data[0x31]) << std::endl;
+    //
 
     uint8_t birth_platform = mii_data->core.birth_platform;
     bool copyable = mii_data->core.copyable == 1;
@@ -57,7 +64,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     }
 #endif
 
-    if (birth_platform != 4) {
+    if (birth_platform != 4 && birth_platform != 0 ) {
         Console::showMessage(ERROR_SHOW, "This does not seems a Wii U mii_data. Birth plaform %x is not allowed", birth_platform);
         return nullptr;
     }
@@ -189,3 +196,20 @@ bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
 bool WiiUMiiData::copy_some_bytes([[maybe_unused]] MiiData *mii_data_template, [[maybe_unused]] char name, [[maybe_unused]] size_t offset, [[maybe_unused]] size_t bytes) {
     return true;
 };
+
+bool WiiUMiiData::flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size) {
+
+    unsigned char *tmp_raw_mii_data = (unsigned char *) MiiData::allocate_memory(buffer_size);
+
+    for (unsigned int i = 0; i < buffer_size; i++) {
+        memset(tmp_raw_mii_data + i, mii_buffer[account_2_ffl_index[i]], 1);
+    }
+
+    for (unsigned int i = 0; i < buffer_size; i++) {
+        memset(mii_buffer + i, tmp_raw_mii_data[i], 1);
+    }
+
+    free(tmp_raw_mii_data);
+
+    return true;
+}

@@ -30,6 +30,9 @@ public:
     bool toggle_normal_special_flag();
     bool toggle_share_flag();
 
+    static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
+
+    // test
     bool set_normal_special_flag(size_t fold);
     bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes);
 
@@ -48,7 +51,35 @@ public:
     const static size_t YEAR_ZERO = 2010;
     const static uint8_t TICKS_PER_SEC = 2;
 
-    const static inline size_t MII_DATA_SIZE = 0x5C;
+    const static inline uint32_t MII_DATA_SIZE = 0x5C;
+
+    // switch between le (account) and be (wiiu ffl) representations
+    const static inline std::vector<uint8_t> account_2_ffl_index = {
+            0x03, 0x02, 0x01, 0x00,
+            0x0B, 0x0A, 0x09, 0x08, 0x07, 0x06, 0x05, 0x04,                                                                         // Author_id
+            0x0C, 0x0D, 0x0E, 0x0F,                                                                                                 // CreateID
+            0x10, 0x11, 0x12, 0x13, 0x14, 0x15,                                                                                     // MAC
+            0x17, 0x16,                                                                                                             // Unused, should be zero
+            0x19, 0x18,                                                                                                             // Color, birthday, gender
+            0x1B, 0x1A, 0x1D, 0x1C, 0x1F, 0x1E, 0x21, 0x20, 0x23, 0x22, 0x25, 0x24, 0x27, 0x26, 0x29, 0x28, 0x2B, 0x2A, 0x2D, 0x2C, // MiiName
+            0x2E, 0x2F,                                                                                                             // Size, Fatness
+            0x31, 0x30,                                                                                                             // Face + Local Only
+            0x33, 0x32,                                                                                                             // Hair Data
+            0x35, 0x34,                                                                                                             // Eye 1
+            0x37, 0x36,                                                                                                             // Eye 2
+            0x39, 0x38,                                                                                                             // Eyebrow1
+            0x3B, 0x3A,                                                                                                             // Eyebrow2
+            0x3D, 0x3C,                                                                                                             // Nose
+            0x3F, 0x3E,                                                                                                             // Mouth1
+            0x41, 0x40,                                                                                                             // Mouth heigh+ Moustache type
+            0x43, 0x42,                                                                                                             // Moustache, beard
+            0x45, 0x44,                                                                                                             // Glasses
+            0x47, 0x46,                                                                                                             // Mole
+            0x49, 0x48, 0x4B, 0x4A, 0x4D, 0x4C, 0x4F, 0x4E, 0x51, 0x50, 0x53, 0x52, 0x55, 0x54, 0x57, 0x56, 0x59, 0x58, 0x5B, 0x5A, // Creator Name
+            0x5D, 0x5C,                                                                                                             // Zero
+            0x5F, 0x5E                                                                                                              // CRC
+    };
+
 
     //FFL_ODB.dat
     class DB {

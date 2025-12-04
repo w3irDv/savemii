@@ -47,7 +47,7 @@ public:
     const static size_t YEAR_ZERO = 2006;
     const static uint8_t TICKS_PER_SEC = 4;
 
-    const static inline size_t MII_DATA_SIZE = 0x4A;
+    const static inline uint32_t MII_DATA_SIZE = 0x4A;
 
     //RFL_DB.dat
     class DB {

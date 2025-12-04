@@ -27,10 +27,6 @@ MiiFileRepo<MII, MIIDATA>::~MiiFileRepo() {
         free(db_buffer);
 };
 
-
-template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
-template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
-
 //template<typename MII, typename MIIDATA>
 template<>
 bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
@@ -70,6 +66,9 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::set_db_fsa_metadata() {
     }
     return false; // no matching, we let db_owner be 0
 }
+
+template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
+template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
 
 template<typename MII, typename MIIDATA>
 bool MiiFileRepo<MII, MIIDATA>::open_and_load_repo() {

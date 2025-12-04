@@ -17,7 +17,7 @@ public:
                                                                      action(action),
                                                                      mii_process_shared_state(mii_process_shared_state) {
         mii_process_shared_state->state = action;
-        entrycount = (mii_repo->db_type == MiiRepo::eDBType::ACCOUNT) ? 4 : 8;
+        entrycount = (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) ? 5 : 8;
     };
 
     //    ~MiiTasksState() {
