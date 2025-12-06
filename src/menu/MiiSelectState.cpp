@@ -22,8 +22,6 @@
 #define MAX_TITLE_SHOW    14
 #define MAX_WINDOW_SCROLL 6
 
-extern bool firstSDWrite;
-
 MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repo(mii_repo), action(action), mii_process_shared_state(mii_process_shared_state) {
 
     mii_process_shared_state->state = action;
@@ -400,6 +398,10 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis import Ok"));
                     else
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
+                    if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+                        mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_IMPORTED;
+                        return SUBSTATE_RETURN;
+                    }
                     break;
                 case MiiProcess::SELECT_MIIS_TO_WIPE:
                     mii_process_shared_state->primary_mii_view = &this->mii_view;
@@ -431,6 +433,8 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     return SUBSTATE_RETURN;
                     break;
                 case MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN:
+                    mii_process_shared_state->primary_mii_view = &this->mii_view;
+                    mii_process_shared_state->primary_c2a = &this->c2a;
                     mii_process_shared_state->mii_index_to_overwrite = c2a[currentlySelectedMii];
                     this->state = STATE_DO_SUBSTATE;
                     for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)

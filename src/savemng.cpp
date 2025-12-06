@@ -30,8 +30,6 @@ const char *batchBackupPath = "fs:/vol/external01/wiiu/backups/batch"; // Must b
 const char *loadiineSavePath = "fs:/vol/external01/wiiu/saves";
 const char *legacyBackupPath = "fs:/vol/external01/savegames";
 
-bool firstSDWrite = true;
-
 //static char *p1;
 Account *wiiu_acc;
 Account *vol_acc;
@@ -759,7 +757,7 @@ int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= fals
 
 
 int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles /*= false*/) {
-    if (firstSDWrite)
+    if (savemng::firstSDWrite)
         sdWriteDisclaimer();
 
     InProgress::copyErrorsCounter = 0;
@@ -870,7 +868,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     std::string dstCommonPath = dstPath + "/common";
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
-    if (firstSDWrite)
+    if (savemng::firstSDWrite)
         sdWriteDisclaimer();
 
     // code to check if data exist must be done before this point.
@@ -1344,12 +1342,12 @@ bool wipeBackupSet(const std::string &subPath, bool force /* = false*/) {
     return true;
 }
 
-void sdWriteDisclaimer() {
+void sdWriteDisclaimer(Color bg_color /*= COLOR_BLACK*/) {
     DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BLACK);
+    DrawUtils::clear(bg_color);
     Console::consolePrintPosAligned(8, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
     DrawUtils::endDraw();
-    firstSDWrite = false;
+    savemng::firstSDWrite = false;
 }
 
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles) {
@@ -1427,7 +1425,7 @@ bool isTitleUsingTitleNameBasedPath(Title *title) {
 
 bool renameTitleFolder(Title *title) {
 
-    if (firstSDWrite)
+    if (savemng::firstSDWrite)
         sdWriteDisclaimer();
 
     std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->highID, title->lowID);
@@ -1457,7 +1455,7 @@ bool renameTitleFolder(Title *title) {
 
 bool mkdirAndUnlink(const std::string &path) {
 
-    if (firstSDWrite)
+    if (savemng::firstSDWrite)
         sdWriteDisclaimer();
 
     if (mkdir(path.c_str(), 0666) != 0) {

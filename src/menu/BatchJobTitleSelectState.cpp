@@ -26,8 +26,6 @@ bool testForceSaveInitFalse = true
 #define MAX_TITLE_SHOW    14
 #define MAX_WINDOW_SCROLL 6
 
-        extern bool firstSDWrite;
-
 BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup,
                                                    Title *titles, int titlesCount, bool isWiiUBatchJob, eJobType jobType) : source_user(source_user),
                                                                                                                             wiiu_user(wiiu_user),
@@ -466,7 +464,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
                         break;
                     case Button::PLUS:
                         if (excludes->getConfig()) {
-                            if (firstSDWrite)
+                            if (savemng::firstSDWrite)
                                 sdWriteDisclaimer();
                             if (excludes->save())
                                 Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("Configuration saved"));

@@ -1,22 +1,28 @@
 #pragma once
 
-#include <filesystem>
-#include <string>
-#include <stdint.h>
-#include <utils/TitleUtils.h>
 #include <ApplicationState.h>
-#include <vector>
+#include <filesystem>
+#include <stdint.h>
+#include <string>
+#include <utils/Colors.h>
+#include <utils/DrawUtils.h>
 #include <utils/InProgress.h>
+#include <utils/TitleUtils.h>
+#include <vector>
 
 namespace fs = std::filesystem;
 
-#define PATH_SIZE 0x400
+#define PATH_SIZE            0x400
 
 #define ONLY_SELECTED_TITLES true
-#define INTERACTIVE true
-#define NON_INTERACTIVE false
-#define INCLUDE_COMMON true
-#define SKIP_COMMON false
+#define INTERACTIVE          true
+#define NON_INTERACTIVE      false
+#define INCLUDE_COMMON       true
+#define SKIP_COMMON          false
+
+namespace savemng {
+    inline bool firstSDWrite = true;
+};
 
 struct Account {
     char persistentID[9];
@@ -68,7 +74,7 @@ Account *getWiiUAcc();
 Account *getVolAcc();
 void deleteSlot(Title *title, uint8_t slot);
 bool wipeBackupSet(const std::string &subPath, bool force = false);
-void sdWriteDisclaimer();
+void sdWriteDisclaimer(Color = COLOR_BLACK);
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles);
 void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> &failedTitles);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);

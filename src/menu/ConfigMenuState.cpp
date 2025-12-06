@@ -11,7 +11,6 @@
 #define ENTRYCOUNT 4
 
 static std::string language;
-extern bool firstSDWrite;
 
 void ConfigMenuState::render() {
     DrawUtils::setFontColor(COLOR_INFO);
@@ -129,7 +128,7 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
     }
     if (input->get(ButtonState::TRIGGER, Button::PLUS)) {
         if (GlobalCfg::global->getConfig()) {
-            if (firstSDWrite)
+            if (savemng::firstSDWrite)
                 sdWriteDisclaimer();
             if (GlobalCfg::global->save())
                 Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("Configuration saved"));

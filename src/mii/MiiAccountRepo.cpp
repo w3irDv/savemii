@@ -18,12 +18,28 @@ namespace fs = std::filesystem;
 template<typename MII, typename MIIDATA>
 MiiAccountRepo<MII, MIIDATA>::MiiAccountRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, eDBKind::ACCOUNT, path_to_repo, backup_folder) {
     mii_data_size = MIIDATA::MII_DATA_SIZE;
+    set_db_fsa_metadata();
+    
 };
 
 template<typename MII, typename MIIDATA>
 MiiAccountRepo<MII, MIIDATA>::~MiiAccountRepo() {
     this->empty_repo();
 };
+
+template<>
+bool MiiAccountRepo<WiiUMii, WiiUMiiData>::set_db_fsa_metadata() {
+    db_group = WiiUMiiData::ACCOUNT::DB_GROUP;
+    db_fsmode = (FSMode) WiiUMiiData::ACCOUNT::DB_FSMODE;
+    if (path_to_repo.find("fs:/vol/") == std::string::npos) {
+        db_owner = WiiUMiiData::ACCOUNT::DB_OWNER;
+        return true;
+    } else {
+        db_owner = 0; // if we are persistig to SD, we will not set the owner, and defaults are OK.
+        return false;
+    }
+}
+
 
 template MiiAccountRepo<WiiUMii, WiiUMiiData>::MiiAccountRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
 
@@ -191,6 +207,12 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     // Replace the original file with the temporary file
     unlink(account_dat.c_str());
     rename(tempFilename.c_str(), account_dat.c_str());
+
+    FSError fserror;
+    if (db_owner != 0) {
+        FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, account_dat, fserror);
+        FSUtils::flushVol(account_dat);
+    }
 
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, size)) {
         Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));

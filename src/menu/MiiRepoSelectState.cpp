@@ -21,8 +21,6 @@
 #define MAX_TITLE_SHOW    14
 #define MAX_WINDOW_SCROLL 6
 
-extern bool firstSDWrite;
-
 MiiRepoSelectState::MiiRepoSelectState(std::vector<bool> mii_repos_candidates, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repos_candidates(mii_repos_candidates), action(action), mii_process_shared_state(mii_process_shared_state) {
 
     mii_process_shared_state->state = action;
@@ -67,7 +65,11 @@ void MiiRepoSelectState::render() {
         const char *menuTitle, *screenOptions;
         switch (action) {
             case MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE:
-                menuTitle = LanguageUtils::gettext("Select Repo with the Template Mii");
+                menuTitle = LanguageUtils::gettext("Select Repo containing the Mii Template");
+                screenOptions = LanguageUtils::gettext("\ue000: Select Template Mii Repo  \ue001: Back");
+                break;
+            case MiiProcess::SELECT_IMPORT_REPO:
+                menuTitle = LanguageUtils::gettext("Select Repo to Import Miis from");
                 screenOptions = LanguageUtils::gettext("\ue000: Select Template Mii Repo  \ue001: Back");
                 break;
             default:
@@ -123,7 +125,7 @@ ApplicationState::eSubState MiiRepoSelectState::update(Input *input) {
                     this->state = STATE_DO_SUBSTATE;
                 } break;
                 case MiiProcess::SELECT_IMPORT_REPO:
-                // MVP - NOT YET USED
+                // MVP - USED ONLY IN ACCOUNT REPO MII IMPORT TASK
                     mii_process_shared_state->auxiliar_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
                     this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_MIIS_FOR_IMPORT, mii_process_shared_state);
                     this->state = STATE_DO_SUBSTATE;
@@ -155,6 +157,8 @@ ApplicationState::eSubState MiiRepoSelectState::update(Input *input) {
             this->subState.reset();
             this->state = STATE_MII_REPO_SELECT;
             if (mii_process_shared_state->state == MiiProcess::MIIS_TRANSFORMED)
+                return SUBSTATE_RETURN;
+            if (mii_process_shared_state->state == MiiProcess::ACCOUNT_MII_IMPORTED)
                 return SUBSTATE_RETURN;
         }
     }

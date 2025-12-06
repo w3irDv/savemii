@@ -38,12 +38,12 @@ MiiDBOptionsState::MiiDBOptionsState(MiiRepo *mii_repo, MiiProcess::eMiiProcessA
     updateRepoHasData();
     passiveUpdateSourceSelectionHasData();
 
-    switch (mii_repo -> db_kind) {
+    switch (mii_repo->db_kind) {
         case MiiRepo::ACCOUNT:
             db_name = "WiiU Account data";
             break;
         default:
-            switch (mii_repo -> db_type) {
+            switch (mii_repo->db_type) {
                 case MiiRepo::FFL:
                     db_name = "cafe Face Lib DB";
                     break;
@@ -249,8 +249,13 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                 updateBackupData();
                 break;
             case MiiProcess::RESTORE_DB:
-                if (mii_repo->restore(slot) == 0)
-                    Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+                    Console::showMessage(OK_SHOW,"TODO!");
+                } else {
+
+                    if (mii_repo->restore(slot) == 0)
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                }
                 updateRestoreData();
                 break;
             case MiiProcess::WIPE_DB:

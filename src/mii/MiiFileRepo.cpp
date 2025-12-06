@@ -36,7 +36,7 @@ bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
         db_owner = WiiMiiData::DB::DB_OWNER;
         return true;
     } else {
-        db_owner = 0; // if we are persistig to SD, we will not set the owner, and defaults are OK.
+        db_owner = 0; // if we are persisting to SD, we will not set the owner, and defaults are OK.
         return false;
     }
 }
@@ -245,9 +245,17 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
 
     size_t index = 0;
 
+    
+
+    size_t consecutive_not_found=0;
     for (size_t i = 0; i < MIIDATA::DB::MAX_MIIS; i++) {
 
-        Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
+        if (consecutive_not_found < 50)
+            Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
+        else {
+            if (i % 100 == 0)
+                Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
+        }
 
         uint8_t raw_mii_data[MIIDATA::MII_DATA_SIZE];
 
@@ -276,7 +284,16 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
             this->miis.push_back(mii);
             this->mii_location.push_back(i);
             index++;
+            consecutive_not_found=0;
+        } else {
+            consecutive_not_found++;
         }
+        /*
+        if (consecutive_not_found == 100) {
+            if (!Console::promptConfirm(ST_CONFIRM_CANCEL, LanguageUtils::gettext("It seems that we have found all miis in the database . Do you want to continue scanning the database or to finish the process")))
+                break;
+        }
+        */
     }
 
     return true;

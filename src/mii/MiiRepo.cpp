@@ -2,7 +2,9 @@
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
 #include <miisavemng.h>
+#include <savemng.h>
 #include <unistd.h>
+#include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/InProgress.h>
@@ -27,14 +29,13 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
     std::string srcPath = this->path_to_repo;
     std::string dstPath = this->backup_base_path + "/" + std::to_string(slot);
 
-    //if (firstSDWrite)
-    //    sdWriteDisclaimer();
-
-
     if (!FSUtils::createFolder(dstPath.c_str())) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."), this->repo_name.c_str());
         return 8;
     }
+
+    if (savemng::firstSDWrite)
+        sdWriteDisclaimer(COLOR_BACKGROUND);
 
     switch (this->db_kind) {
         case FOLDER: {
@@ -111,13 +112,13 @@ int MiiRepo::restore(int slot) {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
                 errorCode = 1;
             }
-            
+
             FSError fserror;
             if (db_owner != 0) {
                 FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, dstPath, fserror);
                 FSUtils::flushVol(dstPath);
             }
-            
+
         } break;
         default:;
     }

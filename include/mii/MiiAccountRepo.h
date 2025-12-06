@@ -25,6 +25,8 @@ public:
     bool empty_repo();
     void push_back_invalid_mii(const std::string &filename_str, size_t index);
 
+    bool set_db_fsa_metadata();
+
     uint16_t get_crc() { return 0; };  // folder REPO does not have a global "CRC"
 
 };

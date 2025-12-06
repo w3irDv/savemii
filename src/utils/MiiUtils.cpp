@@ -10,6 +10,7 @@
 #include <utils/DrawUtils.h>
 #include <utils/InProgress.h>
 #include <utils/MiiUtils.h>
+#include <savemng.h>
 
 ////#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -114,17 +115,20 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     auto c2a = mii_process_shared_state->primary_c2a;
     auto candidate_miis_count = c2a->size();
 
-    MiiRepo *target_repo = mii_repo->stage_repo;
-
-    target_repo->open_and_load_repo();
-
-    if (target_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Target repo is null"));
+    if (mii_view == nullptr || c2a == nullptr || mii_repo == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
         return false;
     }
 
-    if (mii_view == nullptr || c2a == nullptr || mii_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
+    MiiRepo *target_repo = mii_repo->stage_repo;
+
+    if (target_repo == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Repo %s is null"), target_repo->repo_name.c_str());
+        return false;
+    }
+
+    if (!target_repo->open_and_load_repo()) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open repo %s"), target_repo->repo_name.c_str());
         return false;
     }
 
@@ -151,7 +155,6 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
                 Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             if (mii_view->at(mii_index).state == MiiStatus::KO)
                 errorCounter++;
-
             InProgress::currentStep++;
             if (InProgress::totalSteps > 1) {
                 InProgress::input->read();
@@ -181,14 +184,22 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     auto c2a = mii_process_shared_state->auxiliar_c2a;
     auto candidate_miis_count = c2a->size();
 
-    auto receiving_repo = mii_process_shared_state->primary_mii_repo;
-
-    if (receiving_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Receiving repo is null"));
+    if (mii_view == nullptr || c2a == nullptr || mii_repo == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
         return false;
     }
 
-    receiving_repo->open_and_load_repo();
+    auto receiving_repo = mii_process_shared_state->primary_mii_repo;
+
+    if (receiving_repo == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Repo %s is null"), receiving_repo->repo_name.c_str());
+        return false;
+    }
+
+    if (!receiving_repo->open_and_load_repo()) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open repo %s"), receiving_repo->repo_name.c_str());
+        return false;
+    }
 
     InProgress::totalSteps = 0;
     InProgress::currentStep = 1;
@@ -207,8 +218,10 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
             MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
             if (mii_data != nullptr) {
                 if (receiving_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
-                    if (receiving_repo->import_miidata(mii_data, IN_PLACE, mii_process_shared_state->mii_index_to_overwrite))
+                    if (receiving_repo->import_miidata(mii_data, IN_PLACE, mii_process_shared_state->mii_index_to_overwrite)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
+                        mii_process_shared_state->primary_mii_view->at(mii_process_shared_state->mii_index_to_overwrite).state = MiiStatus::OK;
+                    }
                 } else {
                     if (receiving_repo->import_miidata(mii_data, ADD_MII, IN_EMPTY_LOCATION))
                         mii_view->at(mii_index).state = MiiStatus::OK;
@@ -305,6 +318,8 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
     MiiRepo *source_mii_repo = nullptr;
     MiiRepo *target_mii_repo = nullptr;
 
+
+
     switch (mii_process_shared_state->state) {
         case MiiProcess::SELECT_MIIS_FOR_IMPORT:
             source_mii_repo = mii_process_shared_state->auxiliar_mii_repo;
@@ -324,6 +339,11 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
     DrawUtils::clear(COLOR_BACKGROUND);
     DrawUtils::setFontColor(COLOR_INFO);
 
+    if (savemng::firstSDWrite && target_mii_repo->db_kind == MiiRepo::eDBKind::FOLDER) {
+        Console::consolePrintPosAligned(4, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
+        savemng::firstSDWrite = false;
+    }
+    
     Console::consolePrintPos(-2, 6, ">> %s (by %s)", source_mii_repo->miis[mii_index]->mii_name.c_str(), source_mii_repo->miis[mii_index]->creator_name.c_str());
     Console::consolePrintPosAligned(6, 4, 2, "%d/%d", InProgress::currentStep, InProgress::totalSteps);
     DrawUtils::setFontColor(COLOR_TEXT);
@@ -384,10 +404,21 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
                         mii_data->transfer_ownership_from(template_mii_data);
                     if (mii_process_shared_state->update_timestamp)
                         mii_data->update_timestamp(mii_index);
-                    if (mii_process_shared_state->toggle_share_flag)
-                        mii_data->toggle_share_flag();
-                    if (mii_process_shared_state->toggle_normal_special_flag)
+                    if (mii_process_shared_state->toggle_share_flag) {
+                        if (mii_repo->miis[mii_index]->normal) {
+                            mii_data->toggle_share_flag();
+                        } else {
+                            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."), mii_repo->miis[mii_index]->mii_name.c_str());
+                            delete mii_data;
+                            errorCounter++;
+                            break;
+                        }
+                    }
+                    if (mii_process_shared_state->toggle_normal_special_flag) {
+                        if (mii_repo->miis[mii_index]->shareable)
+                            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Share attribute will be disabled for Mii %s as it will be transformed to a Special one."), mii_repo->miis[mii_index]->mii_name.c_str());
                         mii_data->toggle_normal_special_flag();
+                    }
                     if (mii_process_shared_state->toggle_copy_flag)
                         mii_data->toggle_copy_flag();
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
