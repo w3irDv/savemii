@@ -329,6 +329,7 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
         case MiiProcess::SELECT_TRANSFORM_TASK:
         case MiiProcess::SELECT_MIIS_TO_WIPE:
             source_mii_repo = mii_process_shared_state->primary_mii_repo;
+            target_mii_repo = mii_process_shared_state->primary_mii_repo;
             break;
         default:
             source_mii_repo = mii_process_shared_state->primary_mii_repo;

@@ -4,6 +4,8 @@
 #include <menu/MiiRepoSelectState.h>
 #include <menu/MiiSelectState.h>
 #include <menu/MiiTransformTasksState.h>
+#include <mii/MiiAccountRepo.h>
+#include <mii/WiiUMii.h>
 //#include <mockWUT.h>
 #include <savemng.h>
 #include <utils/Colors.h>
@@ -28,7 +30,8 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
 
     if ((action == MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE) ||
         (action == MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN) ||
-        (action == MiiProcess::SELECT_MIIS_FOR_IMPORT && mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT))
+        (action == MiiProcess::SELECT_MIIS_FOR_IMPORT && mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) ||
+        (action == MiiProcess::SELECT_MIIS_FOR_RESTORE))
         selectOnlyOneMii = true;
 
     if (mii_repo->needs_populate) {
@@ -104,46 +107,52 @@ void MiiSelectState::render() {
         switch (action) {
             case MiiProcess::LIST_MIIS:
                 menuTitle = LanguageUtils::gettext("List Miis");
-                screenOptions = LanguageUtils::gettext("\uE002: View  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue002: View  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext("");
                 lastActionBriefOk = LanguageUtils::gettext("");
                 break;
             case MiiProcess::SELECT_MIIS_FOR_IMPORT:
                 menuTitle = LanguageUtils::gettext("Select which Miis to Import");
                 if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT)
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \uE002: View  \ue000: Import Miis  \ue001: Back");
+                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue002: View  \ue000: Import Miis  \ue001: Back");
                 else
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \uE002: View  \ue000: Import Miis  \ue001: Back");
+                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Import Miis  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Import");
                 lastActionBriefOk = LanguageUtils::gettext("|Imported|");
                 break;
             case MiiProcess::SELECT_MIIS_FOR_EXPORT:
                 menuTitle = LanguageUtils::gettext("Select which Miis to Export");
-                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \uE002: View  \ue000: Export Miis  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Export Miis  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Export");
                 lastActionBriefOk = LanguageUtils::gettext("|Exported|");
                 break;
+            case MiiProcess::SELECT_MIIS_FOR_RESTORE:
+                menuTitle = LanguageUtils::gettext("Select which Mii to Restore");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset \ue002: View  \ue000: Restore Mii  \ue001: Back");
+                nextActionBrief = LanguageUtils::gettext(">> Restore");
+                lastActionBriefOk = LanguageUtils::gettext("|Restored|");
+                break;
             case MiiProcess::SELECT_MIIS_TO_WIPE:
                 menuTitle = LanguageUtils::gettext("Select which Miis to Wipe");
-                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \uE002: View  \ue000: Wipe Miis  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Wipe Miis  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Wipe");
                 lastActionBriefOk = LanguageUtils::gettext("|Wiped|");
                 break;
             case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
                 menuTitle = LanguageUtils::gettext("Select which Miis to Transform");
-                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \uE002: View  \ue000: Select Transformation  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Select Transformation  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Transform");
                 lastActionBriefOk = LanguageUtils::gettext("|Transformed|");
                 break;
             case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
                 menuTitle = LanguageUtils::gettext("Select Mii to copy attrs from");
-                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Template  \uE002: View  \ue000: Transform Miis  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Template  \ue002: View  \ue000: Transform Miis  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Use as template");
                 lastActionBriefOk = LanguageUtils::gettext("");
                 break;
             case MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN:
                 menuTitle = LanguageUtils::gettext("Select Mii to be overwritten");
-                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \uE002: View   \ue000: Continue  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \ue002: View   \ue000: Continue  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Import here");
                 lastActionBriefOk = LanguageUtils::gettext("");
                 break;
@@ -400,6 +409,18 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
                     if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_IMPORTED;
+                        return SUBSTATE_RETURN;
+                    }
+                    break;
+                case MiiProcess::SELECT_MIIS_FOR_RESTORE:
+                    if (mii_process_shared_state->auxiliar_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+                        std::string account = mii_process_shared_state->auxiliar_mii_repo->miis.at(c2a[currentlySelectedMii])->location_name;
+                        std::string src_path = mii_process_shared_state->auxiliar_mii_repo->path_to_repo+"/"+account;
+                        std::string dst_path = mii_process_shared_state->primary_mii_repo->path_to_repo+"/"+account;
+                        if (((MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo)->restore_account(src_path,dst_path) == 0)
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                        delete mii_process_shared_state->auxiliar_mii_repo;
+                        mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_RESTORED;
                         return SUBSTATE_RETURN;
                     }
                     break;

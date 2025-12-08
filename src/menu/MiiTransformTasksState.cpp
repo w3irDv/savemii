@@ -55,7 +55,7 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("All selected miis will get the system ownership attributes of the mi you will select in the next menu.");
                 break;
             case 2:
-                info = LanguageUtils::gettext("So the mii has a new unique MiiId (needed if an imported mii does not appear in MiiMaker)");
+                info = LanguageUtils::gettext("So the mii has a new (beware!) unique MiiId (try it if an imported mii does not appear in MiiMaker)");
                 break;
             case 3:
                 info = LanguageUtils::gettext("So the mii can travel to other consoles");

@@ -31,6 +31,7 @@ namespace FSUtils {
     std::string newlibtoFSA(std::string path);
     void flushVol(const std::string &srcPath);
     bool setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror);
+    bool setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror);
 
     int checkEntry(const char *fPath);
 

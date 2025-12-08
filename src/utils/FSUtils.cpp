@@ -648,3 +648,81 @@ bool FSUtils::folderEmptyIgnoreSavemii(const char *fPath) {
     closedir(dir);
     return empty;
 }
+
+/// @brief Recusrsively set mode and owner usin FSA functions. Reuses InProgress::copyErrorsCounter, so it must be zero before entering the function.
+/// @param owner 
+/// @param group 
+/// @param mode 
+/// @param path 
+/// @param fserror 
+/// @return 
+bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
+
+    setOwnerAndMode(owner, group, mode, path, fserror);
+
+    DIR *dir = opendir(path.c_str());
+    if (dir == nullptr) {
+        InProgress::copyErrorsCounter++;
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), path.c_str(), strerror(errno));
+        return false;
+    }
+
+    struct dirent *data;
+
+    errno = 0;
+    while ((data = readdir(dir)) != nullptr) {
+
+        if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
+            continue;
+        std::string tPath = path  + StringUtils::stringFormat("/%s", data->d_name);
+
+        if ((data->d_type & DT_DIR) != 0) {
+            
+            if (!setOwnerAndMode(owner, group, mode, tPath, fserror)) {
+                if (InProgress::abortCopy) {
+                    closedir(dir);
+                    return false;
+                }
+            }
+        } else {
+            if (!setOwnerAndMode(owner, group, mode, tPath, fserror)) {
+                std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+                if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+                    InProgress::abortCopy = true;
+                    closedir(dir);
+                    return false;
+                }
+            }
+        }
+        errno = 0;
+        if (InProgress::totalSteps > 1) {
+            InProgress::input->read();
+            if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
+                InProgress::abortTask = true;
+            }
+        }
+    }
+
+    if (errno != 0) {
+        InProgress::copyErrorsCounter++;
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while parsing folder content\n\n%s\n\n%s\n\nCopy may be incomplete"), path.c_str(), strerror(errno));
+        std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+        if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+            InProgress::abortCopy = true;
+            closedir(dir);
+            return false;
+        }
+    }
+
+    if (closedir(dir) != 0) {
+        InProgress::copyErrorsCounter++;
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while closing folder\n\n%s\n\n%s"), path.c_str(), strerror(errno));
+        std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+        if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+            InProgress::abortCopy = true;
+            return false;
+        }
+    }
+
+    return (InProgress::copyErrorsCounter == 0);
+}

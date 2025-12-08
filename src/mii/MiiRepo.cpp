@@ -38,6 +38,7 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
         sdWriteDisclaimer(COLOR_BACKGROUND);
 
     switch (this->db_kind) {
+        case ACCOUNT:
         case FOLDER: {
             if (!FSUtils::copyDir(srcPath, dstPath)) {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
@@ -68,8 +69,6 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
 
 int MiiRepo::restore(int slot) {
 
-    // todo: createfolderunlocked, backup if non-empty slot
-
     if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
         return -1;
 
@@ -94,31 +93,30 @@ int MiiRepo::restore(int slot) {
 
     switch (this->db_kind) {
         case FOLDER: {
-            if (!FSUtils::createFolder(dstPath.c_str())) {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nRestore failed."), this->repo_name.c_str());
+            if (FSUtils::createFolder(dstPath.c_str())) {
+                if (!FSUtils::copyDir(srcPath, dstPath)) {
+                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                    errorCode = 1;
+                }
+            } else {
+                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating folder."));
                 errorCode = 16;
-                return errorCode;
-            }
-            if (!FSUtils::copyDir(srcPath, dstPath)) {
-                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
-                errorCode = 1;
             }
         } break;
         case FILE: {
             size_t last_slash = dstPath.find_last_of("/");
             std::string filename = dstPath.substr(last_slash, std::string::npos);
             srcPath = srcPath + filename;
-            if (!FSUtils::copyFile(srcPath, dstPath)) {
+            if (FSUtils::copyFile(srcPath, dstPath)) {
+                FSError fserror;
+                if (db_owner != 0) {
+                    FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, dstPath, fserror);
+                    FSUtils::flushVol(dstPath);
+                }
+            } else {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
                 errorCode = 1;
             }
-
-            FSError fserror;
-            if (db_owner != 0) {
-                FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, dstPath, fserror);
-                FSUtils::flushVol(dstPath);
-            }
-
         } break;
         default:;
     }
@@ -146,14 +144,15 @@ int MiiRepo::wipe() {
 
     switch (this->db_kind) {
         case FOLDER: {
-            if (!FSUtils::removeDir(path)) {
+            if (FSUtils::removeDir(path)) {
+                if (rmdir(path.c_str()) == -1) {
+                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting folder."));
+                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete folder:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
+                    errorCode += 2;
+                }
+            } else {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
                 errorCode = 1;
-            }
-            if (rmdir(path.c_str()) == -1) {
-                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting folder."));
-                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete folder:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
-                errorCode += 2;
             }
         } break;
         case FILE: {
@@ -161,9 +160,15 @@ int MiiRepo::wipe() {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting file."));
                 Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete file:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
                 errorCode += 2;
+                FSUtils::flushVol(path);
             }
         } break;
         default:;
+    }
+
+    if (errorCode != 0) {
+        errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
 
     return errorCode;

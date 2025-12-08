@@ -4,7 +4,8 @@
 #include <memory>
 #include <mii/Mii.h>
 //#include <utils/InputUtils.h>
-#include <menu/MiiTypeDeclarations.h>
+//#include <menu/MiiTypeDeclarations.h>
+#include <menu/MiiProcessSharedState.h>
 
 class MiiDBOptionsState : public ApplicationState {
 public:
@@ -18,7 +19,7 @@ public:
         STATE_KEYBOARD
     };
 
-    MiiDBOptionsState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action);
+    MiiDBOptionsState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state);
 
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
@@ -32,6 +33,8 @@ private:
     
     MiiRepo *mii_repo;
     MiiProcess::eMiiProcessActions action;
+    MiiProcessSharedState *mii_process_shared_state;
+
     const char *db_name;
 
     bool unsupported_action = false;

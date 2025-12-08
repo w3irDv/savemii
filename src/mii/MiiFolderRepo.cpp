@@ -6,9 +6,9 @@
 #include <mii/WiiUMii.h>
 #include <unistd.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/EscapeFAT32Utils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
-#include <utils/EscapeFAT32Utils.h>
 
 namespace fs = std::filesystem;
 

@@ -4,10 +4,12 @@
 #include <mii/MiiAccountRepo.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
+#include <miisavemng.h>
 #include <unistd.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/EscapeFAT32Utils.h>
 #include <utils/FSUtils.h>
+#include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
 #include <utils/MiiUtils.h>
 
@@ -19,7 +21,6 @@ template<typename MII, typename MIIDATA>
 MiiAccountRepo<MII, MIIDATA>::MiiAccountRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, eDBKind::ACCOUNT, path_to_repo, backup_folder) {
     mii_data_size = MIIDATA::MII_DATA_SIZE;
     set_db_fsa_metadata();
-    
 };
 
 template<typename MII, typename MIIDATA>
@@ -92,11 +93,13 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string mii_fi
     }
 
     if (!MIIDATA::str_2_raw_mii_data(mii_data_str, mii_buffer, mii_buffer_size)) {
+       Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error deserializing WiiU MiiData"));
         free(mii_buffer);
         return nullptr;
     }
 
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(mii_buffer, mii_buffer_size)) { // Only defined for WiiU
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switchg le/be MiiData representation"));
         free(mii_buffer);
         return nullptr;
     }
@@ -145,7 +148,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
 #endif
-    memcpy(miidata->mii_data + MIIDATA::MII_DATA_SIZE, &crc, 2);
+    memcpy(miidata->mii_data + MIIDATA::MII_DATA_SIZE + 2, &crc, 2);
 
     std::string mii_data_str{};
     if (!MiiData::raw_mii_data_2_str(mii_data_str, miidata->mii_data, size)) {
@@ -320,4 +323,47 @@ bool MiiAccountRepo<MII, MIIDATA>::empty_repo() {
     this->mii_filepath.clear();
 
     return true;
+}
+
+template<>
+int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, std::string dstPath) {
+
+    std::string errorMessage{};
+    int errorCode = 0;
+    InProgress::copyErrorsCounter = 0;
+    InProgress::abortCopy = false;
+    InProgress::titleName.assign(this->repo_name);
+
+    if (!FSUtils::folderEmpty(dstPath.c_str())) {
+        int slotb = MiiSaveMng::getEmptySlot(this);
+        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
+            if (!(this->backup(slotb, LanguageUtils::gettext("pre-Restore backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+                return -1;
+            }
+    }
+
+    if (FSUtils::createFolder(dstPath.c_str())) {
+        if (FSUtils::copyDir(srcPath, dstPath)) {
+            if (dstPath.find("fs:/vol/") == std::string::npos) { // avoid to call FSA when testing  on SD
+                FSError fserror;
+                FSUtils::setOwnerAndModeRec(db_owner, db_group, db_fsmode, dstPath, fserror);
+                FSUtils::flushVol(dstPath);
+            }
+
+        } else {
+            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+            errorCode = 1;
+        }
+    } else {
+        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating folder."));
+        errorCode = 16;
+    }
+
+    if (errorCode != 0) {
+        errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+    }
+
+    return errorCode;
 }
