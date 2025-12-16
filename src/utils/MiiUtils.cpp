@@ -406,13 +406,13 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
                     if (mii_process_shared_state->update_timestamp)
                         mii_data->update_timestamp(mii_index);
                     if (mii_process_shared_state->toggle_share_flag) {
-                        if (mii_repo->miis[mii_index]->normal) {
-                            mii_data->toggle_share_flag();
-                        } else {
+                        if (mii_repo->miis[mii_index]->mii_kind == Mii::eMiiKind::SPECIAL) {
                             Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."), mii_repo->miis[mii_index]->mii_name.c_str());
                             delete mii_data;
                             errorCounter++;
                             break;
+                        } else {
+                            mii_data->toggle_share_flag();
                         }
                     }
                     if (mii_process_shared_state->toggle_normal_special_flag) {
@@ -422,6 +422,8 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
                     }
                     if (mii_process_shared_state->toggle_copy_flag)
                         mii_data->toggle_copy_flag();
+                    if (mii_process_shared_state->toggle_temp_flag)
+                        mii_data->toggle_temp_flag();
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
                         Mii *temp = mii_repo->miis.at(mii_index);

@@ -43,6 +43,8 @@ void MiiTransformTasksState::render() {
             goto all_tasks_shown;
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
         Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Togle Copy Flag On/Off: %s"), toggle_copy_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
+        Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Togle Temporary Flag On/Off: %s"), toggle_temp_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
     all_tasks_shown:
         const char *info;
@@ -61,10 +63,13 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("So the mii can travel to other consoles");
                 break;
             case 4:
-                info = LanguageUtils::gettext("You can transform a normal Mii into an special one, and viceversa");
+                info = LanguageUtils::gettext("You can transform a normal Mii into an special or foreign one (vWii), and viceversa");
                 break;
             case 5:
                 info = LanguageUtils::gettext("So people that does not own the mii can modifiy it by creating a copy of the original");
+                break;
+            case 6:
+                info = LanguageUtils::gettext("Temporary Miis cannot be seen in FFL DB");
                 break;
             default:
                 info = "";
@@ -97,6 +102,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             mii_process_shared_state->update_timestamp = update_timestamp;
             mii_process_shared_state->toggle_normal_special_flag = toggle_normal_special_flag;
             mii_process_shared_state->toggle_share_flag = toggle_share_flag;
+            mii_process_shared_state->toggle_temp_flag = toggle_temp_flag;
             std::vector<bool> mii_repos_candidates;
             for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++) {
                 if (mii_process_shared_state->primary_mii_repo->db_type == MiiUtils::mii_repos.at(i)->db_type)
@@ -108,7 +114,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                 this->state = STATE_DO_SUBSTATE;
                 this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
             } else {
-                if (toggle_copy_flag || update_timestamp || toggle_normal_special_flag || toggle_share_flag) {
+                if (toggle_copy_flag || update_timestamp || toggle_normal_special_flag || toggle_share_flag || toggle_temp_flag) {
                     uint8_t errorCounter = 0;
                     if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state))
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"), errorCounter);
@@ -144,6 +150,9 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                     break;
                 case 5:
                     toggle_copy_flag = toggle_copy_flag ? false : true;
+                    break;
+                case 6:
+                    toggle_temp_flag = toggle_temp_flag ? false : true;
                     break;
                 default:
                     break;

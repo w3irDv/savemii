@@ -318,9 +318,26 @@ void MiiSelectState::render() {
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->shareable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 34, i + 2, LanguageUtils::gettext("|"));
-                        DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->normal);
-                        Console::consolePrintPos(MM_OFF + 36, i + 2, LanguageUtils::gettext("%s"),
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->normal ? LanguageUtils::gettext("NORMAL") : LanguageUtils::gettext("SPECIAL"));
+                        DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->mii_kind == Mii::eMiiKind::NORMAL);
+                        const char* mii_kind;
+                        switch (this->mii_repo->miis[c2a[i + this->scroll]]->mii_kind) {
+                            case Mii::eMiiKind::NORMAL:
+                                mii_kind = LanguageUtils::gettext("NORMAL"); break;
+                            case Mii::eMiiKind::SPECIAL:
+                                mii_kind = LanguageUtils::gettext("SPECIAL");
+                                break;
+                            case Mii::eMiiKind::FOREIGN:
+                                mii_kind = LanguageUtils::gettext("FOREIGN");
+                                break;
+                            case Mii::eMiiKind::TEMP:
+                                mii_kind = LanguageUtils::gettext("TEMP"); break;
+                            case Mii::eMiiKind::S_TEMP:
+                                mii_kind = LanguageUtils::gettext("S_TEMP"); break;
+                            default:
+                                mii_kind = LanguageUtils::gettext("UNKNOWN");
+                                break;
+                        }
+                        Console::consolePrintPos(MM_OFF + 36, i + 2, LanguageUtils::gettext("%s"),mii_kind);
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 44, i + 2, LanguageUtils::gettext("]"));
 
@@ -347,7 +364,6 @@ void MiiSelectState::render() {
                         break;
                     default:;
                 }
-
             } else {
                 Console::consolePrintPos(MM_OFF, i + 2, "    INVALID: <%s>",
                                          this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str());
@@ -415,9 +431,9 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                 case MiiProcess::SELECT_MIIS_FOR_RESTORE:
                     if (mii_process_shared_state->auxiliar_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
                         std::string account = mii_process_shared_state->auxiliar_mii_repo->miis.at(c2a[currentlySelectedMii])->location_name;
-                        std::string src_path = mii_process_shared_state->auxiliar_mii_repo->path_to_repo+"/"+account;
-                        std::string dst_path = mii_process_shared_state->primary_mii_repo->path_to_repo+"/"+account;
-                        if (((MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo)->restore_account(src_path,dst_path) == 0)
+                        std::string src_path = mii_process_shared_state->auxiliar_mii_repo->path_to_repo + "/" + account;
+                        std::string dst_path = mii_process_shared_state->primary_mii_repo->path_to_repo + "/" + account;
+                        if (((MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo)->restore_account(src_path, dst_path) == 0)
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
                         delete mii_process_shared_state->auxiliar_mii_repo;
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_RESTORED;

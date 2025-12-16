@@ -30,6 +30,7 @@ public:
     bool update_timestamp = false;
     bool toggle_normal_special_flag = false;
     bool toggle_share_flag = false;
+    bool toggle_temp_flag = false;
     bool in_place = true;
 
 

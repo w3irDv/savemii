@@ -15,16 +15,25 @@ WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string times
     switch (mii_id_flags) {
         case 0:
         case 2:
+            mii_kind = SPECIAL;
+            break;
         case 6:
-            normal = false;
+            mii_kind = FOREIGN;
             break;
         default:
-            normal = true;
+            mii_kind = NORMAL;
     }
 };
 
-
+/// @brief Wii Mii doe snot have this flag
+/// @return 
 bool WiiMiiData::toggle_copy_flag() {
+    return true;
+}
+
+/// @brief Wii Mii does no have this flag
+/// @return 
+bool WiiMiiData::toggle_temp_flag() {
     return true;
 }
 
@@ -75,7 +84,7 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     bool copyable = true;
     uint64_t author_id = 0;
 
-    // VALIDATE: The top 3 bits are a prefix that determines if a Mii is "special" "foreign" or regular
+    // The top 3 bits are a prefix that determines if a Mii is "special" "foreign" or regular. Normal with mii_id_flas = 1 are deleted by MiiChannel.
     uint8_t mii_id_flags = ((mii_data->miiID1 & 0xE0) >> 5);
 
     uint32_t mii_id_timestamp = ((mii_data->miiID1 & 0x1F) << 24) + (mii_data->miiID2 << 16) + (mii_data->miiID3 << 8) + mii_data->miiID4;
@@ -153,7 +162,7 @@ bool WiiMiiData::update_timestamp(size_t delay) {
     uint32_t flags;
     uint32_t updated_flags_and_ts;
 
-    memcpy(&flags_and_ts, this->mii_data + TIMESTAMP_OFFSET, 4);
+    memcpy(&flags_and_ts, this->mii_data + MII_ID_OFFSET, 4);
     flags = flags_and_ts & 0xE0000000;
     updated_flags_and_ts = flags | ts;
 
@@ -162,7 +171,7 @@ bool WiiMiiData::update_timestamp(size_t delay) {
     updated_flags_and_ts = __builtin_bswap32(ts) | flags;
 #endif
 
-    memcpy(this->mii_data + TIMESTAMP_OFFSET, &updated_flags_and_ts, 4);
+    memcpy(this->mii_data + MII_ID_OFFSET, &updated_flags_and_ts, 4);
 
     return true;
 };
@@ -171,13 +180,29 @@ bool WiiMiiData::toggle_normal_special_flag() {
 
     uint8_t flags;
 
-    memcpy(&flags, this->mii_data + TIMESTAMP_OFFSET, 1);
-    uint8_t toggled = flags ^ 0x80; // lets simplify in this first version and simply assume that just the first bit controls wether is normal or special
-    memcpy(this->mii_data + TIMESTAMP_OFFSET, &toggled, 1);
+    memcpy(&flags, this->mii_data + MII_ID_OFFSET, 1);
+    uint8_t mii_type = (flags & 0b11100000) >> 5;
+    uint8_t partial_ts = (flags & 0b00011111);
+    switch (mii_type) {
+        case 0:         // special > normal
+        case 2:
+            mii_type = 4;
+            break;
+        case 6:         // not local > special
+            mii_type = 2;   // if 0, miis downloaded from https://www.miilibrary.com does not appear unless thy are local from the console (you can fotce it with xfer_physical_appeareance)         
+            break;
+        default:        // normal > not_local
+            mii_type = 6;   
+            break;
+    }
+    flags = (mii_type << 5) + partial_ts;
+    memcpy(this->mii_data + MII_ID_OFFSET, &flags, 1);
+
 
     uint8_t mingleOff; // if false, Mii is shareable.
     memcpy(&mingleOff, this->mii_data + SHAREABLE_OFFSET, 1);
-    mingleOff = mingleOff | 0x04; // if mingle bit is off and the special bit is on, MiiChannel will delete the mii. We let it on ...
+    if (mii_type == 2)
+        mingleOff = mingleOff | 0x04; // if mingle bit is off and the special bit is on, MiiChannel will delete the mii. We let it on ...
     memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);
 
     return true;
@@ -203,7 +228,7 @@ bool WiiMiiData::set_normal_special_flag(size_t fold) {
     memset(this->mii_data + 3, 48 + (uint8_t) fold, 1);
 
     uint8_t flags;
-    memcpy(&flags, this->mii_data + TIMESTAMP_OFFSET, 1);
+    memcpy(&flags, this->mii_data + MII_ID_OFFSET, 1);
 
     //fold = fold << 4;
     fold = fold << 5;
@@ -211,7 +236,7 @@ bool WiiMiiData::set_normal_special_flag(size_t fold) {
     //uint8_t folded = (flags & 0x0f) + fold;
     uint8_t folded = (flags & 0x1f) + fold;
 
-    memcpy(this->mii_data + TIMESTAMP_OFFSET, &folded, 1);
+    memcpy(this->mii_data + MII_ID_OFFSET, &folded, 1);
 
     return true;
 };
@@ -258,3 +283,7 @@ bool WiiMiiData::copy_some_bytes(MiiData *mii_data_template, char name, size_t o
 
     return true;
 };
+
+bool WiiMiiData::flip_between_account_mii_data_and_mii_data([[maybe_unused]] unsigned char *mii_buffer, [[maybe_unused]] size_t buffer_size) {
+    return true;
+}

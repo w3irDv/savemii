@@ -9,6 +9,9 @@
 #include <utils/EscapeFAT32Utils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/MiiUtils.h>
+
+//#define BYTE_ORDER__LITTLE_ENDIAN
 
 namespace fs = std::filesystem;
 
@@ -26,11 +29,15 @@ MiiFolderRepo<MII, MIIDATA>::~MiiFolderRepo() {
 template MiiFolderRepo<WiiMii, WiiMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
 template MiiFolderRepo<WiiUMii, WiiUMiiData>::MiiFolderRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
 
-
 template<typename MII, typename MIIDATA>
 MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
 
     std::string mii_filepath = this->mii_filepath[index];
+    return this->extract_mii_data(mii_filepath);
+}
+
+template<typename MII, typename MIIDATA>
+MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_filepath) {
 
     std::ifstream mii_file;
     mii_file.open(mii_filepath.c_str(), std::ios_base::binary);
@@ -38,37 +45,52 @@ MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
         return nullptr;
     }
-    size_t size = std::filesystem::file_size(std::filesystem::path(mii_filepath));
+    size_t mii_file_size = std::filesystem::file_size(std::filesystem::path(mii_filepath));
 
-    if (size != mii_data_size && size != (mii_data_size + 4)) // Allow "bare" mii or mii+CRC
+    if (mii_file_size != mii_data_size && mii_file_size != (mii_data_size + MIIDATA::CRC_SIZE)) // Allow "bare" mii or mii+CRC
     {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), mii_filepath.c_str(), size, mii_data_size, mii_data_size + 4);
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), mii_filepath.c_str(), mii_file_size, mii_data_size, mii_data_size + 4);
         return nullptr;
     }
 
-    unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(size);
+    // Let's always create buffers with room for CRC data
+    size_t mii_buffer_size = mii_data_size + MIIDATA::CRC_SIZE;
+    unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(mii_buffer_size);
 
     if (mii_buffer == NULL) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for reading the mii data"), mii_filepath.c_str());
         return nullptr;
     }
 
-    // we allow files with or without CRC
-    mii_file.read((char *) mii_buffer, size);
+    // we allow files with or without CRC, but read onle CORE data
+    mii_file.read((char *) mii_buffer, mii_data_size);
     if (mii_file.fail()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        free(mii_buffer);
         return nullptr;
     }
     mii_file.close();
     if (mii_file.fail()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        free(mii_buffer);
         return nullptr;
+    }
+    // CRC bytes to 0
+    memset(mii_buffer + MIIDATA::MII_DATA_SIZE, 0, 4);
+
+    std::string extension = mii_filepath.substr(mii_filepath.find_last_of("."));
+    if (extension == ".ffsd" || extension == ".ffcd" || extension == ".cfsd" || extension == ".cfcd" || extension == ".bin") {
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(mii_buffer, MIIDATA::MII_DATA_SIZE)) {
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switching le/be MiiData representation"));
+            free(mii_buffer);
+            return nullptr;
+        }
     }
 
     MiiData *miidata = new MIIDATA();
 
     miidata->mii_data = mii_buffer;
-    miidata->mii_data_size = size;
+    miidata->mii_data_size = mii_buffer_size;
 
     return miidata;
 }
@@ -81,8 +103,6 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
         return false;
     }
 
-    size_t size = miidata->mii_data_size;
-
     std::string newname{};
     if (in_place) {
         newname = this->mii_filepath.at(index);
@@ -94,13 +114,36 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
         }
     }
 
+    size_t mii_file_size = MIIDATA::MII_DATA_SIZE;
+
+    // switch be->le representation if needed
+    std::string extension = newname.substr(newname.find_last_of("."));
+    if (extension == ".ffsd" || extension == ".ffcd" || extension == ".cfsd" || extension == ".cfcd" || extension == ".bin") {
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switching le/be MiiData representation"));
+            return false;
+        }
+    }
+
+    // Compute CRC and adjust size if needed
+    if (extension == ".ffsd" || extension == ".bin" || extension == ".cfsd" || extension == ".rsd") { // WiiU, 3DS and Wii Miis with CRC
+
+        uint16_t crc = MiiUtils::getCrc(miidata->mii_data, MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_PADDING);
+
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+        crc = __builtin_bswap16(crc);
+#endif
+        memcpy(miidata->mii_data + MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_PADDING, &crc, 2);
+        mii_file_size = MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE;
+    }
+
     std::ofstream mii_file;
     mii_file.open(newname.c_str(), std::ios_base::binary);
     if (mii_file.fail()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), newname.c_str(), strerror(errno));
         return false;
     }
-    mii_file.write((char *) miidata->mii_data, size);
+    mii_file.write((char *) miidata->mii_data, mii_file_size);
     if (mii_file.fail()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), newname.c_str(), strerror(errno));
         return false;
@@ -110,6 +153,14 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
     if (mii_file.fail()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), newname.c_str(), strerror(errno));
         return false;
+    }
+
+    // switch back again so memory representation is BE
+    if (extension == ".ffsd" || extension == ".ffcd" || extension == ".cfsd" || extension == ".cfcd" || extension == ".bin") {
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switching le/be MiiData representation"));
+            return false;
+        }
     }
 
     return true;
@@ -142,6 +193,8 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         std::filesystem::path filename = entry.path();
         std::string filename_str = filename.string();
 
+
+        /*
         std::ifstream mii_file;
         mii_file.open(filename, std::ios_base::binary);
         if (!mii_file.is_open()) {
@@ -178,22 +231,29 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
             index++;
             continue;
         }
+        */
 
-        Mii *mii = MII::populate_mii(index, raw_mii_data);
+        MiiData *miidata = this->extract_mii_data(filename_str);
 
-        if (mii != nullptr) {
-            mii->mii_repo = this;
-            mii->location_name = filename_str.substr(filename_str.find_last_of("/") + 1, std::string::npos);
-            this->miis.push_back(mii);
-            this->mii_filepath.push_back(filename_str);
-            // to test, we will use creator_name
-            std::string creatorName = mii->creator_name;
-            std::vector<size_t> *owners_v = owners[creatorName];
-            if (owners_v == nullptr) {
-                owners_v = new std::vector<size_t>;
-                owners[creatorName] = owners_v;
+        if (miidata != nullptr) {
+            Mii *mii = MII::populate_mii(index, miidata->mii_data);
+            delete miidata;
+            if (mii != nullptr) {
+                mii->mii_repo = this;
+                mii->location_name = filename_str.substr(filename_str.find_last_of("/") + 1, std::string::npos);
+                this->miis.push_back(mii);
+                this->mii_filepath.push_back(filename_str);
+                // to test, we will use creator_name
+                std::string creatorName = mii->creator_name;
+                std::vector<size_t> *owners_v = owners[creatorName];
+                if (owners_v == nullptr) {
+                    owners_v = new std::vector<size_t>;
+                    owners[creatorName] = owners_v;
+                }
+                owners_v->push_back(index);
+            } else {
+                push_back_invalid_mii(filename_str, index);
             }
-            owners_v->push_back(index);
         } else {
             push_back_invalid_mii(filename_str, index);
         }

@@ -15,7 +15,16 @@ WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string tim
                  uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index)
     : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WIIU, mii_repo, index),
       birth_platform(birth_platform) {
-    normal = ((mii_id_flags & 0x8) == 0x8);
+    if ((mii_id_flags & FFL_CREATE_ID_FLAG_NORMAL) == FFL_CREATE_ID_FLAG_NORMAL)
+        mii_kind = NORMAL;
+    else
+        mii_kind = SPECIAL;
+    if ((mii_id_flags & FFL_CREATE_ID_FLAG_TEMPORARY) == FFL_CREATE_ID_FLAG_TEMPORARY) {
+        if (mii_kind == NORMAL)
+            mii_kind = TEMP;
+        else
+            mii_kind = S_TEMP;
+    }
 };
 
 WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
@@ -64,10 +73,12 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     }
 #endif
 
+    /*
     if (birth_platform != 4 && birth_platform != 0 ) {
         Console::showMessage(ERROR_SHOW, "This does not seems a Wii U mii_data. Birth plaform %x is not allowed", birth_platform);
         return nullptr;
     }
+        */
     std::u16string name16;
     name16 = std::u16string(mii_name);
     std::string miiName = utf8::utf16to8(name16);
@@ -149,7 +160,7 @@ bool WiiUMiiData::update_timestamp(size_t delay) {
     uint32_t flags;
     uint32_t updated_flags_and_ts;
 
-    memcpy(&flags_and_ts, this->mii_data + TIMESTAMP_OFFSET, 4);
+    memcpy(&flags_and_ts, this->mii_data + MII_ID_OFFSET, 4);
     flags = flags_and_ts & 0xF0000000;
     updated_flags_and_ts = flags | ts;
 
@@ -159,7 +170,7 @@ bool WiiUMiiData::update_timestamp(size_t delay) {
     updated_flags_and_ts = __builtin_bswap32(ts) | flags;
 #endif
 
-    memcpy(this->mii_data + TIMESTAMP_OFFSET, &updated_flags_and_ts, 4);
+    memcpy(this->mii_data + MII_ID_OFFSET, &updated_flags_and_ts, 4);
 
     return true;
 };
@@ -167,13 +178,13 @@ bool WiiUMiiData::update_timestamp(size_t delay) {
 bool WiiUMiiData::toggle_normal_special_flag() {
 
     uint8_t flags;
-    memcpy(&flags, this->mii_data + TIMESTAMP_OFFSET, 1);
+    memcpy(&flags, this->mii_data + MII_ID_OFFSET, 1);
     uint8_t toggled = flags ^ 0x80;
-    memcpy(this->mii_data + TIMESTAMP_OFFSET, &toggled, 1);
+    memcpy(this->mii_data + MII_ID_OFFSET, &toggled, 1);
 
     uint8_t local_only; // if false, Mii is shareable.
     memcpy(&local_only, this->mii_data + SHAREABLE_OFFSET, 1);
-    local_only = local_only | 0x01; // if local_lonly  bit is off and the special bit is on, MiiMaker win't show the Mii. We let it on ...
+    local_only = local_only | 0x01; // if local_only  bit is off and the special bit is on, MiiMaker win't show the Mii. We let it on ...
     memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);
 
     return true;
@@ -185,6 +196,21 @@ bool WiiUMiiData::toggle_share_flag() {
     memcpy(&local_only, this->mii_data + SHAREABLE_OFFSET, 1);
     local_only = local_only ^ 0x01;
     memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only, 1);
+
+    return true;
+}
+
+bool WiiUMiiData::toggle_temp_flag() {
+
+    uint8_t flags;
+    memcpy(&flags, this->mii_data + MII_ID_OFFSET, 1);
+    uint8_t toggled = flags ^ 0x20;
+    if ((toggled & 0x20) == 0x20)         // in the samples, valid bit is set to 0 then the mii is a temporary (o developer) one
+        toggled = toggled & 0xEF;
+    else
+        toggled = toggled | 0x10;
+
+    memcpy(this->mii_data + MII_ID_OFFSET, &toggled, 1);
 
     return true;
 }

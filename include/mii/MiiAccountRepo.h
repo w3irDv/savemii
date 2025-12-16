@@ -16,7 +16,7 @@ public:
     //bool import_mii(Mii &mii) { return (mii.mii_name == ""); };
     bool import_miidata(MiiData *mii_data, bool in_place, size_t index); // from (temp)mem to the repo
     MiiData *extract_mii_data(size_t index);                             // from the repo to (tmp)mem
-    MiiData *extract_mii_data(const std::string mii_filepath);           // from file to (tmp)mem
+    MiiData *extract_mii_data(const std::string &mii_filepath);           // from file to (tmp)mem
     bool wipe_miidata(size_t index);
 
     std::vector<std::string> mii_filepath;

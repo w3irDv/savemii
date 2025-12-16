@@ -52,7 +52,7 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
 }
 
 template<typename MII, typename MIIDATA>
-MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string mii_filepath) {
+MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_filepath) {
 
     std::ifstream mii_file(mii_filepath);
     if (!mii_file.is_open()) {
@@ -99,7 +99,7 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string mii_fi
     }
 
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(mii_buffer, mii_buffer_size)) { // Only defined for WiiU
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switchg le/be MiiData representation"));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switching le/be MiiData representation"));
         free(mii_buffer);
         return nullptr;
     }

@@ -23,7 +23,7 @@ public:
                         entrycount = 5;
                         break;
                     case MiiRepo::eDBType::FFL:
-                        entrycount = 6;
+                        entrycount = 7;
                         break;
                     default:;
                 };
@@ -47,7 +47,7 @@ private:
     eState state = STATE_MII_TRANSFORM_TASKS;
 
     inline static int cursorPos = 0;
-    int entrycount = 4;
+    int entrycount = 5;
 
     MiiRepo *mii_repo;
     MiiProcess::eMiiProcessActions action;
@@ -59,6 +59,7 @@ private:
     bool update_timestamp = false;
     bool toggle_normal_special_flag = false;
     bool toggle_share_flag = false;
+    bool toggle_temp_flag = false;
 
 
     //void toggle_copy_flag_on();

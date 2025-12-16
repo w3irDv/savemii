@@ -192,7 +192,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
         return false;
     }
 
-    if ((miidata->mii_data_size != MIIDATA::MII_DATA_SIZE) && (miidata->mii_data_size != MIIDATA::MII_DATA_SIZE + 4)) {
+    if ((miidata->mii_data_size != MIIDATA::MII_DATA_SIZE) && (miidata->mii_data_size != MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE)) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), "", miidata->mii_data_size, MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE + 4);
     }
 
@@ -205,6 +205,39 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
         if (!this->find_empty_location(target_location)) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find an EMPTY location for the mii in the db"));
             return false;
+        }
+    }
+ 
+    if (in_place != IN_PLACE) {   // this check should not be performed when transforming miis, which is an in_place operation
+        // change normal wii miis from section 1 to section 4
+        if (this->db_type == MiiRepo::eDBType::RFL) {
+            uint8_t flags;
+            memcpy(&flags, miidata->mii_data + MIIDATA::MII_ID_OFFSET, 1);
+            uint8_t mii_type = (flags & 0b11100000) >> 5;
+            uint8_t partial_ts = (flags & 0b00011111);
+            if (mii_type == 1) {
+                if (Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"))) {
+                    mii_type = 4;
+                    flags = (mii_type << 5) + partial_ts;
+                    memcpy(miidata->mii_data + MIIDATA::MII_ID_OFFSET, &flags, 1);
+                }
+            }
+        }
+
+        // transform wiiu temporary miis to normal ones
+        if (this->db_type == MiiRepo::eDBType::FFL) {
+            uint8_t flags;
+            memcpy(&flags, miidata->mii_data + MIIDATA::MII_ID_OFFSET, 1); // FFLCreateID
+            uint8_t FFLCreateIDFlags = (flags & 0b11110000) >> 4;
+            uint8_t partial_ts = (flags & 0b00001111);
+            if ((FFLCreateIDFlags & FFL_CREATE_ID_FLAG_TEMPORARY) == FFL_CREATE_ID_FLAG_TEMPORARY) {
+                if (Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"))) {
+                    FFLCreateIDFlags = FFLCreateIDFlags & 0b1101; // unset temp
+                    FFLCreateIDFlags = FFLCreateIDFlags | 0b0100; // set WiiU
+                    flags = (FFLCreateIDFlags << 4) + partial_ts;
+                    memcpy(miidata->mii_data + MIIDATA::MII_ID_OFFSET, &flags, 1);
+                }
+            }
         }
     }
 
@@ -222,12 +255,12 @@ bool MiiFileRepo<MII, MIIDATA>::wipe_miidata(size_t index) {
 
     /*
     // the caller should delete element at index for other related vectors
-    it is ienough to force a lazy repopulate, because the menus do not allow to do anythin with a deleted mii
+    it is enough to force a lazy repopulate, because the menus do not allow to do anything with a deleted mii
     */
 
     if (last_empty_location > index)
         last_empty_location = index;
-    
+
     return true;
 }
 
@@ -245,9 +278,8 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
 
     size_t index = 0;
 
-    
 
-    size_t consecutive_not_found=0;
+    size_t consecutive_not_found = 0;
     for (size_t i = 0; i < MIIDATA::DB::MAX_MIIS; i++) {
 
         if (consecutive_not_found < 50)
@@ -284,7 +316,7 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
             this->miis.push_back(mii);
             this->mii_location.push_back(i);
             index++;
-            consecutive_not_found=0;
+            consecutive_not_found = 0;
         } else {
             consecutive_not_found++;
         }

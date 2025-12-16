@@ -18,6 +18,8 @@ public:
     WiiUMii *v_populate_mii(uint8_t *mii_data);
 
     const static inline std::string file_name_prefix = "WIIU-";
+    const static inline std::string file_name_extension = ".ffsd";
+
 };
 
 class WiiUMiiData : public MiiData {
@@ -29,6 +31,7 @@ public:
     bool update_timestamp(size_t delay);
     bool toggle_normal_special_flag();
     bool toggle_share_flag();
+    bool toggle_temp_flag();
 
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 
@@ -39,7 +42,7 @@ public:
     const static size_t COPY_FLAG_OFFSET = 0x2;
     const static size_t AUTHOR_ID_OFFSET = 0x4;
     const static size_t AUTHOR_ID_SIZE = 0x8;
-    const static size_t TIMESTAMP_OFFSET = 0xC;
+    const static size_t MII_ID_OFFSET = 0xC;  // Also FFLCreateID
     const static size_t DEVICE_HASH_OFFSET = 0x10;
     const static size_t DEVICE_HASH_SIZE = 0x6;
     const static size_t APPEARANCE_OFFSET_1 = 0x18; // 0x16 & 0x17 are Unk
@@ -52,6 +55,8 @@ public:
     const static uint8_t TICKS_PER_SEC = 2;
 
     const static inline uint32_t MII_DATA_SIZE = 0x5C;
+    const static inline uint8_t CRC_SIZE = 4;
+    const static inline uint8_t CRC_PADDING = 2;
 
     // switch between le (account) and be (wiiu ffl) representations
     const static inline std::vector<uint8_t> account_2_ffl_index = {
