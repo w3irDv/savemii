@@ -311,13 +311,13 @@ bool MiiFolderRepo<MII, MIIDATA>::find_name(std::string &newname) {
 
     size_t incarnation = 1;
     std::string mii_basepathname = this->path_to_repo + "/" + filename_prefix + sanitized;
-    newname = mii_basepathname + ".mii";
+    newname = mii_basepathname + MII::file_name_extension;
     if (FSUtils::checkEntry(newname.c_str()) == 0) {
         return true;
     } else {
-        newname = mii_basepathname + "-" + std::to_string(incarnation) + ".mii";
+        newname = mii_basepathname + "-" + std::to_string(incarnation) + MII::file_name_extension;
         while ((FSUtils::checkEntry(newname.c_str()) != 0) && incarnation < 3000) {
-            newname = mii_basepathname + "-" + std::to_string(++incarnation) + ".mii";
+            newname = mii_basepathname + "-" + std::to_string(++incarnation) + MII::file_name_extension;
         }
     }
 

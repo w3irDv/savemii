@@ -15,7 +15,7 @@ public:
     WiiMii *v_populate_mii(uint8_t *mii_data);
 
     const static inline std::string file_name_prefix = "WII-";
-    const static inline std::string file_name_extension = ".mii";
+    const static inline std::string file_name_extension = ".miigx";
 };
 
 class WiiMiiData : public MiiData {
