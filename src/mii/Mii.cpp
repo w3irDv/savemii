@@ -35,7 +35,12 @@ bool MiiData::str_2_raw_mii_data(const std::string &mii_data_str, unsigned char 
 
     for (unsigned int i = 0; i < buffer_size; i++) {
         std::string byteString = mii_data_str.substr(2*i, 2);
-        char byte = (char) strtol(byteString.c_str(), NULL, 16);
+        const char *nptr = byteString.c_str();
+        char *endptr = NULL;
+        errno = 0;
+        char byte = (char) strtol(nptr, &endptr, 16);
+        if (nptr == endptr || errno != 0)
+            return false;
         memset(mii_buffer + i, byte, 1);
     }
 

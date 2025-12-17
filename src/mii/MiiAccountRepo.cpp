@@ -93,7 +93,7 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_f
     }
 
     if (!MIIDATA::str_2_raw_mii_data(mii_data_str, mii_buffer, mii_buffer_size)) {
-       Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error deserializing WiiU MiiData"));
+       Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error serializing WiiU MiiData"));
         free(mii_buffer);
         return nullptr;
     }
@@ -152,7 +152,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
 
     std::string mii_data_str{};
     if (!MiiData::raw_mii_data_2_str(mii_data_str, miidata->mii_data, size)) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error serializing WiiU MiiData"));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error deserializing WiiU MiiData"));
         return false;
     }
 
