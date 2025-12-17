@@ -193,45 +193,10 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
         std::filesystem::path filename = entry.path();
         std::string filename_str = filename.string();
 
-
-        /*
-        std::ifstream mii_file;
-        mii_file.open(filename, std::ios_base::binary);
-        if (!mii_file.is_open()) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), filename.c_str(), strerror(errno));
-            push_back_invalid_mii(filename_str, index);
-            index++;
+        if (!fs::is_regular_file(filename)) {
+            Console::showMessage(ERROR_CONFIRM, "Repo: %s \n\nSkipping %s: is not a file", repo_name.c_str(), filename_str.c_str());
             continue;
         }
-        size_t size = std::filesystem::file_size(std::filesystem::path(filename));
-
-        if ((size != mii_data_size) && (size != mii_data_size + 4)) // Allow "bare" mii or mii+CRC
-        {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), filename_str.c_str(), size, mii_data_size, mii_data_size + 4);
-            push_back_invalid_mii(filename_str, index);
-            index++;
-            continue;
-        }
-
-        uint8_t raw_mii_data[mii_data_size];
-
-        size = mii_data_size; // we will ignore last two checkum bytes, if there
-
-        mii_file.read((char *) &raw_mii_data, mii_data_size);
-        if (mii_file.fail()) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), filename.c_str(), strerror(errno));
-            push_back_invalid_mii(filename_str, index);
-            index++;
-            continue;
-        }
-        mii_file.close();
-        if (mii_file.fail()) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), filename.c_str(), strerror(errno));
-            push_back_invalid_mii(filename_str, index);
-            index++;
-            continue;
-        }
-        */
 
         MiiData *miidata = this->extract_mii_data(filename_str);
 
