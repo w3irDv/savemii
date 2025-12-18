@@ -136,31 +136,47 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
 
+    std::string tmp_db_filepath = db_filepath + ".tmp";
+    unlink(tmp_db_filepath.c_str());
     std::ofstream db_file;
-    db_file.open(db_filepath.c_str(), std::ios_base::binary);
+    db_file.open(tmp_db_filepath.c_str(), std::ios_base::binary);
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
-        return false;
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        goto cleanup_after_io_error;
     }
     db_file.write((char *) db_buffer, MIIDATA::DB::DB_SIZE);
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
-        return false;
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        db_file.close();
+        goto cleanup_after_io_error;
     }
 
     db_file.close();
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
-        return false;
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        goto cleanup_after_io_error;
     }
 
     FSError fserror;
-    if (db_owner != 0) {
-        FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, db_filepath, fserror);
-        FSUtils::flushVol(db_filepath);
-    }
+    if (db_owner != 0)
+        if (!FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, tmp_db_filepath, fserror))
+            goto cleanup_after_io_error;
 
-    return true;
+    if (unlink(db_filepath.c_str()) == 0)
+        if (rename(tmp_db_filepath.c_str(), db_filepath.c_str()) == 0) {
+            if (db_owner != 0)
+                FSUtils::flushVol(db_filepath);
+            return true;
+        }
+
+    // some error has happpened
+    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+
+cleanup_after_io_error:
+    unlink(tmp_db_filepath.c_str());
+    if (db_owner != 0)
+        FSUtils::flushVol(db_filepath);
+    return false;
 }
 
 
@@ -207,8 +223,8 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
             return false;
         }
     }
- 
-    if (in_place != IN_PLACE) {   // this check should not be performed when transforming miis, which is an in_place operation
+
+    if (in_place != IN_PLACE) { // this check should not be performed when transforming miis, which is an in_place operation
         // change normal wii miis from section 1 to section 4
         if (this->db_type == MiiRepo::eDBType::RFL) {
             uint8_t flags;
@@ -320,12 +336,6 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         } else {
             consecutive_not_found++;
         }
-        /*
-        if (consecutive_not_found == 100) {
-            if (!Console::promptConfirm(ST_CONFIRM_CANCEL, LanguageUtils::gettext("It seems that we have found all miis in the database . Do you want to continue scanning the database or to finish the process")))
-                break;
-        }
-        */
     }
 
     return true;

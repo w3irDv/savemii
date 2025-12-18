@@ -93,7 +93,7 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_f
     }
 
     if (!MIIDATA::str_2_raw_mii_data(mii_data_str, mii_buffer, mii_buffer_size)) {
-       Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error serializing WiiU MiiData"));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error serializing WiiU MiiData"));
         free(mii_buffer);
         return nullptr;
     }
@@ -153,6 +153,10 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     std::string mii_data_str{};
     if (!MiiData::raw_mii_data_2_str(mii_data_str, miidata->mii_data, size)) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error deserializing WiiU MiiData"));
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, size)) {
+            Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+            this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
+        }
         return false;
     }
 
@@ -162,14 +166,27 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     std::ifstream mii_file(account_dat);
     if (!mii_file.is_open()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, size)) {
+            Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+            this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
+        }
         return false;
     }
     // Write to a temporary file first for safety
-    std::string tempFilename = account_dat + ".tmp";
-    std::ofstream tempFile(tempFilename);
+    std::string tmp_account_dat = account_dat + ".tmp";
+    unlink(tmp_account_dat.c_str());
+    std::ofstream tempFile(tmp_account_dat);
 
     if (!tempFile.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), tempFilename.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
+        mii_file.close();
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, size)) {
+            Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+            this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
+        }
+        unlink(tmp_account_dat.c_str());
+        if (db_owner != 0)
+            FSUtils::flushVol(account_dat);
         return false;
     }
 
@@ -187,8 +204,8 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     if (state & std::ios_base::badbit) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
         tempFile.close();
-        unlink(tempFilename.c_str());
-        return false;
+        mii_file.close();
+        goto cleanup_after_io_error;
     }
 
     mii_file.close();
@@ -196,33 +213,44 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     if (state & std::ios_base::badbit) { // probably overkill
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
         tempFile.close();
-        unlink(tempFilename.c_str());
-        return false;
+        goto cleanup_after_io_error;
     }
 
     tempFile.close();
     if (tempFile.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), tempFilename.c_str(), strerror(errno));
-        unlink(tempFilename.c_str());
-        return false;
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
+        goto cleanup_after_io_error;
     }
-
-    // Replace the original file with the temporary file
-    unlink(account_dat.c_str());
-    rename(tempFilename.c_str(), account_dat.c_str());
 
     FSError fserror;
     if (db_owner != 0) {
-        FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, account_dat, fserror);
-        FSUtils::flushVol(account_dat);
+        FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, tmp_account_dat, fserror);
     }
 
+    // Replace the original file with the temporary file
+    if (unlink(account_dat.c_str()) == 0)
+        if (rename(tmp_account_dat.c_str(), account_dat.c_str()) == 0) {
+            if (db_owner != 0)
+                FSUtils::flushVol(account_dat);
+            if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, size)) {
+                Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+                this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
+            }
+            return true;
+        }
+
+    // some error has happpened
+    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
+
+cleanup_after_io_error:
+    unlink(tmp_account_dat.c_str());
+    if (db_owner != 0)
+        FSUtils::flushVol(account_dat);
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, size)) {
         Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
         this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
     }
-
-    return true;
+    return false;
 }
 
 template<typename MII, typename MIIDATA>
