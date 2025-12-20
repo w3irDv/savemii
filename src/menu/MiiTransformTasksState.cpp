@@ -34,7 +34,7 @@ void MiiTransformTasksState::render() {
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
         Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Transfer Ownership: %s"), transfer_ownership ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Update Timestamp: %s"), update_timestamp ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Update MiiId (Timestamp): %s"), update_timestamp ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
         Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Toggle Share/Mingle flag: %s"), toggle_share_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);

@@ -5,6 +5,7 @@
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
 #include <string>
+#include <unistd.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
@@ -138,21 +139,21 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
 
     std::string tmp_db_filepath = db_filepath + ".tmp";
     unlink(tmp_db_filepath.c_str());
-    std::ofstream db_file;
-    db_file.open(tmp_db_filepath.c_str(), std::ios_base::binary);
-    if (db_file.fail()) {
+    std::ofstream tmp_db_file;
+    tmp_db_file.open(tmp_db_filepath.c_str(), std::ios_base::binary);
+    if (tmp_db_file.fail()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
-    db_file.write((char *) db_buffer, MIIDATA::DB::DB_SIZE);
-    if (db_file.fail()) {
+    tmp_db_file.write((char *) db_buffer, MIIDATA::DB::DB_SIZE);
+    if (tmp_db_file.fail()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
-        db_file.close();
+        tmp_db_file.close();
         goto cleanup_after_io_error;
     }
 
-    db_file.close();
-    if (db_file.fail()) {
+    tmp_db_file.close();
+    if (tmp_db_file.fail()) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
@@ -162,17 +163,30 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
         if (!FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, tmp_db_filepath, fserror))
             goto cleanup_after_io_error;
 
-    if (unlink(db_filepath.c_str()) == 0)
+    if (unlink(db_filepath.c_str()) == 0) {
         if (rename(tmp_db_filepath.c_str(), db_filepath.c_str()) == 0) {
             if (db_owner != 0)
                 FSUtils::flushVol(db_filepath);
             return true;
+        } else { // the worst has happen
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            goto cleanup_managing_real_db;
         }
-
-    // some error has happpened
-    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+    } else {
+        if (FSUtils::checkEntry(db_filepath.c_str()) == 1) {
+            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
+            goto cleanup_after_io_error;
+        } else {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            goto cleanup_managing_real_db;
+        }
+    }
 
 cleanup_after_io_error:
+    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error managing temporal db %s\n\nNo action has been made over real mii db."), tmp_db_filepath.c_str());
+cleanup_managing_real_db:
     unlink(tmp_db_filepath.c_str());
     if (db_owner != 0)
         FSUtils::flushVol(db_filepath);
@@ -183,7 +197,8 @@ cleanup_after_io_error:
 template<typename MII, typename MIIDATA>
 MiiData *MiiFileRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
 
-    unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(MIIDATA::MII_DATA_SIZE);
+    // Alway make room for CRC
+    unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE);
 
     if (mii_buffer == NULL) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for reading the mii data"), std::to_string(index).c_str());
@@ -191,11 +206,14 @@ MiiData *MiiFileRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
     }
 
     memcpy(mii_buffer, db_buffer + MIIDATA::DB::OFFSET + mii_location[index] * MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE);
+    // CRC bytes to 0
+    memset(mii_buffer + MIIDATA::MII_DATA_SIZE, 0, 4);
+
 
     MiiData *miidata = new MIIDATA();
 
     miidata->mii_data = mii_buffer;
-    miidata->mii_data_size = MIIDATA::MII_DATA_SIZE;
+    miidata->mii_data_size = MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE;
 
     return miidata;
 }
@@ -208,6 +226,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
         return false;
     }
 
+    // Cannot happen ...
     if ((miidata->mii_data_size != MIIDATA::MII_DATA_SIZE) && (miidata->mii_data_size != MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE)) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), "", miidata->mii_data_size, MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE + 4);
     }
@@ -224,7 +243,8 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
         }
     }
 
-    if (in_place != IN_PLACE) { // this check should not be performed when transforming miis, which is an in_place operation
+    if (in_place != IN_PLACE) { // BEWARE -- this check on temp type mii should not be performed when transforming miis, which is an in_place operation.
+        // We use this factto avoid the check, but is an indirect condition that can change in the future, provoking this to unwantedly appear
         // change normal wii miis from section 1 to section 4
         if (this->db_type == MiiRepo::eDBType::RFL) {
             uint8_t flags;

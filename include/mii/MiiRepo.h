@@ -64,7 +64,7 @@ public:
     std::vector<Mii *> miis;
     std::map<std::string, std::vector<size_t> *> owners;
 
-    size_t mii_data_size = 0;
+    //size_t mii_data_size = 0;
     const static inline std::string BACKUP_ROOT = "fs:vol/external01/wiiu/backups/MiiRepoBckp";
     //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
 
