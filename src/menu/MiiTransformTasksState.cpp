@@ -77,7 +77,7 @@ void MiiTransformTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF, 12, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 13, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, cursorPos + 5, "\u2192");
@@ -115,7 +115,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                 this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
             } else {
                 if (toggle_copy_flag || update_timestamp || toggle_normal_special_flag || toggle_share_flag || toggle_temp_flag) {
-                    uint8_t errorCounter = 0;
+                    uint16_t errorCounter = 0;
                     if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state))
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"), errorCounter);
                     else

@@ -46,9 +46,20 @@ bool WiiMiiData::transfer_ownership_from(MiiData *mii_data_template) {
 
 bool WiiMiiData::transfer_appearance_from(MiiData *mii_data_template) {
 
+    uint8_t mingleOff_s;
+    memcpy(&mingleOff_s, this->mii_data + SHAREABLE_OFFSET, 1);
+    mingleOff_s = mingleOff_s & 0x04;
+
     memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // gender, fav, color, birth
-    memcpy(this->mii_data + APPEARANCE_OFFSET_2, mii_data_template->mii_data + APPEARANCE_OFFSET_2, APPEARANCE_SIZE_2); // gender, color, birth
+    memcpy(this->mii_data + APPEARANCE_OFFSET_2, mii_data_template->mii_data + APPEARANCE_OFFSET_2, APPEARANCE_SIZE_2); // height, weight
     memcpy(this->mii_data + APPEARANCE_OFFSET_3, mii_data_template->mii_data + APPEARANCE_OFFSET_3, APPEARANCE_SIZE_3); // after name till the end
+
+    uint8_t mingleOff_t; 
+    memcpy(&mingleOff_t, this->mii_data + SHAREABLE_OFFSET, 1);
+    mingleOff_t = (mingleOff_t & 0xFB) + mingleOff_s; // keep original mingle attribute
+    
+    memcpy(this->mii_data + SHAREABLE_OFFSET, &mingleOff_t, 1);
+
 
     return true;
 }

@@ -5,12 +5,12 @@
 #include <mii/MiiFolderRepo.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
+#include <savemng.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
 #include <utils/InProgress.h>
 #include <utils/MiiUtils.h>
-#include <savemng.h>
 
 ////#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -109,7 +109,7 @@ unsigned short MiiUtils::getCrc(unsigned char *buf, int size) {
     return (unsigned short) (crc & 0xFFFF);
 }
 
-bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+bool MiiUtils::export_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
     auto mii_view = mii_process_shared_state->primary_mii_view;
     auto c2a = mii_process_shared_state->primary_c2a;
@@ -123,14 +123,15 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     MiiRepo *target_repo = mii_repo->stage_repo;
 
     if (target_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Repo %s is null"), target_repo->repo_name.c_str());
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Target Repo is null"));
         return false;
     }
 
-    if (!target_repo->open_and_load_repo()) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open repo %s"), target_repo->repo_name.c_str());
-        return false;
-    }
+    if (target_repo->needs_populate == true)
+        if (!target_repo->open_and_load_repo()) {
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open repo %s"), target_repo->repo_name.c_str());
+            return false;
+        }
 
     InProgress::totalSteps = 0;
     InProgress::currentStep = 1;
@@ -166,9 +167,16 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
         }
     }
     if (errorCounter != 0 && target_repo->db_kind == MiiRepo::eDBKind::FILE)
-        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
-            target_repo->open_and_load_repo();
-            target_repo->populate_repo();
+        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detected during import.\nDo you want to save the database?"))) {
+            target_repo->needs_populate = true;
+            for (size_t i = 0; i < candidate_miis_count; i++) { // enough for most cases (if this is the second time you select miis, and the first succeed,
+                                                                // they are already imported in the target repo, but they won'nt be listed as OK )
+                size_t mii_index = c2a->at(i);
+                if (mii_view->at(mii_index).state == MiiStatus::OK) {
+                    mii_view->at(mii_index).state = MiiStatus::NOT_TRIED;
+                    mii_view->at(mii_index).selected = true;
+                }
+            }
             return false;
         }
 
@@ -177,7 +185,7 @@ bool MiiUtils::export_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     return (errorCounter == 0);
 }
 
-bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
 
     auto mii_repo = mii_process_shared_state->auxiliar_mii_repo;
     auto mii_view = mii_process_shared_state->auxiliar_mii_view;
@@ -192,14 +200,15 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     auto receiving_repo = mii_process_shared_state->primary_mii_repo;
 
     if (receiving_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Repo %s is null"), receiving_repo->repo_name.c_str());
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Target Repo is null"));
         return false;
     }
 
-    if (!receiving_repo->open_and_load_repo()) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open repo %s"), receiving_repo->repo_name.c_str());
-        return false;
-    }
+    if (receiving_repo->needs_populate == true)
+        if (!receiving_repo->open_and_load_repo()) {
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open repo %s"), receiving_repo->repo_name.c_str());
+            return false;
+        }
 
     InProgress::totalSteps = 0;
     InProgress::currentStep = 1;
@@ -245,8 +254,15 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
 
     if (errorCounter != 0 && receiving_repo->db_kind == MiiRepo::eDBKind::FILE)
         if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
-            receiving_repo->open_and_load_repo();
-            receiving_repo->populate_repo();
+            receiving_repo->needs_populate = true;
+            for (size_t i = 0; i < candidate_miis_count; i++) { // enough for most cases (if this is the second time you select miis, and the first succeed,
+                                                                // they are already imported in the target repo, but they won'nt be listed as OK )
+                size_t mii_index = c2a->at(i);
+                if (mii_view->at(mii_index).state == MiiStatus::OK) {
+                    mii_view->at(mii_index).state = MiiStatus::NOT_TRIED;
+                    mii_view->at(mii_index).selected = true;
+                }
+            }
             return false;
         }
 
@@ -255,7 +271,7 @@ bool MiiUtils::import_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_pro
     return (errorCounter == 0);
 }
 
-bool MiiUtils::wipe_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+bool MiiUtils::wipe_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
     auto mii_view = mii_process_shared_state->primary_mii_view;
     auto c2a = mii_process_shared_state->primary_c2a;
@@ -319,7 +335,6 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
     MiiRepo *target_mii_repo = nullptr;
 
 
-
     switch (mii_process_shared_state->state) {
         case MiiProcess::SELECT_MIIS_FOR_IMPORT:
             source_mii_repo = mii_process_shared_state->auxiliar_mii_repo;
@@ -344,7 +359,7 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
         Console::consolePrintPosAligned(4, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
         savemng::firstSDWrite = false;
     }
-    
+
     Console::consolePrintPos(-2, 6, ">> %s (by %s)", source_mii_repo->miis[mii_index]->mii_name.c_str(), source_mii_repo->miis[mii_index]->creator_name.c_str());
     Console::consolePrintPosAligned(6, 4, 2, "%d/%d", InProgress::currentStep, InProgress::totalSteps);
     DrawUtils::setFontColor(COLOR_TEXT);
@@ -374,7 +389,7 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
     DrawUtils::endDraw();
 }
 
-bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
 
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
     auto mii_view = mii_process_shared_state->primary_mii_view;
@@ -462,7 +477,7 @@ bool MiiUtils::xform_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_proc
 }
 
 ///// TEST FUNCTIONS
-bool MiiUtils::eight_fold_mii(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+bool MiiUtils::eight_fold_mii(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
 
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
     auto mii_view = mii_process_shared_state->primary_mii_view;
@@ -501,8 +516,15 @@ bool MiiUtils::eight_fold_mii(uint8_t &errorCounter, MiiProcessSharedState *mii_
         }
         if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
             if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
-                mii_repo->open_and_load_repo();
-                mii_repo->populate_repo();
+                mii_repo->needs_populate = true;
+                for (size_t i = 0; i < candidate_miis_count; i++) { // enough for most cases (if this is the second time you select miis, and the first succeed,
+                                                                    // they are already imported in the target repo, but they won'nt be listed as OK )
+                    size_t mii_index = c2a->at(i);
+                    if (mii_view->at(mii_index).state == MiiStatus::OK) {
+                        mii_view->at(mii_index).state = MiiStatus::NOT_TRIED;
+                        mii_view->at(mii_index).selected = true;
+                    }
+                }
                 return false;
             }
         mii_repo->persist_repo();
@@ -514,7 +536,7 @@ bool MiiUtils::eight_fold_mii(uint8_t &errorCounter, MiiProcessSharedState *mii_
 }
 
 
-bool MiiUtils::copy_some_bytes_from_miis(uint8_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+bool MiiUtils::copy_some_bytes_from_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
 
     auto mii_repo = mii_process_shared_state->primary_mii_repo;
     auto mii_view = mii_process_shared_state->primary_mii_view;

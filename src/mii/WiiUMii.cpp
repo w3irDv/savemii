@@ -147,8 +147,17 @@ bool WiiUMiiData::transfer_ownership_from(MiiData *mii_data_template) {
 
 bool WiiUMiiData::transfer_appearance_from(MiiData *mii_data_template) {
 
+    uint8_t local_only_s; // get the local_only value from original mii
+    memcpy(&local_only_s, this->mii_data + SHAREABLE_OFFSET, 1);
+    local_only_s = local_only_s & 0x01;
+
     memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // gender, color, birth
     memcpy(this->mii_data + APPEARANCE_OFFSET_2, mii_data_template->mii_data + APPEARANCE_OFFSET_2, APPEARANCE_SIZE_2); // after name till the end
+
+    uint8_t local_only_t; 
+    memcpy(&local_only_t, mii_data_template->mii_data + SHAREABLE_OFFSET, 1);
+    local_only_t = (local_only_t & 0xFE) + local_only_s; // restore original local_only_value in transformed mii
+    memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only_t, 1);
 
     return true;
 }

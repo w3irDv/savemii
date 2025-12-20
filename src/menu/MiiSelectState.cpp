@@ -319,10 +319,11 @@ void MiiSelectState::render() {
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 34, i + 2, LanguageUtils::gettext("|"));
                         DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->mii_kind == Mii::eMiiKind::NORMAL);
-                        const char* mii_kind;
+                        const char *mii_kind;
                         switch (this->mii_repo->miis[c2a[i + this->scroll]]->mii_kind) {
                             case Mii::eMiiKind::NORMAL:
-                                mii_kind = LanguageUtils::gettext("NORMAL"); break;
+                                mii_kind = LanguageUtils::gettext("NORMAL");
+                                break;
                             case Mii::eMiiKind::SPECIAL:
                                 mii_kind = LanguageUtils::gettext("SPECIAL");
                                 break;
@@ -330,14 +331,16 @@ void MiiSelectState::render() {
                                 mii_kind = LanguageUtils::gettext("FOREIGN");
                                 break;
                             case Mii::eMiiKind::TEMP:
-                                mii_kind = LanguageUtils::gettext("TEMP"); break;
+                                mii_kind = LanguageUtils::gettext("TEMP");
+                                break;
                             case Mii::eMiiKind::S_TEMP:
-                                mii_kind = LanguageUtils::gettext("S_TEMP"); break;
+                                mii_kind = LanguageUtils::gettext("S_TEMP");
+                                break;
                             default:
                                 mii_kind = LanguageUtils::gettext("UNKNOWN");
                                 break;
                         }
-                        Console::consolePrintPos(MM_OFF + 36, i + 2, LanguageUtils::gettext("%s"),mii_kind);
+                        Console::consolePrintPos(MM_OFF + 36, i + 2, LanguageUtils::gettext("%s"), mii_kind);
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 44, i + 2, LanguageUtils::gettext("]"));
 
@@ -405,24 +408,32 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
             Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Please select some miis to work on"));
             return SUBSTATE_RUNNING;
         processSelectedMiis:
-            uint8_t errorCounter = 0;
+            uint16_t errorCounter = 0;
             std::vector<bool> mii_repos_candidates;
             switch (action) {
                 case MiiProcess::SELECT_MIIS_FOR_EXPORT:
                     mii_process_shared_state->primary_mii_view = &this->mii_view;
                     mii_process_shared_state->primary_c2a = &this->c2a;
-                    if (MiiUtils::export_miis(errorCounter, mii_process_shared_state))
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis extraction Ok"));
-                    else
+                    if (MiiUtils::export_miis(errorCounter, mii_process_shared_state)) {
+                        if (InProgress::abortTask == false)
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis extraction Ok"));
+                        else
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task Aborted - Partial extraction Ok"));
+                    } else {
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Extraction has failed for %d miis"), errorCounter);
+                    }
                     break;
                 case MiiProcess::SELECT_MIIS_FOR_IMPORT:
                     mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
                     mii_process_shared_state->auxiliar_c2a = &this->c2a;
-                    if (MiiUtils::import_miis(errorCounter, mii_process_shared_state))
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis import Ok"));
-                    else
+                    if (MiiUtils::import_miis(errorCounter, mii_process_shared_state)) {
+                        if (InProgress::abortTask == false)
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis import Ok"));
+                        else
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task aborted - Partial import Ok"));
+                    } else {
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
+                    }
                     if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_IMPORTED;
                         return SUBSTATE_RETURN;
@@ -663,7 +674,7 @@ bool MiiSelectState::test_select_template_mii(size_t index) {
 
 void MiiSelectState::test_xfer_attr() {
 
-    uint8_t errorCounter = 0;
+    uint16_t errorCounter = 0;
     mii_process_shared_state->auxiliar_mii_repo = this->mii_repo;
     mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
     mii_process_shared_state->auxiliar_c2a = &this->c2a;
@@ -675,7 +686,7 @@ void MiiSelectState::test_xfer_attr() {
 
 void MiiSelectState::test_import() {
 
-    uint8_t errorCounter = 0;
+    uint16_t errorCounter = 0;
     mii_process_shared_state->auxiliar_mii_repo = this->mii_repo;
     mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
     mii_process_shared_state->auxiliar_c2a = &this->c2a;
