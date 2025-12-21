@@ -67,6 +67,7 @@ public:
     virtual bool toggle_normal_special_flag() = 0;
     virtual bool toggle_share_flag() = 0;
     virtual bool toggle_temp_flag() = 0;
+    virtual uint8_t get_gender() = 0;
 
     virtual bool set_normal_special_flag(size_t fold) = 0;
     virtual bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes) = 0;

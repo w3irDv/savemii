@@ -28,6 +28,7 @@ public:
     bool toggle_normal_special_flag();
     bool toggle_share_flag();
     bool toggle_temp_flag();
+    uint8_t get_gender();
 
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 

@@ -232,14 +232,6 @@ bool WiiUMiiData::toggle_temp_flag() {
     return true;
 }
 
-bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
-    return true;
-};
-
-bool WiiUMiiData::copy_some_bytes([[maybe_unused]] MiiData *mii_data_template, [[maybe_unused]] char name, [[maybe_unused]] size_t offset, [[maybe_unused]] size_t bytes) {
-    return true;
-};
-
 bool WiiUMiiData::flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size) {
 
     unsigned char *tmp_raw_mii_data = (unsigned char *) MiiData::allocate_memory(buffer_size);
@@ -256,3 +248,20 @@ bool WiiUMiiData::flip_between_account_mii_data_and_mii_data(unsigned char *mii_
 
     return true;
 }
+
+uint8_t WiiUMiiData::get_gender() {
+    uint8_t gender;
+    memcpy(&gender, this->mii_data + GENDER_OFFSET, 1);
+    gender = gender & 0x01;
+    return gender;
+}
+
+// Test functions
+bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
+    return true;
+};
+
+bool WiiUMiiData::copy_some_bytes([[maybe_unused]] MiiData *mii_data_template, [[maybe_unused]] char name, [[maybe_unused]] size_t offset, [[maybe_unused]] size_t bytes) {
+    return true;
+};
+

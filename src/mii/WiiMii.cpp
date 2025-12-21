@@ -61,7 +61,7 @@ bool WiiMiiData::transfer_appearance_from(MiiData *mii_data_template) {
     
     uint8_t gender;
     memcpy(&gender, mii_data_template->mii_data + GENDER_OFFSET, 1);
-    gender = gender &  0x40;
+    gender = gender & 0x40;
     uint8_t gender_and_other;
     memcpy(&gender_and_other, this->mii_data + GENDER_OFFSET, 1);
     gender_and_other = (gender_and_other & 0xBF) + gender;
@@ -236,6 +236,13 @@ bool WiiMiiData::toggle_share_flag() {
     return true;
 }
 
+
+uint8_t WiiMiiData::get_gender() {
+    uint8_t gender;
+    memcpy(&gender, this->mii_data + GENDER_OFFSET, 1);
+    gender = gender & 0x40;
+    return gender;
+}
 
 /// @brief Debug function to set arbitrary values in flag offset
 /// @param fold

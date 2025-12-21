@@ -131,6 +131,12 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
         return false;
     }
 
+    // Compute gender before fliiping to LE
+    uint8_t gender = miidata->get_gender();
+    printf("\n\n\ngender %d\n\n\n",gender);
+    std::string gender_str = std::to_string(gender + 1);
+
+
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
         return false;
@@ -185,6 +191,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     }
 
     std::string line{};
+    /*
     while (std::getline(mii_file, line)) {
         // Copy All Lines except MiiData one
         if (line.find("MiiData=") == std::string::npos) {
@@ -193,6 +200,18 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
             tempFile << "MiiData=" << mii_data_str << std::endl;
         }
     }
+    */
+    while (std::getline(mii_file, line)) {
+        // Copy All Lines except MiiData one
+        if (line.find("MiiData=") != std::string::npos) {
+            tempFile << "MiiData=" << mii_data_str << std::endl;
+        } else if ((line.find("Gender=1") != std::string::npos) || (line.find("Gender=2") != std::string::npos)) {
+            tempFile << "Gender=" << gender_str << std::endl; // update only if previoulsy the gender was filled
+        } else {
+            tempFile << line << std::endl;
+        }
+    }
+
 
     std::ios_base::iostate state = mii_file.rdstate();
     if (state & std::ios_base::badbit) {
