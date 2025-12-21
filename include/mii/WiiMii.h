@@ -39,13 +39,12 @@ public:
     //const static inline size_t AUTHOR_ID_SIZE = 0x8;
     const static size_t DEVICE_HASH_OFFSET = 0x1C;
     const static size_t DEVICE_HASH_SIZE = 0x4;    // INCLOUEM EL CHECKSUM
-    const static size_t APPEARANCE_OFFSET_1 = 0x0; //
+    const static size_t GENDER_OFFSET = 0x0;
+    const static size_t APPEARANCE_OFFSET_1 = 0x16; //
     const static size_t APPEARANCE_SIZE_1 = 0x2;
-    const static size_t APPEARANCE_OFFSET_2 = 0x16; //
-    const static size_t APPEARANCE_SIZE_2 = 0x2;
     const static size_t MII_ID_OFFSET = 0x18;
-    const static size_t APPEARANCE_OFFSET_3 = 0x20;
-    const static size_t APPEARANCE_SIZE_3 = 0x16;
+    const static size_t APPEARANCE_OFFSET_2 = 0x20;
+    const static size_t APPEARANCE_SIZE_2 = 0x16;
     const static size_t SHAREABLE_OFFSET = 0x21;
 
     const static size_t YEAR_ZERO = 2006;

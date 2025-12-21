@@ -45,10 +45,9 @@ public:
     const static size_t MII_ID_OFFSET = 0xC;  // Also FFLCreateID
     const static size_t DEVICE_HASH_OFFSET = 0x10;
     const static size_t DEVICE_HASH_SIZE = 0x6;
-    const static size_t APPEARANCE_OFFSET_1 = 0x18; // 0x16 & 0x17 are Unk
-    const static size_t APPEARANCE_SIZE_1 = 0x2;
-    const static size_t APPEARANCE_OFFSET_2 = 0x2E;
-    const static size_t APPEARANCE_SIZE_2 = 0x1A;
+    const static size_t GENDER_OFFSET = 0x19;  // last bit
+    const static size_t APPEARANCE_OFFSET_1 = 0x2E;
+    const static size_t APPEARANCE_SIZE_1 = 0x1A;
     const static size_t SHAREABLE_OFFSET = 0x31;
 
     const static size_t YEAR_ZERO = 2010;

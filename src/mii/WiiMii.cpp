@@ -50,15 +50,22 @@ bool WiiMiiData::transfer_appearance_from(MiiData *mii_data_template) {
     memcpy(&mingleOff_s, this->mii_data + SHAREABLE_OFFSET, 1);
     mingleOff_s = mingleOff_s & 0x04;
 
-    memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // gender, fav, color, birth
-    memcpy(this->mii_data + APPEARANCE_OFFSET_2, mii_data_template->mii_data + APPEARANCE_OFFSET_2, APPEARANCE_SIZE_2); // height, weight
-    memcpy(this->mii_data + APPEARANCE_OFFSET_3, mii_data_template->mii_data + APPEARANCE_OFFSET_3, APPEARANCE_SIZE_3); // after name till the end
+    memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // height, weight
+    memcpy(this->mii_data + APPEARANCE_OFFSET_2, mii_data_template->mii_data + APPEARANCE_OFFSET_2, APPEARANCE_SIZE_2); // after name till the end
 
     uint8_t mingleOff_t; 
     memcpy(&mingleOff_t, this->mii_data + SHAREABLE_OFFSET, 1);
     mingleOff_t = (mingleOff_t & 0xFB) + mingleOff_s; // keep original mingle attribute
+    memset(this->mii_data + SHAREABLE_OFFSET, mingleOff_t, 1);
+
     
-    memcpy(this->mii_data + SHAREABLE_OFFSET, &mingleOff_t, 1);
+    uint8_t gender;
+    memcpy(&gender, mii_data_template->mii_data + GENDER_OFFSET, 1);
+    gender = gender &  0x40;
+    uint8_t gender_and_other;
+    memcpy(&gender_and_other, this->mii_data + GENDER_OFFSET, 1);
+    gender_and_other = (gender_and_other & 0xBF) + gender;
+    memset(this->mii_data + GENDER_OFFSET, gender_and_other,1);  // move just gender info from  template miidata
 
 
     return true;
@@ -214,7 +221,7 @@ bool WiiMiiData::toggle_normal_special_flag() {
     memcpy(&mingleOff, this->mii_data + SHAREABLE_OFFSET, 1);
     if (mii_type == 2)
         mingleOff = mingleOff | 0x04; // if mingle bit is off and the special bit is on, MiiChannel will delete the mii. We let it on ...
-    memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);
+    memcpy(this->mii_data + SHAREABLE_OFFSET, &mingleOff, 1);
 
     return true;
 }
@@ -224,7 +231,7 @@ bool WiiMiiData::toggle_share_flag() {
     uint8_t mingleOff; // if false, Mii is shareable.
     memcpy(&mingleOff, this->mii_data + SHAREABLE_OFFSET, 1);
     mingleOff = mingleOff ^ 0x04;
-    memcpy(this->mii_data + APPEARANCE_OFFSET_3 + 1, &mingleOff, 1);
+    memcpy(this->mii_data + SHAREABLE_OFFSET, &mingleOff, 1);
 
     return true;
 }

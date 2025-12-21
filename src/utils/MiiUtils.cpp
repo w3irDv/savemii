@@ -167,7 +167,7 @@ bool MiiUtils::export_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
         }
     }
     if (errorCounter != 0 && target_repo->db_kind == MiiRepo::eDBKind::FILE)
-        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detected during import.\nDo you want to save the database?"))) {
+        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detected during export.\nDo you want to save the database?"))) {
             target_repo->needs_populate = true;
             for (size_t i = 0; i < candidate_miis_count; i++) { // enough for most cases (if this is the second time you select miis, and the first succeed,
                                                                 // they are already imported in the target repo, but they won'nt be listed as OK )
@@ -265,7 +265,6 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
             }
             return false;
         }
-
     receiving_repo->persist_repo();
     receiving_repo->needs_populate = true;
     return (errorCounter == 0);
@@ -314,12 +313,20 @@ bool MiiUtils::wipe_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_proc
         }
     }
 
-    if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
+    if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE) {
         if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during wipe.\nDo you want to save the database?"))) {
-            mii_repo->open_and_load_repo();
-            mii_repo->populate_repo();
+            mii_repo->needs_populate = true;
+            for (size_t i = 0; i < candidate_miis_count; i++) { // enough for most cases (if this is the second time you select miis, and the first succeed,
+                                                                // they are already imported in the target repo, but they won'nt be listed as OK )
+                size_t mii_index = c2a->at(i);
+                if (mii_view->at(mii_index).state == MiiStatus::OK) {
+                    mii_view->at(mii_index).state = MiiStatus::NOT_TRIED;
+                    mii_view->at(mii_index).selected = true;
+                }
+            }
             return false;
         }
+    }
 
     mii_repo->persist_repo();
     mii_repo->needs_populate = true;
@@ -462,12 +469,21 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                 }
             }
         }
-        if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE)
-            if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during import.\nDo you want to save the database?"))) {
-                mii_repo->open_and_load_repo();
-                mii_repo->populate_repo();
+        if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE) {
+            if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detectes during transform.\nDo you want to save the database?"))) {
+                mii_repo->needs_populate = true;
+                for (size_t i = 0; i < candidate_miis_count; i++) { // enough for most cases (if this is the second time you select miis, and the first succeed,
+                                                                    // they are already imported in the target repo, but they won'nt be listed as OK )
+                    size_t mii_index = c2a->at(i);
+                    if (mii_view->at(mii_index).state == MiiStatus::OK) {
+                        mii_view->at(mii_index).state = MiiStatus::NOT_TRIED;
+                        mii_view->at(mii_index).selected = true;
+                    }
+                }
                 return false;
             }
+        }
+
         mii_repo->persist_repo();
         return errorCounter == 0;
     } else {

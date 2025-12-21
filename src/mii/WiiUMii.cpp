@@ -151,13 +151,21 @@ bool WiiUMiiData::transfer_appearance_from(MiiData *mii_data_template) {
     memcpy(&local_only_s, this->mii_data + SHAREABLE_OFFSET, 1);
     local_only_s = local_only_s & 0x01;
 
-    memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // gender, color, birth
-    memcpy(this->mii_data + APPEARANCE_OFFSET_2, mii_data_template->mii_data + APPEARANCE_OFFSET_2, APPEARANCE_SIZE_2); // after name till the end
+    memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // after name till the end
 
     uint8_t local_only_t; 
     memcpy(&local_only_t, mii_data_template->mii_data + SHAREABLE_OFFSET, 1);
     local_only_t = (local_only_t & 0xFE) + local_only_s; // restore original local_only_value in transformed mii
     memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only_t, 1);
+
+    uint8_t gender;
+    memcpy(&gender, mii_data_template->mii_data + GENDER_OFFSET, 1);
+    gender = gender &  0x01;
+    uint8_t gender_and_other;
+    memcpy(&gender_and_other, this->mii_data + GENDER_OFFSET, 1);
+    gender_and_other = (gender_and_other & 0xFE) + gender;
+    memset(this->mii_data + GENDER_OFFSET, gender_and_other,1);  // move just gender info from  template miidata
+
 
     return true;
 }
