@@ -128,6 +128,43 @@ std::string WiiUMiiData::get_mii_name() {
     return miiName;
 }
 
+uint8_t WiiUMiiData::get_gender() {
+    uint8_t gender;
+    memcpy(&gender, this->mii_data + GENDER_OFFSET, 1);
+    gender = gender & GENDER_MASK;
+    return gender;
+}
+
+void WiiUMiiData::get_birthdate_as_string(std::string &birth_month, std::string &birth_day) {
+    
+    uint8_t hi, lo;
+    memcpy(&hi, this->mii_data + BIRTHDATE_OFFSET, 1);
+    memcpy(&lo, this->mii_data + BIRTHDATE_OFFSET + 1, 1);
+    uint16_t birthdate = (hi << 8) + lo;
+
+    char hexhex[3];
+    uint8_t birthday = (birthdate >> BIRTHDAY_ROLL) & BIRTHDAY_MASK;
+    snprintf(hexhex, 3, "%x", birthday);
+    birth_day.assign(hexhex);
+
+    uint8_t birthmonth = (birthdate >> BIRTHMONTH_ROLL) & BIRTHMONTH_MASK;
+    snprintf(hexhex, 3, "%x", birthmonth);
+    birth_month.assign(hexhex);
+
+}
+
+std::string WiiUMiiData::get_name_as_hex_string() {
+
+    std::string name_hex;
+    char hexhex[3];
+    for (size_t i = 0;i < 2 * MiiData::MII_NAME_SIZE;i++) {
+        snprintf(hexhex, 3, "%02x", this->mii_data[NAME_OFFSET + i]);
+        name_hex.append(hexhex);
+    }
+    return name_hex;
+
+}
+
 bool WiiUMiiData::toggle_copy_flag() {
 
     uint8_t copyable = this->mii_data[COPY_FLAG_OFFSET] ^ 0x1;
@@ -153,18 +190,18 @@ bool WiiUMiiData::transfer_appearance_from(MiiData *mii_data_template) {
 
     memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // after name till the end
 
-    uint8_t local_only_t; 
+    uint8_t local_only_t;
     memcpy(&local_only_t, mii_data_template->mii_data + SHAREABLE_OFFSET, 1);
     local_only_t = (local_only_t & 0xFE) + local_only_s; // restore original local_only_value in transformed mii
     memcpy(this->mii_data + SHAREABLE_OFFSET, &local_only_t, 1);
 
     uint8_t gender;
     memcpy(&gender, mii_data_template->mii_data + GENDER_OFFSET, 1);
-    gender = gender &  0x01;
+    gender = gender & 0x01;
     uint8_t gender_and_other;
     memcpy(&gender_and_other, this->mii_data + GENDER_OFFSET, 1);
     gender_and_other = (gender_and_other & 0xFE) + gender;
-    memset(this->mii_data + GENDER_OFFSET, gender_and_other,1);  // move just gender info from  template miidata
+    memset(this->mii_data + GENDER_OFFSET, gender_and_other, 1); // move just gender info from  template miidata
 
 
     return true;
@@ -222,7 +259,7 @@ bool WiiUMiiData::toggle_temp_flag() {
     uint8_t flags;
     memcpy(&flags, this->mii_data + MII_ID_OFFSET, 1);
     uint8_t toggled = flags ^ 0x20;
-    if ((toggled & 0x20) == 0x20)         // in the samples, valid bit is set to 0 then the mii is a temporary (o developer) one
+    if ((toggled & 0x20) == 0x20) // in the samples, valid bit is set to 0 then the mii is a temporary (o developer) one
         toggled = toggled & 0xEF;
     else
         toggled = toggled | 0x10;
@@ -249,13 +286,6 @@ bool WiiUMiiData::flip_between_account_mii_data_and_mii_data(unsigned char *mii_
     return true;
 }
 
-uint8_t WiiUMiiData::get_gender() {
-    uint8_t gender;
-    memcpy(&gender, this->mii_data + GENDER_OFFSET, 1);
-    gender = gender & 0x01;
-    return gender;
-}
-
 // Test functions
 bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
     return true;
@@ -264,4 +294,3 @@ bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
 bool WiiUMiiData::copy_some_bytes([[maybe_unused]] MiiData *mii_data_template, [[maybe_unused]] char name, [[maybe_unused]] size_t offset, [[maybe_unused]] size_t bytes) {
     return true;
 };
-

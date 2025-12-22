@@ -62,9 +62,14 @@ void MiiSelectState::initialize_view() {
 
     all_miis_count = mii_repo->miis.size();
 
+    bool allMiisUnselected = true;
+    if ((action == MiiProcess::SELECT_MIIS_FOR_EXPORT) ||
+        (action == MiiProcess::LIST_MIIS))
+        allMiisUnselected = false;
+
     for (size_t i = 0; i < all_miis_count; i++) {
         if (mii_repo->miis.at(i)->is_valid) {
-            if (selectOnlyOneMii)
+            if (selectOnlyOneMii || allMiisUnselected)
                 mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED));
             else
                 mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED));
@@ -485,6 +490,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     mii_process_shared_state->primary_c2a = &this->c2a;
                     mii_process_shared_state->mii_index_to_overwrite = c2a[currentlySelectedMii];
                     this->state = STATE_DO_SUBSTATE;
+                    MiiUtils::get_compatible_repos(mii_repos_candidates, mii_process_shared_state->primary_mii_repo);
                     for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)
                         mii_repos_candidates.push_back(true);
                     this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_IMPORT_REPO, mii_process_shared_state);

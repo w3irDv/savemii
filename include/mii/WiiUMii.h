@@ -25,6 +25,9 @@ public:
 class WiiUMiiData : public MiiData {
 public:
     std::string get_mii_name();
+    uint8_t get_gender();
+    void get_birthdate_as_string(std::string &birth_month, std::string &birth_day);
+    std::string get_name_as_hex_string();
     bool toggle_copy_flag();
     bool transfer_ownership_from(MiiData *mii_data_template);
     bool transfer_appearance_from(MiiData *mii_data_template);
@@ -32,7 +35,6 @@ public:
     bool toggle_normal_special_flag();
     bool toggle_share_flag();
     bool toggle_temp_flag();
-    uint8_t get_gender();
 
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 
@@ -46,7 +48,14 @@ public:
     const static size_t MII_ID_OFFSET = 0xC;  // Also FFLCreateID
     const static size_t DEVICE_HASH_OFFSET = 0x10;
     const static size_t DEVICE_HASH_SIZE = 0x6;
+    const static size_t BIRTHDATE_OFFSET = 0x18;
+    const static uint8_t BIRTHDAY_MASK = 0x1F;
+    const static uint8_t BIRTHDAY_ROLL = 0x5;
+    const static uint8_t BIRTHMONTH_MASK = 0xF;
+    const static uint8_t BIRTHMONTH_ROLL = 0x1;
     const static size_t GENDER_OFFSET = 0x19;  // last bit
+    const static uint8_t GENDER_MASK = 0x01;
+    const static size_t NAME_OFFSET = 0x1A;
     const static size_t APPEARANCE_OFFSET_1 = 0x2E;
     const static size_t APPEARANCE_SIZE_1 = 0x1A;
     const static size_t SHAREABLE_OFFSET = 0x31;

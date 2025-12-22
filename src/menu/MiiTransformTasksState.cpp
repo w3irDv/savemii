@@ -104,12 +104,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             mii_process_shared_state->toggle_share_flag = toggle_share_flag;
             mii_process_shared_state->toggle_temp_flag = toggle_temp_flag;
             std::vector<bool> mii_repos_candidates;
-            for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++) {
-                if (mii_process_shared_state->primary_mii_repo->db_type == MiiUtils::mii_repos.at(i)->db_type)
-                    mii_repos_candidates.push_back(true);
-                else
-                    mii_repos_candidates.push_back(false);
-            }
+            MiiUtils::get_compatible_repos(mii_repos_candidates, mii_process_shared_state->primary_mii_repo);
             if (transfer_physical_appearance || transfer_ownership) {
                 this->state = STATE_DO_SUBSTATE;
                 this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE, mii_process_shared_state);

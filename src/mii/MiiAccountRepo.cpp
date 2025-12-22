@@ -127,15 +127,15 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     size_t mii_data_size = miidata->mii_data_size;
 
     if (mii_data_size != (MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE)) { // Cannot happen
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("MiiData buffer is not big enough\n%s"), this->miis.at(index)->location_name);
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("MiiData buffer is not big enough\n%s"), this->miis.at(index)->location_name.c_str());
         return false;
     }
 
-    // Compute gender before fliiping to LE
+    // Compute gender before flipping to LE
     uint8_t gender = miidata->get_gender();
-    printf("\n\n\ngender %d\n\n\n",gender);
     std::string gender_str = std::to_string(gender + 1);
 
+    std::string mii_name_str = miidata->get_name_as_hex_string();
 
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
@@ -207,7 +207,9 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
             tempFile << "MiiData=" << mii_data_str << std::endl;
         } else if ((line.find("Gender=1") != std::string::npos) || (line.find("Gender=2") != std::string::npos)) {
             tempFile << "Gender=" << gender_str << std::endl; // update only if previoulsy the gender was filled
-        } else {
+        } else if (line.find("MiiName=") != std::string::npos) {
+            tempFile << "MiiName=" << mii_name_str << std::endl;
+        } else{
             tempFile << line << std::endl;
         }
     }

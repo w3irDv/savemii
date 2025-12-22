@@ -60,6 +60,9 @@ public:
     }
 
     virtual std::string get_mii_name() = 0;
+    virtual uint8_t get_gender() = 0;
+    virtual void get_birthdate_as_string(std::string &birth_month, std::string &birth_day) = 0;
+    virtual std::string get_name_as_hex_string() = 0;
     virtual bool toggle_copy_flag() = 0;                                  // for Wii U
     virtual bool transfer_ownership_from(MiiData *mii_data_template) = 0; // wii -> device, wiiu -> device+author_id
     virtual bool transfer_appearance_from(MiiData *mii_data_template) = 0;
@@ -67,7 +70,6 @@ public:
     virtual bool toggle_normal_special_flag() = 0;
     virtual bool toggle_share_flag() = 0;
     virtual bool toggle_temp_flag() = 0;
-    virtual uint8_t get_gender() = 0;
 
     virtual bool set_normal_special_flag(size_t fold) = 0;
     virtual bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes) = 0;
@@ -80,4 +82,5 @@ public:
     size_t mii_data_size;
 
     const static inline size_t MII_NAME_SIZE = 0xA;
+    
 };

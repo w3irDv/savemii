@@ -492,6 +492,15 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
     }
 }
 
+void MiiUtils::get_compatible_repos(std::vector<bool> &mii_repos_candidates, MiiRepo *mii_repo) {
+    for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++) {
+        if (mii_repo->db_type == MiiUtils::mii_repos.at(i)->db_type)
+            mii_repos_candidates.push_back(true);
+        else
+            mii_repos_candidates.push_back(false);
+    }
+}
+
 ///// TEST FUNCTIONS
 bool MiiUtils::eight_fold_mii(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
 

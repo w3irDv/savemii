@@ -26,13 +26,13 @@ WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string times
 };
 
 /// @brief Wii Mii doe snot have this flag
-/// @return 
+/// @return
 bool WiiMiiData::toggle_copy_flag() {
     return true;
 }
 
 /// @brief Wii Mii does no have this flag
-/// @return 
+/// @return
 bool WiiMiiData::toggle_temp_flag() {
     return true;
 }
@@ -53,19 +53,19 @@ bool WiiMiiData::transfer_appearance_from(MiiData *mii_data_template) {
     memcpy(this->mii_data + APPEARANCE_OFFSET_1, mii_data_template->mii_data + APPEARANCE_OFFSET_1, APPEARANCE_SIZE_1); // height, weight
     memcpy(this->mii_data + APPEARANCE_OFFSET_2, mii_data_template->mii_data + APPEARANCE_OFFSET_2, APPEARANCE_SIZE_2); // after name till the end
 
-    uint8_t mingleOff_t; 
+    uint8_t mingleOff_t;
     memcpy(&mingleOff_t, this->mii_data + SHAREABLE_OFFSET, 1);
     mingleOff_t = (mingleOff_t & 0xFB) + mingleOff_s; // keep original mingle attribute
     memset(this->mii_data + SHAREABLE_OFFSET, mingleOff_t, 1);
 
-    
+
     uint8_t gender;
     memcpy(&gender, mii_data_template->mii_data + GENDER_OFFSET, 1);
     gender = gender & 0x40;
     uint8_t gender_and_other;
     memcpy(&gender_and_other, this->mii_data + GENDER_OFFSET, 1);
     gender_and_other = (gender_and_other & 0xBF) + gender;
-    memset(this->mii_data + GENDER_OFFSET, gender_and_other,1);  // move just gender info from  template miidata
+    memset(this->mii_data + GENDER_OFFSET, gender_and_other, 1); // move just gender info from  template miidata
 
 
     return true;
@@ -92,6 +92,40 @@ std::string WiiMiiData::get_mii_name() {
     return miiName;
 }
 
+uint8_t WiiMiiData::get_gender() {
+    uint8_t gender;
+    memcpy(&gender, this->mii_data + GENDER_OFFSET, 1);
+    gender = gender & GENDER_MASK;
+    return gender;
+}
+
+void WiiMiiData::get_birthdate_as_string(std::string &birth_month, std::string &birth_day) {
+
+    uint8_t hi, lo;
+    memcpy(&hi, this->mii_data + BIRTHDATE_OFFSET, 1);
+    memcpy(&lo, this->mii_data + BIRTHDATE_OFFSET + 1, 1);
+    uint16_t birthdate = (hi << 8) + lo;
+
+    char hexhex[3];
+    uint8_t birthday = (birthdate >> BIRTHDAY_ROLL) & BIRTHDAY_MASK;
+    snprintf(hexhex, 3, "%x", birthday);
+    birth_day.assign(hexhex);
+
+    uint8_t birthmonth = (birthdate >> BIRTHMONTH_ROLL) & BIRTHMONTH_MASK;
+    snprintf(hexhex, 3, "%x", birthmonth);
+    birth_month.assign(hexhex);
+}
+
+std::string WiiMiiData::get_name_as_hex_string() {
+
+    std::string name_hex;
+    char hexhex[3];
+    for (size_t i = 0; i < 2 * MiiData::MII_NAME_SIZE; i++) {
+        snprintf(hexhex, 3, "%02x", this->mii_data[NAME_OFFSET + i]);
+        name_hex.append(hexhex);
+    }
+    return name_hex;
+}
 
 WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
@@ -202,15 +236,15 @@ bool WiiMiiData::toggle_normal_special_flag() {
     uint8_t mii_type = (flags & 0b11100000) >> 5;
     uint8_t partial_ts = (flags & 0b00011111);
     switch (mii_type) {
-        case 0:         // special > normal
+        case 0: // special > normal
         case 2:
             mii_type = 4;
             break;
-        case 6:         // not local > special
-            mii_type = 2;   // if 0, miis downloaded from https://www.miilibrary.com does not appear unless thy are local from the console (you can fotce it with xfer_physical_appeareance)         
+        case 6:           // not local > special
+            mii_type = 2; // if 0, miis downloaded from https://www.miilibrary.com does not appear unless thy are local from the console (you can fotce it with xfer_physical_appeareance)
             break;
-        default:        // normal > not_local
-            mii_type = 6;   
+        default: // normal > not_local
+            mii_type = 6;
             break;
     }
     flags = (mii_type << 5) + partial_ts;
@@ -234,14 +268,6 @@ bool WiiMiiData::toggle_share_flag() {
     memcpy(this->mii_data + SHAREABLE_OFFSET, &mingleOff, 1);
 
     return true;
-}
-
-
-uint8_t WiiMiiData::get_gender() {
-    uint8_t gender;
-    memcpy(&gender, this->mii_data + GENDER_OFFSET, 1);
-    gender = gender & 0x40;
-    return gender;
 }
 
 /// @brief Debug function to set arbitrary values in flag offset

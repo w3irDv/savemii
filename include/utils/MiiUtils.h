@@ -25,6 +25,8 @@ namespace MiiUtils {
 
     bool xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
 
+    void get_compatible_repos(std::vector<bool> &mii_repos_candidates, MiiRepo *mii_repo);
+
     bool eight_fold_mii(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
     bool copy_some_bytes_from_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
 
