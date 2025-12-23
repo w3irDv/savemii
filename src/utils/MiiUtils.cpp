@@ -230,6 +230,8 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
                     if (receiving_repo->import_miidata(mii_data, IN_PLACE, mii_process_shared_state->mii_index_to_overwrite)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
                         mii_process_shared_state->primary_mii_view->at(mii_process_shared_state->mii_index_to_overwrite).state = MiiStatus::OK;
+                        mii_process_shared_state->primary_mii_view->at(mii_process_shared_state->mii_index_to_overwrite).selected = false;
+                        receiving_repo->repopulate_mii(mii_process_shared_state->mii_index_to_overwrite,mii_data);
                     }
                 } else {
                     if (receiving_repo->import_miidata(mii_data, ADD_MII, IN_EMPTY_LOCATION))
@@ -266,7 +268,8 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
             return false;
         }
     receiving_repo->persist_repo();
-    receiving_repo->needs_populate = true;
+    if (receiving_repo->db_kind != MiiRepo::eDBKind::ACCOUNT) // for repoAccounts we have done already done a repopulate
+        receiving_repo->needs_populate = true;
     return (errorCounter == 0);
 }
 
@@ -448,11 +451,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_data->toggle_temp_flag();
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
-                        Mii *temp = mii_repo->miis.at(mii_index);
-                        mii_repo->miis.at(mii_index) = temp->v_populate_mii(mii_data->mii_data);
-                        mii_repo->miis.at(mii_index)->mii_repo = mii_repo;
-                        mii_repo->miis.at(mii_index)->location_name = temp->location_name;
-                        delete temp;
+                        mii_repo->repopulate_mii(mii_index,mii_data);
                     }
                     delete mii_data;
                 } else {

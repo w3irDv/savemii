@@ -28,6 +28,8 @@ public:
                     default:;
                 };
         }
+        if (cursorPos > entrycount - 1)
+            cursorPos = entrycount - 1;
     };
 
     //    ~MiiTransformTasksState() {

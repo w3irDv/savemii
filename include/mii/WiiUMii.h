@@ -50,9 +50,9 @@ public:
     const static size_t DEVICE_HASH_SIZE = 0x6;
     const static size_t BIRTHDATE_OFFSET = 0x18;
     const static uint8_t BIRTHDAY_MASK = 0x1F;
-    const static uint8_t BIRTHDAY_ROLL = 0x5;
+    const static uint8_t BIRTHDAY_SHIFT = 0x5;
     const static uint8_t BIRTHMONTH_MASK = 0xF;
-    const static uint8_t BIRTHMONTH_ROLL = 0x1;
+    const static uint8_t BIRTHMONTH_SHIFT = 0x1;
     const static size_t GENDER_OFFSET = 0x19;  // last bit
     const static uint8_t GENDER_MASK = 0x01;
     const static size_t NAME_OFFSET = 0x1A;

@@ -23,7 +23,7 @@ void MiiTasksState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPos(22, 0, LanguageUtils::gettext("Mii Tasks"));
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAligned(0,4, 2, LanguageUtils::gettext("Selected Repo: %s"), mii_repo->repo_name.c_str());
+        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("Selected Repo: %s"), mii_repo->repo_name.c_str());
 
         switch (mii_repo->db_kind) {
             case MiiRepo::eDBKind::ACCOUNT: {
@@ -74,15 +74,17 @@ void MiiTasksState::render() {
         if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
             switch (cursorPos) {
                 case 0:
-                    info = LanguageUtils::gettext("Backup/Restore Accont Wii U data as a whole");
+                    info = LanguageUtils::gettext("Backup All Wii U Account folders and files");
                     break;
                 case 1:
+                    info = LanguageUtils::gettext("Restore One Wii U Account files (all info, including but not only MiiData)");
+                    break;
                 case 2:
                 case 3:
                     info = LanguageUtils::gettext("Import/Export Miis between Internal Account and SD Stage folders");
                     break;
                 case 4:
-                    info = LanguageUtils::gettext("Change of appearance of internal account miis");
+                    info = LanguageUtils::gettext("Transform tasks for internal account miis (transfer appearance, copy/share/normal/special flags...)");
                     break;
                 default:
                     info = "";
@@ -91,15 +93,25 @@ void MiiTasksState::render() {
         } else {
             switch (cursorPos) {
                 case 0:
+                    info = LanguageUtils::gettext("Backup Mii Database in their enterity");
+                    break;
                 case 1:
+                    info = LanguageUtils::gettext("Restore Mii Database in their enterity");
+                    break;
                 case 2:
-                    info = LanguageUtils::gettext("Backup/Restore internal Mii DBs as a whole");
+                    info = LanguageUtils::gettext("Wipe Mii Database");
                     break;
                 case 3:
+                info = LanguageUtils::gettext("List all Miis and some of its attributes");
+                    break;
                 case 4:
+                info = LanguageUtils::gettext("Export some Miis from this Database to another one");
+                    break;
                 case 5:
+                info = LanguageUtils::gettext("Import some Miis from another Database to this one");
+                    break;
                 case 6:
-                    info = LanguageUtils::gettext("Import/Export/Wipe Miis between internel DBs and SD Stage folders");
+                    info = LanguageUtils::gettext("Wipe some Miis from the Mii Database");
                     break;
                 case 7:
                     info = LanguageUtils::gettext("Change attributes (share/copy/miiid/owner) or appareance of miis");

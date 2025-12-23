@@ -143,11 +143,11 @@ void WiiUMiiData::get_birthdate_as_string(std::string &birth_month, std::string 
     uint16_t birthdate = (hi << 8) + lo;
 
     char hexhex[3];
-    uint8_t birthday = (birthdate >> BIRTHDAY_ROLL) & BIRTHDAY_MASK;
+    uint8_t birthday = (birthdate >> BIRTHDAY_SHIFT) & BIRTHDAY_MASK;
     snprintf(hexhex, 3, "%x", birthday);
     birth_day.assign(hexhex);
 
-    uint8_t birthmonth = (birthdate >> BIRTHMONTH_ROLL) & BIRTHMONTH_MASK;
+    uint8_t birthmonth = (birthdate >> BIRTHMONTH_SHIFT) & BIRTHMONTH_MASK;
     snprintf(hexhex, 3, "%x", birthmonth);
     birth_month.assign(hexhex);
 

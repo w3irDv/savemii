@@ -24,27 +24,28 @@ void MiiTransformTasksState::render() {
         Console::consolePrintPos(22, 0, LanguageUtils::gettext("Mii Transform Tasks"));
         DrawUtils::setFontColor(COLOR_INFO);
 
-        Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("Selected Repo: %s"), mii_repo->repo_name.c_str());
+        DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+        Console::consolePrintPosAligned(0,4, 2, LanguageUtils::gettext("Selected Repo: %s"), mii_repo->repo_name.c_str());
 
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Transfer physical appearance: %s"), transfer_physical_appearance ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Transfer physical appearance: %s"), transfer_physical_appearance ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         //if (this->mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT)
         //    goto all_tasks_shown;
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Transfer Ownership: %s"), transfer_ownership ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Transfer Ownership: %s"), transfer_ownership ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Update MiiId (Timestamp): %s"), update_timestamp ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Update MiiId (Timestamp): %s"), update_timestamp ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Toggle Share/Mingle flag: %s"), toggle_share_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Toggle Share/Mingle flag: %s"), toggle_share_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Toggle Normal/Special flag: %s"), toggle_normal_special_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Toggle Normal/Special flag: %s"), toggle_normal_special_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
             goto all_tasks_shown;
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-        Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Togle Copy Flag On/Off: %s"), toggle_copy_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Togle Copy Flag On/Off: %s"), toggle_copy_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
-        Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Togle Temporary Flag On/Off: %s"), toggle_temp_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Togle Temporary Flag On/Off: %s"), toggle_temp_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
     all_tasks_shown:
         const char *info;
@@ -77,10 +78,10 @@ void MiiTransformTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF, 13, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 12, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, cursorPos + 5, "\u2192");
+        Console::consolePrintPos(M_OFF, cursorPos + 3, "\u2192");
 
         if (transfer_physical_appearance || transfer_ownership)
             Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue000: Select Mii Template  \ue001: Back"));

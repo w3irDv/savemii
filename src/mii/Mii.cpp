@@ -16,8 +16,8 @@ Mii::Mii(std::string mii_name, std::string creator_name, std::string timestamp, 
                                                                                      mii_type(mii_type),
                                                                                      mii_repo(mii_repo),
                                                                                      index(index) {
-    if (device_hash.length() > 7)
-        device_hash_lite = device_hash.substr(device_hash.length() - 8);
+    if (device_hash.length() > 5)
+        device_hash_lite = device_hash.substr(device_hash.length() - 6);
 };
 
 void *MiiData::allocate_memory(size_t size) {

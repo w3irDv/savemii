@@ -68,7 +68,7 @@ void MiiRepoSelectState::render() {
                 menuTitle = LanguageUtils::gettext("Select Repo containing the Mii Template");
                 screenOptions = LanguageUtils::gettext("\ue000: Select Template Mii Repo  \ue001: Back");
                 break;
-            case MiiProcess::SELECT_IMPORT_REPO:
+            case MiiProcess::SELECT_REPO_FOR_IMPORT:
                 menuTitle = LanguageUtils::gettext("Select Repo to Import Miis from");
                 screenOptions = LanguageUtils::gettext("\ue000: Select Template Mii Repo  \ue001: Back");
                 break;
@@ -124,7 +124,7 @@ ApplicationState::eSubState MiiRepoSelectState::update(Input *input) {
                     this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
                     this->state = STATE_DO_SUBSTATE;
                 } break;
-                case MiiProcess::SELECT_IMPORT_REPO:
+                case MiiProcess::SELECT_REPO_FOR_IMPORT:
                 // MVP - USED ONLY IN ACCOUNT REPO MII IMPORT TASK
                     mii_process_shared_state->auxiliar_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
                     this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_MIIS_FOR_IMPORT, mii_process_shared_state);

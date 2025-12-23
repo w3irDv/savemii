@@ -39,9 +39,9 @@ public:
 
     const static size_t BIRTHDATE_OFFSET = 0x00;
     const static uint8_t BIRTHDAY_MASK = 0x1F;
-    const static uint8_t BIRTHDAY_ROLL = 0x5;
+    const static uint8_t BIRTHDAY_SHIFT = 0x5;
     const static uint8_t BIRTHMONTH_MASK = 0xF;
-    const static uint8_t BIRTHMONTH_ROLL = 0xA;
+    const static uint8_t BIRTHMONTH_SHIFT = 0xA;
     const static inline size_t NAME_OFFSET = 0x02;
     const static size_t DEVICE_HASH_OFFSET = 0x1C;
     const static size_t DEVICE_HASH_SIZE = 0x4;    // INCLOUEM EL CHECKSUM

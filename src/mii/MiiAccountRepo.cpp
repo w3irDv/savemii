@@ -202,7 +202,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     }
     */
     while (std::getline(mii_file, line)) {
-        // Copy All Lines except MiiData one
+        // Copy All Lines except MiiData related ones
         if (line.find("MiiData=") != std::string::npos) {
             tempFile << "MiiData=" << mii_data_str << std::endl;
         } else if ((line.find("Gender=1") != std::string::npos) || (line.find("Gender=2") != std::string::npos)) {

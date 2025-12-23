@@ -18,6 +18,8 @@ public:
                                                                      mii_process_shared_state(mii_process_shared_state) {
         mii_process_shared_state->state = action;
         entrycount = (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) ? 6 : 8;
+        if (cursorPos > entrycount - 1)
+            cursorPos = entrycount - 1;
     };
 
     //    ~MiiTasksState() {
@@ -36,7 +38,7 @@ private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_MII_TASKS;
 
-    int cursorPos = 0;
+    static inline int cursorPos = 0;
     int entrycount = 0;
 
     MiiRepo *mii_repo;

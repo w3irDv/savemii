@@ -40,6 +40,7 @@ public:
     virtual bool import_miidata(MiiData *mii_data, bool in_place, size_t index) = 0;  // from (temp)mem to the repo
     virtual MiiData *extract_mii_data(size_t index) = 0; // from the repo to (tmp)mem
     virtual bool wipe_miidata(size_t index) = 0;
+    bool repopulate_mii(size_t index, MiiData *miidata);
 
     virtual std::string getBackupBasePath() { return backup_base_path; };
     int backup(int slot, std::string tag = "");

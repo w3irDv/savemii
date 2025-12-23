@@ -174,6 +174,16 @@ int MiiRepo::wipe() {
     return errorCode;
 }
 
+bool MiiRepo::repopulate_mii(size_t index, MiiData *miidata ) {
+    Mii *temp = this->miis.at(index);
+    this->miis.at(index) = temp->v_populate_mii(miidata->mii_data);
+    this->miis.at(index)->mii_repo = this;
+    this->miis.at(index)->location_name = temp->location_name;
+    delete temp;
+
+    return true;
+}
+
 bool MiiRepo::test_list_repo() {
 
     for (const auto &mii : this->miis) {
