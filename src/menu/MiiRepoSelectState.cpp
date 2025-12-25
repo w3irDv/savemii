@@ -70,7 +70,11 @@ void MiiRepoSelectState::render() {
                 break;
             case MiiProcess::SELECT_REPO_FOR_IMPORT:
                 menuTitle = LanguageUtils::gettext("Select Repo to Import Miis from");
-                screenOptions = LanguageUtils::gettext("\ue000: Select Template Mii Repo  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue000: Select Miis to Import from this repo  \ue001: Back");
+                break;
+            case MiiProcess::SELECT_REPO_FOR_EXPORT:
+                menuTitle = LanguageUtils::gettext("Select Repo to Export Miis to");
+                screenOptions = LanguageUtils::gettext("\ue000: Select Miis to Export to this repo  \ue001: Back");
                 break;
             default:
                 menuTitle = LanguageUtils::gettext("Select Mii Repo to Manage");
@@ -124,11 +128,16 @@ ApplicationState::eSubState MiiRepoSelectState::update(Input *input) {
                     this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
                     this->state = STATE_DO_SUBSTATE;
                 } break;
-                case MiiProcess::SELECT_REPO_FOR_IMPORT:
-                // MVP - USED ONLY IN ACCOUNT REPO MII IMPORT TASK
+                case MiiProcess::SELECT_REPO_FOR_IMPORT: {
                     mii_process_shared_state->auxiliar_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
                     this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->auxiliar_mii_repo, MiiProcess::SELECT_MIIS_FOR_IMPORT, mii_process_shared_state);
                     this->state = STATE_DO_SUBSTATE;
+                } break;
+                case MiiProcess::SELECT_REPO_FOR_EXPORT: {
+                    mii_process_shared_state->auxiliar_mii_repo = MiiUtils::mii_repos.at(c2a[cursorPos + this->scroll]);
+                    this->subState = std::make_unique<MiiSelectState>(mii_process_shared_state->primary_mii_repo, MiiProcess::SELECT_MIIS_FOR_EXPORT, mii_process_shared_state);
+                    this->state = STATE_DO_SUBSTATE;
+                }
                 default:;
             }
             return SUBSTATE_RUNNING;

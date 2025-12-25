@@ -384,4 +384,5 @@ void MiiDBOptionsState::updateRestoreData() {
 
 void MiiDBOptionsState::updateWipeData() {
     updateRepoHasData();
+    passiveUpdateSourceSelectionHasData();
 }

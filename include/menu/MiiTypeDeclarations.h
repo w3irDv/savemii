@@ -34,6 +34,7 @@ namespace MiiProcess {
         WIPE_DB,
         LIST_MIIS,
         SELECT_REPO_FOR_IMPORT,
+        SELECT_REPO_FOR_EXPORT,
         SELECT_TRANSFORM_TASK,
         SELECT_MIIS_FOR_EXPORT,
         SELECT_MIIS_FOR_IMPORT,

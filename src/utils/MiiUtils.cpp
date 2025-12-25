@@ -31,13 +31,13 @@ bool MiiUtils::initMiiRepos() {
     MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", MiiRepo::eDBType::FFL, pathaccount, "mii_bckp_account");
     MiiRepos["ACCOUNT_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_Stage", MiiRepo::eDBType::FFL, pathaccount_Stage, "mii_bckp_account_Stage");
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_Stage"]);
-    MiiRepos["FFL_Stage"]->setStageRepo(MiiRepos["FFL"]);
+    //MiiRepos["FFL_Stage"]->setStageRepo(MiiRepos["FFL"]);
 
     MiiRepos["RFL"]->setStageRepo(MiiRepos["RFL_Stage"]);
-    MiiRepos["RFL_Stage"]->setStageRepo(MiiRepos["RFL"]);
+    //MiiRepos["RFL_Stage"]->setStageRepo(MiiRepos["RFL"]);
 
     MiiRepos["ACCOUNT"]->setStageRepo(MiiRepos["ACCOUNT_Stage"]);
-    MiiRepos["ACCOUNT_Stage"]->setStageRepo(MiiRepos["ACCOUNT"]);
+    //MiiRepos["ACCOUNT_Stage"]->setStageRepo(MiiRepos["ACCOUNT"]);
 
     mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_Stage"], MiiRepos["RFL"], MiiRepos["RFL_Stage"], MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_Stage"]};
 
@@ -120,7 +120,7 @@ bool MiiUtils::export_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
         return false;
     }
 
-    MiiRepo *target_repo = mii_repo->stage_repo;
+    MiiRepo *target_repo = mii_process_shared_state->auxiliar_mii_repo;
 
     if (target_repo == nullptr) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Target Repo is null"));
@@ -377,6 +377,7 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
     switch (mii_process_shared_state->state) {
         case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
         case MiiProcess::SELECT_TRANSFORM_TASK:
+        case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
             Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Transforming mii"));
             break;
         case MiiProcess::SELECT_MIIS_TO_WIPE:
