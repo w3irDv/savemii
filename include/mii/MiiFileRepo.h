@@ -32,5 +32,8 @@ public:
 
     uint16_t get_crc();
 
+    bool init_db_file();
+    bool fill_empty_db_file();
+
     bool test_list_repo();
 };

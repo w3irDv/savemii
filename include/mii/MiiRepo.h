@@ -4,10 +4,10 @@
 #include <map>
 #include <mii/Mii.h>
 #include <string>
-#include <vector>
 #include <mocha/mocha.h>
-#define IN_PLACE true
-#define ADD_MII false
+#include <vector>
+#define IN_PLACE          true
+#define ADD_MII           false
 #define IN_EMPTY_LOCATION 0
 
 class Mii;
@@ -31,14 +31,14 @@ public:
 
     virtual bool populate_repo() = 0;
     virtual bool empty_repo() = 0;
-
+    virtual bool init_db_file() = 0;
 
     virtual bool open_and_load_repo() = 0; // copy repo to mem
-    virtual bool persist_repo() = 0;         // save repro from mem to wherever
+    virtual bool persist_repo() = 0;       // save repro from mem to wherever
 
     //virtual bool import_mii(Mii &mii) = 0;               // from (temp)mem to the repo
-    virtual bool import_miidata(MiiData *mii_data, bool in_place, size_t index) = 0;  // from (temp)mem to the repo
-    virtual MiiData *extract_mii_data(size_t index) = 0; // from the repo to (tmp)mem
+    virtual bool import_miidata(MiiData *mii_data, bool in_place, size_t index) = 0; // from (temp)mem to the repo
+    virtual MiiData *extract_mii_data(size_t index) = 0;                             // from the repo to (tmp)mem
     virtual bool wipe_miidata(size_t index) = 0;
     bool repopulate_mii(size_t index, MiiData *miidata);
 
@@ -56,7 +56,7 @@ public:
     eDBKind db_kind;
     const std::string path_to_repo;
     const std::string backup_base_path;
-    MiiRepo *stage_repo;
+    MiiRepo *stage_repo = nullptr;
 
     FSMode db_fsmode = (FSMode) 0x666;
     uint32_t db_owner = 0;
@@ -72,5 +72,4 @@ public:
     bool needs_populate = true;
 
     bool test_list_repo();
-
 };

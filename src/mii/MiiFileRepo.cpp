@@ -68,6 +68,33 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::set_db_fsa_metadata() {
     return false; // no matching, we let db_owner be 0
 }
 
+template<>
+bool MiiFileRepo<WiiMii, WiiMiiData>::fill_empty_db_file() {
+
+    mempcpy(db_buffer, WiiMiiData::DB::MAGIC, 4);
+    memset(db_buffer + 4, 0, WiiMiiData::DB::MII_SECTION_SIZE - 4);
+    memset(db_buffer + 0x1cec, 0x80, 1);
+    mempcpy(db_buffer + WiiMiiData::DB::MII_SECTION_SIZE, WiiMiiData::DB::PARADE_MAGIC, 4);
+    memset(db_buffer + WiiMiiData::DB::MII_SECTION_SIZE + 4, 0xFF, 4);
+    memset(db_buffer + WiiMiiData::DB::MII_SECTION_SIZE + 8, 0, 8);
+    for (uint32_t i = 0; i < WiiMiiData::DB::MII_PARADE_SIZE - 0x20; i = i + 0xc)
+        mempcpy(db_buffer + WiiMiiData::DB::MII_SECTION_SIZE + 0x10 + i, WiiMiiData::DB::PARADE_DATA, 0xc);
+    memset(db_buffer + WiiMiiData::DB::MII_SECTION_SIZE + 0x10 + WiiMiiData::DB::MII_PARADE_SIZE, 0,
+           WiiMiiData::DB::DB_SIZE - (WiiMiiData::DB::MII_SECTION_SIZE + 0x10 + WiiMiiData::DB::MII_PARADE_SIZE));
+
+    return true;
+}
+
+template<>
+bool MiiFileRepo<WiiUMii, WiiUMiiData>::fill_empty_db_file() {
+
+    mempcpy(db_buffer, WiiUMiiData::DB::MAGIC, 4);
+    memset(db_buffer + 4, 0, WiiUMiiData::DB::DB_SIZE - 4);
+
+    return true;
+}
+
+
 template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
 template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
 
@@ -414,4 +441,50 @@ uint16_t MiiFileRepo<MII, MIIDATA>::get_crc() {
     //#endif
 
     return crc;
+}
+
+template<typename MII, typename MIIDATA>
+bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
+    std::string db_filepath = this->path_to_repo;
+    db_buffer = (uint8_t *) MiiData::allocate_memory(MIIDATA::DB::DB_SIZE);
+
+    if (db_buffer == nullptr) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for initializing the DB data"), db_filepath.c_str());
+        return false;
+    }
+
+    this->fill_empty_db_file();
+
+    uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
+
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    crc = __builtin_bswap16(crc);
+#endif
+    memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
+
+
+    unlink(db_filepath.c_str());
+    std::ofstream db_file;
+    db_file.open(db_filepath.c_str(), std::ios_base::binary);
+    if (db_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        goto cleanup_after_io_error;
+    }
+    db_file.write((char *) db_buffer, MIIDATA::DB::DB_SIZE);
+    if (db_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        db_file.close();
+        goto cleanup_after_io_error;
+    }
+
+    db_file.close();
+    if (db_file.fail()) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        goto cleanup_after_io_error;
+    }
+    return true;
+
+cleanup_after_io_error:
+    free(db_buffer);
+    return false;
 }

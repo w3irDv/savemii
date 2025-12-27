@@ -24,6 +24,8 @@ public:
 
     bool populate_repo();
     bool empty_repo();
+    bool init_db_file() { return true; }; // not-needed for folder based repos
+
     void push_back_invalid_mii(const std::string &filename_str, size_t index);
 
     uint16_t get_crc() { return 0; };  // folder REPO does not have a global "CRC"

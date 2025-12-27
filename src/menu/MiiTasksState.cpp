@@ -42,14 +42,14 @@ void MiiTasksState::render() {
                 Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   List Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
                 if (fixed_stage_repo)
-                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
+                    Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
                 else
-                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis"));
+                    Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Export Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
                 if (fixed_stage_repo)
-                    Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import Miis (from %s)"), mii_repo->stage_repo->repo_name.c_str());
+                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Import Miis (from %s)"), mii_repo->stage_repo->repo_name.c_str());
                 else
-                    Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import Miis"));
+                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Import Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
                 Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Transform Miis"));
                 Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 1 ? 2 : 0), "\u2192");
