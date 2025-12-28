@@ -1,9 +1,7 @@
 #include <BackupSetList.h>
 #include <coreinit/debug.h>
 #include <menu/BackupSetListState.h>
-#include <menu/BatchBackupState.h>
-#include <menu/BatchJobOptions.h>
-#include <menu/BatchJobState.h>
+#include <menu/BatchTasksState.h>
 #include <menu/ConfigMenuState.h>
 #include <menu/MainMenuState.h>
 #include <menu/MiiProcessSharedState.h>
@@ -21,7 +19,7 @@
 
 #include <segher-s_wii/segher.h>
 
-#define ENTRYCOUNT 10
+#define ENTRYCOUNT 6
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -41,24 +39,17 @@ void MainMenuState::render() {
         Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
                                  (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Batch Backup"));
+        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Wii U System Save Management (%u Title%s)"), this->wiiuTitlesCount,
+                                 (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Restore"));
+        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Tasks Management"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch Wipe"));
+        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   BackupSet Management"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch Move to Other Profile"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
-        Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Batch Copy to Other Profile"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
-        Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Batch Copy to Other Device"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 8);
-        Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   BackupSet Management"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 9);
-        Console::consolePrintPos(M_OFF, 14, LanguageUtils::gettext("   Mii Management"));
+        Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Mii Management"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, 2 + cursorPos + (cursorPos > 1 ? 1 : 0) + (cursorPos > 7 ? 1 : 0) + (cursorPos > 8 ? 1 : 0), "\u2192");
+        Console::consolePrintPos(M_OFF, 2 + cursorPos + (cursorPos > 2 ? 1 : 0) + (cursorPos > 3 ? 1 : 0) + (cursorPos > 4 ? 1 : 0), "\u2192");
         Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
     }
 }
@@ -78,34 +69,18 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     break;
                 case 2:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchBackupState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
+                    this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, false);
                     break;
                 case 3:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, RESTORE);
-                    break;
+                    this->subState = std::make_unique<BatchTasksState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
+                    break;        
                 case 4:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, WIPE_PROFILE);
-                    break;
-                case 5:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, MOVE_PROFILE);
-                    break;
-                case 6:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
-                    break;
-                case 7:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, COPY_TO_OTHER_DEVICE);
-                    break;
-                case 8:
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>();
                     break;
-                case 9:
+                case 5:
                     this->state = STATE_DO_SUBSTATE;
                     // TO DO -- REPO CANDIDATES 
                     for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)

@@ -11,6 +11,7 @@
 #include <utils/DrawUtils.h>
 #include <utils/InProgress.h>
 #include <utils/MiiUtils.h>
+#include <utils/StringUtils.h>
 
 ////#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -231,7 +232,7 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
                         mii_view->at(mii_index).state = MiiStatus::OK;
                         mii_process_shared_state->primary_mii_view->at(mii_process_shared_state->mii_index_to_overwrite).state = MiiStatus::OK;
                         mii_process_shared_state->primary_mii_view->at(mii_process_shared_state->mii_index_to_overwrite).selected = false;
-                        receiving_repo->repopulate_mii(mii_process_shared_state->mii_index_to_overwrite,mii_data);
+                        receiving_repo->repopulate_mii(mii_process_shared_state->mii_index_to_overwrite, mii_data);
                     }
                 } else {
                     if (receiving_repo->import_miidata(mii_data, ADD_MII, IN_EMPTY_LOCATION))
@@ -452,7 +453,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_data->toggle_temp_flag();
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
-                        mii_repo->repopulate_mii(mii_index,mii_data);
+                        mii_repo->repopulate_mii(mii_index, mii_data);
                     }
                     delete mii_data;
                 } else {
@@ -500,6 +501,32 @@ void MiiUtils::get_compatible_repos(std::vector<bool> &mii_repos_candidates, Mii
             mii_repos_candidates.push_back(false);
     }
 }
+
+
+/// @brief
+/// @param mii_repo
+/// @return true if the db file has been initialized, false otherwise
+bool MiiUtils::ask_if_to_initialize_db(MiiRepo *mii_repo, bool not_found) {
+    std::string errorMessage;
+    if (not_found)
+        errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("DB file for %s not found. Do you want to initialize it?"), mii_repo->repo_name.c_str());
+    else
+        errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Do you want to initialize db file %s?"), mii_repo->repo_name.c_str());
+    if (Console::promptConfirm((Style) (ST_YES_NO | ST_WARNING), errorMessage.c_str())) {
+        if (savemng::firstSDWrite)
+            sdWriteDisclaimer(COLOR_BACKGROUND);
+
+        if (mii_repo->init_db_file()) {
+            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Db file %s initialized"), mii_repo->path_to_repo.c_str());
+            return true;
+        } else
+            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error initializing db file %s"), mii_repo->path_to_repo.c_str());
+    } else
+        Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Initialize task for %s aborted"), mii_repo->path_to_repo.c_str());
+
+    return false;
+}
+
 
 ///// TEST FUNCTIONS
 bool MiiUtils::eight_fold_mii(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
