@@ -15,15 +15,15 @@ public:
 
         switch (mii_repo->db_kind) {
             case MiiRepo::eDBKind::ACCOUNT:
-                entrycount = 6;
+                entrycount = 7;
                 break;
             default:
                 switch (mii_repo->db_type) {
                     case MiiRepo::eDBType::RFL:
-                        entrycount = 5;
+                        entrycount = 6;
                         break;
                     case MiiRepo::eDBType::FFL:
-                        entrycount = 7;
+                        entrycount = 8;
                         break;
                     default:;
                 };
@@ -62,6 +62,7 @@ private:
     bool toggle_normal_special_flag = false;
     bool toggle_share_flag = false;
     bool toggle_temp_flag = false;
+    bool update_crc = false;
 
 
     //void toggle_copy_flag_on();

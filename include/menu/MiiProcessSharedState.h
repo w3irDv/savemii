@@ -32,6 +32,7 @@ public:
     bool toggle_share_flag = false;
     bool toggle_temp_flag = false;
     bool in_place = true;
+    bool update_crc = false;
 
 
 };

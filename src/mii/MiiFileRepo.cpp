@@ -11,7 +11,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/MiiUtils.h>
 
-#define BYTE_ORDER__LITTLE_ENDIAN
+//#define BYTE_ORDER__LITTLE_ENDIAN
 
 namespace fs = std::filesystem;
 
