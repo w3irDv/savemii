@@ -476,12 +476,15 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
     return true;
 
     FSError fserror;
-    if (db_owner != 0)
+    if (db_owner != 0) {
         if (!FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, db_filepath, fserror))
             goto cleanup_after_io_error;
-
+        FSUtils::flushVol(db_filepath);
+    }
 
 cleanup_after_io_error:
     free(db_buffer);
+    if (db_owner != 0)
+        FSUtils::flushVol(db_filepath);
     return false;
 }

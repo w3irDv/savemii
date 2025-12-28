@@ -46,6 +46,8 @@ public:
     int backup(int slot, std::string tag = "");
     int restore(int slot);
     int wipe();
+    int initialize();
+
 
     void setStageRepo(MiiRepo *stage_repo) { this->stage_repo = stage_repo; };
 

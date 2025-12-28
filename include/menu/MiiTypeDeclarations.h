@@ -32,6 +32,7 @@ namespace MiiProcess {
         BACKUP_DB,
         RESTORE_DB,
         WIPE_DB,
+        INITIALIZE_DB,
         LIST_MIIS,
         SELECT_REPO_FOR_IMPORT,
         SELECT_REPO_FOR_EXPORT,

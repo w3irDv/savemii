@@ -68,7 +68,7 @@ void MiiDBOptionsState::render() {
     if (this->state == STATE_MII_DB_OPTIONS) {
 
         // Account data cannot be wiped
-        if ((mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) && (action == MiiProcess::WIPE_DB)) {
+        if ((mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) && (action == MiiProcess::WIPE_DB || action == MiiProcess::INITIALIZE_DB)) {
             DrawUtils::endDraw();
             Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("This action is not supported on the selected repo."));
             this->unsupported_action = true;
@@ -106,6 +106,10 @@ void MiiDBOptionsState::render() {
             Console::consolePrintPos(M_OFF + 2, 5, LanguageUtils::gettext("DB will be wiped"));
         }
 
+        if (action == MiiProcess::INITIALIZE_DB) {
+            Console::consolePrintPos(M_OFF + 2, 5, LanguageUtils::gettext("DB will be initialized"));
+        }
+
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 5 + cursorPos * 3, "\u2192");
 
@@ -131,6 +135,11 @@ void MiiDBOptionsState::render() {
                 Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Wipe"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
+                break;
+            case MiiProcess::INITIALIZE_DB:
+                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Initialize"));
+                DrawUtils::setFontColor(COLOR_TEXT);
+                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Initialize  \ue001: Back"));
                 break;
             default:;
         }
@@ -165,7 +174,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if (this->action == MiiProcess::WIPE_DB) {
+            } else if ((this->action == MiiProcess::WIPE_DB) || (this->action == MiiProcess::INITIALIZE_DB)) {
                 switch (cursorPos) {
                     default:
                         break;
@@ -192,7 +201,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if (this->action == MiiProcess::WIPE_DB) {
+            } else if ((this->action == MiiProcess::WIPE_DB) || (this->action == MiiProcess::INITIALIZE_DB)) {
                 switch (cursorPos) {
                     default:
                         break;
@@ -208,15 +217,6 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                 }
             }
         }
-
-        //if (this->action != MiiProcess::WIPE_DB) {
-        //    if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
-        //        cursorPos = (cursorPos + 1) % entrycount;
-        //    } else if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
-        //        if (cursorPos > 0)
-        //            --cursorPos;
-        //    }
-        //}
         if (input->get(ButtonState::TRIGGER, Button::MINUS)) {
             if (this->action == MiiProcess::BACKUP_DB) {
                 if (!MiiSaveMng::isSlotEmpty(mii_repo, slot)) {
@@ -231,6 +231,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
             switch (this->action) {
                 case MiiProcess::BACKUP_DB:
                 case MiiProcess::WIPE_DB:
+                case MiiProcess::INITIALIZE_DB:
                 case MiiProcess::RESTORE_DB:
                     if (!(sourceSelectionHasData)) {
                         if (this->action == MiiProcess::BACKUP_DB)
@@ -258,10 +259,12 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("It is not allowed to restore Account data froma a different console"));
                             return SUBSTATE_RUNNING;
                         }
-                        mii_repo->open_and_load_repo();
-                        if (!mii_repo->populate_repo()) {
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error populating repo %s"), mii_repo->path_to_repo.c_str());
-                            return SUBSTATE_RUNNING;
+                        mii_repo->open_and_load_repo(); //  currently does nothing
+                        if (mii_repo->needs_populate) {
+                            if (!mii_repo->populate_repo()) {
+                                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error populating repo %s"), mii_repo->path_to_repo.c_str());
+                                return SUBSTATE_RUNNING;
+                            }
                         }
                         std::string srcPath = mii_repo->backup_base_path + "/" + std::to_string(slot);
                         MiiAccountRepo<WiiUMii, WiiUMiiData> *slot_mii_repo = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_SLOT", MiiRepo::eDBType::FFL, srcPath, "NO_BACKUP");
@@ -272,19 +275,25 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                             return SUBSTATE_RUNNING;
                         }
                         mii_process_shared_state->auxiliar_mii_repo = slot_mii_repo;
-                        mii_process_shared_state->auxiliar_mii_repo = slot_mii_repo;
                         this->subState = std::make_unique<MiiSelectState>(slot_mii_repo, MiiProcess::SELECT_MIIS_FOR_RESTORE, mii_process_shared_state);
                         this->state = STATE_DO_SUBSTATE;
                         return SUBSTATE_RUNNING;
                     } else {
-                        if (mii_repo->restore(slot) == 0)
+                        if (mii_repo->restore(slot) == 0) {
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                        }
                         updateRestoreData();
                     }
                     break;
                 case MiiProcess::WIPE_DB:
                     if (mii_repo->wipe() == 0)
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully wiped!"));
+                    cursorPos = 0;
+                    updateWipeData();
+                    break;
+                case MiiProcess::INITIALIZE_DB:
+                    if (mii_repo->initialize() == 0)
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully initialized!"));
                     cursorPos = 0;
                     updateWipeData();
                     break;

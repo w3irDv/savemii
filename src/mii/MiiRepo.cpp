@@ -126,6 +126,7 @@ int MiiRepo::restore(int slot) {
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
 
+    this->needs_populate = true;
     return errorCode;
 }
 
@@ -141,6 +142,9 @@ int MiiRepo::wipe() {
     InProgress::titleName.assign(this->repo_name);
 
     std::string path = this->path_to_repo;
+
+    if (savemng::firstSDWrite)
+        sdWriteDisclaimer(COLOR_BACKGROUND);
 
     switch (this->db_kind) {
         case FOLDER: {
@@ -171,10 +175,48 @@ int MiiRepo::wipe() {
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
 
+    this->needs_populate = true;
     return errorCode;
 }
 
-bool MiiRepo::repopulate_mii(size_t index, MiiData *miidata ) {
+int MiiRepo::initialize() {
+
+    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
+        return -1;
+
+    std::string errorMessage{};
+    int errorCode = 0;
+    InProgress::copyErrorsCounter = 0;
+    InProgress::abortCopy = false;
+    InProgress::titleName.assign(this->repo_name);
+
+    std::string path = this->path_to_repo;
+
+    if (savemng::firstSDWrite)
+        sdWriteDisclaimer(COLOR_BACKGROUND);
+
+    switch (this->db_kind) {
+        case FOLDER: {
+            if (!FSUtils::removeDir(path))
+                errorCode = 1;
+        } break;
+        case FILE: {
+            if (!this->init_db_file())
+                errorCode += 2;
+        } break;
+        default:;
+    }
+
+    if (errorCode != 0) {
+        errorMessage = (std::string) LanguageUtils::gettext("%s\nInitialize db failed.") + "\n" + errorMessage;
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+    }
+
+    this->needs_populate = true;
+    return errorCode;
+}
+
+bool MiiRepo::repopulate_mii(size_t index, MiiData *miidata) {
     Mii *temp = this->miis.at(index);
     this->miis.at(index) = temp->v_populate_mii(miidata->mii_data);
     this->miis.at(index)->mii_repo = this;
@@ -192,5 +234,3 @@ bool MiiRepo::test_list_repo() {
 
     return true;
 }
-
-

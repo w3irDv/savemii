@@ -97,14 +97,18 @@ void MiiTasksState::render() {
                     info = LanguageUtils::gettext("Restore One Wii U Account files (all info, including but not only MiiData)");
                     break;
                 case 2:
+                    info = LanguageUtils::gettext("List all Miis and some of its attributes");
+                    break;
                 case 3:
+                case 4:
                     info = LanguageUtils::gettext("Import/Export Miis between Internal Account and SD Stage / selected folders");
                     break;
-                case 4:
+                case 5:
                     info = LanguageUtils::gettext("Transform tasks for internal account miis (transfer appearance, copy/share/normal/special flags...)");
                     break;
                 default:
                     info = "";
+
             }
 
         } else {
@@ -142,8 +146,8 @@ void MiiTasksState::render() {
             }
         }
 
-        DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF + 2, 14, info);
+        DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+        Console::consolePrintPosAutoFormat(M_OFF + 4, 14, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
@@ -209,8 +213,8 @@ ApplicationState::eSubState MiiTasksState::update(Input *input) {
                             this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::WIPE_DB, mii_process_shared_state);
                             break;
                         case 3:
-                            MiiUtils::ask_if_to_initialize_db(mii_repo, NEUTRAL_MESSAGE);
-                            mii_repo->needs_populate = true;
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::INITIALIZE_DB, mii_process_shared_state);
                             break;
                         case 4:
                             this->state = STATE_DO_SUBSTATE;
