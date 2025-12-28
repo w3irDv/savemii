@@ -83,7 +83,7 @@ void MiiTasksState::render() {
                 Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Wipe Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 8);
                 Console::consolePrintPos(M_OFF, 13, LanguageUtils::gettext("   Transform Miis"));
-                Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 2 ? 2 : 0), "\u2192");
+                Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 3 ? 2 : 0), "\u2192");
             };
         }
 
@@ -210,6 +210,7 @@ ApplicationState::eSubState MiiTasksState::update(Input *input) {
                             break;
                         case 3:
                             MiiUtils::ask_if_to_initialize_db(mii_repo, NEUTRAL_MESSAGE);
+                            mii_repo->needs_populate = true;
                             break;
                         case 4:
                             this->state = STATE_DO_SUBSTATE;

@@ -37,7 +37,6 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
     if (mii_repo->needs_populate) {
         mii_repo->open_and_load_repo();
         mii_repo->populate_repo();
-        mii_repo->needs_populate = false;
     }
     initialize_view();
 }
@@ -96,26 +95,6 @@ void MiiSelectState::render() {
         return;
     }
     if (this->state == STATE_MII_SELECT) {
-
-        /* Not neeed, in all usecases the modified repo modified will be shown after going to a new selectMiiState menu that will check if re-populate is needed
-        if (mii_repo->needs_populate) {
-            mii_repo->empty_repo();
-            mii_repo->populate_repo();
-            initialize_view();
-            mii_repo->needs_populate = false;
-        }
-        */
-
-        /*
-        if (mii_process_shared_state->state == MiiProcess::MIIS_TRANSFORMED) {           // We have already perform one transformation task, and rwe have eturned from the menus setting all the parameters,
-            mii_process_shared_state->state = MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED; // so reset the state  so we can repeat the tasks
-            action = mii_process_shared_state->state;                                    // we refresh it
-        }
-        if (mii_process_shared_state->state == MiiProcess::ACCOUNT_MII_IMPORTED) {
-            mii_process_shared_state->state = MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN;
-            action = mii_process_shared_state->state;
-        }
-        */
         const char *menuTitle, *screenOptions, *nextActionBrief, *lastActionBriefOk;
         switch (action) {
             case MiiProcess::LIST_MIIS:

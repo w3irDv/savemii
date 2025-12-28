@@ -145,9 +145,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     if (MIIDATA::CRC_PADDING > 0)
         memset(miidata->mii_data + MIIDATA::MII_DATA_SIZE, 0, MIIDATA::CRC_PADDING);
     uint16_t crc = MiiUtils::getCrc(miidata->mii_data, MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_PADDING);
-#ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
-#endif
     memcpy(miidata->mii_data + MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_PADDING, &crc, 2);
 
     std::string mii_data_str{};
@@ -209,7 +207,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
             tempFile << "Gender=" << gender_str << std::endl; // update only if previoulsy the gender was filled
         } else if (line.find("MiiName=") != std::string::npos) {
             tempFile << "MiiName=" << mii_name_str << std::endl;
-        } else{
+        } else {
             tempFile << line << std::endl;
         }
     }
@@ -349,6 +347,7 @@ bool MiiAccountRepo<MII, MIIDATA>::populate_repo() {
         return false;
     }
 
+    this->needs_populate = false;
     return true;
 };
 

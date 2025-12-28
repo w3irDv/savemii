@@ -157,10 +157,7 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
     std::string db_filepath = this->path_to_repo;
 
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
-
-#ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
-#endif
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
 
@@ -385,6 +382,7 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         }
     }
 
+    this->needs_populate = false;
     return true;
 };
 
@@ -435,10 +433,6 @@ uint16_t MiiFileRepo<MII, MIIDATA>::get_crc() {
 
     uint16_t crc;
     memcpy(&crc, db_buffer + MIIDATA::DB::CRC_OFFSET, 2);
-    //    uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
-    //#ifdef BYTE_ORDER__LITTLE_ENDIAN
-    //    crc = __builtin_bswap16(crc);
-    //#endif
 
     return crc;
 }
@@ -456,10 +450,7 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
     this->fill_empty_db_file();
 
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
-
-#ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
-#endif
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
 
@@ -483,6 +474,12 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
         goto cleanup_after_io_error;
     }
     return true;
+
+    FSError fserror;
+    if (db_owner != 0)
+        if (!FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, db_filepath, fserror))
+            goto cleanup_after_io_error;
+
 
 cleanup_after_io_error:
     free(db_buffer);
