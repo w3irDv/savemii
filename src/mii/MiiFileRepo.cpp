@@ -157,7 +157,9 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
     std::string db_filepath = this->path_to_repo;
 
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
+    #ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
+    #endif
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
 
@@ -450,7 +452,9 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
     this->fill_empty_db_file();
 
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
+    #ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
+    #endif
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
 

@@ -136,7 +136,9 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
         if (MIIDATA::CRC_PADDING > 0)
             memset(miidata->mii_data + MIIDATA::MII_DATA_SIZE, 0, MIIDATA::CRC_PADDING);
         uint16_t crc = MiiUtils::getCrc(miidata->mii_data, MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_PADDING);
+        #ifdef BYTE_ORDER__LITTLE_ENDIAN
         crc = __builtin_bswap16(crc);
+        #endif
         memcpy(miidata->mii_data + MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_PADDING, &crc, 2);
     }
 
