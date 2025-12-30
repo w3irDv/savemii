@@ -25,12 +25,27 @@ bool MiiUtils::initMiiRepos() {
     const std::string pathaccount("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT");
     const std::string pathaccount_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_Stage");
 
+    //const std::string path_sgmgx("fs:/vol/external01/savemiis");
+    const std::string path_sgmgx("fs:/vol/external01/wiiu/backups/mii_repos/savemiis");
+
+    FSUtils::createFolder(pathffl.substr(0,pathffl.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathrfl.substr(0,pathffl.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathaccount.substr(0,pathffl.find_last_of("/")).c_str());
+
+    FSUtils::createFolder(pathffl_Stage.c_str());
+    FSUtils::createFolder(pathrfl_Stage.c_str());
+    FSUtils::createFolder(pathaccount_Stage.c_str());
+
+    FSUtils::createFolder(path_sgmgx.c_str());
+
     MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", MiiRepo::eDBType::FFL, pathffl, "mii_bckp_ffl");
     MiiRepos["FFL_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_Stage", MiiRepo::eDBType::FFL, pathffl_Stage, "mii_bckp_ffl_Stage");
     MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", MiiRepo::eDBType::RFL, pathrfl, "mii_bckp_rfl");
     MiiRepos["RFL_Stage"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_Stage", MiiRepo::eDBType::RFL, pathrfl_Stage, "mii_bckp_rfl_Stage");
     MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", MiiRepo::eDBType::FFL, pathaccount, "mii_bckp_account");
     MiiRepos["ACCOUNT_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_Stage", MiiRepo::eDBType::FFL, pathaccount_Stage, "mii_bckp_account_Stage");
+    MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SavegameMgr GX", MiiRepo::eDBType::RFL, path_sgmgx, "mii_bckp_sgmgx");
+    
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_Stage"]);
     //MiiRepos["FFL_Stage"]->setStageRepo(MiiRepos["FFL"]);
 
@@ -40,7 +55,7 @@ bool MiiUtils::initMiiRepos() {
     MiiRepos["ACCOUNT"]->setStageRepo(MiiRepos["ACCOUNT_Stage"]);
     //MiiRepos["ACCOUNT_Stage"]->setStageRepo(MiiRepos["ACCOUNT"]);
 
-    mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_Stage"], MiiRepos["RFL"], MiiRepos["RFL_Stage"], MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_Stage"]};
+    mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_Stage"], MiiRepos["RFL"], MiiRepos["RFL_Stage"], MiiRepos["SGMGX"], MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_Stage"]};
 
     return true;
 }
@@ -50,6 +65,7 @@ void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["FFL_STAGE"];
     delete MiiUtils::MiiRepos["RFL"];
     delete MiiUtils::MiiRepos["RFL_STAGE"];
+    delete MiiUtils::MiiRepos["SGMGX"],
     delete MiiUtils::MiiRepos["ACCOUNT"];
     delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
 }

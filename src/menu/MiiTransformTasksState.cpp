@@ -41,7 +41,7 @@ void MiiTransformTasksState::render() {
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
         Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Toggle Normal/Special flag: %s"), toggle_normal_special_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-        Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Update CRC: %s"), update_crc ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Update CRC: %s"), update_crc ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
             goto all_tasks_shown;
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);

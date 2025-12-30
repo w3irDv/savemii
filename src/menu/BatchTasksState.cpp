@@ -57,7 +57,7 @@ void BatchTasksState::render() {
                 info = LanguageUtils::gettext("Batch Backup allows you to backup savedata:\n* for All titles at once (WiiU+ vWii)\n* for the titles you select (individual 'Wii U' or 'vWii' tasks)");
                 break;
             case 1:
-                info = LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to the same user profiles\n* to a different user in the same console \n* or to a different console where the games are already installed.\nIn the later case, it is recommended but not strictly needed to first run the game to initialize the savedata.");
+                info = LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to the same user profiles\n* to a different user in the same console \n* or to a different console where the games are already installed.\nNow it is not needed to run the game first to initialize the savedata.");
                 break;
             case 2:
                 info = LanguageUtils::gettext("Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.");
@@ -77,8 +77,9 @@ void BatchTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAutoFormat(M_OFF + 4, 10, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 10, info);
 
+        DrawUtils::setFontColor(COLOR_TEXT);        
         Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Batch Task"));
     }
 }
