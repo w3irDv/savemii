@@ -105,6 +105,10 @@ void MiiRepoSelectState::render() {
 
             Console::consolePrintPos(M_OFF, i + 2, "  %s",
                                      MiiUtils::mii_repos.at(c2a[i + this->scroll])->repo_name.c_str());
+              
+            DrawUtils::setFontColorByCursor(COLOR_INFO, COLOR_INFO_AT_CURSOR, cursorPos, i);
+            Console::consolePrintPos(18, i + 2, ">> %s",
+                                     MiiUtils::mii_repos.at(c2a[i + this->scroll])->repo_description.c_str());
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");

@@ -18,7 +18,7 @@ namespace fs = std::filesystem;
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 template<typename MII, typename MIIDATA>
-MiiAccountRepo<MII, MIIDATA>::MiiAccountRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, eDBKind::ACCOUNT, path_to_repo, backup_folder) {
+MiiAccountRepo<MII, MIIDATA>::MiiAccountRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description) : MiiRepo(repo_name, MIIDATA::DB::DB_TYPE, eDBKind::ACCOUNT, path_to_repo, backup_folder, repo_description) {
     //mii_data_size = MIIDATA::MII_DATA_SIZE;
     set_db_fsa_metadata();
 };
@@ -42,7 +42,7 @@ bool MiiAccountRepo<WiiUMii, WiiUMiiData>::set_db_fsa_metadata() {
 }
 
 
-template MiiAccountRepo<WiiUMii, WiiUMiiData>::MiiAccountRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
+template MiiAccountRepo<WiiUMii, WiiUMiiData>::MiiAccountRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
 
 template<typename MII, typename MIIDATA>
 MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(size_t index) {

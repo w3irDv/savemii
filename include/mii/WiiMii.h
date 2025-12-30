@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mii/Mii.h>
+#include <mii/MiiRepo.h>
 #include <string>
 #include <vector>
 
@@ -44,7 +45,7 @@ public:
     const static uint8_t BIRTHMONTH_SHIFT = 0xA;
     const static inline size_t NAME_OFFSET = 0x02;
     const static size_t DEVICE_HASH_OFFSET = 0x1C;
-    const static size_t DEVICE_HASH_SIZE = 0x4;    // INCLOUEM EL CHECKSUM
+    const static size_t DEVICE_HASH_SIZE = 0x4; // INCLOUEM EL CHECKSUM
     const static size_t GENDER_OFFSET = 0x0;
     const static uint8_t GENDER_MASK = 0x40;
     const static size_t APPEARANCE_OFFSET_1 = 0x16; //
@@ -70,13 +71,15 @@ public:
         const static size_t MAX_MIIS = 100;
         const static inline char MAGIC[4] = {'R', 'N', 'O', 'D'};
 
-        const static uint32_t MII_SECTION_SIZE = 0x1D00;  // Includes Magic
-        const static inline char PARADE_MAGIC[4]  = {'R', 'N', 'H', 'D'};
-        const static inline uint8_t PARADE_DATA[0xC] = {0x7F,0xFF,0x7F,0xFF,0,0,0,0,0,0,0,0};
-        const static uint32_t MII_PARADE_SIZE = 0x1D4E0;  // includes Magic and checksum
+        const static uint32_t MII_SECTION_SIZE = 0x1D00; // Includes Magic
+        const static inline char PARADE_MAGIC[4] = {'R', 'N', 'H', 'D'};
+        const static inline uint8_t PARADE_DATA[0xC] = {0x7F, 0xFF, 0x7F, 0xFF, 0, 0, 0, 0, 0, 0, 0, 0};
+        const static uint32_t MII_PARADE_SIZE = 0x1D4E0; // includes Magic and checksum
 
         const static uint32_t DB_OWNER = 0x1003;
         const static uint32_t DB_GROUP = 0x3031;
         const static uint32_t DB_FSMODE = 0x666;
+
+        const static MiiRepo::eDBType DB_TYPE = MiiRepo::eDBType::RFL;
     };
 };

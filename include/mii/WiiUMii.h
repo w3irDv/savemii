@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <nn/ffl/miidata.h>
+#include <mii/MiiRepo.h>
 //#include <mii/WiiUMiiStruct.h>
 
 class WiiUMii : public Mii {
@@ -19,7 +20,6 @@ public:
 
     const static inline std::string file_name_prefix = "WIIU-";
     const static inline std::string file_name_extension = ".ffsd";
-
 };
 
 class WiiUMiiData : public MiiData {
@@ -45,7 +45,7 @@ public:
     const static size_t COPY_FLAG_OFFSET = 0x2;
     const static size_t AUTHOR_ID_OFFSET = 0x4;
     const static size_t AUTHOR_ID_SIZE = 0x8;
-    const static size_t MII_ID_OFFSET = 0xC;  // Also FFLCreateID
+    const static size_t MII_ID_OFFSET = 0xC; // Also FFLCreateID
     const static size_t DEVICE_HASH_OFFSET = 0x10;
     const static size_t DEVICE_HASH_SIZE = 0x6;
     const static size_t BIRTHDATE_OFFSET = 0x18;
@@ -53,7 +53,7 @@ public:
     const static uint8_t BIRTHDAY_SHIFT = 0x5;
     const static uint8_t BIRTHMONTH_MASK = 0xF;
     const static uint8_t BIRTHMONTH_SHIFT = 0x1;
-    const static size_t GENDER_OFFSET = 0x19;  // last bit
+    const static size_t GENDER_OFFSET = 0x19; // last bit
     const static uint8_t GENDER_MASK = 0x01;
     const static size_t NAME_OFFSET = 0x1A;
     const static size_t APPEARANCE_OFFSET_1 = 0x2E;
@@ -108,11 +108,13 @@ public:
         const static uint32_t DB_OWNER = 0; // region dependent, we will find it during  run time
         const static uint32_t DB_GROUP = 0x400;
         const static uint32_t DB_FSMODE = 0x666;
+
+        const static MiiRepo::eDBType DB_TYPE = MiiRepo::eDBType::FFL;
     };
 
     class ACCOUNT {
     public:
-        const static uint32_t DB_OWNER = 0x100000f7; 
+        const static uint32_t DB_OWNER = 0x100000f7;
         const static uint32_t DB_GROUP = 0x400;
         const static uint32_t DB_FSMODE = 0x600;
     };

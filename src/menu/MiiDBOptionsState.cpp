@@ -266,7 +266,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                             }
                         }
                         std::string srcPath = mii_repo->backup_base_path + "/" + std::to_string(slot);
-                        MiiAccountRepo<WiiUMii, WiiUMiiData> *slot_mii_repo = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_SLOT", MiiRepo::eDBType::FFL, srcPath, "NO_BACKUP");
+                        MiiAccountRepo<WiiUMii, WiiUMiiData> *slot_mii_repo = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_SLOT", srcPath, "NO_BACKUP", "Temp ACCOUNT Repo");
                         slot_mii_repo->open_and_load_repo();
                         if (!slot_mii_repo->populate_repo()) {
                             Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error populating repo %s"), slot_mii_repo->path_to_repo.c_str());

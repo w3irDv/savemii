@@ -16,8 +16,8 @@
 namespace fs = std::filesystem;
 
 template<typename MII, typename MIIDATA>
-MiiFileRepo<MII, MIIDATA>::MiiFileRepo(const std::string &repo_name, eDBType db_type,
-                                       const std::string &path_to_repo, const std::string &backup_folder) : MiiRepo(repo_name, db_type, eDBKind::FILE, path_to_repo, backup_folder) {
+MiiFileRepo<MII, MIIDATA>::MiiFileRepo(const std::string &repo_name,
+                                       const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description) : MiiRepo(repo_name, MIIDATA::DB::DB_TYPE, eDBKind::FILE, path_to_repo, backup_folder, repo_description) {
     set_db_fsa_metadata();
 };
 
@@ -95,8 +95,8 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::fill_empty_db_file() {
 }
 
 
-template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
-template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, eDBType db_type, const std::string &path_to_repo, const std::string &backup_folder);
+template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
+template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
 
 template<typename MII, typename MIIDATA>
 bool MiiFileRepo<MII, MIIDATA>::open_and_load_repo() {
@@ -157,9 +157,9 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
     std::string db_filepath = this->path_to_repo;
 
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
-    #ifdef BYTE_ORDER__LITTLE_ENDIAN
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
-    #endif
+#endif
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
 
@@ -452,9 +452,9 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
     this->fill_empty_db_file();
 
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
-    #ifdef BYTE_ORDER__LITTLE_ENDIAN
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
-    #endif
+#endif
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
 
