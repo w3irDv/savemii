@@ -1,11 +1,11 @@
 #include <Metadata.h>
 //#include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
-//#include <mockWUT.h>
 #include <menu/KeyboardState.h>
 #include <menu/MiiDBOptionsState.h>
 #include <mii/Mii.h>
 #include <miisavemng.h>
+//#include <mockWUT.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
@@ -20,7 +20,7 @@
 
 #define TAG_OFF 17
 
-
+/*
 #include <bitset>
 #include <cstring>
 #include <filesystem>
@@ -31,7 +31,7 @@
 #include <string>
 #include <utils/MiiUtils.h>
 #include <vector>
-
+*/
 
 MiiDBOptionsState::MiiDBOptionsState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repo(mii_repo), action(action), mii_process_shared_state(mii_process_shared_state) {
 
@@ -231,7 +231,6 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
             switch (this->action) {
                 case MiiProcess::BACKUP_DB:
                 case MiiProcess::WIPE_DB:
-                case MiiProcess::INITIALIZE_DB:
                 case MiiProcess::RESTORE_DB:
                     if (!(sourceSelectionHasData)) {
                         if (this->action == MiiProcess::BACKUP_DB)
@@ -309,8 +308,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                 this->subState = std::make_unique<KeyboardState>(newTag);
             }
         }
-    }
-    if (this->state == STATE_DO_SUBSTATE) {
+    } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {
             // keep running.

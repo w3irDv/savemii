@@ -9,6 +9,7 @@
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
+#include <utils/FSUtils.h>
 #include <utils/InProgress.h>
 #include <utils/MiiUtils.h>
 #include <utils/StringUtils.h>
@@ -28,9 +29,9 @@ bool MiiUtils::initMiiRepos() {
     //const std::string path_sgmgx("fs:/vol/external01/savemiis");
     const std::string path_sgmgx("fs:/vol/external01/wiiu/backups/mii_repos/savemiis");
 
-    FSUtils::createFolder(pathffl.substr(0,pathffl.find_last_of("/")).c_str());
-    FSUtils::createFolder(pathrfl.substr(0,pathffl.find_last_of("/")).c_str());
-    FSUtils::createFolder(pathaccount.substr(0,pathffl.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathffl.substr(0, pathffl.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathrfl.substr(0, pathrfl.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathaccount.substr(0, pathaccount.find_last_of("/")).c_str());
 
     FSUtils::createFolder(pathffl_Stage.c_str());
     FSUtils::createFolder(pathrfl_Stage.c_str());
@@ -45,7 +46,7 @@ bool MiiUtils::initMiiRepos() {
     MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", MiiRepo::eDBType::FFL, pathaccount, "mii_bckp_account");
     MiiRepos["ACCOUNT_Stage"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_Stage", MiiRepo::eDBType::FFL, pathaccount_Stage, "mii_bckp_account_Stage");
     MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SavegameMgr GX", MiiRepo::eDBType::RFL, path_sgmgx, "mii_bckp_sgmgx");
-    
+
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_Stage"]);
     //MiiRepos["FFL_Stage"]->setStageRepo(MiiRepos["FFL"]);
 
@@ -66,7 +67,7 @@ void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["RFL"];
     delete MiiUtils::MiiRepos["RFL_STAGE"];
     delete MiiUtils::MiiRepos["SGMGX"],
-    delete MiiUtils::MiiRepos["ACCOUNT"];
+            delete MiiUtils::MiiRepos["ACCOUNT"];
     delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
 }
 

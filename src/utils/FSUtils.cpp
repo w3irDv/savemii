@@ -650,12 +650,12 @@ bool FSUtils::folderEmptyIgnoreSavemii(const char *fPath) {
 }
 
 /// @brief Recusrsively set mode and owner usin FSA functions. Reuses InProgress::copyErrorsCounter, so it must be zero before entering the function.
-/// @param owner 
-/// @param group 
-/// @param mode 
-/// @param path 
-/// @param fserror 
-/// @return 
+/// @param owner
+/// @param group
+/// @param mode
+/// @param path
+/// @param fserror
+/// @return
 bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
 
     setOwnerAndMode(owner, group, mode, path, fserror);
@@ -674,10 +674,10 @@ bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, st
 
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
             continue;
-        std::string tPath = path  + StringUtils::stringFormat("/%s", data->d_name);
+        std::string tPath = path + StringUtils::stringFormat("/%s", data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-            
+
             if (!setOwnerAndMode(owner, group, mode, tPath, fserror)) {
                 if (InProgress::abortCopy) {
                     closedir(dir);

@@ -29,13 +29,13 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
     std::string srcPath = this->path_to_repo;
     std::string dstPath = this->backup_base_path + "/" + std::to_string(slot);
 
+    if (savemng::firstSDWrite)
+        sdWriteDisclaimer(COLOR_BACKGROUND);
+
     if (!FSUtils::createFolder(dstPath.c_str())) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."), this->repo_name.c_str());
         return 8;
     }
-
-    if (savemng::firstSDWrite)
-        sdWriteDisclaimer(COLOR_BACKGROUND);
 
     switch (this->db_kind) {
         case ACCOUNT:
