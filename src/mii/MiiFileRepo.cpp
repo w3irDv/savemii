@@ -33,7 +33,7 @@ template<>
 bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
     db_group = WiiMiiData::DB::DB_GROUP;
     db_fsmode = (FSMode) WiiMiiData::DB::DB_FSMODE;
-    if (path_to_repo.find("fs:/vol/") == std::string::npos) {
+        if (path_to_repo.find("fs:/vol/") == std::string::npos) {
         db_owner = WiiMiiData::DB::DB_OWNER;
         return true;
     } else {
@@ -163,7 +163,7 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
 
-    std::string tmp_db_filepath = db_filepath + ".tmp";
+    std::string tmp_db_filepath = db_filepath + "t";
     unlink(tmp_db_filepath.c_str());
     std::ofstream tmp_db_file;
     tmp_db_file.open(tmp_db_filepath.c_str(), std::ios_base::binary);
@@ -190,11 +190,11 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
             goto cleanup_after_io_error;
 
     if (unlink(db_filepath.c_str()) == 0) {
-        if (rename(tmp_db_filepath.c_str(), db_filepath.c_str()) == 0) {
+        if (FSUtils::slc_resilient_rename(tmp_db_filepath, db_filepath) == 0) {
             if (db_owner != 0)
                 FSUtils::flushVol(db_filepath);
             return true;
-        } else { // the worst has happen
+        } else { // the worst has happened
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
             goto cleanup_managing_real_db;
@@ -477,7 +477,6 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
-    return true;
 
     FSError fserror;
     if (db_owner != 0) {
@@ -485,6 +484,7 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
             goto cleanup_after_io_error;
         FSUtils::flushVol(db_filepath);
     }
+    return true;
 
 cleanup_after_io_error:
     free(db_buffer);

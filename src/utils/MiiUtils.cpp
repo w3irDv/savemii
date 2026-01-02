@@ -18,9 +18,11 @@
 
 bool MiiUtils::initMiiRepos() {
 
-    const std::string pathffl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL/FFL_ODB.dat");
+    //const std::string pathffl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL/FFL_ODB.dat");
+    const std::string pathffl("storage_mlc01:/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat");
     const std::string pathffl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_Stage");
-    const std::string pathrfl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL/RFL_DB.dat");
+    //const std::string pathrfl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL/RFL_DB.dat");
+    const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/RFL_DB.dat");
     const std::string pathrfl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL_Stage");
     const std::string pathaccount("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT");
     const std::string pathaccount_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_Stage");
@@ -28,8 +30,8 @@ bool MiiUtils::initMiiRepos() {
     //const std::string path_sgmgx("fs:/vol/external01/savemiis");
     const std::string path_sgmgx("fs:/vol/external01/wiiu/backups/mii_repos/savemiis");
 
-    FSUtils::createFolder(pathffl.substr(0, pathffl.find_last_of("/")).c_str());
-    FSUtils::createFolder(pathrfl.substr(0, pathrfl.find_last_of("/")).c_str());
+    //FSUtils::createFolder(pathffl.substr(0, pathffl.find_last_of("/")).c_str());
+    //FSUtils::createFolder(pathrfl.substr(0, pathrfl.find_last_of("/")).c_str());
     FSUtils::createFolder(pathaccount.substr(0, pathaccount.find_last_of("/")).c_str());
 
     FSUtils::createFolder(pathffl_Stage.c_str());
@@ -58,7 +60,6 @@ bool MiiUtils::initMiiRepos() {
 
     mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_STAGE"], MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["SGMGX"], MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"]};
 
-    Console::showMessage(OK_CONFIRM,"naaaaaammmmmeee   %s\n",mii_repos[0]->repo_name.c_str());
     return true;
 }
 

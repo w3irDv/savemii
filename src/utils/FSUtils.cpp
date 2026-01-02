@@ -233,7 +233,7 @@ bool FSUtils::setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::
     free(shim);
 
     if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error\n%s\nsetting owner/group for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error\n%s\nsetting owner %08x /group %08x for\n%s"), FSAGetStatusStr(fserror), group, owner, path.c_str());
         return false;
     }
 
@@ -725,4 +725,22 @@ bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, st
     }
 
     return (InProgress::copyErrorsCounter == 0);
+}
+
+/// @brief rename that for vWii storage does copy&delete because rename does not work (returns IO ERROR)
+/// @param src_path 
+/// @param dst_path 
+/// @return 
+int FSUtils::slc_resilient_rename(std::string &src_path, std::string &dst_path) {
+    int res;
+
+    if (src_path.rfind("storage_slcc01:", 0) == 0) {
+        res = FSUtils::copyFile(src_path.c_str(), dst_path.c_str()) ? 0 : 1;
+        if (res == 0)
+            unlink(src_path.c_str());
+    } else {
+        res = rename(src_path.c_str(), dst_path.c_str());
+    }
+
+    return res;
 }

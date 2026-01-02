@@ -60,5 +60,7 @@ namespace FSUtils {
 
     bool folderEmpty(const char *fPath);
     bool folderEmptyIgnoreSavemii(const char *fPath);
+ 
+    int slc_resilient_rename(std::string &src_path, std::string &dst_path);
 
 } // namespace FSUtils

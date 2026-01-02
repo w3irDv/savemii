@@ -22,6 +22,44 @@
 
 #define ENTRYCOUNT 6
 
+#include <coreinit/filesystem_fsa.h>
+#include <malloc.h>
+bool setOwner(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
+
+    fserror = FSAChangeMode(FSUtils::handle, FSUtils::newlibtoFSA(path).c_str(), mode);
+    if (fserror != FS_ERROR_OK) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error\n%s\nsetting permissions for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        return false;
+    }
+
+    FSAFlushVolume(FSUtils::handle, "/vol/storage_slcc01");
+
+    fserror = FS_ERROR_OK;
+    FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
+    if (!shim) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error creating shim for change perms\n\n%s"), path.c_str());
+        return false;
+    }
+
+    shim->clientHandle = FSUtils::handle;
+    shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
+    strcpy(shim->request.changeOwner.path, FSUtils::newlibtoFSA(path).c_str());
+    shim->request.changeOwner.owner = owner;
+    shim->request.changeOwner.group = group;
+    shim->command = FSA_COMMAND_CHANGE_OWNER;
+    fserror = __FSAShimSend(shim, 0);
+    free(shim);
+
+    if (fserror != FS_ERROR_OK) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error\n%s\nsetting owner/group for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        return false;
+    }
+
+    return true;
+}
+
+
+
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
@@ -110,6 +148,10 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             //pack(1, arg);
             //unpack(1, arg);
             //statDebugUtils::statVol();
+
+            const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/nRFL_DB.dat");
+            //FSError fserror;
+            //setOwner(0x1000400A,0x400, (FSMode) 0x666, pathrfl,fserror);
             statDebugUtils::statMiiEdit();
             statDebugUtils::statMiiMaker();
             statDebugUtils::statAct();
