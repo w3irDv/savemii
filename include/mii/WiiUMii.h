@@ -11,7 +11,7 @@
 class WiiUMii : public Mii {
 public:
     WiiUMii() {};
-    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool copyable, bool shareable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
+    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
 
     uint8_t birth_platform = 0x4;
 
@@ -35,6 +35,8 @@ public:
     bool toggle_normal_special_flag();
     bool toggle_share_flag();
     bool toggle_temp_flag();
+    bool toggle_favorite_flag();
+    bool toggle_foreign_flag() { return true; };
 
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 
@@ -74,7 +76,7 @@ public:
             0x0C, 0x0D, 0x0E, 0x0F,                                                                                                 // CreateID
             0x10, 0x11, 0x12, 0x13, 0x14, 0x15,                                                                                     // MAC
             0x17, 0x16,                                                                                                             // Unused, should be zero
-            0x19, 0x18,                                                                                                             // Color, birthday, gender
+            0x19, 0x18,                                                                                                             // Color, birthday, gender, favorite
             0x1B, 0x1A, 0x1D, 0x1C, 0x1F, 0x1E, 0x21, 0x20, 0x23, 0x22, 0x25, 0x24, 0x27, 0x26, 0x29, 0x28, 0x2B, 0x2A, 0x2D, 0x2C, // MiiName
             0x2E, 0x2F,                                                                                                             // Size, Fatness
             0x31, 0x30,                                                                                                             // Face + Local Only

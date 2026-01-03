@@ -11,9 +11,9 @@
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp,
-                 std::string device_hash, uint64_t author_id, bool copyable, bool shareable,
+                 std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable,
                  uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index)
-    : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WIIU, mii_repo, index),
+    : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, favorite, copyable, shareable, mii_id_flags, WIIU, mii_repo, index),
       birth_platform(birth_platform) {
     if ((mii_id_flags & FFL_CREATE_ID_FLAG_NORMAL) == FFL_CREATE_ID_FLAG_NORMAL)
         mii_kind = NORMAL;
@@ -38,6 +38,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     //
 
     uint8_t birth_platform = mii_data->core.birth_platform;
+    bool favorite = mii_data->core.unk_0x18_b1 == 1;
     bool copyable = mii_data->core.copyable == 1;
     bool shareable = mii_data->core.local_only == 0;
     uint64_t author_id = mii_data->core.author_id;
@@ -58,6 +59,9 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     // just for testing purposes in a linux box
     birth_platform = mii_data->core.unk_0x00_b4;
+    uint8_t tmp_favorite;
+    memcpy(&tmp_favorite, raw_mii_data + WiiUMiiData::BIRTHDATE_OFFSET, 1);
+    favorite = (((tmp_favorite & 0b01000000) >> 6) == 0x1);
     copyable = (mii_data->core.font_region & 1) == 1;
     shareable = (mii_data->core.face_color & 1) == 0;
     author_id = __builtin_bswap64(author_id);
@@ -99,7 +103,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         deviceHash.append(hexhex);
     }
 
-    WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
+    WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, favorite, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
 
     wiiu_mii->is_valid = true;
     return wiiu_mii;
@@ -136,7 +140,7 @@ uint8_t WiiUMiiData::get_gender() {
 }
 
 void WiiUMiiData::get_birthdate_as_string(std::string &birth_month, std::string &birth_day) {
-    
+
     uint8_t hi, lo;
     memcpy(&hi, this->mii_data + BIRTHDATE_OFFSET, 1);
     memcpy(&lo, this->mii_data + BIRTHDATE_OFFSET + 1, 1);
@@ -150,19 +154,17 @@ void WiiUMiiData::get_birthdate_as_string(std::string &birth_month, std::string 
     uint8_t birthmonth = (birthdate >> BIRTHMONTH_SHIFT) & BIRTHMONTH_MASK;
     snprintf(hexhex, 3, "%x", birthmonth);
     birth_month.assign(hexhex);
-
 }
 
 std::string WiiUMiiData::get_name_as_hex_string() {
 
     std::string name_hex;
     char hexhex[3];
-    for (size_t i = 0;i < 2 * MiiData::MII_NAME_SIZE;i++) {
+    for (size_t i = 0; i < 2 * MiiData::MII_NAME_SIZE; i++) {
         snprintf(hexhex, 3, "%02x", this->mii_data[NAME_OFFSET + i]);
         name_hex.append(hexhex);
     }
     return name_hex;
-
 }
 
 bool WiiUMiiData::toggle_copy_flag() {
@@ -266,6 +268,13 @@ bool WiiUMiiData::toggle_temp_flag() {
 
     memcpy(this->mii_data + MII_ID_OFFSET, &toggled, 1);
 
+    return true;
+}
+
+bool WiiUMiiData::toggle_favorite_flag() {
+
+    uint8_t favorite = this->mii_data[BIRTHDATE_OFFSET] ^ 0b01000000;
+    memcpy(this->mii_data + BIRTHDATE_OFFSET, &favorite, 1);
     return true;
 }
 

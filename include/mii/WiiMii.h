@@ -5,10 +5,14 @@
 #include <string>
 #include <vector>
 
+
+///// HEM AFEGIT favorite A MII.H ... ARA toca modificat els constructors e implemetar la funcio.
+/// LO DE SPECIAL HAURIA DE ESTAR, NOMES VAIDAR QUE NO APAREIXI EL MISSATGE DE que es deshabilitara el flag ...
+
 class WiiMii : public Mii {
 public:
     WiiMii() {};
-    WiiMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool copyable, bool shareable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
+    WiiMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
 
     uint8_t birth_platform = 0;
 
@@ -32,6 +36,8 @@ public:
     bool toggle_normal_special_flag();
     bool toggle_share_flag();
     bool toggle_temp_flag();
+    bool toggle_favorite_flag();
+    bool toggle_foreign_flag();
 
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 

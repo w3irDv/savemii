@@ -20,10 +20,10 @@ public:
             default:
                 switch (mii_repo->db_type) {
                     case MiiRepo::eDBType::RFL:
-                        entrycount = 6;
+                        entrycount = 8;
                         break;
                     case MiiRepo::eDBType::FFL:
-                        entrycount = 8;
+                        entrycount = 10;
                         break;
                     default:;
                 };
@@ -63,6 +63,8 @@ private:
     bool toggle_share_flag = false;
     bool toggle_temp_flag = false;
     bool update_crc = false;
+    bool toggle_favorite_flag = false;
+    bool toggle_foreign_flag = false;
 
 
     //void toggle_copy_flag_on();

@@ -33,6 +33,7 @@ public:
     bool toggle_temp_flag = false;
     bool in_place = true;
     bool update_crc = false;
-
+    bool toggle_favorite_flag = false;
+    bool toggle_foreign_flag  = false;
 
 };

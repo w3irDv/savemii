@@ -8,9 +8,9 @@
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp,
-               std::string device_hash, uint64_t author_id, bool copyable, bool shareable,
+               std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable,
                uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
-               size_t index) : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, copyable, shareable, mii_id_flags, WII, mii_repo, index),
+               size_t index) : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, favorite, copyable, shareable, mii_id_flags, WII, mii_repo, index),
                                birth_platform(birth_platform) {
     switch (mii_id_flags) {
         case 0:
@@ -133,9 +133,10 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     // TODO: LOOK FOR SENSIBLE VALUES FOR THE WII MII Case
     uint8_t birth_platform = 0;
-    bool copyable = true;
+    bool copyable = true;  // non-existent in wii ...
     uint64_t author_id = 0;
 
+    bool favorite = mii_data->isFavorite  == 1;
     // The top 3 bits are a prefix that determines if a Mii is "special" "foreign" or regular. Normal with mii_id_flas = 1 are deleted by MiiChannel.
     uint8_t mii_id_flags = ((mii_data->miiID1 & 0xE0) >> 5);
 
@@ -165,6 +166,11 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     copyable = (mii_data->core.font_region & 1) == 1;
     author_id = __builtin_bswap64(author_id);
     */
+
+    uint8_t tmp_favorite;
+    memcpy (&tmp_favorite,raw_mii_data + 1,1);
+    favorite = ((tmp_favorite & 0x1 ) == 0x1);
+
     uint16_t unknown1 = mii_data->unknown1;
     mingleOff = (unknown1 & 0x1);
 
@@ -195,7 +201,7 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     bool shareable = (mingleOff == 0);
 
-    WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
+    WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, favorite, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
 
     wii_mii->is_valid = true;
 
@@ -237,14 +243,12 @@ bool WiiMiiData::toggle_normal_special_flag() {
     uint8_t partial_ts = (flags & 0b00011111);
     switch (mii_type) {
         case 0: // special > normal
-        case 2:
+        case 2: // special > normal
+        case 6: // not_local (foreign) > normal
             mii_type = 4;
             break;
-        case 6:           // not local > special
-            mii_type = 2; // if 0, miis downloaded from https://www.miilibrary.com does not appear unless thy are local from the console (you can fotce it with xfer_physical_appeareance)
-            break;
-        default: // normal > not_local
-            mii_type = 6;
+        default: // normal > special
+            mii_type = 2; // if 0, miis downloaded from https://www.miilibrary.com does not appear unless thy are local from the console (you can force it with xfer_physical_appeareance)
             break;
     }
     flags = (mii_type << 5) + partial_ts;
@@ -260,6 +264,29 @@ bool WiiMiiData::toggle_normal_special_flag() {
     return true;
 }
 
+
+bool WiiMiiData::toggle_foreign_flag() {
+
+    uint8_t flags;
+
+    memcpy(&flags, this->mii_data + MII_ID_OFFSET, 1);
+    uint8_t mii_type = (flags & 0b11100000) >> 5;
+    uint8_t partial_ts = (flags & 0b00011111);
+    switch (mii_type) {
+        case 6:           // not local > normal
+            mii_type = 4;
+            break;
+        default: // * > not_local
+            mii_type = 6;
+            break;
+    }
+    flags = (mii_type << 5) + partial_ts;
+    memcpy(this->mii_data + MII_ID_OFFSET, &flags, 1);
+
+    return true;
+}
+
+
 bool WiiMiiData::toggle_share_flag() {
 
     uint8_t mingleOff; // if false, Mii is shareable.
@@ -269,6 +296,15 @@ bool WiiMiiData::toggle_share_flag() {
 
     return true;
 }
+
+bool WiiMiiData::toggle_favorite_flag() {
+
+    uint8_t favorite = this->mii_data[1] ^ 0x1;
+    memcpy(this->mii_data + 1, &favorite, 1);
+    return true;
+
+}
+
 
 /// @brief Debug function to set arbitrary values in flag offset
 /// @param fold

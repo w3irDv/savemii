@@ -38,17 +38,21 @@ void MiiTransformTasksState::render() {
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
         Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Update MiiId (Timestamp): %s"), update_timestamp ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Toggle Share/Mingle flag: %s"), toggle_share_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Toggle favorite flag: %s"), toggle_favorite_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Toggle Normal/Special flag: %s"), toggle_normal_special_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Toggle Share/Mingle flag: %s"), toggle_share_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Update CRC: %s"), update_crc ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Toggle Normal/Special flag: %s"), toggle_normal_special_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
+        Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Toggle Foreign flag: %s"), toggle_foreign_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
+        Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Update CRC: %s"), update_crc ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
             goto all_tasks_shown;
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
-        Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Togle Copy Flag On/Off: %s"), toggle_copy_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
-        Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Togle Temporary Flag On/Off: %s"), toggle_temp_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 8);
+        Console::consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Togle Copy Flag On/Off: %s"), toggle_copy_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 9);
+        Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Togle Temporary Flag On/Off: %s"), toggle_temp_flag ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
     all_tasks_shown:
         const char *info;
@@ -64,18 +68,24 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("So the mii has a new unique MiiId (Beware! It will no longer be tied to any game that expects the older MiiId). But you can try it if an imported mii does not appear in MiiMaker");
                 break;
             case 3:
-                info = LanguageUtils::gettext("So the mii can travel to other consoles");
+                info = LanguageUtils::gettext("Only works for Wii Miis - Mark a Mii as a favorite one so they appear in other apps");
                 break;
             case 4:
-                info = LanguageUtils::gettext("You can transform a normal Mii into an special or foreign one (vWii), and viceversa");
+                info = LanguageUtils::gettext("So the mii can travel to other consoles");
                 break;
             case 5:
-                info = LanguageUtils::gettext("CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo).");
+                info = LanguageUtils::gettext("You can transform a normal Mii into an special one, and viceversa");
                 break;
             case 6:
-                info = LanguageUtils::gettext("So people that does not own the mii can modifiy it by creating a copy of the original");
+                info = LanguageUtils::gettext("Wii Miis can be forced as foreign irrespective of where they were created");
                 break;
             case 7:
+                info = LanguageUtils::gettext("CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo).");
+                break;
+            case 8:
+                info = LanguageUtils::gettext("So people that does not own the mii can modifiy it by creating a copy of the original");
+                break;
+            case 9:
                 info = LanguageUtils::gettext("Temporary Miis cannot be seen in FFL DB");
                 break;
             default:
@@ -111,13 +121,15 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             mii_process_shared_state->toggle_share_flag = toggle_share_flag;
             mii_process_shared_state->toggle_temp_flag = toggle_temp_flag;
             mii_process_shared_state->update_crc = update_crc;
+            mii_process_shared_state->toggle_favorite_flag = toggle_favorite_flag;
+            mii_process_shared_state->toggle_foreign_flag = toggle_foreign_flag;
             std::vector<bool> mii_repos_candidates;
             MiiUtils::get_compatible_repos(mii_repos_candidates, mii_process_shared_state->primary_mii_repo);
             if (transfer_physical_appearance || transfer_ownership) {
                 this->state = STATE_DO_SUBSTATE;
                 this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
             } else {
-                if (toggle_copy_flag || update_timestamp || toggle_normal_special_flag || toggle_share_flag || toggle_temp_flag || update_crc) {
+                if (toggle_copy_flag || update_timestamp || toggle_normal_special_flag || toggle_share_flag || toggle_temp_flag || update_crc || toggle_favorite_flag || toggle_foreign_flag) {
                     uint16_t errorCounter = 0;
                     if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state)) {
                         if (InProgress::abortTask == false)
@@ -153,18 +165,30 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                     update_timestamp = update_timestamp ? false : true;
                     break;
                 case 3:
-                    toggle_share_flag = toggle_share_flag ? false : true;
+                    if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
+                        toggle_favorite_flag = update_timestamp ? false : true;
+                    else
+                        toggle_favorite_flag = false;
                     break;
                 case 4:
-                    toggle_normal_special_flag = toggle_normal_special_flag ? false : true;
+                    toggle_share_flag = toggle_share_flag ? false : true;
                     break;
                 case 5:
-                    update_crc = update_crc ? false : true;
+                    toggle_normal_special_flag = toggle_normal_special_flag ? false : true;
                     break;
                 case 6:
-                    toggle_copy_flag = toggle_copy_flag ? false : true;
+                    if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
+                        toggle_foreign_flag = toggle_foreign_flag ? false : true;
+                    else
+                        toggle_foreign_flag = false;
                     break;
                 case 7:
+                    update_crc = update_crc ? false : true;
+                    break;
+                case 8:
+                    toggle_copy_flag = toggle_copy_flag ? false : true;
+                    break;
+                case 9:
                     toggle_temp_flag = toggle_temp_flag ? false : true;
                     break;
                 default:

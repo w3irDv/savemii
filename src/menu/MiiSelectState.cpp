@@ -331,6 +331,7 @@ void MiiSelectState::render() {
                         Console::consolePrintPos(MM_OFF + 36, i + 2, LanguageUtils::gettext("%s"), mii_kind);
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 44, i + 2, LanguageUtils::gettext("]"));
+                        Console::consolePrintPos(MM_OFF + 45, i + 2, LanguageUtils::gettext("%s"),this->mii_repo->miis[c2a[i + this->scroll]]->favorite ? "\ue017": "");
 
 
                         break;

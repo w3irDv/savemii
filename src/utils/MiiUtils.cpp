@@ -476,6 +476,8 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_data->transfer_ownership_from(template_mii_data);
                     if (mii_process_shared_state->update_timestamp)
                         mii_data->update_timestamp(mii_index);
+                    if (mii_process_shared_state->toggle_favorite_flag)
+                        mii_data->toggle_favorite_flag();    
                     if (mii_process_shared_state->toggle_share_flag) {
                         if (mii_repo->miis[mii_index]->mii_kind == Mii::eMiiKind::SPECIAL) {
                             Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."), mii_repo->miis[mii_index]->mii_name.c_str());
@@ -488,10 +490,12 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         }
                     }
                     if (mii_process_shared_state->toggle_normal_special_flag) {
-                        if (mii_repo->miis[mii_index]->shareable)
+                        if (mii_repo->miis[mii_index]->shareable && mii_repo->miis[mii_index]->shareable && mii_repo->miis[mii_index]->mii_kind == Mii::eMiiKind::NORMAL)
                             Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Share attribute will be disabled for Mii %s as it will be transformed to a Special one."), mii_repo->miis[mii_index]->mii_name.c_str());
                         mii_data->toggle_normal_special_flag();
                     }
+                    if (mii_process_shared_state->toggle_foreign_flag)
+                        mii_data->toggle_foreign_flag();
                     if (mii_process_shared_state->toggle_copy_flag)
                         mii_data->toggle_copy_flag();
                     if (mii_process_shared_state->toggle_temp_flag)
