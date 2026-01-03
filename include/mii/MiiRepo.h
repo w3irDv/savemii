@@ -48,7 +48,6 @@ public:
     int wipe();
     int initialize();
 
-
     void setStageRepo(MiiRepo *stage_repo) { this->stage_repo = stage_repo; };
 
     virtual uint16_t get_crc() = 0;
@@ -73,6 +72,7 @@ public:
     //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
 
     bool needs_populate = true;
+
 
     bool test_list_repo();
 };

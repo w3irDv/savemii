@@ -24,7 +24,7 @@ public:
     bool populate_repo();
     bool empty_repo();
     bool init_db_file() { return true; }; // not-needed for folder based repos
-
+    
     void push_back_invalid_mii(const std::string &filename_str, size_t index);
 
     bool set_db_fsa_metadata();

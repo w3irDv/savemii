@@ -175,6 +175,7 @@ int MiiRepo::wipe() {
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
 
+    this->empty_repo();
     this->needs_populate = true;
     return errorCode;
 }

@@ -102,7 +102,6 @@ public:
         const static uint32_t CRC_OFFSET = 0x4383E;
         const static uint32_t DB_SIZE = 0x43840;
         const static size_t MAX_MIIS = 3000;
-        //const static size_t MAX_MIIS = 100; //ENOUGH FOR TEST
         const static inline char MAGIC[4] = {'F', 'F', 'O', 'C'};
 
         const static uint32_t DB_OWNER = 0; // region dependent, we will find it during  run time

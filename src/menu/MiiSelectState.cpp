@@ -35,8 +35,10 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
         selectOnlyOneMii = true;
 
     if (mii_repo->needs_populate) {
-        mii_repo->open_and_load_repo();
-        mii_repo->populate_repo();
+        if (mii_repo->open_and_load_repo())
+            mii_repo->populate_repo();
+        else
+            no_miis = true;
     }
     initialize_view();
 }
@@ -181,7 +183,7 @@ void MiiSelectState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         //Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
         //                                (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
-        if ((mii_repo == nullptr) || (this->all_miis_count == 0 || (this->candidate_miis_count == 0))) {
+        if ((mii_repo == nullptr) || (this->all_miis_count == 0 || (this->candidate_miis_count == 0)) || (this->no_miis == true)) {
             DrawUtils::clear(COLOR_BG_KO);
             DrawUtils::endDraw();
             Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("There are no miis matching selected filters."));

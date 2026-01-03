@@ -28,7 +28,7 @@ bool MiiUtils::initMiiRepos() {
     const std::string pathaccount_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_Stage");
 
     //const std::string path_sgmgx("fs:/vol/external01/savemiis");
-    const std::string path_sgmgx("fs:/vol/external01/wiiu/backups/mii_repos/savemiis");
+    const std::string path_sgmgx("fs:/vol/external01/savemiis");
 
     //FSUtils::createFolder(pathffl.substr(0, pathffl.find_last_of("/")).c_str());
     //FSUtils::createFolder(pathrfl.substr(0, pathrfl.find_last_of("/")).c_str());
