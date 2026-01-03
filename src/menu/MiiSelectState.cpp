@@ -408,7 +408,10 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         else
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task Aborted - Partial extraction Ok"));
                     } else {
-                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Extraction has failed for %d miis"), errorCounter);
+                        if (errorCounter == 0)
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Extraction has failed - Global Error"));
+                        else
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Extraction has failed for %d miis"), errorCounter);
                     }
                     break;
                 case MiiProcess::SELECT_MIIS_FOR_IMPORT:
@@ -420,7 +423,10 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         else
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task aborted - Partial import Ok"));
                     } else {
-                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
+                        if (errorCounter == 0)
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed - Global Error"));
+                        else
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
                     }
                     if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_IMPORTED;
@@ -434,6 +440,8 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         std::string dst_path = mii_process_shared_state->primary_mii_repo->path_to_repo + "/" + account;
                         if (((MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo)->restore_account(src_path, dst_path) == 0)
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                        else
+                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Data restoration has failed!"));
                         delete mii_process_shared_state->auxiliar_mii_repo;
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_RESTORED;
                         return SUBSTATE_RETURN;
@@ -448,7 +456,10 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         else
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task Aborted - Partial wipe Ok"));
                     } else {
-                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Wipe has failed for %d miis"), errorCounter);
+                        if (errorCounter == 0)
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Wipe has failed - Global Error"));
+                        else
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Wipe has failed for %d miis"), errorCounter);
                     }
                     break;
                 case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
@@ -461,10 +472,17 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
                     if (mii_process_shared_state->template_mii_data != nullptr) {
                         //if (MiiUtils::copy_some_bytes_from_miis(errorCounter, mii_process_shared_state))
-                        if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state))
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"), errorCounter);
-                        else
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
+                        if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state)) {
+                            if (InProgress::abortTask == false)
+                                Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"));
+                            else
+                                Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task aborted - Partial Miis transform ok"));
+                        } else {
+                            if (errorCounter == 0)
+                                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed - Global Error"));
+                            else
+                                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
+                        }
                     } else
                         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), this->mii_repo->miis[c2a[currentlySelectedMii]]->mii_name.c_str(), mii_repo->miis[c2a[currentlySelectedMii]]->creator_name.c_str());
                     delete mii_process_shared_state->template_mii_data;

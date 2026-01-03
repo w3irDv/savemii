@@ -194,6 +194,7 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
             if (db_owner != 0)
                 FSUtils::flushVol(db_filepath);
             return true;
+            //return false  //CHAOS;
         } else { // the worst has happened
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));

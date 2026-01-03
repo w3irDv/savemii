@@ -7,6 +7,7 @@
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
+#include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
 #include <utils/MiiUtils.h>
 
@@ -25,7 +26,7 @@ void MiiTransformTasksState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
 
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAligned(0,4, 2, LanguageUtils::gettext("Selected Repo: %s"), mii_repo->repo_name.c_str());
+        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("Selected Repo: %s"), mii_repo->repo_name.c_str());
 
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -118,10 +119,17 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             } else {
                 if (toggle_copy_flag || update_timestamp || toggle_normal_special_flag || toggle_share_flag || toggle_temp_flag || update_crc) {
                     uint16_t errorCounter = 0;
-                    if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state))
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"), errorCounter);
-                    else
-                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
+                    if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state)) {
+                        if (InProgress::abortTask == false)
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"));
+                        else
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task aborted - Partial Miis transform ok"));
+                    } else {
+                        if (errorCounter == 0)
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed - Global Error"));
+                        else
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
+                    }
                     return SUBSTATE_RETURN;
                 } else
                     Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Please select an option"));
