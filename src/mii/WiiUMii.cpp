@@ -38,7 +38,9 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     //
 
     uint8_t birth_platform = mii_data->core.birth_platform;
-    bool favorite = mii_data->core.unk_0x18_b1 == 1;
+    // according to https://github.com/HEYimHeroic/mii2studio/blob/master/mii_data_ver3.ksy , is_favorite , but seems to be ignored by MiiMaker
+    //bool favorite = mii_data->core.unk_0x18_b1 == 1;
+    bool favorite = false; // We wiil compute later in populate_repo, comparing with mii_id
     bool copyable = mii_data->core.copyable == 1;
     bool shareable = mii_data->core.local_only == 0;
     uint64_t author_id = mii_data->core.author_id;
@@ -59,9 +61,9 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     // just for testing purposes in a linux box
     birth_platform = mii_data->core.unk_0x00_b4;
-    uint8_t tmp_favorite;
-    memcpy(&tmp_favorite, raw_mii_data + WiiUMiiData::BIRTHDATE_OFFSET, 1);
-    favorite = (((tmp_favorite & 0b01000000) >> 6) == 0x1);
+    //uint8_t tmp_favorite;
+    //memcpy(&tmp_favorite, raw_mii_data + WiiUMiiData::BIRTHDATE_OFFSET, 1);
+    //favorite = (((tmp_favorite & 0b01000000) >> 6) == 0x1);
     copyable = (mii_data->core.font_region & 1) == 1;
     shareable = (mii_data->core.face_color & 1) == 0;
     author_id = __builtin_bswap64(author_id);
@@ -271,12 +273,28 @@ bool WiiUMiiData::toggle_temp_flag() {
     return true;
 }
 
+/// @brief For WiiU, favorites are stoed in a section of the DB. We do nothing on the MiiData. To clarify: is this commented below bit really a favorite in other places (MiiMaker ignores it)
+/// @param db_buffer
+/// @return
 bool WiiUMiiData::toggle_favorite_flag() {
 
+    /*
     uint8_t favorite = this->mii_data[BIRTHDATE_OFFSET] ^ 0b01000000;
     memcpy(this->mii_data + BIRTHDATE_OFFSET, &favorite, 1);
     return true;
+    */
+    return true;
 }
+
+
+/// @brief This function retuns the favorite bit from the MiiData, which is nevertheless ignored by MiiMaker. Not used in the real cases.
+/// @return
+bool WiiUMiiData::get_favorite_flag() {
+
+    uint8_t favorite = (this->mii_data[BIRTHDATE_OFFSET] & 0b01000000) >> 6;
+    return (favorite == 1);
+}
+
 
 bool WiiUMiiData::flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size) {
 

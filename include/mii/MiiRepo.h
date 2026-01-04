@@ -41,6 +41,8 @@ public:
     virtual MiiData *extract_mii_data(size_t index) = 0;                             // from the repo to (tmp)mem
     virtual bool wipe_miidata(size_t index) = 0;
     bool repopulate_mii(size_t index, MiiData *miidata);
+    virtual bool check_if_favorite(MiiData* miidata) = 0;
+    virtual bool toggle_favorite_flag(MiiData* miidata) = 0;
 
     virtual std::string getBackupBasePath() { return backup_base_path; };
     int backup(int slot, std::string tag = "");
@@ -63,6 +65,7 @@ public:
     FSMode db_fsmode = (FSMode) 0x666;
     uint32_t db_owner = 0;
     uint32_t db_group = 0;
+    uint8_t *db_buffer = nullptr;
 
     std::vector<Mii *> miis;
     std::map<std::string, std::vector<size_t> *> owners;
@@ -72,7 +75,6 @@ public:
     //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
 
     bool needs_populate = true;
-
 
     bool test_list_repo();
 };

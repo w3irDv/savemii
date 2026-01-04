@@ -38,6 +38,7 @@ public:
     bool toggle_temp_flag();
     bool toggle_favorite_flag();
     bool toggle_foreign_flag();
+    bool get_favorite_flag();
 
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 
@@ -64,9 +65,9 @@ public:
     const static size_t YEAR_ZERO = 2006;
     const static uint8_t TICKS_PER_SEC = 4;
 
-    const static inline uint32_t MII_DATA_SIZE = 0x4A;
-    const static inline uint8_t CRC_SIZE = 2;
-    const static inline uint8_t CRC_PADDING = 0;
+    const static uint32_t MII_DATA_SIZE = 0x4A;
+    const static uint8_t CRC_SIZE = 2;
+    const static uint8_t CRC_PADDING = 0;
 
     //RFL_DB.dat
     class DB {

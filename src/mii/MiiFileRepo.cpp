@@ -33,7 +33,7 @@ template<>
 bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
     db_group = WiiMiiData::DB::DB_GROUP;
     db_fsmode = (FSMode) WiiMiiData::DB::DB_FSMODE;
-        if (path_to_repo.find("fs:/vol/") == std::string::npos) {
+    if (path_to_repo.find("fs:/vol/") == std::string::npos) {
         db_owner = WiiMiiData::DB::DB_OWNER;
         return true;
     } else {
@@ -94,6 +94,94 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::fill_empty_db_file() {
     return true;
 }
 
+/// @brief WiiU specialization, a mii is favorite if it appears in the favorites DB section
+/// @param miidata
+/// @return
+template<>
+bool MiiFileRepo<WiiUMii, WiiUMiiData>::check_if_favorite(MiiData *miidata) {
+
+    bool favorite = false;
+
+    uint8_t *fav_offset = nullptr;
+    for (size_t fav_index = 0; fav_index < WiiUMiiData::DB::MAX_FAVORITES; fav_index++) {
+        fav_offset = db_buffer + WiiUMiiData::DB::FAVORITES_OFFSET + fav_index * WiiUMiiData::MII_ID_SIZE;
+        int diff = memcmp(miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, fav_offset, WiiUMiiData::MII_ID_SIZE);
+        if (diff == 0) {
+            favorite = true;
+            break;
+        }
+    }
+
+    return favorite;
+}
+
+/// @brief Wii specialization, favorite only depends on the bit 0x01&1 in MiiData
+/// @param miidata
+/// @return
+template<>
+bool MiiFileRepo<WiiMii, WiiMiiData>::check_if_favorite(MiiData *miidata) {
+    return miidata->get_favorite_flag();
+}
+
+
+/// @brief Update the favorite section in FFL DB so the Mii will be appear as favourite in MiiMaker. Nothing is done on the MiiData
+/// @param db_buffer 
+/// @return 
+template<>
+bool MiiFileRepo<WiiUMii, WiiUMiiData>::toggle_favorite_flag(MiiData* miidata) {
+
+    /*
+    uint8_t favorite = this->mii_data[BIRTHDATE_OFFSET] ^ 0b01000000;
+    memcpy(this->mii_data + BIRTHDATE_OFFSET, &favorite, 1);
+    return true;
+    */
+
+    if (db_buffer == nullptr)
+        return false;
+
+    bool favorite = false;
+
+    uint8_t zero[10] = {0};
+
+    uint8_t *fav_offset = nullptr;
+    for (size_t fav_index = 0; fav_index < WiiUMiiData::DB::MAX_FAVORITES; fav_index++) {
+        fav_offset = db_buffer + WiiUMiiData::DB::FAVORITES_OFFSET + fav_index * WiiUMiiData::MII_ID_SIZE;
+        int diff = memcmp(miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, fav_offset, WiiUMiiData::MII_ID_SIZE);
+        if (diff == 0) {
+            favorite = true;
+            break;
+        }
+    }
+
+    bool toggled = false;
+
+    if (favorite == true) {
+        memset(fav_offset, 0, WiiUMiiData::MII_ID_SIZE);
+        toggled = true;
+    } else {
+        for (size_t fav_index = 0; fav_index < WiiUMiiData::DB::MAX_FAVORITES; fav_index++) {
+            fav_offset = db_buffer + WiiUMiiData::DB::FAVORITES_OFFSET + fav_index * WiiUMiiData::MII_ID_SIZE;
+            int diff = memcmp(&zero, fav_offset, WiiUMiiData::MII_ID_SIZE);
+            if (diff == 0) {
+                memcpy(fav_offset, miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
+                toggled = true;
+                break;
+            }
+        }
+        if (toggled == false)
+            Console::showMessage(ERROR_CONFIRM,LanguageUtils::gettext("Maximum Numer of Favorite Miis (%d) reached"), WiiUMiiData::DB::MAX_FAVORITES);
+    }
+
+    return toggled;
+}
+
+/// @brief RFL DB ha no Favourite section. Nothing is done
+/// @param miidata 
+/// @return 
+template<>
+bool MiiFileRepo<WiiMii, WiiMiiData>::toggle_favorite_flag([[maybe_unused]] MiiData* miidata) {
+    return true;
+}
 
 template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
 template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
@@ -335,7 +423,6 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         return false;
     }
 
-
     if (this->miis.size() != 0)
         empty_repo();
 
@@ -352,9 +439,14 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
                 Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
         }
 
+        /*
         uint8_t raw_mii_data[MIIDATA::MII_DATA_SIZE];
-
+        */
+        unsigned char *raw_mii_data = (unsigned char *) MiiData::allocate_memory(MIIDATA::MII_DATA_SIZE);
         memcpy(raw_mii_data, db_buffer + MIIDATA::DB::OFFSET + i * MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE);
+        MiiData *current_miidata = new MIIDATA();
+        current_miidata->mii_data = raw_mii_data;
+        current_miidata->mii_data_size = MIIDATA::MII_DATA_SIZE;
 
         if (has_a_mii(raw_mii_data)) {
             Mii *mii = MII::populate_mii(index, raw_mii_data);
@@ -368,6 +460,9 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
                     owners[creatorName] = owners_v;
                 }
                 owners_v->push_back(index);
+                if (MIIDATA::DB::DB_TYPE == MiiRepo::eDBType::FFL) {
+                    mii->favorite = check_if_favorite(current_miidata);
+                }
             } else {
                 mii = new MII();
                 mii->is_valid = false;
@@ -383,6 +478,7 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         } else {
             consecutive_not_found++;
         }
+        delete current_miidata;
     }
 
     this->needs_populate = false;

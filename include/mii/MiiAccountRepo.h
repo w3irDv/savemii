@@ -16,7 +16,7 @@ public:
     //bool import_mii(Mii &mii) { return (mii.mii_name == ""); };
     bool import_miidata(MiiData *mii_data, bool in_place, size_t index); // from (temp)mem to the repo
     MiiData *extract_mii_data(size_t index);                             // from the repo to (tmp)mem
-    MiiData *extract_mii_data(const std::string &mii_filepath);           // from file to (tmp)mem
+    MiiData *extract_mii_data(const std::string &mii_filepath);          // from file to (tmp)mem
     bool wipe_miidata(size_t index);
 
     std::vector<std::string> mii_filepath;
@@ -24,12 +24,15 @@ public:
     bool populate_repo();
     bool empty_repo();
     bool init_db_file() { return true; }; // not-needed for folder based repos
-    
+
     void push_back_invalid_mii(const std::string &filename_str, size_t index);
 
     bool set_db_fsa_metadata();
 
     uint16_t get_crc() { return 0; }; // folder REPO does not have a global "CRC"
+
+    bool check_if_favorite(MiiData *miidata);
+    bool toggle_favorite_flag([[maybe_unused]] MiiData *miidata) { return true; }; // Not needed for account
 
     int restore_account(std::string source_path, std::string dst_path);
 };

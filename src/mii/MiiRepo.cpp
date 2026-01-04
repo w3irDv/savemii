@@ -222,6 +222,8 @@ bool MiiRepo::repopulate_mii(size_t index, MiiData *miidata) {
     this->miis.at(index) = temp->v_populate_mii(miidata->mii_data);
     this->miis.at(index)->mii_repo = this;
     this->miis.at(index)->location_name = temp->location_name;
+    this->miis.at(index)->favorite = this->check_if_favorite(miidata);
+
     delete temp;
 
     return true;

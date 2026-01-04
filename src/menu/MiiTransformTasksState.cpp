@@ -68,7 +68,7 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("So the mii has a new unique MiiId (Beware! It will no longer be tied to any game that expects the older MiiId). But you can try it if an imported mii does not appear in MiiMaker");
                 break;
             case 3:
-                info = LanguageUtils::gettext("Only works for Wii Miis - Mark a Mii as a favorite one so they appear in other apps");
+                info = LanguageUtils::gettext("Mark a Mii as a favorite one so they appear in other apps (applicable to any Wii mii, but only to WiiU miis in FFL DB)");
                 break;
             case 4:
                 info = LanguageUtils::gettext("So the mii can travel to other consoles");
@@ -165,10 +165,10 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                     update_timestamp = update_timestamp ? false : true;
                     break;
                 case 3:
-                    if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
+                    //if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
                         toggle_favorite_flag = update_timestamp ? false : true;
-                    else
-                        toggle_favorite_flag = false;
+                    //else
+                    //    toggle_favorite_flag = false;
                     break;
                 case 4:
                     toggle_share_flag = toggle_share_flag ? false : true;

@@ -73,6 +73,7 @@ public:
     virtual bool toggle_temp_flag() = 0;
     virtual bool toggle_favorite_flag() = 0;
     virtual bool toggle_foreign_flag() = 0;
+    virtual bool get_favorite_flag() = 0;
 
     virtual bool set_normal_special_flag(size_t fold) = 0;
     virtual bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes) = 0;

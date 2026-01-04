@@ -41,6 +41,13 @@ bool MiiAccountRepo<WiiUMii, WiiUMiiData>::set_db_fsa_metadata() {
     }
 }
 
+/// @brief In the WiiU, we assume that a favorite mii must be defined in FFL_ODB.dat favorite section. So FALSE for account repo.
+/// @param miidata 
+/// @return 
+template<>
+bool MiiAccountRepo<WiiUMii, WiiUMiiData>::check_if_favorite([[maybe_unused]] MiiData *miidata) {
+    return false;
+}
 
 template MiiAccountRepo<WiiUMii, WiiUMiiData>::MiiAccountRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
 

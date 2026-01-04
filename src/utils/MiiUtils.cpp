@@ -18,21 +18,23 @@
 
 bool MiiUtils::initMiiRepos() {
 
-    //const std::string pathffl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL/FFL_ODB.dat");
+
     const std::string pathffl("storage_mlc01:/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat");
+    const std::string pathfflc("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat");
     const std::string pathffl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_Stage");
-    //const std::string pathrfl("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL/RFL_DB.dat");
     const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/RFL_DB.dat");
+    const std::string pathrflc("/home/qwii/hb/mock_mii/test/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat");
     const std::string pathrfl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL_Stage");
-    const std::string pathaccount("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT");
+    //const std::string pathaccount("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT");
+    const std::string pathaccount("storage_mlc01:/usr/save/system/act");
     const std::string pathaccount_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_Stage");
 
     //const std::string path_sgmgx("fs:/vol/external01/savemiis");
     const std::string path_sgmgx("fs:/vol/external01/savemiis");
 
-    //FSUtils::createFolder(pathffl.substr(0, pathffl.find_last_of("/")).c_str());
-    //FSUtils::createFolder(pathrfl.substr(0, pathrfl.find_last_of("/")).c_str());
-    FSUtils::createFolder(pathaccount.substr(0, pathaccount.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathfflc.substr(0, pathffl.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathrflc.substr(0, pathrfl.find_last_of("/")).c_str());
+    //FSUtils::createFolder(pathaccount.substr(0, pathaccount.find_last_of("/")).c_str());
 
     FSUtils::createFolder(pathffl_Stage.c_str());
     FSUtils::createFolder(pathrfl_Stage.c_str());
@@ -41,8 +43,10 @@ bool MiiUtils::initMiiRepos() {
     FSUtils::createFolder(path_sgmgx.c_str());
 
     MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", "Wii U Mii Database");
+    MiiRepos["FFL_C"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_C", pathfflc, "mii_bckp_ffl_c", "Custom Wii U Mii Database on SD");
     MiiRepos["FFL_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_STAGE", pathffl_Stage, "mii_bckp_ffl_Stage", "Stage Folder for Wii U Miis");
     MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", "vWii Mii Database");
+    MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", "Custom vWii Mii Database on SD");
     MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", "Stage Folder for vWii Miis");
     MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", "Miis from Account DB");
     MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis");
@@ -58,7 +62,10 @@ bool MiiUtils::initMiiRepos() {
     MiiRepos["ACCOUNT"]->setStageRepo(MiiRepos["ACCOUNT_STAGE"]);
     //MiiRepos["ACCOUNT_STAGE"]->setStageRepo(MiiRepos["ACCOUNT"]);
 
-    mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_STAGE"], MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["SGMGX"], MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"]};
+    mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_STAGE"], MiiRepos["FFL_C"],
+                 MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["RFL_C"],
+                 MiiRepos["SGMGX"],
+                 MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"]};
 
     return true;
 }
@@ -66,8 +73,10 @@ bool MiiUtils::initMiiRepos() {
 void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["FFL"];
     delete MiiUtils::MiiRepos["FFL_STAGE"];
+    delete MiiUtils::MiiRepos["FFL_C"];
     delete MiiUtils::MiiRepos["RFL"];
     delete MiiUtils::MiiRepos["RFL_STAGE"];
+    delete MiiUtils::MiiRepos["RFL_C"];
     delete MiiUtils::MiiRepos["SGMGX"],
             delete MiiUtils::MiiRepos["ACCOUNT"];
     delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
@@ -476,8 +485,10 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_data->transfer_ownership_from(template_mii_data);
                     if (mii_process_shared_state->update_timestamp)
                         mii_data->update_timestamp(mii_index);
-                    if (mii_process_shared_state->toggle_favorite_flag)
-                        mii_data->toggle_favorite_flag();    
+                    if (mii_process_shared_state->toggle_favorite_flag) {
+                        mii_data->toggle_favorite_flag();         // RFL
+                        mii_repo->toggle_favorite_flag(mii_data); // FFL
+                    }
                     if (mii_process_shared_state->toggle_share_flag) {
                         if (mii_repo->miis[mii_index]->mii_kind == Mii::eMiiKind::SPECIAL) {
                             Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."), mii_repo->miis[mii_index]->mii_name.c_str());

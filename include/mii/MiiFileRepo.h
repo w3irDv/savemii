@@ -20,14 +20,16 @@ public:
 
     bool populate_repo();
     bool empty_repo();
+    bool check_if_favorite(MiiData* miidata);
+    bool toggle_favorite_flag(MiiData* miidata);
 
     bool find_empty_location(size_t &target_location);
     bool has_a_mii(uint8_t *raw_mii_data);
 
     std::vector<size_t> mii_location; //index of the mii inside the db
-    uint8_t *db_buffer = nullptr;
     size_t last_empty_location = 0;
 
+    std::map<std::string, int> favorite_miis;
     bool set_db_fsa_metadata();
 
     uint16_t get_crc();

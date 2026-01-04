@@ -305,6 +305,12 @@ bool WiiMiiData::toggle_favorite_flag() {
 
 }
 
+bool WiiMiiData::get_favorite_flag() {
+
+    uint8_t favorite = this->mii_data[1] & 0x1;
+    return (favorite == 1);
+
+}
 
 /// @brief Debug function to set arbitrary values in flag offset
 /// @param fold

@@ -26,6 +26,22 @@ MiiFolderRepo<MII, MIIDATA>::~MiiFolderRepo() {
     this->empty_repo();
 };
 
+/// @brief In the WiiU, we assume that a favorite mii must be defined in FFL_ODB.dat favorite section. So FALSE for folder repo.
+/// @param miidata 
+/// @return 
+template<>
+bool MiiFolderRepo<WiiUMii, WiiUMiiData>::check_if_favorite([[maybe_unused]] MiiData *miidata) {
+    return false;
+}
+
+/// @brief Wii specialization, favorite only depends on the bit 0x01&1 in MiiData
+/// @param miidata
+/// @return
+template<>
+bool MiiFolderRepo<WiiMii, WiiMiiData>::check_if_favorite(MiiData *miidata) {
+    return miidata->get_favorite_flag();
+}
+
 template MiiFolderRepo<WiiMii, WiiMiiData>::MiiFolderRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
 template MiiFolderRepo<WiiUMii, WiiUMiiData>::MiiFolderRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
 

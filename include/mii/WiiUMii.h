@@ -37,6 +37,7 @@ public:
     bool toggle_temp_flag();
     bool toggle_favorite_flag();
     bool toggle_foreign_flag() { return true; };
+    bool get_favorite_flag();
 
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 
@@ -65,9 +66,11 @@ public:
     const static size_t YEAR_ZERO = 2010;
     const static uint8_t TICKS_PER_SEC = 2;
 
-    const static inline uint32_t MII_DATA_SIZE = 0x5C;
-    const static inline uint8_t CRC_SIZE = 4;
-    const static inline uint8_t CRC_PADDING = 2;
+    const static uint32_t MII_DATA_SIZE = 0x5C;
+    const static uint8_t CRC_SIZE = 4;
+    const static uint8_t CRC_PADDING = 2;
+
+    const static uint8_t MII_ID_SIZE = 0xA;
 
     // switch between le (account) and be (wiiu ffl) representations
     const static inline std::vector<uint8_t> account_2_ffl_index = {
@@ -111,6 +114,9 @@ public:
         const static uint32_t DB_FSMODE = 0x666;
 
         const static MiiRepo::eDBType DB_TYPE = MiiRepo::eDBType::FFL;
+
+        const static uint8_t MAX_FAVORITES = 50;
+        const static uint32_t FAVORITES_OFFSET = 0x43628;
     };
 
     class ACCOUNT {
