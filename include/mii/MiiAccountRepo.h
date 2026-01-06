@@ -33,6 +33,8 @@ public:
 
     bool check_if_favorite(MiiData *miidata);
     bool toggle_favorite_flag([[maybe_unused]] MiiData *miidata) { return true; }; // Not needed for account
+    bool update_miid_in_favorite_section([[maybe_unused]] MiiData* old_miidata, [[maybe_unused]] MiiData* new_miidata) { return true; }; // Not needed for account
+    bool delete_miid_from_favorite_section([[maybe_unused]] MiiData* miidata) { return true; }; // Not needed for account
 
     int restore_account(std::string source_path, std::string dst_path);
 };

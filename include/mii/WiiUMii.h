@@ -24,6 +24,10 @@ public:
 
 class WiiUMiiData : public MiiData {
 public:
+
+    WiiUMiiData(uint8_t *mii_data, size_t mii_data_size) : MiiData(mii_data, mii_data_size) {};
+    MiiData *clone();
+
     std::string get_mii_name();
     uint8_t get_gender();
     void get_birthdate_as_string(std::string &birth_month, std::string &birth_day);

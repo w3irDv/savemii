@@ -14,7 +14,7 @@
 #include <utils/MiiUtils.h>
 #include <utils/StringUtils.h>
 
-////#define BYTE_ORDER__LITTLE_ENDIAN
+//#define BYTE_ORDER__LITTLE_ENDIAN
 
 bool MiiUtils::initMiiRepos() {
 
@@ -23,7 +23,7 @@ bool MiiUtils::initMiiRepos() {
     const std::string pathfflc("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat");
     const std::string pathffl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_Stage");
     const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/RFL_DB.dat");
-    const std::string pathrflc("/home/qwii/hb/mock_mii/test/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat");
+    const std::string pathrflc("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat");
     const std::string pathrfl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL_Stage");
     //const std::string pathaccount("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT");
     const std::string pathaccount("storage_mlc01:/usr/save/system/act");
@@ -347,10 +347,19 @@ bool MiiUtils::wipe_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_proc
             mii_view->at(mii_index).selected = false;
             mii_view->at(mii_index).state = MiiStatus::KO;
 
+            if (mii_repo->miis.at(mii_index)->favorite) {
+                MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
+                if (mii_data != nullptr) {
+                    mii_repo->delete_miid_from_favorite_section(mii_data);
+                    delete mii_data;
+                } else { // Just a warning, we are unable to delete it from favourites
+                    Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Unable to remove %s (by %s) from favorites section. Error extracting MiiData"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
+                }
+            }
             if (mii_repo->wipe_miidata(mii_index)) {
                 mii_view->at(mii_index).state = MiiStatus::OK;
             } else {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error wiping MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
                 errorCounter++;
             }
             InProgress::currentStep++;
@@ -478,21 +487,29 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                 mii_view->at(mii_index).state = MiiStatus::KO;
                 mii_view->at(mii_index).selected = false;
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
-                if (mii_data != nullptr) {
+                bool mii_is_favorite = mii_repo->miis.at(mii_index)->favorite;
+                bool modifies_favorite_flag = mii_process_shared_state->transfer_ownership || mii_process_shared_state->update_timestamp ||
+                                              mii_process_shared_state->toggle_favorite_flag || mii_process_shared_state->toggle_normal_special_flag ||
+                                              mii_process_shared_state->toggle_temp_flag;
+                MiiData *original_mii_data;
+                original_mii_data = mii_data->clone();
+                if (mii_data != nullptr && original_mii_data != nullptr) {
+                    if (mii_is_favorite && mii_process_shared_state->toggle_favorite_flag && modifies_favorite_flag) {
+                        mii_repo->toggle_favorite_flag(mii_data); // FFL
+                    }
                     if (mii_process_shared_state->transfer_physical_appearance)
                         mii_data->transfer_appearance_from(template_mii_data);
                     if (mii_process_shared_state->transfer_ownership)
                         mii_data->transfer_ownership_from(template_mii_data);
                     if (mii_process_shared_state->update_timestamp)
                         mii_data->update_timestamp(mii_index);
-                    if (mii_process_shared_state->toggle_favorite_flag) {
-                        mii_data->toggle_favorite_flag();         // RFL
-                        mii_repo->toggle_favorite_flag(mii_data); // FFL
-                    }
+                    if (mii_process_shared_state->toggle_favorite_flag)
+                        mii_data->toggle_favorite_flag(); // RFL , unless at some momment we decide to update bits in miidata for FFL too
                     if (mii_process_shared_state->toggle_share_flag) {
                         if (mii_repo->miis[mii_index]->mii_kind == Mii::eMiiKind::SPECIAL) {
                             Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."), mii_repo->miis[mii_index]->mii_name.c_str());
                             delete mii_data;
+                            delete original_mii_data;
                             mii_view->at(mii_index).state = MiiStatus::NOT_TRIED;
                             mii_view->at(mii_index).selected = true;
                             continue;
@@ -511,11 +528,18 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_data->toggle_copy_flag();
                     if (mii_process_shared_state->toggle_temp_flag)
                         mii_data->toggle_temp_flag();
+                    if (!mii_is_favorite && mii_process_shared_state->toggle_favorite_flag && modifies_favorite_flag) {
+                        mii_repo->toggle_favorite_flag(mii_data); // FFL
+                    }
+                    if (mii_is_favorite && !mii_process_shared_state->toggle_favorite_flag && modifies_favorite_flag) {
+                        mii_repo->update_miid_in_favorite_section(original_mii_data, mii_data); // FFL
+                    }
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
                         mii_repo->repopulate_mii(mii_index, mii_data);
                     }
                     delete mii_data;
+                    delete original_mii_data;
                 } else {
                     Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
                     errorCounter++;

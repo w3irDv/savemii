@@ -55,11 +55,14 @@ public:
 class MiiData {
 
 public:
+
+    MiiData(uint8_t *mii_data, size_t mii_data_size) : mii_data(mii_data),mii_data_size{mii_data_size} {};
     virtual ~MiiData() {
         if (mii_data != nullptr)
             free(mii_data);
     }
 
+    virtual MiiData *clone() = 0;
     virtual std::string get_mii_name() = 0;
     virtual uint8_t get_gender() = 0;
     virtual void get_birthdate_as_string(std::string &birth_month, std::string &birth_day) = 0;

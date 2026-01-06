@@ -103,10 +103,7 @@ MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_fi
         }
     }
 
-    MiiData *miidata = new MIIDATA();
-
-    miidata->mii_data = mii_buffer;
-    miidata->mii_data_size = mii_buffer_size;
+    MiiData *miidata = new MIIDATA(mii_buffer, mii_buffer_size);
 
     return miidata;
 }

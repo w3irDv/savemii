@@ -22,6 +22,8 @@ public:
     bool empty_repo();
     bool check_if_favorite(MiiData* miidata);
     bool toggle_favorite_flag(MiiData* miidata);
+    bool update_miid_in_favorite_section(MiiData* old_miidata, MiiData* new_miidata);
+    bool delete_miid_from_favorite_section(MiiData* miidata) { return true; };
 
     bool find_empty_location(size_t &target_location);
     bool has_a_mii(uint8_t *raw_mii_data);

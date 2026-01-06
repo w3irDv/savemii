@@ -4,6 +4,7 @@
 #include <mii/WiiMiiStruct.h>
 #include <utf8.h>
 #include <utils/MiiUtils.h>
+#include <utils/ConsoleUtils.h>
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -24,6 +25,15 @@ WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string times
             mii_kind = NORMAL;
     }
 };
+
+MiiData *WiiMiiData::clone() {
+ 
+    unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(this->mii_data_size);
+    memcpy(mii_buffer,this->mii_data,mii_data_size);
+    MiiData *miidata = new WiiMiiData(mii_buffer, this->mii_data_size);
+
+    return miidata;
+}
 
 /// @brief Wii Mii doe snot have this flag
 /// @return
@@ -195,7 +205,7 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     std::string deviceHash{};
     for (size_t i = 0; i < WiiMiiData::DEVICE_HASH_SIZE; i++) {
         char hexhex[3];
-        snprintf(hexhex, 3, "%02x", mii_id_deviceHash[i]);
+        snprintf(hexhex, 3, "%02X", mii_id_deviceHash[i]);
         deviceHash.append(hexhex);
     }
 

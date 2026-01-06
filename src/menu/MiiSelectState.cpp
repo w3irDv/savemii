@@ -285,27 +285,18 @@ void MiiSelectState::render() {
                                          this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str());
                 switch (view_type) {
                     case BASIC:
-                        /*
-                        Console::consolePrintPos(MM_OFF + 12, i + 2, LanguageUtils::gettext("[COPY %s"),
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
-                        Console::consolePrintPos(MM_OFF + 22, i + 2, LanguageUtils::gettext("| SHARE %s"),
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->shareable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
-                        Console::consolePrintPos(MM_OFF + 34, i + 2, LanguageUtils::gettext("| %s"),
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->normal ? LanguageUtils::gettext("NORMAL") : LanguageUtils::gettext("SPECIAL"));
-                        Console::consolePrintPos(MM_OFF + 43, i + 2, LanguageUtils::gettext("]"));
-                    */
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 12, i + 2, LanguageUtils::gettext("[COPY"));
                         DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->copyable);
                         Console::consolePrintPos(MM_OFF + 18, i + 2, LanguageUtils::gettext("%s"),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
                         DrawUtils::setFontColor(color_text);
-                        Console::consolePrintPos(MM_OFF + 22, i + 2, LanguageUtils::gettext("| SHARE"));
+                        Console::consolePrintPos(MM_OFF + 21, i + 2, LanguageUtils::gettext("| SHARE"));
                         DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->shareable);
-                        Console::consolePrintPos(MM_OFF + 30, i + 2, LanguageUtils::gettext("%s"),
+                        Console::consolePrintPos(MM_OFF + 29, i + 2, LanguageUtils::gettext("%s"),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->shareable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
                         DrawUtils::setFontColor(color_text);
-                        Console::consolePrintPos(MM_OFF + 34, i + 2, LanguageUtils::gettext("|"));
+                        Console::consolePrintPos(MM_OFF + 32, i + 2, LanguageUtils::gettext("|"));
                         DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->mii_kind == Mii::eMiiKind::NORMAL);
                         const char *mii_kind;
                         switch (this->mii_repo->miis[c2a[i + this->scroll]]->mii_kind) {
@@ -328,19 +319,19 @@ void MiiSelectState::render() {
                                 mii_kind = LanguageUtils::gettext("UNKNOWN");
                                 break;
                         }
-                        Console::consolePrintPos(MM_OFF + 36, i + 2, LanguageUtils::gettext("%s"), mii_kind);
+                        Console::consolePrintPos(MM_OFF + 34, i + 2, LanguageUtils::gettext("%s"), mii_kind);
                         DrawUtils::setFontColor(color_text);
-                        Console::consolePrintPos(MM_OFF + 44, i + 2, LanguageUtils::gettext("]"));
-                        Console::consolePrintPos(MM_OFF + 45, i + 2, LanguageUtils::gettext("%s"),this->mii_repo->miis[c2a[i + this->scroll]]->favorite ? "\ue017": "");
+                        Console::consolePrintPos(MM_OFF + 42, i + 2, LanguageUtils::gettext("]"));
+                        Console::consolePrintPos(MM_OFF + 43, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->favorite ? "\ue017" : "");
 
 
                         break;
                     case CREATORS:
                         Console::consolePrintPos(MM_OFF + 12, i + 2, ":%s",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str());
-                        Console::consolePrintPos(MM_OFF + 24, i + 2, "[A:%08x]",
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->author_id);
-                        Console::consolePrintPos(MM_OFF + 36, i + 2, "[D:%s]",
+                        Console::consolePrintPos(MM_OFF + 24, i + 2, "[A:%06X]",
+                                                 ((uint32_t) this->mii_repo->miis[c2a[i + this->scroll]]->author_id) & 0xFFFFFF);
+                        Console::consolePrintPos(MM_OFF + 35, i + 2, "[D:%s]",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str());
                         break;
                     case LOCATION:

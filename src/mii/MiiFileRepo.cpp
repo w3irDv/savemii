@@ -124,11 +124,11 @@ bool MiiFileRepo<WiiMii, WiiMiiData>::check_if_favorite(MiiData *miidata) {
 }
 
 
-/// @brief Update the favorite section in FFL DB so the Mii will be appear as favourite in MiiMaker. Nothing is done on the MiiData
-/// @param db_buffer 
-/// @return 
+/// @brief Add/Remove miidataid from the favorite section in FFL DB so the Mii will be appear as favourite in MiiMaker. Nothing is done on the MiiData
+/// @param db_buffer
+/// @return
 template<>
-bool MiiFileRepo<WiiUMii, WiiUMiiData>::toggle_favorite_flag(MiiData* miidata) {
+bool MiiFileRepo<WiiUMii, WiiUMiiData>::toggle_favorite_flag(MiiData *miidata) {
 
     /*
     uint8_t favorite = this->mii_data[BIRTHDATE_OFFSET] ^ 0b01000000;
@@ -169,19 +169,101 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::toggle_favorite_flag(MiiData* miidata) {
             }
         }
         if (toggled == false)
-            Console::showMessage(ERROR_CONFIRM,LanguageUtils::gettext("Maximum Numer of Favorite Miis (%d) reached"), WiiUMiiData::DB::MAX_FAVORITES);
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Maximum Numer of Favorite Miis (%d) reached"), WiiUMiiData::DB::MAX_FAVORITES);
     }
 
     return toggled;
 }
 
 /// @brief RFL DB ha no Favourite section. Nothing is done
-/// @param miidata 
-/// @return 
+/// @param miidata
+/// @return
 template<>
-bool MiiFileRepo<WiiMii, WiiMiiData>::toggle_favorite_flag([[maybe_unused]] MiiData* miidata) {
+bool MiiFileRepo<WiiMii, WiiMiiData>::toggle_favorite_flag([[maybe_unused]] MiiData *miidata) {
     return true;
 }
+
+/// @brief If a modified mii is favorite, modifies its miiid in the favorite section
+/// @param old_miidata
+/// @param new_miidata
+/// @return
+template<>
+bool MiiFileRepo<WiiUMii, WiiUMiiData>::update_miid_in_favorite_section([[maybe_unused]] MiiData *old_miidata, [[maybe_unused]] MiiData *new_miidata) {
+
+    if (db_buffer == nullptr)
+        return false;
+
+    bool found = false;
+
+    uint8_t *fav_offset = nullptr;
+    for (size_t fav_index = 0; fav_index < WiiUMiiData::DB::MAX_FAVORITES; fav_index++) {
+        fav_offset = db_buffer + WiiUMiiData::DB::FAVORITES_OFFSET + fav_index * WiiUMiiData::MII_ID_SIZE;
+        int diff = memcmp(old_miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, fav_offset, WiiUMiiData::MII_ID_SIZE);
+        if (diff == 0) {
+            found = true;
+            break;
+        }
+    }
+
+    if (found == true) {
+        memcpy(fav_offset, new_miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
+    } else {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Mii %s not found in Favorites section"), old_miidata->get_name_as_hex_string().c_str());
+    }
+
+    return found;
+}
+
+/// @brief Deletes miiid from favorite section
+/// @param old_miidata
+/// @param new_miidata
+/// @return
+template<>
+bool MiiFileRepo<WiiUMii, WiiUMiiData>::delete_miid_from_favorite_section(MiiData *miidata) {
+
+    if (db_buffer == nullptr)
+        return false;
+
+    bool found = false;
+
+    uint8_t *fav_offset = nullptr;
+    for (size_t fav_index = 0; fav_index < WiiUMiiData::DB::MAX_FAVORITES; fav_index++) {
+        fav_offset = db_buffer + WiiUMiiData::DB::FAVORITES_OFFSET + fav_index * WiiUMiiData::MII_ID_SIZE;
+        int diff = memcmp(miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, fav_offset, WiiUMiiData::MII_ID_SIZE);
+        if (diff == 0) {
+            found = true;
+            break;
+        }
+    }
+
+    if (found == true) {
+        memset(fav_offset, 0, WiiUMiiData::MII_ID_SIZE);
+    } else {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Mii %s not found in Favorites section"), miidata->get_name_as_hex_string().c_str());
+    }
+
+    return found;
+}
+
+
+/// @brief RFL DB ha no Favourite section. Nothing is done
+/// @param old_miidata
+/// @param new_miidata
+/// @return
+template<>
+bool MiiFileRepo<WiiMii, WiiMiiData>::update_miid_in_favorite_section([[maybe_unused]] MiiData *old_miidata, [[maybe_unused]] MiiData *new_miidata) {
+    return true;
+}
+
+
+/// @brief RFL DB ha no Favourite section. Nothing is done
+/// @param old_miidata
+/// @param new_miidata
+/// @return
+template<>
+bool MiiFileRepo<WiiMii, WiiMiiData>::delete_miid_from_favorite_section([[maybe_unused]] MiiData *miidata) {
+    return true;
+};
 
 template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
 template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
@@ -325,10 +407,7 @@ MiiData *MiiFileRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
     memset(mii_buffer + MIIDATA::MII_DATA_SIZE, 0, 4);
 
 
-    MiiData *miidata = new MIIDATA();
-
-    miidata->mii_data = mii_buffer;
-    miidata->mii_data_size = MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE;
+    MiiData *miidata = new MIIDATA(mii_buffer, MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE);
 
     return miidata;
 }
@@ -444,9 +523,7 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         */
         unsigned char *raw_mii_data = (unsigned char *) MiiData::allocate_memory(MIIDATA::MII_DATA_SIZE);
         memcpy(raw_mii_data, db_buffer + MIIDATA::DB::OFFSET + i * MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE);
-        MiiData *current_miidata = new MIIDATA();
-        current_miidata->mii_data = raw_mii_data;
-        current_miidata->mii_data_size = MIIDATA::MII_DATA_SIZE;
+        MiiData *current_miidata = new MIIDATA(raw_mii_data, MIIDATA::MII_DATA_SIZE);
 
         if (has_a_mii(raw_mii_data)) {
             Mii *mii = MII::populate_mii(index, raw_mii_data);

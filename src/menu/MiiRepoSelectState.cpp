@@ -107,7 +107,7 @@ void MiiRepoSelectState::render() {
                                      MiiUtils::mii_repos.at(c2a[i + this->scroll])->repo_name.c_str());
               
             DrawUtils::setFontColorByCursor(COLOR_INFO, COLOR_INFO_AT_CURSOR, cursorPos, i);
-            Console::consolePrintPos(18, i + 2, ">> %s",
+            Console::consolePrintPos(19, i + 2, ">> %s",
                                      MiiUtils::mii_repos.at(c2a[i + this->scroll])->repo_description.c_str());
         }
         DrawUtils::setFontColor(COLOR_TEXT);
