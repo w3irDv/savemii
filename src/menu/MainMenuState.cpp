@@ -125,6 +125,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                         MiiUtils::ask_if_to_initialize_db(MiiUtils::MiiRepos["RFL"], DB_NOT_FOUND);
                     if (FSUtils::checkEntry(MiiUtils::MiiRepos["FFL"]->path_to_repo.c_str()) != 1)
                         MiiUtils::ask_if_to_initialize_db(MiiUtils::MiiRepos["FFL"], DB_NOT_FOUND);
+                    MiiUtils::initial_checkpoint();
                     for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)
                         mii_repos_candidates.push_back(true);
                     this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_SOURCE_REPO, &MiiUtils::mii_process_shared_state);

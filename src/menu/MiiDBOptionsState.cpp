@@ -316,7 +316,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                     }
                     break;
                 case MiiProcess::WIPE_DB:
-                    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\n- ALL MIIS WILL BE WIPED -")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?\n\n- ALL MIIS WILL BE WIPED -")))
+                    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
                         return SUBSTATE_RUNNING;
                     if (mii_repo->wipe() == 0)
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully wiped!"));
@@ -324,7 +324,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                     updateWipeData();
                     break;
                 case MiiProcess::INITIALIZE_DB:
-                    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\n- ALL MIIS WILL BE WIPED -")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?\n\n- ALL MIIS WILL BE WIPED -")))
+                    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
                         return SUBSTATE_RUNNING;
                     if (mii_repo->initialize() == 0)
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully initialized!"));

@@ -1,3 +1,4 @@
+#include <Metadata.h>
 #include <chrono>
 #include <menu/MiiTypeDeclarations.h>
 #include <mii/MiiAccountRepo.h>
@@ -72,6 +73,39 @@ bool MiiUtils::initMiiRepos() {
     return true;
 }
 
+bool MiiUtils::initial_checkpoint() {
+    std::string checkpointDir = "fs:/vol/external01/wiiu/backups/mii_db_checkpoint/" + Metadata::thisConsoleSerialId;
+    std::string checkpointDirSD = "SD:/wiiu/backups/mii_db_checkpoint/" + Metadata::thisConsoleSerialId;
+    if (FSUtils::checkEntry(checkpointDir.c_str()) == 0) {
+        Console::showMessage(OK_SHOW,"AUTOMATIC BACKUP OF MII DBs in Progress");
+        if (savemng::firstSDWrite)
+            sdWriteDisclaimer(COLOR_BACKGROUND);
+        FSUtils::createFolder(checkpointDir.c_str());
+        {
+            std::string srcPath = MiiRepos["FFL"]->path_to_repo;
+            std::string dstPath = checkpointDir + "/FFL_ODB.dat";
+            if (FSUtils::checkEntry(srcPath.c_str()) == 1)
+                FSUtils::copyFile(srcPath, dstPath);
+        }
+        {
+            std::string srcPath = MiiRepos["RFL"]->path_to_repo;
+            std::string dstPath = checkpointDir + "/RFL_DB.dat";
+            if (FSUtils::checkEntry(srcPath.c_str()) == 1)
+                FSUtils::copyFile(srcPath, dstPath);
+        }
+        {
+            std::string srcPath = MiiRepos["ACCOUNT"]->path_to_repo;
+            std::string dstPath = checkpointDir + "/act/";
+            if (FSUtils::checkEntry(srcPath.c_str()) == 2) {
+                FSUtils::createFolder(dstPath.c_str());
+                FSUtils::copyDir(srcPath, dstPath);
+            }
+        }
+        Console::showMessage(OK_CONFIRM,LanguageUtils::gettext("In case you need this files in the future, you will find them here:\n%s"),checkpointDirSD.c_str());
+    }
+    return true;
+}
+
 void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["FFL"];
     delete MiiUtils::MiiRepos["FFL_STAGE"];
@@ -80,7 +114,7 @@ void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["RFL_STAGE"];
     delete MiiUtils::MiiRepos["RFL_C"];
     delete MiiUtils::MiiRepos["SGMGX"],
-    delete MiiUtils::MiiRepos["ACCOUNT"];
+            delete MiiUtils::MiiRepos["ACCOUNT"];
     delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
     delete MiiUtils::MiiRepos["ACCOUNT_C"];
 }

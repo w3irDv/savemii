@@ -12,6 +12,7 @@ namespace MiiUtils {
 
     bool initMiiRepos();
     void deinitMiiRepos();
+    bool initial_checkpoint();
 
     inline std::map<std::string, MiiRepo *> MiiRepos;
 

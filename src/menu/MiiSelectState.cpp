@@ -514,7 +514,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
                         mii_process_shared_state->auxiliar_c2a = &this->c2a;
                         mii_process_shared_state->mii_index_with_source_data = c2a[currentlySelectedMii];
-                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\n- MIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN -")))
+                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nMIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN")))
                             return SUBSTATE_RUNNING;
                         if (MiiUtils::x_restore_miis(errorCounter, mii_process_shared_state))
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
