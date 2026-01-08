@@ -1,6 +1,7 @@
 
 #include <coreinit/debug.h>
 #include <cstring>
+#include <menu/MiiDBOptionsState.h>
 #include <menu/MiiRepoSelectState.h>
 #include <menu/MiiSelectState.h>
 #include <menu/MiiTransformTasksState.h>
@@ -11,6 +12,7 @@
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
+#include <utils/FSUtils.h>
 #include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
@@ -31,7 +33,9 @@ MiiSelectState::MiiSelectState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions
     if ((action == MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE) ||
         (action == MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN) ||
         (action == MiiProcess::SELECT_MIIS_FOR_IMPORT && mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) ||
-        (action == MiiProcess::SELECT_MIIS_FOR_RESTORE))
+        (action == MiiProcess::SELECT_MIIS_FOR_RESTORE) ||
+        (action == MiiProcess::SELECT_SOURCE_MII_FOR_XRESTORE) ||
+        (action == MiiProcess::SELECT_TARGET_MII_FOR_XRESTORE))
         selectOnlyOneMii = true;
 
     if (mii_repo->needs_populate) {
@@ -121,6 +125,7 @@ void MiiSelectState::render() {
                 lastActionBriefOk = LanguageUtils::gettext("|Exported|");
                 break;
             case MiiProcess::SELECT_MIIS_FOR_RESTORE:
+            case MiiProcess::SELECT_SOURCE_MII_FOR_XRESTORE:
                 menuTitle = LanguageUtils::gettext("Select which Mii to Restore");
                 screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset \ue002: View  \ue000: Restore Mii  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Restore");
@@ -149,6 +154,12 @@ void MiiSelectState::render() {
                 screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \ue002: View   \ue000: Continue  \ue001: Back");
                 nextActionBrief = LanguageUtils::gettext(">> Import here");
                 lastActionBriefOk = LanguageUtils::gettext("|Imported|");
+                break;
+            case MiiProcess::SELECT_TARGET_MII_FOR_XRESTORE:
+                menuTitle = LanguageUtils::gettext("Select Mii to be overwritten");
+                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \ue002: View   \ue000: Continue  \ue001: Back");
+                nextActionBrief = LanguageUtils::gettext(">> Restore here");
+                lastActionBriefOk = LanguageUtils::gettext("|Restored|");
                 break;
             default:
                 menuTitle = "";
@@ -250,13 +261,6 @@ void MiiSelectState::render() {
                     }
                 };
             }
-
-            //if (this->mii_repo->miis[c2a[i + this->scroll]]->mii_type == Mii::eMiiType::WIIU) {
-            //    if (this->mii_view[c2a[i + this->scroll]].selected && this->mii_repo->miis[c2a[i + this->scroll]].copyable) {
-            //        DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT, COLOR_LIST_INJECT_AT_CURSOR, cursorPos, i);
-            //       Console::consolePrintPos(M_OFF, i + 2, "\ue071");
-            //    }
-            //}
 
             switch (this->mii_view[c2a[i + this->scroll]].state) {
                 case MiiStatus::NOT_TRIED:
@@ -430,6 +434,12 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                         std::string account = mii_process_shared_state->auxiliar_mii_repo->miis.at(c2a[currentlySelectedMii])->location_name;
                         std::string src_path = mii_process_shared_state->auxiliar_mii_repo->path_to_repo + "/" + account;
                         std::string dst_path = mii_process_shared_state->primary_mii_repo->path_to_repo + "/" + account;
+                        if (FSUtils::checkEntry(dst_path.c_str()) == 0) {
+                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Account %s does not exist in primary Account DB %s"), account.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
+                            delete mii_process_shared_state->auxiliar_mii_repo;
+                            mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_RESTORED;
+                            return SUBSTATE_RETURN;
+                        }
                         if (((MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo)->restore_account(src_path, dst_path) == 0)
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
                         else
@@ -489,7 +499,32 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     this->state = STATE_DO_SUBSTATE;
                     MiiUtils::get_compatible_repos(mii_repos_candidates, mii_process_shared_state->primary_mii_repo);
                     this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_IMPORT, mii_process_shared_state);
-
+                    break;
+                case MiiProcess::SELECT_TARGET_MII_FOR_XRESTORE:
+                    if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+                        mii_process_shared_state->primary_mii_view = &this->mii_view;
+                        mii_process_shared_state->primary_c2a = &this->c2a;
+                        mii_process_shared_state->mii_index_to_overwrite = c2a[currentlySelectedMii];
+                        this->state = STATE_DO_SUBSTATE;
+                        this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::XRESTORE_DB, mii_process_shared_state);
+                    }
+                    break;
+                case MiiProcess::SELECT_SOURCE_MII_FOR_XRESTORE:
+                    if (mii_process_shared_state->auxiliar_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+                        mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
+                        mii_process_shared_state->auxiliar_c2a = &this->c2a;
+                        mii_process_shared_state->mii_index_with_source_data = c2a[currentlySelectedMii];
+                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\n- MIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN -")))
+                            return SUBSTATE_RUNNING;
+                        if (MiiUtils::x_restore_miis(errorCounter, mii_process_shared_state))
+                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                        else
+                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Data restoration has failed!"));
+                        delete mii_process_shared_state->auxiliar_mii_repo; // slot_repo
+                        mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_XRESTORED;
+                        return SUBSTATE_RETURN;
+                    }
+                    break;
                 default:;
             }
             return SUBSTATE_RUNNING;

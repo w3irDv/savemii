@@ -21,6 +21,7 @@ public:
     MiiData *template_mii_data = nullptr;
 
     int mii_index_to_overwrite = 0;
+    int mii_index_with_source_data = 0;
 
     MiiProcess::eMiiProcessActions state = MiiProcess::SELECT_SOURCE_REPO;
 

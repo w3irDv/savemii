@@ -42,8 +42,8 @@ bool MiiAccountRepo<WiiUMii, WiiUMiiData>::set_db_fsa_metadata() {
 }
 
 /// @brief In the WiiU, we assume that a favorite mii must be defined in FFL_ODB.dat favorite section. So FALSE for account repo.
-/// @param miidata 
-/// @return 
+/// @param miidata
+/// @return
 template<>
 bool MiiAccountRepo<WiiUMii, WiiUMiiData>::check_if_favorite([[maybe_unused]] MiiData *miidata) {
     return false;
@@ -110,7 +110,7 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_f
         return nullptr;
     }
 
-    MiiData *miidata = new MIIDATA(mii_buffer,mii_buffer_size);
+    MiiData *miidata = new MIIDATA(mii_buffer, mii_buffer_size);
 
     return miidata;
 }
@@ -139,7 +139,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     uint8_t gender = miidata->get_gender();
     std::string gender_str = std::to_string(gender + 1);
 
-    std::string mii_name_str = miidata->get_name_as_hex_string();
+    std::string mii_name_str = miidata->get_name_as_hex_string() + "0000";
 
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
@@ -149,9 +149,9 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     if (MIIDATA::CRC_PADDING > 0)
         memset(miidata->mii_data + MIIDATA::MII_DATA_SIZE, 0, MIIDATA::CRC_PADDING);
     uint16_t crc = MiiUtils::getCrc(miidata->mii_data, MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_PADDING);
-    #ifdef BYTE_ORDER__LITTLE_ENDIAN
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
-    #endif
+#endif
     memcpy(miidata->mii_data + MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_PADDING, &crc, 2);
 
     std::string mii_data_str{};
@@ -426,6 +426,41 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
     if (errorCode != 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+    }
+
+    return errorCode;
+}
+
+/// @brief Copy account data from one accoint to another. It is assumed that both folder exists, locations are inside bounds
+/// @param target_mii_location
+/// @param source_mii_repo
+/// @param source_mii_location
+/// @return
+template<>
+int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int target_mii_location, MiiAccountRepo *source_mii_repo, int source_mii_location) {
+
+
+    std::string source_account = source_mii_repo->miis.at(source_mii_location)->location_name;
+    std::string target_account = this->miis.at(target_mii_location)->location_name;
+
+    std::string source_path = source_mii_repo->path_to_repo + "/" + source_account;
+    std::string target_path = this->path_to_repo + "/" + target_account;
+
+    std::string errorMessage{};
+
+    int errorCode = 0;
+
+    if (FSUtils::copyDir(source_path, target_path)) {
+        if (target_path.find("fs:/vol/") == std::string::npos) { // avoid to call FSA when testing  on SD
+            FSError fserror;
+            FSUtils::setOwnerAndModeRec(db_owner, db_group, db_fsmode, target_path, fserror);
+            FSUtils::flushVol(target_path);
+        }
+
+    } else {
+        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+        errorCode = 1;
     }
 
     return errorCode;

@@ -29,6 +29,8 @@ namespace MiiUtils {
 
     bool xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
 
+    bool x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
+    
     void get_compatible_repos(std::vector<bool> &mii_repos_candidates, MiiRepo *mii_repo);
 
     bool ask_if_to_initialize_db(MiiRepo *mii_repo, bool DB_NOT_Found);

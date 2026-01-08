@@ -5,7 +5,9 @@
 #include <mii/MiiFolderRepo.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
+#include <miisavemng.h>
 #include <savemng.h>
+#include <unistd.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
@@ -25,16 +27,15 @@ bool MiiUtils::initMiiRepos() {
     const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/RFL_DB.dat");
     const std::string pathrflc("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat");
     const std::string pathrfl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL_Stage");
-    //const std::string pathaccount("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT");
     const std::string pathaccount("storage_mlc01:/usr/save/system/act");
+    const std::string pathaccountc("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_C");
     const std::string pathaccount_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_ACCOUNT_Stage");
 
-    //const std::string path_sgmgx("fs:/vol/external01/savemiis");
     const std::string path_sgmgx("fs:/vol/external01/savemiis");
 
-    FSUtils::createFolder(pathfflc.substr(0, pathffl.find_last_of("/")).c_str());
-    FSUtils::createFolder(pathrflc.substr(0, pathrfl.find_last_of("/")).c_str());
-    //FSUtils::createFolder(pathaccount.substr(0, pathaccount.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathfflc.substr(0, pathfflc.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathrflc.substr(0, pathrflc.find_last_of("/")).c_str());
+    FSUtils::createFolder(pathaccountc.substr(0, pathaccountc.find_last_of("/")).c_str());
 
     FSUtils::createFolder(pathffl_Stage.c_str());
     FSUtils::createFolder(pathrfl_Stage.c_str());
@@ -42,13 +43,14 @@ bool MiiUtils::initMiiRepos() {
 
     FSUtils::createFolder(path_sgmgx.c_str());
 
-    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", "Wii U Mii Database");
+    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", "Internal Wii U Mii Database");
     MiiRepos["FFL_C"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_C", pathfflc, "mii_bckp_ffl_c", "Custom Wii U Mii Database on SD");
     MiiRepos["FFL_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_STAGE", pathffl_Stage, "mii_bckp_ffl_Stage", "Stage Folder for Wii U Miis");
-    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", "vWii Mii Database");
+    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", "Internal vWii Mii Database");
     MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", "Custom vWii Mii Database on SD");
     MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", "Stage Folder for vWii Miis");
-    MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", "Miis from Account DB");
+    MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", "Miis from Internal Account DB");
+    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccountc, "mii_bckp_account_c", "Miis from Custom Account DB on SD");
     MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis");
     MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", "SaveGameManager GX Miis stage folder");
 
@@ -65,7 +67,7 @@ bool MiiUtils::initMiiRepos() {
     mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_STAGE"], MiiRepos["FFL_C"],
                  MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["RFL_C"],
                  MiiRepos["SGMGX"],
-                 MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"]};
+                 MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"], MiiRepos["ACCOUNT_C"]};
 
     return true;
 }
@@ -78,8 +80,9 @@ void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["RFL_STAGE"];
     delete MiiUtils::MiiRepos["RFL_C"];
     delete MiiUtils::MiiRepos["SGMGX"],
-            delete MiiUtils::MiiRepos["ACCOUNT"];
+    delete MiiUtils::MiiRepos["ACCOUNT"];
     delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
+    delete MiiUtils::MiiRepos["ACCOUNT_C"];
 }
 
 std::string MiiUtils::epoch_to_utc(int temp) {
@@ -599,7 +602,7 @@ bool MiiUtils::ask_if_to_initialize_db(MiiRepo *mii_repo, bool not_found) {
     if (not_found)
         errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("DB file for %s not found. Do you want to initialize it?"), mii_repo->repo_name.c_str());
     else
-        errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Do you want to initialize db file %s?"), mii_repo->repo_name.c_str());
+        errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"), mii_repo->repo_name.c_str());
     if (Console::promptConfirm((Style) (ST_YES_NO | ST_WARNING), errorMessage.c_str())) {
         if (savemng::firstSDWrite)
             sdWriteDisclaimer(COLOR_BACKGROUND);
@@ -615,6 +618,75 @@ bool MiiUtils::ask_if_to_initialize_db(MiiRepo *mii_repo, bool not_found) {
     return false;
 }
 
+
+bool MiiUtils::x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+
+    if (mii_process_shared_state->auxiliar_mii_repo->db_kind != MiiRepo::ACCOUNT) {
+        Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("This action is not supported on the selected repo."));
+        return false;
+    }
+
+    MiiAccountRepo<WiiUMii, WiiUMiiData> *source_mii_repo = (MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->auxiliar_mii_repo;
+    MiiAccountRepo<WiiUMii, WiiUMiiData> *target_mii_repo = (MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo;
+
+    auto source_c2a = mii_process_shared_state->auxiliar_c2a;
+    auto target_c2a = mii_process_shared_state->primary_c2a;
+
+    int source_mii_index = mii_process_shared_state->mii_index_with_source_data;
+    int target_mii_index = mii_process_shared_state->mii_index_to_overwrite;
+
+    std::string source_account = source_mii_repo->miis.at(source_c2a->at(source_mii_index))->location_name;
+    std::string target_account = target_mii_repo->miis.at(target_c2a->at(target_mii_index))->location_name;
+
+    std::string source_path = mii_process_shared_state->auxiliar_mii_repo->path_to_repo + "/" + source_account;
+    std::string target_path = mii_process_shared_state->primary_mii_repo->path_to_repo + "/" + target_account;
+
+    std::string target_account_dat = target_path + "/account.dat";
+    std::string tmp_target_account_dat = target_account_dat + ".tmp";
+
+    std::string source_account_dat = source_path + "/account.dat";
+
+    if (!FSUtils::folderEmpty(target_path.c_str())) {
+        int slotb = MiiSaveMng::getEmptySlot(target_mii_repo);
+        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
+            if (!(target_mii_repo->backup(slotb, LanguageUtils::gettext("pre-XRestore backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+                return false;
+            }
+    }
+
+    if (rename(target_account_dat.c_str(), tmp_target_account_dat.c_str()) == 0) {
+        if (target_mii_repo->restore_mii_account_from_repo(target_c2a->at(target_mii_index), source_mii_repo, source_c2a->at(source_mii_index)) == 0) {
+            if (unlink(target_account_dat.c_str()) == 0) {
+                if (rename(tmp_target_account_dat.c_str(), target_account_dat.c_str()) == 0) {
+                    FSError fserror;
+                    if (target_mii_repo->db_owner != 0) {
+                        FSUtils::setOwnerAndMode(target_mii_repo->db_owner, target_mii_repo->db_group, target_mii_repo->db_fsmode, target_account_dat, fserror);
+                    }
+                    int returnState = MiiUtils::import_miis(errorCounter, mii_process_shared_state);
+                    if (returnState) {
+                        return true;
+                    } else {
+                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+                    }
+                } else {
+                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), target_account_dat.c_str(), strerror(errno));
+                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Restored full account %s on %s account. \n\nPlease restore a db Backup if needed."), source_account.c_str(), target_account.c_str());
+                }
+            } else {
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), source_account_dat.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Restored full account %s on %s account. \n\nPlease restore a db Backup if needed."), source_account.c_str(), target_account.c_str());
+            }
+        } else {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error restoring db file %s\n\n%s\n\n"), source_path.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+        }
+    } else {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), target_account_dat.c_str(), strerror(errno));
+    }
+
+    return false;
+}
 
 ///// TEST FUNCTIONS
 bool MiiUtils::eight_fold_mii(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {

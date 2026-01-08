@@ -69,10 +69,6 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
 
 int MiiRepo::restore(int slot) {
 
-    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
-        return -1;
-
-
     std::string errorMessage{};
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
@@ -132,9 +128,6 @@ int MiiRepo::restore(int slot) {
 
 int MiiRepo::wipe() {
 
-    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
-        return -1;
-
     std::string errorMessage{};
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
@@ -181,9 +174,6 @@ int MiiRepo::wipe() {
 }
 
 int MiiRepo::initialize() {
-
-    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
-        return -1;
 
     std::string errorMessage{};
     int errorCode = 0;

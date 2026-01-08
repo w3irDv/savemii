@@ -62,13 +62,13 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("All selected miis will get the physical appearance of the mii you select in the next menu ");
                 break;
             case 1:
-                info = LanguageUtils::gettext("All selected miis will get the system ownership attributes of the mi you will select in the next menu.");
+                info = LanguageUtils::gettext("All selected miis will get the ownership attributes of the template mii you will select after. So if the template belongs to this console, the transformed miis will belong too.");
                 break;
             case 2:
                 info = LanguageUtils::gettext("So the mii has a new unique MiiId (Beware! It will no longer be tied to any game that expects the older MiiId). But you can try it if an imported mii does not appear in MiiMaker");
                 break;
             case 3:
-                info = LanguageUtils::gettext("Mark a Mii as a favorite one so they appear in other apps (applicable to any Wii mii, but only to WiiU miis in FFL DB)");
+                info = LanguageUtils::gettext("Mark a Mii as a favorite one so they appear in other apps.");
                 break;
             case 4:
                 info = LanguageUtils::gettext("So the mii can travel to other consoles");
@@ -94,7 +94,7 @@ void MiiTransformTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF, 12, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 13 + ((cursorPos == 1 || cursorPos == 2) ? -1 : 0) , info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, cursorPos + 2, "\u2192");

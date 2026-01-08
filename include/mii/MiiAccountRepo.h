@@ -37,4 +37,6 @@ public:
     bool delete_miid_from_favorite_section([[maybe_unused]] MiiData* miidata) { return true; }; // Not needed for account
 
     int restore_account(std::string source_path, std::string dst_path);
+    int restore_mii_account_from_repo(int target_mii_location,MiiAccountRepo *source_mii_repo,int source_mii_location);
+
 };

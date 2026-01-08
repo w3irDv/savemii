@@ -35,24 +35,23 @@ void MiiTasksState::render() {
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
                 Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Backup DB"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-                Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Restore DB"));
-                DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("Mii Management"));
+                Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Restore Full DB (Full data restore for one account mii)"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-                Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   List Miis"));
+                Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"));
+                DrawUtils::setFontColor(COLOR_INFO);
+                Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Mii Management"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-                if (fixed_stage_repo)
-                    Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
-                else
-                    Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Export Miis"));
+                Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   List Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
                 if (fixed_stage_repo)
-                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Import Miis (from %s)"), mii_repo->stage_repo->repo_name.c_str());
+                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
                 else
-                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Import Miis"));
+                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-                Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Transform Miis"));
-                Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 1 ? 2 : 0), "\u2192");
+                Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import Miis"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
+                Console::consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Transform Miis"));
+                Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 2 ? 2 : 0), "\u2192");
             } break;
             default: {
                 DrawUtils::setFontColor(COLOR_INFO);
@@ -94,17 +93,22 @@ void MiiTasksState::render() {
                     info = LanguageUtils::gettext("Backup All Wii U Account folders and files");
                     break;
                 case 1:
-                    info = LanguageUtils::gettext("Restore One Wii U Account files (all info, including but not only MiiData)");
+                    info = LanguageUtils::gettext("Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect.");
                     break;
                 case 2:
-                    info = LanguageUtils::gettext("List all Miis and some of its attributes");
+                    info = LanguageUtils::gettext("Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified)). Needs a console restart to take effect.");
                     break;
                 case 3:
+                    info = LanguageUtils::gettext("List all Miis and some of its attributes");
+                    break;
                 case 4:
-                    info = LanguageUtils::gettext("Import/Export Miis between Internal Account and SD Stage / selected folders");
+                    info = LanguageUtils::gettext("Export Miis to other repos");
                     break;
                 case 5:
-                    info = LanguageUtils::gettext("Transform tasks for internal account miis (transfer appearance, copy/share/normal/special flags...)");
+                    info = LanguageUtils::gettext("Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect");
+                    break;
+                case 6:
+                    info = LanguageUtils::gettext("Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect");
                     break;
                 default:
                     info = "";
@@ -146,7 +150,7 @@ void MiiTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAutoFormat(M_OFF, 15, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 15 + ((mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) ? -2 : 0), info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
@@ -174,9 +178,13 @@ ApplicationState::eSubState MiiTasksState::update(Input *input) {
                             break;
                         case 2:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::LIST_MIIS, mii_process_shared_state);
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_TARGET_MII_FOR_XRESTORE, mii_process_shared_state);
                             break;
                         case 3:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::LIST_MIIS, mii_process_shared_state);
+                            break;
+                        case 4:
                             this->state = STATE_DO_SUBSTATE;
                             if (mii_repo->stage_repo != nullptr) {
                                 mii_process_shared_state->auxiliar_mii_repo = mii_repo->stage_repo;
@@ -186,11 +194,11 @@ ApplicationState::eSubState MiiTasksState::update(Input *input) {
                                 this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_EXPORT, mii_process_shared_state);
                             }
                             break;
-                        case 4:
+                        case 5:
                             this->state = STATE_DO_SUBSTATE;
                             this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN, mii_process_shared_state);
                             break;
-                        case 5:
+                        case 6:
                             this->state = STATE_DO_SUBSTATE;
                             this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED, mii_process_shared_state);
                             break;
