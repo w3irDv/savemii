@@ -17,12 +17,50 @@
 #include <utils/MiiUtils.h>
 #include <utils/StringUtils.h>
 
+#include <Metadata.h>
+//#include <mockWUT.h>
+
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 bool MiiUtils::initMiiRepos() {
 
+    bool enable_ffl = true;
 
-    const std::string pathffl("storage_mlc01:/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat");
+    std::string MiiMakerTitleId{"SET_IT_DYNAMICALLY"};
+    switch (Metadata::thisConsoleRegion) {
+        case MCPRegion::MCP_REGION_EUROPE:
+            MiiMakerTitleId = "1004a200";
+            break;
+        case MCPRegion::MCP_REGION_JAPAN:
+            MiiMakerTitleId = "1004a000";
+            break;
+        case MCPRegion::MCP_REGION_USA:
+            MiiMakerTitleId = "1004a100";
+            break;
+        default:;
+    }
+
+    std::string mii_maker_path = "storage_mlc01:/usr/save/00050010/" + MiiMakerTitleId;
+    if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2) {
+        goto set_repos;
+    } else { // I'm using game_region in MLCSysProd prod, but we have no access to korean wii u's ... game_region ? product_area in sysProd?
+        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a100";
+        if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
+            goto set_repos;
+        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a200";
+        if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
+            goto set_repos;
+        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a000";
+        if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
+            goto set_repos;
+    }
+
+    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unable to obtain MiiMaker region. Disabling Internal WII U MiiDB"));
+    enable_ffl = false;
+
+set_repos:
+
+    const std::string pathffl = mii_maker_path + "/user/common/db/FFL_ODB.dat";
     const std::string pathfflc("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat");
     const std::string pathffl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_Stage");
     const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/RFL_DB.dat");
@@ -65,11 +103,17 @@ bool MiiUtils::initMiiRepos() {
     MiiRepos["ACCOUNT"]->setStageRepo(MiiRepos["ACCOUNT_STAGE"]);
     //MiiRepos["ACCOUNT_STAGE"]->setStageRepo(MiiRepos["ACCOUNT"]);
 
-    mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_STAGE"], MiiRepos["FFL_C"],
-                 MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["RFL_C"],
-                 MiiRepos["SGMGX"],
-                 MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"], MiiRepos["ACCOUNT_C"]};
-
+    // q&d
+    if (enable_ffl)
+        mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_STAGE"], MiiRepos["FFL_C"],
+                     MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["RFL_C"],
+                     MiiRepos["SGMGX"],
+                     MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"], MiiRepos["ACCOUNT_C"]};
+    else
+        mii_repos = {MiiRepos["FFL_STAGE"], MiiRepos["FFL_C"],
+                     MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["RFL_C"],
+                     MiiRepos["SGMGX"],
+                     MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"], MiiRepos["ACCOUNT_C"]};
     return true;
 }
 
@@ -77,7 +121,7 @@ bool MiiUtils::initial_checkpoint() {
     std::string checkpointDir = "fs:/vol/external01/wiiu/backups/mii_db_checkpoint/" + Metadata::thisConsoleSerialId;
     std::string checkpointDirSD = "SD:/wiiu/backups/mii_db_checkpoint/" + Metadata::thisConsoleSerialId;
     if (FSUtils::checkEntry(checkpointDir.c_str()) == 0) {
-        Console::showMessage(OK_SHOW,"AUTOMATIC BACKUP OF MII DBs in Progress");
+        Console::showMessage(OK_SHOW, "AUTOMATIC BACKUP OF MII DBs in Progress");
         if (savemng::firstSDWrite)
             sdWriteDisclaimer(COLOR_BACKGROUND);
         FSUtils::createFolder(checkpointDir.c_str());
@@ -101,7 +145,7 @@ bool MiiUtils::initial_checkpoint() {
                 FSUtils::copyDir(srcPath, dstPath);
             }
         }
-        Console::showMessage(OK_CONFIRM,LanguageUtils::gettext("In case you need this files in the future, you will find them here:\n%s"),checkpointDirSD.c_str());
+        Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("In case you need this files in the future, you will find them here:\n%s"), checkpointDirSD.c_str());
     }
     return true;
 }

@@ -7,6 +7,8 @@
 #include <savemng.h>
 #include <string>
 
+#include <coreinit/mcp.h>
+
 class Metadata {
 public:
     Metadata(Title *title, uint8_t s) : highID(title->highID),
@@ -58,6 +60,7 @@ public:
     bool set(const std::string &date, bool isUSB);
     static std::string thisConsoleSerialId;
     static std::string unknownSerialId;
+    static inline MCPRegion thisConsoleRegion;
     std::string getDate() { return Date; };
     std::string getTag() { return tag; };
     void setTag(const std::string &tag_) { this->tag = tag_; };

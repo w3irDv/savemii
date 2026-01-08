@@ -25,6 +25,7 @@ void StartupUtils::getWiiUSerialId() {
     if (mcpHandle >= 0) {
         if (MCP_GetSysProdSettings(mcpHandle, &sysProd) == 0) {
             Metadata::thisConsoleSerialId = std::string(sysProd.code_id) + sysProd.serial_id;
+            Metadata::thisConsoleRegion = sysProd.game_region;
         }
         MCP_Close(mcpHandle);
     }
