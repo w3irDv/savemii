@@ -15,7 +15,7 @@ public:
 
         switch (mii_repo->db_kind) {
             case MiiRepo::eDBKind::ACCOUNT:
-                entrycount = 7;
+                entrycount = 10;
                 break;
             default:
                 switch (mii_repo->db_type) {

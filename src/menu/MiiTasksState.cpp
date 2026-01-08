@@ -149,8 +149,18 @@ void MiiTasksState::render() {
             }
         }
 
+        int v_info_offset = 0;
+        if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+            if (cursorPos == 2 || cursorPos == 5 || cursorPos == 6)
+                v_info_offset = -3;
+            else
+                v_info_offset = -2;
+        } else {
+            v_info_offset = 0;
+        }
+
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAutoFormat(M_OFF, 15 + ((mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) ? -2 : 0), info);
+        Console::consolePrintPosAutoFormat(M_OFF, 15 + v_info_offset, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));

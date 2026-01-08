@@ -23,7 +23,6 @@
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
 bool MiiUtils::initMiiRepos() {
-
     bool enable_ffl = true;
 
     std::string MiiMakerTitleId{"SET_IT_DYNAMICALLY"};
@@ -89,8 +88,8 @@ set_repos:
     MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", "Custom vWii Mii Database on SD");
     MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", "Stage Folder for vWii Miis");
     MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", "Miis from Internal Account DB");
-    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccountc, "mii_bckp_account_c", "Miis from Custom Account DB on SD");
-    MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACCOUNT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis");
+    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_C", pathaccountc, "mii_bckp_account_c", "Miis from Custom Account DB on SD");
+    MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis");
     MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", "SaveGameManager GX Miis stage folder");
 
 
@@ -108,12 +107,16 @@ set_repos:
         mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_STAGE"], MiiRepos["FFL_C"],
                      MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["RFL_C"],
                      MiiRepos["SGMGX"],
-                     MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"], MiiRepos["ACCOUNT_C"]};
+                     MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"]};
     else
         mii_repos = {MiiRepos["FFL_STAGE"], MiiRepos["FFL_C"],
                      MiiRepos["RFL"], MiiRepos["RFL_STAGE"], MiiRepos["RFL_C"],
                      MiiRepos["SGMGX"],
-                     MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"], MiiRepos["ACCOUNT_C"]};
+                     MiiRepos["ACCOUNT"], MiiRepos["ACCOUNT_STAGE"]};
+
+    if (!FSUtils::folderEmptyIgnoreSavemii(pathaccountc.c_str()))
+        mii_repos.push_back(MiiRepos["ACCOUNT_C"]);
+
     return true;
 }
 
