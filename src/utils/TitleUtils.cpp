@@ -474,6 +474,293 @@ Title *TitleUtils::loadWiiTitles() {
     return titles;
 }
 
+
+Title *TitleUtils::loadWiiUSysTitles(int run) {
+    static char *tList;
+    static uint32_t receivedCount;
+    const uint32_t highIDs[2] = {0x00050010, 0x00050030};
+    //const uint32_t vWiiHighIDs[3] = {0x00010000, 0x00010001, 0x00010004}; // DBG - TO DELETE
+    // Source: haxchi installer
+    if (run == 0) {
+        int mcp_handle = MCP_Open();
+        int count = MCP_TitleCount(mcp_handle);
+        int listSize = count * 0x61;
+        tList = (char *) memalign(32, listSize);
+        memset(tList, 0, listSize);
+        receivedCount = count;
+        MCP_TitleList(mcp_handle, &receivedCount, (MCPTitleListType *) tList, listSize);
+        MCP_Close(mcp_handle);
+        return nullptr;
+    }
+
+    int usable = receivedCount;
+    int j = 0;
+    auto *savesl = (Saves *) malloc(receivedCount * sizeof(Saves));
+    if (savesl == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        return nullptr;
+    }
+    for (uint32_t i = 0; i < receivedCount; i++) {
+        char *element = tList + (i * 0x61);
+        savesl[j].highID = *(uint32_t *) (element);
+        bool isUSB = (memcmp(element + 0x56, "usb", 4) == 0);
+        bool isMLC = (memcmp(element + 0x56, "mlc", 4) == 0);
+        if (!contains(highIDs, savesl[j].highID) || !(isUSB || isMLC)) {
+            usable--;
+            continue;
+        }
+        savesl[j].lowID = *(uint32_t *) (element + 4);
+        savesl[j].dev = static_cast<uint8_t>(isMLC); // 0 = usb, 1 = nand
+
+        savesl[j].found = false;
+        j++;
+    }
+    savesl = (Saves *) realloc(savesl, usable * sizeof(Saves));
+
+    int foundCount = 0;
+    int pos = 0;
+    int tNoSave = usable;
+    for (int i = 0; i <= 1; i++) {
+        for (uint8_t a = 0; a < 2; a++) {
+            std::string path = StringUtils::stringFormat("%s/usr/save/%08x", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a]);
+            DIR *dir = opendir(path.c_str());
+            if (dir != nullptr) {
+                struct dirent *data;
+                while ((data = readdir(dir)) != nullptr) {
+                    if (data->d_name[0] == '.')
+                        continue;
+
+                    path = StringUtils::stringFormat("%s/usr/save/%08x/%s/user", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a], data->d_name);
+                    if (FSUtils::checkEntry(path.c_str()) == 2) {
+                        path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a],
+                                                         data->d_name);
+                        if (FSUtils::checkEntry(path.c_str()) == 1) {
+                            for (int ii = 0; ii < usable; ii++) {
+                                if (contains(highIDs, savesl[ii].highID) &&
+                                    (strtoul(data->d_name, nullptr, 16) == savesl[ii].lowID) &&
+                                    savesl[ii].dev == i) {
+                                    savesl[ii].found = true;
+                                    tNoSave--;
+                                    break;
+                                }
+                            }
+                            foundCount++;
+                        }
+                    }
+                }
+                closedir(dir);
+            }
+        }
+    }
+
+    foundCount += tNoSave;
+    auto *saves = (Saves *) malloc((foundCount) * sizeof(Saves));
+    if (saves == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        return nullptr;
+    }
+
+    for (uint8_t a = 0; a < 2; a++) {
+        for (int i = 0; i <= 1; i++) {
+            std::string path = StringUtils::stringFormat("%s/usr/save/%08x", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a]);
+            DIR *dir = opendir(path.c_str());
+            if (dir != nullptr) {
+                struct dirent *data;
+                while ((data = readdir(dir)) != nullptr) {
+                    if (data->d_name[0] == '.')
+                        continue;
+
+                    path = StringUtils::stringFormat("%s/usr/save/%08x/%s/meta/meta.xml", (i == 0) ? FSUtils::getUSB().c_str() : "storage_mlc01:", highIDs[a],
+                                                     data->d_name);
+                    if (FSUtils::checkEntry(path.c_str()) == 1) {
+                        saves[pos].highID = highIDs[a];
+                        saves[pos].lowID = strtoul(data->d_name, nullptr, 16);
+                        saves[pos].dev = i;
+                        saves[pos].found = false;
+                        pos++;
+                    }
+                }
+                closedir(dir);
+            }
+        }
+    }
+
+    for (int i = 0; i < usable; i++) {
+        if (!savesl[i].found) {
+            saves[pos].highID = savesl[i].highID;
+            saves[pos].lowID = savesl[i].lowID;
+            saves[pos].dev = savesl[i].dev;
+            saves[pos].found = true;
+            pos++;
+        }
+    }
+
+#ifndef STRESS
+    auto *titles = (Title *) malloc(foundCount * sizeof(Title));
+#else
+    auto *titles = (Title *) malloc(std::max(foundCount, MAXTITLES) * sizeof(Title));
+#endif
+    if (titles == nullptr) {
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        return nullptr;
+    }
+
+    for (int i = 0; i < foundCount; i++) {
+        uint32_t highID = saves[i].highID;
+        uint32_t lowID = saves[i].lowID;
+        bool isTitleOnUSB = saves[i].dev == 0u;
+
+        const std::string path = StringUtils::stringFormat("%s/usr/%s/%08x/%08x/meta/meta.xml", isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
+                                                           saves[i].found ? "title" : "save", highID, lowID);
+        titles[wiiuSysTitlesCount].saveInit = !saves[i].found;
+
+        char *xmlBuf = nullptr;
+        if (FSUtils::loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
+            char *cptr = strchr(strstr(xmlBuf, "product_code"), '>') + 7;
+            memset(titles[wiiuSysTitlesCount].productCode, 0, sizeof(titles[wiiuSysTitlesCount].productCode));
+            strlcpy(titles[wiiuSysTitlesCount].productCode, cptr, strcspn(cptr, "<") + 1);
+
+            cptr = strchr(strstr(xmlBuf, "account_save_size"), '>') + 1;
+            char accountSaveSize[255];
+            strlcpy(accountSaveSize, cptr, strcspn(cptr, "<") + 1);
+            titles[wiiuSysTitlesCount].accountSaveSize = strtoull(accountSaveSize, nullptr, 16);
+
+            cptr = strchr(strstr(xmlBuf, "common_save_size"), '>') + 1;
+            char commonSaveSize[255];
+            strlcpy(commonSaveSize, cptr, strcspn(cptr, "<") + 1);
+            titles[wiiuSysTitlesCount].commonSaveSize = strtoull(commonSaveSize, nullptr, 16);
+
+            cptr = strchr(strstr(xmlBuf, "group_id"), '>') + 1;
+            char groupID[255];
+            strlcpy(groupID, cptr, strcspn(cptr, "<") + 1);
+            titles[wiiuSysTitlesCount].groupID = strtoul(groupID, nullptr, 16);
+
+            // DBG - NOT NEEDED
+            /*
+            cptr = strchr(strstr(xmlBuf, "reserved_flag2"), '>') + 1;
+            char vWiiLowID[255];
+            strlcpy(vWiiLowID, cptr, strcspn(cptr, "<") + 1);
+            titles[wiiuSysTitlesCount].vWiiLowID = strtoul(vWiiLowID, nullptr, 16);
+            */
+
+            cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
+            memset(titles[wiiuSysTitlesCount].shortName, 0, sizeof(titles[wiiuSysTitlesCount].shortName));
+            if (strcspn(cptr, "<") == 0)
+                cptr = strchr(strstr(xmlBuf, "shortname_ja"), '>') + 1;
+
+            StringUtils::decodeXMLEscapeLine(std::string(cptr));
+            strlcpy(titles[wiiuSysTitlesCount].shortName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
+
+            cptr = strchr(strstr(xmlBuf, "longname_en"), '>') + 1;
+            memset(titles[i].longName, 0, sizeof(titles[i].longName));
+            if (strcspn(cptr, "<") == 0)
+                cptr = strchr(strstr(xmlBuf, "longname_ja"), '>') + 1;
+
+            strlcpy(titles[wiiuSysTitlesCount].longName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
+
+            free(xmlBuf);
+        }
+        if (strlen(titles[wiiuSysTitlesCount].shortName) == 0u)
+            sprintf(titles[wiiuSysTitlesCount].shortName, "%08x%08x",
+                    titles[wiiuSysTitlesCount].highID,
+                    titles[wiiuSysTitlesCount].lowID);
+
+        titles[wiiuSysTitlesCount].isTitleDupe = false;
+        for (int i = 0; i < wiiuSysTitlesCount; i++) {
+            if ((titles[i].highID == highID) && (titles[i].lowID == lowID)) {
+                titles[wiiuSysTitlesCount].isTitleDupe = true;
+                titles[wiiuSysTitlesCount].dupeID = i;
+                titles[i].isTitleDupe = true;
+                titles[i].dupeID = wiiuSysTitlesCount;
+            }
+        }
+
+        titles[wiiuSysTitlesCount].highID = highID;
+        titles[wiiuSysTitlesCount].lowID = lowID;
+        titles[wiiuSysTitlesCount].is_Wii = ((highID & 0xFFFFFFF0) == 0x00010000);
+        titles[wiiuSysTitlesCount].isTitleOnUSB = isTitleOnUSB;
+        titles[wiiuSysTitlesCount].listID = wiiuSysTitlesCount;
+        titles[wiiuSysTitlesCount].indexID = wiiuSysTitlesCount;
+        if (TitleUtils::loadTitleIcon(&titles[wiiuSysTitlesCount]) < 0)
+            titles[wiiuSysTitlesCount].iconBuf = nullptr;
+
+        titles[wiiuSysTitlesCount].vWiiHighID = 0;
+        std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
+                                                       titles[wiiuSysTitlesCount].isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
+                                                       titles[wiiuSysTitlesCount].highID,
+                                                       titles[wiiuSysTitlesCount].lowID);
+        if (FSUtils::checkEntry(fwpath.c_str()) != 0) {
+            titles[wiiuSysTitlesCount].noFwImg = true;
+            titles[wiiuSysTitlesCount].is_Inject = true;
+            // DBG - NOT NEEDED
+            /*
+            for (uint32_t vWiiHighID : vWiiHighIDs) {
+                std::string path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuSysTitlesCount].vWiiLowID);
+                if (FSUtils::checkEntry(path.c_str()) == 1) {
+                    titles[wiiuSysTitlesCount].saveInit = true;
+                    titles[wiiuSysTitlesCount].vWiiHighID = vWiiHighID;
+                    break;
+                }
+            }
+            */
+        } else {
+            titles[wiiuSysTitlesCount].noFwImg = false;
+            titles[wiiuSysTitlesCount].is_Inject = false;
+        }
+
+        setTitleNameBasedDirName(&titles[wiiuSysTitlesCount]);
+
+        wiiuSysTitlesCount++;
+
+        DrawUtils::beginDraw();
+        DrawUtils::clear(COLOR_BLACK);
+        StartupUtils::disclaimer();
+        DrawUtils::drawTGA(328, 160, 1, icon_tga);
+        Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
+        Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), i);
+        Console::consolePrintPosAligned(12, 0, 1, LanguageUtils::gettext("Loaded %i Wii U Sys titles."), wiiuSysTitlesCount);
+        DrawUtils::endDraw();
+    }
+
+    free(savesl);
+    free(saves);
+    free(tList);
+
+#ifdef STRESS
+    for (int i = wiiuSysTitlesCount; i < MAXTITLES; i++) {
+        titles[i].highID = titles[i - wiiuSysTitlesCount].highID;
+        titles[i].lowID = titles[i - wiiuSysTitlesCount].lowID + i / wiiuSysTitlesCount;
+        titles[i].vWiiLowID = 0;
+        titles[i].is_Wii = titles[i - wiiuSysTitlesCount].is_Wii;
+        titles[i].isTitleOnUSB = titles[i - wiiuSysTitlesCount].isTitleOnUSB;
+        titles[i].isTitleDupe = titles[i - wiiuSysTitlesCount].isTitleDupe;
+        titles[i].listID = titles[i - wiiuSysTitlesCount].listID;
+        titles[i].indexID = titles[i - wiiuSysTitlesCount].indexID;
+        titles[i].dupeID = titles[i - wiiuSysTitlesCount].dupeID;
+        titles[i].noFwImg = titles[i - wiiuSysTitlesCount].noFwImg;
+        titles[i].saveInit = titles[i - wiiuSysTitlesCount].saveInit;
+        sprintf(titles[i].shortName, "%s", titles[i - wiiuSysTitlesCount].shortName);
+        sprintf(titles[i].longName, "%s", titles[i - wiiuSysTitlesCount].longName);
+        sprintf(titles[i].productCode, "%s", titles[i - wiiuSysTitlesCount].productCode);
+        titles[i].accountSaveSize = titles[i - wiiuSysTitlesCount].accountSaveSize;
+        titles[i].groupID = titles[i - wiiuSysTitlesCount].groupID;
+
+        if (titles[i - wiiuSysTitlesCount].iconBuf != nullptr) {
+            int tgaSize = 4 * tgaGetWidth(titles[i - wiiuSysTitlesCount].iconBuf) *
+                          tgaGetHeight(titles[i - wiiuSysTitlesCount].iconBuf);
+            titles[i].iconBuf = (uint8_t *) malloc(tgaSize);
+            memcpy(titles[i].iconBuf, titles[i - wiiuSysTitlesCount].iconBuf, tgaSize);
+        } else {
+            titles[i].iconBuf = nullptr;
+        }
+    }
+    wiiuSysTitlesCount = std::max(wiiuSysTitlesCount, MAXTITLES);
+#endif
+
+    return titles;
+}
+
+
 void TitleUtils::unloadTitles(Title *titles, int count) {
     for (int i = 0; i < count; i++)
         if (titles[i].iconBuf != nullptr)
@@ -523,7 +810,7 @@ void TitleUtils::setTitleNameBasedDirName(Title *title) {
     strcpy(&(title->titleNameBasedDirName[insert_point]), idstr);
 }
 
-void TitleUtils::reset_backup_state(Title *titles,int title_count) {
+void TitleUtils::reset_backup_state(Title *titles, int title_count) {
     for (int i = 0; i < title_count; i++) {
         titles[i].currentDataSource.batchBackupState = NOT_TRIED;
     }

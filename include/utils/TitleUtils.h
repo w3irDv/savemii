@@ -66,10 +66,11 @@ struct Saves {
 
 namespace TitleUtils {
 
-    inline int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
+    inline int wiiuTitlesCount = 0, wiiuSysTitlesCount = 0, vWiiTitlesCount = 0;
 
     Title *loadWiiTitles();
     Title *loadWiiUTitles(int run);
+    Title *loadWiiUSysTitles(int run);
 
     void unloadTitles(Title *titles, int count);
 

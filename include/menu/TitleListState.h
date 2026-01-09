@@ -7,6 +7,9 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
+#define IS_WIIU true
+#define IS_VWII false
+
 class TitleListState : public ApplicationState {
 public:
     explicit TitleListState(Title *titles, int titlesCount, bool isWiiU) : titles(titles),

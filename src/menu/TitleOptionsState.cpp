@@ -38,7 +38,9 @@ TitleOptionsState::TitleOptionsState(Title &title,
 
     wiiUAccountsTotalNumber = getWiiUAccn();
     sourceAccountsTotalNumber = getVolAccn();
-    this->isWiiUTitle = ((this->title.highID == 0x00050000) || (this->title.highID == 0x00050002)) && !this->title.noFwImg;
+    this->isWiiUTitle = (!this->title.is_Wii) && (!this->title.noFwImg);
+    // DBG - REVIEW CONDITiONS
+    //this->isWiiUTitle = ((this->title.highID == 0x00050000) || (this->title.highID == 0x00050002)) && !this->title.noFwImg;
     switch (task) {
         case BACKUP:
             updateBackupData();

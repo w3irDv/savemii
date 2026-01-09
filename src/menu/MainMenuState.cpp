@@ -78,8 +78,8 @@ void MainMenuState::render() {
         Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
                                  (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Wii U System Save Management (%u Title%s)"), this->wiiuTitlesCount,
-                                 (this->vWiiTitlesCount > 1) ? "s" : "");
+        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Wii U System Save Management (%u Title%s)"), this->wiiuSysTitlesCount,
+                                 (this->wiiuSysTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
         Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Tasks Management"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
@@ -100,19 +100,19 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             switch (cursorPos) {
                 case 0:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<TitleListState>(this->wiiutitles, this->wiiuTitlesCount, true);
+                    this->subState = std::make_unique<TitleListState>(this->wiiutitles, this->wiiuTitlesCount, IS_WIIU);
                     break;
                 case 1:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, false);
+                    this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, IS_VWII);
                     break;
                 case 2:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, false);
+                    this->subState = std::make_unique<TitleListState>(this->wiiusystitles, this->wiiuSysTitlesCount, IS_WIIU);
                     break;
                 case 3:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchTasksState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
+                    this->subState = std::make_unique<BatchTasksState>(this->wiiutitles, this->wiititles, this->wiiusystitles, this->wiiuTitlesCount, this->vWiiTitlesCount, this->wiiuSysTitlesCount);
                     break;
                 case 4:
                     this->state = STATE_DO_SUBSTATE;

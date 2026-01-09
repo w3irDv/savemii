@@ -103,11 +103,12 @@ int main() {
 
     Title *wiiutitles = TitleUtils::loadWiiUTitles(1);
     Title *wiititles = TitleUtils::loadWiiTitles();
+    Title *wiiusystitles = TitleUtils::loadWiiUSysTitles(1);
     getAccountsWiiU();
 
     TitleUtils::sortTitle(wiiutitles, wiiutitles + TitleUtils::wiiuTitlesCount, 1, true);
     TitleUtils::sortTitle(wiititles, wiititles + TitleUtils::vWiiTitlesCount, 1, true);
-
+    TitleUtils::sortTitle(wiiusystitles, wiiusystitles + TitleUtils::wiiuSysTitlesCount, 1, true);
 
     StartupUtils::resetMessageList();
     StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing BackupSets metadata."));
@@ -128,8 +129,8 @@ int main() {
     StartupUtils::resetMessageList();
 
     Input input{};
-    std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, TitleUtils::wiiuTitlesCount,
-                                                                           TitleUtils::vWiiTitlesCount);
+    std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiusystitles, TitleUtils::wiiuTitlesCount,
+                                                                           TitleUtils::vWiiTitlesCount, TitleUtils::wiiuSysTitlesCount);
 
     InProgress::input = &input;
     while (State::AppRunning()) {
@@ -165,6 +166,7 @@ int main() {
     MiiUtils::deinitMiiRepos();
     TitleUtils::unloadTitles(wiiutitles, TitleUtils::wiiuTitlesCount);
     TitleUtils::unloadTitles(wiititles, TitleUtils::vWiiTitlesCount);
+    TitleUtils::unloadTitles(wiiusystitles, TitleUtils::wiiuSysTitlesCount);
     FSUtils::deinit_fs_buffers();
     FSUtils::shutdownFS();
     LanguageUtils::gettextCleanUp();
