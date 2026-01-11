@@ -14,6 +14,7 @@
 #include <utils/EscapeFAT32Utils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/StatManager.h>
 #include <utils/StringUtils.h>
 
 //#define DEBUG
@@ -795,12 +796,15 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
 
 #ifndef MOCKALLBACKUP
             if (FSUtils::createFolder(dstPath.c_str())) {
+                StatManager::open_stat_file_for_write(dstPath);
+                StatManager::set_default_stat_for_savedata(&titles[i]);
                 FAT32EscapeFileManager::active_fat32_escape_file_manager = std::make_unique<FAT32EscapeFileManager>(dstPath);
                 if (FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
                     Escape::setPrefix(srcPath, dstPath);
                     if (FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE)) {
                         if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1)
                             FSUtils::copyFile(metaSavePath + "/saveinfo.xml", dstPath + "/savemii_saveinfo.xml");
+                        StatManager::close_stat_file_for_write();
                         if (FAT32EscapeFileManager::active_fat32_escape_file_manager->close()) {
                             FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
                             writeMetadata(&titles[i], slot, isUSB, batchDatetime);
@@ -822,6 +826,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             // backup for this tile has failed
             titlesKO++;
             titles[i].currentDataSource.batchBackupState = KO;
+            StatManager::close_stat_file_for_write();
             FAT32EscapeFileManager::active_fat32_escape_file_manager->close();
             FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
             writeMetadataWithTag(&titles[i], slot, isUSB, batchDatetime, LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
@@ -886,6 +891,8 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         return 16;
     }
 
+    StatManager::open_stat_file_for_write(title, slot);
+    StatManager::set_default_stat_for_savedata(title);
 
     bool doBase = false;
     bool doCommon = false;
@@ -936,6 +943,8 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         }
     }
 
+    StatManager::close_stat_file_for_write();
+
     if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1) {
         if (!FSUtils::copyFile(metaSavePath + "/saveinfo.xml", baseDstPath + "/savemii_saveinfo.xml")) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Warning - Error copying matadata saveinfo.xml. Not critical."));
@@ -948,6 +957,16 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         errorCode += 32;
     }
     FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
+
+    /*
+    StatManager::set_default_stat_for_savedata(title);
+    if (!StatManager::store_statSaves(title, slot) && title->is_WiiUSysTitle) {
+        errorMessage = (std::string) LanguageUtils::gettext("%s\nCreation of stat file failed, which is mandatory for system titles in order to set the right permissions when restoring. \nDO NOT restore from this slot.") + "\n" + errorMessage;
+        errorCode += 64;
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
+        writeMetadataWithTag(title, slot, isUSB, LanguageUtils::gettext("UNUSABLE - NO STAT FILE"));
+    }
+    */
 
     if (errorCode == 0)
         writeMetadataWithTag(title, slot, isUSB, tag);
@@ -986,6 +1005,12 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     std::string dstCommonPath = dstPath + "/common";
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
+    if (isWii || !StatManager::stat_file_exists(title, slot))
+        StatManager::use_legacy_stat_cfg = true;
+    else {
+        StatManager::set_default_stat_for_savedata(title);
+        StatManager::use_legacy_stat_cfg = false;
+    }
 
     if (interactive) {
         if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")))
@@ -1063,9 +1088,16 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     }
 
     std::string storage_vol = (isWii ? "storage_slcc01:" : (isUSB ? FSUtils::getUSB() : "storage_mlc01:"));
+    StatManager::device = storage_vol;
+
+    if (!StatManager::use_legacy_stat_cfg) {
+        StatManager::open_stat_file_for_read(title, slot);
+        StatManager::apply_stat_file();
+        StatManager::close_stat_file_for_read();
+    }
+
     if (!FAT32EscapeFileManager::rename_fat32_escaped_files(baseSrcPath, storage_vol, errorMessage, errorCode))
         goto flush_volume;
-
 
     if (!title->saveInit && title->is_Inject) {
         initializeVWiiInjectTitle(title, errorMessage, errorCode);
@@ -1094,7 +1126,6 @@ flush_volume:
 
     return errorCode;
 }
-
 
 
 int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive /*= true*/, eAccountSource accountSource /*= USE_WIIU_PROFILES*/) {
@@ -1352,7 +1383,7 @@ void sdWriteDisclaimer(Color bg_color /*= COLOR_BLACK*/) {
 
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles) {
     for (int i = 0; i < titlesCount; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0 ) // || !titles[i].saveInit)
+        if (titles[i].highID == 0 || titles[i].lowID == 0) // || !titles[i].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
 
@@ -1387,7 +1418,7 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
     else
         summaryTemplate = LanguageUtils::gettext("Task completed. Results:\n\n- OK: %d\n- Warning: %d\n- KO: %d\n- Aborted: %d\n- Skipped: %d (including %d notInitialized)\n");
 
-    std::string summaryWithTitles = StringUtils::stringFormat(summaryTemplate,titlesOK,titlesWarning,titlesKO,titlesAborted,titlesSkipped,titlesNotInitialized);
+    std::string summaryWithTitles = StringUtils::stringFormat(summaryTemplate, titlesOK, titlesWarning, titlesKO, titlesAborted, titlesSkipped, titlesNotInitialized);
 
     Style summaryStyle = OK_CONFIRM;
     if (titlesWarning > 0 || titlesAborted > 0)

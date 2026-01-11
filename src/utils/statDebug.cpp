@@ -53,7 +53,7 @@ bool statDebugUtils::statDir(const std::string &entryPath, FILE *file) {
             return false;
         }
 
-        auto *data = (dirent *) malloc(sizeof(dirent));
+        struct dirent *data;
 
         while ((data = readdir(dir)) != nullptr) {
             if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
@@ -87,9 +87,8 @@ void statDebugUtils::statSaves(const Title &title) {
 
     statDir(srcPath, file);
 
-
     if (title.is_Inject) {
-        // vWii content fir injects
+        // vWii content for injects
         highID = title.noFwImg ? title.vWiiHighID : title.highID;
         lowID = title.noFwImg ? title.vWiiLowID : title.lowID;
         isUSB = title.noFwImg ? false : title.isTitleOnUSB;
@@ -121,8 +120,10 @@ void statDebugUtils::statTitle(const Title &title) {
     uint32_t lowID = title.lowID;
     bool isUSB = title.isTitleOnUSB;
     bool isWii = title.is_Wii;
+    bool is_WiiUSysTitle = title.is_WiiUSysTitle; 
 
-    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/title").c_str() : "storage_mlc01:/usr/title"));
+    std::string title_path = is_WiiUSysTitle ? "/sys/title" : "/usr/title";
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + title_path) : ("storage_mlc01:"+title_path)));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
 
     statDir(srcPath, file);

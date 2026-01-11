@@ -240,6 +240,8 @@ Title *TitleUtils::loadWiiUTitles(int run) {
         if (TitleUtils::loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr;
 
+        titles[wiiuSysTitlesCount].is_WiiUSysTitle = false;
+        
         titles[wiiuTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
                                                        titles[wiiuTitlesCount].isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
@@ -442,6 +444,7 @@ Title *TitleUtils::loadWiiTitles() {
                 titles[i].is_Wii = true;
                 titles[i].noFwImg = true;
                 titles[i].is_Inject = false;
+                titles[wiiuSysTitlesCount].is_WiiUSysTitle = false;
 
                 titles[i].listID = i;
                 titles[i].indexID = i;
@@ -610,8 +613,10 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
         uint32_t lowID = saves[i].lowID;
         bool isTitleOnUSB = saves[i].dev == 0u;
 
-        const std::string path = StringUtils::stringFormat("%s/usr/%s/%08x/%08x/meta/meta.xml", isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
-                                                           saves[i].found ? "title" : "save", highID, lowID);
+        // DBG - One Diff
+        const std::string path = StringUtils::stringFormat("%s/%s/%s/%08x/%08x/meta/meta.xml", isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
+                                                           saves[i].found ? "sys" : "usr",saves[i].found ? "title" : "save", highID, lowID);
+ 
         titles[wiiuSysTitlesCount].saveInit = !saves[i].found;
 
         char *xmlBuf = nullptr;
@@ -678,6 +683,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
         titles[wiiuSysTitlesCount].highID = highID;
         titles[wiiuSysTitlesCount].lowID = lowID;
         titles[wiiuSysTitlesCount].is_Wii = ((highID & 0xFFFFFFF0) == 0x00010000);
+        titles[wiiuSysTitlesCount].is_WiiUSysTitle = true;
         titles[wiiuSysTitlesCount].isTitleOnUSB = isTitleOnUSB;
         titles[wiiuSysTitlesCount].listID = wiiuSysTitlesCount;
         titles[wiiuSysTitlesCount].indexID = wiiuSysTitlesCount;
@@ -717,7 +723,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
         StartupUtils::disclaimer();
         DrawUtils::drawTGA(328, 160, 1, icon_tga);
         Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
-        Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), i);
+        Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), vWiiTitlesCount);
         Console::consolePrintPosAligned(12, 0, 1, LanguageUtils::gettext("Loaded %i Wii U Sys titles."), wiiuSysTitlesCount);
         DrawUtils::endDraw();
     }

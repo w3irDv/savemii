@@ -9,6 +9,7 @@
 #include <utils/FSUtils.h>
 #include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
+#include <utils/StatManager.h>
 #include <utils/StringUtils.h>
 
 static file_buffer buffers[16];
@@ -332,6 +333,8 @@ bool FSUtils::copyFile(const std::string &sPath, const std::string &initial_tPat
         return true;
     if (sPath.find(FAT32EscapeFileManager::fat32_rename_file) != std::string::npos)
         return true;
+    if (sPath.find("savemii_cfg_") != std::string::npos)
+        return true;
     FILE *source = fopen(sPath.c_str(), "rb");
     if (source == nullptr) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), sPath.c_str(), strerror(errno));
@@ -395,7 +398,14 @@ copy_file:
         }
     }
 
-    FSAChangeMode(handle, FSUtils::newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
+    // backup
+    if (StatManager::enable_get_stat)
+        StatManager::get_stat(sPath);
+
+    // restore
+    if (StatManager::enable_set_stat)
+        StatManager::apply_default_stat(tPath);
+
 
     if (!success) {
         if (readError > 0) {
@@ -447,7 +457,15 @@ bool FSUtils::copyDir(const std::string &sPath, const std::string &initial_tPath
     }
 
 dir_created:
-    FSAChangeMode(handle, FSUtils::newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
+
+    // restore
+    if (StatManager::enable_set_stat)
+        StatManager::apply_default_stat(tPath);
+
+    // backup
+    if (StatManager::enable_get_stat)
+        StatManager::get_stat(sPath);
+
     struct dirent *data;
 
     errno = 0;
@@ -728,9 +746,9 @@ bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, st
 }
 
 /// @brief rename that for vWii storage does copy&delete because rename does not work (returns IO ERROR)
-/// @param src_path 
-/// @param dst_path 
-/// @return 
+/// @param src_path
+/// @param dst_path
+/// @return
 int FSUtils::slc_resilient_rename(std::string &src_path, std::string &dst_path) {
     int res;
 

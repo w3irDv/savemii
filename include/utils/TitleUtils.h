@@ -47,6 +47,7 @@ struct Title {
     bool is_Wii;
     bool is_Inject;
     bool noFwImg;
+    bool is_WiiUSysTitle;
     uint16_t dupeID;
     uint8_t *iconBuf;
     uint64_t accountSaveSize;
