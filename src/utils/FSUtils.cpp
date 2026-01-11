@@ -406,6 +406,11 @@ copy_file:
     if (StatManager::enable_set_stat)
         StatManager::apply_default_stat(tPath);
 
+    // copy to other profile/device
+    if (StatManager::enable_copy_stat)
+        StatManager::copy_stat(sPath, tPath);
+
+
 
     if (!success) {
         if (readError > 0) {
@@ -465,6 +470,11 @@ dir_created:
     // backup
     if (StatManager::enable_get_stat)
         StatManager::get_stat(sPath);
+
+    
+    // copy to other profile/device
+    if (StatManager::enable_copy_stat)
+        StatManager::copy_stat(sPath, tPath);
 
     struct dirent *data;
 

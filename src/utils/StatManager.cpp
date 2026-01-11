@@ -2,7 +2,6 @@
 #include <cstring>
 #include <ctime>
 #include <dirent.h>
-#include <map>
 #include <savemng.h>
 #include <sstream>
 #include <sys/stat.h>
@@ -177,7 +176,7 @@ bool StatManager::apply_stat_file() {
         filename = device + filename;
 
         //Console::showMessage(OK_CONFIRM,"mode %x, uid %x, gid %x, file %s",fsmode,uid,gid,filename.c_str());
-        
+
         FSError fserror;
         if (!FSUtils::setOwnerAndMode(uid, gid, (FSMode) fsmode, filename, fserror)) {
             if (fserror == FS_ERROR_NOT_FOUND) // we allow partial restores, so may be the file has not been copied
@@ -205,141 +204,6 @@ bool StatManager::apply_stat_file() {
     return (permErrors == 0);
 }
 
-
-/// @brief load stat file with owner and permissions different from the default. If file is not found or there is a parsing error, returns false, and the code will uses 666 perms and uid:gid from savemii hb
-/// @param stat_file
-/// @return
-bool StatManager::load_statDir(Title *title, int slot) {
-
-    const std::string baseSrcPath = getDynamicBackupPath(title, slot);
-
-    std::string statFilePath = baseSrcPath + savemii_stat_info_file;
-
-    use_legacy_stat_cfg = true;
-    //int permErrors = 0;
-    FILE *fp;
-    char line[1128];
-
-    std::string message;
-    std::string lineString;
-
-    fp = fopen(statFilePath.c_str(), "r");
-    if (fp == NULL) {
-        //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), stat_file.c_str(), strerror(errno));
-        return false;
-    }
-
-    while (fgets(line, sizeof(line), fp) != NULL) {
-        lineString.assign(line);
-
-        std::string fileType;
-        std::string mode;
-        std::string owner;
-        std::string group;
-        std::string quota;
-
-        uint16_t fsmode = 0;
-        uint32_t uid = 0;
-        uint32_t gid = 0;
-        //uint64_t quotasize;
-
-        std::stringstream ss(lineString);
-
-        try {
-            getline(ss, fileType, ' ');
-
-            getline(ss, mode, ' ');
-            fsmode = static_cast<uint16_t>(std::stoul(mode, nullptr, 16));
-
-            getline(ss, owner, ':');
-            uid = static_cast<uint32_t>(std::stoul(owner, nullptr, 16));
-
-            getline(ss, group, ' ');
-            gid = static_cast<uint32_t>(std::stoul(group, nullptr, 16));
-
-            getline(ss, quota, ' ');
-            //quotasize = static_cast<uint64_t>(std::stoull(quota, nullptr, 16));
-        } catch (...) {
-            /*
-            permErrors++;
-            Console::showMessage(ERROR_CONFIRM, "Error parsing stat file %s:\n%s", stat_file.c_str(), lineString.c_str());
-            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error loading  permissions file - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), permErrors);
-            if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-                InProgress::abortCopy = true;
-                fclose(fp);
-                return false;
-            }
-            */
-            return false;
-        }
-
-        std::string filename;
-        getline(ss, filename, '\n');
-
-        StatData *this_file_stat_info = new StatData(uid, gid, fsmode);
-        stat_map[filename] = this_file_stat_info;
-    }
-
-    if (ferror(fp)) {
-        /*
-        permErrors++;
-        Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("Error reading stat file\n\n%s\n\n%s"), stat_file.c_str(), strerror(errno));
-        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Error setting permissions - Restore is not reliable"), permErrors);
-        fclose(fp);
-        */
-        return false;
-    }
-
-    fclose(fp);
-
-    //return (permErrors == 0);
-    enable_set_stat = true;
-    use_legacy_stat_cfg = false;
-    return true;
-}
-
-
-void StatManager::unload_statDir() {
-
-    for (auto it = StatManager::stat_map.cbegin(); it != StatManager::stat_map.cend(); ++it) {
-        delete it->second;
-    }
-
-    stat_map.clear();
-
-    enable_set_stat = false;
-    use_legacy_stat_cfg = true;
-}
-
-/// @brief If a stat file is loaded in memory, try to use it: If the file is in the map, set permisssions accordingly, if not use the default ones. if the file is not loaded, revert to legacy behaviour: permissions to 666
-/// @param file
-/// @param device
-/// @return
-bool StatManager::set_stat(const std::string &filepath) {
-
-    if (use_legacy_stat_cfg) {
-        FSAChangeMode(FSUtils::handle, FSUtils::newlibtoFSA(filepath).c_str(), (FSMode) 0x666);
-        return true;
-    } else {
-        std::string path_wo_device = filepath.substr(filepath.find_first_of(":") + 1, std::string::npos);
-        StatData *file_stat_data = stat_map[path_wo_device];
-
-        FSError fserror;
-        if (file_stat_data != nullptr) {
-            if (FSUtils::setOwnerAndMode(file_stat_data->uid, file_stat_data->gid, (FSMode) file_stat_data->fsmode, filepath, fserror)) {
-                return true;
-            }
-        } else {
-            if (FSUtils::setOwnerAndMode(default_file_stat->uid, default_file_stat->gid, (FSMode) default_file_stat->fsmode, filepath, fserror)) {
-                return true;
-            }
-        }
-        std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions for file: %s\n\n%s"), filepath.c_str(), FSAGetStatusStr(fserror));
-        Console::showMessage(ERROR_SHOW, "%s", errorMessage.c_str());
-    }
-
-    return false;
-}
 
 /// @brief Set opinionated defaults: legacy = {other can also rw, uid:gid as hb}, "new default" = {660, uid=tid,gid=0x400}
 /// @param filepath
@@ -426,7 +290,7 @@ bool StatManager::close_stat_file_for_write() {
 bool StatManager::close_stat_file_for_read() {
 
     fclose(stat_file_handle);
-    
+
     return true;
 }
 
@@ -443,7 +307,6 @@ bool StatManager::stat_file_exists(Title *title, int slot) {
     statFilePath = baseDstPath + "/" + savemii_stat_info_file;
 
     return (FSUtils::checkEntry(statFilePath.c_str()) == 1);
-
 }
 
 bool StatManager::get_stat(const std::string &entryPath) {
@@ -481,7 +344,7 @@ bool StatManager::get_stat(const std::string &entryPath) {
 
     std::string path_wo_device = entryPath.substr(entryPath.find_first_of(":") + 1, std::string::npos);
 
-    // only store files that have fsmod,, uid or gid diferent to the default one (640, tid, 0x400)
+    // only store files that have fsmod, uid or gid diferent to the default one (640, tid, 0x400)
     if ((fsmode != default_file_stat->fsmode) || (fsastat.owner != default_file_stat->uid) || (fsastat.group != default_file_stat->gid)) {
         int ret = fprintf(stat_file_handle, "%s %x %x:%x %llx %s\n", entryType.c_str(), fsmode, fsastat.owner, fsastat.group, fsastat.quotaSize, path_wo_device.c_str());
         if (ret == EOF && ferror(stat_file_handle)) {
@@ -489,9 +352,27 @@ bool StatManager::get_stat(const std::string &entryPath) {
             return false;
         }
     }
-
     return true;
 }
+
+
+bool StatManager::copy_stat(const std::string &source_file, const std::string &target_file) {
+    FSAStat fsastat;
+    FSError fserror = FSAGetStat(FSUtils::handle, FSUtils::newlibtoFSA(source_file).c_str(), &fsastat);
+    if (fserror != FS_ERROR_OK) {
+        Console::showMessage(ERROR_SHOW, "Error opening dir: %s", FSAGetStatusStr(fserror));
+        return false;
+    }
+
+    if (FSUtils::setOwnerAndMode(fsastat.owner, fsastat.group, fsastat.mode, target_file, fserror)) {
+        return true;
+    } else {
+        std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions for file: %s\n\n%s"), target_file.c_str(), FSAGetStatusStr(fserror));
+        Console::showMessage(ERROR_SHOW, "%s", errorMessage.c_str());
+        return false;
+    }
+}
+
 
 void StatManager::set_default_stat(uint32_t uid, uint32_t gid, uint16_t fsmode) {
 
@@ -507,68 +388,6 @@ void StatManager::unload_statManager() {
 void StatManager::set_default_stat_for_savedata(Title *title) {
 
     default_file_stat->uid = title->lowID;
-    default_file_stat->gid = 0x400;
+    default_file_stat->gid = title->groupID;
     default_file_stat->fsmode = 0x660;
 }
-
-
-#ifdef TEST
-#include <sys/stat.h>
-#include <sys/types.h>
-bool StatManager::store_statDir2([[maybe_unused]] const std::string &entryPath, [[maybe_unused]] FILE *file) {
-
-    struct stat file_stat;
-    stat(entryPath.c_str(), &file_stat);
-
-    if (entryPath.find("5678") != std::string::npos)
-        return false;
-
-    int ret = fprintf(file, "%s Size: %lld bytes\n", entryPath.c_str(), (long long) file_stat.st_size);
-    if (ret == EOF && ferror(file)) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing stat file\n\n%s"), strerror(errno));
-        return false;
-    }
-
-    if (S_ISDIR(file_stat.st_mode)) {
-
-        DIR *dir = opendir(entryPath.c_str());
-        if (dir == nullptr) {
-            fprintf(file, "Error opening source dir\n\n%s\n\n%s", entryPath.c_str(), strerror(errno));
-            return false;
-        }
-
-        struct dirent *data;
-
-        while ((data = readdir(dir)) != nullptr) {
-            if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
-                continue;
-            std::string newEntryPath = (entryPath + "/" + std::string(data->d_name));
-            if (!store_statDir2(newEntryPath.c_str(), file)) {
-                closedir(dir);
-                return false;
-            }
-        }
-        closedir(dir);
-    }
-
-    return true;
-}
-
-void StatManager::store_statSaves2() {
-
-    std::string statFilePath = "/home/qwii/projects/perm_keeper/test/savemii_statInfo.out";
-    std::string srcPath = "/home/qwii/projects/perm_keeper/test/usr";
-
-    FILE *file = fopen(statFilePath.c_str(), "w");
-
-    if (!store_statDir2(srcPath, file)) {
-        Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Cannot create stat file. Backup can be used and will work (if there are no other errors), but it is advised to resolve the issue and try again."));
-        fclose(file);
-        //unlink(statFilePath.c_str());
-        return;
-    }
-
-    fclose(file);
-}
-
-#endif

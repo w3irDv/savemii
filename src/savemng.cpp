@@ -520,6 +520,8 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             break;
     }
 
+    StatManager::enable_copy_stat = true;
+
     std::string errorMessage{};
     if (doCommon) {
         FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstCommonPath).c_str(), 0x666, titleb->commonSaveSize);
@@ -542,6 +544,8 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             errorCode += 2;
         }
     }
+
+    StatManager::enable_copy_stat = false;
 
     if (!titleb->saveInit) {
 
@@ -603,12 +607,16 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     std::string errorMessage{};
 
+    StatManager::enable_copy_stat = true;
+    
     FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
     if (!FSUtils::copyDir(srcPath, dstPath)) {
         errorMessage = LanguageUtils::gettext("Error copying profile savedata.");
         errorCode = 1;
         goto flush_volume;
     }
+
+    StatManager::enable_copy_stat = false;
 
     updateSaveinfo(title, source_user, wiiu_user, PROFILE_TO_PROFILE, 0, title, errorMessage, errorCode);
 
