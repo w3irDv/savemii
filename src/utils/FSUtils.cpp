@@ -399,8 +399,12 @@ copy_file:
     }
 
     // backup
-    if (StatManager::enable_get_stat)
-        StatManager::get_stat(sPath);
+    if (StatManager::enable_get_stat) {
+        if (!StatManager::get_stat(sPath)) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error creating permission file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+            return false;
+        }
+    }
 
     // restore
     if (StatManager::enable_set_stat)
@@ -409,7 +413,6 @@ copy_file:
     // copy to other profile/device
     if (StatManager::enable_copy_stat)
         StatManager::copy_stat(sPath, tPath);
-
 
 
     if (!success) {
@@ -468,10 +471,19 @@ dir_created:
         StatManager::apply_default_stat(tPath);
 
     // backup
-    if (StatManager::enable_get_stat)
-        StatManager::get_stat(sPath);
+    if (StatManager::enable_get_stat) {
+        if (!StatManager::get_stat(sPath)) {
+            InProgress::copyErrorsCounter++;
+            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error creating permission file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+            if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+                InProgress::abortCopy = true;
+                closedir(dir);
+                return false;
+            }
+        }
+    }
 
-    
+
     // copy to other profile/device
     if (StatManager::enable_copy_stat)
         StatManager::copy_stat(sPath, tPath);

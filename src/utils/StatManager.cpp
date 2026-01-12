@@ -14,113 +14,8 @@
 
 //#include <mockWUT.h>
 
-bool StatManager::store_statDir(const std::string &entryPath, FILE *file) {
-
-    FSAStat fsastat;
-    FSMode fsmode;
-    FSStatFlags fsstatflags;
-    FSError fserror = FSAGetStat(FSUtils::handle, FSUtils::newlibtoFSA(entryPath).c_str(), &fsastat);
-    if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_SHOW, "Error opening dir: %s", FSAGetStatusStr(fserror));
-        return false;
-    }
-    fsmode = fsastat.mode;
-    fsstatflags = fsastat.flags;
-
-    std::string entryType{};
-    if ((fsstatflags & FS_STAT_DIRECTORY) != 0)
-        entryType.append("D");
-    if ((fsstatflags & FS_STAT_QUOTA) != 0)
-        entryType.append("Q");
-    if ((fsstatflags & FS_STAT_FILE) != 0)
-        entryType.append("F");
-    if ((fsstatflags & FS_STAT_ENCRYPTED_FILE) != 0)
-        entryType.append("E");
-    if ((fsstatflags & FS_STAT_LINK) != 0)
-        entryType.append("L");
-    if (fsstatflags == 0) {
-        struct stat path_stat;
-        stat(entryPath.c_str(), &path_stat);
-        if (S_ISREG(path_stat.st_mode) != 0)
-            entryType.append("0F");
-        else
-            entryType.append("00");
-    }
-
-    std::string path_wo_device = entryPath.substr(entryPath.find_first_of(":") + 1, std::string::npos);
-
-    // only store files that have fsmod,, uid or gid diferent to the default one (640, tid, 0x400)
-    if ((fsmode != default_file_stat->fsmode) || (fsastat.owner != default_file_stat->uid) || (fsastat.group != default_file_stat->gid)) {
-        int ret = fprintf(file, "%s %x %x:%x %llx %s\n", entryType.c_str(), fsmode, fsastat.owner, fsastat.group, fsastat.quotaSize, path_wo_device.c_str());
-        if (ret == EOF && ferror(file)) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing stat file\n\n%s"), strerror(errno));
-            return false;
-        }
-    }
-
-    if ((fsstatflags & FS_STAT_DIRECTORY) != 0) {
-
-        DIR *dir = opendir(entryPath.c_str());
-        if (dir == nullptr) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), entryPath.c_str(), strerror(errno));
-            return false;
-        }
-
-        struct dirent *data;
-
-        while ((data = readdir(dir)) != nullptr) {
-            if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
-                continue;
-            std::string newEntryPath = (entryPath + "/" + std::string(data->d_name));
-            if (!store_statDir(newEntryPath.c_str(), file)) {
-                closedir(dir);
-                return false;
-            }
-        }
-        closedir(dir);
-    }
-
-    return true;
-}
-
-/// @brief Create file with stat info for savedata folder. If there is any error and the backup file is not created, savemii will revert to the legacy behaviour of setrting 666 permissions ... so a failure is considered a warning
-/// @param title
-/// @param slot
-bool StatManager::store_statSaves(Title *title, int slot) {
-
-    /*
-    
-    int errorCode = 0;
-    InProgress::copyErrorsCounter = 0;
-    InProgress::abortCopy = false;
-    InProgress::titleName.assign(title->shortName);
-    InProgress::jobType = COPY_TO_OTHER_DEVICE;
-    */
-    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
-    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
-    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
-    bool isWii = title->is_Wii || title->noFwImg;
-    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
-    std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    const std::string baseDstPath = getDynamicBackupPath(title, slot);
-
-    std::string statFilePath = baseDstPath + savemii_stat_info_file;
-
-    FILE *file = fopen(statFilePath.c_str(), "w");
-
-    if (!store_statDir(srcPath, file)) {
-        Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Cannot create stat file. Backup can be used and will work (if there are no mor errors), but it is advised to resolve the issue and try again."));
-        fclose(file);
-        unlink(statFilePath.c_str());
-        return false;
-    }
-
-    fclose(file);
-
-    return true;
-}
-
-
+/// @brief If we are applying permissions and the proces fails, the restore can or not be reliable. For SysTtitles is unreiable for sure (Miimaker has special permissions)
+/// @return
 bool StatManager::apply_stat_file() {
 
     int permErrors = 0;
@@ -165,7 +60,6 @@ bool StatManager::apply_stat_file() {
             std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), permErrors);
             if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                 InProgress::abortCopy = true;
-                fclose(stat_file_handle);
                 return false;
             }
             break;
@@ -175,17 +69,21 @@ bool StatManager::apply_stat_file() {
         getline(ss, filename, '\n');
         filename = device + filename;
 
-        //Console::showMessage(OK_CONFIRM,"mode %x, uid %x, gid %x, file %s",fsmode,uid,gid,filename.c_str());
+        if (enable_filtered_stat) {
+            if (filename.find(source_profile_subpath) == std::string::npos)
+                continue;
+            if (needs_profile_translation)
+                filename.replace(filename.find(source_profile_subpath), source_profile_subpath.size(), target_profile_subpath);
+        }
 
         FSError fserror;
+        if (FSUtils::checkEntry(filename.c_str()) == 0) // we allow partial restores, so may be the file has not been copied
+            continue;
         if (!FSUtils::setOwnerAndMode(uid, gid, (FSMode) fsmode, filename, fserror)) {
-            if (fserror == FS_ERROR_NOT_FOUND) // we allow partial restores, so may be the file has not been copied
-                continue;
             permErrors++;
             std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), permErrors);
             if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                 InProgress::abortCopy = true;
-                fclose(stat_file_handle);
                 return false;
             }
         }
@@ -194,12 +92,8 @@ bool StatManager::apply_stat_file() {
     if (ferror(stat_file_handle)) {
         permErrors++;
         Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("Error reading stat file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
-        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Error setting permissions - Restore is not reliable"), permErrors);
-        fclose(stat_file_handle);
         return false;
     }
-
-    fclose(stat_file_handle);
 
     return (permErrors == 0);
 }
@@ -240,7 +134,15 @@ bool StatManager::open_stat_file_for_write(Title *title, int slot) {
     statFilePath = baseDstPath + "/" + savemii_stat_info_file;
 
     stat_file_handle = fopen(statFilePath.c_str(), "w");
+
+    if (stat_file_handle == NULL) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        return false;
+    }
+
     enable_get_stat = true;
+
+    fprintf(stat_file_handle, "[STAT EXCEPTIONS FILE]\n");
 
     return true;
 }
@@ -252,7 +154,15 @@ bool StatManager::open_stat_file_for_write(const std::string &path) {
 
     statFilePath = path + "/" + savemii_stat_info_file;
     stat_file_handle = fopen(statFilePath.c_str(), "w");
+
+    if (stat_file_handle == NULL) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        return false;
+    }
+
     enable_get_stat = true;
+
+    fprintf(stat_file_handle, "[STAT EXCEPTIONSFILE]\n");
 
     return true;
 }
@@ -276,20 +186,30 @@ bool StatManager::open_stat_file_for_read(Title *title, int slot) {
         return false;
     }
 
+    char to_drop[25]; // first line contains the literal [STAT EXCEPTIONS FILE]
+    fgets(to_drop, sizeof(to_drop), stat_file_handle);
+
     return true;
 }
 
 bool StatManager::close_stat_file_for_write() {
 
-    fclose(stat_file_handle);
     enable_get_stat = false;
+
+    if (fclose(stat_file_handle) == EOF) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        return false;
+    }
 
     return true;
 }
 
 bool StatManager::close_stat_file_for_read() {
 
-    fclose(stat_file_handle);
+    if (fclose(stat_file_handle) == EOF) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        return false;
+    }
 
     return true;
 }
@@ -316,7 +236,7 @@ bool StatManager::get_stat(const std::string &entryPath) {
     FSStatFlags fsstatflags;
     FSError fserror = FSAGetStat(FSUtils::handle, FSUtils::newlibtoFSA(entryPath).c_str(), &fsastat);
     if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_SHOW, "Error opening dir: %s", FSAGetStatusStr(fserror));
+        Console::showMessage(ERROR_CONFIRM, "Error gtting stat for %s: %s", entryPath.c_str(), FSAGetStatusStr(fserror));
         return false;
     }
     fsmode = fsastat.mode;
@@ -385,9 +305,35 @@ void StatManager::unload_statManager() {
     delete default_file_stat;
 }
 
-void StatManager::set_default_stat_for_savedata(Title *title) {
+void StatManager::set_default_stat_for_wiiu_savedata(Title *title) {
 
     default_file_stat->uid = title->lowID;
     default_file_stat->gid = title->groupID;
     default_file_stat->fsmode = 0x660;
+}
+
+void StatManager::set_default_stat_for_vwii_savedata(Title *title) {
+
+    default_file_stat->uid = title->lowID;
+    default_file_stat->gid = title->groupID;
+    default_file_stat->fsmode = 0x660;
+}
+
+
+void StatManager::enable_flags_for_restore() {
+    enable_set_stat = true;
+    enable_get_stat = false;
+    enable_copy_stat = false;
+}
+
+void StatManager::enable_flags_for_backup() {
+    enable_set_stat = false;
+    enable_get_stat = true;
+    enable_copy_stat = false;
+}
+
+void StatManager::enable_flags_for_copy() {
+    enable_set_stat = false;
+    enable_get_stat = false;
+    enable_copy_stat = true;
 }

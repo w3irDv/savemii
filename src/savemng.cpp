@@ -520,7 +520,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             break;
     }
 
-    StatManager::enable_copy_stat = true;
+    StatManager::enable_flags_for_copy();
 
     std::string errorMessage{};
     if (doCommon) {
@@ -544,8 +544,6 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             errorCode += 2;
         }
     }
-
-    StatManager::enable_copy_stat = false;
 
     if (!titleb->saveInit) {
 
@@ -607,16 +605,14 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     std::string errorMessage{};
 
-    StatManager::enable_copy_stat = true;
-    
+    StatManager::enable_flags_for_copy();
+
     FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
     if (!FSUtils::copyDir(srcPath, dstPath)) {
         errorMessage = LanguageUtils::gettext("Error copying profile savedata.");
         errorCode = 1;
         goto flush_volume;
     }
-
-    StatManager::enable_copy_stat = false;
 
     updateSaveinfo(title, source_user, wiiu_user, PROFILE_TO_PROFILE, 0, title, errorMessage, errorCode);
 
@@ -804,39 +800,50 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
 
 #ifndef MOCKALLBACKUP
             if (FSUtils::createFolder(dstPath.c_str())) {
-                StatManager::open_stat_file_for_write(dstPath);
-                StatManager::set_default_stat_for_savedata(&titles[i]);
-                FAT32EscapeFileManager::active_fat32_escape_file_manager = std::make_unique<FAT32EscapeFileManager>(dstPath);
-                if (FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
-                    Escape::setPrefix(srcPath, dstPath);
-                    if (FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE)) {
-                        if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1)
-                            FSUtils::copyFile(metaSavePath + "/saveinfo.xml", dstPath + "/savemii_saveinfo.xml");
-                        StatManager::close_stat_file_for_write();
-                        if (FAT32EscapeFileManager::active_fat32_escape_file_manager->close()) {
-                            FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
-                            writeMetadata(&titles[i], slot, isUSB, batchDatetime);
-                            titles[i].currentDataSource.batchBackupState = OK;
-                            titles[i].currentDataSource.selectedForBackup = false;
-                            titlesOK++;
-
-                            if (InProgress::abortTask) {
-                                if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), LanguageUtils::gettext("Do you want to cancel batch backup?")))
-                                    return titlesKO;
-                                else
-                                    InProgress::abortTask = false;
+                StatManager::enable_flags_for_backup();
+                if (StatManager::open_stat_file_for_write(dstPath)) {
+                    if (isWii)
+                        StatManager::set_default_stat_for_vwii_savedata(&titles[i]);
+                    else
+                        StatManager::set_default_stat_for_wiiu_savedata(&titles[i]);
+                    FAT32EscapeFileManager::active_fat32_escape_file_manager = std::make_unique<FAT32EscapeFileManager>(dstPath);
+                    if (FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
+                        Escape::setPrefix(srcPath, dstPath);
+                        if (FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE)) {
+                            if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1)
+                                FSUtils::copyFile(metaSavePath + "/saveinfo.xml", dstPath + "/savemii_saveinfo.xml");
+                            if (FAT32EscapeFileManager::active_fat32_escape_file_manager->close()) {
+                                FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
+                                if (StatManager::close_stat_file_for_write()) {
+                                    writeMetadata(&titles[i], slot, isUSB, batchDatetime);
+                                    titles[i].currentDataSource.batchBackupState = OK;
+                                    titles[i].currentDataSource.selectedForBackup = false;
+                                    titlesOK++;
+                                    if (InProgress::abortTask) {
+                                        if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), LanguageUtils::gettext("Do you want to cancel batch backup?")))
+                                            return titlesKO;
+                                        else
+                                            InProgress::abortTask = false;
+                                    }
+                                    continue;
+                                }
+                            } else {
+                                FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
+                                StatManager::close_stat_file_for_write();
                             }
-                            continue;
+                        } else {
+                            FAT32EscapeFileManager::active_fat32_escape_file_manager->close();
+                            FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
+                            StatManager::close_stat_file_for_write();
                         }
+                    } else {
+                        StatManager::close_stat_file_for_write();
                     }
                 }
             }
             // backup for this tile has failed
             titlesKO++;
             titles[i].currentDataSource.batchBackupState = KO;
-            StatManager::close_stat_file_for_write();
-            FAT32EscapeFileManager::active_fat32_escape_file_manager->close();
-            FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
             writeMetadataWithTag(&titles[i], slot, isUSB, batchDatetime, LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
             std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), titles[i].shortName, titlesKO);
             if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
@@ -899,8 +906,20 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         return 16;
     }
 
-    StatManager::open_stat_file_for_write(title, slot);
-    StatManager::set_default_stat_for_savedata(title);
+    if (!StatManager::open_stat_file_for_write(title, slot)) {
+        if (title->is_WiiUSysTitle) {
+            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."));
+            return 64;
+        } else {
+            if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry.")))
+                return -1;
+        }
+    } // we have set enable_get_stat to true;
+
+    if (isWii)
+        StatManager::set_default_stat_for_vwii_savedata(title);
+    else
+        StatManager::set_default_stat_for_wiiu_savedata(title);
 
     bool doBase = false;
     bool doCommon = false;
@@ -933,12 +952,15 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
             break;
     }
 
+    StatManager::enable_flags_for_backup();
+
     std::string errorMessage{};
     if (doCommon) {
         Escape::setPrefix(srcCommonPath, dstCommonPath);
         if (!FSUtils::copyDir(srcCommonPath, dstCommonPath, GENERATE_FAT32_TRANSLATION_FILE)) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying common savedata."));
             errorCode = 1;
+            goto backup_cleanup_and_return;
         }
     }
 
@@ -948,10 +970,9 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
             errorMessage.append("\n" + (std::string) ((source_user == -1) ? LanguageUtils::gettext("Error copying savedata.")
                                                                           : LanguageUtils::gettext("Error copying profile savedata.")));
             errorCode += 2;
+            goto backup_cleanup_and_return;
         }
     }
-
-    StatManager::close_stat_file_for_write();
 
     if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1) {
         if (!FSUtils::copyFile(metaSavePath + "/saveinfo.xml", baseDstPath + "/savemii_saveinfo.xml")) {
@@ -960,21 +981,26 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         }
     }
 
+
+backup_cleanup_and_return:
+
     if (!FAT32EscapeFileManager::active_fat32_escape_file_manager->close()) {
         errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error closing FAT32 chars translation file"));
         errorCode += 32;
     }
     FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
 
-    /*
-    StatManager::set_default_stat_for_savedata(title);
-    if (!StatManager::store_statSaves(title, slot) && title->is_WiiUSysTitle) {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\nCreation of stat file failed, which is mandatory for system titles in order to set the right permissions when restoring. \nDO NOT restore from this slot.") + "\n" + errorMessage;
-        errorCode += 64;
-        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
-        writeMetadataWithTag(title, slot, isUSB, LanguageUtils::gettext("UNUSABLE - NO STAT FILE"));
+    if (StatManager::enable_get_stat) {
+        if (!StatManager::close_stat_file_for_write()) {
+            if (title->is_WiiUSysTitle) {
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."));
+                errorCode += 64;
+            } else {
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."));
+                writeMetadataWithTag(title, slot, isUSB, LanguageUtils::gettext("WARNING - NO PERMS"));
+            }
+        } // we have set enable_get_stat to false
     }
-    */
 
     if (errorCode == 0)
         writeMetadataWithTag(title, slot, isUSB, tag);
@@ -1013,10 +1039,11 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     std::string dstCommonPath = dstPath + "/common";
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
-    if (isWii || !StatManager::stat_file_exists(title, slot))
+    if (isWii || !StatManager::stat_file_exists(title, slot)) {
         StatManager::use_legacy_stat_cfg = true;
-    else {
-        StatManager::set_default_stat_for_savedata(title);
+        StatManager::set_default_stat_for_vwii_savedata(title);
+    } else {
+        StatManager::set_default_stat_for_wiiu_savedata(title);
         StatManager::use_legacy_stat_cfg = false;
     }
 
@@ -1073,12 +1100,16 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             break;
     }
 
+    StatManager::enable_flags_for_restore();
+    
+    std::string storage_vol{};
     std::string errorMessage{};
     if (doCommon) {
         FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstCommonPath).c_str(), 0x666, title->commonSaveSize);
         if (!FSUtils::copyDir(srcCommonPath, dstCommonPath)) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error restoring common savedata."));
             errorCode = 1;
+            goto flush_volume;
         }
     }
 
@@ -1092,20 +1123,63 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             errorMessage = errorMessage.append("\n" + (std::string) ((wiiu_user == -1) ? LanguageUtils::gettext("Error restoring savedata.")
                                                                                        : LanguageUtils::gettext("Error restoring profile savedata.")));
             errorCode += 2;
+            goto flush_volume;
         }
     }
 
-    std::string storage_vol = (isWii ? "storage_slcc01:" : (isUSB ? FSUtils::getUSB() : "storage_mlc01:"));
+    storage_vol = (isWii ? "storage_slcc01:" : (isUSB ? FSUtils::getUSB() : "storage_mlc01:"));
     StatManager::device = storage_vol;
 
-    if (!StatManager::use_legacy_stat_cfg) {
-        StatManager::open_stat_file_for_read(title, slot);
-        StatManager::apply_stat_file();
-        StatManager::close_stat_file_for_read();
+    // Both StatManager and FAT32EscapeFileManager will use these flags.
+    switch (source_user) {
+        case -2:
+            StatManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/common", lowID);
+            StatManager::enable_filtered_stat = true;
+            StatManager::needs_profile_translation = false;
+            FAT32EscapeFileManager::source_profile_subpath = common;
+            FAT32EscapeFileManager::enable_filtered_escape_path = true;
+            FAT32EscapeFileManager::needs_profile_translation = false;
+            break;
+        case -1:
+            StatManager::enable_filtered_stat = false;
+            FAT32EscapeFileManager::enable_filtered_escape_path = false;
+            break;
+        default:
+            StatManager::enable_filtered_stat = true;
+            StatManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, vol_acc[source_user].persistentID);
+            StatManager::target_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, wiiu_acc[wiiu_user].persistentID);
+            FAT32EscapeFileManager::enable_filtered_escape_path = true;
+            FAT32EscapeFileManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, vol_acc[source_user].persistentID);
+            FAT32EscapeFileManager::target_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, wiiu_acc[wiiu_user].persistentID);
+            if (StatManager::source_profile_subpath != StatManager::target_profile_subpath) {
+                StatManager::needs_profile_translation = true;
+                FAT32EscapeFileManager::needs_profile_translation = true;
+            } else {
+                StatManager::needs_profile_translation = false;
+                FAT32EscapeFileManager::needs_profile_translation = false;
+            }
+            break;
     }
 
     if (!FAT32EscapeFileManager::rename_fat32_escaped_files(baseSrcPath, storage_vol, errorMessage, errorCode))
         goto flush_volume;
+
+    if (!StatManager::use_legacy_stat_cfg) {
+        if (StatManager::open_stat_file_for_read(title, slot)) {
+            if (StatManager::apply_stat_file()) {
+                if (StatManager::close_stat_file_for_read()) {
+                    goto initialize_title;
+                }
+            } else {
+                StatManager::close_stat_file_for_read();
+            }
+        }
+        errorCode += 64;
+        errorMessage = errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error setting permissions"));
+        goto flush_volume;
+    }
+
+initialize_title:
 
     if (!title->saveInit && title->is_Inject) {
         initializeVWiiInjectTitle(title, errorMessage, errorCode);
@@ -1113,7 +1187,6 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     }
 
     if (!title->saveInit && !isWii) {
-
         if (initializeWiiUTitle(title, errorMessage, errorCode))
             goto restoreSaveinfo;
         else

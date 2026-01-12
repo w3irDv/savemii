@@ -37,6 +37,13 @@ public:
 
     static inline const std::string fat32_rename_file = "/savemii_fat32_renames.txt";
 
+    static inline bool enable_filtered_escape_path = false;
+    static inline bool needs_profile_translation = false;
+
+    static inline std::string source_profile_subpath{};
+    static inline std::string target_profile_subpath{};
+
+
 private:
     std::string title_backup_root{};
     std::string fat32_rename_file_path;

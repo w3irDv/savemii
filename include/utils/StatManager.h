@@ -6,9 +6,6 @@
 
 namespace StatManager {
 
-    bool store_statDir(const std::string &pPath, FILE *file);
-    bool store_statSaves(Title *title, int slot);
-
     bool apply_stat_file();
     bool open_stat_file_for_write(Title *title, int slot);
     bool open_stat_file_for_write(const std::string &path);
@@ -20,8 +17,12 @@ namespace StatManager {
     bool copy_stat(const std::string &source_file, const std::string &target_file);
     bool apply_default_stat(const std::string &filepath);
     void set_default_stat(uint32_t uid, uint32_t gid, uint16_t fsmode);
-    void set_default_stat_for_savedata(Title *title);
+    void set_default_stat_for_wiiu_savedata(Title *title);
+    void set_default_stat_for_vwii_savedata(Title *title);
     void unload_statManager();
+    void enable_flags_for_restore();
+    void enable_flags_for_backup();
+    void enable_flags_for_copy();
 
     class StatData {
     public:
@@ -40,7 +41,11 @@ namespace StatManager {
     inline bool enable_set_stat = false;
     inline bool enable_get_stat = false;
     inline bool enable_copy_stat = false;
-    
+    inline bool enable_filtered_stat = false;
+    inline bool needs_profile_translation = false;
+
+    inline std::string source_profile_subpath{};
+    inline std::string target_profile_subpath{};
 
     inline FILE *stat_file_handle;
     inline std::string statFilePath{};

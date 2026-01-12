@@ -7,6 +7,7 @@
 #include <utils/FSUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
+#include <utils/EscapeFAT32Utils.h>
 
 static int statCount = 0;
 
@@ -74,7 +75,12 @@ void statDebugUtils::statSaves(const Title &title) {
 
     statCount++;
 
-    std::string statFilePath = "fs:/vol/external01/wiiu/backups/statSave-" + std::string(title.shortName) + "-" + std::to_string(statCount) + "-" + timeStamp + ".out";
+    std::string shortName(title.shortName);
+    std::string titleNameBasedDirName{};
+
+    Escape::convertToFAT32ASCIICompliant(shortName, titleNameBasedDirName);
+
+    std::string statFilePath = "fs:/vol/external01/wiiu/backups/statSave-" + titleNameBasedDirName + "-" + std::to_string(statCount) + "-" + timeStamp + ".out";
     FILE *file = fopen(statFilePath.c_str(), "w");
 
     uint32_t highID = title.highID;
@@ -113,7 +119,12 @@ void statDebugUtils::statTitle(const Title &title) {
 
     statCount++;
 
-    std::string statFilePath = "fs:/vol/external01/wiiu/backups/statTitle-" + std::string(title.shortName) + "-" + std::to_string(statCount) + "-" + timeStamp + ".out";
+    std::string shortName(title.shortName);
+    std::string titleNameBasedDirName{};
+
+    Escape::convertToFAT32ASCIICompliant(shortName, titleNameBasedDirName);
+
+    std::string statFilePath = "fs:/vol/external01/wiiu/backups/statTitle-" + std::string(titleNameBasedDirName) + "-" + std::to_string(statCount) + "-" + timeStamp + ".out";
     FILE *file = fopen(statFilePath.c_str(), "w");
 
     uint32_t highID = title.highID;

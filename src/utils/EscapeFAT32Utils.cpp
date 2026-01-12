@@ -93,6 +93,14 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                 goto close_and_error;
             }
         }
+        if (enable_filtered_escape_path) {
+            if (sPath.find(source_profile_subpath) == std::string::npos)
+                continue;
+            if (needs_profile_translation) {
+                sPath.replace(sPath.find(source_profile_subpath),source_profile_subpath.size(),target_profile_subpath);
+                tPath.replace(tPath.find(source_profile_subpath),source_profile_subpath.size(),target_profile_subpath);
+            }
+        }
         RenameData renameElement = {.source = sPath, .target = tPath, .fileType = file_type};
         rename_vector.push_back(renameElement);
     }
