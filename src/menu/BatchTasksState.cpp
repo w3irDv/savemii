@@ -93,7 +93,7 @@ ApplicationState::eSubState BatchTasksState::update(Input *input) {
             switch (cursorPos) {
                 case 0:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchBackupState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
+                    this->subState = std::make_unique<BatchBackupState>(this->wiiutitles, this->wiititles, this->wiiusystitles, this->wiiuTitlesCount, this->vWiiTitlesCount, this->wiiuSysTitlesCount);
                     break;
                 case 1:
                     this->state = STATE_DO_SUBSTATE;
@@ -105,11 +105,11 @@ ApplicationState::eSubState BatchTasksState::update(Input *input) {
                     break;
                 case 3:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, MOVE_PROFILE);
+                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, WIIU, MOVE_PROFILE);
                     break;
                 case 4:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
+                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, WIIU, PROFILE_TO_PROFILE);
                     break;
                 case 5:
                     this->state = STATE_DO_SUBSTATE;

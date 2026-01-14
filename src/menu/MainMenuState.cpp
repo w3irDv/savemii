@@ -59,7 +59,6 @@ bool setOwner(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSE
 }
 
 
-
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
         if (this->subState == nullptr) {
@@ -78,7 +77,7 @@ void MainMenuState::render() {
         Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
                                  (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Wii U System Save Management (%u Title%s)"), this->wiiuSysTitlesCount,
+        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Wii U System Titles Save Management (%u Title%s)"), this->wiiuSysTitlesCount,
                                  (this->wiiuSysTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
         Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Tasks Management"));
@@ -107,6 +106,8 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, IS_VWII);
                     break;
                 case 2:
+                    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n\nProceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n\nDo you wat to continue?\n\n")))
+                        return SUBSTATE_RUNNING;
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<TitleListState>(this->wiiusystitles, this->wiiuSysTitlesCount, IS_WIIU);
                     break;

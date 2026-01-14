@@ -26,6 +26,13 @@ enum eJobType {
     NONE = 17
 };
 
+enum eTitleType {
+    WIIU,
+    VWII,
+    WIIU_SYS
+};
+
+
 class ApplicationState {
 public:
     enum eSubState {

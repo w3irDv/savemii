@@ -28,9 +28,9 @@ extern Account *wiiu_acc;
 static bool substate_return = false;
 
 BatchJobOptions::BatchJobOptions(Title *titles,
-                                 int titlesCount, bool isWiiUBatchJob, eJobType jobType) : titles(titles),
-                                                                                           titlesCount(titlesCount), isWiiUBatchJob(isWiiUBatchJob), jobType(jobType) {
-    minCursorPos = isWiiUBatchJob ? 0 : (jobType != WIPE_PROFILE ? 3 : 4);
+                                 int titlesCount, eTitleType titleType, eJobType jobType) : titles(titles),
+                                                                                            titlesCount(titlesCount), titleType(titleType), jobType(jobType) {
+    minCursorPos = (titleType == VWII) ? (jobType != WIPE_PROFILE ? 3 : 4) : 0;
     cursorPos = minCursorPos;
     for (int i = 0; i < this->titlesCount; i++) {
         this->titles[i].currentDataSource = {};
@@ -64,7 +64,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) // skip CBHC savedata
             continue;
-        //if (this->titles[i].is_Wii && isWiiUBatchJob) // wii titles installed as wiiU appear in vWii restore
+        //if (this->titles[i].is_Wii && (titleType != VWII)) // wii titles installed as wiiU appear in vWii restore
         //    continue;
         std::string srcPath{};
         std::string path{};
@@ -273,7 +273,7 @@ void BatchJobOptions::render() {
         if (jobType == RESTORE)
             Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BS: %s"), BackupSetList::getBackupSetEntry().c_str());
         DrawUtils::setFontColor(COLOR_TEXT);
-        if (isWiiUBatchJob) {
+        if (titleType == WIIU || titleType == WIIU_SYS) {
             Console::consolePrintPos(M_OFF, 3, sourceUserPrompt);
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             if (source_user == -2) {
@@ -317,18 +317,18 @@ void BatchJobOptions::render() {
 
         if (jobType != WIPE_PROFILE && jobType != MOVE_PROFILE) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-            Console::consolePrintPos(M_OFF, 12 - (isWiiUBatchJob ? 0 : 8), LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+            Console::consolePrintPos(M_OFF, 12 - (titleType == VWII ? 8 : 0), LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
         }
         if (jobType == MOVE_PROFILE) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-            Console::consolePrintPos(M_OFF, 12 - (isWiiUBatchJob ? 0 : 8), LanguageUtils::gettext("   Target user savedata will be wiped"));
+            Console::consolePrintPos(M_OFF, 12 - (titleType == VWII ? 8 : 0), LanguageUtils::gettext("   Target user savedata will be wiped"));
         }
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 14 - (isWiiUBatchJob ? 0 : 8), LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 14 - (titleType == VWII ? 8 : 0), LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3 + (cursorPos - 3) * 2 + 5) - (isWiiUBatchJob ? 0 : 8), "\u2192");
+        Console::consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3 + (cursorPos - 3) * 2 + 5) - (titleType == VWII ? 8 : 0), "\u2192");
 
         if (totalNumberOfTitlesWithNonExistentProfiles == 0)
             Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
@@ -346,7 +346,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                     return SUBSTATE_RUNNING;
             }
             this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<BatchJobTitleSelectState>(source_user, wiiu_user, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchJob, jobType);
+            this->subState = std::make_unique<BatchJobTitleSelectState>(source_user, wiiu_user, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, titleType, jobType);
         }
         if (input->get(ButtonState::TRIGGER, Button::B) || substate_return == true)
             return SUBSTATE_RETURN;

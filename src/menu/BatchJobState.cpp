@@ -79,11 +79,11 @@ ApplicationState::eSubState BatchJobState::update(Input *input) {
                     switch (cursorPos) {
                         case 0:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, true);
+                            this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, WIIU);
                             break;
                         case 1:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, false);
+                            this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, VWII);
                             break;
                         default:
                             return SUBSTATE_RUNNING;
@@ -93,11 +93,11 @@ ApplicationState::eSubState BatchJobState::update(Input *input) {
                     switch (cursorPos) {
                         case 0:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, WIPE_PROFILE);
+                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, WIIU, WIPE_PROFILE);
                             break;
                         case 1:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<BatchJobOptions>(this->wiititles, this->vWiiTitlesCount, false, WIPE_PROFILE);
+                            this->subState = std::make_unique<BatchJobOptions>(this->wiititles, this->vWiiTitlesCount, VWII, WIPE_PROFILE);
                             break;
                         default:
                             return SUBSTATE_RUNNING;
@@ -107,11 +107,11 @@ ApplicationState::eSubState BatchJobState::update(Input *input) {
                     switch (cursorPos) {
                         case 0:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_NAND_TO_USB);
+                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, WIIU, COPY_FROM_NAND_TO_USB);
                             break;
                         case 1:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, COPY_FROM_USB_TO_NAND);
+                            this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, WIIU, COPY_FROM_USB_TO_NAND);
                             break;
                         default:
                             return SUBSTATE_RUNNING;

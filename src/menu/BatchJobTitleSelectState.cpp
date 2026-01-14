@@ -27,14 +27,14 @@ bool testForceSaveInitFalse = true
 #define MAX_WINDOW_SCROLL 6
 
 BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup,
-                                                   Title *titles, int titlesCount, bool isWiiUBatchJob, eJobType jobType) : source_user(source_user),
+                                                   Title *titles, int titlesCount, eTitleType titleType, eJobType jobType) : source_user(source_user),
                                                                                                                             wiiu_user(wiiu_user),
                                                                                                                             common(common),
                                                                                                                             wipeBeforeRestore(wipeBeforeRestore),
                                                                                                                             fullBackup(fullBackup),
                                                                                                                             titles(titles),
                                                                                                                             titlesCount(titlesCount),
-                                                                                                                            isWiiUBatchJob(isWiiUBatchJob),
+                                                                                                                            titleType(titleType),
                                                                                                                             jobType(jobType) {
     // from batchRestore to batch* -> restore variables refer to the task performed, and backup to the source data, wether in SD or NAND or USB
     // All this should be renamed in a neutral way.
@@ -130,9 +130,9 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_use
 }
 
 // BatchBackup constructor
-BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchJob, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType) : titles(titles),
+BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCount, eTitleType titleType, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType) : titles(titles),
                                                                                                                                                                     titlesCount(titlesCount),
-                                                                                                                                                                    isWiiUBatchJob(isWiiUBatchJob),
+                                                                                                                                                                    titleType(titleType),
                                                                                                                                                                     excludes(excludes),
                                                                                                                                                                     jobType(jobType) {
 
@@ -209,7 +209,7 @@ void BatchJobTitleSelectState::render() {
     }
     if (this->state == STATE_BATCH_JOB_TITLE_SELECT) {
         int nameVWiiOffset = 0;
-        if (!isWiiUBatchJob)
+        if (titleType == VWII)
             nameVWiiOffset = 1;
 
         const char *menuTitle, *screenOptions, *nextActionBrief, *lastActionBriefOk;
@@ -367,7 +367,7 @@ void BatchJobTitleSelectState::render() {
                                      lastState.c_str(),
                                      nxtAction.c_str());
             if (this->titles[c2t[i + this->scroll]].iconBuf != nullptr) {
-                if (!isWiiUBatchJob)
+                if (titleType == VWII)
                     DrawUtils::drawRGB5A3((M_OFF + 2 + X_OFFSET) * 12, (i + 3) * 24 + 8, 0.25,
                                           titles[c2t[i + this->scroll]].iconBuf);
                 else
@@ -537,17 +537,17 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     switch (jobType) {
         case RESTORE:
             menuTitle = LanguageUtils::gettext("Batch Restore - Review & Go");
-            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Restore from %s to < %s (%s) >") : LanguageUtils::gettext("- Restore");
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchRestore Backup (WiiU: %d%s") : LanguageUtils::gettext("pre-BatchRestore Backup (vWii: %d%s");
-            allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore allusers") : LanguageUtils::gettext("- Restore");
-            noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Restore no user") : LanguageUtils::gettext("- Restore");
+            taskDescription = (titleType == VWII) ? LanguageUtils::gettext("- Restore") : LanguageUtils::gettext("- Restore from %s to < %s (%s) >") ;
+            backupDescription = (titleType == VWII) ? LanguageUtils::gettext("pre-BatchRestore Backup (vWii: %d%s") : LanguageUtils::gettext("pre-BatchRestore Backup (WiiU: %d%s");
+            allUsersInfo = (titleType == VWII) ? LanguageUtils::gettext("- Restore") : LanguageUtils::gettext("- Restore allusers");
+            noUsersInfo = (titleType == VWII) ? LanguageUtils::gettext("- Restore") : LanguageUtils::gettext("- Restore no user");
             taskHasFailed = LanguageUtils::gettext("%s\n\nRestore failed.\nErrors so far: %d\nDo you want to continue with next title?");
             taskAbortedByUser = LanguageUtils::gettext("Batch Restore paused - Do you want to abort?");
             break;
         case PROFILE_TO_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Review & Go");
-            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileCopy Backup (WiiU: %d%s") : "";
+            taskDescription = (titleType == VWII) ?  "" : LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >");
+            backupDescription = (titleType == VWII) ?  "" : LanguageUtils::gettext("pre-BatchProfileCopy Backup (WiiU: %d%s");
             allUsersInfo = "";
             noUsersInfo = "";
             taskHasFailed = LanguageUtils::gettext("%s\n\nCopy Profile failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -555,8 +555,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             break;
         case MOVE_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch ProfileMove - Review & Go");
-            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Move < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchProfileMove Backup (WiiU: %d%s") : "";
+            taskDescription = (titleType == VWII) ? "" : LanguageUtils::gettext("- Move < %s (%s)> to < %s (%s) >") ;
+            backupDescription = (titleType == VWII) ?  "" : LanguageUtils::gettext("pre-BatchProfileMove Backup (WiiU: %d%s");
             allUsersInfo = "";
             noUsersInfo = "";
             taskHasFailed = LanguageUtils::gettext("%s\n\nMove Profile failed.\nErrors so far: %d\nDo you want to continue with next title?");
@@ -564,28 +564,28 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             break;
         case WIPE_PROFILE:
             menuTitle = LanguageUtils::gettext("Batch Wipe - Review & Go");
-            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe  < %s (%s)>") : LanguageUtils::gettext("- Wipe");
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchWipe Backup (WiiU: %d%s") : LanguageUtils::gettext("pre-BatchWipe Backup (vWii: %d%s");
-            allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe allusers") : LanguageUtils::gettext("- Wipe");
-            noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Wipe no user") : LanguageUtils::gettext("- Wipe");
+            taskDescription = (titleType == VWII) ? LanguageUtils::gettext("- Wipe") : LanguageUtils::gettext("- Wipe  < %s (%s)>");
+            backupDescription = (titleType == VWII) ? LanguageUtils::gettext("pre-BatchWipe Backup (vWii: %d%s") : LanguageUtils::gettext("pre-BatchWipe Backup (WiiU: %d%s") ;
+            allUsersInfo = (titleType == VWII) ?   LanguageUtils::gettext("- Wipe") : LanguageUtils::gettext("- Wipe allusers");
+            noUsersInfo = (titleType == VWII) ? LanguageUtils::gettext("- Wipe") : LanguageUtils::gettext("- Wipe no user");
             taskHasFailed = LanguageUtils::gettext("%s\n\nWipe failed.\nErrors so far: %d\nDo you want to continue with next title?");
             taskAbortedByUser = LanguageUtils::gettext("Batch Wipe paused - Do you want to abort?");
             break;
         case COPY_FROM_NAND_TO_USB:
             menuTitle = LanguageUtils::gettext("Batch Copy To USB - Review & Go");
-            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToUSB Backup (WiiU: %d%s") : "";
-            allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
-            noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
+            taskDescription = (titleType == VWII) ? "" : LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >");
+            backupDescription = (titleType == VWII) ?  "" : LanguageUtils::gettext("pre-BatchCopyToUSB Backup (WiiU: %d%s");
+            allUsersInfo = (titleType == VWII) ?  "" : LanguageUtils::gettext("- Copy allusers");
+            noUsersInfo = (titleType == VWII) ?  "" : LanguageUtils::gettext("- Copy no user");
             taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from NAND to USB failed.\nErrors so far: %d\nDo you want to continue with next title?");
             taskAbortedByUser = LanguageUtils::gettext("Batch Copy To USB paused - Do you want to abort?");
             break;
         case COPY_FROM_USB_TO_NAND:
             menuTitle = LanguageUtils::gettext("Batch Copy To NAND - Review & Go");
-            taskDescription = isWiiUBatchJob ? LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >") : "";
-            backupDescription = isWiiUBatchJob ? LanguageUtils::gettext("pre-BatchCopyToNAND Backup (WiiU: %d%s") : "";
-            allUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy allusers") : "";
-            noUsersInfo = isWiiUBatchJob ? LanguageUtils::gettext("- Copy no user") : "";
+            taskDescription = (titleType == VWII) ?  "" : LanguageUtils::gettext("- Copy from < %s (%s)> to < %s (%s) >");
+            backupDescription = (titleType == VWII) ? "" : LanguageUtils::gettext("pre-BatchCopyToNAND Backup (WiiU: %d%s");
+            allUsersInfo = (titleType == VWII) ? "" : LanguageUtils::gettext("- Copy allusers");
+            noUsersInfo = (titleType == VWII) ? "" : LanguageUtils::gettext("- Copy no user");
             taskHasFailed = LanguageUtils::gettext("%s\n\nCopy from USB to NAND failed.\nErrors so far: %d\nDo you want to continue with next title?");
             taskAbortedByUser = LanguageUtils::gettext("Batch Copy To NAND paused - Do you want to abort?");
             break;
@@ -603,7 +603,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     std::string summary;
     std::string selectedUserInfo;
 
-    if (isWiiUBatchJob) {
+    if (titleType == WIIU || titleType == WIIU_SYS) {
         summaryTemplate = LanguageUtils::gettext("%s\n\nYou have selected the following options:\n\n%s\n\n%s\n%s\n%s\n\nContinue?\n\n\n");
         if (source_user > -1) {
             switch (jobType) {
@@ -911,13 +911,13 @@ void BatchJobTitleSelectState::executeBatchBackup() {
     if (titlesOK > 0 && titles_failed_counter == 0) {
         tag = StringUtils::stringFormat(LanguageUtils::gettext("PARTIAL - %d %s title%s OK"),
                                         titlesOK,
-                                        isWiiUBatchJob ? "Wii U" : "vWii",
+                                        (titleType == VWII ? "vWii" : (titleType == WIIU ?  "Wii U" : "WiiU Sys")),
                                         (titlesOK == 1) ? "" : "s");
     } else if (titlesOK == 0) {
         tag = StringUtils::stringFormat(LanguageUtils::gettext("FAILED - No titles"));
     } else if (titles_failed_counter > 0) {
         tag = StringUtils::stringFormat(LanguageUtils::gettext("FAILED - OK/KO > %s: %d/%d"),
-                                        isWiiUBatchJob ? "Wii U" : "vWii",
+                                        (titleType == VWII ? "vWii" : (titleType == WIIU ?  "Wii U" : "WiiU Sys")),
                                         titles_failed_counter,
                                         titles_failed_counter);
     }

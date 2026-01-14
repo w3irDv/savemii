@@ -28,9 +28,9 @@ BackupSetListState::BackupSetListState() {
     }
 }
 
-BackupSetListState::BackupSetListState(Title *titles, int titlesCount, bool isWiiUBatchJob) : titles(titles),
+BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleType titleType) : titles(titles),
                                                                                               titlesCount(titlesCount),
-                                                                                              isWiiUBatchJob(isWiiUBatchJob) {
+                                                                                              titleType(titleType) {
     finalScreen = false;
     if (BackupSetList::getIsInitializationRequired()) {
         BackupSetList::initBackupSetList();
@@ -126,7 +126,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             } else // is a step in batchRestore
             {
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, isWiiUBatchJob, RESTORE);
+                this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::Y)) {
