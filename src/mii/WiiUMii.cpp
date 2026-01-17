@@ -28,9 +28,9 @@ WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string tim
 };
 
 MiiData *WiiUMiiData::clone() {
- 
+
     unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(this->mii_data_size);
-    memcpy(mii_buffer,this->mii_data,mii_data_size);
+    memcpy(mii_buffer, this->mii_data, mii_data_size);
     MiiData *miidata = new WiiUMiiData(mii_buffer, this->mii_data_size);
 
     return miidata;

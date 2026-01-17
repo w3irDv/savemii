@@ -16,6 +16,7 @@
 #include <utils/InProgress.h>
 #include <utils/MiiUtils.h>
 #include <utils/StringUtils.h>
+#include <utils/AmbientConfig.h>
 
 #include <Metadata.h>
 //#include <mockWUT.h>

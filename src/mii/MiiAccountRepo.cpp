@@ -406,7 +406,7 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
             }
     }
 
-    if (FSUtils::createFolder(dstPath.c_str())) {
+    if (FSUtils::createFolderUnlocked(dstPath.c_str())) {
         if (FSUtils::copyDir(srcPath, dstPath)) {
             if (dstPath.find("fs:/vol/") == std::string::npos) { // avoid to call FSA when testing  on SD
                 FSError fserror;
@@ -427,6 +427,8 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
         errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
+
+    this->needs_populate = true;
 
     return errorCode;
 }
