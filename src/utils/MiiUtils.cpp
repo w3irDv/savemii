@@ -9,6 +9,7 @@
 #include <miisavemng.h>
 #include <savemng.h>
 #include <unistd.h>
+#include <utils/AmbientConfig.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
@@ -16,7 +17,6 @@
 #include <utils/InProgress.h>
 #include <utils/MiiUtils.h>
 #include <utils/StringUtils.h>
-#include <utils/AmbientConfig.h>
 
 #include <Metadata.h>
 //#include <mockWUT.h>

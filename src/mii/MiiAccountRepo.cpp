@@ -159,7 +159,6 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error deserializing WiiU MiiData"));
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
             Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
-            this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
         }
         return false;
     }
@@ -172,7 +171,6 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
             Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
-            this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
         }
         return false;
     }
@@ -186,7 +184,6 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
         mii_file.close();
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
             Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
-            this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
         }
         unlink(tmp_account_dat.c_str());
         if (db_owner != 0)
@@ -253,7 +250,6 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
                 FSUtils::flushVol(account_dat);
             if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
                 Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
-                this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
             }
             return true;
         } else { // the worst has happen
@@ -282,9 +278,11 @@ cleanup_managing_real_db:
         FSUtils::flushVol(account_dat);
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
         Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
-        this->needs_populate = true; // next time the select menu is constructed, it will get the right data from disk
     }
     return false;
+
+
+    
 }
 
 template<typename MII, typename MIIDATA>
@@ -429,7 +427,6 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
     }
 
     this->needs_populate = true;
-
     return errorCode;
 }
 
@@ -465,5 +462,6 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int targ
         errorCode = 1;
     }
 
+    // caller will repoulate repo
     return errorCode;
 }
