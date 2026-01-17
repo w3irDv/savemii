@@ -8,7 +8,7 @@
 
 BaseCfg::BaseCfg(const std::string &cfg) : cfg(cfg) {
 
-    cfgFile = cfgPath + "/savemii-" + Metadata::thisConsoleSerialId + "-" + cfg + ".json";
+    cfgFile = cfgPath + "/savemii-" + AmbientConfig::thisConsoleSerialId + "-" + cfg + ".json";
 }
 
 bool BaseCfg::init() {

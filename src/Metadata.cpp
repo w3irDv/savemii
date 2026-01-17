@@ -5,9 +5,6 @@
 
 #define FS_ALIGN(x) ((x + 0x3F) & ~(0x3F))
 
-std::string Metadata::unknownSerialId{"_WIIU_"};
-std::string Metadata::thisConsoleSerialId = Metadata::unknownSerialId;
-
 bool Metadata::read() {
     if (FSUtils::checkEntry(this->path.c_str()) != 0) {
         FILE *f = fopen(this->path.c_str(), "rb");
@@ -105,7 +102,7 @@ bool Metadata::set(const std::string &date, bool isUSB) {
 
     this->Date = date;
     this->storage = isUSB ? "USB" : "NAND";
-    this->serialId = thisConsoleSerialId;
+    this->serialId = AmbientConfig::thisConsoleSerialId;
 
     return write();
 }

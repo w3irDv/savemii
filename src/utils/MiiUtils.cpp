@@ -26,7 +26,7 @@ bool MiiUtils::initMiiRepos() {
     bool enable_ffl = true;
 
     std::string MiiMakerTitleId{"SET_IT_DYNAMICALLY"};
-    switch (Metadata::thisConsoleRegion) {
+    switch (AmbientConfig::thisConsoleRegion) {
         case MCPRegion::MCP_REGION_EUROPE:
             MiiMakerTitleId = "1004a200";
             break;
@@ -121,8 +121,8 @@ set_repos:
 }
 
 bool MiiUtils::initial_checkpoint() {
-    std::string checkpointDir = "fs:/vol/external01/wiiu/backups/mii_db_checkpoint/" + Metadata::thisConsoleSerialId;
-    std::string checkpointDirSD = "SD:/wiiu/backups/mii_db_checkpoint/" + Metadata::thisConsoleSerialId;
+    std::string checkpointDir = "fs:/vol/external01/wiiu/backups/mii_db_checkpoint/" + AmbientConfig::thisConsoleSerialId;
+    std::string checkpointDirSD = "SD:/wiiu/backups/mii_db_checkpoint/" + AmbientConfig::thisConsoleSerialId;
     if (FSUtils::checkEntry(checkpointDir.c_str()) == 0) {
         Console::showMessage(OK_SHOW, "AUTOMATIC BACKUP OF MII DBs in Progress");
         if (savemng::firstSDWrite)

@@ -5,6 +5,7 @@
 #include <memory>
 #include <menu/MainMenuState.h>
 #include <romfs-wiiu.h>
+#include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
 #include <utils/FSUtils.h>
@@ -45,7 +46,7 @@ int main() {
     }
 
     StartupUtils::addInitMessage("Getting Serial ID");
-    StartupUtils::getWiiUSerialId();
+    AmbientConfig::getWiiUSerialId();
 
     StartupUtils::addInitMessage("Initializing ROMFS");
 
@@ -121,6 +122,10 @@ int main() {
     ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes", wiititles, TitleUtils::vWiiTitlesCount);
     ExcludesCfg::wiiuExcludes->init();
     ExcludesCfg::wiiExcludes->init();
+
+    StartupUtils::addInitMessage("Getting DeviceID and MACAddress");
+    AmbientConfig::get_device_hash();
+    AmbientConfig::get_mac_address();
 
     StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing Mii repos."));
 

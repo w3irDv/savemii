@@ -16,6 +16,7 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StatManager.h>
 #include <utils/StringUtils.h>
+#include <utils/AmbientConfig.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -740,7 +741,7 @@ void writeMetadataWithTag(Title *title, uint8_t slot, bool isUSB, const std::str
 }
 
 void writeBackupAllMetadata(const std::string &batchDatetime, const std::string &tag) {
-    Metadata *metadataObj = new Metadata(batchDatetime, "", Metadata::thisConsoleSerialId, tag);
+    Metadata *metadataObj = new Metadata(batchDatetime, "", AmbientConfig::thisConsoleSerialId, tag);
     metadataObj->write();
     delete metadataObj;
 }

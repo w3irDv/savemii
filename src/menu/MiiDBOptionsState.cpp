@@ -378,7 +378,7 @@ void MiiDBOptionsState::updateSlotMetadata() {
             slotInfo = metadataObj->simpleFormat();
             tag = metadataObj->getTag();
             newTag = tag;
-            if (Metadata::thisConsoleSerialId == metadataObj->getSerialId())
+            if (AmbientConfig::thisConsoleSerialId == metadataObj->getSerialId())
                 backupRestoreFromSameConsole = true;
         } else {
             slotInfo = "";

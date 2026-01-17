@@ -26,7 +26,7 @@ void TitleTaskState::render() {
     }
     if (this->state == STATE_TITLE_TASKS) {
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("WiiU Serial Id: %s"), Metadata::thisConsoleSerialId.c_str());
+        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("WiiU Serial Id: %s"), AmbientConfig::thisConsoleSerialId.c_str());
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPos(22, 0, LanguageUtils::gettext("Tasks"));
         DrawUtils::setFontColor(COLOR_TEXT);

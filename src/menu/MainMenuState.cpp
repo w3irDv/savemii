@@ -20,6 +20,8 @@
 
 #include <segher-s_wii/segher.h>
 
+#include <utils/AmbientConfig.h>
+
 #define ENTRYCOUNT 6
 
 #include <coreinit/filesystem_fsa.h>
@@ -92,6 +94,8 @@ void MainMenuState::render() {
     }
 }
 
+
+
 ApplicationState::eSubState MainMenuState::update(Input *input) {
     if (this->state == STATE_MAIN_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
@@ -154,9 +158,18 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/nRFL_DB.dat");
             //FSError fserror;
             //setOwner(0x1000400A,0x400, (FSMode) 0x666, pathrfl,fserror);
-            statDebugUtils::statMiiEdit();
-            statDebugUtils::statMiiMaker();
-            statDebugUtils::statAct();
+            //statDebugUtils::statMiiEdit();
+            //statDebugUtils::statMiiMaker();
+            //statDebugUtils::statAct();
+            Console::showMessage(ERROR_CONFIRM, "device_hash %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x",
+                             AmbientConfig::device_hash[0], AmbientConfig::device_hash[1], AmbientConfig::device_hash[2], AmbientConfig::device_hash[3], AmbientConfig::device_hash[4],
+                             AmbientConfig::device_hash[5], AmbientConfig::device_hash[6], AmbientConfig::device_hash[7]);
+
+           Console::showMessage(ERROR_CONFIRM, "mac:%02x:%02x:%02x:%02x:%02x:%02x",
+                             AmbientConfig::mac_address.MACAddr[0], AmbientConfig::mac_address.MACAddr[1], AmbientConfig::mac_address.MACAddr[2],
+                             AmbientConfig::mac_address.MACAddr[3], AmbientConfig::mac_address.MACAddr[4], AmbientConfig::mac_address.MACAddr[5]);
+                  
+
             return SUBSTATE_RUNNING;
         }
     } else if (this->state == STATE_DO_SUBSTATE) {

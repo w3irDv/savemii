@@ -38,7 +38,7 @@ void ConfigMenuState::render() {
                              GlobalCfg::global->dontAllowUndefinedProfiles ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
     DrawUtils::setFontColor(COLOR_INFO);
-    Console::consolePrintPos(M_OFF + 2, 10, LanguageUtils::gettext("WiiU Serial Id: %s"), Metadata::thisConsoleSerialId.c_str());
+    Console::consolePrintPos(M_OFF + 2, 10, LanguageUtils::gettext("WiiU Serial Id: %s"), AmbientConfig::thisConsoleSerialId.c_str());
 
     DrawUtils::setFontColor(COLOR_TEXT);
     Console::consolePrintPos(M_OFF, 2 + cursorPos * 2, "\u2192");

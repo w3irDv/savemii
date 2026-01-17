@@ -1,5 +1,4 @@
 #include <Metadata.h>
-#include <coreinit/mcp.h>
 #include <cstdint>
 #include <icon.h>
 #include <string>
@@ -15,20 +14,6 @@ void StartupUtils::disclaimer() {
     Console::consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("Disclaimer:"));
     Console::consolePrintPosAligned(16, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
     Console::consolePrintPosAligned(17, 0, 1, LanguageUtils::gettext("Everything you do with this software is your own responsibility"));
-}
-
-void StartupUtils::getWiiUSerialId() {
-    // from WiiUCrashLogDumper
-    WUT_ALIGNAS(0x40)
-    MCPSysProdSettings sysProd{};
-    int32_t mcpHandle = MCP_Open();
-    if (mcpHandle >= 0) {
-        if (MCP_GetSysProdSettings(mcpHandle, &sysProd) == 0) {
-            Metadata::thisConsoleSerialId = std::string(sysProd.code_id) + sysProd.serial_id;
-            Metadata::thisConsoleRegion = sysProd.game_region;
-        }
-        MCP_Close(mcpHandle);
-    }
 }
 
 std::vector<const char *> initMessageList;
