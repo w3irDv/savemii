@@ -1929,11 +1929,13 @@ bool initializeWiiUTitle(Title *title, std::string &errorMessage, int &errorCode
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
+    bool isWiiUSysTitle = title->is_WiiUSysTitle;
     const std::string path = isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save";
 
 
-    const std::string metaTitlePath = StringUtils::stringFormat("%s/usr/title/%08x/%08x/meta",
+    const std::string metaTitlePath = StringUtils::stringFormat("%s/%s/title/%08x/%08x/meta",
                                                                 isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
+                                                                isWiiUSysTitle ? "sys" : "usr",
                                                                 highID, lowID);
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
     const std::string titleSavePath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);

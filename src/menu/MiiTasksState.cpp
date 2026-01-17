@@ -96,7 +96,7 @@ void MiiTasksState::render() {
                     info = LanguageUtils::gettext("Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect.");
                     break;
                 case 2:
-                    info = LanguageUtils::gettext("Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified)). Needs a console restart to take effect.");
+                    info = LanguageUtils::gettext("Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect.");
                     break;
                 case 3:
                     info = LanguageUtils::gettext("List all Miis and some of its attributes");

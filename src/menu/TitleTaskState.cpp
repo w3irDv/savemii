@@ -80,7 +80,6 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             return SUBSTATE_RETURN;
 
         if (input->get(ButtonState::TRIGGER, Button::A)) {
-            bool noError = true;
             this->task = (eJobType) cursorPos;
 
             source_user = -1;
@@ -109,14 +108,16 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                     break;
             }
 
-            if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
+            if (this->task == BACKUP || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
                 if (!this->title.saveInit) {
                     Console::showMessage(ERROR_SHOW, noData);
-                    noError = false;
-                } else {
-                    BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
-                    getAccountsFromVol(&this->title, slot, this->task);
+                    return SUBSTATE_RUNNING;
                 }
+            }
+
+            if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
+                BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                getAccountsFromVol(&this->title, slot, this->task);
             }
 
             if (this->task == RESTORE) {
@@ -124,7 +125,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 getAccountsFromVol(&this->title, slot, RESTORE);
             }
 
-            if ((this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE) && noError) {
+            if ((this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE)) {
                 if (getVolAccn() == 0)
                     Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Title has no profile savedata"));
                 else {
@@ -139,7 +140,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                     }
                     Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("At least two profiles are needed to Copy/Move To OtherProfile."));
                 }
-                noError = false;
+                return SUBSTATE_RUNNING;
             }
 
         nxtCheck:
@@ -157,16 +158,15 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 if (this->task == exportLoadiine) {
                     if (!this->title.saveInit) {
                         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No save to Export."));
-                        noError = false;
+                        return SUBSTATE_RUNNING;
                     }
                     exportToLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
                 }
             }
 
-            if (noError) {
-                this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
-            }
+            // All checks OK
+            this->state = STATE_DO_SUBSTATE;
+            this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
         }
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
             cursorPos = (cursorPos + 1) % entrycount;
