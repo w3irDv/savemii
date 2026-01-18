@@ -13,7 +13,6 @@ public:
 
     bool open_and_load_repo() { return true; }; // not-needed for folder based repos
     bool persist_repo() { return true; };       // not-needed for folder based repos
-    //bool import_mii(Mii &mii) { return (mii.mii_name == ""); };
     bool import_miidata(MiiData *mii_data, bool in_place, size_t index); // from (temp)mem to the repo
     MiiData *extract_mii_data(size_t index);                             // from the repo to (tmp)mem
     bool wipe_miidata(size_t index);

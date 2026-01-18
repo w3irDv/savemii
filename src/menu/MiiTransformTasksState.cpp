@@ -183,10 +183,10 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                     update_timestamp = update_timestamp ? false : true;
                     break;
                 case 3:
-                    //if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
-                    toggle_favorite_flag = update_timestamp ? false : true;
-                    //else
-                    //    toggle_favorite_flag = false;
+                    if (this->mii_repo->db_kind != MiiRepo::eDBKind::ACCOUNT)
+                        toggle_favorite_flag = update_timestamp ? false : true;
+                    else
+                        toggle_favorite_flag = false;
                     break;
                 case 4:
                     toggle_share_flag = toggle_share_flag ? false : true;
@@ -219,10 +219,6 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
             // keep running.
             return SUBSTATE_RUNNING;
         } else if (retSubState == SUBSTATE_RETURN) {
-            //     if ( this->substateCalled == STATE_BACKUPSET_MENU) {
-            //         slot = 0;
-            //         getAccountsFromVol(&this->title, slot);
-            //     }
             this->subState.reset();
             this->state = STATE_MII_TRANSFORM_TASKS;
             if (mii_process_shared_state->state == MiiProcess::MIIS_TRANSFORMED)

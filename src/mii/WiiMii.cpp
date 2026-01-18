@@ -171,12 +171,6 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     // just for testing purposes in a linux box
-    /*
-    birth_platform = mii_data->core.unk_0x00_b4;
-    copyable = (mii_data->core.font_region & 1) == 1;
-    author_id = __builtin_bswap64(author_id);
-    */
-
     uint8_t tmp_favorite;
     memcpy(&tmp_favorite, raw_mii_data + 1, 1);
     favorite = ((tmp_favorite & 0x1) == 0x1);
@@ -338,49 +332,6 @@ bool WiiMiiData::set_normal_special_flag(size_t fold) {
     uint8_t folded = (flags & 0x1f) + fold;
 
     memcpy(this->mii_data + MII_ID_OFFSET, &folded, 1);
-
-    return true;
-};
-
-#include <bitset>
-#include <iostream>
-
-/// @brief Debug function to get/set some values , or copy from template miidata to miidata
-/// @param mii_data_template
-/// @param name
-/// @param offset
-/// @param end
-/// @return
-bool WiiMiiData::copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t end) {
-
-    ///// TEST FUNCTION, set a especific value  (end is the value)
-    //set value
-
-    printf("value to set: %02x\n", (uint8_t) end);
-    uint8_t value;
-    memcpy(&value, mii_data_template->mii_data + offset, 1);
-    std::cout << "template: " << std::bitset<8>(value) << std::endl;
-    printf("template: %02x\n", value);
-    std::cout << std::endl;
-
-    memcpy(&value, this->mii_data + offset, 1);
-    std::cout << "mii: " << std::bitset<8>(value) << std::endl;
-    printf("mii: %02x\n", value);
-
-
-    memset(this->mii_data + offset, (uint8_t) end, 1);
-
-    memcpy(&value, this->mii_data + offset, 1);
-    std::cout << "value set: " << std::bitset<8>(value) << std::endl;
-    printf("value set: %02x\n", value);
-    ///////
-
-    ///////TEST FUNCTIOM , if copy is needed  (end is the last byte to copy)
-    //copy
-    //memcpy(this->mii_data + offset, mii_data_template->mii_data + offset, end-offset);
-
-    //set_name
-    memset(this->mii_data + 5, name, 1);
 
     return true;
 };

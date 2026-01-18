@@ -31,8 +31,6 @@ public:
 
     std::string mii_name{};
     std::string creator_name{};
-    //uint8_t mii_id[4]; // flag + tstamp
-    //uint8_t mac[6];    // wiiu: mac wiiu, wii: hash + 3 bytes from mac + 2 0
     std::string timestamp{};
     uint32_t hex_timestamp = 0;
     std::string device_hash{};
@@ -83,8 +81,7 @@ public:
     virtual uint8_t get_miid_flags() = 0;
 
     virtual bool set_normal_special_flag(size_t fold) = 0;
-    virtual bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes) = 0;
-
+    
     static void *allocate_memory(size_t size);
     static bool str_2_raw_mii_data(const std::string &mii_data_str, unsigned char *mii_buffer, size_t mii_data_size);
     static bool raw_mii_data_2_str(std::string &mii_data_str, unsigned char *mii_buffer, size_t buffer_size);

@@ -5,10 +5,6 @@
 #include <string>
 #include <vector>
 
-
-///// HEM AFEGIT favorite A MII.H ... ARA toca modificat els constructors e implemetar la funcio.
-/// LO DE SPECIAL HAURIA DE ESTAR, NOMES VAIDAR QUE NO APAREIXI EL MISSATGE DE que es deshabilitara el flag ...
-
 class WiiMii : public Mii {
 public:
     WiiMii() {};
@@ -50,7 +46,6 @@ public:
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 
     bool set_normal_special_flag(size_t fold);
-    bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes);
 
     const static size_t BIRTHDATE_OFFSET = 0x00;
     const static uint8_t BIRTHDAY_MASK = 0x1F;

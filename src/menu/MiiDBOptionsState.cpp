@@ -20,19 +20,6 @@
 
 #define TAG_OFF 17
 
-/*
-#include <bitset>
-#include <cstring>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <nn/ffl/miidata.h>
-//#include <mii/WiiUMiiStruct.h>
-#include <string>
-#include <utils/MiiUtils.h>
-#include <vector>
-*/
-
 MiiDBOptionsState::MiiDBOptionsState(MiiRepo *mii_repo, MiiProcess::eMiiProcessActions action, MiiProcessSharedState *mii_process_shared_state) : mii_repo(mii_repo), action(action), mii_process_shared_state(mii_process_shared_state) {
 
     entrycount = 1;
@@ -151,18 +138,6 @@ void MiiDBOptionsState::render() {
                 break;
             default:;
         }
-
-        // {
-        //
-        //     std::ifstream MyReadFile;
-        //     const char *fichero = "fs:/vol/external01/wiiu/lbtest.bin";
-        //     MyReadFile.open(fichero, std::ios_base::binary);
-        //     size_t size = std::filesystem::file_size(std::filesystem::path(fichero));
-        //     FFLCreateID DatFileBuf;
-        //     MyReadFile.read((char *) &DatFileBuf, size);
-        //     MyReadFile.close();
-        //     Console::consolePrintPos(4, 15, "flags: %01x   ts: %07x ", DatFileBuf.flags, DatFileBuf.timestamp);
-        // }
     }
 }
 

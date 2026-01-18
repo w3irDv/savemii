@@ -13,7 +13,6 @@ public:
 
     bool open_and_load_repo();
     bool persist_repo();
-    //bool import_mii(Mii &mii) { return (mii.mii_name == ""); };
     bool import_miidata(MiiData *mii_data, bool in_place, size_t location);  // from (temp)mem to the repo
     MiiData *extract_mii_data(size_t index); // from the repo to (tmp)mem
     bool wipe_miidata(size_t index);
@@ -39,6 +38,4 @@ public:
 
     bool init_db_file();
     bool fill_empty_db_file();
-
-    bool test_list_repo();
 };

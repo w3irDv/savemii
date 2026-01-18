@@ -50,7 +50,6 @@ public:
 
     // test
     bool set_normal_special_flag(size_t fold);
-    bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes);
 
     const static size_t COPY_FLAG_OFFSET = 0x2;
     const static size_t AUTHOR_ID_OFFSET = 0x4;

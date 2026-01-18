@@ -37,17 +37,6 @@ public:
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
 
-    // TO BE REMOVED
-    bool test_select_some_miis();
-    bool test_select_all_miis();
-    bool test_select_all_miis_but_first(); 
-    bool test_candidate_some_miis();
-    bool test_select_template_mii(size_t index);
-    void test_xfer_attr();
-    void test_import();
-    //
-
-
 private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_MII_SELECT;

@@ -40,12 +40,6 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     FFLiMiiDataOfficial *mii_data = (FFLiMiiDataOfficial *) raw_mii_data;
 
-    //TEMP
-    //printf("size: %02x\n",mii_data->core.);
-    //printf("value: %02x\n", ((uint8_t *) raw_mii_data)[0x03]);
-    //std::cout << "value: " << std::bitset<8>(raw_mii_data[0x31]) << std::endl;
-    //
-
     uint8_t birth_platform = mii_data->core.birth_platform;
     // according to https://github.com/HEYimHeroic/mii2studio/blob/master/mii_data_ver3.ksy , is_favorite , but seems to be ignored by MiiMaker
     //bool favorite = mii_data->core.unk_0x18_b1 == 1;
@@ -93,15 +87,13 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         Console::showMessage(ERROR_SHOW, "This does not seems a Wii U mii_data. Birth plaform %x is not allowed", birth_platform);
         return nullptr;
     }
-        */
+    */
     std::u16string name16;
     name16 = std::u16string(mii_name);
     std::string miiName = utf8::utf16to8(name16);
 
     name16 = std::u16string(creator_name);
     std::string creatorName = utf8::utf16to8(name16);
-
-    //FFLCreateIDFlags mii_id_flags = (FFLCreateIDFlags) mii_id_flags_u8;
 
     time_t base = MiiUtils::year_zero_offset(WiiUMiiData::YEAR_ZERO);
 
@@ -288,7 +280,7 @@ bool WiiUMiiData::toggle_temp_flag() {
 /// @return
 bool WiiUMiiData::toggle_favorite_flag() {
 
-    /*
+    /* 
     uint8_t favorite = this->mii_data[BIRTHDATE_OFFSET] ^ 0b01000000;
     memcpy(this->mii_data + BIRTHDATE_OFFSET, &favorite, 1);
     return true;
@@ -327,11 +319,6 @@ bool WiiUMiiData::flip_between_account_mii_data_and_mii_data(unsigned char *mii_
 bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
     return true;
 };
-
-bool WiiUMiiData::copy_some_bytes([[maybe_unused]] MiiData *mii_data_template, [[maybe_unused]] char name, [[maybe_unused]] size_t offset, [[maybe_unused]] size_t bytes) {
-    return true;
-};
-
 
 uint32_t WiiUMiiData::get_timestamp() {
 

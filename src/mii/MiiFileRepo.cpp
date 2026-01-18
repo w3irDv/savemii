@@ -29,7 +29,6 @@ MiiFileRepo<MII, MIIDATA>::~MiiFileRepo() {
         free(db_buffer);
 };
 
-//template<typename MII, typename MIIDATA>
 template<>
 bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
     db_group = WiiMiiData::DB::DB_GROUP;
@@ -130,12 +129,6 @@ bool MiiFileRepo<WiiMii, WiiMiiData>::check_if_favorite(MiiData *miidata) {
 /// @return
 template<>
 bool MiiFileRepo<WiiUMii, WiiUMiiData>::toggle_favorite_flag(MiiData *miidata) {
-
-    /*
-    uint8_t favorite = this->mii_data[BIRTHDATE_OFFSET] ^ 0b01000000;
-    memcpy(this->mii_data + BIRTHDATE_OFFSET, &favorite, 1);
-    return true;
-    */
 
     if (db_buffer == nullptr)
         return false;

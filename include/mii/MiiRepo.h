@@ -36,7 +36,6 @@ public:
     virtual bool open_and_load_repo() = 0; // copy repo to mem
     virtual bool persist_repo() = 0;       // save repro from mem to wherever
 
-    //virtual bool import_mii(Mii &mii) = 0;               // from (temp)mem to the repo
     virtual bool import_miidata(MiiData *mii_data, bool in_place, size_t index) = 0; // from (temp)mem to the repo
     virtual MiiData *extract_mii_data(size_t index) = 0;                             // from the repo to (tmp)mem
     virtual bool wipe_miidata(size_t index) = 0;
@@ -76,7 +75,6 @@ public:
 
     bool repo_has_duplicated_miis = false;
 
-    //size_t mii_data_size = 0;
     const static inline std::string BACKUP_ROOT = "fs:/vol/external01/wiiu/backups/MiiRepoBckp";
     //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
 

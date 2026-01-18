@@ -540,7 +540,6 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                 case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
                     mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
                     if (mii_process_shared_state->template_mii_data != nullptr) {
-                        //if (MiiUtils::copy_some_bytes_from_miis(errorCounter, mii_process_shared_state))
                         if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state)) {
                             if (InProgress::abortTask == false)
                                 Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"));
@@ -694,107 +693,4 @@ void MiiSelectState::moveUp(unsigned amount, bool wrap) {
                 cursorPos = candidate_miis_count - 1;
         }
     }
-}
-
-
-bool MiiSelectState::test_select_some_miis() {
-
-    for (size_t i = 0; i < candidate_miis_count; i++) {
-        if (i % 3 != 0) {
-            mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED);
-        }
-
-        mii_process_shared_state->primary_mii_view = &this->mii_view;
-        mii_process_shared_state->primary_c2a = &this->c2a;
-
-        //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
-    }
-    return true;
-}
-
-bool MiiSelectState::test_select_all_miis_but_first() {
-
-    mii_view.at(c2a[0]) = MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED);
-    for (size_t i = 1; i < candidate_miis_count; i++) {
-        mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
-
-        mii_process_shared_state->primary_mii_view = &this->mii_view;
-        mii_process_shared_state->primary_c2a = &this->c2a;
-
-        //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
-    }
-    return true;
-}
-
-bool MiiSelectState::test_select_all_miis() {
-
-    for (size_t i = 0; i < candidate_miis_count; i++) {
-        mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
-
-
-        mii_process_shared_state->primary_mii_view = &this->mii_view;
-        mii_process_shared_state->primary_c2a = &this->c2a;
-
-        //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
-    }
-    return true;
-}
-
-bool MiiSelectState::test_candidate_some_miis() {
-    for (size_t i = 0; i < all_miis_count; i++) {
-        if (i % 2 == 0) {
-            mii_view.at(i) = MiiStatus::MiiStatus(NOT_CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
-        }
-        //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
-    }
-    c2a.clear();
-    for (size_t i = 0; i < all_miis_count; i++) {
-        if (mii_view[i].candidate)
-            c2a.push_back(i);
-    }
-    //update_c2a();
-    candidate_miis_count = c2a.size();
-    mii_process_shared_state->primary_mii_view = &this->mii_view;
-    mii_process_shared_state->primary_c2a = &this->c2a;
-    return true;
-}
-
-bool MiiSelectState::test_select_template_mii(size_t index) {
-    for (size_t i = 0; i < candidate_miis_count; i++) {
-        if (i == index) {
-            mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED);
-        } else {
-            mii_view.at(c2a[i]) = MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED);
-        }
-        //printf("%s ----> %s\n", this->mii_repo->miis[c2a[i]]->mii_name.c_str(), mii_view.at(c2a[i]).selected ? "true" : "false");
-    }
-
-    currentlySelectedMii = index;
-
-    return true;
-}
-
-
-void MiiSelectState::test_xfer_attr() {
-
-    uint16_t errorCounter = 0;
-    mii_process_shared_state->auxiliar_mii_repo = this->mii_repo;
-    mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
-    mii_process_shared_state->auxiliar_c2a = &this->c2a;
-    mii_process_shared_state->template_mii_data = this->mii_repo->extract_mii_data(c2a[currentlySelectedMii]);
-    MiiUtils::xform_miis(errorCounter, mii_process_shared_state);
-    delete mii_process_shared_state->template_mii_data;
-}
-
-
-void MiiSelectState::test_import() {
-
-    uint16_t errorCounter = 0;
-    mii_process_shared_state->auxiliar_mii_repo = this->mii_repo;
-    mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
-    mii_process_shared_state->auxiliar_c2a = &this->c2a;
-    if (MiiUtils::import_miis(errorCounter, mii_process_shared_state))
-        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis import Ok"));
-    else
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
 }

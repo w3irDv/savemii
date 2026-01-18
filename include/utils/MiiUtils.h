@@ -36,10 +36,6 @@ namespace MiiUtils {
 
     bool ask_if_to_initialize_db(MiiRepo *mii_repo, bool DB_NOT_Found);
 
-    bool eight_fold_mii(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
-    bool copy_some_bytes_from_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state);
-
-
     void showMiiOperations(MiiProcessSharedState *mii_process_shared_state, size_t mii_index);
 
     unsigned short getCrc(unsigned char *buf, int size);

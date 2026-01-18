@@ -142,12 +142,6 @@ int MiiRepo::wipe() {
     switch (this->db_kind) {
         case FOLDER: {
             if (!FSUtils::removeDir(path)) {
-                //if (rmdir(path.c_str()) == -1) {
-                //errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting folder."));
-                //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete folder:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
-                //errorCode += 2;
-                //}
-                //} else {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
                 errorCode = 1;
             }
