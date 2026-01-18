@@ -330,11 +330,13 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
     }
 
     if (receiving_repo->needs_populate == true)
-        if (!receiving_repo->open_and_load_repo()) {
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open repo %s"), receiving_repo->repo_name.c_str());
-            return false;
-        }
+        if (receiving_repo->open_and_load_repo())
+            if (receiving_repo->populate_repo())
+                goto repo_populated;
+    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), receiving_repo->repo_name.c_str());
+    return false;
 
+repo_populated:
     InProgress::totalSteps = 0;
     InProgress::currentStep = 1;
     InProgress::abortTask = false;
@@ -577,7 +579,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                                               mii_process_shared_state->toggle_favorite_flag || mii_process_shared_state->toggle_normal_special_flag ||
                                               mii_process_shared_state->toggle_temp_flag;
                 MiiData *original_mii_data;
-                original_mii_data = mii_data->clone();
+                original_mii_data = mii_data->clone(); // we may need original miiid later to update favorite section
                 if (mii_data != nullptr && original_mii_data != nullptr) {
                     if (mii_is_favorite && mii_process_shared_state->toggle_favorite_flag && modifies_favorite_flag) {
                         mii_repo->toggle_favorite_flag(mii_data); // FFL
@@ -645,8 +647,12 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
             }
         }
 
-        if (mii_repo->persist_repo())
+        if (mii_repo->persist_repo()) {
+            if (mii_repo->db_kind != MiiRepo::FOLDER)
+                if (mii_repo->mark_duplicates())
+                    Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings. They will be deleted by MiiChannel or ignored by MiiMaker. Please fix it updating its miiid or normal/special/temp or device info for one of them"));
             return errorCounter == 0;
+        }
 
     cleanup_mii_view_after_error:
         mii_repo->needs_populate = true;
@@ -659,7 +665,6 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
             }
         }
         return false;
-
     } else {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
         return false;

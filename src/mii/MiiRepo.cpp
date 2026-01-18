@@ -219,6 +219,35 @@ bool MiiRepo::repopulate_mii(size_t index, MiiData *miidata) {
     return true;
 }
 
+/// @brief look for duplicates in the mii vector associated with the repo (after populating it) and signals them.
+/// @return True if vector's repo has duplicates, false otherwhise
+bool MiiRepo::mark_duplicates() {
+    bool dup_found = false;
+    auto miis = this->miis;
+
+    for (size_t i = 0; i < miis.size(); i++)
+        miis.at(i)->dup_mii_id = false;
+
+    for (size_t i = 0; i < miis.size(); i++) {
+        auto mii_i = miis.at(i);
+        for (size_t j = i + 1; j < miis.size(); j++) {
+            auto mii_j = miis.at(j);
+            if (mii_i->hex_timestamp == mii_j->hex_timestamp) {
+                if (mii_i->mii_id_flags == mii_j->mii_id_flags) {
+                    if (mii_i->device_hash == mii_j->device_hash) {
+                        mii_i->dup_mii_id = true;
+                        mii_j->dup_mii_id = true;
+                        dup_found = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    this->repo_has_duplicated_miis = true;
+    return dup_found;
+}
+
 bool MiiRepo::test_list_repo() {
 
     for (const auto &mii : this->miis) {

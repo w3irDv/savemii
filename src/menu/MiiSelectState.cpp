@@ -1,5 +1,6 @@
 
 #include <coreinit/debug.h>
+#include <bitset>
 #include <cstring>
 #include <menu/MiiDBOptionsState.h>
 #include <menu/MiiRepoSelectState.h>
@@ -91,6 +92,45 @@ void MiiSelectState::initialize_view() {
     candidate_miis_count = c2a.size();
 }
 
+void MiiSelectState::dup_view() {
+    // just in case later we add filtering, sorting ...
+    // MVP , candidates = all
+    // candidates => filtered subset of all miss that will appear and can be managed on the menu
+    // mii_view[i] => state of mii[i] --> is candidate or not (i.e. will appear in the current menu), is selected or not. 0 < i < all_miis
+    // c2a[j] = i ==> candidate j is mii[i]. 0 < j < candidate_miis
+
+    c2a.clear();
+    mii_view.clear();
+
+    all_miis_count = mii_repo->miis.size();
+
+    bool allMiisUnselected = true;
+    if ((action == MiiProcess::SELECT_MIIS_FOR_EXPORT) ||
+        (action == MiiProcess::LIST_MIIS))
+        allMiisUnselected = false;
+
+    for (size_t i = 0; i < all_miis_count; i++) {
+        if (!mii_repo->miis.at(i)->dup_mii_id) {
+            mii_view.push_back(MiiStatus::MiiStatus(NOT_CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED));
+        } else {
+            if (mii_repo->miis.at(i)->is_valid) {
+                if (selectOnlyOneMii || allMiisUnselected)
+                    mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::NOT_TRIED));
+                else
+                    mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, SELECTED, MiiStatus::NOT_TRIED));
+            } else {
+                if (action == MiiProcess::SELECT_MIIS_TO_WIPE)
+                    mii_view.push_back(MiiStatus::MiiStatus(CANDIDATE, UNSELECTED, MiiStatus::INVALID));
+                else
+                    mii_view.push_back(MiiStatus::MiiStatus(NOT_CANDIDATE, UNSELECTED, MiiStatus::INVALID));
+            }
+        }
+        if (mii_view[i].candidate)
+            c2a.push_back(i);
+    }
+
+    candidate_miis_count = c2a.size();
+}
 
 void MiiSelectState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -174,6 +214,9 @@ void MiiSelectState::render() {
             case BASIC:
                 view_type_str = LanguageUtils::gettext("Basic view");
                 break;
+            case MIIID:
+                view_type_str = LanguageUtils::gettext("Mii ID");
+                break;
             case CREATORS:
                 view_type_str = LanguageUtils::gettext("Creators view");
                 break;
@@ -221,10 +264,17 @@ void MiiSelectState::render() {
 
             switch (action) {
                 case MiiProcess::LIST_MIIS:
-                    color_text = (cursorPos == i) ? COLOR_LIST_AT_CURSOR : COLOR_LIST;
-                    color_on = COLOR_LIST_DANGER;
-                    color_off = COLOR_LIST_DANGER_AT_CURSOR;
-                    DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
+                    if (this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id) {
+                        color_text = (cursorPos == i) ? COLOR_LIST_WARNING_AT_CURSOR : COLOR_LIST_WARNING;
+                        color_on = COLOR_LIST_WARNING;
+                        color_off = COLOR_LIST_WARNING_AT_CURSOR;
+                        DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
+                    } else {
+                        color_text = (cursorPos == i) ? COLOR_LIST_AT_CURSOR : COLOR_LIST;
+                        color_on = COLOR_LIST_DANGER;
+                        color_off = COLOR_LIST_DANGER_AT_CURSOR;
+                        DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
+                    }
                     break;
                 default: {
                     if (this->mii_view[c2a[i + this->scroll]].selected) {
@@ -327,7 +377,8 @@ void MiiSelectState::render() {
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 42, i + 2, LanguageUtils::gettext("]"));
                         Console::consolePrintPos(MM_OFF + 43, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->favorite ? "\ue017" : "");
-
+                        DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
+                        Console::consolePrintPos(MM_OFF + 43, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "D" : "");
 
                         break;
                     case CREATORS:
@@ -338,9 +389,23 @@ void MiiSelectState::render() {
                         Console::consolePrintPos(MM_OFF + 35, i + 2, "[D:%s]",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str());
                         break;
-                    case LOCATION:
+                    case MIIID:
+                        Console::consolePrintPos(MM_OFF + 11, i + 2, "[F:%s ", std::bitset<4>(this->mii_repo->miis[c2a[i + this->scroll]]->mii_id_flags).to_string().c_str());
+                        Console::consolePrintPos(MM_OFF + 18, i + 2, "]");
+                        Console::consolePrintPos(MM_OFF + 19, i + 2, "[T:%04x",
+                                                 this->mii_repo->miis[c2a[i + this->scroll]]->hex_timestamp);
+                        Console::consolePrintPos(MM_OFF + 29, i + 2, "]");
+                        Console::consolePrintPos(MM_OFF + 30, i + 2, "[D:%s]",
+                                                 this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str());
+
+                        DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
+                        break;
+                        case LOCATION:
                         Console::consolePrintPos(MM_OFF + 12, i + 2, "< %s >",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->location_name.c_str());
+                        DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     case TIMESTAMP:
                         Console::consolePrintPos(MM_OFF + 12, i + 2, "[ %s ]",
@@ -348,6 +413,8 @@ void MiiSelectState::render() {
                         Console::consolePrintPos(MM_OFF + 28, i + 2, "[ %04x",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->hex_timestamp);
                         Console::consolePrintPos(MM_OFF + 38, i + 2, "]");
+                        DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     default:;
                 }

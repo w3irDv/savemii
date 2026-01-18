@@ -19,6 +19,8 @@
 #define COLOR_LIST_DANGER_AT_CURSOR          Color(0xFF4060FF)
 #define COLOR_LIST_RESTORE_SUCCESS           Color(0xFFFFFFFF)
 #define COLOR_LIST_RESTORE_SUCCESS_AT_CURSOR Color(0xBBBBEEFF)
+#define COLOR_LIST_WARNING                   Color(0xBB7F0000)
+#define COLOR_LIST_WARNING_AT_CURSOR         Color(0xBB7F88FF)
 #define COLOR_INFO                           Color(0x88CC88FF)
 #define COLOR_INFO_AT_CURSOR                 Color(0x88CCCCFF)
 #define COLOR_CURRENT_BS                     Color(0xFFBB33FF)

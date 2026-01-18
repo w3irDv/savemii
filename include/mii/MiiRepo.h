@@ -56,6 +56,8 @@ public:
 
     virtual uint16_t get_crc() = 0;
 
+    bool mark_duplicates();
+    
     const std::string repo_name;
     eDBType db_type = FFL;
     eDBKind db_kind;
@@ -71,6 +73,8 @@ public:
 
     std::vector<Mii *> miis;
     std::map<std::string, std::vector<size_t> *> owners;
+
+    bool repo_has_duplicated_miis = false;
 
     //size_t mii_data_size = 0;
     const static inline std::string BACKUP_ROOT = "fs:/vol/external01/wiiu/backups/MiiRepoBckp";

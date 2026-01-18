@@ -351,6 +351,7 @@ bool MiiAccountRepo<MII, MIIDATA>::populate_repo() {
         return false;
     }
 
+    this->mark_duplicates(); 
     this->needs_populate = false;
     return true;
 };

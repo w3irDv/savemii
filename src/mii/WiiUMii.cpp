@@ -117,6 +117,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, favorite, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
 
     wiiu_mii->is_valid = true;
+
     return wiiu_mii;
 }
 
@@ -330,3 +331,36 @@ bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
 bool WiiUMiiData::copy_some_bytes([[maybe_unused]] MiiData *mii_data_template, [[maybe_unused]] char name, [[maybe_unused]] size_t offset, [[maybe_unused]] size_t bytes) {
     return true;
 };
+
+
+uint32_t WiiUMiiData::get_timestamp() {
+
+    uint32_t mii_id_timestamp = ((this->mii_data[MII_ID_OFFSET] & 0xF)<< 24) + (this->mii_data[MII_ID_OFFSET+1]  <<16 ) + (this->mii_data[MII_ID_OFFSET+2] << 8) + this->mii_data[MII_ID_OFFSET+3];
+
+    return mii_id_timestamp;
+}
+
+std::string WiiUMiiData::get_device_hash() {
+
+    FFLiMiiDataOfficial *mii_data = (FFLiMiiDataOfficial *) this->mii_data;
+    
+    uint8_t mii_id_deviceHash[WiiUMiiData::DEVICE_HASH_SIZE];
+    for (size_t i = 0; i < WiiUMiiData::DEVICE_HASH_SIZE; i++)
+        mii_id_deviceHash[i] = mii_data->core.mii_id.deviceHash[i];
+
+    std::string deviceHash{};
+    for (size_t i = 0; i < WiiUMiiData::DEVICE_HASH_SIZE; i++) {
+        char hexhex[3];
+        snprintf(hexhex, 3, "%02X", mii_id_deviceHash[i]);
+        deviceHash.append(hexhex);
+    }
+
+    return deviceHash;
+}
+
+uint8_t WiiUMiiData::get_miid_flags() {
+
+    uint32_t mii_id_flags = ((this->mii_data[MII_ID_OFFSET] & 0xF0) >> 4);
+
+    return mii_id_flags;
+}

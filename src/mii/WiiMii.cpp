@@ -3,8 +3,8 @@
 #include <mii/WiiMii.h>
 #include <mii/WiiMiiStruct.h>
 #include <utf8.h>
-#include <utils/MiiUtils.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/MiiUtils.h>
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -27,9 +27,9 @@ WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string times
 };
 
 MiiData *WiiMiiData::clone() {
- 
+
     unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(this->mii_data_size);
-    memcpy(mii_buffer,this->mii_data,mii_data_size);
+    memcpy(mii_buffer, this->mii_data, mii_data_size);
     MiiData *miidata = new WiiMiiData(mii_buffer, this->mii_data_size);
 
     return miidata;
@@ -143,10 +143,10 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     // TODO: LOOK FOR SENSIBLE VALUES FOR THE WII MII Case
     uint8_t birth_platform = 0;
-    bool copyable = true;  // non-existent in wii ...
+    bool copyable = true; // non-existent in wii ...
     uint64_t author_id = 0;
 
-    bool favorite = mii_data->isFavorite  == 1;
+    bool favorite = mii_data->isFavorite == 1;
     // The top 3 bits are a prefix that determines if a Mii is "special" "foreign" or regular. Normal with mii_id_flas = 1 are deleted by MiiChannel.
     uint8_t mii_id_flags = ((mii_data->miiID1 & 0xE0) >> 5);
 
@@ -178,8 +178,8 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
     */
 
     uint8_t tmp_favorite;
-    memcpy (&tmp_favorite,raw_mii_data + 1,1);
-    favorite = ((tmp_favorite & 0x1 ) == 0x1);
+    memcpy(&tmp_favorite, raw_mii_data + 1, 1);
+    favorite = ((tmp_favorite & 0x1) == 0x1);
 
     uint16_t unknown1 = mii_data->unknown1;
     mingleOff = (unknown1 & 0x1);
@@ -257,7 +257,7 @@ bool WiiMiiData::toggle_normal_special_flag() {
         case 6: // not_local (foreign) > normal
             mii_type = 4;
             break;
-        default: // normal > special
+        default:          // normal > special
             mii_type = 2; // if 0, miis downloaded from https://www.miilibrary.com does not appear unless thy are local from the console (you can force it with xfer_physical_appeareance)
             break;
     }
@@ -283,7 +283,7 @@ bool WiiMiiData::toggle_foreign_flag() {
     uint8_t mii_type = (flags & 0b11100000) >> 5;
     uint8_t partial_ts = (flags & 0b00011111);
     switch (mii_type) {
-        case 6:           // not local > normal
+        case 6: // not local > normal
             mii_type = 4;
             break;
         default: // * > not_local
@@ -312,14 +312,12 @@ bool WiiMiiData::toggle_favorite_flag() {
     uint8_t favorite = this->mii_data[1] ^ 0x1;
     memcpy(this->mii_data + 1, &favorite, 1);
     return true;
-
 }
 
 bool WiiMiiData::get_favorite_flag() {
 
     uint8_t favorite = this->mii_data[1] & 0x1;
     return (favorite == 1);
-
 }
 
 /// @brief Debug function to set arbitrary values in flag offset
@@ -389,4 +387,43 @@ bool WiiMiiData::copy_some_bytes(MiiData *mii_data_template, char name, size_t o
 
 bool WiiMiiData::flip_between_account_mii_data_and_mii_data([[maybe_unused]] unsigned char *mii_buffer, [[maybe_unused]] size_t buffer_size) {
     return true;
+}
+
+uint32_t WiiMiiData::get_timestamp() {
+
+    MII_DATA_STRUCT *mii_data = (MII_DATA_STRUCT *) this->mii_data;
+
+    uint32_t mii_id_timestamp = ((mii_data->miiID1 & 0x1F) << 24) + (mii_data->miiID2 << 16) + (mii_data->miiID3 << 8) + mii_data->miiID4;
+
+    return mii_id_timestamp;
+}
+
+std::string WiiMiiData::get_device_hash() {
+
+    MII_DATA_STRUCT *mii_data = (MII_DATA_STRUCT *) this->mii_data;
+
+    uint8_t mii_id_deviceHash[WiiMiiData::DEVICE_HASH_SIZE];
+    mii_id_deviceHash[0] = mii_data->systemID0;
+    mii_id_deviceHash[1] = mii_data->systemID1;
+    mii_id_deviceHash[2] = mii_data->systemID2;
+    mii_id_deviceHash[3] = mii_data->systemID3;
+
+    std::string deviceHash{};
+    for (size_t i = 0; i < WiiMiiData::DEVICE_HASH_SIZE; i++) {
+        char hexhex[3];
+        snprintf(hexhex, 3, "%02X", mii_id_deviceHash[i]);
+        deviceHash.append(hexhex);
+    }
+
+    return deviceHash;
+}
+
+uint8_t WiiMiiData::get_miid_flags() {
+
+    MII_DATA_STRUCT *mii_data = (MII_DATA_STRUCT *) this->mii_data;
+
+    // The top 3 bits are a prefix that determines if a Mii is "special" "foreign" or regular. Normal with mii_id_flas = 1 are deleted by MiiChannel.
+    uint8_t mii_id_flags = ((mii_data->miiID1 & 0xE0) >> 5);
+
+    return mii_id_flags;
 }

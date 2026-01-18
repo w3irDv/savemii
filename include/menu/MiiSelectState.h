@@ -14,12 +14,13 @@ class MiiProcessSharedState;
 
 enum eViewType {
     BASIC = 0,
-    CREATORS = 1,
-    LOCATION = 2,
-    TIMESTAMP = 3
+    MIIID = 1,
+    CREATORS = 2,
+    LOCATION = 3,
+    TIMESTAMP = 4
 };
 
-#define EVIEWTYPESIZE 4
+#define EVIEWTYPESIZE 5
         
 class MiiSelectState : public ApplicationState {
 
@@ -73,6 +74,7 @@ private:
     void moveUp(unsigned amount = 1, bool wrap = true);
 
     void initialize_view();
+    void dup_view();
 
     std::vector<MiiStatus::MiiStatus> mii_view;
 

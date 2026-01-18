@@ -10,6 +10,7 @@
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/MiiUtils.h>
+#include <utils/StringUtils.h>
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -437,8 +438,8 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
         }
     }
 
-    if (in_place != IN_PLACE) { // BEWARE -- this check on temp type mii should not be performed when transforming miis, which is an in_place operation.
-        // We use this factto avoid the check, but is an indirect condition that can change in the future, provoking this to unwantedly appear
+    if (in_place != IN_PLACE) { // BEWARE -- All this checks  should not be performed when transforming miis, whichares an in_place operation.
+        // We use this factto avoid the checks, but is an indirect condition that can change in the future, provoking this to unwantedly appear
         // change normal wii miis from section 1 to section 4
         if (this->db_type == MiiRepo::eDBType::RFL) {
             uint8_t flags;
@@ -469,7 +470,17 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
                 }
             }
         }
+        if (this->check_if_miiid_exists(miidata)) {
+            std::string mess = StringUtils::stringFormat(LanguageUtils::gettext("Duplicate Mii ID found (%s). MiiMaker will not show this mii, and MiiChannel can delete it unless you generate a new Mii ID for it, becoming a completely new mii.\nDo you want me to chnage MiiId for this mii?"),
+                                                         miidata->get_mii_name().c_str());
+            if (Console::promptConfirm(ST_WARNING, mess.c_str())) {
+                miidata->update_timestamp(target_location);
+            } else {
+                this->repo_has_duplicated_miis = true;
+            }
+        }
     }
+
 
     memcpy(db_buffer + MIIDATA::DB::OFFSET + target_location * MIIDATA::MII_DATA_SIZE, miidata->mii_data, MIIDATA::MII_DATA_SIZE);
 
@@ -558,6 +569,7 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         delete current_miidata;
     }
 
+    this->mark_duplicates();
     this->needs_populate = false;
     return true;
 };
@@ -664,5 +676,24 @@ cleanup_after_io_error:
     free(db_buffer);
     if (db_owner != 0)
         FSUtils::flushVol(db_filepath);
+    return false;
+}
+
+template<typename MII, typename MIIDATA>
+bool MiiFileRepo<MII, MIIDATA>::check_if_miiid_exists(MiiData *miidata) {
+
+    uint32_t mii_id_timestamp = miidata->get_timestamp();
+
+    for (const auto &mii : this->miis) {
+        if (mii->hex_timestamp == mii_id_timestamp) {
+            uint8_t mii_id_flags = miidata->get_miid_flags();
+            if (mii->mii_id_flags == mii_id_flags) {
+                std::string device_hash = miidata->get_device_hash();
+                if (mii->device_hash == device_hash)
+                    return true;
+            }
+        }
+    }
+
     return false;
 }

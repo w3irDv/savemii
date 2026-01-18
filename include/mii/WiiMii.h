@@ -43,6 +43,9 @@ public:
     bool toggle_favorite_flag();
     bool toggle_foreign_flag();
     bool get_favorite_flag();
+    uint32_t get_timestamp();
+    std::string get_device_hash();
+    uint8_t get_miid_flags();
 
     static bool flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size);
 

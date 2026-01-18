@@ -48,6 +48,7 @@ public:
     bool is_valid = false;
     std::string location_name{};
     eMiiKind mii_kind = NORMAL;
+    bool dup_mii_id = false;
 
     virtual Mii *v_populate_mii(uint8_t *mii_data) = 0;
 };
@@ -77,6 +78,9 @@ public:
     virtual bool toggle_favorite_flag() = 0;
     virtual bool toggle_foreign_flag() = 0;
     virtual bool get_favorite_flag() = 0;
+    virtual uint32_t get_timestamp() = 0;
+    virtual std::string get_device_hash() = 0;
+    virtual uint8_t get_miid_flags() = 0;
 
     virtual bool set_normal_special_flag(size_t fold) = 0;
     virtual bool copy_some_bytes(MiiData *mii_data_template, char name, size_t offset, size_t bytes) = 0;
