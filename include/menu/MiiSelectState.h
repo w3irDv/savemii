@@ -71,4 +71,5 @@ private:
     int currentlySelectedMii = 0;
 
     eViewType view_type = BASIC;
+    bool duplicated_miis_view = false;
 };

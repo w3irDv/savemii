@@ -205,8 +205,6 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
     std::error_code ec;
     for (const auto &entry : fs::directory_iterator(path_to_repo, ec)) {
 
-        Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Reading Miis: %d"), index + 1);
-
         std::filesystem::path filename = entry.path();
         std::string filename_str = filename.string();
 
@@ -240,6 +238,7 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
             push_back_invalid_mii(filename_str, index);
         }
         index++;
+        Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Reading Miis: %d"), index);
     }
 
     if (ec.value() != 0) {

@@ -174,40 +174,40 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::TRIGGER, Button::RIGHT)) {
             switch (cursorPos) {
                 case 0:
-                    transfer_physical_appearance = transfer_physical_appearance ? false : true;
+                    transfer_physical_appearance = !transfer_physical_appearance;
                     break;
                 case 1:
-                    transfer_ownership = transfer_ownership ? false : true;
+                    transfer_ownership = !transfer_ownership;
                     break;
                 case 2:
-                    update_timestamp = update_timestamp ? false : true;
+                    update_timestamp = !update_timestamp;
                     break;
                 case 3:
                     if (this->mii_repo->db_kind != MiiRepo::eDBKind::ACCOUNT)
-                        toggle_favorite_flag = update_timestamp ? false : true;
+                        toggle_favorite_flag = !toggle_favorite_flag;
                     else
                         toggle_favorite_flag = false;
                     break;
                 case 4:
-                    toggle_share_flag = toggle_share_flag ? false : true;
+                    toggle_share_flag = !toggle_share_flag;
                     break;
                 case 5:
-                    toggle_normal_special_flag = toggle_normal_special_flag ? false : true;
+                    toggle_normal_special_flag = !toggle_normal_special_flag;
                     break;
                 case 6:
                     if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
-                        toggle_foreign_flag = toggle_foreign_flag ? false : true;
+                        toggle_foreign_flag = !toggle_foreign_flag;
                     else
                         toggle_foreign_flag = false;
                     break;
                 case 7:
-                    update_crc = update_crc ? false : true;
+                    update_crc = !update_crc;
                     break;
                 case 8:
-                    toggle_copy_flag = toggle_copy_flag ? false : true;
+                    toggle_copy_flag = !toggle_copy_flag;
                     break;
                 case 9:
-                    toggle_temp_flag = toggle_temp_flag ? false : true;
+                    toggle_temp_flag = !toggle_temp_flag;
                     break;
                 default:
                     break;

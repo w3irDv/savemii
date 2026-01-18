@@ -66,15 +66,15 @@ void MiiRepoSelectState::render() {
         switch (action) {
             case MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE:
                 menuTitle = LanguageUtils::gettext("Select Repo containing the Mii Template");
-                screenOptions = LanguageUtils::gettext("\ue000: Select Template Mii Repo  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue000: To Select Template Mii Repo  \ue001: Back");
                 break;
             case MiiProcess::SELECT_REPO_FOR_IMPORT:
                 menuTitle = LanguageUtils::gettext("Select Repo to Import Miis from");
-                screenOptions = LanguageUtils::gettext("\ue000: Select Miis to Import from this repo  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue000: To Select Miis to Import from this repo  \ue001: Back");
                 break;
             case MiiProcess::SELECT_REPO_FOR_EXPORT:
                 menuTitle = LanguageUtils::gettext("Select Repo to Export Miis to");
-                screenOptions = LanguageUtils::gettext("\ue000: Select Miis to Export to this repo  \ue001: Back");
+                screenOptions = LanguageUtils::gettext("\ue000: To Select Miis to Export to this repo  \ue001: Back");
                 break;
             default:
                 menuTitle = LanguageUtils::gettext("Select Mii Repo to Manage");

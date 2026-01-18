@@ -123,7 +123,7 @@ int main() {
     ExcludesCfg::wiiuExcludes->init();
     ExcludesCfg::wiiExcludes->init();
 
-    StartupUtils::addInitMessage("Getting DeviceID and MACAddress");
+    StartupUtils::addInitMessageWithIcon("Getting DeviceID and MACAddress");
     AmbientConfig::get_device_hash();
     AmbientConfig::get_mac_address();
 

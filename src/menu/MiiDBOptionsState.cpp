@@ -385,7 +385,7 @@ void MiiDBOptionsState::updateRepoHasData() {
 
 void MiiDBOptionsState::passiveUpdateSourceSelectionHasData() {
     if (action == MiiProcess::RESTORE_DB)
-        sourceSelectionHasData = emptySlot ? false : true;
+        sourceSelectionHasData = !emptySlot;
     else {
         sourceSelectionHasData = repoHasData;
     }

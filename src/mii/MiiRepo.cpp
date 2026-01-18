@@ -216,8 +216,8 @@ bool MiiRepo::repopulate_mii(size_t index, MiiData *miidata) {
 /// @brief look for duplicates in the mii vector associated with the repo (after populating it) and signals them.
 /// @return True if vector's repo has duplicates, false otherwhise
 bool MiiRepo::mark_duplicates() {
-    bool dup_found = false;
     auto miis = this->miis;
+    this->repo_has_duplicated_miis = false;
 
     for (size_t i = 0; i < miis.size(); i++)
         miis.at(i)->dup_mii_id = false;
@@ -231,15 +231,14 @@ bool MiiRepo::mark_duplicates() {
                     if (mii_i->device_hash == mii_j->device_hash) {
                         mii_i->dup_mii_id = true;
                         mii_j->dup_mii_id = true;
-                        dup_found = true;
+                        this->repo_has_duplicated_miis = true;
                         break;
                     }
                 }
             }
         }
     }
-    this->repo_has_duplicated_miis = true;
-    return dup_found;
+    return this->repo_has_duplicated_miis;
 }
 
 bool MiiRepo::test_list_repo() {

@@ -652,8 +652,8 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
         }
 
         if (mii_repo->persist_repo()) {
-            if (mii_repo->db_kind != MiiRepo::FOLDER)
-                if (mii_repo->mark_duplicates())
+            bool repo_has_duplicates = mii_repo->mark_duplicates();
+            if (mii_repo->db_kind != MiiRepo::FOLDER && repo_has_duplicates)
                     Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings. They will be deleted by MiiChannel or ignored by MiiMaker. Please fix it updating its miiid or normal/special/temp or device info for one of them"));
             return errorCounter == 0;
         }
