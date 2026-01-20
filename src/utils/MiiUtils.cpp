@@ -329,12 +329,13 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
         return false;
     }
 
-    if (receiving_repo->needs_populate == true)
+    if (receiving_repo->needs_populate == true) {
         if (receiving_repo->open_and_load_repo())
             if (receiving_repo->populate_repo())
                 goto repo_populated;
-    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), receiving_repo->repo_name.c_str());
-    return false;
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), receiving_repo->repo_name.c_str());
+        return false;
+    }
 
 repo_populated:
     InProgress::totalSteps = 0;
@@ -389,6 +390,9 @@ repo_populated:
     if (receiving_repo->persist_repo()) {
         if (receiving_repo->db_kind != MiiRepo::eDBKind::ACCOUNT) // for repoAccounts we have done already done a repopulate
             receiving_repo->needs_populate = true;
+        if (receiving_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) // We allow duplicates in Folder repos, and for File repo we have already informed of duplicates (except if we are explicitly importing two duplicate miis)
+            if (receiving_repo->mark_duplicates())
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings. They will be deleted by MiiChannel or ignored by MiiMaker. Please fix it updating its miiid or normal/special/temp or device info for one of them"));
     } else {
         goto cleanup_mii_view_if_error; // can only happen for fileRepos
     }
@@ -575,7 +579,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                 mii_view->at(mii_index).selected = false;
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
                 bool mii_is_favorite = mii_repo->miis.at(mii_index)->favorite;
-                bool modifies_favorite_flag = mii_process_shared_state->transfer_ownership || mii_process_shared_state->update_timestamp ||
+                bool modifies_favorite_flag = mii_process_shared_state->transfer_ownership || mii_process_shared_state->make_it_local || mii_process_shared_state->update_timestamp ||
                                               mii_process_shared_state->toggle_favorite_flag || mii_process_shared_state->toggle_normal_special_flag ||
                                               mii_process_shared_state->toggle_temp_flag;
                 MiiData *original_mii_data;
@@ -599,6 +603,8 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_data->transfer_appearance_from(template_mii_data);
                     if (mii_process_shared_state->transfer_ownership)
                         mii_data->transfer_ownership_from(template_mii_data);
+                    if (mii_process_shared_state->make_it_local)
+                        mii_data->make_it_local();
                     if (mii_process_shared_state->update_timestamp)
                         mii_data->update_timestamp(mii_index);
                     if (mii_process_shared_state->toggle_favorite_flag)
@@ -654,7 +660,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
         if (mii_repo->persist_repo()) {
             bool repo_has_duplicates = mii_repo->mark_duplicates();
             if (mii_repo->db_kind != MiiRepo::FOLDER && repo_has_duplicates)
-                    Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings. They will be deleted by MiiChannel or ignored by MiiMaker. Please fix it updating its miiid or normal/special/temp or device info for one of them"));
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings. They will be deleted by MiiChannel or ignored by MiiMaker. Please fix it updating its miiid or normal/special/temp or device info for one of them"));
             return errorCounter == 0;
         }
 
@@ -709,7 +715,10 @@ bool MiiUtils::ask_if_to_initialize_db(MiiRepo *mii_repo, bool not_found) {
     return false;
 }
 
-
+/// @brief Restores Mii related data from one account into another: copying act/profile/miiimgxx.dat files and importing miidata of the source profile into the account.dat target profile.
+/// @param errorCounter
+/// @param mii_process_shared_state
+/// @return
 bool MiiUtils::x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
 
     if (mii_process_shared_state->auxiliar_mii_repo->db_kind != MiiRepo::ACCOUNT) {
@@ -741,7 +750,7 @@ bool MiiUtils::x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii
         int slotb = MiiSaveMng::getEmptySlot(target_mii_repo);
         if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
             if (!(target_mii_repo->backup(slotb, LanguageUtils::gettext("pre-XRestore backup")) == 0)) {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - XRestore aborted !!"));
                 return false;
             }
     }

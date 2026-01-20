@@ -57,3 +57,27 @@ void AmbientConfig::getWiiUSerialId() {
         MCP_Close(mcpHandle);
     }
 }
+
+
+bool AmbientConfig::get_author_id() {
+    nn::act::Initialize();
+    int i = 0;
+    int accn = 0;
+    uint8_t wiiu_accn = nn::act::GetNumOfAccounts();
+    FFLStoreData mii;
+
+    while ((accn < wiiu_accn) && (i <= 12)) {
+        if (nn::act::IsSlotOccupied(i)) {
+            nn::Result result = nn::act::GetMiiEx(&mii, i);
+            if (result.IsSuccess()) {
+                author_id = mii.data.core.author_id;
+                break;
+            }
+            accn++;
+        }
+        i++;
+    }
+    nn::act::Finalize();
+
+    return true;
+}

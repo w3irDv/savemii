@@ -75,13 +75,14 @@ public:
     virtual bool toggle_temp_flag() = 0;
     virtual bool toggle_favorite_flag() = 0;
     virtual bool toggle_foreign_flag() = 0;
+    virtual bool make_it_local() = 0;
     virtual bool get_favorite_flag() = 0;
     virtual uint32_t get_timestamp() = 0;
     virtual std::string get_device_hash() = 0;
     virtual uint8_t get_miid_flags() = 0;
 
     virtual bool set_normal_special_flag(size_t fold) = 0;
-    
+
     static void *allocate_memory(size_t size);
     static bool str_2_raw_mii_data(const std::string &mii_data_str, unsigned char *mii_buffer, size_t mii_data_size);
     static bool raw_mii_data_2_str(std::string &mii_data_str, unsigned char *mii_buffer, size_t buffer_size);

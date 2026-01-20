@@ -15,12 +15,13 @@ class MiiProcessSharedState;
 enum eViewType {
     BASIC = 0,
     MIIID = 1,
-    CREATORS = 2,
+    SYSTEM_DEVICE = 2,
     LOCATION = 3,
-    TIMESTAMP = 4
+    CREATOR = 4,
+    TIMESTAMP = 5
 };
 
-#define EVIEWTYPESIZE 5
+#define EVIEWTYPESIZE 6
         
 class MiiSelectState : public ApplicationState {
 
@@ -47,10 +48,7 @@ private:
 
     int scroll = 0;
     int cursorPos = 0;
-    //int titleSort = 1;
-    //bool sortAscending = true;
-    //int targ = 0;
-
+    
     bool no_miis = false;
 
     std::vector<int> c2a;

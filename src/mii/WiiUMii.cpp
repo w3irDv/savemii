@@ -2,6 +2,7 @@
 #include <ctime>
 #include <mii/WiiUMii.h>
 #include <utf8.h>
+#include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/MiiUtils.h>
 
@@ -322,7 +323,7 @@ bool WiiUMiiData::set_normal_special_flag([[maybe_unused]] size_t fold) {
 
 uint32_t WiiUMiiData::get_timestamp() {
 
-    uint32_t mii_id_timestamp = ((this->mii_data[MII_ID_OFFSET] & 0xF)<< 24) + (this->mii_data[MII_ID_OFFSET+1]  <<16 ) + (this->mii_data[MII_ID_OFFSET+2] << 8) + this->mii_data[MII_ID_OFFSET+3];
+    uint32_t mii_id_timestamp = ((this->mii_data[MII_ID_OFFSET] & 0xF) << 24) + (this->mii_data[MII_ID_OFFSET + 1] << 16) + (this->mii_data[MII_ID_OFFSET + 2] << 8) + this->mii_data[MII_ID_OFFSET + 3];
 
     return mii_id_timestamp;
 }
@@ -330,7 +331,7 @@ uint32_t WiiUMiiData::get_timestamp() {
 std::string WiiUMiiData::get_device_hash() {
 
     FFLiMiiDataOfficial *mii_data = (FFLiMiiDataOfficial *) this->mii_data;
-    
+
     uint8_t mii_id_deviceHash[WiiUMiiData::DEVICE_HASH_SIZE];
     for (size_t i = 0; i < WiiUMiiData::DEVICE_HASH_SIZE; i++)
         mii_id_deviceHash[i] = mii_data->core.mii_id.deviceHash[i];
@@ -350,4 +351,19 @@ uint8_t WiiUMiiData::get_miid_flags() {
     uint32_t mii_id_flags = ((this->mii_data[MII_ID_OFFSET] & 0xF0) >> 4);
 
     return mii_id_flags;
+}
+
+bool WiiUMiiData::make_it_local() {
+
+    memcpy(this->mii_data + DEVICE_HASH_OFFSET, AmbientConfig::device_hash, DEVICE_HASH_SIZE);
+
+    uint64_t author_id = AmbientConfig::author_id;
+
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    author_id = __builtin_bswap64(author_id);
+#endif
+
+    memcpy(this->mii_data + AUTHOR_ID_OFFSET, &author_id, AUTHOR_ID_SIZE);
+
+    return true;
 }

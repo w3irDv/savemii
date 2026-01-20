@@ -3,6 +3,7 @@
 #include <mii/WiiMii.h>
 #include <mii/WiiMiiStruct.h>
 #include <utf8.h>
+#include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/MiiUtils.h>
 
@@ -377,4 +378,19 @@ uint8_t WiiMiiData::get_miid_flags() {
     uint8_t mii_id_flags = ((mii_data->miiID1 & 0xE0) >> 5);
 
     return mii_id_flags;
+}
+
+bool WiiMiiData::make_it_local() {
+
+    auto mac = AmbientConfig::mac_address.MACAddr;
+    
+    uint8_t cksum8 = mac[0] + mac[1] + mac[2];
+    uint8_t system_id[4] = {cksum8, mac[3], mac[4], mac[5]};
+
+    printf("mac - %02x %02x %02x %02x %02x %02x\n",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5]);
+    printf("systemid - %02x %02x %02x %02x\n",system_id[0],system_id[1],system_id[2],system_id[3]);
+
+    memcpy(this->mii_data + DEVICE_HASH_OFFSET, system_id, DEVICE_HASH_SIZE);
+
+    return true;
 }

@@ -248,13 +248,16 @@ void MiiSelectState::render() {
                 view_type_str = LanguageUtils::gettext("Basic view");
                 break;
             case MIIID:
-                view_type_str = LanguageUtils::gettext("Mii ID");
+                view_type_str = LanguageUtils::gettext("Mii ID view");
                 break;
-            case CREATORS:
-                view_type_str = LanguageUtils::gettext("Creators view");
+            case SYSTEM_DEVICE:
+                view_type_str = LanguageUtils::gettext("Device view");
                 break;
             case LOCATION:
                 view_type_str = LanguageUtils::gettext("Location view");
+                break;
+            case CREATOR:
+                view_type_str = LanguageUtils::gettext("Creator view");
                 break;
             case TIMESTAMP:
                 view_type_str = LanguageUtils::gettext("Timestamp view");
@@ -370,6 +373,8 @@ void MiiSelectState::render() {
             if (this->mii_repo->miis[c2a[i + this->scroll]]->is_valid) {
                 Console::consolePrintPos(MM_OFF, i + 2, "%s",
                                          this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str());
+                if (this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
                 switch (view_type) {
                     case BASIC:
                         DrawUtils::setFontColor(color_text);
@@ -414,33 +419,39 @@ void MiiSelectState::render() {
                         Console::consolePrintPos(MM_OFF + 44, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "D" : "");
 
                         break;
-                    case CREATORS:
-                        Console::consolePrintPos(MM_OFF + 12, i + 2, ":%s",
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str());
-                        Console::consolePrintPos(MM_OFF + 24, i + 2, "[A:%06X]",
-                                                 ((uint32_t) this->mii_repo->miis[c2a[i + this->scroll]]->author_id) & 0xFFFFFF);
-                        Console::consolePrintPos(MM_OFF + 35, i + 2, "[D:%s]",
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str());
+                    case SYSTEM_DEVICE:
+                        if ((mii_repo->db_type == MiiRepo::eDBType::RFL)) {
+                            Console::consolePrintPos(MM_OFF + 20, i + 2, "[D:%s",
+                                                     this->mii_repo->miis[c2a[i + this->scroll]]->device_hash.c_str());
+                            Console::consolePrintPos(MM_OFF + 34, i + 2, "]");
+                        } else {
+                            Console::consolePrintPos(MM_OFF + 12, i + 2, "[A:%04X..%04X]",
+                                                     ((uint32_t) (this->mii_repo->miis[c2a[i + this->scroll]]->author_id >> 48)), ((uint32_t) this->mii_repo->miis[c2a[i + this->scroll]]->author_id) & 0xFFFF);
+
+                            Console::consolePrintPos(MM_OFF + 28, i + 2, "[D:..%s",
+                                                     this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str());
+                            Console::consolePrintPos(MM_OFF + 40, i + 2, "]");
+                        }
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     case MIIID:
-                        if (this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id)
-                            DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
                         Console::consolePrintPos(MM_OFF + 11, i + 2, "[F:%s ",
                                                  (mii_repo->db_type == MiiRepo::eDBType::RFL) ? std::bitset<3>(this->mii_repo->miis[c2a[i + this->scroll]]->mii_id_flags).to_string().c_str() : std::bitset<4>(this->mii_repo->miis[c2a[i + this->scroll]]->mii_id_flags).to_string().c_str());
-                        Console::consolePrintPos(MM_OFF + 18, i + 2, "]");
-                        Console::consolePrintPos(MM_OFF + 19, i + 2, (mii_repo->db_type == MiiRepo::eDBType::RFL) ?"[T:%08X" : "[T:%07X",
+                        Console::consolePrintPos(MM_OFF + 18, i + 2, (mii_repo->db_type == MiiRepo::eDBType::RFL) ? "|T:%08X" : "|T:%07X",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->hex_timestamp);
-                        Console::consolePrintPos(MM_OFF + 31, i + 2, "]");
-                        Console::consolePrintPos(MM_OFF + 32, i + 2, "[D:%s",
+                        Console::consolePrintPos(MM_OFF + 31, i + 2, "|D:..%s",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str());
-                        Console::consolePrintPos(MM_OFF + 42, i + 2, "]");
-                        Console::consolePrintPos(MM_OFF + 43, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
+                        Console::consolePrintPos(MM_OFF + 43, i + 2, "]");
+                        Console::consolePrintPos(MM_OFF + 44, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "D" : "");
                         break;
                     case LOCATION:
-                        if (this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id)
-                            DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
                         Console::consolePrintPos(MM_OFF + 12, i + 2, "< %s >",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->location_name.c_str());
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
+                        break;
+                    case CREATOR:
+                        Console::consolePrintPos(MM_OFF + 12, i + 2, ", created by: %s",
+                                                 this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str());
                         Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     case TIMESTAMP:
@@ -448,9 +459,9 @@ void MiiSelectState::render() {
                             DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
                         Console::consolePrintPos(MM_OFF + 12, i + 2, "[ %s ]",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->timestamp.c_str());
-                        Console::consolePrintPos(MM_OFF + 28, i + 2, "[ %04x",
+                        Console::consolePrintPos(MM_OFF + 28, i + 2, "[ %04X",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->hex_timestamp);
-                        Console::consolePrintPos(MM_OFF + 38, i + 2, "]");
+                        Console::consolePrintPos(MM_OFF + 39, i + 2, "]");
                         Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     default:;
@@ -474,20 +485,6 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
     if (this->state == STATE_MII_SELECT) {
         if (input->get(ButtonState::TRIGGER, Button::B) || this->no_miis)
             return SUBSTATE_RETURN;
-        //if (input->get(ButtonState::TRIGGER, Button::R)) {
-        //    this->titleSort = (this->titleSort + 1) % 4;
-        //    TitleUtils::sortTitle(this->titles, this->titles + this->all_miis_count, this->titleSort, this->sortAscending);
-        //    this->update_c2a();
-        //    return SUBSTATE_RUNNING;
-        //}
-        //if (input->get(ButtonState::TRIGGER, Button::L)) {
-        //    if (this->titleSort > 0) {
-        //        this->sortAscending = !this->sortAscending;
-        //        TitleUtils::sortTitle(this->titles, this->titles + this->all_miis_count, this->titleSort, this->sortAscending);
-        //        this->update_c2a();
-        //    }
-        //    return SUBSTATE_RUNNING;
-        //}
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             for (size_t i = 0; i < all_miis_count; i++) {
                 if (this->mii_view[i].selected)

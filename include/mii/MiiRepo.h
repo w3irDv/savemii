@@ -40,10 +40,10 @@ public:
     virtual MiiData *extract_mii_data(size_t index) = 0;                             // from the repo to (tmp)mem
     virtual bool wipe_miidata(size_t index) = 0;
     bool repopulate_mii(size_t index, MiiData *miidata);
-    virtual bool check_if_favorite(MiiData* miidata) = 0;
-    virtual bool toggle_favorite_flag(MiiData* miidata) = 0;
-    virtual bool update_miid_in_favorite_section(MiiData* old_miidata, MiiData* new_miidata) = 0;
-    virtual bool delete_miid_from_favorite_section(MiiData* miidata) = 0;
+    virtual bool check_if_favorite(MiiData *miidata) = 0;
+    virtual bool toggle_favorite_flag(MiiData *miidata) = 0;
+    virtual bool update_miid_in_favorite_section(MiiData *old_miidata, MiiData *new_miidata) = 0;
+    virtual bool delete_miid_from_favorite_section(MiiData *miidata) = 0;
 
     virtual std::string getBackupBasePath() { return backup_base_path; };
     int backup(int slot, std::string tag = "");
@@ -56,7 +56,8 @@ public:
     virtual uint16_t get_crc() = 0;
 
     bool mark_duplicates();
-    
+    bool check_if_miiid_exists(MiiData *miidata);
+
     const std::string repo_name;
     eDBType db_type = FFL;
     eDBKind db_kind;

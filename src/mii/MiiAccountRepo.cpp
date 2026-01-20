@@ -376,6 +376,10 @@ bool MiiAccountRepo<MII, MIIDATA>::empty_repo() {
     return true;
 }
 
+/// @brief Restores all account data (account.dat and miimgXX.dat diles) from a backup of the same account
+/// @param srcPath 
+/// @param dstPath 
+/// @return /
 template<>
 int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, std::string dstPath) {
 
@@ -420,7 +424,7 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
     return errorCode;
 }
 
-/// @brief Copy account data from one accoint to another. It is assumed that both folder exists, locations are inside bounds
+/// @brief Helper function to copy account data from one account to another. It is assumed that both folder exists, and locations are inside bounds
 /// @param target_mii_location
 /// @param source_mii_repo
 /// @param source_mii_location

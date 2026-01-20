@@ -41,6 +41,7 @@ public:
     bool toggle_temp_flag();
     bool toggle_favorite_flag();
     bool toggle_foreign_flag() { return true; };
+    bool make_it_local();
     bool get_favorite_flag();
     uint32_t get_timestamp();
     std::string get_device_hash();

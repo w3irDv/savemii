@@ -123,9 +123,10 @@ int main() {
     ExcludesCfg::wiiuExcludes->init();
     ExcludesCfg::wiiExcludes->init();
 
-    StartupUtils::addInitMessageWithIcon("Getting DeviceID and MACAddress");
+    StartupUtils::addInitMessageWithIcon("Getting DeviceID , MACAddress and AuthorId");
     AmbientConfig::get_device_hash();
     AmbientConfig::get_mac_address();
+    AmbientConfig::get_author_id();
 
     StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing Mii repos."));
 

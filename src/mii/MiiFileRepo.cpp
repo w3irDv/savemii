@@ -671,22 +671,3 @@ cleanup_after_io_error:
         FSUtils::flushVol(db_filepath);
     return false;
 }
-
-template<typename MII, typename MIIDATA>
-bool MiiFileRepo<MII, MIIDATA>::check_if_miiid_exists(MiiData *miidata) {
-
-    uint32_t mii_id_timestamp = miidata->get_timestamp();
-
-    for (const auto &mii : this->miis) {
-        if (mii->hex_timestamp == mii_id_timestamp) {
-            uint8_t mii_id_flags = miidata->get_miid_flags();
-            if (mii->mii_id_flags == mii_id_flags) {
-                std::string device_hash = miidata->get_device_hash();
-                if (mii->device_hash == device_hash)
-                    return true;
-            }
-        }
-    }
-
-    return false;
-}

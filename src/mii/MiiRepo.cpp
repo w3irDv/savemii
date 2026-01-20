@@ -241,6 +241,24 @@ bool MiiRepo::mark_duplicates() {
     return this->repo_has_duplicated_miis;
 }
 
+bool MiiRepo::check_if_miiid_exists(MiiData *miidata) {
+
+    uint32_t mii_id_timestamp = miidata->get_timestamp();
+
+    for (const auto &mii : this->miis) {
+        if (mii->hex_timestamp == mii_id_timestamp) {
+            uint8_t mii_id_flags = miidata->get_miid_flags();
+            if (mii->mii_id_flags == mii_id_flags) {
+                std::string device_hash = miidata->get_device_hash();
+                if (mii->device_hash == device_hash)
+                    return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 bool MiiRepo::test_list_repo() {
 
     for (const auto &mii : this->miis) {
