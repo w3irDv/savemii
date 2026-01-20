@@ -40,4 +40,6 @@ namespace MiiUtils {
 
     unsigned short getCrc(unsigned char *buf, int size);
 
+    bool check_for_duplicates_in_selected_miis(MiiRepo *mii_repo, std::vector<MiiStatus::MiiStatus> *mii_view, std::vector<int> *c2a);
+
 } // namespace MiiUtils

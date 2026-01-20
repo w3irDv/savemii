@@ -247,6 +247,21 @@ bool MiiUtils::export_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
             return false;
         }
 
+    if (mii_repo->needs_populate == true) { // this cannot happen because we have selected miis to import from the primary repo (=mii_repo)
+        if (mii_repo->open_and_load_repo())
+            if (mii_repo->populate_repo())
+                goto mii_repo_populated;
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), mii_repo->repo_name.c_str());
+        return false;
+    }
+
+mii_repo_populated:
+    if (mii_repo->repo_has_duplicated_miis)
+        if (target_repo->db_kind != MiiRepo::FOLDER)
+            if (check_for_duplicates_in_selected_miis(mii_repo, mii_view, c2a))
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its miiid or normal/special/temp or device info for one of them"));
+
+
     InProgress::totalSteps = 0;
     InProgress::currentStep = 1;
     InProgress::abortTask = false;
@@ -332,12 +347,27 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
     if (receiving_repo->needs_populate == true) {
         if (receiving_repo->open_and_load_repo())
             if (receiving_repo->populate_repo())
-                goto repo_populated;
+                goto receiving_repo_populated;
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), receiving_repo->repo_name.c_str());
         return false;
     }
 
-repo_populated:
+receiving_repo_populated:
+    if (mii_repo->needs_populate == true) { // this cannot happen because we have selected miis to import from the auxiliary repo (=mii_repo)
+        if (mii_repo->open_and_load_repo())
+            if (mii_repo->populate_repo())
+                goto mii_repo_populated;
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), mii_repo->repo_name.c_str());
+        return false;
+    }
+
+mii_repo_populated:
+    if (mii_repo->repo_has_duplicated_miis)
+        if (receiving_repo->db_kind != MiiRepo::FOLDER)
+            if (check_for_duplicates_in_selected_miis(mii_repo, mii_view, c2a))
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("You are importing duplicated Miis. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its miiid or normal/special/temp or device info for one of them"));
+
+
     InProgress::totalSteps = 0;
     InProgress::currentStep = 1;
     InProgress::abortTask = false;
@@ -392,7 +422,7 @@ repo_populated:
             receiving_repo->needs_populate = true;
         if (receiving_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) // We allow duplicates in Folder repos, and for File repo we have already informed of duplicates (except if we are explicitly importing two duplicate miis)
             if (receiving_repo->mark_duplicates())
-                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings. They will be deleted by MiiChannel or ignored by MiiMaker. Please fix it updating its miiid or normal/special/temp or device info for one of them"));
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"));
     } else {
         goto cleanup_mii_view_if_error; // can only happen for fileRepos
     }
@@ -660,7 +690,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
         if (mii_repo->persist_repo()) {
             bool repo_has_duplicates = mii_repo->mark_duplicates();
             if (mii_repo->db_kind != MiiRepo::FOLDER && repo_has_duplicates)
-                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings. They will be deleted by MiiChannel or ignored by MiiMaker. Please fix it updating its miiid or normal/special/temp or device info for one of them"));
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"));
             return errorCounter == 0;
         }
 
@@ -785,5 +815,31 @@ bool MiiUtils::x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), target_account_dat.c_str(), strerror(errno));
     }
 
+    return false;
+}
+
+bool MiiUtils::check_for_duplicates_in_selected_miis(MiiRepo *mii_repo, std::vector<MiiStatus::MiiStatus> *mii_view, std::vector<int> *c2a) {
+
+    auto miis = mii_repo->miis;
+
+    auto candidate_miis_count = c2a->size();
+
+    for (size_t i = 0; i < candidate_miis_count; i++) {
+        auto mii_i = miis.at(c2a->at(i));
+        if (!mii_view->at(c2a->at(i)).selected || !mii_i->dup_mii_id)
+            continue;
+        for (size_t j = i + 1; j < candidate_miis_count; j++) {
+            auto mii_j = miis.at(c2a->at(j));
+            if (!mii_view->at(c2a->at(j)).selected || !mii_j->dup_mii_id)
+                continue;
+            if (mii_i->hex_timestamp == mii_j->hex_timestamp) {
+                if (mii_i->mii_id_flags == mii_j->mii_id_flags) {
+                    if (mii_i->device_hash == mii_j->device_hash) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
     return false;
 }

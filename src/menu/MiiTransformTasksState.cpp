@@ -90,10 +90,10 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates MiiId, so games association is lost.");
                 break;
             case 3:
-                info = LanguageUtils::gettext("So the mii has a new unique MiiId (Beware! It will no longer be tied to any game that expects the older MiiId). MiiIds must be unique in FFL/RFL DBs.");
+                info = LanguageUtils::gettext("So the mii has a new unique MiiId (Beware! It will no longer be tied to any game that expects the older MiiId).");
                 break;
             case 4:
-                info = LanguageUtils::gettext("Mark a Mii as a favorite one so they appear in other apps.");
+                info = LanguageUtils::gettext("Mark Miis as a favorite one so they appear in other apps.");
                 break;
             case 5:
                 info = LanguageUtils::gettext("So the mii can travel to other consoles");
@@ -119,7 +119,7 @@ void MiiTransformTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF, 13 + ((cursorPos == 1 || cursorPos == 3) ? -1 : 0), info);
+        Console::consolePrintPosAutoFormat(M_OFF, 13 + ((cursorPos == 4 || cursorPos == 5) ? 1 : 0), info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, cursorPos + 2, "\u2192");

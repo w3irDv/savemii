@@ -464,7 +464,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
             }
         }
         if (this->check_if_miiid_exists(miidata)) {
-            std::string mess = StringUtils::stringFormat(LanguageUtils::gettext("Duplicate Mii ID found (%s). MiiMaker will not show this mii, and MiiChannel can delete it unless you generate a new Mii ID for it, becoming a completely new mii.\nDo you want me to chnage MiiId for this mii?"),
+            std::string mess = StringUtils::stringFormat(LanguageUtils::gettext("Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n\nYou can generate a new Mii ID for it, and it will become a completely new unique mii.\n\nDo you want me to change Mii Id for this mii?"),
                                                          miidata->get_mii_name().c_str());
             if (Console::promptConfirm(ST_WARNING, mess.c_str())) {
                 miidata->update_timestamp(target_location);

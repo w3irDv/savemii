@@ -242,25 +242,22 @@ void DrawUtils::setFontColorByCursor(Color col, Color colAtCursor, int cursorPos
 
 void DrawUtils::setFontColorByCursorForToggles(Color col, Color colAtCursor, int cursorPos, int line, bool toggle) {
 
-    if (toggle) {
-        col.a = 0xff;
+     if (toggle) {
+        colAtCursor.a = 0xff;
+        colAtCursor.b = col.b/8;
+        colAtCursor.r = col.r/8;
+        colAtCursor.g = (0xff - colAtCursor.g) * 3 / 4 + colAtCursor.g;
+        
+        col.b = col.b/4;
+        col.r = col.r/4;
         col.g = (0xff - col.g) * 3 / 4 + col.g;
-        col.r = (0xff - col.r) * 3 / 4 + col.r;
-    } else {
-        col.a = col.a * 14 / 15;
-        col.b = col.b * 10 / 12;
-        col.g = col.g * 10 / 12;
-        col.r = col.r * 10 / 12;
     }
 
     if (cursorPos == line)
         font_col = colAtCursor;
     else
         font_col = col;
-
-
-    }
-
+}
 
 void DrawUtils::setFontColorForToggles(Color col, bool toggle) {
     if (toggle) {
