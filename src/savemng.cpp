@@ -804,9 +804,9 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                 StatManager::enable_flags_for_backup();
                 if (StatManager::open_stat_file_for_write(dstPath)) {
                     if (isWii)
-                        StatManager::set_default_stat_for_vwii_savedata(&titles[i]);
+                        StatManager::set_default_stat_cfg_for_vwii_savedata(&titles[i]);
                     else
-                        StatManager::set_default_stat_for_wiiu_savedata(&titles[i]);
+                        StatManager::set_default_stat_cfg_for_wiiu_savedata(&titles[i]);
                     FAT32EscapeFileManager::active_fat32_escape_file_manager = std::make_unique<FAT32EscapeFileManager>(dstPath);
                     if (FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
                         Escape::setPrefix(srcPath, dstPath);
@@ -918,9 +918,9 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     } // we have set enable_get_stat to true;
 
     if (isWii)
-        StatManager::set_default_stat_for_vwii_savedata(title);
+        StatManager::set_default_stat_cfg_for_vwii_savedata(title);
     else
-        StatManager::set_default_stat_for_wiiu_savedata(title);
+        StatManager::set_default_stat_cfg_for_wiiu_savedata(title);
 
     bool doBase = false;
     bool doCommon = false;
@@ -1042,9 +1042,9 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
 
     if (isWii || !StatManager::stat_file_exists(title, slot)) {
         StatManager::use_legacy_stat_cfg = true;
-        StatManager::set_default_stat_for_vwii_savedata(title);
+        StatManager::set_default_stat_cfg_for_vwii_savedata(title);
     } else {
-        StatManager::set_default_stat_for_wiiu_savedata(title);
+        StatManager::set_default_stat_cfg_for_wiiu_savedata(title);
         StatManager::use_legacy_stat_cfg = false;
     }
 

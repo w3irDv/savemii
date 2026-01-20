@@ -305,14 +305,14 @@ void StatManager::unload_statManager() {
     delete default_file_stat;
 }
 
-void StatManager::set_default_stat_for_wiiu_savedata(Title *title) {
+void StatManager::set_default_stat_cfg_for_wiiu_savedata(Title *title) {
 
     default_file_stat->uid = title->lowID;
     default_file_stat->gid = title->groupID;
     default_file_stat->fsmode = 0x660;
 }
 
-void StatManager::set_default_stat_for_vwii_savedata(Title *title) {
+void StatManager::set_default_stat_cfg_for_vwii_savedata(Title *title) {
 
     default_file_stat->uid = title->lowID;
     default_file_stat->gid = title->groupID;

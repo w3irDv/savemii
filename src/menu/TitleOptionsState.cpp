@@ -181,20 +181,20 @@ void TitleOptionsState::render() {
             const char *onlyCommon, *commonIncluded; // now is time to show common savedata status
             switch (this->task) {
                 case BACKUP:
-                    onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be saved");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata will also be saved");
+                    onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be saved");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata found. It will also be saved");
                     break;
                 case RESTORE:
-                    onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be restored");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata will also be restored");
+                    onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be restored");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata found. It will also be restored");
                     break;
                 case WIPE_PROFILE:
-                    onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be deleted");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata will also be deleted");
+                    onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be deleted");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata found. It will also be deleted");
                     break;
                 case COPY_TO_OTHER_DEVICE:
-                    onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be copied");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata will also be copied");
+                    onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be copied");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata found. It will also be copied");
                     break;
                 default:
                     onlyCommon = "";
@@ -471,8 +471,12 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         source_user = ((source_user == -3) ? -3 : (source_user - 1));
-                        if ((!this->isWiiUTitle) && source_user == -2)
-                            source_user = -3;
+                        if (!this->isWiiUTitle && source_user == -2) {
+                            if (this->title.is_Inject)
+                                source_user = -3;
+                            else
+                                source_user = -1;
+                        }
                         updateSourceHasRequestedSavedata();
                         break;
                     case 2:

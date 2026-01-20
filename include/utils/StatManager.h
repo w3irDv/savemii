@@ -17,8 +17,8 @@ namespace StatManager {
     bool copy_stat(const std::string &source_file, const std::string &target_file);
     bool apply_default_stat(const std::string &filepath);
     void set_default_stat(uint32_t uid, uint32_t gid, uint16_t fsmode);
-    void set_default_stat_for_wiiu_savedata(Title *title);
-    void set_default_stat_for_vwii_savedata(Title *title);
+    void set_default_stat_cfg_for_wiiu_savedata(Title *title);
+    void set_default_stat_cfg_for_vwii_savedata(Title *title);
     void unload_statManager();
     void enable_flags_for_restore();
     void enable_flags_for_backup();
