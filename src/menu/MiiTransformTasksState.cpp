@@ -42,7 +42,7 @@ void MiiTransformTasksState::render() {
         Console::consolePrintPosAligned(4, 4, 2, LanguageUtils::gettext("[%s]"), make_it_local ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
         DrawUtils::setFontColorByCursorForToggles(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3, update_timestamp);
-        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Update MiiId (Timestamp):"));
+        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Update Mii Id (Timestamp):"));
         Console::consolePrintPosAligned(5, 4, 2, LanguageUtils::gettext("[%s]"), update_timestamp ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
         DrawUtils::setFontColorByCursorForToggles(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4, toggle_favorite_flag);
@@ -87,31 +87,31 @@ void MiiTransformTasksState::render() {
                 info = LanguageUtils::gettext("Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost.");
                 break;
             case 2:
-                info = LanguageUtils::gettext("Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates MiiId, so games association is lost.");
+                info = LanguageUtils::gettext("Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost.");
                 break;
             case 3:
-                info = LanguageUtils::gettext("So the mii has a new unique MiiId (Beware! It will no longer be tied to any game that expects the older MiiId).");
+                info = LanguageUtils::gettext("So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id).");
                 break;
             case 4:
-                info = LanguageUtils::gettext("Mark Miis as a favorite one so they appear in other apps.");
+                info = LanguageUtils::gettext("Mark Miis as a favorite one so they appear in games that support them.");
                 break;
             case 5:
-                info = LanguageUtils::gettext("So the mii can travel to other consoles");
+                info = LanguageUtils::gettext("So the mii can travel to other consoles.");
                 break;
             case 6:
-                info = LanguageUtils::gettext("You can transform a normal Mii into an special one, and viceversa. This updates the MiiId, so games association is lost.");
+                info = LanguageUtils::gettext("You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost.");
                 break;
             case 7:
-                info = LanguageUtils::gettext("Wii Miis can be forced as foreign irrespective of where they were created. This updates the MiiId (mii games association is lost).");
+                info = LanguageUtils::gettext("Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost).");
                 break;
             case 8:
                 info = LanguageUtils::gettext("CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo).");
                 break;
             case 9:
-                info = LanguageUtils::gettext("So people that does not own the mii can modifiy it by creating a copy of the original");
+                info = LanguageUtils::gettext("So people that does not own the mii can modifiy it by creating a copy of the original.");
                 break;
             case 10:
-                info = LanguageUtils::gettext("Temporary Miis cannot be seen in FFL DB. This updates the MiiId (mii games association is lost).");
+                info = LanguageUtils::gettext("Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost).");
                 break;
             default:
                 info = "";

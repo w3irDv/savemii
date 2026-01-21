@@ -108,7 +108,6 @@ void MiiRepoSelectState::render() {
 
             Console::consolePrintPos(M_OFF, i + 2, "  %s",
                                      MiiUtils::mii_repos.at(c2a[i + this->scroll])->repo_name.c_str());
-              
             if (MiiUtils::mii_repos.at(c2a[i + this->scroll])->db_category == MiiRepo::INTERNAL)
                 DrawUtils::setFontColorByCursor(COLOR_INFO_EM, COLOR_INFO_AT_CURSOR, cursorPos, i);
             else

@@ -515,10 +515,11 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
     size_t consecutive_not_found = 0;
     for (size_t i = 0; i < MIIDATA::DB::MAX_MIIS; i++) {
 
-        if (consecutive_not_found < 50)
-            Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
-        else {
-            if (i % 100 == 0)
+        if (consecutive_not_found < 10) {
+            if (i % 3 == 0)
+                Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
+        } else {
+            if (i % 500 == 0)
                 Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
         }
 
