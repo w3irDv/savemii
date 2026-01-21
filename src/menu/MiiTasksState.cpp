@@ -35,7 +35,7 @@ void MiiTasksState::render() {
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
                 Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Backup DB"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-                Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Restore Full DB (Full data restore for one account mii)"));
+                Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Restore Full DB (Full restore - all account attributes - for one profile)"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
                 Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"));
                 DrawUtils::setFontColor(COLOR_INFO);
@@ -46,9 +46,9 @@ void MiiTasksState::render() {
                 if (fixed_stage_repo)
                     Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
                 else
-                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis"));
+                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis (account MiiData)"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-                Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import Miis"));
+                Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import Miis (account MiiData)"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
                 Console::consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Transform Miis"));
                 Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 2 ? 2 : 0), "\u2192");

@@ -135,11 +135,14 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
         return false;
     }
 
-    // Compute gender before flipping to LE
+    // Compute gender/name/birthdate before flipping to LE
     uint8_t gender = miidata->get_gender();
     std::string gender_str = std::to_string(gender + 1);
 
     std::string mii_name_str = miidata->get_name_as_hex_string() + "0000";
+
+    std::string birth_day{}, birth_month{};
+    miidata->get_birthdate_as_string(birth_month, birth_day);
 
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
@@ -200,9 +203,12 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
             tempFile << "Gender=" << gender_str << std::endl; // update only if previoulsy the gender was filled
         } else if (line.find("MiiName=") != std::string::npos) {
             tempFile << "MiiName=" << mii_name_str << std::endl;
-        } else {
+        } else if ((line.find("BirthDay=") != std::string::npos) && (line.find("BirthDay=0") == std::string::npos)) {
+            tempFile << "BirthDay=" << birth_day << std::endl;
+        } else if ((line.find("BirthMonth=") != std::string::npos) && (line.find("BirthMonth=0") == std::string::npos)) {
+            tempFile << "BirthMonth=" << birth_month << std::endl;
+        } else
             tempFile << line << std::endl;
-        }
     }
 
 
@@ -270,9 +276,6 @@ cleanup_managing_real_db:
         Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
     }
     return false;
-
-
-    
 }
 
 template<typename MII, typename MIIDATA>
@@ -340,7 +343,7 @@ bool MiiAccountRepo<MII, MIIDATA>::populate_repo() {
         return false;
     }
 
-    this->mark_duplicates(); 
+    this->mark_duplicates();
     this->needs_populate = false;
     return true;
 };
@@ -377,8 +380,8 @@ bool MiiAccountRepo<MII, MIIDATA>::empty_repo() {
 }
 
 /// @brief Restores all account data (account.dat and miimgXX.dat diles) from a backup of the same account
-/// @param srcPath 
-/// @param dstPath 
+/// @param srcPath
+/// @param dstPath
 /// @return /
 template<>
 int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, std::string dstPath) {
