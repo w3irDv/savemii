@@ -11,9 +11,8 @@
 
 WiiMii::WiiMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp,
                std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable,
-               uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo,
-               size_t index) : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, favorite, copyable, shareable, mii_id_flags, WII, mii_repo, index),
-                               birth_platform(birth_platform) {
+               uint8_t mii_id_flags, eBirthPlatform birth_platform, MiiRepo *mii_repo,
+               size_t index) : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, favorite, copyable, shareable, mii_id_flags, WII, birth_platform, mii_repo, index) {
     switch (mii_id_flags) {
         case 0:
         case 2:
@@ -142,9 +141,8 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     MII_DATA_STRUCT *mii_data = (MII_DATA_STRUCT *) raw_mii_data;
 
-    // TODO: LOOK FOR SENSIBLE VALUES FOR THE WII MII Case
-    uint8_t birth_platform = 0;
-    bool copyable = true; // non-existent in wii ...
+    eBirthPlatform birth_platform = REV; // manualy forged ... does not exist in miidata
+    bool copyable = true;                // non-existent in wii ...
     uint64_t author_id = 0;
 
     bool favorite = mii_data->isFavorite == 1;
@@ -383,12 +381,12 @@ uint8_t WiiMiiData::get_miid_flags() {
 bool WiiMiiData::make_it_local() {
 
     auto mac = AmbientConfig::mac_address.MACAddr;
-    
+
     uint8_t cksum8 = mac[0] + mac[1] + mac[2];
     uint8_t system_id[4] = {cksum8, mac[3], mac[4], mac[5]};
 
-    printf("mac - %02x %02x %02x %02x %02x %02x\n",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5]);
-    printf("systemid - %02x %02x %02x %02x\n",system_id[0],system_id[1],system_id[2],system_id[3]);
+    printf("mac - %02x %02x %02x %02x %02x %02x\n", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    printf("systemid - %02x %02x %02x %02x\n", system_id[0], system_id[1], system_id[2], system_id[3]);
 
     memcpy(this->mii_data + DEVICE_HASH_OFFSET, system_id, DEVICE_HASH_SIZE);
 

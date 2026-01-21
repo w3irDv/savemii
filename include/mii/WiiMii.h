@@ -8,9 +8,7 @@
 class WiiMii : public Mii {
 public:
     WiiMii() {};
-    WiiMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index);
-
-    uint8_t birth_platform = 0;
+    WiiMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, eBirthPlatform birth_platform, MiiRepo *mii_repo, size_t index);
 
     static WiiMii *populate_mii(size_t index, uint8_t *raw_mii_data);
     WiiMii *v_populate_mii(uint8_t *mii_data);

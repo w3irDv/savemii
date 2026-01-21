@@ -13,9 +13,8 @@
 
 WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp,
                  std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable,
-                 uint8_t mii_id_flags, uint8_t birth_platform, MiiRepo *mii_repo, size_t index)
-    : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, favorite, copyable, shareable, mii_id_flags, WIIU, mii_repo, index),
-      birth_platform(birth_platform) {
+                 uint8_t mii_id_flags, eBirthPlatform birth_platform, MiiRepo *mii_repo, size_t index)
+    : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, favorite, copyable, shareable, mii_id_flags, WIIU, birth_platform, mii_repo, index) {
     if ((mii_id_flags & FFL_CREATE_ID_FLAG_NORMAL) == FFL_CREATE_ID_FLAG_NORMAL)
         mii_kind = NORMAL;
     else
@@ -41,7 +40,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     FFLiMiiDataOfficial *mii_data = (FFLiMiiDataOfficial *) raw_mii_data;
 
-    uint8_t birth_platform = mii_data->core.birth_platform;
+    eBirthPlatform birth_platform = (eBirthPlatform) mii_data->core.birth_platform;
     // according to https://github.com/HEYimHeroic/mii2studio/blob/master/mii_data_ver3.ksy , is_favorite , but seems to be ignored by MiiMaker
     //bool favorite = mii_data->core.unk_0x18_b1 == 1;
     bool favorite = false; // We wiil compute later in populate_repo, comparing with mii_id
@@ -64,7 +63,7 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     // just for testing purposes in a linux box
-    birth_platform = mii_data->core.unk_0x00_b4;
+    birth_platform = (eBirthPlatform) mii_data->core.unk_0x00_b4;
     //uint8_t tmp_favorite;
     //memcpy(&tmp_favorite, raw_mii_data + WiiUMiiData::BIRTHDATE_OFFSET, 1);
     //favorite = (((tmp_favorite & 0b01000000) >> 6) == 0x1);

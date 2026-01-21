@@ -24,9 +24,15 @@ public:
         S_TEMP   // Special Temporary
     };
 
+    enum eBirthPlatform {
+        REV = 1,
+        DS = 2,
+        N3DS = 3,
+        WIIU_SWITCH = 4
+    };
 
     Mii() {};
-    Mii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, eMiiType mii_type, MiiRepo *mii_repo, size_t index);
+    Mii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, eMiiType mii_type, eBirthPlatform birth_platform, MiiRepo *mii_repo, size_t index);
     virtual ~Mii() {};
 
     std::string mii_name{};
@@ -40,6 +46,7 @@ public:
     bool shareable = false;
     uint8_t mii_id_flags = 0;
     eMiiType mii_type = WIIU;
+    eBirthPlatform birth_platform = WIIU_SWITCH;
     MiiRepo *mii_repo = nullptr;
     size_t index = 0;
     std::string device_hash_lite{};
@@ -49,6 +56,8 @@ public:
     bool dup_mii_id = false;
 
     virtual Mii *v_populate_mii(uint8_t *mii_data) = 0;
+    
+    const char *get_birth_platform_as_string();
 };
 
 class MiiData {

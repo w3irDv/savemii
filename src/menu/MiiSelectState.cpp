@@ -450,9 +450,12 @@ void MiiSelectState::render() {
                         Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     case CREATOR:
-                        Console::consolePrintPos(MM_OFF + 12, i + 2, ": created by %s",
+                        Console::consolePrintPos(MM_OFF + 12, i + 2, LanguageUtils::gettext(": by %s"),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str());
+                        Console::consolePrintPos(MM_OFF + 30, i + 2, LanguageUtils::gettext("- %s"),
+                                                 this->mii_repo->miis[c2a[i + this->scroll]]->get_birth_platform_as_string());
                         Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
+
                         break;
                     case TIMESTAMP:
                         if (this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id)
