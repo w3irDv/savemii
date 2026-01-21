@@ -251,7 +251,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                         }
                     primary_repo_populated:
                         std::string srcPath = mii_repo->backup_base_path + "/" + std::to_string(slot);
-                        MiiAccountRepo<WiiUMii, WiiUMiiData> *slot_mii_repo = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_SLOT", srcPath, "NO_BACKUP", "Temp ACCOUNT Repo");
+                        MiiAccountRepo<WiiUMii, WiiUMiiData> *slot_mii_repo = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_SLOT", srcPath, "NO_BACKUP", "Temp ACCOUNT Repo", MiiRepo::TEMP);
                         if (slot_mii_repo->open_and_load_repo())
                             if (slot_mii_repo->populate_repo())
                                 goto slot_repo_populated;
@@ -276,7 +276,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                     if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
                         // primary repo is already populated ... continue
                         std::string srcPath = mii_repo->backup_base_path + "/" + std::to_string(slot);
-                        MiiAccountRepo<WiiUMii, WiiUMiiData> *slot_mii_repo = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_SLOT", srcPath, "NO_BACKUP", "Temp ACCOUNT Repo");
+                        MiiAccountRepo<WiiUMii, WiiUMiiData> *slot_mii_repo = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_SLOT", srcPath, "NO_BACKUP", "Temp ACCOUNT Repo", MiiRepo::TEMP);
                         if (slot_mii_repo->open_and_load_repo())
                             if (slot_mii_repo->populate_repo())
                                 goto slot_repo_populated_for_xrestore;

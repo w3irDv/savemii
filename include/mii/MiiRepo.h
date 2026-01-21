@@ -26,7 +26,13 @@ public:
         ACCOUNT
     };
 
-    MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
+    enum eDBCategory {
+        INTERNAL,
+        SD,
+        TEMP
+    };
+
+    MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
     virtual ~MiiRepo();
 
     virtual bool populate_repo() = 0;
@@ -64,6 +70,7 @@ public:
     const std::string path_to_repo;
     const std::string backup_base_path;
     const std::string repo_description;
+    eDBCategory db_category;
     MiiRepo *stage_repo = nullptr;
 
     FSMode db_fsmode = (FSMode) 0x666;

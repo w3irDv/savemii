@@ -23,6 +23,7 @@
 #define COLOR_LIST_WARNING_AT_CURSOR         Color(0xBB7F88FF)
 #define COLOR_INFO                           Color(0x88CC88FF)
 #define COLOR_INFO_AT_CURSOR                 Color(0x88CCCCFF)
+#define COLOR_INFO_EM                        Color(0x66FF66FF)
 #define COLOR_CURRENT_BS                     Color(0xFFBB33FF)
 #define COLOR_CURRENT_BS_AT_CURSOR           Color(0xFFFF99FF)
 #define COLOR_KEY                            Color(0xFF3333FF)

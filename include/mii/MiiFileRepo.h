@@ -8,7 +8,7 @@ template<typename MII, typename MIIDATA>
 class MiiFileRepo : public MiiRepo {
 
 public:
-    MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
+    MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
     virtual ~MiiFileRepo();
 
     bool open_and_load_repo();

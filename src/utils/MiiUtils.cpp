@@ -82,16 +82,16 @@ set_repos:
 
     FSUtils::createFolder(path_sgmgx.c_str());
 
-    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", "Internal Wii U Mii Database");
-    MiiRepos["FFL_C"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_C", pathfflc, "mii_bckp_ffl_c", "Custom Wii U Mii Database on SD");
-    MiiRepos["FFL_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_STAGE", pathffl_Stage, "mii_bckp_ffl_Stage", "Stage Folder for Wii U Miis");
-    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", "Internal vWii Mii Database");
-    MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", "Custom vWii Mii Database on SD");
-    MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", "Stage Folder for vWii Miis");
-    MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", "Miis from Internal Account DB");
-    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_C", pathaccountc, "mii_bckp_account_c", "Miis from Custom Account DB on SD");
-    MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis");
-    MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", "SaveGameManager GX Miis stage folder");
+    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", "Internal Wii U Mii Database",MiiRepo::INTERNAL);
+    MiiRepos["FFL_C"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_C", pathfflc, "mii_bckp_ffl_c", "Custom Wii U Mii Database on SD",MiiRepo::SD);
+    MiiRepos["FFL_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_STAGE", pathffl_Stage, "mii_bckp_ffl_Stage", "Stage Folder for Wii U Miis on SD",MiiRepo::SD);
+    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", "Internal vWii Mii Database",MiiRepo::INTERNAL);
+    MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", "Custom vWii Mii Database on SD",MiiRepo::SD);
+    MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", "Stage Folder for vWii Miis on SD",MiiRepo::SD);
+    MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", "Miis from Internal Account DB",MiiRepo::INTERNAL);
+    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_C", pathaccountc, "mii_bckp_account_c", "Miis from Custom Account DB on SD",MiiRepo::SD);
+    MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis on SD",MiiRepo::SD);
+    MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", "SaveGameManager GX Miis stage folder on SD",MiiRepo::SD);
 
 
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_STAGE"]);

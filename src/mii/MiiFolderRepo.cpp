@@ -16,7 +16,7 @@
 namespace fs = std::filesystem;
 
 template<typename MII, typename MIIDATA>
-MiiFolderRepo<MII, MIIDATA>::MiiFolderRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description) : MiiRepo(repo_name, MIIDATA::DB::DB_TYPE, eDBKind::FOLDER, path_to_repo, backup_folder, repo_description) {
+MiiFolderRepo<MII, MIIDATA>::MiiFolderRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category) : MiiRepo(repo_name, MIIDATA::DB::DB_TYPE, eDBKind::FOLDER, path_to_repo, backup_folder, repo_description, db_category) {
     filename_prefix = MII::file_name_prefix;
 };
 
@@ -41,8 +41,8 @@ bool MiiFolderRepo<WiiMii, WiiMiiData>::check_if_favorite(MiiData *miidata) {
     return miidata->get_favorite_flag();
 }
 
-template MiiFolderRepo<WiiMii, WiiMiiData>::MiiFolderRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
-template MiiFolderRepo<WiiUMii, WiiUMiiData>::MiiFolderRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
+template MiiFolderRepo<WiiMii, WiiMiiData>::MiiFolderRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
+template MiiFolderRepo<WiiUMii, WiiUMiiData>::MiiFolderRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
 
 template<typename MII, typename MIIDATA>
 MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(size_t index) {

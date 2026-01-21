@@ -18,7 +18,7 @@ namespace fs = std::filesystem;
 
 template<typename MII, typename MIIDATA>
 MiiFileRepo<MII, MIIDATA>::MiiFileRepo(const std::string &repo_name,
-                                       const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description) : MiiRepo(repo_name, MIIDATA::DB::DB_TYPE, eDBKind::FILE, path_to_repo, backup_folder, repo_description) {
+                                       const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category) : MiiRepo(repo_name, MIIDATA::DB::DB_TYPE, eDBKind::FILE, path_to_repo, backup_folder, repo_description, db_category) {
     set_db_fsa_metadata();
 };
 
@@ -259,8 +259,8 @@ bool MiiFileRepo<WiiMii, WiiMiiData>::delete_miid_from_favorite_section([[maybe_
     return true;
 };
 
-template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
-template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description);
+template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
+template MiiFileRepo<WiiUMii, WiiUMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
 
 template<typename MII, typename MIIDATA>
 bool MiiFileRepo<MII, MIIDATA>::open_and_load_repo() {

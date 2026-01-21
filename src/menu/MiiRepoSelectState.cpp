@@ -99,14 +99,20 @@ void MiiRepoSelectState::render() {
                 break;
 
             //if (this->mii_repos_candidates->at(c2a[i + this->scroll]))
-            DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
+            if (MiiUtils::mii_repos.at(c2a[i + this->scroll])->db_category == MiiRepo::INTERNAL)
+                DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
+            else
+                DrawUtils::setFontColorByCursor(COLOR_LIST_HIGH, COLOR_LIST_AT_CURSOR, cursorPos, i);
             //else
             //DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED, COLOR_LIST_SKIPPED_AT_CURSOR, cursorPos, i);
 
             Console::consolePrintPos(M_OFF, i + 2, "  %s",
                                      MiiUtils::mii_repos.at(c2a[i + this->scroll])->repo_name.c_str());
               
-            DrawUtils::setFontColorByCursor(COLOR_INFO, COLOR_INFO_AT_CURSOR, cursorPos, i);
+            if (MiiUtils::mii_repos.at(c2a[i + this->scroll])->db_category == MiiRepo::INTERNAL)
+                DrawUtils::setFontColorByCursor(COLOR_INFO_EM, COLOR_INFO_AT_CURSOR, cursorPos, i);
+            else
+                DrawUtils::setFontColorByCursor(COLOR_INFO, COLOR_INFO_AT_CURSOR, cursorPos, i);
             Console::consolePrintPos(19, i + 2, ">> %s",
                                      MiiUtils::mii_repos.at(c2a[i + this->scroll])->repo_description.c_str());
         }

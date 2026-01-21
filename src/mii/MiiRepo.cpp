@@ -10,7 +10,10 @@
 #include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
 
-MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description) : repo_name(repo_name), db_type(db_type), db_kind(db_kind), path_to_repo(path_to_repo), backup_base_path(BACKUP_ROOT + "/" + backup_folder), repo_description(repo_description) {};
+MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder,
+                 const std::string &repo_description, eDBCategory db_category) : repo_name(repo_name), db_type(db_type), db_kind(db_kind),
+                                                                               path_to_repo(path_to_repo), backup_base_path(BACKUP_ROOT + "/" + backup_folder),
+                                                                               repo_description(repo_description), db_category(db_category) {};
 MiiRepo::~MiiRepo() {};
 
 int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
