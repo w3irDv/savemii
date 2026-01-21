@@ -977,7 +977,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
 
     if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1) {
         if (!FSUtils::copyFile(metaSavePath + "/saveinfo.xml", baseDstPath + "/savemii_saveinfo.xml")) {
-            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Warning - Error copying matadata saveinfo.xml. Not critical."));
+            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Warning - Error copying metadata saveinfo.xml. Not critical."));
             errorCode += 0;
         }
     }
@@ -2086,7 +2086,7 @@ bool updateSaveinfo(Title *title, int8_t source_user, int8_t wiiu_user, eJobType
             errorMessage.append("\n" + (std::string) FSAGetStatusStr(fserror));
         }
     }
-    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Warning - Error copying matadata saveinfo.xml. Not critical.\n"));
+    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Warning - Error copying metadata saveinfo.xml. Not critical.\n"));
     errorCode += 512;
     return false;
 }
