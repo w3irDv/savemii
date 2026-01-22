@@ -275,7 +275,7 @@ bool WiiUMiiData::toggle_temp_flag() {
     return true;
 }
 
-/// @brief For WiiU, favorites are stoed in a section of the DB. We do nothing on the MiiData. To clarify: is this commented below bit really a favorite in other places (MiiMaker ignores it)
+/// @brief For WiiU, favorites are stoed in a section of the DB. We do nothing on the MiiData. To pursue: is this commented below bit really marks favorite mii in other apps (MiiMaker ignores it)?
 /// @param db_buffer
 /// @return
 bool WiiUMiiData::toggle_favorite_flag() {

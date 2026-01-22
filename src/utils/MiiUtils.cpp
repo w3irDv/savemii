@@ -82,16 +82,16 @@ set_repos:
 
     FSUtils::createFolder(path_sgmgx.c_str());
 
-    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", "Internal Wii U Mii Database",MiiRepo::INTERNAL);
-    MiiRepos["FFL_C"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_C", pathfflc, "mii_bckp_ffl_c", "Custom Wii U Mii Database on SD",MiiRepo::SD);
-    MiiRepos["FFL_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_STAGE", pathffl_Stage, "mii_bckp_ffl_Stage", "Stage Folder for Wii U Miis on SD",MiiRepo::SD);
-    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", "Internal vWii Mii Database",MiiRepo::INTERNAL);
-    MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", "Custom vWii Mii Database on SD",MiiRepo::SD);
-    MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", "Stage Folder for vWii Miis on SD",MiiRepo::SD);
-    MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", "Miis from Internal Account DB",MiiRepo::INTERNAL);
-    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_C", pathaccountc, "mii_bckp_account_c", "Miis from Custom Account DB on SD",MiiRepo::SD);
-    MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis on SD",MiiRepo::SD);
-    MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", "SaveGameManager GX Miis stage folder on SD",MiiRepo::SD);
+    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", "Internal Wii U Mii Database", MiiRepo::INTERNAL);
+    MiiRepos["FFL_C"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_C", pathfflc, "mii_bckp_ffl_c", "Custom Wii U Mii Database on SD", MiiRepo::SD);
+    MiiRepos["FFL_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_STAGE", pathffl_Stage, "mii_bckp_ffl_Stage", "Stage Folder for Wii U Miis on SD", MiiRepo::SD);
+    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", "Internal vWii Mii Database", MiiRepo::INTERNAL);
+    MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", "Custom vWii Mii Database on SD", MiiRepo::SD);
+    MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", "Stage Folder for vWii Miis on SD", MiiRepo::SD);
+    MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", "Miis from Internal Account DB", MiiRepo::INTERNAL);
+    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_C", pathaccountc, "mii_bckp_account_c", "Miis from Custom Account DB on SD", MiiRepo::SD);
+    MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis on SD", MiiRepo::SD);
+    MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", "SaveGameManager GX Miis stage folder on SD", MiiRepo::SD);
 
 
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_STAGE"]);
@@ -546,14 +546,15 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
     }
 
     DrawUtils::beginDraw();
-    DrawUtils::clear(COLOR_BACKGROUND);
-    DrawUtils::setFontColor(COLOR_INFO);
+    DrawUtils::clear(COLOR_BLACK);
 
     if (savemng::firstSDWrite && target_mii_repo->db_kind == MiiRepo::eDBKind::FOLDER) {
+        DrawUtils::setFontColor(COLOR_WHITE);
         Console::consolePrintPosAligned(4, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
         savemng::firstSDWrite = false;
     }
 
+    DrawUtils::setFontColor(COLOR_INFO);
     Console::consolePrintPos(-2, 6, ">> %s (by %s)", source_mii_repo->miis[mii_index]->mii_name.c_str(), source_mii_repo->miis[mii_index]->creator_name.c_str());
     Console::consolePrintPosAligned(6, 4, 2, "%d/%d", InProgress::currentStep, InProgress::totalSteps);
     DrawUtils::setFontColor(COLOR_TEXT);
@@ -609,9 +610,9 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                 mii_view->at(mii_index).selected = false;
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
                 bool mii_is_favorite = mii_repo->miis.at(mii_index)->favorite;
-                bool modifies_favorite_flag = mii_process_shared_state->transfer_ownership || mii_process_shared_state->make_it_local || mii_process_shared_state->update_timestamp ||
-                                              mii_process_shared_state->toggle_favorite_flag || mii_process_shared_state->toggle_normal_special_flag ||
-                                              mii_process_shared_state->toggle_temp_flag;
+                bool is_wiiu_mii = (mii_repo->miis.at(mii_index)->mii_type == Mii::WIIU);
+                bool miiid_modified = mii_process_shared_state->transfer_ownership || mii_process_shared_state->make_it_local || mii_process_shared_state->update_timestamp ||
+                                      mii_process_shared_state->toggle_normal_special_flag || mii_process_shared_state->toggle_temp_flag;
                 MiiData *original_mii_data;
                 original_mii_data = mii_data->clone(); // we may need original miiid later to update favorite section
                 if (mii_data != nullptr && original_mii_data != nullptr) {
@@ -626,8 +627,8 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                             continue;
                         }
                     }
-                    if (mii_is_favorite && mii_process_shared_state->toggle_favorite_flag && modifies_favorite_flag) {
-                        mii_repo->toggle_favorite_flag(mii_data); // FFL
+                    if (is_wiiu_mii && mii_is_favorite && mii_process_shared_state->toggle_favorite_flag) {
+                        mii_repo->toggle_favorite_flag(mii_data); // only modifies repo for FFL, first operation to do to ensure the MiiD has not been yet modified
                     }
                     if (mii_process_shared_state->transfer_physical_appearance)
                         mii_data->transfer_appearance_from(template_mii_data);
@@ -637,8 +638,8 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_data->make_it_local();
                     if (mii_process_shared_state->update_timestamp)
                         mii_data->update_timestamp(mii_index);
-                    if (mii_process_shared_state->toggle_favorite_flag)
-                        mii_data->toggle_favorite_flag(); // RFL , unless at some momment we decide to update bits in miidata for FFL too
+                    if (!is_wiiu_mii && mii_process_shared_state->toggle_favorite_flag)
+                        mii_data->toggle_favorite_flag(); // only modifies MiiData for RFL , unless at some momment we decide to update bits in miidata for FFL too
                     if (mii_process_shared_state->toggle_share_flag) {
                         if (mii_data->toggle_share_flag())
                             effective_share_flag = !effective_share_flag;
@@ -655,11 +656,11 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_data->toggle_copy_flag();
                     if (mii_process_shared_state->toggle_temp_flag)
                         mii_data->toggle_temp_flag();
-                    if (!mii_is_favorite && mii_process_shared_state->toggle_favorite_flag && modifies_favorite_flag) {
-                        mii_repo->toggle_favorite_flag(mii_data); // FFL
+                    if (is_wiiu_mii && !mii_is_favorite && mii_process_shared_state->toggle_favorite_flag) {
+                        mii_repo->toggle_favorite_flag(mii_data); //  adds current miiid to  FFL mii favorite section, after al transformations has been made
                     }
-                    if (mii_is_favorite && !mii_process_shared_state->toggle_favorite_flag && modifies_favorite_flag) {
-                        mii_repo->update_miid_in_favorite_section(original_mii_data, mii_data); // FFL
+                    if (is_wiiu_mii && mii_is_favorite && !mii_process_shared_state->toggle_favorite_flag && miiid_modified) {
+                        mii_repo->update_miid_in_favorite_section(original_mii_data, mii_data); // FFL, updates old miid with new miiid in favorites section
                     }
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
