@@ -453,6 +453,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
     InProgress::titleName.assign(title->shortName);
     InProgress::jobType = COPY_TO_OTHER_DEVICE;
     uint32_t highID = title->highID;
@@ -571,6 +572,7 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
     InProgress::titleName.assign(title->shortName);
     InProgress::jobType = PROFILE_TO_PROFILE;
     uint32_t highID = title->highID;
@@ -631,6 +633,7 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
     InProgress::titleName.assign(title->shortName);
     InProgress::jobType = MOVE_PROFILE;
     uint32_t highID = title->highID;
@@ -768,6 +771,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
 
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
     int titlesKO = 0;
     titlesOK = 0;
 
@@ -871,6 +875,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
     if (!isSlotEmpty(title, slot) &&
         !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
         return -1;
@@ -1018,6 +1023,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
     // THIS NOW CANNOT HAPPEN CHECK IF THIS IS STILL NEEEDED!!!!
     /*
     if (isSlotEmpty(title->highID, title->lowID, slot)) {
@@ -1215,6 +1221,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
     InProgress::titleName.assign(title->shortName);
     InProgress::jobType = WIPE_PROFILE;
     uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;

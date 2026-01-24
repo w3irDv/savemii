@@ -390,6 +390,7 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
     InProgress::titleName.assign(this->repo_name);
 
     if (!FSUtils::folderEmpty(dstPath.c_str())) {
@@ -435,6 +436,12 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
 template<>
 int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int target_mii_location, MiiAccountRepo *source_mii_repo, int source_mii_location) {
 
+    std::string errorMessage{};
+    int errorCode = 0;
+    InProgress::copyErrorsCounter = 0;
+    InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
+    InProgress::titleName.assign(this->repo_name);
 
     std::string source_account = source_mii_repo->miis.at(source_mii_location)->location_name;
     std::string target_account = this->miis.at(target_mii_location)->location_name;
@@ -442,9 +449,6 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int targ
     std::string source_path = source_mii_repo->path_to_repo + "/" + source_account;
     std::string target_path = this->path_to_repo + "/" + target_account;
 
-    std::string errorMessage{};
-
-    int errorCode = 0;
 
     if (FSUtils::copyDir(source_path, target_path)) {
         if (target_path.find("fs:/vol/") == std::string::npos) { // avoid to call FSA when testing  on SD

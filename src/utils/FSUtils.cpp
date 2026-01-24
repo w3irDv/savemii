@@ -137,10 +137,15 @@ bool FSUtils::removeDir(const std::string &pPath) {
             if (unlink(tempPath.c_str()) == -1) {
                 Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Failed to delete file\n\n%s\n\n%s"), tempPath.c_str(), strerror(errno));
             }
-            if (InProgress::totalSteps > 1) {
+            if (InProgress::totalSteps > 1 || InProgress::immediateAbort == true) {
                 InProgress::input->read();
-                if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS))
+                if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
                     InProgress::abortTask = true;
+                    if (InProgress::immediateAbort) {
+                        closedir(dir);
+                        return false;
+                    }
+                }
             }
         }
     }
@@ -522,10 +527,14 @@ dir_created:
             }
         }
         errno = 0;
-        if (InProgress::totalSteps > 1) {
+        if (InProgress::totalSteps > 1 || InProgress::immediateAbort) {
             InProgress::input->read();
             if (InProgress::input->get(ButtonState::HOLD, Button::L) && InProgress::input->get(ButtonState::HOLD, Button::MINUS)) {
                 InProgress::abortTask = true;
+                if (InProgress::immediateAbort) {
+                    closedir(dir);
+                    return false;
+                }
             }
         }
     }
@@ -571,7 +580,7 @@ void FSUtils::showFileOperation(const std::string &file_name, const std::string 
     Console::consolePrintPos(-2, 1, LanguageUtils::gettext("Copying file: %s"), file_name.c_str());
     Console::consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: %s"), file_src.c_str());
     Console::consolePrintPosMultiline(-2, 10, LanguageUtils::gettext("To: %s"), file_dest.c_str());
-    if (InProgress::totalSteps > 1) {
+    if (InProgress::totalSteps > 1 || InProgress::immediateAbort) {
         if (InProgress::abortTask) {
             DrawUtils::setFontColor(COLOR_LIST_DANGER);
             Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("Will abort..."));
@@ -590,7 +599,7 @@ void FSUtils::showDeleteOperations(bool isFolder, const char *name, const std::s
     DrawUtils::setFontColor(COLOR_TEXT);
     Console::consolePrintPos(-2, 1, isFolder ? LanguageUtils::gettext("Deleting folder %s") : LanguageUtils::gettext("Deleting file %s"), name);
     Console::consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), path.c_str());
-    if (InProgress::totalSteps > 1) {
+    if (InProgress::totalSteps > 1  || InProgress::immediateAbort) {
         if (InProgress::abortTask) {
             DrawUtils::setFontColor(COLOR_LIST_DANGER);
             Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("Will abort..."));

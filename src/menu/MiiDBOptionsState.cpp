@@ -264,13 +264,15 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                         this->state = STATE_DO_SUBSTATE;
                         return SUBSTATE_RUNNING;
                     } else {
-                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nEXISTING MIIS WILL BE OVERWRITTEN")))
-                            return SUBSTATE_RUNNING;
+                        if (mii_repo->db_kind == MiiRepo::eDBKind::FILE)
+                            if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nEXISTING MIIS WILL BE OVERWRITTEN")))
+                                return SUBSTATE_RUNNING;
                         if (mii_repo->restore(slot) == 0) {
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
                         }
                         updateRestoreData();
                     }
+
                     break;
                 case MiiProcess::XRESTORE_DB:
                     if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {

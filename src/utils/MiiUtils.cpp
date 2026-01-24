@@ -208,7 +208,7 @@ uint32_t MiiUtils::generate_timestamp(int year_zero, uint8_t ticks_per_sec) {
 }
 
 
-unsigned short MiiUtils::getCrc(unsigned char *buf, int size) {
+unsigned short MiiUtils::getCrc(unsigned char *buf, int size) { // https://wiibrew.org/wiki/Mii_data#Block_format
     unsigned int crc = 0x0000;
     int byteIndex, bitIndex, counter;
     for (byteIndex = 0; byteIndex < size; byteIndex++) {

@@ -12,8 +12,8 @@
 
 MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder,
                  const std::string &repo_description, eDBCategory db_category) : repo_name(repo_name), db_type(db_type), db_kind(db_kind),
-                                                                               path_to_repo(path_to_repo), backup_base_path(BACKUP_ROOT + "/" + backup_folder),
-                                                                               repo_description(repo_description), db_category(db_category) {};
+                                                                                 path_to_repo(path_to_repo), backup_base_path(BACKUP_ROOT + "/" + backup_folder),
+                                                                                 repo_description(repo_description), db_category(db_category) {};
 MiiRepo::~MiiRepo() {};
 
 int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
@@ -27,6 +27,8 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::abortTask = false;
+    InProgress::immediateAbort = true;
     InProgress::titleName.assign(this->repo_name);
 
     std::string srcPath = this->path_to_repo;
@@ -44,8 +46,13 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
         case ACCOUNT:
         case FOLDER: {
             if (!FSUtils::copyDir(srcPath, dstPath)) {
-                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
-                errorCode = 1;
+                if (InProgress::copyErrorsCounter == 0 && InProgress::abortTask == true) {
+                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Backup aborted."));
+                    errorCode = -1;
+                } else {
+                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                    errorCode = 1;
+                }
             }
         } break;
         case FILE: {
@@ -63,9 +70,15 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
     if (errorCode == 0)
         MiiSaveMng::writeMiiMetadataWithTag(this, slot, tag);
     else {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
-        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
-        MiiSaveMng::writeMiiMetadataWithTag(this, slot, LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
+        if (errorCode == -1) {
+            errorMessage = (std::string) LanguageUtils::gettext("%s\n") + errorMessage;
+            Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+            MiiSaveMng::writeMiiMetadataWithTag(this, slot, LanguageUtils::gettext("PARTIAL BACKUP"));
+        } else {
+            errorMessage = (std::string) LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
+            Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+            MiiSaveMng::writeMiiMetadataWithTag(this, slot, LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
+        }
     }
     return errorCode;
 }
@@ -76,6 +89,11 @@ int MiiRepo::restore(int slot) {
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::abortTask = false;
+    if (this->db_kind == FOLDER)
+        InProgress::immediateAbort = true;
+    else
+        InProgress::immediateAbort = false;
     InProgress::titleName.assign(this->repo_name);
 
     std::string srcPath = this->backup_base_path + "/" + std::to_string(slot);
@@ -94,8 +112,13 @@ int MiiRepo::restore(int slot) {
         case FOLDER: {
             if (FSUtils::createFolder(dstPath.c_str())) {
                 if (!FSUtils::copyDir(srcPath, dstPath)) {
-                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
-                    errorCode = 1;
+                    if (InProgress::copyErrorsCounter == 0 && InProgress::abortTask == true) {
+                        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Restore aborted."));
+                        errorCode = -1;
+                    } else {
+                        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                        errorCode = 1;
+                    }
                 }
             } else {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating folder."));
@@ -120,7 +143,10 @@ int MiiRepo::restore(int slot) {
         default:;
     }
 
-    if (errorCode != 0) {
+    if (errorCode == -1) {
+        errorMessage = (std::string) LanguageUtils::gettext("%s\n") + errorMessage;
+        Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+    } else if (errorCode > 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
@@ -135,6 +161,11 @@ int MiiRepo::wipe() {
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::abortTask = false;
+    if (this->db_kind == FOLDER)
+        InProgress::immediateAbort = true;
+    else
+        InProgress::immediateAbort = false;
     InProgress::titleName.assign(this->repo_name);
 
     std::string path = this->path_to_repo;
@@ -145,8 +176,13 @@ int MiiRepo::wipe() {
     switch (this->db_kind) {
         case FOLDER: {
             if (!FSUtils::removeDir(path)) {
-                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
-                errorCode = 1;
+                if (InProgress::copyErrorsCounter == 0 && InProgress::abortTask == true) {
+                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Wipe aborted."));
+                    errorCode = -1;
+                } else {
+                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
+                    errorCode = 1;
+                }
             }
         } break;
         case FILE: {
@@ -160,7 +196,10 @@ int MiiRepo::wipe() {
         default:;
     }
 
-    if (errorCode != 0) {
+    if (errorCode == -1) {
+        errorMessage = (std::string) LanguageUtils::gettext("%s\n") + errorMessage;
+        Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+    } else if (errorCode > 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nWipe failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
@@ -176,6 +215,12 @@ int MiiRepo::initialize() {
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
+    InProgress::abortTask = false;
+    if (this->db_kind == FOLDER)
+        InProgress::immediateAbort = true;
+    else
+        InProgress::immediateAbort = false;
+    InProgress::immediateAbort = false;
     InProgress::titleName.assign(this->repo_name);
 
     std::string path = this->path_to_repo;
@@ -185,8 +230,15 @@ int MiiRepo::initialize() {
 
     switch (this->db_kind) {
         case FOLDER: {
-            if (!FSUtils::removeDir(path))
-                errorCode = 1;
+            if (!FSUtils::removeDir(path)) {
+                if (InProgress::copyErrorsCounter == 0 && InProgress::abortTask == true) {
+                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Initialize aborted."));
+                    errorCode = -1;
+                } else {
+                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
+                    errorCode = 1;
+                }
+            }
         } break;
         case FILE: {
             if (!this->init_db_file())
@@ -195,7 +247,10 @@ int MiiRepo::initialize() {
         default:;
     }
 
-    if (errorCode != 0) {
+    if (errorCode == -1) {
+        errorMessage = (std::string) LanguageUtils::gettext("%s\n") + errorMessage;
+        Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+    } else if (errorCode > 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nInitialize db failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
