@@ -466,3 +466,34 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int targ
     // caller will repoulate repo
     return errorCode;
 }
+
+template<>
+uint8_t *MiiAccountRepo<WiiUMii, WiiUMiiData>::find_mii_id_in_stadio(MiiData *miidata) {
+
+    for (size_t i = 0; i < WiiUMiiData::STADIO::STADIO_MAX_ACCOUNT_MIIS; i++) {
+        uint8_t *location_to_check = stadio_buffer + WiiUMiiData::STADIO::STADIO_ACCOUNT_MIIS_OFFSET + i * WiiUMiiData::STADIO::STADIO_MII_SIZE;
+        if (memcmp(miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, location_to_check + 0x10, WiiUMiiData::MII_ID_SIZE) == 0) {
+            return location_to_check;
+        }
+    }
+    return nullptr;
+}
+
+/// @brief If a miid changes, stadio entry for the old miiiid must be updated
+/// @param old_miidata
+/// @param new_miidata
+/// @return true if not found or updated, false if stadio_buffer is not initialized
+template<>
+bool MiiAccountRepo<WiiUMii, WiiUMiiData>::update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata) {
+
+    if (stadio_buffer == nullptr)
+        return false;
+
+    uint8_t *old_location = find_mii_id_in_stadio(old_miidata);
+    if (old_location == nullptr)
+        return true;
+
+    memcpy(old_location + 0x10, new_miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
+
+    return true;
+}

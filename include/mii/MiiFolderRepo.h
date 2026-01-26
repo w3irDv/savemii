@@ -31,8 +31,10 @@ public:
 
     bool check_if_favorite(MiiData *miidata);
     bool toggle_favorite_flag([[maybe_unused]] MiiData *miidata) { return true; }; // Not needed for folders
-    bool update_miid_in_favorite_section([[maybe_unused]] MiiData* old_miidata, [[maybe_unused]] MiiData* new_miidata) { return true; }; // Not needed for folders
-    bool delete_miid_from_favorite_section([[maybe_unused]] MiiData* miidata) { return true; }; // Not needed for folders
+    bool update_mii_id_in_favorite_section([[maybe_unused]] MiiData* old_miidata, [[maybe_unused]] MiiData* new_miidata) { return true; }; // Not needed for folders
+    bool delete_mii_id_from_favorite_section([[maybe_unused]] MiiData* miidata) { return true; }; // Not needed for folders
     
+    bool update_mii_id_in_stadio([[maybe_unused]] MiiData* old_miidata, [[maybe_unused]] MiiData* new_miidata) { return true; }; // Not needed for folders
+
     std::string filename_prefix;
 };

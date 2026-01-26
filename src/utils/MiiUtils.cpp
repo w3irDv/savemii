@@ -471,7 +471,7 @@ bool MiiUtils::wipe_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_proc
             if (mii_repo->miis.at(mii_index)->favorite) {
                 MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
                 if (mii_data != nullptr) {
-                    mii_repo->delete_miid_from_favorite_section(mii_data);
+                    mii_repo->delete_mii_id_from_favorite_section(mii_data);
                     delete mii_data;
                 } else { // Just a warning, we are unable to delete it from favourites
                     Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Unable to remove %s (by %s) from favorites section. Error extracting MiiData"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
@@ -660,8 +660,11 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_repo->toggle_favorite_flag(mii_data); //  adds current miiid to  FFL mii favorite section, after al transformations has been made
                     }
                     if (is_wiiu_mii && mii_is_favorite && !mii_process_shared_state->toggle_favorite_flag && miiid_modified) {
-                        mii_repo->update_miid_in_favorite_section(original_mii_data, mii_data); // FFL, updates old miid with new miiid in favorites section
+                        mii_repo->update_mii_id_in_favorite_section(original_mii_data, mii_data); // FFL, updates old miid with new miiid in favorites section
                     }
+                    // STADIO
+                    if (is_wiiu_mii &&  miiid_modified)
+                        mii_repo->update_mii_id_in_stadio(original_mii_data, mii_data);
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
                         mii_repo->repopulate_mii(mii_index, mii_data);

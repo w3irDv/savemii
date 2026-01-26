@@ -22,7 +22,6 @@ public:
 
 class WiiUMiiData : public MiiData {
 public:
-
     WiiUMiiData(uint8_t *mii_data, size_t mii_data_size) : MiiData(mii_data, mii_data_size) {};
     MiiData *clone();
 
@@ -122,6 +121,19 @@ public:
 
         const static uint8_t MAX_FAVORITES = 50;
         const static uint32_t FAVORITES_OFFSET = 0x43628;
+    };
+
+    class STADIO {
+    public:
+        const static uint32_t STADIO_SIZE = 0x34000;
+        const static inline char STADIO_MAGIC[3] = {'M', 'S', 'U'};
+        const static uint32_t STADIO_MIIS_OFFSET = 0x4000;
+        const static uint8_t STADIO_MII_SIZE = 0x40;
+        const static uint8_t STADIO_MII_NUMBER_OFFSET = 0x40;
+        const static uint32_t STADIO_GLOBALS_OFFSET = 0x33100;
+
+        const static uint32_t STADIO_ACCOUNT_MIIS_OFFSET = 0x33100;
+        const static uint8_t STADIO_MAX_ACCOUNT_MIIS = 0xC;
     };
 
     class ACCOUNT {

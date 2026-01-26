@@ -48,8 +48,10 @@ public:
     bool repopulate_mii(size_t index, MiiData *miidata);
     virtual bool check_if_favorite(MiiData *miidata) = 0;
     virtual bool toggle_favorite_flag(MiiData *miidata) = 0;
-    virtual bool update_miid_in_favorite_section(MiiData *old_miidata, MiiData *new_miidata) = 0;
-    virtual bool delete_miid_from_favorite_section(MiiData *miidata) = 0;
+    virtual bool update_mii_id_in_favorite_section(MiiData *old_miidata, MiiData *new_miidata) = 0;
+    virtual bool delete_mii_id_from_favorite_section(MiiData *miidata) = 0;
+
+    virtual bool update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata) = 0;
 
     virtual std::string getBackupBasePath() { return backup_base_path; };
     int backup(int slot, std::string tag = "");
@@ -77,6 +79,13 @@ public:
     uint32_t db_owner = 0;
     uint32_t db_group = 0;
     uint8_t *db_buffer = nullptr;
+
+    std::string path_to_stadio;
+    uint8_t *stadio_buffer = nullptr;
+    uint64_t stadio_last_mii_index = 0; 
+    uint64_t stadio_last_mii_update = 0;
+    uint32_t stadio_max_alive_miis = 0;
+    std::vector<bool> stadio_empty_frames;
 
     std::vector<Mii *> miis;
     std::map<std::string, std::vector<size_t> *> owners;
