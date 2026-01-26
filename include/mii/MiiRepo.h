@@ -6,12 +6,15 @@
 #include <string>
 #include <mocha/mocha.h>
 #include <vector>
+#include <mii/MiiStadioSav.h>
+
 #define IN_PLACE          true
 #define ADD_MII           false
 #define IN_EMPTY_LOCATION 0
 
 class Mii;
 class MiiData;
+class MiiStadioSav;
 
 class MiiRepo {
 public:
@@ -50,7 +53,6 @@ public:
     virtual bool toggle_favorite_flag(MiiData *miidata) = 0;
     virtual bool update_mii_id_in_favorite_section(MiiData *old_miidata, MiiData *new_miidata) = 0;
     virtual bool delete_mii_id_from_favorite_section(MiiData *miidata) = 0;
-
     virtual bool update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata) = 0;
 
     virtual std::string getBackupBasePath() { return backup_base_path; };
@@ -60,6 +62,7 @@ public:
     int initialize();
 
     void setStageRepo(MiiRepo *stage_repo) { this->stage_repo = stage_repo; };
+    void setStadioSav(MiiStadioSav *stadio_sav) { this->stadio_sav = stadio_sav; };
 
     virtual uint16_t get_crc() = 0;
 
@@ -74,18 +77,12 @@ public:
     const std::string repo_description;
     eDBCategory db_category;
     MiiRepo *stage_repo = nullptr;
+    MiiStadioSav *stadio_sav = nullptr;
 
     FSMode db_fsmode = (FSMode) 0x666;
     uint32_t db_owner = 0;
     uint32_t db_group = 0;
     uint8_t *db_buffer = nullptr;
-
-    std::string path_to_stadio;
-    uint8_t *stadio_buffer = nullptr;
-    uint64_t stadio_last_mii_index = 0; 
-    uint64_t stadio_last_mii_update = 0;
-    uint32_t stadio_max_alive_miis = 0;
-    std::vector<bool> stadio_empty_frames;
 
     std::vector<Mii *> miis;
     std::map<std::string, std::vector<size_t> *> owners;

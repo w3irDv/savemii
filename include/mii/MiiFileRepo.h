@@ -17,20 +17,13 @@ public:
     MiiData *extract_mii_data(size_t index);                                // from the repo to (tmp)mem
     bool wipe_miidata(size_t index);
 
-    bool open_and_load_stadio();
-    bool persist_stadio();
-    bool import_miidata_in_stadio(MiiData *miidata);
-    uint8_t *find_stadio_empty_location();
-    bool find_stadio_empty_frame(uint16_t &frame);
-    uint8_t *find_mii_id_in_stadio(MiiData *miidata);
-    bool update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata);
-
     bool populate_repo();
     bool empty_repo();
     bool check_if_favorite(MiiData *miidata);
     bool toggle_favorite_flag(MiiData *miidata);
     bool update_mii_id_in_favorite_section(MiiData *old_miidata, MiiData *new_miidata);
     bool delete_mii_id_from_favorite_section(MiiData *miidata) { return true; };
+    bool update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata);
 
     bool find_empty_location(size_t &target_location);
     bool has_a_mii(uint8_t *raw_mii_data);
@@ -38,19 +31,13 @@ public:
     std::vector<size_t> mii_location; //index of the mii inside the db
     size_t last_empty_location = 0;
 
-    size_t stadio_last_empty_location = 0;
-    size_t stadio_last_empty_frame_index = 0;
-
     std::map<std::string, int> favorite_miis;
     bool set_db_fsa_metadata();
-
-    bool set_stadio_path();
 
     uint16_t get_crc();
 
     bool init_db_file();
     bool fill_empty_db_file();
 
-    bool init_stadio_file();
-    bool fill_empty_stadio_file();
+    
 };

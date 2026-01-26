@@ -4,6 +4,7 @@
 #include <mii/MiiAccountRepo.h>
 #include <mii/MiiFileRepo.h>
 #include <mii/MiiFolderRepo.h>
+#include <mii/MiiStadioSav.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
 #include <miisavemng.h>
@@ -72,6 +73,8 @@ set_repos:
 
     const std::string path_sgmgx("fs:/vol/external01/savemiis");
 
+    const std::string pathstadio = mii_maker_path + "/user/common/stadio.sav";
+
     FSUtils::createFolder(pathfflc.substr(0, pathfflc.find_last_of("/")).c_str());
     FSUtils::createFolder(pathrflc.substr(0, pathrflc.find_last_of("/")).c_str());
     FSUtils::createFolder(pathaccountc.substr(0, pathaccountc.find_last_of("/")).c_str());
@@ -93,6 +96,8 @@ set_repos:
     MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", "Stage folder for Account Miis on SD", MiiRepo::SD);
     MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", "SaveGameManager GX Miis stage folder on SD", MiiRepo::SD);
 
+    // STADIO
+    MiiStadios["FFL_ACCOUNT"] = new MiiStadioSav("FFL_ACCOUNT", pathstadio, "mii_bckp_ffl", "Internal Stadio save DB");
 
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_STAGE"]);
     //MiiRepos["FFL_STAGE"]->setStageRepo(MiiRepos["FFL"]);
@@ -102,6 +107,10 @@ set_repos:
 
     MiiRepos["ACCOUNT"]->setStageRepo(MiiRepos["ACCOUNT_STAGE"]);
     //MiiRepos["ACCOUNT_STAGE"]->setStageRepo(MiiRepos["ACCOUNT"]);
+
+    // STADIO
+    MiiRepos["FFL"]->setStadioSav(MiiStadios["FFL_ACCOUNT"]);
+    MiiRepos["ACCOUNT"]->setStadioSav(MiiStadios["FFL_ACCOUNT"]);
 
     // q&d
     if (enable_ffl)
@@ -162,9 +171,10 @@ void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["RFL_STAGE"];
     delete MiiUtils::MiiRepos["RFL_C"];
     delete MiiUtils::MiiRepos["SGMGX"],
-            delete MiiUtils::MiiRepos["ACCOUNT"];
+    delete MiiUtils::MiiRepos["ACCOUNT"];
     delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
     delete MiiUtils::MiiRepos["ACCOUNT_C"];
+    delete MiiUtils::MiiStadios["FFL_ACCOUNT"];
 }
 
 std::string MiiUtils::epoch_to_utc(int temp) {
@@ -385,12 +395,18 @@ mii_repo_populated:
             MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
             if (mii_data != nullptr) {
                 if (receiving_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+                    MiiData *old_mii_data = receiving_repo->extract_mii_data(mii_process_shared_state->mii_index_to_overwrite);
                     if (receiving_repo->import_miidata(mii_data, IN_PLACE, mii_process_shared_state->mii_index_to_overwrite)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;
                         mii_process_shared_state->primary_mii_view->at(mii_process_shared_state->mii_index_to_overwrite).state = MiiStatus::OK;
                         mii_process_shared_state->primary_mii_view->at(mii_process_shared_state->mii_index_to_overwrite).selected = false;
                         receiving_repo->repopulate_mii(mii_process_shared_state->mii_index_to_overwrite, mii_data);
+                        // STADIO
+                        if (old_mii_data != nullptr)
+                            receiving_repo->update_mii_id_in_stadio(old_mii_data, mii_data);
                     }
+                    if (old_mii_data != nullptr)
+                        delete old_mii_data;
                 } else {
                     if (receiving_repo->import_miidata(mii_data, ADD_MII, IN_EMPTY_LOCATION))
                         mii_view->at(mii_index).state = MiiStatus::OK;
@@ -663,7 +679,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                         mii_repo->update_mii_id_in_favorite_section(original_mii_data, mii_data); // FFL, updates old miid with new miiid in favorites section
                     }
                     // STADIO
-                    if (is_wiiu_mii &&  miiid_modified)
+                    if (is_wiiu_mii && miiid_modified && mii_repo->stadio_sav != nullptr)
                         mii_repo->update_mii_id_in_stadio(original_mii_data, mii_data);
                     if (mii_repo->import_miidata(mii_data, IN_PLACE, mii_index)) {
                         mii_view->at(mii_index).state = MiiStatus::OK;

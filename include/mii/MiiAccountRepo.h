@@ -11,8 +11,8 @@ public:
     MiiAccountRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
     virtual ~MiiAccountRepo();
 
-    bool open_and_load_repo() { return true; }; // not-needed for folder based repos
-    bool persist_repo() { return true; };       // not-needed for folder based repos
+    bool open_and_load_repo(); // not needed for account, but indirectly needed for loading stadio.sav
+    bool persist_repo();       // not needed for account, but indirectly needed for writting stadio.sav
     bool import_miidata(MiiData *mii_data, bool in_place, size_t index); // from (temp)mem to the repo
     MiiData *extract_mii_data(size_t index);                             // from the repo to (tmp)mem
     MiiData *extract_mii_data(const std::string &mii_filepath);          // from file to (tmp)mem
@@ -34,8 +34,6 @@ public:
     bool toggle_favorite_flag([[maybe_unused]] MiiData *miidata) { return true; }; // Not needed for account
     bool update_mii_id_in_favorite_section([[maybe_unused]] MiiData* old_miidata, [[maybe_unused]] MiiData* new_miidata) { return true; }; // Not needed for account
     bool delete_mii_id_from_favorite_section([[maybe_unused]] MiiData* miidata) { return true; }; // Not needed for account
-
-    uint8_t *find_mii_id_in_stadio(MiiData *miidata);
     bool update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata);
 
     int restore_account(std::string source_path, std::string dst_path);

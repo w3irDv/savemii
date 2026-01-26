@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <fstream>
 #include <mii/MiiAccountRepo.h>
+#include <mii/MiiStadioSav.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
 #include <miisavemng.h>
@@ -50,6 +51,25 @@ bool MiiAccountRepo<WiiUMii, WiiUMiiData>::check_if_favorite([[maybe_unused]] Mi
 }
 
 template MiiAccountRepo<WiiUMii, WiiUMiiData>::MiiAccountRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
+
+template<typename MII, typename MIIDATA>
+bool MiiAccountRepo<MII, MIIDATA>::open_and_load_repo() {
+
+    // STADIO
+    if (this->stadio_sav != nullptr)
+        this->stadio_sav->open_and_load_stadio();
+
+    return true;
+}
+
+template<typename MII, typename MIIDATA>
+bool MiiAccountRepo<MII, MIIDATA>::persist_repo() {
+    // STADIO
+    if (this->stadio_sav != nullptr)
+        this->stadio_sav->persist_stadio();
+
+    return true;
+}
 
 template<typename MII, typename MIIDATA>
 MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
@@ -247,6 +267,10 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
             if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
                 Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
             }
+            // STADIO
+            if (!in_place) // at the moment, this is always FALSE
+                if (this->stadio_sav != nullptr)
+                    this->stadio_sav->import_miidata_in_stadio(miidata);
             return true;
         } else { // the worst has happen
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
@@ -468,32 +492,7 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int targ
 }
 
 template<>
-uint8_t *MiiAccountRepo<WiiUMii, WiiUMiiData>::find_mii_id_in_stadio(MiiData *miidata) {
-
-    for (size_t i = 0; i < WiiUMiiData::STADIO::STADIO_MAX_ACCOUNT_MIIS; i++) {
-        uint8_t *location_to_check = stadio_buffer + WiiUMiiData::STADIO::STADIO_ACCOUNT_MIIS_OFFSET + i * WiiUMiiData::STADIO::STADIO_MII_SIZE;
-        if (memcmp(miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, location_to_check + 0x10, WiiUMiiData::MII_ID_SIZE) == 0) {
-            return location_to_check;
-        }
-    }
-    return nullptr;
-}
-
-/// @brief If a miid changes, stadio entry for the old miiiid must be updated
-/// @param old_miidata
-/// @param new_miidata
-/// @return true if not found or updated, false if stadio_buffer is not initialized
-template<>
 bool MiiAccountRepo<WiiUMii, WiiUMiiData>::update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata) {
 
-    if (stadio_buffer == nullptr)
-        return false;
-
-    uint8_t *old_location = find_mii_id_in_stadio(old_miidata);
-    if (old_location == nullptr)
-        return true;
-
-    memcpy(old_location + 0x10, new_miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
-
-    return true;
+    return this->stadio_sav->update_account_mii_id_in_stadio(old_miidata, new_miidata);
 }

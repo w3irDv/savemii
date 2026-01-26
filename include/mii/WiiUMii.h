@@ -132,8 +132,12 @@ public:
         const static uint8_t STADIO_MII_NUMBER_OFFSET = 0x40;
         const static uint32_t STADIO_GLOBALS_OFFSET = 0x33100;
 
-        const static uint32_t STADIO_ACCOUNT_MIIS_OFFSET = 0x33100;
+        const static uint32_t STADIO_ACCOUNT_MIIS_OFFSET = 0x32E00;
         const static uint8_t STADIO_MAX_ACCOUNT_MIIS = 0xC;
+
+        const static uint32_t STADIO_OWNER = 0; // region dependent, we will find it during  run time
+        const static uint32_t STADIO_GROUP = 0x400;
+        const static uint32_t STADIO_FSMODE = 0x660;
     };
 
     class ACCOUNT {
