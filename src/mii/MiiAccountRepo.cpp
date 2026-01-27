@@ -403,7 +403,7 @@ bool MiiAccountRepo<MII, MIIDATA>::empty_repo() {
     return true;
 }
 
-/// @brief Restores all account data (account.dat and miimgXX.dat diles) from a backup of the same account
+/// @brief Restores all account data (account.dat and miimgXX.dat diles) from a backup of the same account. STADIO is not updated
 /// @param srcPath
 /// @param dstPath
 /// @return /
@@ -447,7 +447,7 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
         errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
-
+    
     this->needs_populate = true;
     return errorCode;
 }

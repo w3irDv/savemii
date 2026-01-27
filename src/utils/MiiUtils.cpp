@@ -171,7 +171,7 @@ void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["RFL_STAGE"];
     delete MiiUtils::MiiRepos["RFL_C"];
     delete MiiUtils::MiiRepos["SGMGX"],
-    delete MiiUtils::MiiRepos["ACCOUNT"];
+            delete MiiUtils::MiiRepos["ACCOUNT"];
     delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
     delete MiiUtils::MiiRepos["ACCOUNT_C"];
     delete MiiUtils::MiiStadios["FFL_ACCOUNT"];
@@ -769,7 +769,9 @@ bool MiiUtils::ask_if_to_initialize_db(MiiRepo *mii_repo, bool not_found) {
 /// @param errorCounter
 /// @param mii_process_shared_state
 /// @return
-bool MiiUtils::x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+bool MiiUtils::x_restore_account_mii(uint16_t &errorCounter, MiiProcessSharedState *mii_process_shared_state) {
+
+    uint8_t result = 1;
 
     if (mii_process_shared_state->auxiliar_mii_repo->db_kind != MiiRepo::ACCOUNT) {
         Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("This action is not supported on the selected repo."));
@@ -805,6 +807,9 @@ bool MiiUtils::x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii
             }
     }
 
+    // STADIO
+    MiiData *old_mii_data = target_mii_repo->extract_mii_data(target_mii_index);
+
     if (rename(target_account_dat.c_str(), tmp_target_account_dat.c_str()) == 0) {
         if (target_mii_repo->restore_mii_account_from_repo(target_c2a->at(target_mii_index), source_mii_repo, source_c2a->at(source_mii_index)) == 0) {
             if (unlink(target_account_dat.c_str()) == 0) {
@@ -815,7 +820,13 @@ bool MiiUtils::x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii
                     }
                     int returnState = MiiUtils::import_miis(errorCounter, mii_process_shared_state);
                     if (returnState) {
-                        return true;
+                        MiiData *new_mii_data = mii_process_shared_state->primary_mii_repo->extract_mii_data(mii_process_shared_state->mii_index_to_overwrite);
+                        if (old_mii_data != nullptr && new_mii_data != nullptr)
+                            mii_process_shared_state->primary_mii_repo->update_mii_id_in_stadio(old_mii_data, new_mii_data);
+                        if (new_mii_data != nullptr)
+                            delete new_mii_data;
+                        result = 0;
+                        goto cleanup;
                     } else {
                         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
                     }
@@ -835,7 +846,11 @@ bool MiiUtils::x_restore_miis(uint16_t &errorCounter, MiiProcessSharedState *mii
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), target_account_dat.c_str(), strerror(errno));
     }
 
-    return false;
+cleanup:
+    if (old_mii_data != nullptr)
+        delete old_mii_data;
+
+    return (result == 0);
 }
 
 bool MiiUtils::check_for_duplicates_in_selected_miis(MiiRepo *mii_repo, std::vector<MiiStatus::MiiStatus> *mii_view, std::vector<int> *c2a) {
@@ -862,4 +877,55 @@ bool MiiUtils::check_for_duplicates_in_selected_miis(MiiRepo *mii_repo, std::vec
         }
     }
     return false;
+}
+
+/// @brief primary_repo is repo to overwrite, auxiliary_repo is repo with source data. one mii account is restored
+/// @param errorCounter
+/// @param mii_process_shared_state
+/// @return
+bool MiiUtils::restore_account_mii(MiiProcessSharedState *mii_process_shared_state) {
+
+    uint8_t result = 0;
+
+    auto index_with_source_data = mii_process_shared_state->mii_index_with_source_data;
+
+    std::string account = mii_process_shared_state->auxiliar_mii_repo->miis.at(index_with_source_data)->location_name;
+
+    std::string src_path = mii_process_shared_state->auxiliar_mii_repo->path_to_repo + "/" + account;
+    std::string dst_path = mii_process_shared_state->primary_mii_repo->path_to_repo + "/" + account;
+    if (FSUtils::checkEntry(dst_path.c_str()) == 0) {
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Account %s does not exist in primary Account DB %s"), account.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
+        return false;
+    }
+    // STADIO
+    MiiData *old_mii_data = nullptr;
+    size_t location = 0;
+    bool location_found = true;
+    for (const auto &mii : mii_process_shared_state->primary_mii_repo->miis) {
+        if (mii->location_name == account) {
+            location = mii->index;
+            old_mii_data = mii_process_shared_state->primary_mii_repo->extract_mii_data(location);
+            location_found = true;
+            break;
+        }
+    }
+    if (!location_found) { // Cannot happen
+        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Account %s does not exist in primary Account DB %s"), account.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
+        return false;
+    }
+    if (((MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo)->restore_account(src_path, dst_path) == 0) {
+        MiiData *new_mii_data = mii_process_shared_state->primary_mii_repo->extract_mii_data(location);
+        if (old_mii_data != nullptr && new_mii_data != nullptr) {
+            mii_process_shared_state->primary_mii_repo->update_mii_id_in_stadio(old_mii_data, new_mii_data);
+            mii_process_shared_state->primary_mii_repo->persist_repo(); // PERSIST STADIO
+        }
+        if (new_mii_data != nullptr)
+            delete new_mii_data;
+    } else {
+        result = 1;
+    }
+    if (old_mii_data != nullptr)
+        delete old_mii_data;
+
+    return (result == 0);
 }

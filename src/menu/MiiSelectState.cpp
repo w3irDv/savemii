@@ -535,19 +535,16 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     break;
                 case MiiProcess::SELECT_MIIS_FOR_RESTORE:
                     if (mii_process_shared_state->auxiliar_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
-                        std::string account = mii_process_shared_state->auxiliar_mii_repo->miis.at(c2a[currentlySelectedMii])->location_name;
-                        std::string src_path = mii_process_shared_state->auxiliar_mii_repo->path_to_repo + "/" + account;
-                        std::string dst_path = mii_process_shared_state->primary_mii_repo->path_to_repo + "/" + account;
-                        if (FSUtils::checkEntry(dst_path.c_str()) == 0) {
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Account %s does not exist in primary Account DB %s"), account.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
-                            delete mii_process_shared_state->auxiliar_mii_repo;
-                            mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_RESTORED;
-                            return SUBSTATE_RETURN;
-                        }
-                        if (((MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo)->restore_account(src_path, dst_path) == 0)
+                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nMIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN")))
+                            return SUBSTATE_RUNNING;
+                        mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
+                        mii_process_shared_state->auxiliar_c2a = &this->c2a;
+                        mii_process_shared_state->mii_index_with_source_data = c2a[currentlySelectedMii];
+                        if (MiiUtils::restore_account_mii(mii_process_shared_state)) {
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
-                        else
+                        } else {
                             Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Data restoration has failed!"));
+                        }
                         delete mii_process_shared_state->auxiliar_mii_repo;
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_RESTORED;
                         return SUBSTATE_RETURN;
@@ -614,15 +611,16 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     break;
                 case MiiProcess::SELECT_SOURCE_MII_FOR_XRESTORE:
                     if (mii_process_shared_state->auxiliar_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nMIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN")))
+                            return SUBSTATE_RUNNING;
                         mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
                         mii_process_shared_state->auxiliar_c2a = &this->c2a;
                         mii_process_shared_state->mii_index_with_source_data = c2a[currentlySelectedMii];
-                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nMIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN")))
-                            return SUBSTATE_RUNNING;
-                        if (MiiUtils::x_restore_miis(errorCounter, mii_process_shared_state))
+                        if (MiiUtils::x_restore_account_mii(errorCounter, mii_process_shared_state)) {
                             Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
-                        else
+                        } else {
                             Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Data restoration has failed!"));
+                        }
                         delete mii_process_shared_state->auxiliar_mii_repo; // slot_repo
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_XRESTORED;
                         return SUBSTATE_RETURN;
