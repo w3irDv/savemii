@@ -241,7 +241,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
             titles[wiiuTitlesCount].iconBuf = nullptr;
 
         titles[wiiuSysTitlesCount].is_WiiUSysTitle = false;
-        
+
         titles[wiiuTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
                                                        titles[wiiuTitlesCount].isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
@@ -267,12 +267,14 @@ Title *TitleUtils::loadWiiUTitles(int run) {
 
         wiiuTitlesCount++;
 
-        DrawUtils::beginDraw();
-        DrawUtils::clear(COLOR_BLACK);
-        StartupUtils::disclaimer();
-        DrawUtils::drawTGA(328, 160, 1, icon_tga);
-        Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
-        DrawUtils::endDraw();
+        if (wiiuTitlesCount == 1 || wiiuTitlesCount % 10 == 0) {
+            DrawUtils::beginDraw();
+            DrawUtils::clear(COLOR_BLACK);
+            StartupUtils::disclaimer();
+            DrawUtils::drawTGA(328, 160, 1, icon_tga);
+            Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
+            DrawUtils::endDraw();
+        }
     }
 
     free(savesl);
@@ -462,13 +464,15 @@ Title *TitleUtils::loadWiiTitles() {
                 setTitleNameBasedDirName(&titles[i]);
                 i++;
 
-                DrawUtils::beginDraw();
-                DrawUtils::clear(COLOR_BLACK);
-                StartupUtils::disclaimer();
-                DrawUtils::drawTGA(328, 160, 1, icon_tga);
-                Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
-                Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), i);
-                DrawUtils::endDraw();
+                if (i == 1  || i % 10 == 0) {
+                    DrawUtils::beginDraw();
+                    DrawUtils::clear(COLOR_BLACK);
+                    StartupUtils::disclaimer();
+                    DrawUtils::drawTGA(328, 160, 1, icon_tga);
+                    Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
+                    Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), i);
+                    DrawUtils::endDraw();
+                }
             }
             closedir(dir);
         }
@@ -615,8 +619,8 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
 
         // DBG - One Diff
         const std::string path = StringUtils::stringFormat("%s/%s/%s/%08x/%08x/meta/meta.xml", isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
-                                                           saves[i].found ? "sys" : "usr",saves[i].found ? "title" : "save", highID, lowID);
- 
+                                                           saves[i].found ? "sys" : "usr", saves[i].found ? "title" : "save", highID, lowID);
+
         titles[wiiuSysTitlesCount].saveInit = !saves[i].found;
 
         char *xmlBuf = nullptr;
@@ -718,14 +722,16 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
 
         wiiuSysTitlesCount++;
 
-        DrawUtils::beginDraw();
-        DrawUtils::clear(COLOR_BLACK);
-        StartupUtils::disclaimer();
-        DrawUtils::drawTGA(328, 160, 1, icon_tga);
-        Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
-        Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), vWiiTitlesCount);
-        Console::consolePrintPosAligned(12, 0, 1, LanguageUtils::gettext("Loaded %i Wii U Sys titles."), wiiuSysTitlesCount);
-        DrawUtils::endDraw();
+        if (wiiuSysTitlesCount == 1 || wiiuSysTitlesCount % 3 == 0) {
+            DrawUtils::beginDraw();
+            DrawUtils::clear(COLOR_BLACK);
+            StartupUtils::disclaimer();
+            DrawUtils::drawTGA(328, 160, 1, icon_tga);
+            Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
+            Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), vWiiTitlesCount);
+            Console::consolePrintPosAligned(12, 0, 1, LanguageUtils::gettext("Loaded %i Wii U Sys titles."), wiiuSysTitlesCount);
+            DrawUtils::endDraw();
+        }
     }
 
     free(savesl);
