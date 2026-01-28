@@ -26,7 +26,7 @@ public:
     uint8_t *find_account_mii_id_in_stadio(MiiData *miidata);
     bool update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata);
     bool update_account_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata);
-    bool delete_mii_id_in_stadio(MiiData *miidata);
+    bool delete_mii_id_from_stadio(MiiData *miidata);
 
     const std::string stadio_name;
     const std::string path_to_stadio;

@@ -337,3 +337,11 @@ void StatManager::enable_flags_for_copy() {
     enable_get_stat = false;
     enable_copy_stat = true;
 }
+
+void StatManager::disable_all_flags() {
+    enable_set_stat = false;
+    enable_get_stat = false;
+    enable_copy_stat = false;
+    enable_filtered_stat = false;
+    needs_profile_translation = false;
+}

@@ -9,6 +9,7 @@
 #include <utils/FSUtils.h>
 #include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
+#include <utils/StatManager.h>
 
 MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind, const std::string &path_to_repo, const std::string &backup_folder,
                  const std::string &repo_description, eDBCategory db_category) : repo_name(repo_name), db_type(db_type), db_kind(db_kind),
@@ -17,6 +18,8 @@ MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind,
 MiiRepo::~MiiRepo() {};
 
 int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
+
+    StatManager::disable_all_flags();
 
     if (!MiiSaveMng::isSlotEmpty(this, slot) &&
         !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
@@ -106,6 +109,8 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
 
 int MiiRepo::restore(int slot) {
 
+    StatManager::disable_all_flags();
+
     std::string errorMessage{};
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
@@ -190,6 +195,8 @@ int MiiRepo::restore(int slot) {
 }
 
 int MiiRepo::wipe() {
+
+    StatManager::disable_all_flags();
 
     std::string errorMessage{};
     int errorCode = 0;

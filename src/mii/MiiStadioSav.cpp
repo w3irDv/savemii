@@ -88,7 +88,7 @@ uint8_t *MiiStadioSav::find_account_mii_id_in_stadio(MiiData *miidata) {
 /// @brief If a miid changes, stadio entry for the old miiiid must be updated
 /// @param old_miidata
 /// @param new_miidata
-/// @return true if not found or updated, false if stadio_buffer is not initialized
+/// @return true if updated, false if stadio_buffer is not initialized or not found
 bool MiiStadioSav::update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata) {
 
     if (stadio_buffer == nullptr)
@@ -96,7 +96,7 @@ bool MiiStadioSav::update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_mi
 
     uint8_t *old_location = find_mii_id_in_stadio(old_miidata);
     if (old_location == nullptr)
-        return true;
+        return false;
 
     memcpy(old_location + 0x10, new_miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
 
@@ -106,7 +106,7 @@ bool MiiStadioSav::update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_mi
 /// @brief Delete a mii_id from stadio
 /// @param miidata
 /// @return true if not found or wiped, false if stadio_buffer is not initialized
-bool MiiStadioSav::delete_mii_id_in_stadio(MiiData *miidata) {
+bool MiiStadioSav::delete_mii_id_from_stadio(MiiData *miidata) {
     if (stadio_buffer == nullptr)
         return false;
 

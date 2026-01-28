@@ -23,6 +23,7 @@ namespace StatManager {
     void enable_flags_for_restore();
     void enable_flags_for_backup();
     void enable_flags_for_copy();
+    void disable_all_flags();
 
     class StatData {
     public:

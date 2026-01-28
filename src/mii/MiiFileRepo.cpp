@@ -182,7 +182,7 @@ bool MiiFileRepo<WiiMii, WiiMiiData>::toggle_favorite_flag([[maybe_unused]] MiiD
 /// @brief If a modified mii is favorite, modifies its miiid in the favorite section
 /// @param old_miidata
 /// @param new_miidata
-/// @return
+/// @return false if db not initialized or mii id not found, true if updated
 template<>
 bool MiiFileRepo<WiiUMii, WiiUMiiData>::update_mii_id_in_favorite_section(MiiData *old_miidata, MiiData *new_miidata) {
 
@@ -213,7 +213,7 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::update_mii_id_in_favorite_section(MiiDat
 /// @brief Deletes miiid from favorite section
 /// @param old_miidata
 /// @param new_miidata
-/// @return
+/// @return true if not found or wiped, false if db not initialized
 template<>
 bool MiiFileRepo<WiiUMii, WiiUMiiData>::delete_mii_id_from_favorite_section(MiiData *miidata) {
 
@@ -234,11 +234,9 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::delete_mii_id_from_favorite_section(MiiD
 
     if (found == true) {
         memset(fav_offset, 0, WiiUMiiData::MII_ID_SIZE);
-    } else {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Mii %s not found in Favorites section"), miidata->get_name_as_hex_string().c_str());
     }
 
-    return found;
+    return true;
 }
 
 
@@ -514,7 +512,7 @@ bool MiiFileRepo<MII, MIIDATA>::wipe_miidata(size_t index) {
     if (this->stadio_sav != nullptr) {
         MiiData *miidata = this->extract_mii_data(index);
         if (miidata != nullptr) {
-            this->stadio_sav->delete_mii_id_in_stadio(miidata);
+            this->stadio_sav->delete_mii_id_from_stadio(miidata);
             delete miidata;
         }
     }

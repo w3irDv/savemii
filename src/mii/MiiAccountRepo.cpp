@@ -13,6 +13,7 @@
 #include <utils/InProgress.h>
 #include <utils/LanguageUtils.h>
 #include <utils/MiiUtils.h>
+#include <utils/StatManager.h>
 
 namespace fs = std::filesystem;
 
@@ -410,6 +411,8 @@ bool MiiAccountRepo<MII, MIIDATA>::empty_repo() {
 template<>
 int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, std::string dstPath) {
 
+    StatManager::disable_all_flags();
+
     std::string errorMessage{};
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
@@ -447,7 +450,7 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
         errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
-    
+
     this->needs_populate = true;
     return errorCode;
 }
@@ -459,6 +462,8 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
 /// @return
 template<>
 int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int target_mii_location, MiiAccountRepo *source_mii_repo, int source_mii_location) {
+
+    StatManager::disable_all_flags();
 
     std::string errorMessage{};
     int errorCode = 0;
