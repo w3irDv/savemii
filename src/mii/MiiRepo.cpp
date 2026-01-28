@@ -58,11 +58,27 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
         case FILE: {
             size_t last_slash = srcPath.find_last_of("/");
             std::string filename = srcPath.substr(last_slash, std::string::npos);
-            dstPath = dstPath + filename;
-            if (!FSUtils::copyFile(srcPath, dstPath)) {
+            std::string db_dstPath = dstPath + filename;
+
+            if (FSUtils::copyFile(srcPath, db_dstPath)) {
+                if (this->stadio_sav != nullptr) {
+                    std::string path_to_stadio = this->stadio_sav->path_to_stadio;
+                    size_t last_slash = path_to_stadio.find_last_of("/");
+                    std::string filename = path_to_stadio.substr(last_slash, std::string::npos);
+                    std::string stadio_dstPath = dstPath + filename;
+                    if (FSUtils::checkEntry(path_to_stadio.c_str()) == 1) {
+                        if (!FSUtils::copyFile(path_to_stadio, stadio_dstPath)) {
+                            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Warning - Error copying stadio file"));
+                            errorCode = 2;
+                        }
+                    }
+                }
+            } else {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
                 errorCode = 1;
             }
+
+
         } break;
         default:;
     }
@@ -71,9 +87,14 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
         MiiSaveMng::writeMiiMetadataWithTag(this, slot, tag);
     else {
         if (errorCode == -1) {
-            errorMessage = (std::string) LanguageUtils::gettext("%s\n") + errorMessage;
+            errorMessage = std::string("%s\n") + errorMessage;
             Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
             MiiSaveMng::writeMiiMetadataWithTag(this, slot, LanguageUtils::gettext("PARTIAL BACKUP"));
+        }
+        if (errorCode == 2) {
+            errorMessage = std::string("%s\n") + errorMessage;
+            Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
+            MiiSaveMng::writeMiiMetadataWithTag(this, slot, LanguageUtils::gettext("NO STADIO"));
         } else {
             errorMessage = (std::string) LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
             Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
@@ -128,12 +149,25 @@ int MiiRepo::restore(int slot) {
         case FILE: {
             size_t last_slash = dstPath.find_last_of("/");
             std::string filename = dstPath.substr(last_slash, std::string::npos);
-            srcPath = srcPath + filename;
-            if (FSUtils::copyFile(srcPath, dstPath)) {
+            std::string db_srcPath = srcPath + filename;
+            if (FSUtils::copyFile(db_srcPath, dstPath)) {
                 FSError fserror;
                 if (db_owner != 0) {
                     FSUtils::setOwnerAndMode(db_owner, db_group, db_fsmode, dstPath, fserror);
                     FSUtils::flushVol(dstPath);
+                }
+                if (this->stadio_sav != nullptr) {
+                    std::string path_to_stadio = this->stadio_sav->path_to_stadio;
+                    size_t last_slash = path_to_stadio.find_last_of("/");
+                    std::string filename = path_to_stadio.substr(last_slash, std::string::npos);
+                    std::string stadio_srcPath = srcPath + filename;
+                    if (FSUtils::checkEntry(stadio_srcPath.c_str()) == 1) {
+                        FSUtils::copyFile(stadio_srcPath, path_to_stadio);
+                        if (this->stadio_sav->stadio_owner != 0) {
+                            FSUtils::setOwnerAndMode(this->stadio_sav->stadio_owner, this->stadio_sav->stadio_group, this->stadio_sav->stadio_fsmode, path_to_stadio, fserror);
+                            FSUtils::flushVol(path_to_stadio);
+                        }
+                    }
                 }
             } else {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
@@ -144,7 +178,7 @@ int MiiRepo::restore(int slot) {
     }
 
     if (errorCode == -1) {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\n") + errorMessage;
+        errorMessage = std::string("%s\n") + errorMessage;
         Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     } else if (errorCode > 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
@@ -186,7 +220,12 @@ int MiiRepo::wipe() {
             }
         } break;
         case FILE: {
-            if (unlink(path.c_str()) == -1) {
+            if (unlink(path.c_str()) == 0) {
+                if (this->stadio_sav != nullptr) {
+                    std::string path_to_stadio = this->stadio_sav->path_to_stadio;
+                    unlink(path_to_stadio.c_str());
+                }
+            } else {
                 errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting file."));
                 Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete file:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
                 errorCode += 2;
@@ -197,7 +236,7 @@ int MiiRepo::wipe() {
     }
 
     if (errorCode == -1) {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\n") + errorMessage;
+        errorMessage = std::string("%s\n") + errorMessage;
         Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     } else if (errorCode > 0) {
         errorMessage = (std::string) LanguageUtils::gettext("%s\nWipe failed.") + "\n" + errorMessage;
