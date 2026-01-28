@@ -266,14 +266,12 @@ template<>
 bool MiiFileRepo<WiiUMii, WiiUMiiData>::update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata) {
 
     return this->stadio_sav->update_mii_id_in_stadio(old_miidata, new_miidata);
-
 }
 
 template<>
 bool MiiFileRepo<WiiMii, WiiMiiData>::update_mii_id_in_stadio([[maybe_unused]] MiiData *old_miidata, [[maybe_unused]] MiiData *new_miidata) {
 
     return true;
-
 }
 
 template MiiFileRepo<WiiMii, WiiMiiData>::MiiFileRepo(const std::string &repo_name, const std::string &path_to_repo, const std::string &backup_folder, const std::string &repo_description, eDBCategory db_category);
@@ -512,14 +510,18 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
 template<typename MII, typename MIIDATA>
 bool MiiFileRepo<MII, MIIDATA>::wipe_miidata(size_t index) {
 
+    // STADIO
+    if (this->stadio_sav != nullptr) {
+        MiiData *miidata = this->extract_mii_data(index);
+        if (miidata != nullptr) {
+            this->stadio_sav->delete_mii_id_in_stadio(miidata);
+            delete miidata;
+        }
+    }
+    
     size_t target_location = this->mii_location.at(index);
 
     memset(this->db_buffer + MIIDATA::DB::OFFSET + target_location * MIIDATA::MII_DATA_SIZE, 0, MIIDATA::MII_DATA_SIZE);
-
-    /*
-    // the caller should delete element at index for other related vectors
-    it is enough to force a lazy repopulate, because the menus do not allow to do anything with a deleted mii
-    */
 
     if (last_empty_location > index)
         last_empty_location = index;
@@ -704,4 +706,3 @@ cleanup_after_io_error:
         FSUtils::flushVol(db_filepath);
     return false;
 }
-

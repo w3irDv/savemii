@@ -19,7 +19,6 @@ namespace fs = std::filesystem;
 MiiStadioSav::MiiStadioSav(const std::string &stadio_name,
                            const std::string &path_to_stadio, const std::string &backup_folder, const std::string &stadio_description) : stadio_name(stadio_name), path_to_stadio(path_to_stadio), backup_folder(backup_folder), stadio_description(stadio_description) {
     set_stadio_fsa_metadata();
-    set_stadio_path();
 };
 
 // STADIO
@@ -104,6 +103,23 @@ bool MiiStadioSav::update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_mi
     return true;
 }
 
+/// @brief Delete a mii_id from stadio
+/// @param miidata
+/// @return true if not found or wiped, false if stadio_buffer is not initialized
+bool MiiStadioSav::delete_mii_id_in_stadio(MiiData *miidata) {
+    if (stadio_buffer == nullptr)
+        return false;
+
+    uint8_t *location = find_mii_id_in_stadio(miidata);
+    if (location == nullptr)
+        return true;
+
+    memset(location, 0, WiiUMiiData::STADIO::STADIO_MII_SIZE);
+
+    return true;
+}
+
+
 /// @brief If an account miid changes, stadio entry for the old miiiid must be updated
 /// @param old_miidata
 /// @param new_miidata
@@ -132,22 +148,6 @@ bool MiiStadioSav::find_stadio_empty_frame(uint16_t &frame) {
         }
     }
     return false;
-}
-
-bool MiiStadioSav::set_stadio_path() {
-
-    // STADIO
-    /*
-    std::string path_to_s("/mnt/c/Users/Xavier/repo/cemu/mlc01/usr/save/00050010/1004a200/user/common/stadio.sav");
-
-    
-    printf("%s\n", path_to_stadio.c_str());
-    path_to_stadio = path_to_repo.substr(0, path_to_repo.find_last_of("/"));
-    printf("%s\n", path_to_stadio.c_str());
-    path_to_stadio = path_to_stadio.substr(0, path_to_stadio.find_last_of("/")) + "/stadio.sav";
-    printf("%s\n", path_to_stadio.c_str());
-    */
-    return true;
 }
 
 bool MiiStadioSav::open_and_load_stadio() {
@@ -343,7 +343,7 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata) {
     memcpy(empty_slot_offset + 8, &stadio_last_mii_update, 8);
     memcpy(empty_slot_offset + 0x1A, &frame, 2);
 
-    // probably can be safely moved to persist fucntion
+    // probably can be safely moved to persist function
     memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET, &stadio_last_mii_index, 8);
     memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 8, &stadio_last_mii_update, 8);
     memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 0x10, &stadio_max_alive_miis, 4);

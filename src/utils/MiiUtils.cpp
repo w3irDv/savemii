@@ -483,22 +483,26 @@ bool MiiUtils::wipe_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_proc
             showMiiOperations(mii_process_shared_state, c2a->at(i));
             mii_view->at(mii_index).selected = false;
             mii_view->at(mii_index).state = MiiStatus::KO;
-
-            if (mii_repo->miis.at(mii_index)->favorite) {
-                MiiData *mii_data = mii_repo->extract_mii_data(mii_index);
-                if (mii_data != nullptr) {
-                    mii_repo->delete_mii_id_from_favorite_section(mii_data);
-                    delete mii_data;
-                } else { // Just a warning, we are unable to delete it from favourites
-                    Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Unable to remove %s (by %s) from favorites section. Error extracting MiiData"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
-                }
-            }
+            MiiData *mii_data = nullptr;
+            if (mii_repo->miis.at(mii_index)->favorite)
+                mii_data = mii_repo->extract_mii_data(mii_index);
             if (mii_repo->wipe_miidata(mii_index)) {
                 mii_view->at(mii_index).state = MiiStatus::OK;
+                if (mii_repo->miis.at(mii_index)->favorite) {
+                    if (mii_data != nullptr) {
+                        mii_repo->delete_mii_id_from_favorite_section(mii_data);
+                        delete mii_data;
+                        mii_data = nullptr;
+                    } else { // Just a warning, we are unable to delete it from favourites
+                        Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Unable to remove %s (by %s) from favorites section. Error extracting MiiData"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
+                    }
+                }
             } else {
                 Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error wiping MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
                 errorCounter++;
             }
+            if (mii_data != nullptr)
+                delete mii_data;
             InProgress::currentStep++;
             if (InProgress::totalSteps > 1) {
                 InProgress::input->read();

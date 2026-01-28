@@ -18,7 +18,6 @@ public:
     bool init_stadio_file();
     bool fill_empty_stadio_file();
     bool set_stadio_fsa_metadata();
-    bool set_stadio_path();
 
     bool import_miidata_in_stadio(MiiData *miidata);
     uint8_t *find_stadio_empty_location();
@@ -27,6 +26,7 @@ public:
     uint8_t *find_account_mii_id_in_stadio(MiiData *miidata);
     bool update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata);
     bool update_account_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata);
+    bool delete_mii_id_in_stadio(MiiData *miidata);
 
     const std::string stadio_name;
     const std::string path_to_stadio;
