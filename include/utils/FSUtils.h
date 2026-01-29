@@ -10,6 +10,8 @@
 #define __FSAShimSend                   ((FSError (*)(FSAShimBuffer *, uint32_t))(0x101C400 + 0x042d90))
 
 #define GENERATE_FAT32_TRANSLATION_FILE true
+#define NOFAT32_TRANSLATION false
+#define ENABLE_STAT_MANAGER true
 
 struct file_buffer {
     void *buf;
@@ -50,8 +52,8 @@ namespace FSUtils {
         return fsize;
     }
 
-    bool copyFile(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file = false);
-    bool copyDir(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file = false); // Source: ft2sd
+    bool copyFile(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file = false, bool enable_stat_manager = false);
+    bool copyDir(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file = false, bool enable_stat_manager = false); // Source: ft2sd
 
     void showFileOperation(const std::string &file_name, const std::string &file_src, const std::string &file_dest);
     void showDeleteOperations(bool isFolder, const char *name, const std::string &path);
@@ -60,7 +62,7 @@ namespace FSUtils {
 
     bool folderEmpty(const char *fPath);
     bool folderEmptyIgnoreSavemii(const char *fPath);
- 
+
     int slc_resilient_rename(std::string &src_path, std::string &dst_path);
 
 } // namespace FSUtils

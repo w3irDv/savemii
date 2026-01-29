@@ -329,7 +329,7 @@ bool FSUtils::copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, c
 }
 
 
-bool FSUtils::copyFile(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file /*= false*/) {
+bool FSUtils::copyFile(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file /*= false*/, bool enable_stat_manager /*=false*/) {
 
     std::string tPath(initial_tPath);
     if (sPath.find("savemiiMeta.json") != std::string::npos)
@@ -403,21 +403,25 @@ copy_file:
         }
     }
 
-    // backup
-    if (StatManager::enable_get_stat) {
-        if (!StatManager::get_stat(sPath)) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error creating permission file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-            return false;
+    if (enable_stat_manager) {
+        // backup
+        if (StatManager::enable_get_stat) {
+            if (!StatManager::get_stat(sPath)) {
+                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error creating permission file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+                return false;
+            }
         }
+
+        // restore
+        if (StatManager::enable_set_stat)
+            StatManager::apply_default_stat(tPath);
+
+        // copy to other profile/device
+        if (StatManager::enable_copy_stat)
+            StatManager::copy_stat(sPath, tPath);
+    } else {
+        FSAChangeMode(handle, FSUtils::newlibtoFSA(tPath).c_str(), (FSMode) 0x666);
     }
-
-    // restore
-    if (StatManager::enable_set_stat)
-        StatManager::apply_default_stat(tPath);
-
-    // copy to other profile/device
-    if (StatManager::enable_copy_stat)
-        StatManager::copy_stat(sPath, tPath);
 
     if (!success) {
         if (readError > 0) {
@@ -432,7 +436,7 @@ copy_file:
 }
 
 #ifndef MOCK
-bool FSUtils::copyDir(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file /*= false*/) { // Source: ft2sd
+bool FSUtils::copyDir(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file /*= false*/, bool enable_stat_manager /*=false*/) { // Source: ft2sd
 
     std::string tPath(initial_tPath);
     DIR *dir = opendir(sPath.c_str());
@@ -470,27 +474,29 @@ bool FSUtils::copyDir(const std::string &sPath, const std::string &initial_tPath
 
 dir_created:
 
-    // restore
-    if (StatManager::enable_set_stat)
-        StatManager::apply_default_stat(tPath);
+    if (enable_stat_manager) {
+        // restore
+        if (StatManager::enable_set_stat)
+            StatManager::apply_default_stat(tPath);
 
-    // backup
-    if (StatManager::enable_get_stat) {
-        if (!StatManager::get_stat(sPath)) {
-            InProgress::copyErrorsCounter++;
-            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error creating permission file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-            if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-                InProgress::abortCopy = true;
-                closedir(dir);
-                return false;
+        // backup
+        if (StatManager::enable_get_stat) {
+            if (!StatManager::get_stat(sPath)) {
+                InProgress::copyErrorsCounter++;
+                std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error creating permission file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+                if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+                    InProgress::abortCopy = true;
+                    closedir(dir);
+                    return false;
+                }
             }
         }
+
+
+        // copy to other profile/device
+        if (StatManager::enable_copy_stat)
+            StatManager::copy_stat(sPath, tPath);
     }
-
-
-    // copy to other profile/device
-    if (StatManager::enable_copy_stat)
-        StatManager::copy_stat(sPath, tPath);
 
     struct dirent *data;
 
@@ -598,7 +604,7 @@ void FSUtils::showDeleteOperations(bool isFolder, const char *name, const std::s
     DrawUtils::setFontColor(COLOR_TEXT);
     Console::consolePrintPos(-2, 1, isFolder ? LanguageUtils::gettext("Deleting folder %s") : LanguageUtils::gettext("Deleting file %s"), name);
     Console::consolePrintPosMultiline(-2, 3, LanguageUtils::gettext("From: \n%s"), path.c_str());
-    if (InProgress::totalSteps > 1  || InProgress::immediateAbort) {
+    if (InProgress::totalSteps > 1 || InProgress::immediateAbort) {
         if (InProgress::abortTask) {
             DrawUtils::setFontColor(COLOR_LIST_DANGER);
             Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("Will abort..."));

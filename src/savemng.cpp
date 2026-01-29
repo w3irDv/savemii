@@ -10,13 +10,13 @@
 #include <savemng.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/EscapeFAT32Utils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StatManager.h>
 #include <utils/StringUtils.h>
-#include <utils/AmbientConfig.h>
 
 //#define DEBUG
 #ifdef DEBUG
@@ -527,7 +527,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
     std::string errorMessage{};
     if (doCommon) {
         FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstCommonPath).c_str(), 0x666, titleb->commonSaveSize);
-        if (!FSUtils::copyDir(srcCommonPath, dstCommonPath)) {
+        if (!FSUtils::copyDir(srcCommonPath, dstCommonPath, NOFAT32_TRANSLATION, ENABLE_STAT_MANAGER)) {
             errorMessage = LanguageUtils::gettext("Error copying common savedata.");
             errorCode = 1;
         }
@@ -540,7 +540,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
         } else {
             FSUtils::FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize, titleb->commonSaveSize);
         }
-        if (!FSUtils::copyDir(srcPath, dstPath)) {
+        if (!FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, ENABLE_STAT_MANAGER)) {
             errorMessage = ((errorMessage.size() == 0) ? "" : (errorMessage + "\n")) + ((source_user == -1) ? LanguageUtils::gettext("Error copying savedata.")
                                                                                                             : LanguageUtils::gettext("Error copying profile savedata."));
             errorCode += 2;
@@ -611,7 +611,7 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
     StatManager::enable_flags_for_copy();
 
     FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
-    if (!FSUtils::copyDir(srcPath, dstPath)) {
+    if (!FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION,ENABLE_STAT_MANAGER)) {
         errorMessage = LanguageUtils::gettext("Error copying profile savedata.");
         errorCode = 1;
         goto flush_volume;
@@ -814,7 +814,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                     FAT32EscapeFileManager::active_fat32_escape_file_manager = std::make_unique<FAT32EscapeFileManager>(dstPath);
                     if (FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
                         Escape::setPrefix(srcPath, dstPath);
-                        if (FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE)) {
+                        if (FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE, ENABLE_STAT_MANAGER)) {
                             if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1)
                                 FSUtils::copyFile(metaSavePath + "/saveinfo.xml", dstPath + "/savemii_saveinfo.xml");
                             if (FAT32EscapeFileManager::active_fat32_escape_file_manager->close()) {
@@ -963,7 +963,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     std::string errorMessage{};
     if (doCommon) {
         Escape::setPrefix(srcCommonPath, dstCommonPath);
-        if (!FSUtils::copyDir(srcCommonPath, dstCommonPath, GENERATE_FAT32_TRANSLATION_FILE)) {
+        if (!FSUtils::copyDir(srcCommonPath, dstCommonPath, GENERATE_FAT32_TRANSLATION_FILE, ENABLE_STAT_MANAGER)) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying common savedata."));
             errorCode = 1;
             goto backup_cleanup_and_return;
@@ -972,7 +972,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
 
     if (doBase) {
         Escape::setPrefix(srcPath, dstPath);
-        if (!FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE)) {
+        if (!FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE, ENABLE_STAT_MANAGER)) {
             errorMessage.append("\n" + (std::string) ((source_user == -1) ? LanguageUtils::gettext("Error copying savedata.")
                                                                           : LanguageUtils::gettext("Error copying profile savedata.")));
             errorCode += 2;
@@ -1108,12 +1108,12 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     }
 
     StatManager::enable_flags_for_restore();
-    
+
     std::string storage_vol{};
     std::string errorMessage{};
     if (doCommon) {
         FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstCommonPath).c_str(), 0x666, title->commonSaveSize);
-        if (!FSUtils::copyDir(srcCommonPath, dstCommonPath)) {
+        if (!FSUtils::copyDir(srcCommonPath, dstCommonPath, NOFAT32_TRANSLATION, ENABLE_STAT_MANAGER)) {
             errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error restoring common savedata."));
             errorCode = 1;
             goto flush_volume;
@@ -1126,7 +1126,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
         } else {
             FSUtils::FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), title->accountSaveSize, title->commonSaveSize);
         }
-        if (!FSUtils::copyDir(srcPath, dstPath)) {
+        if (!FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, ENABLE_STAT_MANAGER)) {
             errorMessage = errorMessage.append("\n" + (std::string) ((wiiu_user == -1) ? LanguageUtils::gettext("Error restoring savedata.")
                                                                                        : LanguageUtils::gettext("Error restoring profile savedata.")));
             errorCode += 2;
