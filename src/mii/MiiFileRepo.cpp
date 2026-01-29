@@ -45,28 +45,14 @@ bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
 
 template<>
 bool MiiFileRepo<WiiUMii, WiiUMiiData>::set_db_fsa_metadata() {
+
     db_group = WiiUMiiData::DB::DB_GROUP;
     db_fsmode = (FSMode) WiiUMiiData::DB::DB_FSMODE;
-    db_owner = WiiUMiiData::DB::DB_OWNER; // defaults to 0, we will change it to the right uid only if updating the miimaker db
-                                          // othewise, default savemii uid will be fine
+    // db_owner is set dynamically in MiiUtils::init_repos
+    if (path_to_repo.find("fs:/vol/") != std::string::npos) // default (0) is ok for SD  (probably it is a test file)
+        db_owner = 0;
 
-    if (path_to_repo.find("fs:/vol/") != std::string::npos) // default is ok for SD  (probably it is a test file)
-        return false;
-    size_t mii_make_id_pos = path_to_repo.find("/save/00050010/1004a"); // mii maker savepath, region independent part
-    if (mii_make_id_pos == std::string::npos)
-        mii_make_id_pos = path_to_repo.find("/save/00050010/1004A"); // just in case ...
-    if (mii_make_id_pos != std::string::npos) {
-        std::string mii_maker_id = path_to_repo.substr(mii_make_id_pos + 15, 8);
-        uint64_t owner;
-        try {
-            owner = stoull(mii_maker_id, nullptr, 16);
-        } catch (...) {
-            return false;
-        }
-        db_owner = owner;
-        return true;
-    }
-    return false; // no matching, we let db_owner be 0
+    return true;
 }
 
 template<>

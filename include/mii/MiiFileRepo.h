@@ -33,6 +33,7 @@ public:
 
     std::map<std::string, int> favorite_miis;
     bool set_db_fsa_metadata();
+    void set_db_owner(uint32_t db_owner) {this->db_owner = db_owner;}; // dynamically set for FFL
 
     uint16_t get_crc();
 

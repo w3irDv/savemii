@@ -18,6 +18,7 @@ public:
     bool init_stadio_file();
     bool fill_empty_stadio_file();
     bool set_stadio_fsa_metadata();
+    void set_stadio_owner(uint32_t stadio_owner) {this->stadio_owner = stadio_owner;}; // dynamically set for FFL
 
     bool import_miidata_in_stadio(MiiData *miidata);
     uint8_t *find_stadio_empty_location();

@@ -464,7 +464,7 @@ Title *TitleUtils::loadWiiTitles() {
                 setTitleNameBasedDirName(&titles[i]);
                 i++;
 
-                if (i == 1  || i % 10 == 0) {
+                if (i == 1 || i % 10 == 0) {
                     DrawUtils::beginDraw();
                     DrawUtils::clear(COLOR_BLACK);
                     StartupUtils::disclaimer();
@@ -826,4 +826,24 @@ void TitleUtils::reset_backup_state(Title *titles, int title_count) {
     for (int i = 0; i < title_count; i++) {
         titles[i].currentDataSource.batchBackupState = NOT_TRIED;
     }
+}
+
+
+uint32_t TitleUtils::getMiiMakerOwner() {
+    for (int i = 0; i < wiiuSysTitlesCount; i++) {
+        if (wiiusystitles[i].lowID >> 12 == 0x1004a) {
+            return wiiusystitles[i].lowID;
+        }
+    }
+    return 0;
+}
+
+
+bool TitleUtils::getMiiMakerisTitleOnUSB() {
+    for (int i = 0; i < wiiuSysTitlesCount; i++) {
+        if (wiiusystitles[i].lowID >> 12 == 0x1004a) {
+            return wiiusystitles[i].isTitleOnUSB;
+        }
+    }
+    return 0;
 }

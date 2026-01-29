@@ -69,11 +69,18 @@ namespace TitleUtils {
 
     inline int wiiuTitlesCount = 0, wiiuSysTitlesCount = 0, vWiiTitlesCount = 0;
 
+    inline Title *wiiutitles = nullptr;
+    inline Title *wiititles = nullptr;
+    inline Title *wiiusystitles = nullptr;
+
     Title *loadWiiTitles();
     Title *loadWiiUTitles(int run);
     Title *loadWiiUSysTitles(int run);
 
     void unloadTitles(Title *titles, int count);
+
+    uint32_t getMiiMakerOwner();
+    bool getMiiMakerisTitleOnUSB();
 
     template<class It>
     void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true);

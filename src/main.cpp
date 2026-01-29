@@ -102,14 +102,14 @@ int main() {
     DrawUtils::endDraw();
 
 
-    Title *wiiutitles = TitleUtils::loadWiiUTitles(1);
-    Title *wiititles = TitleUtils::loadWiiTitles();
-    Title *wiiusystitles = TitleUtils::loadWiiUSysTitles(1);
+    TitleUtils::wiiutitles = TitleUtils::loadWiiUTitles(1);
+    TitleUtils::wiititles = TitleUtils::loadWiiTitles();
+    TitleUtils::wiiusystitles = TitleUtils::loadWiiUSysTitles(1);
     getAccountsWiiU();
 
-    TitleUtils::sortTitle(wiiutitles, wiiutitles + TitleUtils::wiiuTitlesCount, 1, true);
-    TitleUtils::sortTitle(wiititles, wiititles + TitleUtils::vWiiTitlesCount, 1, true);
-    TitleUtils::sortTitle(wiiusystitles, wiiusystitles + TitleUtils::wiiuSysTitlesCount, 1, true);
+    TitleUtils::sortTitle(TitleUtils::wiiutitles, TitleUtils::wiiutitles + TitleUtils::wiiuTitlesCount, 1, true);
+    TitleUtils::sortTitle(TitleUtils::wiititles, TitleUtils::wiititles + TitleUtils::vWiiTitlesCount, 1, true);
+    TitleUtils::sortTitle(TitleUtils::wiiusystitles, TitleUtils::wiiusystitles + TitleUtils::wiiuSysTitlesCount, 1, true);
 
     StartupUtils::resetMessageList();
     StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing BackupSets metadata."));
@@ -118,8 +118,8 @@ int main() {
 
     StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing Excludes config."));
 
-    ExcludesCfg::wiiuExcludes = std::make_unique<ExcludesCfg>("wiiuExcludes", wiiutitles, TitleUtils::wiiuTitlesCount);
-    ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes", wiititles, TitleUtils::vWiiTitlesCount);
+    ExcludesCfg::wiiuExcludes = std::make_unique<ExcludesCfg>("wiiuExcludes", TitleUtils::wiiutitles, TitleUtils::wiiuTitlesCount);
+    ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes", TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
     ExcludesCfg::wiiuExcludes->init();
     ExcludesCfg::wiiExcludes->init();
 
@@ -135,7 +135,7 @@ int main() {
     StartupUtils::resetMessageList();
 
     Input input{};
-    std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(wiiutitles, wiititles, wiiusystitles, TitleUtils::wiiuTitlesCount,
+    std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(TitleUtils::wiiutitles, TitleUtils::wiititles, TitleUtils::wiiusystitles, TitleUtils::wiiuTitlesCount,
                                                                            TitleUtils::vWiiTitlesCount, TitleUtils::wiiuSysTitlesCount);
 
     InProgress::input = &input;
@@ -170,9 +170,9 @@ int main() {
     }
 
     MiiUtils::deinitMiiRepos();
-    TitleUtils::unloadTitles(wiiutitles, TitleUtils::wiiuTitlesCount);
-    TitleUtils::unloadTitles(wiititles, TitleUtils::vWiiTitlesCount);
-    TitleUtils::unloadTitles(wiiusystitles, TitleUtils::wiiuSysTitlesCount);
+    TitleUtils::unloadTitles(TitleUtils::wiiutitles, TitleUtils::wiiuTitlesCount);
+    TitleUtils::unloadTitles(TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
+    TitleUtils::unloadTitles(TitleUtils::wiiusystitles, TitleUtils::wiiuSysTitlesCount);
     FSUtils::deinit_fs_buffers();
     FSUtils::shutdownFS();
     LanguageUtils::gettextCleanUp();

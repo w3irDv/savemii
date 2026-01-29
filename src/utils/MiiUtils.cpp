@@ -18,6 +18,7 @@
 #include <utils/InProgress.h>
 #include <utils/MiiUtils.h>
 #include <utils/StringUtils.h>
+#include <utils/TitleUtils.h>
 
 #include <Metadata.h>
 //#include <mockWUT.h>
@@ -27,31 +28,47 @@
 bool MiiUtils::initMiiRepos() {
     bool enable_ffl = true;
 
-    std::string MiiMakerTitleId{"SET_IT_DYNAMICALLY"};
+    uint32_t mii_maker_owner = TitleUtils::getMiiMakerOwner();
+    std::string MiiMakerTitleId = StringUtils::stringFormat("%08x", mii_maker_owner);
+    bool isUSB = TitleUtils::getMiiMakerisTitleOnUSB();
+    std::string path = (isUSB ? (FSUtils::getUSB() + "/sys/title/00050010/").c_str() : "storage_mlc01:/sys/title/00050010/");
+    std::string mii_maker_path = path + MiiMakerTitleId;
+    if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2) {
+        path = (isUSB ? (FSUtils::getUSB() + "/usr/save/00050010/").c_str() : "storage_mlc01:/usr/save/00050010/");
+        mii_maker_path = path + MiiMakerTitleId; // save path
+        goto set_repos;
+    }
+
+    Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Unable to obtain MiiMaker title information. Let's try to find it..."));
+
+    // let's try the id corresponding to the console region
     switch (AmbientConfig::thisConsoleRegion) {
         case MCPRegion::MCP_REGION_EUROPE:
-            MiiMakerTitleId = "1004a200";
+            mii_maker_owner = 0x1004a200;
             break;
         case MCPRegion::MCP_REGION_JAPAN:
-            MiiMakerTitleId = "1004a000";
+            mii_maker_owner = 0x1004a000;
             break;
         case MCPRegion::MCP_REGION_USA:
-            MiiMakerTitleId = "1004a100";
+            mii_maker_owner = 0x1004a100;
             break;
         default:;
     }
 
-    std::string mii_maker_path = "storage_mlc01:/usr/save/00050010/" + MiiMakerTitleId;
+    MiiMakerTitleId = StringUtils::stringFormat("%08x", mii_maker_owner);
+    mii_maker_path = "storage_mlc01:/sys/title/00050010/" + MiiMakerTitleId;
     if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2) {
         goto set_repos;
-    } else { // I'm using game_region in MLCSysProd prod, but we have no access to korean wii u's ... game_region ? product_area in sysProd?
-        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a100";
+    }
+
+    { // I'm using game_region in MLCSysProd prod, but we have no access to korean wii u's ... game_region? product_area in sysProd?
+        mii_maker_path = "storage_mlc01:/sys/title/00050010/1004a100";
         if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
             goto set_repos;
-        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a200";
+        mii_maker_path = "storage_mlc01:/sys/title/00050010/1004a200";
         if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
             goto set_repos;
-        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a000";
+        mii_maker_path = "storage_mlc01:/sys/title/00050010/1004a000";
         if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
             goto set_repos;
     }
@@ -112,6 +129,10 @@ set_repos:
     MiiRepos["FFL"]->setStadioSav(MiiStadios["FFL_ACCOUNT"]);
     MiiRepos["ACCOUNT"]->setStadioSav(MiiStadios["FFL_ACCOUNT"]);
 
+    // Owners
+    ((MiiFileRepo<WiiUMii, WiiUMiiData> *) MiiRepos["FFL"])->set_db_owner(mii_maker_owner);
+    MiiStadios["FFL_ACCOUNT"]->set_stadio_owner(mii_maker_owner);
+
     // q&d
     if (enable_ffl)
         mii_repos = {MiiRepos["FFL"], MiiRepos["FFL_STAGE"], MiiRepos["FFL_C"],
@@ -139,10 +160,16 @@ bool MiiUtils::initial_checkpoint() {
             sdWriteDisclaimer(COLOR_BACKGROUND);
         FSUtils::createFolder(checkpointDir.c_str());
         {
-            std::string srcPath = MiiRepos["FFL"]->path_to_repo;
-            std::string dstPath = checkpointDir + "/FFL_ODB.dat";
-            if (FSUtils::checkEntry(srcPath.c_str()) == 1)
-                FSUtils::copyFile(srcPath, dstPath);
+            if (MiiRepos.count("FFL")) {
+                std::string srcPath = MiiRepos["FFL"]->path_to_repo;
+                std::string dstPath = checkpointDir + "/FFL_ODB.dat";
+                if (FSUtils::checkEntry(srcPath.c_str()) == 1)
+                    FSUtils::copyFile(srcPath, dstPath);
+                srcPath = MiiRepos["FFL"]->stadio_sav->path_to_stadio;
+                dstPath = checkpointDir + "/stadio.sav";
+                if (FSUtils::checkEntry(srcPath.c_str()) == 1)
+                    FSUtils::copyFile(srcPath, dstPath);
+            }
         }
         {
             std::string srcPath = MiiRepos["RFL"]->path_to_repo;

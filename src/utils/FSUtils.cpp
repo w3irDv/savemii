@@ -419,7 +419,6 @@ copy_file:
     if (StatManager::enable_copy_stat)
         StatManager::copy_stat(sPath, tPath);
 
-
     if (!success) {
         if (readError > 0) {
             Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Read error\n\n%s\n\n reading from %s"), strerror(readError), sPath.c_str());
