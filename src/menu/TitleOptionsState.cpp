@@ -70,6 +70,7 @@ void TitleOptionsState::render() {
         this->subState->render();
         return;
     }
+    //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - RENDERING 1"));
     if (this->state == STATE_TITLE_OPTIONS) {
         std::string slotFormat = getSlotFormatType(&this->title, slot);
         if (((this->task == COPY_TO_OTHER_DEVICE) || (this->task == PROFILE_TO_PROFILE) || (this->task == MOVE_PROFILE) || (this->task == WIPE_PROFILE)) && cursorPos == 0)
@@ -98,6 +99,7 @@ void TitleOptionsState::render() {
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Move profile savedata to a different profile."));
             Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   - Target profile will be wiped."));
         } else if (this->task == importLoadiine || this->task == exportLoadiine) {
+            //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - RENDERING LOADDINE 1"));
             entrycount = 2;
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -250,12 +252,15 @@ void TitleOptionsState::render() {
                     break;
                 case importLoadiine:
                 case exportLoadiine:
+                    //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - COMPUTING 1"));
                     if (hasCommonSave(&this->title, true, true, slot, this->versionList != nullptr ? this->versionList[slot] : 0)) {
+                        //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - COMMON OK"));
                         Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Include 'common' save?"));
                         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                         Console::consolePrintPos(M_OFF, 8, "   < %s >", common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         entrycount++;
                     } else {
+                        //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - COMMON KO"));
                         common = false;
                         Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("No 'common' save found."));
                     }
@@ -263,6 +268,7 @@ void TitleOptionsState::render() {
                 default:;
             }
 
+            //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - TO SHOW ICON"));
 
         showIcon:
             if (this->title.iconBuf != nullptr)
@@ -760,6 +766,14 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     if (copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
                     updateCopyToOtherDeviceData();
+                    break;
+                case importLoadiine:
+                    if (importFromLoadiine(&this->title, common, this->versionList != nullptr ? this->versionList[slot] : 0))
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
+                    break;
+                case exportLoadiine:
+                    if (exportToLoadiine(&this->title, common, this->versionList != nullptr ? this->versionList[slot] : 0))
+                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
                     break;
                 default:;
             }

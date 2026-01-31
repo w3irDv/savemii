@@ -152,6 +152,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                     return SUBSTATE_RUNNING;
                 }
                 getLoadiineSaveVersionList(versionList, gamePath);
+                /*
                 if (this->task == importLoadiine) {
                     importFromLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
                 }
@@ -162,6 +163,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                     }
                     exportToLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
                 }
+                */
             }
 
             // All checks OK

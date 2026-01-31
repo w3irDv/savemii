@@ -66,8 +66,8 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
 int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
-void importFromLoadiine(Title *title, bool common, int version);
-void exportToLoadiine(Title *title, bool common, int version);
+bool importFromLoadiine(Title *title, bool common, int version);
+bool exportToLoadiine(Title *title, bool common, int version);
 uint8_t getVolAccn();
 uint8_t getWiiUAccn();
 Account *getWiiUAcc();
