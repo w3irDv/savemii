@@ -739,7 +739,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                 default: //source_user > -1
                     if (effectiveCommon)
                         retCode = wipeSavedata(&targetTitle, -2, INCLUDE_COMMON, NON_INTERACTIVE);
-                    bool targeHasProfileSavedata = hasProfileSave(&targetTitle, false, false, getWiiUAcc()[this->wiiu_user].pID, 0, 0);
+                    bool targeHasProfileSavedata = hasProfileSave(&targetTitle, false, false, getWiiUAcc()[this->wiiu_user].persistentID, 0, 0, false, "");
                     if (sourceTitle.currentDataSource.hasProfileSavedata && targeHasProfileSavedata) {
                         switch (jobType) {
                             case RESTORE:

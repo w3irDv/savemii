@@ -22,6 +22,7 @@ static int offsetIfRestoreOrCopyToOtherDev = 0;
 
 TitleOptionsState::TitleOptionsState(Title &title,
                                      eJobType task,
+                                     const std::string &loadiineGamePath,
                                      int *versionList,
                                      int8_t source_user,
                                      int8_t wiiu_user,
@@ -29,6 +30,7 @@ TitleOptionsState::TitleOptionsState(Title &title,
                                      Title *titles,
                                      int titleCount) : title(title),
                                                        task(task),
+                                                       loadiineGamePath(loadiineGamePath),
                                                        versionList(versionList),
                                                        source_user(source_user),
                                                        wiiu_user(wiiu_user),
@@ -58,6 +60,10 @@ TitleOptionsState::TitleOptionsState(Title &title,
         case PROFILE_TO_PROFILE:
             updateMoveCopyProfileData();
             break;
+        case importLoadiine:
+        case exportLoadiine:
+            updateLoadiine();
+            break;
         default:;
     }
 }
@@ -70,7 +76,6 @@ void TitleOptionsState::render() {
         this->subState->render();
         return;
     }
-    //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - RENDERING 1"));
     if (this->state == STATE_TITLE_OPTIONS) {
         std::string slotFormat = getSlotFormatType(&this->title, slot);
         if (((this->task == COPY_TO_OTHER_DEVICE) || (this->task == PROFILE_TO_PROFILE) || (this->task == MOVE_PROFILE) || (this->task == WIPE_PROFILE)) && cursorPos == 0)
@@ -99,11 +104,9 @@ void TitleOptionsState::render() {
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Move profile savedata to a different profile."));
             Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   - Target profile will be wiped."));
         } else if (this->task == importLoadiine || this->task == exportLoadiine) {
-            //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - RENDERING LOADDINE 1"));
-            entrycount = 2;
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-            Console::consolePrintPos(M_OFF, 5, "   < v%u >", this->versionList != nullptr ? this->versionList[slot] : 0);
+            Console::consolePrintPos(M_OFF, 5, "   < v%u >", version);
         } else if (this->task == WIPE_PROFILE) {
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Delete from:"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -136,12 +139,13 @@ void TitleOptionsState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         if (this->isWiiUTitle) {
 
-            if (task == RESTORE && emptySlot) {
+            if ((task == RESTORE || task == importLoadiine) && emptySlot) {
                 entrycount = 1;
                 goto showIcon;
             }
 
-            if ((task == RESTORE) || (task == BACKUP) || (task == WIPE_PROFILE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE)) { // manage lines related to source data
+            // manage lines related to source data
+            if ((task == RESTORE) || (task == BACKUP) || (task == WIPE_PROFILE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE) || (task == importLoadiine) || (task == exportLoadiine)) {
                 Console::consolePrintPos(M_OFF, 7, (task == RESTORE) ? LanguageUtils::gettext("Select SD user to copy from:") : (task == WIPE_PROFILE ? LanguageUtils::gettext("Select Wii U user to wipe:") : LanguageUtils::gettext("Select Wii U user to copy from:")));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 if (source_user == -3 && task == WIPE_PROFILE) {
@@ -152,7 +156,7 @@ void TitleOptionsState::render() {
                     Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("all users"),
                                              sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
-                    if (task == RESTORE && !backupRestoreFromSameConsole)
+                    if ((task == RESTORE && !backupRestoreFromSameConsole) || task == importLoadiine || task == exportLoadiine)
                         Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", getVolAcc()[source_user].persistentID,
                                                  sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                     else
@@ -162,7 +166,8 @@ void TitleOptionsState::render() {
             }
 
             DrawUtils::setFontColor(COLOR_TEXT);
-            if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE)) { // manage lines related to target user data
+            // manage lines related to target user data
+            if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE) || (task == importLoadiine) || (task == exportLoadiine)) {
                 if (source_user > -1)
                     entrycount++;
                 Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user to copy to:"));
@@ -173,14 +178,20 @@ void TitleOptionsState::render() {
                     Console::consolePrintPos(M_OFF, 11, "   < %s > (%s)", LanguageUtils::gettext("same user than in source"),
                                              (hasTargetUserData) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
-                    Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUAcc()[wiiu_user].miiName,
-                                             getWiiUAcc()[wiiu_user].persistentID,
-                                             hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                    if (task == exportLoadiine) { // allow exportLoadiine to export to "/u"
+                        Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getVolAcc()[wiiu_user].miiName,
+                                                 getVolAcc()[wiiu_user].persistentID,
+                                                 hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                    } else {
+                        Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUAcc()[wiiu_user].miiName,
+                                                 getWiiUAcc()[wiiu_user].persistentID,
+                                                 hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                    }
                 }
             }
 
-
-            const char *onlyCommon, *commonIncluded; // now is time to show common savedata status
+            // now is time to show common savedata status
+            const char *onlyCommon, *commonIncluded;
             switch (this->task) {
                 case BACKUP:
                     onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be saved");
@@ -203,14 +214,16 @@ void TitleOptionsState::render() {
                     commonIncluded = "";
             }
             DrawUtils::setFontColor(COLOR_TEXT);
-            offsetIfRestoreOrCopyToOtherDev = ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) ? 1 : 0;
+            offsetIfRestoreOrCopyToOtherDev = ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == importLoadiine) || (task == exportLoadiine)) ? 1 : 0;
             switch (task) {
                 case RESTORE:
                 case BACKUP:
                 case WIPE_PROFILE:
                 case COPY_TO_OTHER_DEVICE:
+                case importLoadiine:
+                case exportLoadiine:
                     if (this->source_user != -1) {
-                        if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE)) {
+                        if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == importLoadiine) || (task == exportLoadiine)) {
                             DrawUtils::setFontColor(COLOR_TEXT);
                             Console::consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
                                                             hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
@@ -244,31 +257,14 @@ void TitleOptionsState::render() {
                         else
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
                                                      LanguageUtils::gettext("No 'common' save found."));
-                        if (task == RESTORE || task == COPY_TO_OTHER_DEVICE)
+                        if (task == RESTORE || task == COPY_TO_OTHER_DEVICE || (task == importLoadiine) || (task == exportLoadiine))
                             Console::consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
                                                             hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         common = false;
                     }
                     break;
-                case importLoadiine:
-                case exportLoadiine:
-                    //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - COMPUTING 1"));
-                    if (hasCommonSave(&this->title, true, true, slot, this->versionList != nullptr ? this->versionList[slot] : 0)) {
-                        //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - COMMON OK"));
-                        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Include 'common' save?"));
-                        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-                        Console::consolePrintPos(M_OFF, 8, "   < %s >", common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
-                        entrycount++;
-                    } else {
-                        //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - COMMON KO"));
-                        common = false;
-                        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("No 'common' save found."));
-                    }
-                    break;
                 default:;
             }
-
-            //Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("DBG - TO SHOW ICON"));
 
         showIcon:
             if (this->title.iconBuf != nullptr)
@@ -513,13 +509,56 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
+            } else if ((this->task == importLoadiine)) {
                 switch (cursorPos) {
                     case 0:
                         slot--;
+                        updateLoadiineVersion();
+                        getAccountsFromLoadiine(&this->title, slot, importLoadiine);
+                        if (source_user > getVolAccn() - 1)
+                            source_user = 0;
+                        updateLoadiineMode(source_user);
+                        updateHasCommonSaveInSource();
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 1:
-                        common = common ? false : true;
+                        source_user = ((source_user == 0) ? 0 : (source_user - 1));
+                        updateLoadiineMode(source_user);
+                        updateSourceHasRequestedSavedata();
+                        break;
+                    case 2:
+                        wiiu_user = ((wiiu_user == 0) ? 0 : (wiiu_user - 1));
+                        updateHasTargetUserData();
+                        break;
+                    case 3:
+                        common = !common;
+                        break;
+                    default:
+                        break;
+                }
+            } else if ((this->task == exportLoadiine)) {
+                switch (cursorPos) {
+                    case 0:
+                        slot--;
+                        updateLoadiineVersion();
+                        getAccountsFromLoadiine(&this->title, slot, exportLoadiine);
+                        if (wiiu_user > getVolAccn() - 1)
+                            wiiu_user = 0;
+                        updateLoadiineMode(wiiu_user);
+                        updateHasCommonSaveInTarget();
+                        updateHasTargetUserData();
+                        break;
+                    case 1:
+                        source_user = ((source_user == 0) ? 0 : (source_user - 1));
+                        updateSourceHasRequestedSavedata();
+                        break;
+                    case 2:
+                        wiiu_user = ((wiiu_user == 0) ? 0 : (wiiu_user - 1)); // this is misleading: it is reallly the target user in the loaddiine folder
+                        updateLoadiineMode(wiiu_user);
+                        updateHasTargetUserData();
+                        break;
+                    case 3:
+                        common = !common;
                         break;
                     default:
                         break;
@@ -642,13 +681,56 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
+            } else if ((this->task == importLoadiine)) {
                 switch (cursorPos) {
                     case 0:
                         slot++;
+                        updateLoadiineVersion();
+                        getAccountsFromLoadiine(&this->title, slot, importLoadiine);
+                        if (source_user > getVolAccn() - 1)
+                            source_user = 0;
+                        updateLoadiineMode(source_user);
+                        updateHasCommonSaveInSource();
+                        updateSourceHasRequestedSavedata();
                         break;
                     case 1:
-                        common = common ? false : true;
+                        source_user = ((source_user == sourceAccountsTotalNumber - 1) ? source_user : (source_user + 1));
+                        updateLoadiineMode(source_user);
+                        updateSourceHasRequestedSavedata();
+                        break;
+                    case 2:
+                        wiiu_user = ((wiiu_user == wiiUAccountsTotalNumber - 1) ? wiiu_user : (wiiu_user + 1));
+                        updateHasTargetUserData();
+                        break;
+                    case 3:
+                        common = !common;
+                        break;
+                    default:
+                        break;
+                }
+            } else if ((this->task == exportLoadiine)) {
+                switch (cursorPos) {
+                    case 0:
+                        slot++;
+                        updateLoadiineVersion();
+                        getAccountsFromLoadiine(&this->title, slot, exportLoadiine);
+                        if (wiiu_user > getVolAccn() - 1)
+                            wiiu_user = 0;
+                        updateLoadiineMode(wiiu_user);
+                        updateHasCommonSaveInTarget();
+                        updateHasTargetUserData();
+                        break;
+                    case 1:
+                        source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? source_user : (source_user + 1));
+                        updateSourceHasRequestedSavedata();
+                        break;
+                    case 2:
+                        wiiu_user = ((wiiu_user == getVolAccn() - 1) ? wiiu_user : (wiiu_user + 1)); // wiiu_user is target_user , but in thsi case can take values on vol accounts
+                        updateLoadiineMode(wiiu_user);
+                        updateHasTargetUserData();
+                        break;
+                    case 3:
+                        common = !common;
                         break;
                     default:
                         break;
@@ -768,11 +850,11 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateCopyToOtherDeviceData();
                     break;
                 case importLoadiine:
-                    if (importFromLoadiine(&this->title, common, this->versionList != nullptr ? this->versionList[slot] : 0))
+                    if (importFromLoadiine(&this->title, source_user, wiiu_user, common, version, loadiine_mode))
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
                     break;
                 case exportLoadiine:
-                    if (exportToLoadiine(&this->title, common, this->versionList != nullptr ? this->versionList[slot] : 0))
+                    if (exportToLoadiine(&this->title, source_user, wiiu_user, common, version, loadiine_mode, USE_SD_OR_STORAGE_PROFILES))
                         Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
                     break;
                 default:;
@@ -839,41 +921,42 @@ void TitleOptionsState::updateSlotMetadata() {
     }
 }
 
-void TitleOptionsState::updateSourceHasRequestedSavedata() {
 
+/// @brief Premise: all tasks have source user from AccountVol. Needs some rewrite if we allow USE_WIIU_PROFILES in TitleState
+void TitleOptionsState::updateSourceHasRequestedSavedata() {
     if (source_user == -2) {
         sourceHasRequestedSavedata = false;
     } else if (source_user == -1 || source_user == -3) {
         sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot);
     } else {
-        sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE, false, getVolAcc()[source_user].pID, slot, 0);
+        sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE || task == importLoadiine, task == importLoadiine, getVolAcc()[source_user].persistentID, slot, version, loadiine_mode, loadiineGamePath.c_str());
     }
 }
 
+/// @brief Premise: all tasks have source user from AccountVol. Needs some rewrite if we allow USE_WIIU_PROFILES in TitleState
 void TitleOptionsState::updateHasTargetUserData() {
-    // used by restore, move(/copy profile and copy_to_other_dev
+    // used by restore, importLoadiine/export, move/copy profile and copy_to_other_dev
     int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
     switch (wiiu_user) {
         case -2:
             break;
         case -1:
-            hasTargetUserData = hasSavedata(&(titles[targetIndex]), false, slot);
+            hasTargetUserData = hasSavedata(&(titles[targetIndex]), (task == BACKUP), slot);
             break;
         default:
-            hasTargetUserData = hasProfileSave(&(titles[targetIndex]), false, false, getWiiUAcc()[wiiu_user].pID, 0, 0);
+            hasTargetUserData = hasProfileSave(&(titles[targetIndex]), (task == BACKUP || task == exportLoadiine), task == exportLoadiine, (task == BACKUP || task == exportLoadiine) ? getVolAcc()[wiiu_user].persistentID : getWiiUAcc()[wiiu_user].persistentID, slot, version, loadiine_mode, loadiineGamePath.c_str());
     }
 }
 
-
 void TitleOptionsState::updateHasCommonSaveInTarget() {
-    // used by restore or copy_to_other_dev
+    // used by restore , importLoadiine/exportLoaddine or copy_to_other_dev
 
-    int targetIndex = (task == RESTORE) ? this->title.indexID : this->title.dupeID;
-    hasCommonSaveInTarget = hasCommonSave(&(titles[targetIndex]), false, false, 0, 0);
+    int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
+    hasCommonSaveInTarget = hasCommonSave(&(titles[targetIndex]), (task == BACKUP || task == exportLoadiine), task == exportLoadiine, slot, version, loadiine_mode);
 }
 
 void TitleOptionsState::updateHasCommonSaveInSource() {
-    hasCommonSaveInSource = hasCommonSave(&this->title, task == RESTORE, false, slot, 0);
+    hasCommonSaveInSource = hasCommonSave(&this->title, task == RESTORE || task == importLoadiine, task == importLoadiine, slot, version, loadiine_mode);
 }
 
 void TitleOptionsState::updateHasVWiiSavedata() {
@@ -933,4 +1016,29 @@ void TitleOptionsState::updateWipeProfileData() {
 void TitleOptionsState::updateMoveCopyProfileData() {
     updateSourceHasRequestedSavedata();
     updateHasTargetUserData();
+}
+
+void TitleOptionsState::updateLoadiine() {
+    updateLoadiineVersion();
+    updateLoadiineMode(source_user);
+    updateHasCommonSaveInTarget();
+    updateHasCommonSaveInSource();
+    updateSourceHasRequestedSavedata();
+    updateHasTargetUserData();
+
+}
+
+/// @brief We construct LoaddineAcc so user "u" (=`shared mode" in loadiine) has index  0
+/// @param user
+void TitleOptionsState::updateLoadiineMode(int8_t user) {
+    if (user == 0)
+        loadiine_mode = LOADIINE_SHARED_SAVEDATA;
+    else
+        loadiine_mode = LOADIINE_UNIQUE_SAVEDATA;
+}
+
+void TitleOptionsState::updateLoadiineVersion() {
+
+    version = this->versionList != nullptr ? this->versionList[slot] : 0;
+
 }

@@ -41,6 +41,7 @@ private:
 
     eJobType task;
     int *versionList = (int *) malloc(0x100 * sizeof(int));
+    std::string loadiineGamePath{};
 
     inline static int cursorPos = 0;
     int entrycount;

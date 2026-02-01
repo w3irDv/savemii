@@ -9,6 +9,7 @@ class TitleOptionsState : public ApplicationState {
 public:
     TitleOptionsState(Title &title,
                       eJobType task,
+                      const std::string &loadiineGamePath,
                       int *versionList,
                       int8_t source_user,
                       int8_t wiiu_user,
@@ -39,7 +40,9 @@ private:
     Title &title;
     eJobType task;
 
+    const std::string loadiineGamePath;
     int *versionList;
+    int version = 0;
 
     int8_t source_user;
     int8_t wiiu_user;
@@ -85,4 +88,11 @@ private:
     void updateCopyToOtherDeviceData();
     void updateWipeProfileData();
     void updateMoveCopyProfileData();
+    void updateLoadiine();
+
+    bool loadiine_mode =  LOADIINE_SHARED_SAVEDATA;
+    void updateLoadiineMode(int8_t user);
+    void updateLoadiineVersion();
+
+
 };

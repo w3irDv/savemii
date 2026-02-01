@@ -145,30 +145,22 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
         nxtCheck:
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
+                source_user = 0;
+                wiiu_user = 0;
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 char gamePath[PATH_SIZE];
                 memset(versionList, 0, 0x100 * sizeof(int));
                 if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.longName, this->title.highID, this->title.lowID)) {
                     return SUBSTATE_RUNNING;
                 }
+                loadiineGamePath.assign(gamePath);
                 getLoadiineSaveVersionList(versionList, gamePath);
-                /*
-                if (this->task == importLoadiine) {
-                    importFromLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
-                }
-                if (this->task == exportLoadiine) {
-                    if (!this->title.saveInit) {
-                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No save to Export."));
-                        return SUBSTATE_RUNNING;
-                    }
-                    exportToLoadiine(&this->title, common, versionList != nullptr ? versionList[slot] : 0);
-                }
-                */
+                getAccountsFromLoadiine(&this->title, slot, this->task);
             }
 
             // All checks OK
             this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
+            this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->loadiineGamePath, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
         }
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
             cursorPos = (cursorPos + 1) % entrycount;

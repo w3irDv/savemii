@@ -12,13 +12,15 @@
 
 namespace fs = std::filesystem;
 
-#define PATH_SIZE            0x400
+#define PATH_SIZE                0x400
 
-#define ONLY_SELECTED_TITLES true
-#define INTERACTIVE          true
-#define NON_INTERACTIVE      false
-#define INCLUDE_COMMON       true
-#define SKIP_COMMON          false
+#define ONLY_SELECTED_TITLES     true
+#define INTERACTIVE              true
+#define NON_INTERACTIVE          false
+#define INCLUDE_COMMON           true
+#define SKIP_COMMON              false
+#define LOADIINE_SHARED_SAVEDATA true
+#define LOADIINE_UNIQUE_SAVEDATA false
 
 namespace savemng {
     inline bool firstSDWrite = true;
@@ -43,11 +45,12 @@ enum eAccountSource {
 
 void getAccountsWiiU();
 void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType);
-bool hasProfileSave(Title *title, bool inSD, bool iine, uint32_t user, uint8_t slot, int version);
-bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version);
+void getAccountsFromLoadiine(Title *title, uint8_t slot, eJobType jobType);
+bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_t slot, int version, bool loadiine_savedata_mode, const char *loadiine_game_path);
+bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version, bool loadiine_savedata_mode = LOADIINE_SHARED_SAVEDATA);
 bool hasSavedata(Title *title, bool inSD, uint8_t slot);
 bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *longName, const uint32_t highID, const uint32_t lowID);
-bool getLoadiineSaveVersionList(int *out, const char *gamePath);
+int getLoadiineSaveVersionList(int *out, const char *gamePath);
 bool isSlotEmpty(Title *title, uint8_t slot);
 bool isSlotEmptyInTitleBasedPath(Title *title, uint8_t slot);
 bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime);
@@ -66,8 +69,8 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
 int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
-bool importFromLoadiine(Title *title, bool common, int version);
-bool exportToLoadiine(Title *title, bool common, int version);
+bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode) ;
+bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode, eAccountSource accountSource = USE_SD_OR_STORAGE_PROFILES);
 uint8_t getVolAccn();
 uint8_t getWiiUAccn();
 Account *getWiiUAcc();
