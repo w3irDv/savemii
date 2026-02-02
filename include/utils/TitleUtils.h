@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <string_view>
+#include <tuple>
 
 enum eBatchJobState {
     NOT_TRIED = 0,
@@ -89,7 +91,7 @@ namespace TitleUtils {
 
     void setTitleNameBasedDirName(Title *title);
 
-    void reset_backup_state(Title *titles,int title_count);
+    void reset_backup_state(Title *titles, int title_count);
 
     template<class It>
     void sortTitle(It titles, It last, int tsort /*= 1*/, bool sortAscending /*= true*/) {

@@ -5,6 +5,7 @@
 #include <memory>
 #include <menu/MainMenuState.h>
 #include <romfs-wiiu.h>
+#include <utils/AccountUtils.h>
 #include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>
@@ -105,7 +106,7 @@ int main() {
     TitleUtils::wiiutitles = TitleUtils::loadWiiUTitles(1);
     TitleUtils::wiititles = TitleUtils::loadWiiTitles();
     TitleUtils::wiiusystitles = TitleUtils::loadWiiUSysTitles(1);
-    getAccountsWiiU();
+    AccountUtils::getAccountsWiiU();
 
     TitleUtils::sortTitle(TitleUtils::wiiutitles, TitleUtils::wiiutitles + TitleUtils::wiiuTitlesCount, 1, true);
     TitleUtils::sortTitle(TitleUtils::wiititles, TitleUtils::wiititles + TitleUtils::vWiiTitlesCount, 1, true);

@@ -5,6 +5,7 @@
 #include <menu/TitleOptionsState.h>
 #include <menu/TitleTaskState.h>
 #include <savemng.h>
+#include <utils/AccountUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/InputUtils.h>
@@ -117,21 +118,21 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
             if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
-                getAccountsFromVol(&this->title, slot, this->task);
+                AccountUtils::getAccountsFromVol(&this->title, slot, this->task);
             }
 
             if (this->task == RESTORE) {
                 BackupSetList::setBackupSetSubPath();
-                getAccountsFromVol(&this->title, slot, RESTORE);
+                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE);
             }
 
             if ((this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE)) {
-                if (getVolAccn() == 0)
+                if (AccountUtils::getVolAccn() == 0)
                     Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Title has no profile savedata"));
                 else {
-                    for (int i = 0; i < getVolAccn(); i++) {
-                        for (int j = 0; j < getWiiUAccn(); j++) {
-                            if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
+                    for (int i = 0; i < AccountUtils::getVolAccn(); i++) {
+                        for (int j = 0; j < AccountUtils::getWiiUAccn(); j++) {
+                            if (AccountUtils::getVolAcc()[i].pID != AccountUtils::getWiiUAcc()[j].pID) {
                                 source_user = i;
                                 wiiu_user = j;
                                 goto nxtCheck;
@@ -157,7 +158,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 }
                 gameBackupBasePath.assign(gamePath);
                 getLoadiineSaveVersionList(versionList, gamePath);
-                getAccountsFromLoadiine(&this->title, slot, this->task);
+                AccountUtils::getAccountsFromLoadiine(&this->title, slot, this->task);
             }
 
             // All checks OK

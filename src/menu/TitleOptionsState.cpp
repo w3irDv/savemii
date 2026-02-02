@@ -6,6 +6,7 @@
 #include <menu/KeyboardState.h>
 #include <menu/TitleOptionsState.h>
 #include <savemng.h>
+#include <utils/AccountUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
@@ -38,8 +39,8 @@ TitleOptionsState::TitleOptionsState(Title &title,
                                                        titles(titles),
                                                        titleCount(titleCount) {
 
-    wiiUAccountsTotalNumber = getWiiUAccn();
-    sourceAccountsTotalNumber = getVolAccn();
+    wiiUAccountsTotalNumber = AccountUtils::getWiiUAccn();
+    sourceAccountsTotalNumber = AccountUtils::getVolAccn();
     this->isWiiUTitle = (!this->title.is_Wii) && (!this->title.noFwImg);
     // DBG - REVIEW CONDITiONS
     //this->isWiiUTitle = ((this->title.highID == 0x00050000) || (this->title.highID == 0x00050002)) && !this->title.noFwImg;
@@ -157,10 +158,10 @@ void TitleOptionsState::render() {
                                              sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
                     if ((task == RESTORE && !backupRestoreFromSameConsole) || task == importLoadiine || task == exportLoadiine)
-                        Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", getVolAcc()[source_user].persistentID,
+                        Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", AccountUtils::getVolAcc()[source_user].persistentID,
                                                  sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                     else
-                        Console::consolePrintPos(M_OFF, 8, "   < %s (%s)> (%s)", getVolAcc()[source_user].miiName, getVolAcc()[source_user].persistentID,
+                        Console::consolePrintPos(M_OFF, 8, "   < %s (%s)> (%s)", AccountUtils::getVolAcc()[source_user].miiName, AccountUtils::getVolAcc()[source_user].persistentID,
                                                  sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 }
             }
@@ -179,12 +180,12 @@ void TitleOptionsState::render() {
                                              (hasTargetUserData) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                 } else {
                     if (task == exportLoadiine) { // allow exportLoadiine to export to "/u"
-                        Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getVolAcc()[wiiu_user].miiName,
-                                                 getVolAcc()[wiiu_user].persistentID,
+                        Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", AccountUtils::getVolAcc()[wiiu_user].miiName,
+                                                 AccountUtils::getVolAcc()[wiiu_user].persistentID,
                                                  hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                     } else {
-                        Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", getWiiUAcc()[wiiu_user].miiName,
-                                                 getWiiUAcc()[wiiu_user].persistentID,
+                        Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", AccountUtils::getWiiUAcc()[wiiu_user].miiName,
+                                                 AccountUtils::getWiiUAcc()[wiiu_user].persistentID,
                                                  hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
                     }
                 }
@@ -315,13 +316,13 @@ void TitleOptionsState::render() {
 
             uint64_t savesize = 0;
             if (source_user == -2) {
-                srcPath = basePath + StringUtils::stringFormat("/common", getVolAcc()[source_user].persistentID);
+                srcPath = basePath + StringUtils::stringFormat("/common", AccountUtils::getVolAcc()[source_user].persistentID);
                 savesize = title.commonSaveSize;
             } else if (source_user == -1) {
                 srcPath = basePath + StringUtils::stringFormat("/");
                 savesize = 0;
             } else if (source_user > -1) {
-                srcPath = basePath + StringUtils::stringFormat("/%s", getVolAcc()[source_user].persistentID);
+                srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getVolAcc()[source_user].persistentID);
                 savesize = title.accountSaveSize;
             }
 
@@ -416,9 +417,9 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         this->source_user = ((this->source_user == -2) ? -2 : (this->source_user - 1));
-                        wiiu_user = (source_user < getWiiUAccn() - 1) ? source_user : wiiu_user;
+                        wiiu_user = (source_user < AccountUtils::getWiiUAccn() - 1) ? source_user : wiiu_user;
                         ;
-                        if (source_user < getWiiUAccn() - 1) {
+                        if (source_user < AccountUtils::getWiiUAccn() - 1) {
                             wiiu_user = source_user;
                             updateHasTargetUserData();
                         }
@@ -438,8 +439,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             } else if (this->task == RESTORE) {
                 switch (cursorPos) {
                     case 0:
-                        getAccountsFromVol(&this->title, --slot, RESTORE);
-                        if (source_user > getVolAccn() - 1) {
+                        AccountUtils::getAccountsFromVol(&this->title, --slot, RESTORE);
+                        if (source_user > AccountUtils::getVolAccn() - 1) {
                             source_user = -1;
                             wiiu_user = -1;
                             updateHasTargetUserData();
@@ -493,7 +494,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         this->source_user = ((this->source_user == 0) ? 0 : (this->source_user - 1));
-                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID) {
+                        if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID) {
                             wiiu_user = (source_user + 1) % wiiUAccountsTotalNumber;
                             updateHasTargetUserData();
                         }
@@ -501,7 +502,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 2:
                         wiiu_user = (--wiiu_user == -1) ? (wiiUAccountsTotalNumber - 1) : (wiiu_user);
-                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
+                        if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID)
                             wiiu_user = (wiiu_user - 1) % wiiUAccountsTotalNumber;
                         wiiu_user = (wiiu_user < 0) ? (wiiUAccountsTotalNumber - 1) : wiiu_user;
                         updateHasTargetUserData();
@@ -514,8 +515,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateLoadiineVersion();
-                        getAccountsFromLoadiine(&this->title, slot, importLoadiine);
-                        if (source_user > getVolAccn() - 1)
+                        AccountUtils::getAccountsFromLoadiine(&this->title, slot, importLoadiine);
+                        if (source_user > AccountUtils::getVolAccn() - 1)
                             source_user = 0;
                         updateLoadiineMode(source_user);
                         updateHasCommonSaveInSource();
@@ -541,8 +542,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateLoadiineVersion();
-                        getAccountsFromLoadiine(&this->title, slot, exportLoadiine);
-                        if (wiiu_user > getVolAccn() - 1)
+                        AccountUtils::getAccountsFromLoadiine(&this->title, slot, exportLoadiine);
+                        if (wiiu_user > AccountUtils::getVolAccn() - 1)
                             wiiu_user = 0;
                         updateLoadiineMode(wiiu_user);
                         updateHasCommonSaveInTarget();
@@ -590,7 +591,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
-                        if (source_user < getWiiUAccn() - 1) {
+                        if (source_user < AccountUtils::getWiiUAccn() - 1) {
                             wiiu_user = source_user;
                             updateHasTargetUserData();
                         }
@@ -610,8 +611,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             } else if (this->task == RESTORE) {
                 switch (cursorPos) {
                     case 0:
-                        getAccountsFromVol(&this->title, ++slot, RESTORE);
-                        if (source_user > getVolAccn() - 1) {
+                        AccountUtils::getAccountsFromVol(&this->title, ++slot, RESTORE);
+                        if (source_user > AccountUtils::getVolAccn() - 1) {
                             source_user = -1;
                             wiiu_user = -1;
                             updateHasTargetUserData();
@@ -621,7 +622,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSourceHasRequestedSavedata();
                         break;
                     case 1:
-                        source_user = ((source_user == (getVolAccn() - 1)) ? (getVolAccn() - 1) : (source_user + 1));
+                        source_user = ((source_user == (AccountUtils::getVolAccn() - 1)) ? (AccountUtils::getVolAccn() - 1) : (source_user + 1));
                         if (source_user < 0) {
                             wiiu_user = source_user;
                             updateHasTargetUserData();
@@ -666,7 +667,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 1:
                         source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
-                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID) {
+                        if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID) {
                             wiiu_user = (wiiu_user + 1) % wiiUAccountsTotalNumber;
                             updateHasTargetUserData();
                         }
@@ -674,7 +675,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         break;
                     case 2:
                         wiiu_user = (++wiiu_user == wiiUAccountsTotalNumber) ? 0 : wiiu_user;
-                        if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
+                        if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID)
                             wiiu_user = (wiiu_user + 1) % wiiUAccountsTotalNumber;
                         updateHasTargetUserData();
                         break;
@@ -686,8 +687,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateLoadiineVersion();
-                        getAccountsFromLoadiine(&this->title, slot, importLoadiine);
-                        if (source_user > getVolAccn() - 1)
+                        AccountUtils::getAccountsFromLoadiine(&this->title, slot, importLoadiine);
+                        if (source_user > AccountUtils::getVolAccn() - 1)
                             source_user = 0;
                         updateLoadiineMode(source_user);
                         updateHasCommonSaveInSource();
@@ -713,8 +714,8 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateLoadiineVersion();
-                        getAccountsFromLoadiine(&this->title, slot, exportLoadiine);
-                        if (wiiu_user > getVolAccn() - 1)
+                        AccountUtils::getAccountsFromLoadiine(&this->title, slot, exportLoadiine);
+                        if (wiiu_user > AccountUtils::getVolAccn() - 1)
                             wiiu_user = 0;
                         updateLoadiineMode(wiiu_user);
                         updateHasCommonSaveInTarget();
@@ -725,7 +726,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSourceHasRequestedSavedata();
                         break;
                     case 2:
-                        wiiu_user = ((wiiu_user == getVolAccn() - 1) ? wiiu_user : (wiiu_user + 1)); // wiiu_user is target_user , but in thsi case can take values on vol accounts
+                        wiiu_user = ((wiiu_user == AccountUtils::getVolAccn() - 1) ? wiiu_user : (wiiu_user + 1)); // wiiu_user is target_user , but in thsi case can take values on vol accounts
                         updateLoadiineMode(wiiu_user);
                         updateHasTargetUserData();
                         break;
@@ -887,7 +888,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             }
             if (this->substateCalled == STATE_BACKUPSET_MENU) {
                 slot = 0;
-                getAccountsFromVol(&this->title, slot, RESTORE);
+                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE);
                 cursorPos = 0;
                 gameBackupBasePath = getDynamicBackupBasePath(&this->title);
                 updateRestoreData();
@@ -924,7 +925,7 @@ void TitleOptionsState::updateSlotMetadata() {
 
 /*
 
-This is the Account that each task uses (all of them are called with USE_SD_OR_VOL_ACCOUNTS) 
+This is the Account that each task uses (all of them are called with USE_SD_OR_AccountUtils::vol_accOUNTS) 
 | TASK         | SRC        | DST         |
 | ------------ | ---------- | ----------- |
 | backup       | vol  NAND  | vol   SD    |
@@ -948,7 +949,7 @@ void TitleOptionsState::updateSourceHasRequestedSavedata() {
         sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot, gameBackupBasePath.c_str());
     } else {
         sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE || task == importLoadiine, task == importLoadiine,
-                                                    getVolAcc()[source_user].persistentID, slot, version, loadiine_mode, gameBackupBasePath.c_str());
+                                                    AccountUtils::getVolAcc()[source_user].persistentID, slot, version, loadiine_mode, gameBackupBasePath.c_str());
     }
 }
 
@@ -964,7 +965,7 @@ void TitleOptionsState::updateHasTargetUserData() {
             break;
         default:
             hasTargetUserData = hasProfileSave(&(titles[targetIndex]), (task == BACKUP || task == exportLoadiine), task == exportLoadiine,
-                                               (task == BACKUP || task == exportLoadiine) ? getVolAcc()[wiiu_user].persistentID : getWiiUAcc()[wiiu_user].persistentID,
+                                               (task == BACKUP || task == exportLoadiine) ? AccountUtils::getVolAcc()[wiiu_user].persistentID : AccountUtils::getWiiUAcc()[wiiu_user].persistentID,
                                                slot, version, loadiine_mode, gameBackupBasePath.c_str());
     }
 }

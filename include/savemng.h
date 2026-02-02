@@ -26,12 +26,6 @@ namespace savemng {
     inline bool firstSDWrite = true;
 };
 
-struct Account {
-    char persistentID[9];
-    uint32_t pID;
-    char miiName[50];
-    uint8_t slot;
-};
 
 struct titlesNEProfiles {
     int index;
@@ -43,9 +37,6 @@ enum eAccountSource {
     USE_SD_OR_STORAGE_PROFILES
 };
 
-void getAccountsWiiU();
-void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType);
-void getAccountsFromLoadiine(Title *title, uint8_t slot, eJobType jobType);
 bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path);
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path);
 bool hasSavedata(Title *title, bool inSD, uint8_t slot, const char *game_backup_base_path);
@@ -71,10 +62,6 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode);
 bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode, eAccountSource accountSource = USE_SD_OR_STORAGE_PROFILES);
-uint8_t getVolAccn();
-uint8_t getWiiUAccn();
-Account *getWiiUAcc();
-Account *getVolAcc();
 void deleteSlot(Title *title, uint8_t slot);
 bool wipeBackupSet(const std::string &subPath, bool force = false);
 void sdWriteDisclaimer(Color = COLOR_BLACK);

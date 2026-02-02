@@ -133,7 +133,7 @@ ApplicationState::eSubState BatchTasksState::update(Input *input) {
         } else if (retSubState == SUBSTATE_RETURN) {
             //     if ( this->substateCalled == STATE_BACKUPSET_MENU) {
             //         slot = 0;
-            //         getAccountsFromVol(&this->title, slot);
+            //         AccountUtils::getAccountsFromVol(&this->title, slot);
             //     }
             this->subState.reset();
             this->state = STATE_BATCH_TASKS_MENU;
