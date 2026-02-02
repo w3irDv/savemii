@@ -109,6 +109,8 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                     break;
             }
 
+            // Backup & Restore gameBackupPath
+            gameBackupBasePath = getDynamicBackupBasePath(&this->title);
             if (this->task == BACKUP || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
                 if (!this->title.saveInit) {
                     Console::showMessage(ERROR_SHOW, noData);
@@ -118,12 +120,12 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
             if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
-                AccountUtils::getAccountsFromVol(&this->title, slot, this->task);
+                AccountUtils::getAccountsFromVol(&this->title, slot, this->task, gameBackupBasePath);
             }
 
             if (this->task == RESTORE) {
                 BackupSetList::setBackupSetSubPath();
-                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE);
+                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath);
             }
 
             if ((this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE)) {
@@ -144,8 +146,6 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 return SUBSTATE_RUNNING;
             }
 
-            gameBackupBasePath = getDynamicBackupBasePath(&this->title);
-
         nxtCheck:
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 source_user = 0;
@@ -156,9 +156,10 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.longName, this->title.highID, this->title.lowID)) {
                     return SUBSTATE_RUNNING;
                 }
+                // Loadiine gameBackupPath
                 gameBackupBasePath.assign(gamePath);
                 getLoadiineSaveVersionList(versionList, gamePath);
-                AccountUtils::getAccountsFromLoadiine(&this->title, slot, this->task);
+                AccountUtils::getAccountsFromVol(&this->title, slot, this->task, gameBackupBasePath);
             }
 
             // All checks OK

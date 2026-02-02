@@ -439,7 +439,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             } else if (this->task == RESTORE) {
                 switch (cursorPos) {
                     case 0:
-                        AccountUtils::getAccountsFromVol(&this->title, --slot, RESTORE);
+                        AccountUtils::getAccountsFromVol(&this->title, --slot, RESTORE, gameBackupBasePath);
                         if (source_user > AccountUtils::getVolAccn() - 1) {
                             source_user = -1;
                             wiiu_user = -1;
@@ -515,7 +515,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateLoadiineVersion();
-                        AccountUtils::getAccountsFromLoadiine(&this->title, slot, importLoadiine);
+                        AccountUtils::getAccountsFromVol(&this->title, version, importLoadiine, gameBackupBasePath);
                         if (source_user > AccountUtils::getVolAccn() - 1)
                             source_user = 0;
                         updateLoadiineMode(source_user);
@@ -542,7 +542,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateLoadiineVersion();
-                        AccountUtils::getAccountsFromLoadiine(&this->title, slot, exportLoadiine);
+                        AccountUtils::getAccountsFromVol(&this->title, version, exportLoadiine, gameBackupBasePath);
                         if (wiiu_user > AccountUtils::getVolAccn() - 1)
                             wiiu_user = 0;
                         updateLoadiineMode(wiiu_user);
@@ -611,7 +611,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             } else if (this->task == RESTORE) {
                 switch (cursorPos) {
                     case 0:
-                        AccountUtils::getAccountsFromVol(&this->title, ++slot, RESTORE);
+                        AccountUtils::getAccountsFromVol(&this->title, ++slot, RESTORE, gameBackupBasePath);
                         if (source_user > AccountUtils::getVolAccn() - 1) {
                             source_user = -1;
                             wiiu_user = -1;
@@ -687,7 +687,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateLoadiineVersion();
-                        AccountUtils::getAccountsFromLoadiine(&this->title, slot, importLoadiine);
+                        AccountUtils::getAccountsFromVol(&this->title, version, importLoadiine, gameBackupBasePath);
                         if (source_user > AccountUtils::getVolAccn() - 1)
                             source_user = 0;
                         updateLoadiineMode(source_user);
@@ -714,7 +714,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateLoadiineVersion();
-                        AccountUtils::getAccountsFromLoadiine(&this->title, slot, exportLoadiine);
+                        AccountUtils::getAccountsFromVol(&this->title, version, exportLoadiine, gameBackupBasePath);
                         if (wiiu_user > AccountUtils::getVolAccn() - 1)
                             wiiu_user = 0;
                         updateLoadiineMode(wiiu_user);
@@ -888,9 +888,9 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             }
             if (this->substateCalled == STATE_BACKUPSET_MENU) {
                 slot = 0;
-                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE);
-                cursorPos = 0;
                 gameBackupBasePath = getDynamicBackupBasePath(&this->title);
+                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath);
+                cursorPos = 0;
                 updateRestoreData();
             }
             this->subState.reset();
@@ -1063,4 +1063,5 @@ void TitleOptionsState::updateLoadiineMode(int8_t user) {
 void TitleOptionsState::updateLoadiineVersion() {
 
     version = this->versionList != nullptr ? this->versionList[slot] : 0;
+
 }

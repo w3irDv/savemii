@@ -61,35 +61,22 @@ void AccountUtils::getAccountsWiiU() {
     nn::act::Finalize();
 }
 
-
-void AccountUtils::getAccountsFromLoadiine([[maybe_unused]] Title *title, [[maybe_unused]] uint8_t slot, [[maybe_unused]] eJobType jobType) {
+/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task
+/// @param title
+/// @param slot_or_version
+/// @param jobType
+/// @param gameBackupPath
+void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupPath) {
     vol_accn = 0;
     if (vol_acc != nullptr)
         free(vol_acc);
 
-    vol_accn = 2;
-    vol_acc = (Account *) malloc(vol_accn * sizeof(Account));
-    strcpy(vol_acc[0].persistentID, "u");
-    vol_acc[0].pID = 0;
-    vol_acc[0].slot = 1;
-    strcpy(vol_acc[0].miiName, "u");
-    // todo!() > accept standard profiles
-    strcpy(vol_acc[1].persistentID, "8000000e");
-    vol_acc[1].pID = 0x8000000e;
-    vol_acc[1].slot = 1;
-    strcpy(vol_acc[1].miiName, "8000000e");
-}
-
-void AccountUtils::getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
-    vol_accn = 0;
-    if (vol_acc != nullptr)
-        free(vol_acc);
-
+    int initial_index = 0;
     std::string srcPath;
     std::string path;
     switch (jobType) {
         case RESTORE:
-            srcPath = getDynamicBackupPath(title, slot);
+            srcPath = StringUtils::stringFormat("%s/%u", gameBackupPath.c_str(), slot_or_version);
             break;
         case BACKUP:
         case WIPE_PROFILE:
@@ -100,9 +87,20 @@ void AccountUtils::getAccountsFromVol(Title *title, uint8_t slot, eJobType jobTy
             srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), title->highID, title->lowID, title->is_Wii ? "data" : "user");
             break;
         }
+        case importLoadiine:
+            if (slot_or_version != 0)
+                srcPath = StringUtils::stringFormat("%s/v%u", gameBackupPath.c_str(), slot_or_version);
+            else
+                srcPath = gameBackupPath;
+            break;
+        case exportLoadiine:
+            path = (title->is_Wii ? "storage_slcc01:/title" : (title->isTitleOnUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+            srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), title->highID, title->lowID, title->is_Wii ? "data" : "user");
+            break;
         default:;
     }
 
+    std::vector<uint32_t> profiles;
     DIR *dir = opendir(srcPath.c_str());
     if (dir != nullptr) {
         struct dirent *data;
@@ -112,34 +110,39 @@ void AccountUtils::getAccountsFromVol(Title *title, uint8_t slot, eJobType jobTy
                 if (str2uint(pID, data->d_name, 16) != SUCCESS)
                     continue;
                 vol_accn++;
+                profiles.push_back(pID);
             }
         }
         closedir(dir);
     }
 
+    if (jobType == exportLoadiine || jobType == importLoadiine) {
+        vol_accn++;
+        initial_index = 1;
+    }
+
     vol_acc = (Account *) malloc(vol_accn * sizeof(Account));
-    dir = opendir(srcPath.c_str());
-    if (dir != nullptr) {
-        struct dirent *data;
-        int i = 0;
-        while ((data = readdir(dir)) != nullptr) {
-            if (strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
-                uint32_t pID;
-                if (str2uint(pID, data->d_name, 16) != SUCCESS)
-                    continue;
-                strcpy(vol_acc[i].persistentID, data->d_name);
-                vol_acc[i].pID = pID;
-                vol_acc[i].slot = i;
-                i++;
-            }
-        }
-        closedir(dir);
+
+    // LOADIINE_SHARED_MODE
+    if (jobType == exportLoadiine || jobType == importLoadiine) {
+            strcpy(vol_acc[0].persistentID, "u");
+            vol_acc[0].pID = 0;
+            vol_acc[0].slot = 0;
+            strcpy(vol_acc[0].miiName, "loadiine");
+    }
+
+    int i = initial_index;
+    for (const uint32_t &pID : profiles) {
+        snprintf(vol_acc[i].persistentID,9,"%08x",pID);
+        vol_acc[i].pID = pID;
+        vol_acc[i].slot = i;
+        i++;
     }
 
     int sourceAccountsTotalNumber = vol_accn;
     int wiiUAccountsTotalNumber = getWiiUAccn();
 
-    for (int i = 0; i < sourceAccountsTotalNumber; i++) {
+    for (int i = initial_index; i < sourceAccountsTotalNumber; i++) {
         strcpy(vol_acc[i].miiName, "undefined");
         for (int j = 0; j < wiiUAccountsTotalNumber; j++) {
             if (vol_acc[i].pID == wiiu_acc[j].pID) {
