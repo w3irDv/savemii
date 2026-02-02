@@ -151,7 +151,7 @@ void TitleOptionsState::render() {
                 if (source_user == -3 && task == WIPE_PROFILE) {
                     Console::consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("metadata + savedata"));
                 } else if (source_user == -2) {
-                    Console::consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("no profile user"));
+                    Console::consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("only common save"));
                 } else if (source_user == -1) {
                     Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("all users"),
                                              sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
@@ -173,7 +173,7 @@ void TitleOptionsState::render() {
                 Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user to copy to:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
                 if (wiiu_user == -2)
-                    Console::consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("no profile user"));
+                    Console::consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("only common save"));
                 else if (wiiu_user == -1) {
                     Console::consolePrintPos(M_OFF, 11, "   < %s > (%s)", LanguageUtils::gettext("same user than in source"),
                                              (hasTargetUserData) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
@@ -194,20 +194,20 @@ void TitleOptionsState::render() {
             const char *onlyCommon, *commonIncluded;
             switch (this->task) {
                 case BACKUP:
-                    onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be saved");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata found. It will also be saved");
+                    onlyCommon = LanguageUtils::gettext("Source has 'common' savedata, only it will be saved");
+                    commonIncluded = LanguageUtils::gettext("Source has 'common' savedata, it will also be saved");
                     break;
                 case RESTORE:
-                    onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be restored");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata found. It will also be restored");
+                    onlyCommon = LanguageUtils::gettext("Source has 'common' savedata, only it will be restored");
+                    commonIncluded = LanguageUtils::gettext("Source has 'common' savedata, it will also be restored");
                     break;
                 case WIPE_PROFILE:
-                    onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be deleted");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata found. It will also be deleted");
+                    onlyCommon = LanguageUtils::gettext("'common' savedata found, only it will be deleted");
+                    commonIncluded = LanguageUtils::gettext("'common' savedata found, it will also be deleted");
                     break;
                 case COPY_TO_OTHER_DEVICE:
-                    onlyCommon = LanguageUtils::gettext("'common' savedata found. Only it will be copied");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata found. It will also be copied");
+                    onlyCommon = LanguageUtils::gettext("Source has 'common' savedata, only it will be copied");
+                    commonIncluded = LanguageUtils::gettext("Source 'common' savedata, tt will also be copied");
                     break;
                 default:
                     onlyCommon = "";
@@ -225,7 +225,7 @@ void TitleOptionsState::render() {
                     if (this->source_user != -1) {
                         if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == importLoadiine) || (task == exportLoadiine)) {
                             DrawUtils::setFontColor(COLOR_TEXT);
-                            Console::consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
+                            Console::consolePrintPosAligned(10, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
                                                             hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         }
                         if (hasCommonSaveInSource) {
@@ -258,7 +258,7 @@ void TitleOptionsState::render() {
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
                                                      LanguageUtils::gettext("No 'common' save found."));
                         if (task == RESTORE || task == COPY_TO_OTHER_DEVICE || (task == importLoadiine) || (task == exportLoadiine))
-                            Console::consolePrintPosAligned(13, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
+                            Console::consolePrintPosAligned(10, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
                                                             hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
                         common = false;
                     }

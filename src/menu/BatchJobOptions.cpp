@@ -277,7 +277,7 @@ void BatchJobOptions::render() {
             Console::consolePrintPos(M_OFF, 3, sourceUserPrompt);
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             if (source_user == -2) {
-                Console::consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("no profile user"));
+                Console::consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("only common save"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 Console::consolePrintPos(M_OFF, 9, onlyCommon);
                 Console::consolePrintPos(M_OFF, 10, "   < %s >", LanguageUtils::gettext("Ok"));
@@ -299,7 +299,7 @@ void BatchJobOptions::render() {
                 Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("Select Wii U user to copy to:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 if (this->wiiu_user == -2)
-                    Console::consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("no profile user"));
+                    Console::consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("only common save"));
                 else if (this->wiiu_user == -1)
                     Console::consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("same user than in source"));
                 else

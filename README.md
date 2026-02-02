@@ -48,7 +48,7 @@ Allows you to backup/restore/wipe individual titles.
 ### Backup
 1. Select a slot to store the savedata. You can select any number from 0 to 255, each one representing a different folder in the SD card. Individual backups will always be stored in the `Root backupSet`. Next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. 
 2. For Wii U titles, select which data to save:
-	1. `No Profile Users`. This option will copy only common savedata.
+	1. `Only common save`. This option will copy only common savedata.
 	2. `All users`: Recommended option. Will backup all game data.
 	3. `From user: xxxxxxxx`. Will only backup the data for the specified user/profile. In this case, you must also specify if you want to save the "common" data or not. "Common" savedata is data shared by all profiles. Titles can have common save data, profile savedata or both.
 3. Press `A` to initiate the backup. After the backup is done, you can tag the slot with a meaningful name pressing `+` button while you are in the backup menu. If the slot is unneeded, you can delete it by pressing `-` button.
@@ -77,7 +77,7 @@ For vWii titles, savedata is directly under the slot folder.
 1. Select a slot to get the data from.  If you haven't selected any backupSet, the data from the `Root backupSet`  (the one where the manual backups are always stored) is used. But you can also use data from any batch backupSet, by pressing the `X` button and selecting the backupSet you want to use. Notice that the last backupSet you previously selected in any task (Batch Restore or BackupSet Management) will be the one used here by default. BackupSets can be tagged by pressing `+` button in the BackupSet List Menu, or from the BackupSet Management in Main menu.
    To identify which data the slot contains: If the slot has been tagged, you will see its tag next to the slot number. On the top screen line, you will see which backupSet is being used. And at the last screen line, you can see when the savedata were taken, and from which console. Finally, next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. In case that hexadecimal and titleName folder exists for the same title, save data from the hexadecimal folder will always be used. Conversion will merge slots from both savedata, and then only the new titleName folder will be used.
 2. For Wii U titles, select witch data to restore:
-	1. `No Profile Users`
+	1. `Only common save`
        This will restore only common savedata.
 	2. `From: All users / To: Same user than Source`
 	    This will restore all save data (profiles+common) from the selected slot keeping the same userid that was used to backup the data. This option can only be used to restore previous savedata from the same console, or if the profile ids in the new console are identical to the ones in the source console. If profile ids from source and target differ, you must use the next option.
@@ -167,7 +167,7 @@ This task allows you to restore the savedata for all titles already installed in
 
 This task allows you to wipe  savedata belonging to the selected list of titles.
 
-1. Select which data to wipe: `No Profile Users`, `All users`, `From: select source user / To: select target user`. `common save: Yes/No`. You can also choose if you want to perform a full backup (recommended).
+1. Select which data to wipe: `Only common save`, `All users`, `From: select source user / To: select target user`. `common save: Yes/No`. You can also choose if you want to perform a full backup (recommended).
 2. The list of all installed titles that match the savedata criteria chosen in the previous step will appear. You can select / deselect which titles to copy with `Y` `<-` and `->`, or select/deselect all at once with `+` and `-`. 
 3. Once you have reviewed the list of titles to be wiped, press `A`. A summary screen will appear, and if it is OK, you can initiate the wipe.
 4. Once the wipe is completed, a summary screen will show the number of sucess/failed/skipped titles.
@@ -194,7 +194,7 @@ This task allows you to move / copy  savedata from one profile to a different pr
 This task allows you to move  savedata between NAND and USB  for titles that have already savedata in both media. 
 
 1. Select if you want to move "From NAND to USB" or "From USB to NAND".
-2. Select wich data to restore:``No Profile Users`, `All users`, `From: select source user / To: select target user`. `common save: Yes/No` .  You can also choose if you want to perform a full backup (recommended) or to wipe data before restoring it.
+2. Select wich data to restore:``Only common save`, `All users`, `From: select source user / To: select target user`. `common save: Yes/No` .  You can also choose if you want to perform a full backup (recommended) or to wipe data before restoring it.
 3. The list of all titles that are installed on both NAND and USB, and  that match  the savedata criteria you chose in the previous step will appear. You can select / deselect which titles to copy with `Y` `<-` and `->`, or select/deselect all at once with `+` and `-`. 
 4. Once you have reviewed the list of titles to be restored, press `A`. A summary screen will appear, and if it is OK, you can initiate the copy.
 5. Once the copy is completed, a summary screen will show the number of sucess/failed/skipped titles.
