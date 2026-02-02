@@ -9,7 +9,7 @@ class TitleOptionsState : public ApplicationState {
 public:
     TitleOptionsState(Title &title,
                       eJobType task,
-                      const std::string &loadiineGamePath,
+                      std::string &gameBackupBasePath,
                       int *versionList,
                       int8_t source_user,
                       int8_t wiiu_user,
@@ -40,7 +40,7 @@ private:
     Title &title;
     eJobType task;
 
-    const std::string loadiineGamePath;
+    std::string gameBackupBasePath;
     int *versionList;
     int version = 0;
 

@@ -724,7 +724,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             }
         }
 
-        bool targetHasCommonSave = hasCommonSave(&targetTitle, false, false, 0, 0);
+        const char *game_backup_base_path = getDynamicBackupBasePath(&targetTitle).c_str();
+        bool targetHasCommonSave = hasCommonSave(&targetTitle, false, false, 0, 0, false, game_backup_base_path);
         bool effectiveCommon = common && sourceTitle.currentDataSource.hasCommonSavedata && targetHasCommonSave;
         if (wipeBeforeRestore || jobType == WIPE_PROFILE) {
             switch (source_user) {
@@ -733,13 +734,13 @@ void BatchJobTitleSelectState::executeBatchProcess() {
                         retCode = wipeSavedata(&targetTitle, -2, INCLUDE_COMMON, NON_INTERACTIVE);
                     break;
                 case -1:
-                    if (hasSavedata(&targetTitle, false, 0))
+                    if (hasSavedata(&targetTitle, false, 0,game_backup_base_path))
                         retCode = wipeSavedata(&targetTitle, -1, INCLUDE_COMMON, NON_INTERACTIVE);
                     break;
                 default: //source_user > -1
                     if (effectiveCommon)
                         retCode = wipeSavedata(&targetTitle, -2, INCLUDE_COMMON, NON_INTERACTIVE);
-                    bool targeHasProfileSavedata = hasProfileSave(&targetTitle, false, false, getWiiUAcc()[this->wiiu_user].persistentID, 0, 0, false, "");
+                    bool targeHasProfileSavedata = hasProfileSave(&targetTitle, false, false, getWiiUAcc()[this->wiiu_user].persistentID, 0, 0, false, game_backup_base_path);
                     if (sourceTitle.currentDataSource.hasProfileSavedata && targeHasProfileSavedata) {
                         switch (jobType) {
                             case RESTORE:

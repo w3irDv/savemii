@@ -22,7 +22,7 @@ static int offsetIfRestoreOrCopyToOtherDev = 0;
 
 TitleOptionsState::TitleOptionsState(Title &title,
                                      eJobType task,
-                                     const std::string &loadiineGamePath,
+                                     std::string &gameBackupBasePath,
                                      int *versionList,
                                      int8_t source_user,
                                      int8_t wiiu_user,
@@ -30,7 +30,7 @@ TitleOptionsState::TitleOptionsState(Title &title,
                                      Title *titles,
                                      int titleCount) : title(title),
                                                        task(task),
-                                                       loadiineGamePath(loadiineGamePath),
+                                                       gameBackupBasePath(gameBackupBasePath),
                                                        versionList(versionList),
                                                        source_user(source_user),
                                                        wiiu_user(wiiu_user),
@@ -889,6 +889,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 slot = 0;
                 getAccountsFromVol(&this->title, slot, RESTORE);
                 cursorPos = 0;
+                gameBackupBasePath = getDynamicBackupBasePath(&this->title);
                 updateRestoreData();
             }
             this->subState.reset();
@@ -921,15 +922,33 @@ void TitleOptionsState::updateSlotMetadata() {
     }
 }
 
+/*
+
+This is the Account that each task uses (all of them are called with USE_SD_OR_VOL_ACCOUNTS) 
+| TASK         | SRC        | DST         |
+| ------------ | ---------- | ----------- |
+| backup       | vol  NAND  | vol   SD    |
+| restore      | vol  SD    | wiiu  NAND  |
+| copy profile | vol  NAND  | wiiu  NAND  |
+| copy dev     | vol  NAND  | wiiu  NAND  |
+| move device  | vol  NAND  | wiiu  NAND  |
+| importload   | vol  SD    | wiiu  NAND  |
+| exportload   | vol  NAND  | vol   SD    |
+| wipe         | vol  NAND  |             |
+
+NAND = NAND & USB
+*/
+
 
 /// @brief Premise: all tasks have source user from AccountVol. Needs some rewrite if we allow USE_WIIU_PROFILES in TitleState
 void TitleOptionsState::updateSourceHasRequestedSavedata() {
     if (source_user == -2) {
         sourceHasRequestedSavedata = false;
     } else if (source_user == -1 || source_user == -3) {
-        sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot);
+        sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot, gameBackupBasePath.c_str());
     } else {
-        sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE || task == importLoadiine, task == importLoadiine, getVolAcc()[source_user].persistentID, slot, version, loadiine_mode, loadiineGamePath.c_str());
+        sourceHasRequestedSavedata = hasProfileSave(&this->title, task == RESTORE || task == importLoadiine, task == importLoadiine,
+                                                    getVolAcc()[source_user].persistentID, slot, version, loadiine_mode, gameBackupBasePath.c_str());
     }
 }
 
@@ -941,10 +960,12 @@ void TitleOptionsState::updateHasTargetUserData() {
         case -2:
             break;
         case -1:
-            hasTargetUserData = hasSavedata(&(titles[targetIndex]), (task == BACKUP), slot);
+            hasTargetUserData = hasSavedata(&(titles[targetIndex]), (task == BACKUP), slot, gameBackupBasePath.c_str());
             break;
         default:
-            hasTargetUserData = hasProfileSave(&(titles[targetIndex]), (task == BACKUP || task == exportLoadiine), task == exportLoadiine, (task == BACKUP || task == exportLoadiine) ? getVolAcc()[wiiu_user].persistentID : getWiiUAcc()[wiiu_user].persistentID, slot, version, loadiine_mode, loadiineGamePath.c_str());
+            hasTargetUserData = hasProfileSave(&(titles[targetIndex]), (task == BACKUP || task == exportLoadiine), task == exportLoadiine,
+                                               (task == BACKUP || task == exportLoadiine) ? getVolAcc()[wiiu_user].persistentID : getWiiUAcc()[wiiu_user].persistentID,
+                                               slot, version, loadiine_mode, gameBackupBasePath.c_str());
     }
 }
 
@@ -952,17 +973,19 @@ void TitleOptionsState::updateHasCommonSaveInTarget() {
     // used by restore , importLoadiine/exportLoaddine or copy_to_other_dev
 
     int targetIndex = (task == COPY_TO_OTHER_DEVICE) ? this->title.dupeID : this->title.indexID;
-    hasCommonSaveInTarget = hasCommonSave(&(titles[targetIndex]), (task == BACKUP || task == exportLoadiine), task == exportLoadiine, slot, version, loadiine_mode);
+    hasCommonSaveInTarget = hasCommonSave(&(titles[targetIndex]), (task == BACKUP || task == exportLoadiine), task == exportLoadiine,
+                                          slot, version, loadiine_mode, gameBackupBasePath.c_str());
 }
 
 void TitleOptionsState::updateHasCommonSaveInSource() {
-    hasCommonSaveInSource = hasCommonSave(&this->title, task == RESTORE || task == importLoadiine, task == importLoadiine, slot, version, loadiine_mode);
+    hasCommonSaveInSource = hasCommonSave(&this->title, task == RESTORE || task == importLoadiine, task == importLoadiine,
+                                          slot, version, loadiine_mode, gameBackupBasePath.c_str());
 }
 
 void TitleOptionsState::updateHasVWiiSavedata() {
-    hasUserDataInNAND = hasSavedata(&this->title, false, slot);
+    hasUserDataInNAND = hasSavedata(&this->title, false, slot, gameBackupBasePath.c_str());
     if (task == RESTORE)
-        sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot);
+        sourceHasRequestedSavedata = hasSavedata(&this->title, task == RESTORE, slot, gameBackupBasePath.c_str());
     else
         sourceHasRequestedSavedata = hasUserDataInNAND;
 }
@@ -1025,7 +1048,6 @@ void TitleOptionsState::updateLoadiine() {
     updateHasCommonSaveInSource();
     updateSourceHasRequestedSavedata();
     updateHasTargetUserData();
-
 }
 
 /// @brief We construct LoaddineAcc so user "u" (=`shared mode" in loadiine) has index  0
@@ -1040,5 +1062,4 @@ void TitleOptionsState::updateLoadiineMode(int8_t user) {
 void TitleOptionsState::updateLoadiineVersion() {
 
     version = this->versionList != nullptr ? this->versionList[slot] : 0;
-
 }

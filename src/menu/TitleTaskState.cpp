@@ -143,6 +143,8 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 return SUBSTATE_RUNNING;
             }
 
+            gameBackupBasePath = getDynamicBackupBasePath(&this->title);
+
         nxtCheck:
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 source_user = 0;
@@ -153,14 +155,14 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.longName, this->title.highID, this->title.lowID)) {
                     return SUBSTATE_RUNNING;
                 }
-                loadiineGamePath.assign(gamePath);
+                gameBackupBasePath.assign(gamePath);
                 getLoadiineSaveVersionList(versionList, gamePath);
                 getAccountsFromLoadiine(&this->title, slot, this->task);
             }
 
             // All checks OK
             this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->loadiineGamePath, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
+            this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->gameBackupBasePath, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
         }
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
             cursorPos = (cursorPos + 1) % entrycount;

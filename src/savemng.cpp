@@ -69,17 +69,41 @@ std::string getSlotFormatType(Title *title, uint8_t slot) {
 std::string getDynamicBackupPath(Title *title, uint8_t slot) {
 
     uint32_t highID = title->highID;
-    uint32_t lowID = title->lowID;
 
     if (((highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
-        return StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highID, lowID); // LegacyBackup
+        return getDynamicBackupBasePathSGMGX(title);
     else {
-        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID);
-        if (FSUtils::checkEntry(idBasedPath.c_str()) == 2) //hilo dir already exists
-            return StringUtils::stringFormat("%s%s%08x%08x/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID, slot);
-        else
-            return StringUtils::stringFormat("%s%s%s/%u", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName, slot);
+        std::string game_backup_base_path = getDynamicBackupBasePath(title);
+        return StringUtils::stringFormat("%s/%u", game_backup_base_path.c_str(), slot);
     }
+}
+
+/// @brief slot-independent part of the path, checking if title users title-name or hex-id folder convention
+/// @param title
+/// @return
+std::string getDynamicBackupBasePath(Title *title) {
+
+    uint32_t highID = title->highID;
+    uint32_t lowID = title->lowID;
+
+    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID);
+
+    if (FSUtils::checkEntry(idBasedPath.c_str()) == 2) //hilo dir already exists
+        return StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID);
+    else
+        return StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
+}
+
+
+/// @brief slot-independent part of the path for legacy (=savegame manager gx) backups
+/// @param title
+/// @return
+std::string getDynamicBackupBasePathSGMGX(Title *title) {
+
+    uint32_t highID = title->highID;
+    uint32_t lowID = title->lowID;
+
+    return StringUtils::stringFormat("%s/%08x%08x", legacyBackupPath, highID, lowID); // LegacyBackup
 }
 
 std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string &datetime) {
@@ -171,12 +195,12 @@ void getAccountsFromLoadiine([[maybe_unused]] Title *title, [[maybe_unused]] uin
     strcpy(vol_acc[0].persistentID, "u");
     vol_acc[0].pID = 0;
     vol_acc[0].slot = 1;
-    strcpy(vol_acc[0].miiName,"u");
+    strcpy(vol_acc[0].miiName, "u");
     // todo!() > accept standard profiles
     strcpy(vol_acc[1].persistentID, "8000000e");
     vol_acc[1].pID = 0x8000000e;
     vol_acc[1].slot = 1;
-    strcpy(vol_acc[1].miiName,"8000000e");
+    strcpy(vol_acc[1].miiName, "8000000e");
 }
 
 void getAccountsFromVol(Title *title, uint8_t slot, eJobType jobType) {
@@ -298,10 +322,10 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *long
     return false;
 }
 
-/// @brief Look for v\d folders under gamePath and insters the number in out[i] (=versionList[i]). out[0] is not changed  
-/// @param out 
-/// @param gamePath 
-/// @return number of versions (including de "no version" folder) 
+/// @brief Look for v\d folders under gamePath and insters the number in out[i] (=versionList[i]). out[0] is not changed
+/// @param out
+/// @param gamePath
+/// @return number of versions (including de "no version" folder)
 int getLoadiineSaveVersionList(int *out, const char *gamePath) {
     DIR *dir = opendir(gamePath);
 
@@ -373,7 +397,7 @@ static int getEmptySlotInTitleNameBasedPath(Title *title) {
 /// @param slot
 /// @param version
 /// @return
-bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_t slot, int version, bool loadiine_savedata_mode, const char *loadiine_game_path) {
+bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -388,13 +412,13 @@ bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_
 
     } else {
         if (!iine) {
-            snprintf(srcPath, PATH_SIZE, "%s/%s", getDynamicBackupPath(title, slot).c_str(), user);
+            snprintf(srcPath, PATH_SIZE, "%s/%u/%s", game_backup_base_path, slot, user);
         } else {
             char gamePath[PATH_SIZE];
             if (version != 0)
-                snprintf(gamePath, PATH_SIZE, "%s/v%u", loadiine_game_path, version);
+                snprintf(gamePath, PATH_SIZE, "%s/v%u", game_backup_base_path, version);
             else
-                snprintf(gamePath, PATH_SIZE, "%s", loadiine_game_path);
+                snprintf(gamePath, PATH_SIZE, "%s", game_backup_base_path);
 
 
             if (loadiine_savedata_mode == LOADIINE_SHARED_SAVEDATA)
@@ -404,24 +428,13 @@ bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_
         }
     }
 
-
-    /* 
-    //compare with hasSavedata and then delete
-    } else {
-        if (!inSD) {
-            snprintf(srcPath, PATH_SIZE, "storage_slcc01:/title/%08x/%08x/data", highID, lowID);
-        } else {
-            snprintf(srcPath, PATH_SIZE, getDynamicBackupPath(title, slot).c_str());
-        }
-    }
-        */
     if (FSUtils::checkEntry(srcPath) == 2)
         if (!FSUtils::folderEmpty(srcPath))
             return true;
     return false;
 }
 
-bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version, bool loadiine_savedata_mode) {
+bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
     bool isUSB = title->isTitleOnUSB;
@@ -436,13 +449,9 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
         srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s/common", path, highID, lowID, "user");
     } else {
         if (!iine) {
-            srcPath = getDynamicBackupPath(title, slot) + "/common";
+            srcPath = StringUtils::stringFormat("%s/%u/common", game_backup_base_path, slot);
         } else {
-            char gamePath[PATH_SIZE];
-            if (!getLoadiineGameSaveDir(gamePath, title->productCode, title->longName, title->highID, title->lowID)) {
-                return false;
-            }
-            srcPath.assign(gamePath);
+            srcPath.assign(game_backup_base_path);
             if (version != 0)
                 srcPath.append(StringUtils::stringFormat("/v%u", version));
             if (loadiine_savedata_mode == LOADIINE_SHARED_SAVEDATA)
@@ -457,7 +466,13 @@ bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version
     return false;
 }
 
-bool hasSavedata(Title *title, bool inSD, uint8_t slot) {
+/// @brief check it there is content under the savedata root. If checking backups, it assumes that vWii (injects and no injects) in slot 255 follow SGMX convention
+/// @param title 
+/// @param inSD 
+/// @param slot 
+/// @param game_backup_base_path 
+/// @return 
+bool hasSavedata(Title *title, bool inSD, uint8_t slot, const char *game_backup_base_path) {
 
     uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
     uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
@@ -468,8 +483,12 @@ bool hasSavedata(Title *title, bool inSD, uint8_t slot) {
     if (!inSD) {
         const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
         srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    } else
-        srcPath = getDynamicBackupPath(title, slot);
+    } else {
+        if (isWii && slot == 255)
+            srcPath = getDynamicBackupBasePathSGMGX(title);
+        else
+            srcPath = StringUtils::stringFormat("%s/%u", game_backup_base_path, slot);
+    }
 
     if (FSUtils::checkEntry(srcPath.c_str()) == 2)
         if (!FSUtils::folderEmptyIgnoreSavemii(srcPath.c_str()))
@@ -1394,7 +1413,7 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
 
     uint32_t srcOffset = strlen(srcPath);
     sprintf(srcPath + srcOffset, "/%s", getVolAcc()[source_user].persistentID);
-    
+
     sprintf(dstPath, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
     Console::showMessage(WARNING_CONFIRM, "createFolder %s", dstPath);
     /*
@@ -1411,8 +1430,8 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
     uint32_t dstOffset = strlen(dstPath);
     sprintf(dstPath + dstOffset, "/%s", getWiiUAcc()[wiiu_user].persistentID);
     //if (FSUtils::checkEntry(srcPath) == 2) {
-        Console::showMessage(WARNING_CONFIRM, "copyDir %s > %s", srcPath, dstPath);
-        /*
+    Console::showMessage(WARNING_CONFIRM, "copyDir %s > %s", srcPath, dstPath);
+    /*
     FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
     if (!FSUtils::copyDir(srcPath, dstPath)) {
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to import savedata from loadiine."));
