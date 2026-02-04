@@ -153,7 +153,7 @@ uint32_t getPersistentID() { // Source: loadiine_gx2
 }
 
 
-bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *longName, const uint32_t highID, const uint32_t lowID) {
+bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *titleName, const uint32_t highID, const uint32_t lowID) {
     DIR *dir = opendir(loadiineSavePath);
 
     if (dir == nullptr) {
@@ -162,11 +162,17 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *long
         return false;
     }
 
+
+    std::string escapedTitleName{};
+    const std::string titleNameStr{titleName};
+    Escape::convertToFAT32ASCIICompliant(titleNameStr, escapedTitleName);
+    const char *escaped_title_name = escapedTitleName.c_str();
+
     struct dirent *data;
     while ((data = readdir(dir)) != nullptr) {
         if (((data->d_type & DT_DIR) != 0) && ((strstr(data->d_name, productCode) != nullptr) ||
-                                               (strstr(data->d_name, StringUtils::stringFormat("%s [%08x%08x]", longName, highID, lowID).c_str()) != nullptr) ||
-                                               (strstr(data->d_name, StringUtils::stringFormat("%s [%s]", longName, productCode).c_str()) != nullptr))) {
+                                               (strstr(data->d_name, StringUtils::stringFormat("[%08x%08x]", highID, lowID).c_str()) != nullptr) ||
+                                               (strstr(data->d_name, escaped_title_name) != nullptr))) {
             sprintf(out, "%s/%s", loadiineSavePath, data->d_name);
             closedir(dir);
             return true;
@@ -175,6 +181,9 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *long
 
     Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Loadiine game folder not found."));
     closedir(dir);
+
+    sprintf(out, "%s/%s [%s]", loadiineSavePath, escaped_title_name, productCode);
+
     return false;
 }
 
@@ -1261,7 +1270,7 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
     bool isUSB = title->isTitleOnUSB;
     char srcPath[PATH_SIZE];
     char dstPath[PATH_SIZE];
-    if (!getLoadiineGameSaveDir(srcPath, title->productCode, title->longName, title->highID, title->lowID))
+    if (!getLoadiineGameSaveDir(srcPath, title->productCode, title->shortName, title->highID, title->lowID))
         return false;
     if (version != 0)
         sprintf(srcPath + strlen(srcPath), "/v%i", version);
@@ -1322,7 +1331,7 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
     bool isUSB = title->isTitleOnUSB;
     char srcPath[PATH_SIZE];
     char dstPath[PATH_SIZE];
-    if (!getLoadiineGameSaveDir(dstPath, title->productCode, title->longName, title->highID, title->lowID))
+    if (!getLoadiineGameSaveDir(dstPath, title->productCode, title->shortName, title->highID, title->lowID))
         return false;
     if (version != 0)
         sprintf(dstPath + strlen(dstPath), "/v%u", version);

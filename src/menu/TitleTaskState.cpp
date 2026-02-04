@@ -8,6 +8,7 @@
 #include <utils/AccountUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/EscapeFAT32Utils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/statDebug.h>
@@ -153,7 +154,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 char gamePath[PATH_SIZE];
                 memset(versionList, 0, 0x100 * sizeof(int));
-                if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.longName, this->title.highID, this->title.lowID)) {
+                if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.shortName, this->title.highID, this->title.lowID)) {
                     return SUBSTATE_RUNNING;
                 }
                 // Loadiine gameBackupPath
