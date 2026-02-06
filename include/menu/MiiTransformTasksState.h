@@ -32,10 +32,6 @@ public:
             cursorPos = entrycount - 1;
     };
 
-    //    ~MiiTransformTasksState() {
-    //        free(this->versionList);
-    //    }
-
     enum eState {
         STATE_MII_TRANSFORM_TASKS,
         STATE_DO_SUBSTATE,

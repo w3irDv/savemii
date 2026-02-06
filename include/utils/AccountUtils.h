@@ -25,4 +25,7 @@ namespace AccountUtils {
     Account *getWiiUAcc();
     Account *getVolAcc();
 
+    std::string getUserID();
+    uint32_t getPersistentID();
+
 }; // namespace AccountUtils

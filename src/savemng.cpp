@@ -129,30 +129,6 @@ bool checkIfProfileExistsInWiiUAccounts(const char *name) {
     return exists;
 }
 
-/*
-static std::string getUserID() { // Source: loadiine_gx2
-    // get persistent ID - thanks to Maschell
-    nn::act::Initialize();
-
-    unsigned char slotno = nn::act::GetSlotNo();
-    unsigned int persistentID = nn::act::GetPersistentIdEx(slotno);
-    nn::act::Finalize();
-    std::string out = StringUtils::stringFormat("%08x", persistentID);
-    return out;
-}
-*/
-
-uint32_t getPersistentID() { // Source: loadiine_gx2
-    /* get persistent ID - thanks to Maschell */
-    nn::act::Initialize();
-
-    unsigned char slotno = nn::act::GetSlotNo();
-    uint32_t persistentID = nn::act::GetPersistentIdEx(slotno);
-    nn::act::Finalize();
-    return persistentID;
-}
-
-
 bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *titleName, const uint32_t highID, const uint32_t lowID) {
     DIR *dir = opendir(loadiineSavePath);
 
@@ -187,28 +163,43 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *titl
     return false;
 }
 
-/// @brief Look for v\d folders under gamePath and insters the number in out[i] (=versionList[i]). out[0] is not changed
-/// @param out
+/// @brief Look for v\d folders under gamePath and insters the number in versionList. First element is always 0 ("no version").
+/// @param versionList
 /// @param gamePath
 /// @return number of versions (including de "no version" folder)
-int getLoadiineSaveVersionList(int *out, const char *gamePath) {
+bool getLoadiineSaveVersionList(std::vector<unsigned int> &versionList, const char *gamePath) {
     DIR *dir = opendir(gamePath);
 
     if (dir == nullptr) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), gamePath, strerror(errno));
         Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Loadiine game folder not found."));
-        return -1;
+        return false;
     }
 
-    int i = 0;
-    out[0] = 0;
+    unsigned int i = 0;
+    versionList.clear();
+    versionList.push_back(0);
+    unsigned int max_version = 0;
     struct dirent *data;
-    while (i < 255 && (data = readdir(dir)) != nullptr)
-        if (((data->d_type & DT_DIR) != 0) && (strchr(data->d_name, 'v') != nullptr))
-            out[++i] = strtol((data->d_name) + 1, nullptr, 10);
+    while (i < 256 && (data = readdir(dir)) != nullptr)
+        if (((data->d_type & DT_DIR) != 0) && (data->d_name[0] == 'v')) {
+            errno = 0;
+            unsigned int version_number = strtoul((data->d_name) + 1, nullptr, 10);
+            if (errno == EINVAL || errno == ERANGE)
+                continue;
+            if (max_version < version_number)
+                max_version = version_number;
+            versionList.push_back(version_number);
+            i++;
+        }
+    // fill up to 256 values ...
+    unsigned int offset = 1;
+    for (; i < 256; i++) {
+        versionList.push_back(max_version + offset++);
+    }
 
     closedir(dir);
-    return i + 1;
+    return true;
 }
 
 bool isSlotEmpty(Title *title, uint8_t slot) {

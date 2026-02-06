@@ -4,6 +4,7 @@
 #include <memory>
 #include <savemng.h>
 #include <utils/InputUtils.h>
+#include <vector>
 
 class TitleTaskState : public ApplicationState {
 public:
@@ -16,10 +17,6 @@ public:
         entrycount = 3 + 4 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));
         if (cursorPos > entrycount - 1)
             cursorPos = 0;
-    }
-
-    ~TitleTaskState() {
-        free(this->versionList);
     }
 
     enum eState {
@@ -40,7 +37,7 @@ private:
     bool isWiiUTitle;
 
     eJobType task;
-    int *versionList = (int *) malloc(0x100 * sizeof(int));
+    std::vector<unsigned int> versionList;
     std::string gameBackupBasePath{};
 
     inline static int cursorPos = 0;

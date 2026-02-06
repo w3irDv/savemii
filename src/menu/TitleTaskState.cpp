@@ -153,7 +153,6 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 wiiu_user = 0;
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 char gamePath[PATH_SIZE];
-                memset(versionList, 0, 0x100 * sizeof(int));
                 if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.shortName, this->title.highID, this->title.lowID)) {
                     return SUBSTATE_RUNNING;
                 }

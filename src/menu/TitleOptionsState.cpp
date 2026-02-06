@@ -24,7 +24,7 @@ static int offsetIfRestoreOrCopyToOtherDev = 0;
 TitleOptionsState::TitleOptionsState(Title &title,
                                      eJobType task,
                                      std::string &gameBackupBasePath,
-                                     int *versionList,
+                                     std::vector<unsigned int> &versionList,
                                      int8_t source_user,
                                      int8_t wiiu_user,
                                      bool common,
@@ -108,8 +108,8 @@ void TitleOptionsState::render() {
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             Console::consolePrintPos(M_OFF, 5, "   < v%u > (%s)", version,
-                                         emptySlot ? LanguageUtils::gettext("Empty")
-                                                   : LanguageUtils::gettext("Used"));
+                                     emptySlot ? LanguageUtils::gettext("Empty")
+                                               : LanguageUtils::gettext("Used"));
         } else if (this->task == WIPE_PROFILE) {
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Delete from:"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -252,14 +252,14 @@ void TitleOptionsState::render() {
                         } else {
                             common = false;
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
-                                                     LanguageUtils::gettext("No 'common' save found."));
+                                                     task == BACKUP ? LanguageUtils::gettext("No 'common' save found.") : LanguageUtils::gettext("Source: No 'common' save found."));
                         }
                     } else {
                         if (hasCommonSaveInSource)
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev, commonIncluded);
                         else
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
-                                                     LanguageUtils::gettext("No 'common' save found."));
+                                                     task == BACKUP ? LanguageUtils::gettext("No 'common' save found.") : LanguageUtils::gettext("Source: No 'common' save found."));
                         if (task == RESTORE || task == COPY_TO_OTHER_DEVICE || (task == importLoadiine) || (task == exportLoadiine))
                             Console::consolePrintPosAligned(10, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
                                                             hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
@@ -696,7 +696,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         slot++;
                         updateLoadiineVersion();
                         AccountUtils::getAccountsFromVol(&this->title, version, importLoadiine, gameBackupBasePath);
-                        volAccountsTotalNumber = AccountUtils::getVolAccn(); 
+                        volAccountsTotalNumber = AccountUtils::getVolAccn();
                         if (source_user > volAccountsTotalNumber - 1)
                             source_user = 0;
                         updateLoadiineMode(source_user);
@@ -727,7 +727,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateLoadiineVersion();
                         AccountUtils::getAccountsFromVol(&this->title, version, exportLoadiine, gameBackupBasePath);
                         volAccountsTotalNumber = AccountUtils::getVolAccn();
-                        if (wiiu_user > volAccountsTotalNumber - 1)   // Vol users contain shared loaddine"/u" + users in NAND/USB
+                        if (wiiu_user > volAccountsTotalNumber - 1) // Vol users contain shared loaddine"/u" + users in NAND/USB
                             wiiu_user = 0;
                         updateLoadiineMode(wiiu_user);
                         updateHasCommonSaveInTarget();
@@ -1062,8 +1062,6 @@ void TitleOptionsState::updateLoadiine() {
     updateSourceHasRequestedSavedata();
     updateHasTargetUserData();
     updateSlotContentFlagForLoadiine();
-
-
 }
 
 /// @brief We construct LoaddineAcc so user "u" (=`shared mode" in loadiine) has index  0
@@ -1077,14 +1075,14 @@ void TitleOptionsState::updateLoadiineMode(int8_t user) {
 
 void TitleOptionsState::updateLoadiineVersion() {
 
-    version = this->versionList != nullptr ? this->versionList[slot] : 0;
-
+    if (slot < versionList.size())
+        version = versionList.at(slot);
 }
 
 void TitleOptionsState::updateSlotContentFlagForLoadiine() {
     if (task == importLoadiine) {
-        emptySlot = hasCommonSaveInSource || sourceHasRequestedSavedata;
+        emptySlot = !(hasCommonSaveInSource || sourceHasRequestedSavedata);
     } else {
-        emptySlot = hasCommonSaveInTarget || hasTargetUserData;
+        emptySlot = !(hasCommonSaveInTarget || hasTargetUserData);
     }
 }

@@ -10,7 +10,7 @@ public:
     TitleOptionsState(Title &title,
                       eJobType task,
                       std::string &gameBackupBasePath,
-                      int *versionList,
+                      std::vector<unsigned int> &versionList,
                       int8_t source_user,
                       int8_t wiiu_user,
                       bool common,
@@ -41,7 +41,7 @@ private:
     eJobType task;
 
     std::string gameBackupBasePath;
-    int *versionList;
+    std::vector<unsigned int> versionList;
     int version = 0;
 
     int8_t source_user;

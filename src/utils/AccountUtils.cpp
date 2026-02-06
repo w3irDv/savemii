@@ -3,6 +3,7 @@
 #include <savemng.h>
 #include <string>
 #include <utils/AccountUtils.h>
+#include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/StringUtils.h>
 
@@ -61,7 +62,7 @@ void AccountUtils::getAccountsWiiU() {
     nn::act::Finalize();
 }
 
-/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task
+/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loaddine shared savedata accounts if found in a normal slot
 /// @param title
 /// @param slot_or_version
 /// @param jobType
@@ -100,6 +101,8 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         default:;
     }
 
+    bool rename_shared_loadiine_account = false;
+    bool rename_shared_loadiine_common = false;
     std::vector<uint32_t> profiles;
     DIR *dir = opendir(srcPath.c_str());
     if (dir != nullptr) {
@@ -107,15 +110,55 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         while ((data = readdir(dir)) != nullptr) {
             if (strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
                 uint32_t pID;
-                if (str2uint(pID, data->d_name, 16) != SUCCESS)
+                if (str2uint(pID, data->d_name, 16) != SUCCESS) {
+                    if (jobType == RESTORE) {
+                        if (strcmp(data->d_name, "u") == 0)
+                            rename_shared_loadiine_account = true;
+                        if (strcmp(data->d_name, "c") == 0)
+                            rename_shared_loadiine_common = true;
+                    }
                     continue;
-                vol_accn++;
+                }
                 profiles.push_back(pID);
             }
         }
         closedir(dir);
     }
 
+    if (rename_shared_loadiine_account) {
+        std::string loadiineSharedAccountPath = srcPath + "/u";
+        if (FSUtils::checkEntry(loadiineSharedAccountPath.c_str()) != 2)
+            goto rename_shared_loadiine_common;
+        uint32_t currentPersistentID = getPersistentID();
+        std::string currentUserID = StringUtils::stringFormat("%s", currentPersistentID);
+        std::string uniqueAccountPath = srcPath + "/" + currentUserID;
+        if (FSUtils::checkEntry(uniqueAccountPath.c_str()) == 0) {
+            rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str());
+            for (const uint32_t &pID : profiles) {
+                if (pID == currentPersistentID)
+                    goto rename_shared_loadiine_common;
+            }
+            profiles.push_back(currentPersistentID);
+        } else {
+            Console::showMessage(ERROR_CONFIRM,"Found loadiine 'u' and dedicated '%s' profiles in backup. Please remove the unneeded one",currentUserID.c_str());
+        }
+    }
+
+rename_shared_loadiine_common:
+    if (rename_shared_loadiine_common) {
+        std::string loadiineSharedAccountPath = srcPath + "/c";
+        if (FSUtils::checkEntry(loadiineSharedAccountPath.c_str()) != 2)
+            goto add_loadiine_shared_account;
+        std::string uniqueAccountPath = srcPath + "/common";
+        if (FSUtils::checkEntry(uniqueAccountPath.c_str()) == 0) {
+            rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str());
+        } else {
+            Console::showMessage(ERROR_CONFIRM,"Found loadiine 'c' and dedicated 'common' profiles in backup. Please remove the unneeded one");
+        }
+    }
+
+add_loadiine_shared_account:
+    vol_accn = profiles.size();
     if (jobType == exportLoadiine || jobType == importLoadiine) {
         vol_accn++;
         initial_index = 1;
@@ -125,15 +168,15 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
 
     // LOADIINE_SHARED_MODE
     if (jobType == exportLoadiine || jobType == importLoadiine) {
-            strcpy(vol_acc[0].persistentID, "u");
-            vol_acc[0].pID = 0;
-            vol_acc[0].slot = 0;
-            strcpy(vol_acc[0].miiName, "loadiine");
+        strcpy(vol_acc[0].persistentID, "u");
+        vol_acc[0].pID = 0;
+        vol_acc[0].slot = 0;
+        strcpy(vol_acc[0].miiName, "loadiine");
     }
 
     int i = initial_index;
     for (const uint32_t &pID : profiles) {
-        snprintf(vol_acc[i].persistentID,9,"%08x",pID);
+        snprintf(vol_acc[i].persistentID, 9, "%08x", pID);
         vol_acc[i].pID = pID;
         vol_acc[i].slot = i;
         i++;
@@ -151,4 +194,27 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
             }
         }
     }
+}
+
+
+std::string AccountUtils::getUserID() { // Source: loadiine_gx2
+    // get persistent ID - thanks to Maschell
+    nn::act::Initialize();
+
+    unsigned char slotno = nn::act::GetSlotNo();
+    unsigned int persistentID = nn::act::GetPersistentIdEx(slotno);
+    nn::act::Finalize();
+    std::string out = StringUtils::stringFormat("%08x", persistentID);
+    return out;
+}
+
+
+uint32_t AccountUtils::getPersistentID() { // Source: loadiine_gx2
+    /* get persistent ID - thanks to Maschell */
+    nn::act::Initialize();
+
+    unsigned char slotno = nn::act::GetSlotNo();
+    uint32_t persistentID = nn::act::GetPersistentIdEx(slotno);
+    nn::act::Finalize();
+    return persistentID;
 }

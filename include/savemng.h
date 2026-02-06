@@ -41,7 +41,7 @@ bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path);
 bool hasSavedata(Title *title, bool inSD, uint8_t slot, const char *game_backup_base_path);
 bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *titleName, const uint32_t highID, const uint32_t lowID);
-int getLoadiineSaveVersionList(int *out, const char *gamePath);
+bool getLoadiineSaveVersionList(std::vector<unsigned int> &versionList, const char *gamePath);
 bool isSlotEmpty(Title *title, uint8_t slot);
 bool isSlotEmptyInTitleBasedPath(Title *title, uint8_t slot);
 bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime);
