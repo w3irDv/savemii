@@ -67,6 +67,7 @@ private:
     bool backupRestoreFromSameConsole = false;
     std::string slotInfo{};
     void updateSlotMetadata();
+    void updateSlotContentFlagForLoadiine();
 
     bool sourceHasRequestedSavedata = false;
     void updateSourceHasRequestedSavedata();

@@ -107,7 +107,9 @@ void TitleOptionsState::render() {
         } else if (this->task == importLoadiine || this->task == exportLoadiine) {
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-            Console::consolePrintPos(M_OFF, 5, "   < v%u >", version);
+            Console::consolePrintPos(M_OFF, 5, "   < v%u > (%s)", version,
+                                         emptySlot ? LanguageUtils::gettext("Empty")
+                                                   : LanguageUtils::gettext("Used"));
         } else if (this->task == WIPE_PROFILE) {
             Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Delete from:"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -523,6 +525,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateLoadiineMode(source_user);
                         updateHasCommonSaveInSource();
                         updateSourceHasRequestedSavedata();
+                        updateSlotContentFlagForLoadiine();
                         break;
                     case 1:
                         source_user = ((source_user == 0) ? 0 : (source_user - 1));
@@ -552,6 +555,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateLoadiineMode(wiiu_user);
                         updateHasCommonSaveInTarget();
                         updateHasTargetUserData();
+                        updateSlotContentFlagForLoadiine();
                         break;
                     case 1:
                         source_user = ((source_user == 0) ? 0 : (source_user - 1));
@@ -698,6 +702,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateLoadiineMode(source_user);
                         updateHasCommonSaveInSource();
                         updateSourceHasRequestedSavedata();
+                        updateSlotContentFlagForLoadiine();
                         break;
                     case 1:
                         source_user = ((source_user == volAccountsTotalNumber - 1) ? source_user : (source_user + 1));
@@ -727,6 +732,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateLoadiineMode(wiiu_user);
                         updateHasCommonSaveInTarget();
                         updateHasTargetUserData();
+                        updateSlotContentFlagForLoadiine();
                         break;
                     case 1:
                         source_user = ((source_user == (volAccountsTotalNumber - 1)) ? source_user : (source_user + 1));
@@ -1055,6 +1061,9 @@ void TitleOptionsState::updateLoadiine() {
     updateHasCommonSaveInSource();
     updateSourceHasRequestedSavedata();
     updateHasTargetUserData();
+    updateSlotContentFlagForLoadiine();
+
+
 }
 
 /// @brief We construct LoaddineAcc so user "u" (=`shared mode" in loadiine) has index  0
@@ -1070,4 +1079,12 @@ void TitleOptionsState::updateLoadiineVersion() {
 
     version = this->versionList != nullptr ? this->versionList[slot] : 0;
 
+}
+
+void TitleOptionsState::updateSlotContentFlagForLoadiine() {
+    if (task == importLoadiine) {
+        emptySlot = hasCommonSaveInSource || sourceHasRequestedSavedata;
+    } else {
+        emptySlot = hasCommonSaveInTarget || hasTargetUserData;
+    }
 }
