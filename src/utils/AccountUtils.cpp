@@ -139,10 +139,10 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         i++;
     }
 
-    int sourceAccountsTotalNumber = vol_accn;
+    int volAccountsTotalNumber = vol_accn;
     int wiiUAccountsTotalNumber = getWiiUAccn();
 
-    for (int i = initial_index; i < sourceAccountsTotalNumber; i++) {
+    for (int i = initial_index; i < volAccountsTotalNumber; i++) {
         strcpy(vol_acc[i].miiName, "undefined");
         for (int j = 0; j < wiiUAccountsTotalNumber; j++) {
             if (vol_acc[i].pID == wiiu_acc[j].pID) {

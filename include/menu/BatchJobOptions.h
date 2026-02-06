@@ -43,7 +43,7 @@ private:
 
     eJobType jobType;
     int wiiUAccountsTotalNumber;
-    int sourceAccountsTotalNumber;
+    int volAccountsTotalNumber;
 
     bool nonExistentProfileInTitleBackup = false;
 

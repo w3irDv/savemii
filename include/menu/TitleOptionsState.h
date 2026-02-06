@@ -61,7 +61,7 @@ private:
     std::string newTag{};
 
     int wiiUAccountsTotalNumber = 0;
-    int sourceAccountsTotalNumber = 0;
+    int volAccountsTotalNumber = 0;
 
     bool emptySlot = false;
     bool backupRestoreFromSameConsole = false;

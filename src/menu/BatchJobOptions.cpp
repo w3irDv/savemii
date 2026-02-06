@@ -134,13 +134,13 @@ BatchJobOptions::BatchJobOptions(Title *titles,
         i++;
     }
 
-    sourceAccountsTotalNumber = AccountUtils::getVolAccn();
+    volAccountsTotalNumber = AccountUtils::getVolAccn();
     wiiUAccountsTotalNumber = AccountUtils::getWiiUAccn();
 
     substate_return = false;
     if (jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE) {
         common = false;
-        for (int i = 0; i < sourceAccountsTotalNumber; i++) {
+        for (int i = 0; i < volAccountsTotalNumber; i++) {
             for (int j = 0; j < wiiUAccountsTotalNumber; j++) {
                 if (AccountUtils::getVolAcc()[i].pID != AccountUtils::getWiiUAcc()[j].pID) {
                     source_user = i;
@@ -159,7 +159,7 @@ nxtCheck:
         wipeBeforeRestore = true;
 
     if (jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE || jobType == WIPE_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) {
-        for (int i = 0; i < sourceAccountsTotalNumber; i++) {
+        for (int i = 0; i < volAccountsTotalNumber; i++) {
             strcpy(AccountUtils::vol_acc[i].miiName, "undefined");
             for (int j = 0; j < wiiUAccountsTotalNumber; j++) {
                 if (AccountUtils::vol_acc[i].pID == AccountUtils::wiiu_acc[j].pID) {
@@ -443,7 +443,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                 case COPY_FROM_USB_TO_NAND:
                     switch (cursorPos) {
                         case 0:
-                            source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
+                            source_user = ((source_user == (volAccountsTotalNumber - 1)) ? (volAccountsTotalNumber - 1) : (source_user + 1));
                             wiiu_user = (source_user < 0) ? source_user : wiiu_user;
                             wiiu_user = ((source_user > -1) && (wiiu_user < 0)) ? 0 : wiiu_user;
                             break;
@@ -462,7 +462,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                 case MOVE_PROFILE:
                     switch (cursorPos) {
                         case 0:
-                            source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
+                            source_user = ((source_user == (volAccountsTotalNumber - 1)) ? (volAccountsTotalNumber - 1) : (source_user + 1));
                             if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = (wiiu_user + 1) % wiiUAccountsTotalNumber;
                             break;
