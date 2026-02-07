@@ -108,18 +108,18 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
     if (dir != nullptr) {
         struct dirent *data;
         while ((data = readdir(dir)) != nullptr) {
-            if (strlen(data->d_name) == 8 && data->d_type & DT_DIR) {
-                uint32_t pID;
-                if (str2uint(pID, data->d_name, 16) != SUCCESS) {
-                    if (jobType == RESTORE) {
-                        if (strcmp(data->d_name, "u") == 0)
-                            rename_shared_loadiine_account = true;
-                        if (strcmp(data->d_name, "c") == 0)
-                            rename_shared_loadiine_common = true;
-                    }
-                    continue;
+            if (data->d_type & DT_DIR) {
+                if (strlen(data->d_name) == 8) {
+                    uint32_t pID;
+                    if (str2uint(pID, data->d_name, 16) != SUCCESS)
+                        continue;
+                    profiles.push_back(pID);
+                } else if (jobType == RESTORE) {
+                    if (strcmp(data->d_name, "u") == 0)
+                        rename_shared_loadiine_account = true;
+                    if (strcmp(data->d_name, "c") == 0)
+                        rename_shared_loadiine_common = true;
                 }
-                profiles.push_back(pID);
             }
         }
         closedir(dir);
@@ -130,7 +130,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         if (FSUtils::checkEntry(loadiineSharedAccountPath.c_str()) != 2)
             goto rename_shared_loadiine_common;
         uint32_t currentPersistentID = getPersistentID();
-        std::string currentUserID = StringUtils::stringFormat("%s", currentPersistentID);
+        std::string currentUserID = getUserID();
         std::string uniqueAccountPath = srcPath + "/" + currentUserID;
         if (FSUtils::checkEntry(uniqueAccountPath.c_str()) == 0) {
             rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str());
@@ -140,7 +140,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
             }
             profiles.push_back(currentPersistentID);
         } else {
-            Console::showMessage(ERROR_CONFIRM,"Found loadiine 'u' and dedicated '%s' profiles in backup. Please remove the unneeded one",currentUserID.c_str());
+            Console::showMessage(ERROR_CONFIRM, "Found loadiine 'u' and dedicated '%s' profiles in backup. Please remove the unneeded one", currentUserID.c_str());
         }
     }
 
@@ -153,7 +153,7 @@ rename_shared_loadiine_common:
         if (FSUtils::checkEntry(uniqueAccountPath.c_str()) == 0) {
             rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str());
         } else {
-            Console::showMessage(ERROR_CONFIRM,"Found loadiine 'c' and dedicated 'common' profiles in backup. Please remove the unneeded one");
+            Console::showMessage(ERROR_CONFIRM, "Found loadiine 'c' and dedicated 'common' profiles in backup. Please remove the unneeded one");
         }
     }
 
