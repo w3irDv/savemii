@@ -37,7 +37,7 @@ void MiiTransformTasksState::render() {
         Console::consolePrintPosAligned(3, 4, 2, LanguageUtils::gettext("[%s]"), transfer_ownership ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
         DrawUtils::setFontColorByCursorForToggles(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2, make_it_local);
-        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Make it belong to this console:"));
+        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Make them belong to this console:"));
         Console::consolePrintPosAligned(4, 4, 2, LanguageUtils::gettext("[%s]"), make_it_local ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
 
         DrawUtils::setFontColorByCursorForToggles(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3, update_timestamp);

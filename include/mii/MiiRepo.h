@@ -89,7 +89,6 @@ public:
     bool repo_has_duplicated_miis = false;
 
     const static inline std::string BACKUP_ROOT = "fs:/vol/external01/wiiu/backups/MiiRepoBckp";
-    //const static inline std::string BACKUP_ROOT = "/home/qwii/hb/mock_mii/test/backups";
 
     bool needs_populate = true;
 

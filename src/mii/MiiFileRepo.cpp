@@ -637,6 +637,9 @@ uint16_t MiiFileRepo<MII, MIIDATA>::get_crc() {
 template<typename MII, typename MIIDATA>
 bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
     std::string db_filepath = this->path_to_repo;
+
+    if (db_buffer != nullptr)
+        free(db_buffer);
     db_buffer = (uint8_t *) MiiData::allocate_memory(MIIDATA::DB::DB_SIZE);
 
     if (db_buffer == nullptr) {
