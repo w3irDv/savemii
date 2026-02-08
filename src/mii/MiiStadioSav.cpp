@@ -1,3 +1,4 @@
+#include <coreinit/time.h>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
@@ -7,10 +8,6 @@
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
-
-
-#include <coreinit/time.h>
-//#include <mockWUT.h>
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -138,14 +135,24 @@ bool MiiStadioSav::update_account_mii_id_in_stadio(MiiData *old_miidata, MiiData
     return true;
 }
 
-bool MiiStadioSav::find_stadio_empty_frame(uint16_t &frame) {
+bool MiiStadioSav::find_stadio_empty_frame(uint16_t &frame, eDBKind source_mii_repo_kind /*= FFL*/) {
 
-    for (size_t i = stadio_last_empty_frame_index; i < WiiUMiiData::DB::MAX_MIIS; i++) {
-        if (stadio_empty_frames.at(i)) {
-            frame = (uint16_t) i;
-            stadio_last_empty_frame_index = i + 1;
+    switch (source_mii_repo_kind) {
+        case FFL:
+            for (size_t i = stadio_last_empty_frame_index; i < WiiUMiiData::DB::MAX_MIIS; i++) {
+                if (stadio_empty_frames.at(i)) {
+                    frame = (uint16_t) i;
+                    stadio_last_empty_frame_index = i + 1;
+                    return true;
+                }
+            }
+            break;
+        case ACCOUNT:
+            // irrelevant
+            frame = 1;
             return true;
-        }
+            break;
+        default:;
     }
     return false;
 }
@@ -292,11 +299,27 @@ cleanup_managing_real_db:
     return false;
 }
 
-uint8_t *MiiStadioSav::find_stadio_empty_location() {
+uint8_t *MiiStadioSav::find_stadio_empty_location(eDBKind source_mii_repo_kind) {
     uint8_t zero[10] = {0};
 
-    for (size_t i = stadio_last_empty_location; i < WiiUMiiData::DB::MAX_MIIS; i++) {
-        uint8_t *location_to_check = stadio_buffer + WiiUMiiData::STADIO::STADIO_MIIS_OFFSET + i * WiiUMiiData::STADIO::STADIO_MII_SIZE;
+    size_t max_miis;
+    uint32_t stadio_mii_offset;
+
+    switch (source_mii_repo_kind) {
+        case ACCOUNT:
+            max_miis = WiiUMiiData::STADIO::STADIO_MAX_ACCOUNT_MIIS;
+            stadio_mii_offset = WiiUMiiData::STADIO::STADIO_ACCOUNT_MIIS_OFFSET;
+            break;
+        case FFL:
+            max_miis = WiiUMiiData::DB::MAX_MIIS;
+            stadio_mii_offset = WiiUMiiData::STADIO::STADIO_MIIS_OFFSET;
+            break;
+        default:
+            return nullptr;
+    }
+
+    for (size_t i = stadio_last_empty_location; i < max_miis; i++) {
+        uint8_t *location_to_check = stadio_buffer + stadio_mii_offset + i * WiiUMiiData::STADIO::STADIO_MII_SIZE;
         if (memcmp(location_to_check + 0x10, &zero, WiiUMiiData::MII_ID_SIZE) == 0) {
             stadio_last_empty_location = i + 1;
             return location_to_check;
@@ -305,12 +328,12 @@ uint8_t *MiiStadioSav::find_stadio_empty_location() {
     return nullptr;
 }
 
-bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata) {
+bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata, eDBKind source_mii_repo_kind /*= FFL*/) {
 
     if (stadio_buffer == nullptr)
         return false;
 
-    uint8_t *empty_slot_offset = find_stadio_empty_location();
+    uint8_t *empty_slot_offset = find_stadio_empty_location(source_mii_repo_kind);
 
     if (empty_slot_offset == nullptr) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find an EMPTY location for the mii in the STADIO db"));
@@ -318,7 +341,7 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata) {
     }
 
     uint16_t frame;
-    if (!find_stadio_empty_frame(frame)) {
+    if (!find_stadio_empty_frame(frame, source_mii_repo_kind)) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find an EMPTY frame for the mii in the STADIO db"));
         return false;
     }
@@ -348,6 +371,13 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata) {
     memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 8, &stadio_last_mii_update, 8);
     memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 0x10, &stadio_max_alive_miis, 4);
 
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    stadio_last_mii_index = __builtin_bswap64(stadio_last_mii_index);
+    stadio_last_mii_update = __builtin_bswap64(stadio_last_mii_update);
+    stadio_max_alive_miis = __builtin_bswap32(stadio_max_alive_miis);
+    frame = __builtin_bswap16(frame);
+#endif
+
 
     return true;
 }
@@ -361,17 +391,47 @@ bool MiiStadioSav::fill_empty_stadio_file() {
 
     uint64_t timestamp = OSGetTime();
     memcpy(stadio_buffer + 0x10, &timestamp, 8);
+
+
+    // Add Acoount MiiRepos
+    if (this->account_repo != nullptr) {
+        if (account_repo->needs_populate == true) {
+            if (!account_repo->populate_repo()) {
+                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Warning: unable to populate Account repo. Non-critical error, you can continue"));
+                return false;
+            }
+        }
+        for (size_t mii_index = 0; mii_index < account_repo->miis.size(); mii_index++) {
+            MiiData *mii_data = account_repo->extract_mii_data(mii_index);
+            if (mii_data != nullptr) {
+                if (!this->import_miidata_in_stadio(mii_data, ACCOUNT))
+                    Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"), account_repo->miis.at(mii_index)->mii_name.c_str());
+                delete mii_data;
+            } else {
+                Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"), account_repo->miis[mii_index]->mii_name.c_str(), account_repo->miis[mii_index]->creator_name.c_str());
+            }
+        }
+    }
+
+
     return true;
 }
 
 bool MiiStadioSav::init_stadio_file() {
     std::string db_filepath = this->path_to_stadio;
+
+    if (stadio_buffer != nullptr)
+        free(stadio_buffer);
     stadio_buffer = (uint8_t *) MiiData::allocate_memory(WiiUMiiData::STADIO::STADIO_SIZE);
 
     if (stadio_buffer == nullptr) {
         Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for initializing the DB data"), db_filepath.c_str());
         return false;
     }
+
+    stadio_last_mii_index = 0;
+    stadio_last_mii_update = 0;
+    stadio_max_alive_miis = 0;
 
     this->fill_empty_stadio_file();
 

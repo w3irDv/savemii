@@ -2,11 +2,10 @@
 
 #include <cstdint>
 #include <mii/Mii.h>
+#include <mii/MiiRepo.h>
+#include <nn/ffl/miidata.h>
 #include <string>
 #include <vector>
-#include <nn/ffl/miidata.h>
-#include <mii/MiiRepo.h>
-//#include <mii/WiiUMiiStruct.h>
 
 class WiiUMii : public Mii {
 public:

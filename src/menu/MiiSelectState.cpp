@@ -1,6 +1,6 @@
 
-#include <coreinit/debug.h>
 #include <bitset>
+#include <coreinit/debug.h>
 #include <cstring>
 #include <menu/MiiDBOptionsState.h>
 #include <menu/MiiRepoSelectState.h>
@@ -8,7 +8,6 @@
 #include <menu/MiiTransformTasksState.h>
 #include <mii/MiiAccountRepo.h>
 #include <mii/WiiUMii.h>
-//#include <mockWUT.h>
 #include <savemng.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>

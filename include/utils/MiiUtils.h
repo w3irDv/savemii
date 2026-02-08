@@ -3,11 +3,14 @@
 #include <ctime>
 #include <menu/MiiProcessSharedState.h>
 #include <mii/Mii.h>
+#include <mii/MiiRepo.h>
 #include <mii/MiiStadioSav.h>
 
 #define DB_NOT_FOUND    true
 #define NEUTRAL_MESSAGE false
 
+class MiiRepo;
+class MiiStadioSav;
 
 namespace MiiUtils {
 

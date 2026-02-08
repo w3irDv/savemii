@@ -4,7 +4,6 @@
 #include <mii/MiiAccountRepo.h>
 #include <mii/MiiFileRepo.h>
 #include <mii/MiiFolderRepo.h>
-#include <mii/MiiStadioSav.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
 #include <miisavemng.h>
@@ -19,9 +18,6 @@
 #include <utils/MiiUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/TitleUtils.h>
-
-#include <Metadata.h>
-//#include <mockWUT.h>
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
@@ -128,6 +124,7 @@ set_repos:
     // STADIO
     MiiRepos["FFL"]->setStadioSav(MiiStadios["FFL_ACCOUNT"]);
     MiiRepos["ACCOUNT"]->setStadioSav(MiiStadios["FFL_ACCOUNT"]);
+    MiiStadios["FFL_ACCOUNT"]->setAccountRepo(MiiRepos["ACCOUNT"]);
 
     // Owners
     ((MiiFileRepo<WiiUMii, WiiUMiiData> *) MiiRepos["FFL"])->set_db_owner(mii_maker_owner);

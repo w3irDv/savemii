@@ -3,7 +3,6 @@
 #include <cstring>
 #include <menu/MiiRepoSelectState.h>
 #include <menu/MiiTasksState.h>
-//#include <mockWUT.h>
 #include <savemng.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>

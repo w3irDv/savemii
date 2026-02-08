@@ -5,7 +5,6 @@
 #include <menu/MiiDBOptionsState.h>
 #include <mii/Mii.h>
 #include <miisavemng.h>
-//#include <mockWUT.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DrawUtils.h>

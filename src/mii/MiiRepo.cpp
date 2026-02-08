@@ -371,3 +371,8 @@ bool MiiRepo::test_list_repo() {
 
     return true;
 }
+
+void MiiRepo::setStadioSav(MiiStadioSav *stadio_sav) {
+    this->stadio_sav = stadio_sav;
+    stadio_sav->setAccountRepo(this);
+};

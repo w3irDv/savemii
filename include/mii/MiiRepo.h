@@ -3,10 +3,9 @@
 #include <cstdint>
 #include <map>
 #include <mii/Mii.h>
-#include <string>
-#include <mocha/mocha.h>
-#include <vector>
 #include <mii/MiiStadioSav.h>
+#include <string>
+#include <vector>
 
 #define IN_PLACE          true
 #define ADD_MII           false
@@ -62,7 +61,7 @@ public:
     int initialize();
 
     void setStageRepo(MiiRepo *stage_repo) { this->stage_repo = stage_repo; };
-    void setStadioSav(MiiStadioSav *stadio_sav) { this->stadio_sav = stadio_sav; };
+    void setStadioSav(MiiStadioSav *stadio_sav);
 
     virtual uint16_t get_crc() = 0;
 
