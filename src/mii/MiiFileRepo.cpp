@@ -647,6 +647,8 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
         return false;
     }
 
+    last_empty_location = 0;
+
     this->fill_empty_db_file();
 
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);

@@ -433,6 +433,9 @@ bool MiiStadioSav::init_stadio_file() {
     stadio_last_mii_update = 0;
     stadio_max_alive_miis = 0;
 
+    stadio_last_empty_location = 0;
+    stadio_last_empty_frame_index = 0;
+
     this->fill_empty_stadio_file();
 
     unlink(db_filepath.c_str());
