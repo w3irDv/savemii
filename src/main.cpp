@@ -89,7 +89,7 @@ int main() {
     StartupUtils::addInitMessage(LanguageUtils::gettext("Initializing FS"));
 
     if (!FSUtils::initFS()) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("FSUtils::initFS failed. Please make sure your MochaPayload is up-to-date"));
+        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
         romfsExit();
         DrawUtils::deinitFont();
