@@ -54,17 +54,20 @@ bool MiiUtils::initMiiRepos() {
     MiiMakerTitleId = StringUtils::stringFormat("%08x", mii_maker_owner);
     mii_maker_path = "storage_mlc01:/sys/title/00050010/" + MiiMakerTitleId;
     if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2) {
+        mii_maker_path = "storage_mlc01:/usr/save/00050010/" + MiiMakerTitleId;
+        ; // save path
         goto set_repos;
     }
 
     { // I'm using game_region in MLCSysProd prod, but we have no access to korean wii u's ... game_region? product_area in sysProd?
-        mii_maker_path = "storage_mlc01:/sys/title/00050010/1004a100";
+        // directly look for the save folder
+        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a100";
         if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
             goto set_repos;
-        mii_maker_path = "storage_mlc01:/sys/title/00050010/1004a200";
+        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a200";
         if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
             goto set_repos;
-        mii_maker_path = "storage_mlc01:/sys/title/00050010/1004a000";
+        mii_maker_path = "storage_mlc01:/usr/save/00050010/1004a000";
         if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
             goto set_repos;
     }
@@ -144,6 +147,34 @@ set_repos:
 
     if (!FSUtils::folderEmptyIgnoreSavemii(pathaccountc.c_str()))
         mii_repos.push_back(MiiRepos["ACCOUNT_C"]);
+
+    // Look for temporary MiiMaker on USB due to a NAND mounted as USB (after ISFSHax recovery)
+    if (mii_maker_path.find("storage_usb") == std::string::npos) {
+        mii_maker_owner = TitleUtils::getMiiMakerOwner();
+        mii_maker_path = "storage_usb01:/usr/save/00050010/" + mii_maker_owner;
+        if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
+            goto set_temp_FFL;
+        mii_maker_path = "storage_usb01:/usr/save/00050010/1004a100";
+        if (mii_maker_path.find(mii_maker_owner) == std::string::npos)
+            if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
+                goto set_temp_FFL;
+        mii_maker_path = "storage_usb01:/usr/save/00050010/1004a200";
+        if (mii_maker_path.find(mii_maker_owner) == std::string::npos)
+            if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
+                goto set_temp_FFL;
+        mii_maker_path = "storage_usb01:/usr/save/00050010/1004a000";
+        if (mii_maker_path.find(mii_maker_owner) == std::string::npos)
+            if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
+                goto set_temp_FFL;
+    }
+    // Not found, we can return
+    return true;
+
+    //Found, add it to repos
+set_temp_FFL:
+    const std::string pathffl_tmp = mii_maker_path + "/user/common/db/FFL_ODB.dat";
+    MiiRepos["FFL_USB"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_USB", pathffl_tmp, "mii_bckp_ffl", "Wii U Mii Database mounted on USB", MiiRepo::INTERNAL);
+    mii_repos.push_back(MiiRepos["FFL_USB"]);
 
     return true;
 }
