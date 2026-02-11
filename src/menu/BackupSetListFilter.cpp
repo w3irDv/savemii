@@ -22,7 +22,7 @@ void BackupSetListFilterState::render() {
         Console::consolePrintPos(M_OFF, 8, "Month: %s", (*backupSetList->bsMetadataValues.month.iterator).c_str());
         Console::consolePrintPos(M_OFF, 9, "Year: %s", (*backupSetList->bsMetadataValues.year.iterator).c_str());
         Console::consolePrintPos(-1, 6 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Apply Filter  \uE002: Reset Filters  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Apply Filter  \ue002: Reset Filters  \ue001: Back"));
     }
 }
 

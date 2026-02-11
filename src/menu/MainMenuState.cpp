@@ -90,7 +90,7 @@ void MainMenuState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + cursorPos + (cursorPos > 2 ? 1 : 0) + (cursorPos > 3 ? 1 : 0) + (cursorPos > 4 ? 1 : 0), "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
+        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Options \ue000: Select Mode"));
     }
 }
 

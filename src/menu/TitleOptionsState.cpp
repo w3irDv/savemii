@@ -210,7 +210,7 @@ void TitleOptionsState::render() {
                     break;
                 case COPY_TO_OTHER_DEVICE:
                     onlyCommon = LanguageUtils::gettext("Source has 'common' savedata, only it will be copied");
-                    commonIncluded = LanguageUtils::gettext("Source 'common' savedata, tt will also be copied");
+                    commonIncluded = LanguageUtils::gettext("Source 'common' savedata, it will also be copied");
                     break;
                 default:
                     onlyCommon = "";
