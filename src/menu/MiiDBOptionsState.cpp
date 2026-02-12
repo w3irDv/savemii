@@ -105,35 +105,35 @@ void MiiDBOptionsState::render() {
                 Console::consolePrintPosAligned(0, 4, 1, _("Backup"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Backup  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"));
                 break;
             case MiiProcess::RESTORE_DB:
                 Console::consolePrintPos(20, 0, _("Restore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Restore  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Restore  \\ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"));
                 break;
             case MiiProcess::XRESTORE_DB:
                 Console::consolePrintPos(20, 0, _("CrossRestore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: XRestore  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: XRestore  \\ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: XRestore  \ue045 Tag Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"));
                 break;
             case MiiProcess::WIPE_DB:
                 Console::consolePrintPosAligned(0, 4, 1, _("Wipe"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Wipe  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Wipe  \\ue001: Back"));
                 break;
             case MiiProcess::INITIALIZE_DB:
                 Console::consolePrintPosAligned(0, 4, 1, _("Initialize"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Initialize  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Initialize  \\ue001: Back"));
                 break;
             default:;
         }

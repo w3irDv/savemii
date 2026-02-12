@@ -47,7 +47,7 @@ void Console::showMessage(Style St, const char *message, ...) {
         if (St & ST_CONFIRM) {
             size_t press_nLines;
             size_t maxLineWidth;
-            const char *press_to_continue = _("Press \ue000 to continue");
+            const char *press_to_continue = _("Press \\ue000 to continue");
             splitMessage(press_to_continue, formatted_message, maxLineWidth, press_nLines);
             int x = 31 - (maxLineWidth / 24);
             x = (x < -X_OFFSET) ? -X_OFFSET : x;
@@ -77,9 +77,9 @@ bool Console::promptConfirm(Style st, const std::string &question) {
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     DrawUtils::setFontColor(COLOR_TEXT);
-    const std::string msg1 = _("\ue000 Yes - \ue001 No");
-    const std::string msg2 = _("\ue000 Confirm - \ue001 Cancel");
-    const std::string msg3 = _("\ue003 Confirm - \ue001 Cancel");
+    const std::string msg1 = _("\\ue000 Yes - \\ue001 No");
+    const std::string msg2 = _("\\ue000 Confirm - \\ue001 Cancel");
+    const std::string msg3 = _("\\ue003 Confirm - \\ue001 Cancel");
     std::string msg;
     switch (st & 0x0F) {
         case ST_YES_NO:

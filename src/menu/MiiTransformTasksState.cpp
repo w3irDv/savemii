@@ -124,9 +124,9 @@ void MiiTransformTasksState::render() {
         Console::consolePrintPos(M_OFF, cursorPos + 2, "\u2192");
 
         if (transfer_physical_appearance || transfer_ownership)
-            Console::consolePrintPosAligned(17, 4, 2, _("\ue003\ue07e: Set/Unset  \ue000: Select Mii Template  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue003\\ue07e: Set/Unset  \\ue000: Select Mii Template  \\ue001: Back"));
         else
-            Console::consolePrintPosAligned(17, 4, 2, _("\ue003\ue07e: Set/Unset  \ue000: Transform  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue003\\ue07e: Set/Unset  \\ue000: Transform  \\ue001: Back"));
     }
 }
 

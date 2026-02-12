@@ -27,21 +27,21 @@ void BatchJobState::render() {
                 wiiUTask = _("   Restore Wii U (%u Title%s)");
                 vWiiTask = _("   Restore vWii (%u Title%s)");
                 readme = _("Batch Restore allows you to restore all savedata from a BatchBackup \n* to the same user profiles\n* to a different user in the same console \n* or to a different console where the games are already installed.\nIn the later case, it is recommended to first run the game to initialize the savedata.");
-                nextTask = _("\ue000: Continue to BackupSet selection  \ue001: Back");
+                nextTask = _("\\ue000: Continue to BackupSet selection  \\ue001: Back");
                 break;
             case WIPE_PROFILE:
                 screenTitle = _("Batch Wipe");
                 wiiUTask = _("   Wipe Wii U Profiles (%u Title%s)");
                 vWiiTask = _("   Wipe vWii Savedata (%u Title%s)");
                 readme = _("Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n\nJust:\n- select which data to wipe\n- select titles to act on\n- and go!");
-                nextTask = _("\ue000: Continue to savedata selection  \ue001: Back");
+                nextTask = _("\\ue000: Continue to savedata selection  \\ue001: Back");
                 break;
             case COPY_TO_OTHER_DEVICE:
                 screenTitle = _("Batch Copy To Other Device");
                 wiiUTask = _("   Copy Wii U Savedata from NAND to USB");
                 vWiiTask = _("   Copy Wii U Savedata from USB to NAND");
                 readme = _("Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n\nJust:\n- select which data to copy\n- select titles to act on\n- and go!");
-                nextTask = _("\ue000: Continue to savedata selection  \ue001: Back");
+                nextTask = _("\\ue000: Continue to savedata selection  \\ue001: Back");
                 break;
             default:
                 screenTitle = "";

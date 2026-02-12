@@ -80,7 +80,7 @@ void BatchTasksState::render() {
         Console::consolePrintPosAutoFormat(M_OFF, 10, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);        
-        Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Options \ue000: Select Batch Task"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Options \\ue000: Select Batch Task"));
     }
 }
 

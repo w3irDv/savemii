@@ -161,7 +161,7 @@ int main() {
 
             //Console::consolePrintPos(0, 16, "----------------------------------------------------------------------------");
             DrawUtils::drawLine(16, 420, 812, 420, COLOR_TEXT_AT_CURSOR.r, COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
-            Console::consolePrintPos(0, 17, _("Press \ue044 to exit."));
+            Console::consolePrintPos(0, 17, _("Press \\ue044 to exit."));
 
             DrawUtils::setRedraw(false);
             state->render();

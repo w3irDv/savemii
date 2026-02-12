@@ -351,47 +351,47 @@ void TitleOptionsState::render() {
                 Console::consolePrintPosAligned(0, 4, 1, _("Backup"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Backup  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"));
                 break;
             case RESTORE:
                 Console::consolePrintPos(20, 0, _("Restore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Change BackupSet  \ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Change BackupSet  \\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"));
                 break;
             case WIPE_PROFILE:
                 Console::consolePrintPosAligned(0, 4, 1, _("Wipe"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Wipe  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Wipe  \\ue001: Back"));
                 break;
             case PROFILE_TO_PROFILE:
                 Console::consolePrintPosAligned(0, 4, 1, _("Copy to Other Profile"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Copy  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Copy  \\ue001: Back"));
                 break;
             case MOVE_PROFILE:
                 Console::consolePrintPosAligned(0, 4, 1, _("Move to Other Profile"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Move  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Move  \\ue001: Back"));
                 break;
             case importLoadiine:
                 Console::consolePrintPosAligned(0, 4, 1, _("Import Loadiine"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Import  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Import  \\ue001: Back"));
                 break;
             case exportLoadiine:
                 Console::consolePrintPosAligned(0, 4, 1, _("Export Loadiine"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Export  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue001: Back"));
                 break;
             case COPY_TO_OTHER_DEVICE:
                 Console::consolePrintPosAligned(0, 4, 1, _("Copy to Other Device"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Copy  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Copy  \\ue001: Back"));
                 break;
             default:;
         }

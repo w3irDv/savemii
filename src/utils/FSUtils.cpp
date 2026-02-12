@@ -591,7 +591,7 @@ void FSUtils::showFileOperation(const std::string &file_name, const std::string 
             Console::consolePrintPosAligned(17, 4, 2, _("Will abort..."));
         } else {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAligned(17, 4, 2, _("Abort:\ue083+\ue046"));
+            Console::consolePrintPosAligned(17, 4, 2, _("Abort:\\ue083+\\ue046"));
         }
     }
     DrawUtils::setFontColor(COLOR_TEXT);
@@ -610,7 +610,7 @@ void FSUtils::showDeleteOperations(bool isFolder, const char *name, const std::s
             Console::consolePrintPosAligned(17, 4, 2, _("Will abort..."));
         } else {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAligned(17, 4, 2, _("Abort:\ue083+\ue046"));
+            Console::consolePrintPosAligned(17, 4, 2, _("Abort:\\ue083+\\ue046"));
         }
     }
     DrawUtils::setFontColor(COLOR_TEXT);

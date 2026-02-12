@@ -71,7 +71,7 @@ void BackupSetListState::render() {
             Console::consolePrintPosAligned(0, 4, 1, _("BackupSets (filter applied)"));
         }
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPosAligned(0, 4, 2, _("\ue083 Sort: %s \ue084"),
+        Console::consolePrintPosAligned(0, 4, 2, _("\\ue083 Sort: %s \\ue084"),
                                         this->sortAscending ? "\u2191" : "\u2193");
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + scroll < 0 || i + scroll >= BackupSetList::currentBackupSetList->entriesView)
@@ -94,9 +94,9 @@ void BackupSetListState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         if (cursorPos + scroll > 0)
-            Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Select BS  \ue045: Tag BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"));
         else
-            Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"));
     }
 }
 

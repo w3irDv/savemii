@@ -217,43 +217,43 @@ void BatchJobTitleSelectState::render() {
         switch (jobType) {
             case RESTORE:
                 menuTitle = _("Batch Restore - Select");
-                screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: Restore titles  \ue001: Back");
+                screenOptions = _("\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back");
                 nextActionBrief = _(">> Restore");
                 lastActionBriefOk = _("|Restored|");
                 break;
             case PROFILE_TO_PROFILE:
                 menuTitle = _("Batch ProfileCopy - Select");
-                screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileCopy  \ue001: Back");
+                screenOptions = _("\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back");
                 nextActionBrief = _(">> Copy");
                 lastActionBriefOk = _("|Copied|");
                 break;
             case MOVE_PROFILE:
                 menuTitle = _("Batch ProfileMove - Select");
-                screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: ProfileMove  \ue001: Back");
+                screenOptions = _("\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back");
                 nextActionBrief = _(">> Move");
                 lastActionBriefOk = _("|Moved|");
                 break;
             case WIPE_PROFILE:
                 menuTitle = _("Batch Wipe - Select");
-                screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: WipeProfile  \ue001: Back");
+                screenOptions = _("\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back");
                 nextActionBrief = _(">> Wipe");
                 lastActionBriefOk = _("|Wiped|");
                 break;
             case COPY_FROM_NAND_TO_USB:
                 menuTitle = _("Batch Copy To USB - Select");
-                screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: CopyToUSB  \ue001: Back");
+                screenOptions = _("\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back");
                 nextActionBrief = _(">> Copy");
                 lastActionBriefOk = _("|Copied|");
                 break;
             case COPY_FROM_USB_TO_NAND:
                 menuTitle = _("Batch Copy To NAND - Select");
-                screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue000: CopyToNAND  \ue001: Back");
+                screenOptions = _("\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back");
                 nextActionBrief = _(">> Copy");
                 lastActionBriefOk = _("|Copied|");
                 break;
             case BACKUP:
                 menuTitle = _("Batch Backup - Select & Go");
-                screenOptions = _("\ue003\ue07eSet/Unset  \ue045\ue046Set/Unset All  \ue002Excludes  \ue000Backup  \ue001Back");
+                screenOptions = _("\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back");
                 nextActionBrief = _(">> Backup");
                 lastActionBriefOk = _("|Saved|");
                 break;
@@ -268,7 +268,7 @@ void BatchJobTitleSelectState::render() {
         Console::consolePrintPosAligned(0, 4, 1, menuTitle);
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPosAligned(0, 4, 2, _("%s Sort: %s \ue084"),
+        Console::consolePrintPosAligned(0, 4, 2, _("%s Sort: %s \\ue084"),
                                         (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         if ((this->titles == nullptr) || (this->titlesCount == 0 || (this->candidatesCount == 0))) {
             DrawUtils::endDraw();
@@ -278,7 +278,7 @@ void BatchJobTitleSelectState::render() {
             DrawUtils::setRedraw(true);
             return;
         }
-        Console::consolePrintPosAligned(39, 4, 2, _("%s Sort: %s \ue084"),
+        Console::consolePrintPosAligned(39, 4, 2, _("%s Sort: %s \\ue084"),
                                         (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         std::string nxtAction;
         std::string lastState;
@@ -453,7 +453,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
         }
         if (input->get(ButtonState::TRIGGER, Button::X) && jobType == BACKUP) {
             job2batch();
-            std::string choices = _("\ue000  Apply saved excludes\n\ue045  Save current excludes\n\ue001  Back");
+            std::string choices = _("\\ue000  Apply saved excludes\n\\ue045  Save current excludes\n\\ue001  Back");
             bool done = false;
             while (!done) {
                 Button choice = Console::promptMultipleChoice(ST_MULTIPLE_CHOICE, choices);

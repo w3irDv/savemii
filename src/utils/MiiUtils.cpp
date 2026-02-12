@@ -654,7 +654,7 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
             Console::consolePrintPosAligned(17, 4, 2, _("Will abort..."));
         } else {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAligned(17, 4, 2, _("Abort:\ue083+\ue046"));
+            Console::consolePrintPosAligned(17, 4, 2, _("Abort:\\ue083+\\ue046"));
         }
     }
     DrawUtils::endDraw();

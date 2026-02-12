@@ -327,9 +327,9 @@ void BatchJobOptions::render() {
         Console::consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3 + (cursorPos - 3) * 2 + 5) - (titleType == VWII ? 8 : 0), "\u2192");
 
         if (totalNumberOfTitlesWithNonExistentProfiles == 0)
-            Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Ok! Go to Title selection  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Ok! Go to Title selection  \\ue001: Back"));
         else
-            Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"));
     }
 }
 

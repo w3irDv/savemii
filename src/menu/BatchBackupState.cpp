@@ -52,7 +52,7 @@ void BatchBackupState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, _("\ue002: BackupSet Management  \ue000: Backup  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: BackupSet Management  \\ue000: Backup  \\ue001: Back"));
     }
 }
 

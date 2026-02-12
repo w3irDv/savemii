@@ -72,7 +72,7 @@ void TitleTaskState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Select Task  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select Task  \\ue001: Back"));
     }
 }
 

@@ -42,7 +42,7 @@ void ConfigMenuState::render() {
 
     DrawUtils::setFontColor(COLOR_TEXT);
     Console::consolePrintPos(M_OFF, 2 + cursorPos * 2, "\u2192");
-    Console::consolePrintPosAligned(17, 4, 2, _("\ue045 SaveConfig  \ue001: Back"));
+    Console::consolePrintPosAligned(17, 4, 2, _("\\ue045 SaveConfig  \\ue001: Back"));
 }
 
 ApplicationState::eSubState ConfigMenuState::update(Input *input) {
