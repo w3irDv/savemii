@@ -56,7 +56,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
     int j = 0;
     auto *savesl = (Saves *) malloc(receivedCount * sizeof(Saves));
     if (savesl == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
         return nullptr;
     }
     for (uint32_t i = 0; i < receivedCount; i++) {
@@ -115,7 +115,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
     foundCount += tNoSave;
     auto *saves = (Saves *) malloc((foundCount) * sizeof(Saves));
     if (saves == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
         return nullptr;
     }
 
@@ -160,7 +160,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
     auto *titles = (Title *) malloc(std::max(foundCount, MAXTITLES) * sizeof(Title));
 #endif
     if (titles == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
         return nullptr;
     }
 
@@ -272,7 +272,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
             DrawUtils::clear(COLOR_BLACK);
             StartupUtils::disclaimer();
             DrawUtils::drawTGA(328, 160, 1, icon_tga);
-            Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
+            Console::consolePrintPosAligned(10, 0, 1, _("Loaded %i Wii U titles."), wiiuTitlesCount);
             DrawUtils::endDraw();
         }
     }
@@ -350,7 +350,7 @@ Title *TitleUtils::loadWiiTitles() {
 
     auto *titles = (Title *) malloc(vWiiTitlesCount * sizeof(Title));
     if (titles == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
         return nullptr;
     }
 
@@ -426,7 +426,7 @@ Title *TitleUtils::loadWiiTitles() {
                     }
                     fclose(file);
                 } else {
-                    sprintf(titles[i].shortName, LanguageUtils::gettext("%s%s (No banner.bin)"), highID,
+                    sprintf(titles[i].shortName, _("%s%s (No banner.bin)"), highID,
                             data->d_name);
                     memset(titles[i].longName, 0, sizeof(titles[i].longName));
                     hasBanner = false;
@@ -469,8 +469,8 @@ Title *TitleUtils::loadWiiTitles() {
                     DrawUtils::clear(COLOR_BLACK);
                     StartupUtils::disclaimer();
                     DrawUtils::drawTGA(328, 160, 1, icon_tga);
-                    Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
-                    Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), i);
+                    Console::consolePrintPosAligned(10, 0, 1, _("Loaded %i Wii U titles."), wiiuTitlesCount);
+                    Console::consolePrintPosAligned(11, 0, 1, _("Loaded %i Wii titles."), i);
                     DrawUtils::endDraw();
                 }
             }
@@ -504,7 +504,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
     int j = 0;
     auto *savesl = (Saves *) malloc(receivedCount * sizeof(Saves));
     if (savesl == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
         return nullptr;
     }
     for (uint32_t i = 0; i < receivedCount; i++) {
@@ -563,7 +563,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
     foundCount += tNoSave;
     auto *saves = (Saves *) malloc((foundCount) * sizeof(Saves));
     if (saves == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
         return nullptr;
     }
 
@@ -608,7 +608,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
     auto *titles = (Title *) malloc(std::max(foundCount, MAXTITLES) * sizeof(Title));
 #endif
     if (titles == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Out of memory."));
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
         return nullptr;
     }
 
@@ -727,9 +727,9 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
             DrawUtils::clear(COLOR_BLACK);
             StartupUtils::disclaimer();
             DrawUtils::drawTGA(328, 160, 1, icon_tga);
-            Console::consolePrintPosAligned(10, 0, 1, LanguageUtils::gettext("Loaded %i Wii U titles."), wiiuTitlesCount);
-            Console::consolePrintPosAligned(11, 0, 1, LanguageUtils::gettext("Loaded %i Wii titles."), vWiiTitlesCount);
-            Console::consolePrintPosAligned(12, 0, 1, LanguageUtils::gettext("Loaded %i Wii U Sys titles."), wiiuSysTitlesCount);
+            Console::consolePrintPosAligned(10, 0, 1, _("Loaded %i Wii U titles."), wiiuTitlesCount);
+            Console::consolePrintPosAligned(11, 0, 1, _("Loaded %i Wii titles."), vWiiTitlesCount);
+            Console::consolePrintPosAligned(12, 0, 1, _("Loaded %i Wii U Sys titles."), wiiuSysTitlesCount);
             DrawUtils::endDraw();
         }
     }

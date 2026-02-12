@@ -22,7 +22,7 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
     StatManager::disable_all_flags();
 
     if (!MiiSaveMng::isSlotEmpty(this, slot) &&
-        !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Backup found on this slot. Overwrite it?"))) {
+        !Console::promptConfirm(ST_WARNING, _("Backup found on this slot. Overwrite it?"))) {
         return -1;
     }
 
@@ -41,7 +41,7 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
         sdWriteDisclaimer(COLOR_BACKGROUND);
 
     if (!FSUtils::createFolder(dstPath.c_str())) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot."), this->repo_name.c_str());
+        Console::showMessage(ERROR_SHOW, _("%s\nBackup failed. DO NOT restore from this slot."), this->repo_name.c_str());
         return 8;
     }
 
@@ -50,10 +50,10 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
         case FOLDER: {
             if (!FSUtils::copyDir(srcPath, dstPath)) {
                 if (InProgress::copyErrorsCounter == 0 && InProgress::abortTask == true) {
-                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Backup aborted."));
+                    errorMessage.append("\n" + (std::string) _("Backup aborted."));
                     errorCode = -1;
                 } else {
-                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                    errorMessage.append("\n" + (std::string) _("Error copying data."));
                     errorCode = 1;
                 }
             }
@@ -71,13 +71,13 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
                     std::string stadio_dstPath = dstPath + filename;
                     if (FSUtils::checkEntry(path_to_stadio.c_str()) == 1) {
                         if (!FSUtils::copyFile(path_to_stadio, stadio_dstPath)) {
-                            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Warning - Error copying stadio file"));
+                            errorMessage.append("\n" + (std::string) _("Warning - Error copying stadio file"));
                             errorCode = 2;
                         }
                     }
                 }
             } else {
-                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                errorMessage.append("\n" + (std::string) _("Error copying data."));
                 errorCode = 1;
             }
 
@@ -92,16 +92,16 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
         if (errorCode == -1) {
             errorMessage = std::string("%s\n") + errorMessage;
             Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
-            MiiSaveMng::writeMiiMetadataWithTag(this, slot, LanguageUtils::gettext("PARTIAL BACKUP"));
+            MiiSaveMng::writeMiiMetadataWithTag(this, slot, _("PARTIAL BACKUP"));
         }
         if (errorCode == 2) {
             errorMessage = std::string("%s\n") + errorMessage;
             Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
-            MiiSaveMng::writeMiiMetadataWithTag(this, slot, LanguageUtils::gettext("NO STADIO"));
+            MiiSaveMng::writeMiiMetadataWithTag(this, slot, _("NO STADIO"));
         } else {
-            errorMessage = (std::string) LanguageUtils::gettext("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
+            errorMessage = (std::string) _("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
             Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
-            MiiSaveMng::writeMiiMetadataWithTag(this, slot, LanguageUtils::gettext("UNUSABLE SLOT - BACKUP FAILED"));
+            MiiSaveMng::writeMiiMetadataWithTag(this, slot, _("UNUSABLE SLOT - BACKUP FAILED"));
         }
     }
     return errorCode;
@@ -127,9 +127,9 @@ int MiiRepo::restore(int slot) {
 
     if (!FSUtils::folderEmpty(dstPath.c_str())) {
         int slotb = MiiSaveMng::getEmptySlot(this);
-        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
-            if (!(this->backup(slotb, LanguageUtils::gettext("pre-Restore backup")) == 0)) {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
+            if (!(this->backup(slotb, _("pre-Restore backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
                 return -1;
             }
     }
@@ -139,15 +139,15 @@ int MiiRepo::restore(int slot) {
             if (FSUtils::createFolder(dstPath.c_str())) {
                 if (!FSUtils::copyDir(srcPath, dstPath)) {
                     if (InProgress::copyErrorsCounter == 0 && InProgress::abortTask == true) {
-                        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Restore aborted."));
+                        errorMessage.append("\n" + (std::string) _("Restore aborted."));
                         errorCode = -1;
                     } else {
-                        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                        errorMessage.append("\n" + (std::string) _("Error copying data."));
                         errorCode = 1;
                     }
                 }
             } else {
-                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating folder."));
+                errorMessage.append("\n" + (std::string) _("Error creating folder."));
                 errorCode = 16;
             }
         } break;
@@ -175,7 +175,7 @@ int MiiRepo::restore(int slot) {
                     }
                 }
             } else {
-                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+                errorMessage.append("\n" + (std::string) _("Error copying data."));
                 errorCode = 1;
             }
         } break;
@@ -186,7 +186,7 @@ int MiiRepo::restore(int slot) {
         errorMessage = std::string("%s\n") + errorMessage;
         Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     } else if (errorCode > 0) {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
+        errorMessage = (std::string) _("%s\nRestore failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
 
@@ -218,10 +218,10 @@ int MiiRepo::wipe() {
         case FOLDER: {
             if (!FSUtils::removeDir(path)) {
                 if (InProgress::copyErrorsCounter == 0 && InProgress::abortTask == true) {
-                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Wipe aborted."));
+                    errorMessage.append("\n" + (std::string) _("Wipe aborted."));
                     errorCode = -1;
                 } else {
-                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
+                    errorMessage.append("\n" + (std::string) _("Error wiping data."));
                     errorCode = 1;
                 }
             }
@@ -233,8 +233,8 @@ int MiiRepo::wipe() {
                     unlink(path_to_stadio.c_str());
                 }
             } else {
-                errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error deleting file."));
-                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete file:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
+                errorMessage.append("\n" + (std::string) _("Error deleting file."));
+                Console::showMessage(ERROR_CONFIRM, _("%s \n Failed to delete file:\n%s\n%s"), this->repo_name.c_str(), path.c_str(), strerror(errno));
                 errorCode += 2;
                 FSUtils::flushVol(path);
             }
@@ -246,7 +246,7 @@ int MiiRepo::wipe() {
         errorMessage = std::string("%s\n") + errorMessage;
         Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     } else if (errorCode > 0) {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\nWipe failed.") + "\n" + errorMessage;
+        errorMessage = (std::string) _("%s\nWipe failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
 
@@ -278,10 +278,10 @@ int MiiRepo::initialize() {
         case FOLDER: {
             if (!FSUtils::removeDir(path)) {
                 if (InProgress::copyErrorsCounter == 0 && InProgress::abortTask == true) {
-                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Initialize aborted."));
+                    errorMessage.append("\n" + (std::string) _("Initialize aborted."));
                     errorCode = -1;
                 } else {
-                    errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error wiping data."));
+                    errorMessage.append("\n" + (std::string) _("Error wiping data."));
                     errorCode = 1;
                 }
             }
@@ -294,10 +294,10 @@ int MiiRepo::initialize() {
     }
 
     if (errorCode == -1) {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\n") + errorMessage;
+        errorMessage = (std::string) _("%s\n") + errorMessage;
         Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     } else if (errorCode > 0) {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\nInitialize db failed.") + "\n" + errorMessage;
+        errorMessage = (std::string) _("%s\nInitialize db failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
 

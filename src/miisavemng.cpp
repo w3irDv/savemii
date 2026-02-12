@@ -11,18 +11,18 @@
 
 
 void MiiSaveMng::deleteSlot(MiiRepo *mii_repo, uint8_t slot) {
-    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?")))
+    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
         return;
     InProgress::titleName.assign(mii_repo->repo_name);
     const std::string path = getMiiRepoBackupPath(mii_repo, slot);
     if (FSUtils::checkEntry(path.c_str()) == 2) {
         if (FSUtils::removeDir(path)) {
             if (unlink(path.c_str()) == -1)
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to delete slot %u."), slot);
+                Console::showMessage(ERROR_SHOW, _("Failed to delete slot %u."), slot);
         } else
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Failed to delete slot %u."), slot);
+            Console::showMessage(ERROR_SHOW, _("Failed to delete slot %u."), slot);
     } else {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Folder $s\ndoes not exist."), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Folder $s\ndoes not exist."), path.c_str());
     }
 }
 

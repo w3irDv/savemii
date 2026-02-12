@@ -15,14 +15,14 @@ void BackupSetListFilterState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(0, 4, 1, "Filter BackupSets");
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPos(0, 4, LanguageUtils::gettext("Show only BackupSets satisfying all these conditions:"));
+        Console::consolePrintPos(0, 4, _("Show only BackupSets satisfying all these conditions:"));
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 6, "Console: %s", (*backupSetList->bsMetadataValues.serialId.iterator).c_str());
         Console::consolePrintPos(M_OFF, 7, "Tag: %s", (*backupSetList->bsMetadataValues.tag.iterator).c_str());
         Console::consolePrintPos(M_OFF, 8, "Month: %s", (*backupSetList->bsMetadataValues.month.iterator).c_str());
         Console::consolePrintPos(M_OFF, 9, "Year: %s", (*backupSetList->bsMetadataValues.year.iterator).c_str());
         Console::consolePrintPos(-1, 6 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Apply Filter  \ue002: Reset Filters  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Apply Filter  \ue002: Reset Filters  \ue001: Back"));
     }
 }
 

@@ -147,91 +147,91 @@ void MiiSelectState::render() {
         const char *menuTitle, *screenOptions, *nextActionBrief, *lastActionBriefOk;
         switch (action) {
             case MiiProcess::LIST_MIIS:
-                menuTitle = LanguageUtils::gettext("List Miis");
-                screenOptions = LanguageUtils::gettext("\ue002: View  \ue001: Back");
+                menuTitle = _("List Miis");
+                screenOptions = _("\ue002: View  \ue001: Back");
                 if (mii_repo->repo_has_duplicated_miis)
-                    screenOptions = LanguageUtils::gettext("\ue083\ue084 View Duplicates  \ue002: View  \ue001: Back");
+                    screenOptions = _("\ue083\ue084 View Duplicates  \ue002: View  \ue001: Back");
                 else
-                    screenOptions = LanguageUtils::gettext("\ue002: View  \ue001: Back");
-                nextActionBrief = LanguageUtils::gettext("");
-                lastActionBriefOk = LanguageUtils::gettext("");
+                    screenOptions = _("\ue002: View  \ue001: Back");
+                nextActionBrief = "";
+                lastActionBriefOk = "";
                 break;
             case MiiProcess::SELECT_MIIS_FOR_IMPORT:
-                menuTitle = LanguageUtils::gettext("Select which Miis to Import");
+                menuTitle = _("Select which Miis to Import");
                 if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
                     if (mii_repo->repo_has_duplicated_miis)
-                        screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue002\ue084: View  \ue000: Import Miis  \ue001: Back");
+                        screenOptions = _("\ue003\ue07e: Set/Unset  \ue002\ue084: View  \ue000: Import Miis  \ue001: Back");
                     else
-                        screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue002: View  \ue000: Import Miis  \ue001: Back");
+                        screenOptions = _("\ue003\ue07e: Set/Unset  \ue002: View  \ue000: Import Miis  \ue001: Back");
                 } else {
                     if (mii_repo->repo_has_duplicated_miis)
-                        screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002\ue084: View  \ue000: Import  \ue001: Back");
+                        screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002\ue084: View  \ue000: Import  \ue001: Back");
                     else
-                        screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Import  \ue001: Back");
+                        screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Import  \ue001: Back");
                 }
-                nextActionBrief = LanguageUtils::gettext(">> Import");
-                lastActionBriefOk = LanguageUtils::gettext("|Imported|");
+                nextActionBrief = _(">> Import");
+                lastActionBriefOk = _("|Imported|");
                 break;
             case MiiProcess::SELECT_MIIS_FOR_EXPORT:
-                menuTitle = LanguageUtils::gettext("Select which Miis to Export");
+                menuTitle = _("Select which Miis to Export");
                 if (mii_repo->repo_has_duplicated_miis)
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002\ue084: View  \ue000: Export  \ue001: Back");
+                    screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002\ue084: View  \ue000: Export  \ue001: Back");
                 else
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Export  \ue001: Back");
-                nextActionBrief = LanguageUtils::gettext(">> Export");
-                lastActionBriefOk = LanguageUtils::gettext("|Exported|");
+                    screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Export  \ue001: Back");
+                nextActionBrief = _(">> Export");
+                lastActionBriefOk = _("|Exported|");
                 break;
             case MiiProcess::SELECT_MIIS_FOR_RESTORE:
             case MiiProcess::SELECT_SOURCE_MII_FOR_XRESTORE:
-                menuTitle = LanguageUtils::gettext("Select which Mii to Restore");
-                screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset \ue002\ue083\ue084: View  \ue000: Restore Mii  \ue001: Back");
-                nextActionBrief = LanguageUtils::gettext(">> Restore");
-                lastActionBriefOk = LanguageUtils::gettext("|Restored|");
+                menuTitle = _("Select which Mii to Restore");
+                screenOptions = _("\ue003\ue07e: Set/Unset \ue002\ue083\ue084: View  \ue000: Restore Mii  \ue001: Back");
+                nextActionBrief = _(">> Restore");
+                lastActionBriefOk = _("|Restored|");
                 break;
             case MiiProcess::SELECT_MIIS_TO_WIPE:
-                menuTitle = LanguageUtils::gettext("Select which Miis to Wipe");
+                menuTitle = _("Select which Miis to Wipe");
                 if (mii_repo->repo_has_duplicated_miis)
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002\ue084: View  \ue000: Wipe  \ue001: Back");
+                    screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002\ue084: View  \ue000: Wipe  \ue001: Back");
                 else
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Wipe  \ue001: Back");
-                nextActionBrief = LanguageUtils::gettext(">> Wipe");
-                lastActionBriefOk = LanguageUtils::gettext("|Wiped|");
+                    screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Set/Unset All  \ue002: View  \ue000: Wipe  \ue001: Back");
+                nextActionBrief = _(">> Wipe");
+                lastActionBriefOk = _("|Wiped|");
                 break;
             case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
-                menuTitle = LanguageUtils::gettext("Select which Miis to Transform");
+                menuTitle = _("Select which Miis to Transform");
                 if (mii_repo->repo_has_duplicated_miis)
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002\ue084: View  \ue000: Tasks  \ue001: Back");
+                    screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002\ue084: View  \ue000: Tasks  \ue001: Back");
                 else
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002: View  \ue000: Tasks  \ue001: Back");
-                nextActionBrief = LanguageUtils::gettext(">> Transform");
-                lastActionBriefOk = LanguageUtils::gettext("|Transformed|");
+                    screenOptions = _("\ue003\ue07e: Set/Unset  \ue045\ue046: Toggle All  \ue002: View  \ue000: Tasks  \ue001: Back");
+                nextActionBrief = _(">> Transform");
+                lastActionBriefOk = _("|Transformed|");
                 break;
             case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
-                menuTitle = LanguageUtils::gettext("Select Mii to copy attrs from");
+                menuTitle = _("Select Mii to copy attrs from");
                 if (mii_repo->repo_has_duplicated_miis)
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Template  \ue002\ue084: View  \ue000: Transform Miis  \ue001: Back");
+                    screenOptions = _("\ue003\ue07e: Select Template  \ue002\ue084: View  \ue000: Transform Miis  \ue001: Back");
                 else
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Template  \ue002: View  \ue000: Transform Miis  \ue001: Back");
-                nextActionBrief = LanguageUtils::gettext(">> Use as template");
-                lastActionBriefOk = LanguageUtils::gettext("");
+                    screenOptions = _("\ue003\ue07e: Select Template  \ue002: View  \ue000: Transform Miis  \ue001: Back");
+                nextActionBrief = _(">> Use as template");
+                lastActionBriefOk = "";
                 break;
             case MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN:
-                menuTitle = LanguageUtils::gettext("Select Mii to be overwritten");
+                menuTitle = _("Select Mii to be overwritten");
                 if (mii_repo->repo_has_duplicated_miis)
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \ue002\ue084: View   \ue000: Continue  \ue001: Back");
+                    screenOptions = _("\ue003\ue07e: Select Target Mii  \ue002\ue084: View   \ue000: Continue  \ue001: Back");
                 else
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \ue002: View   \ue000: Continue  \ue001: Back");
-                nextActionBrief = LanguageUtils::gettext(">> Import here");
-                lastActionBriefOk = LanguageUtils::gettext("|Imported|");
+                    screenOptions = _("\ue003\ue07e: Select Target Mii  \ue002: View   \ue000: Continue  \ue001: Back");
+                nextActionBrief = _(">> Import here");
+                lastActionBriefOk = _("|Imported|");
                 break;
             case MiiProcess::SELECT_TARGET_MII_FOR_XRESTORE:
-                menuTitle = LanguageUtils::gettext("Select Mii to be overwritten");
+                menuTitle = _("Select Mii to be overwritten");
                 if (mii_repo->repo_has_duplicated_miis)
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \ue002\ue084: View   \ue000: Continue  \ue001: Back");
+                    screenOptions = _("\ue003\ue07e: Select Target Mii  \ue002\ue084: View   \ue000: Continue  \ue001: Back");
                 else
-                    screenOptions = LanguageUtils::gettext("\ue003\ue07e: Select Target Mii  \ue002: View   \ue000: Continue  \ue001: Back");
-                nextActionBrief = LanguageUtils::gettext(">> Restore here");
-                lastActionBriefOk = LanguageUtils::gettext("|Restored|");
+                    screenOptions = _("\ue003\ue07e: Select Target Mii  \ue002: View   \ue000: Continue  \ue001: Back");
+                nextActionBrief = _(">> Restore here");
+                lastActionBriefOk = _("|Restored|");
                 break;
             default:
                 menuTitle = "";
@@ -244,22 +244,22 @@ void MiiSelectState::render() {
         const char *view_type_str;
         switch (view_type) {
             case BASIC:
-                view_type_str = LanguageUtils::gettext("Basic view");
+                view_type_str = _("Basic view");
                 break;
             case MIIID:
-                view_type_str = LanguageUtils::gettext("Mii ID view");
+                view_type_str = _("Mii ID view");
                 break;
             case SYSTEM_DEVICE:
-                view_type_str = LanguageUtils::gettext("Device view");
+                view_type_str = _("Device view");
                 break;
             case LOCATION:
-                view_type_str = LanguageUtils::gettext("Location view");
+                view_type_str = _("Location view");
                 break;
             case CREATOR:
-                view_type_str = LanguageUtils::gettext("Creator view");
+                view_type_str = _("Creator view");
                 break;
             case TIMESTAMP:
-                view_type_str = LanguageUtils::gettext("Timestamp view");
+                view_type_str = _("Timestamp view");
                 break;
             default:
                 view_type_str = "";
@@ -270,18 +270,18 @@ void MiiSelectState::render() {
         Console::consolePrintPosAligned(0, 4, 2, view_type_str);
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        //Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        //Console::consolePrintPosAligned(0, 4, 2, _("%s Sort: %s \ue084"),
         //                                (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         if ((mii_repo == nullptr) || (this->all_miis_count == 0 || (this->candidate_miis_count == 0)) || (this->no_miis == true)) {
             DrawUtils::clear(COLOR_BG_KO);
             DrawUtils::endDraw();
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("There are no miis matching selected filters."));
+            Console::showMessage(ERROR_SHOW, _("There are no miis matching selected filters."));
             this->no_miis = true;
             DrawUtils::beginDraw();
             DrawUtils::setRedraw(true);
             return;
         }
-        //Console::consolePrintPosAligned(39, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        //Console::consolePrintPosAligned(39, 4, 2, _("%s Sort: %s \ue084"),
         //                                (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         std::string nxtAction;
         std::string lastState;
@@ -351,15 +351,15 @@ void MiiSelectState::render() {
                 case MiiStatus::NOT_TRIED:
                 case MiiStatus::INVALID:
                     lastState = "";
-                    nxtAction = this->mii_view[c2a[i + this->scroll]].selected ? nextActionBrief : LanguageUtils::gettext(">> Skip");
+                    nxtAction = this->mii_view[c2a[i + this->scroll]].selected ? nextActionBrief : _(">> Skip");
                     break;
                 case MiiStatus::OK:
-                    lastState = LanguageUtils::gettext("[OK]");
+                    lastState = _("[OK]");
                     nxtAction = lastActionBriefOk;
                     break;
                 case MiiStatus::KO:
-                    lastState = LanguageUtils::gettext("[KO]");
-                    nxtAction = this->mii_view[c2a[i + this->scroll]].selected ? LanguageUtils::gettext(">> Retry") : LanguageUtils::gettext(">> Skip");
+                    lastState = _("[KO]");
+                    nxtAction = this->mii_view[c2a[i + this->scroll]].selected ? _(">> Retry") : _(">> Skip");
                     break;
                 default:
                     lastState = "";
@@ -377,45 +377,45 @@ void MiiSelectState::render() {
                 switch (view_type) {
                     case BASIC:
                         DrawUtils::setFontColor(color_text);
-                        Console::consolePrintPos(MM_OFF + 12, i + 2, LanguageUtils::gettext("[COPY"));
+                        Console::consolePrintPos(MM_OFF + 12, i + 2, _("[COPY"));
                         DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->copyable);
-                        Console::consolePrintPos(MM_OFF + 18, i + 2, LanguageUtils::gettext("%s"),
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
+                        Console::consolePrintPos(MM_OFF + 18, i + 2, _("%s"),
+                                                 this->mii_repo->miis[c2a[i + this->scroll]]->copyable ? _("On") : _("Off"));
                         DrawUtils::setFontColor(color_text);
-                        Console::consolePrintPos(MM_OFF + 21, i + 2, LanguageUtils::gettext("| SHARE"));
+                        Console::consolePrintPos(MM_OFF + 21, i + 2, _("| SHARE"));
                         DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->shareable);
-                        Console::consolePrintPos(MM_OFF + 29, i + 2, LanguageUtils::gettext("%s"),
-                                                 this->mii_repo->miis[c2a[i + this->scroll]]->shareable ? LanguageUtils::gettext("On") : LanguageUtils::gettext("Off"));
+                        Console::consolePrintPos(MM_OFF + 29, i + 2, _("%s"),
+                                                 this->mii_repo->miis[c2a[i + this->scroll]]->shareable ? _("On") : _("Off"));
                         DrawUtils::setFontColor(color_text);
-                        Console::consolePrintPos(MM_OFF + 32, i + 2, LanguageUtils::gettext("|"));
+                        Console::consolePrintPos(MM_OFF + 32, i + 2, _("|"));
                         DrawUtils::setFontColorForToggles(color_text, this->mii_repo->miis[c2a[i + this->scroll]]->mii_kind == Mii::eMiiKind::NORMAL);
                         const char *mii_kind;
                         switch (this->mii_repo->miis[c2a[i + this->scroll]]->mii_kind) {
                             case Mii::eMiiKind::NORMAL:
-                                mii_kind = LanguageUtils::gettext("NORMAL");
+                                mii_kind = _("NORMAL");
                                 break;
                             case Mii::eMiiKind::SPECIAL:
-                                mii_kind = LanguageUtils::gettext("SPECIAL");
+                                mii_kind = _("SPECIAL");
                                 break;
                             case Mii::eMiiKind::FOREIGN:
-                                mii_kind = LanguageUtils::gettext("FOREIGN");
+                                mii_kind = _("FOREIGN");
                                 break;
                             case Mii::eMiiKind::TEMP:
-                                mii_kind = LanguageUtils::gettext("TEMP");
+                                mii_kind = _("TEMP");
                                 break;
                             case Mii::eMiiKind::S_TEMP:
-                                mii_kind = LanguageUtils::gettext("S_TEMP");
+                                mii_kind = _("S_TEMP");
                                 break;
                             default:
-                                mii_kind = LanguageUtils::gettext("UNKNOWN");
+                                mii_kind = _("UNKNOWN");
                                 break;
                         }
-                        Console::consolePrintPos(MM_OFF + 34, i + 2, LanguageUtils::gettext("%s"), mii_kind);
+                        Console::consolePrintPos(MM_OFF + 34, i + 2, _("%s"), mii_kind);
                         DrawUtils::setFontColor(color_text);
-                        Console::consolePrintPos(MM_OFF + 42, i + 2, LanguageUtils::gettext("]"));
-                        Console::consolePrintPos(MM_OFF + 43, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->favorite ? "\ue017" : "");
+                        Console::consolePrintPos(MM_OFF + 42, i + 2, _("]"));
+                        Console::consolePrintPos(MM_OFF + 43, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->favorite ? "\ue017" : "");
                         DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
-                        Console::consolePrintPos(MM_OFF + 44, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "D" : "");
+                        Console::consolePrintPos(MM_OFF + 44, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "D" : "");
 
                         break;
                     case SYSTEM_DEVICE:
@@ -431,7 +431,7 @@ void MiiSelectState::render() {
                                                      this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str());
                             Console::consolePrintPos(MM_OFF + 40, i + 2, "]");
                         }
-                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     case MIIID:
                         Console::consolePrintPos(MM_OFF + 11, i + 2, "[F:%s ",
@@ -441,19 +441,19 @@ void MiiSelectState::render() {
                         Console::consolePrintPos(MM_OFF + 31, i + 2, "|D:..%s",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->device_hash_lite.c_str());
                         Console::consolePrintPos(MM_OFF + 43, i + 2, "]");
-                        Console::consolePrintPos(MM_OFF + 44, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "D" : "");
+                        Console::consolePrintPos(MM_OFF + 44, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "D" : "");
                         break;
                     case LOCATION:
                         Console::consolePrintPos(MM_OFF + 12, i + 2, "< %s >",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->location_name.c_str());
-                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     case CREATOR:
-                        Console::consolePrintPos(MM_OFF + 12, i + 2, LanguageUtils::gettext(": by %s"),
+                        Console::consolePrintPos(MM_OFF + 12, i + 2, _(": by %s"),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->creator_name.c_str());
-                        Console::consolePrintPos(MM_OFF + 30, i + 2, LanguageUtils::gettext("- %s"),
+                        Console::consolePrintPos(MM_OFF + 30, i + 2, _("- %s"),
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->get_birth_platform_as_string());
-                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
 
                         break;
                     case TIMESTAMP:
@@ -464,7 +464,7 @@ void MiiSelectState::render() {
                         Console::consolePrintPos(MM_OFF + 28, i + 2, "[ %04X",
                                                  this->mii_repo->miis[c2a[i + this->scroll]]->hex_timestamp);
                         Console::consolePrintPos(MM_OFF + 39, i + 2, "]");
-                        Console::consolePrintPos(MM_OFF + 41, i + 2, LanguageUtils::gettext("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
+                        Console::consolePrintPos(MM_OFF + 41, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "DUP" : "");
                         break;
                     default:;
                 }
@@ -472,7 +472,7 @@ void MiiSelectState::render() {
                 Console::consolePrintPos(MM_OFF, i + 2, "    INVALID: <%s>",
                                          this->mii_repo->miis[c2a[i + this->scroll]]->mii_name.c_str());
             }
-            Console::consolePrintPos(MM_OFF + 46, i + 2, LanguageUtils::gettext("%s%s"),
+            Console::consolePrintPos(MM_OFF + 46, i + 2, _("%s%s"),
                                      lastState.c_str(),
                                      nxtAction.c_str());
             //Console::consolePrintPos(M_OFF + 65, i + 2, ">"); /// ONY FOR TEST
@@ -492,7 +492,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                 if (this->mii_view[i].selected)
                     goto processSelectedMiis;
             }
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Please select some miis to work on"));
+            Console::showMessage(ERROR_SHOW, _("Please select some miis to work on"));
             return SUBSTATE_RUNNING;
         processSelectedMiis:
             uint16_t errorCounter = 0;
@@ -503,14 +503,14 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     mii_process_shared_state->primary_c2a = &this->c2a;
                     if (MiiUtils::export_miis(errorCounter, mii_process_shared_state)) {
                         if (InProgress::abortTask == false)
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis extraction Ok"));
+                            Console::showMessage(OK_SHOW, _("Miis extraction Ok"));
                         else
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task Aborted - Partial extraction Ok"));
+                            Console::showMessage(OK_SHOW, _("Task Aborted - Partial extraction Ok"));
                     } else {
                         if (errorCounter == 0)
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Extraction has failed - Global Error"));
+                            Console::showMessage(ERROR_CONFIRM, _("Extraction has failed - Global Error"));
                         else
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Extraction has failed for %d miis"), errorCounter);
+                            Console::showMessage(ERROR_CONFIRM, _("Extraction has failed for %d miis"), errorCounter);
                     }
                     break;
                 case MiiProcess::SELECT_MIIS_FOR_IMPORT:
@@ -518,14 +518,14 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     mii_process_shared_state->auxiliar_c2a = &this->c2a;
                     if (MiiUtils::import_miis(errorCounter, mii_process_shared_state)) {
                         if (InProgress::abortTask == false)
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis import Ok"));
+                            Console::showMessage(OK_SHOW, _("Miis import Ok"));
                         else
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task aborted - Partial import Ok"));
+                            Console::showMessage(OK_SHOW, _("Task aborted - Partial import Ok"));
                     } else {
                         if (errorCounter == 0)
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed - Global Error"));
+                            Console::showMessage(ERROR_CONFIRM, _("Import has failed - Global Error"));
                         else
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Import has failed for %d miis"), errorCounter);
+                            Console::showMessage(ERROR_CONFIRM, _("Import has failed for %d miis"), errorCounter);
                     }
                     if (mii_process_shared_state->primary_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_IMPORTED;
@@ -534,15 +534,15 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     break;
                 case MiiProcess::SELECT_MIIS_FOR_RESTORE:
                     if (mii_process_shared_state->auxiliar_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
-                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nMIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN")))
+                        if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nMIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN")))
                             return SUBSTATE_RUNNING;
                         mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
                         mii_process_shared_state->auxiliar_c2a = &this->c2a;
                         mii_process_shared_state->mii_index_with_source_data = c2a[currentlySelectedMii];
                         if (MiiUtils::restore_account_mii(mii_process_shared_state)) {
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                            Console::showMessage(OK_SHOW, _("Data succesfully restored!"));
                         } else {
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Data restoration has failed!"));
+                            Console::showMessage(ERROR_SHOW, _("Data restoration has failed!"));
                         }
                         delete mii_process_shared_state->auxiliar_mii_repo;
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_RESTORED;
@@ -554,14 +554,14 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     mii_process_shared_state->primary_c2a = &this->c2a;
                     if (MiiUtils::wipe_miis(errorCounter, mii_process_shared_state)) {
                         if (InProgress::abortTask == false)
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis wipe Ok"));
+                            Console::showMessage(OK_SHOW, _("Miis wipe Ok"));
                         else
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task Aborted - Partial wipe Ok"));
+                            Console::showMessage(OK_SHOW, _("Task Aborted - Partial wipe Ok"));
                     } else {
                         if (errorCounter == 0)
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Wipe has failed - Global Error"));
+                            Console::showMessage(ERROR_CONFIRM, _("Wipe has failed - Global Error"));
                         else
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Wipe has failed for %d miis"), errorCounter);
+                            Console::showMessage(ERROR_CONFIRM, _("Wipe has failed for %d miis"), errorCounter);
                     }
                     break;
                 case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
@@ -575,17 +575,17 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     if (mii_process_shared_state->template_mii_data != nullptr) {
                         if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state)) {
                             if (InProgress::abortTask == false)
-                                Console::showMessage(OK_SHOW, LanguageUtils::gettext("Miis transform ok"));
+                                Console::showMessage(OK_SHOW, _("Miis transform ok"));
                             else
-                                Console::showMessage(OK_SHOW, LanguageUtils::gettext("Task aborted - Partial Miis transform ok"));
+                                Console::showMessage(OK_SHOW, _("Task aborted - Partial Miis transform ok"));
                         } else {
                             if (errorCounter == 0)
-                                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed - Global Error"));
+                                Console::showMessage(ERROR_CONFIRM, _("Transform has failed - Global Error"));
                             else
-                                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Transform has failed for %d miis"), errorCounter);
+                                Console::showMessage(ERROR_CONFIRM, _("Transform has failed for %d miis"), errorCounter);
                         }
                     } else
-                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), this->mii_repo->miis[c2a[currentlySelectedMii]]->mii_name.c_str(), mii_repo->miis[c2a[currentlySelectedMii]]->creator_name.c_str());
+                        Console::showMessage(ERROR_SHOW, _("Error extracting MiiData for %s (by %s)"), this->mii_repo->miis[c2a[currentlySelectedMii]]->mii_name.c_str(), mii_repo->miis[c2a[currentlySelectedMii]]->creator_name.c_str());
                     delete mii_process_shared_state->template_mii_data;
                     mii_process_shared_state->template_mii_data = nullptr;
                     mii_process_shared_state->state = MiiProcess::MIIS_TRANSFORMED;
@@ -610,15 +610,15 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
                     break;
                 case MiiProcess::SELECT_SOURCE_MII_FOR_XRESTORE:
                     if (mii_process_shared_state->auxiliar_mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
-                        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nMIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN")))
+                        if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nMIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN")))
                             return SUBSTATE_RUNNING;
                         mii_process_shared_state->auxiliar_mii_view = &this->mii_view;
                         mii_process_shared_state->auxiliar_c2a = &this->c2a;
                         mii_process_shared_state->mii_index_with_source_data = c2a[currentlySelectedMii];
                         if (MiiUtils::x_restore_account_mii(errorCounter, mii_process_shared_state)) {
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                            Console::showMessage(OK_SHOW, _("Data succesfully restored!"));
                         } else {
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Data restoration has failed!"));
+                            Console::showMessage(ERROR_SHOW, _("Data restoration has failed!"));
                         }
                         delete mii_process_shared_state->auxiliar_mii_repo; // slot_repo
                         mii_process_shared_state->state = MiiProcess::ACCOUNT_MII_XRESTORED;

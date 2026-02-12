@@ -28,31 +28,31 @@ void TitleTaskState::render() {
     }
     if (this->state == STATE_TITLE_TASKS) {
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("WiiU Serial Id: %s"), AmbientConfig::thisConsoleSerialId.c_str());
+        Console::consolePrintPosAligned(0, 4, 2, _("WiiU Serial Id: %s"), AmbientConfig::thisConsoleSerialId.c_str());
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPos(22, 0, LanguageUtils::gettext("Tasks"));
+        Console::consolePrintPos(22, 0, _("Tasks"));
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
                                  this->title.productCode);
         Console::consolePrintPos(M_OFF, 3, "   %s (%s)", this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Backup savedata"));
+        Console::consolePrintPos(M_OFF, 5, _("   Backup savedata"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Restore savedata"));
+        Console::consolePrintPos(M_OFF, 6, _("   Restore savedata"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Wipe savedata"));
+        Console::consolePrintPos(M_OFF, 7, _("   Wipe savedata"));
         if (this->isWiiUTitle) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-            Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Move savedata to other profile"));
+            Console::consolePrintPos(M_OFF, 8, _("   Move savedata to other profile"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-            Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Copy savedata to other profile"));
+            Console::consolePrintPos(M_OFF, 9, _("   Copy savedata to other profile"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-            Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import from loadiine"));
+            Console::consolePrintPos(M_OFF, 10, _("   Import from loadiine"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
-            Console::consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Export to loadiine"));
+            Console::consolePrintPos(M_OFF, 11, _("   Export to loadiine"));
             if (this->title.isTitleDupe) {
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
-                Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Copy Savedata to Title in %s"),
+                Console::consolePrintPos(M_OFF, 12, _("   Copy Savedata to Title in %s"),
                                          this->title.isTitleOnUSB ? "NAND" : "USB");
             }
         }
@@ -66,13 +66,13 @@ void TitleTaskState::render() {
 
         if (this->title.is_Inject) {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPos(2, 11, LanguageUtils::gettext("This title is a inject (vWii or GC title packaged as a WiiU title).\nIf needed, vWii saves can also be managed using\n  the vWii Save Management section."));
+            Console::consolePrintPos(2, 11, _("This title is a inject (vWii or GC title packaged as a WiiU title).\nIf needed, vWii saves can also be managed using\n  the vWii Save Management section."));
         }
 
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + 3 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Select Task  \ue001: Back"));
     }
 }
 
@@ -91,19 +91,19 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             const char *noData;
             switch (this->task) {
                 case BACKUP:
-                    noData = LanguageUtils::gettext("No save to Backup.");
+                    noData = _("No save to Backup.");
                     break;
                 case WIPE_PROFILE:
-                    noData = LanguageUtils::gettext("No save to Wipe.");
+                    noData = _("No save to Wipe.");
                     break;
                 case PROFILE_TO_PROFILE:
-                    noData = LanguageUtils::gettext("No save to Replicate.");
+                    noData = _("No save to Replicate.");
                     break;
                 case COPY_TO_OTHER_DEVICE:
-                    noData = LanguageUtils::gettext("No save to Copy.");
+                    noData = _("No save to Copy.");
                     break;
                 case MOVE_PROFILE:
-                    noData = LanguageUtils::gettext("No save to Move.");
+                    noData = _("No save to Move.");
                     break;
                 default:
                     noData = "";
@@ -131,7 +131,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
 
             if ((this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE)) {
                 if (AccountUtils::getVolAccn() == 0)
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Title has no profile savedata"));
+                    Console::showMessage(ERROR_SHOW, _("Title has no profile savedata"));
                 else {
                     for (int i = 0; i < AccountUtils::getVolAccn(); i++) {
                         for (int j = 0; j < AccountUtils::getWiiUAccn(); j++) {
@@ -142,7 +142,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                             }
                         }
                     }
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("At least two profiles are needed to Copy/Move To OtherProfile."));
+                    Console::showMessage(ERROR_SHOW, _("At least two profiles are needed to Copy/Move To OtherProfile."));
                 }
                 return SUBSTATE_RUNNING;
             }

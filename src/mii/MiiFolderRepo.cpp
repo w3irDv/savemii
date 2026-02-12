@@ -57,14 +57,14 @@ MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_fi
     std::ifstream mii_file;
     mii_file.open(mii_filepath.c_str(), std::ios_base::binary);
     if (!mii_file.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
         return nullptr;
     }
     size_t mii_file_size = std::filesystem::file_size(std::filesystem::path(mii_filepath));
 
     if (mii_file_size != MIIDATA::MII_DATA_SIZE && mii_file_size != (MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE)) // Allow "bare" mii or mii+CRC
     {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), mii_filepath.c_str(), mii_file_size, MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE + 4);
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), mii_filepath.c_str(), mii_file_size, MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE + 4);
         return nullptr;
     }
 
@@ -73,20 +73,20 @@ MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_fi
     unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(mii_buffer_size);
 
     if (mii_buffer == NULL) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for reading the mii data"), mii_filepath.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nCannot create memory buffer for reading the mii data"), mii_filepath.c_str());
         return nullptr;
     }
 
     // we allow files with or without CRC, but read only CORE data
     mii_file.read((char *) mii_buffer, MIIDATA::MII_DATA_SIZE);
     if (mii_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error reading file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
         free(mii_buffer);
         return nullptr;
     }
     mii_file.close();
     if (mii_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
         free(mii_buffer);
         return nullptr;
     }
@@ -96,7 +96,7 @@ MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_fi
     std::string extension = mii_filepath.substr(mii_filepath.find_last_of("."));
     if (extension == ".ffsd" || extension == ".ffcd" || extension == ".cfsd" || extension == ".cfcd" || extension == ".bin") {
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(mii_buffer, MIIDATA::MII_DATA_SIZE)) {
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switching le/be MiiData representation"));
+            Console::showMessage(ERROR_SHOW, _("Error switching le/be MiiData representation"));
             free(mii_buffer);
             return nullptr;
         }
@@ -111,7 +111,7 @@ template<typename MII, typename MIIDATA>
 bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, size_t index) {
 
     if (miidata == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import from null mii data"));
+        Console::showMessage(ERROR_SHOW, _("Trying to import from null mii data"));
         return false;
     }
 
@@ -121,7 +121,7 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
     } else {
         mii_filename = miidata->get_mii_name();
         if (!this->find_name(mii_filename)) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find a name for the mii file:\n%s\n%s"), mii_filename.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Cannot find a name for the mii file:\n%s\n%s"), mii_filename.c_str(), strerror(errno));
             return false;
         }
     }
@@ -132,7 +132,7 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
     std::string extension = mii_filename.substr(mii_filename.find_last_of("."));
     if (extension == ".ffsd" || extension == ".ffcd" || extension == ".cfsd" || extension == ".cfcd" || extension == ".bin") {
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switching le/be MiiData representation"));
+            Console::showMessage(ERROR_SHOW, _("Error switching le/be MiiData representation"));
             return false;
         }
     }
@@ -142,7 +142,7 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
     if (extension == ".ffsd" || extension == ".bin" || extension == ".cfsd" || extension == ".rsd") { // WiiU, 3DS and Wii Miis with CRC
         mii_file_size = MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE;
         if (miidata->mii_data_size < mii_file_size) { // Cannot happen
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("MiiData buffer is not big enough\n%s"), mii_filename.c_str());
+            Console::showMessage(ERROR_CONFIRM, _("MiiData buffer is not big enough\n%s"), mii_filename.c_str());
             return false;
         }
         if (MIIDATA::CRC_PADDING > 0)
@@ -157,25 +157,25 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
     std::ofstream mii_file;
     mii_file.open(mii_filename.c_str(), std::ios_base::binary);
     if (mii_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), mii_filename.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), mii_filename.c_str(), strerror(errno));
         return false;
     }
     mii_file.write((char *) miidata->mii_data, mii_file_size);
     if (mii_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), mii_filename.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), mii_filename.c_str(), strerror(errno));
         return false;
     }
 
     mii_file.close();
     if (mii_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), mii_filename.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), mii_filename.c_str(), strerror(errno));
         return false;
     }
 
     // switch back again so memory representation is BE
     if (extension == ".ffsd" || extension == ".ffcd" || extension == ".cfsd" || extension == ".cfcd" || extension == ".bin") {
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switching le/be MiiData representation"));
+            Console::showMessage(ERROR_SHOW, _("Error switching le/be MiiData representation"));
             return false;
         }
     }
@@ -187,7 +187,7 @@ template<typename MII, typename MIIDATA>
 bool MiiFolderRepo<MII, MIIDATA>::wipe_miidata(size_t index) {
 
     if (unlink(this->mii_filepath.at(index).c_str()) == -1) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s \n Failed to delete file:\n%s\n%s"), this->repo_name.c_str(), this->mii_filepath.at(index).c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("%s \n Failed to delete file:\n%s\n%s"), this->repo_name.c_str(), this->mii_filepath.at(index).c_str(), strerror(errno));
         return false;
     }
     return true;
@@ -238,7 +238,7 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
             push_back_invalid_mii(filename_str, index);
         }
         index++;
-        Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Reading Miis: %d"), index);
+        Console::showMessage(ST_DEBUG, _("Reading Miis: %d"), index);
     }
 
     if (ec.value() != 0) {

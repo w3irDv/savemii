@@ -33,20 +33,20 @@ void BatchTasksState::render() {
     }
     if (this->state == STATE_BATCH_TASKS_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Batch Tasks Menu"));
+        Console::consolePrintPosAligned(0, 4, 1, _("Batch Tasks Menu"));
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Batch Backup"));
+        Console::consolePrintPos(M_OFF, 3, _("   Batch Backup"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Batch Restore"));
+        Console::consolePrintPos(M_OFF, 4, _("   Batch Restore"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Batch Wipe"));
+        Console::consolePrintPos(M_OFF, 5, _("   Batch Wipe"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Move to Other Profile"));
+        Console::consolePrintPos(M_OFF, 6, _("   Batch Move to Other Profile"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch Copy to Other Profile"));
+        Console::consolePrintPos(M_OFF, 7, _("   Batch Copy to Other Profile"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch Copy to Other Device"));
+        Console::consolePrintPos(M_OFF, 8, _("   Batch Copy to Other Device"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
@@ -54,22 +54,22 @@ void BatchTasksState::render() {
         const char *info;
         switch (cursorPos) {
             case 0:
-                info = LanguageUtils::gettext("Batch Backup allows you to backup savedata:\n* for All titles at once (WiiU+ vWii)\n* for the titles you select (individual 'Wii U' or 'vWii' tasks)");
+                info = _("Batch Backup allows you to backup savedata:\n* for All titles at once (WiiU+ vWii)\n* for the titles you select (individual 'Wii U' or 'vWii' tasks)");
                 break;
             case 1:
-                info = LanguageUtils::gettext("Batch Restore allows you to restore all savedata from a BatchBackup \n* to the same user profiles\n* to a different user in the same console \n* or to a different console where the games are already installed.\nNow it is not needed to run the game first to initialize the savedata.");
+                info = _("Batch Restore allows you to restore all savedata from a BatchBackup \n* to the same user profiles\n* to a different user in the same console \n* or to a different console where the games are already installed.\nNow it is not needed to run the game first to initialize the savedata.");
                 break;
             case 2:
-                info = LanguageUtils::gettext("Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.");
+                info = _("Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.");
                 break;
             case 3:
-                info = LanguageUtils::gettext("Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick..");
+                info = _("Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick..");
                 break;
             case 4:
-                info = LanguageUtils::gettext("Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched.");
+                info = _("Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched.");
                 break;
             case 5:
-                info = LanguageUtils::gettext("Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.");
+                info = _("Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.");
                 break;
             default:
                 info = "";
@@ -80,7 +80,7 @@ void BatchTasksState::render() {
         Console::consolePrintPosAutoFormat(M_OFF, 10, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);        
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Options \ue000: Select Batch Task"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Options \ue000: Select Batch Task"));
     }
 }
 

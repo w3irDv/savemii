@@ -38,10 +38,10 @@ private:
     eTitleType titleType;
 
 
-    std::vector<const char *> sortNames = {LanguageUtils::gettext("None"),
-                                           LanguageUtils::gettext("Name"),
-                                           LanguageUtils::gettext("Storage"),
-                                           LanguageUtils::gettext("Strg+Nm")};
+    std::vector<const char *> sortNames = {_("None"),
+                                           _("Name"),
+                                           _("Storage"),
+                                           _("Strg+Nm")};
 
     int titleSort = 1;
     int scroll = 0;

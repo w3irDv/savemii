@@ -150,7 +150,7 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::toggle_favorite_flag(MiiData *miidata) {
             }
         }
         if (toggled == false)
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Maximum Numer of Favorite Miis (%d) reached"), WiiUMiiData::DB::MAX_FAVORITES);
+            Console::showMessage(ERROR_CONFIRM, _("Maximum Numer of Favorite Miis (%d) reached"), WiiUMiiData::DB::MAX_FAVORITES);
     }
 
     return toggled;
@@ -190,7 +190,7 @@ bool MiiFileRepo<WiiUMii, WiiUMiiData>::update_mii_id_in_favorite_section(MiiDat
     if (found == true) {
         memcpy(fav_offset, new_miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
     } else {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Mii %s not found in Favorites section"), old_miidata->get_name_as_hex_string().c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Mii %s not found in Favorites section"), old_miidata->get_name_as_hex_string().c_str());
     }
 
     return found;
@@ -269,13 +269,13 @@ bool MiiFileRepo<MII, MIIDATA>::open_and_load_repo() {
     std::ifstream db_file;
     db_file.open(db_filepath.c_str(), std::ios_base::binary);
     if (!db_file.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         return false;
     }
     size_t size = std::filesystem::file_size(std::filesystem::path(db_filepath));
 
     if (size < MIIDATA::DB::DB_SIZE) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a DB file: %d. Expected %d bytes or more."), db_filepath.c_str(), size, MIIDATA::DB::DB_SIZE);
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nUnexpected size for a DB file: %d. Expected %d bytes or more."), db_filepath.c_str(), size, MIIDATA::DB::DB_SIZE);
         return false;
     }
 
@@ -283,26 +283,26 @@ bool MiiFileRepo<MII, MIIDATA>::open_and_load_repo() {
         db_buffer = (uint8_t *) MiiData::allocate_memory(size);
 
     if (db_buffer == nullptr) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for reading the DB data"), db_filepath.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nCannot create memory buffer for reading the DB data"), db_filepath.c_str());
         return false;
     }
 
     db_file.read((char *) db_buffer, size);
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error reading file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         db_file.close();
         goto free_after_fail;
     }
 
     if (memcmp(db_buffer, MIIDATA::DB::MAGIC, 4) != 0) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading db\n%s\nWrong magic number."), db_filepath.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Error reading db\n%s\nWrong magic number."), db_filepath.c_str());
         db_file.close();
         goto free_after_fail;
     }
 
     db_file.close();
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         goto free_after_fail;
     }
 
@@ -335,19 +335,19 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
     std::ofstream tmp_db_file;
     tmp_db_file.open(tmp_db_filepath.c_str(), std::ios_base::binary);
     if (tmp_db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
     tmp_db_file.write((char *) db_buffer, MIIDATA::DB::DB_SIZE);
     if (tmp_db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error writing file\n\n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
         tmp_db_file.close();
         goto cleanup_after_io_error;
     }
 
     tmp_db_file.close();
     if (tmp_db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
 
@@ -366,23 +366,23 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
             return true;
             //return false  //CHAOS;
         } else { // the worst has happened
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            Console::showMessage(ERROR_CONFIRM, _("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Unrecoverable Error - Please restore db from a Backup"));
             goto cleanup_managing_real_db;
         }
     } else {
         if (FSUtils::checkEntry(db_filepath.c_str()) == 1) {
-            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
+            Console::showMessage(WARNING_CONFIRM, _("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
             goto cleanup_after_io_error;
         } else {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            Console::showMessage(ERROR_CONFIRM, _("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Unrecoverable Error - Please restore db from a Backup"));
             goto cleanup_managing_real_db;
         }
     }
 
 cleanup_after_io_error:
-    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error managing temporal db %s\n\nNo action has been made over real mii db."), tmp_db_filepath.c_str());
+    Console::showMessage(ERROR_CONFIRM, _("Error managing temporal db %s\n\nNo action has been made over real mii db."), tmp_db_filepath.c_str());
 cleanup_managing_real_db:
     unlink(tmp_db_filepath.c_str());
     if (db_owner != 0)
@@ -398,7 +398,7 @@ MiiData *MiiFileRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
     unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE);
 
     if (mii_buffer == NULL) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for reading the mii data"), std::to_string(index).c_str());
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nCannot create memory buffer for reading the mii data"), std::to_string(index).c_str());
         return nullptr;
     }
 
@@ -416,13 +416,13 @@ template<typename MII, typename MIIDATA>
 bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, size_t index) {
 
     if (miidata == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import from null mii data"));
+        Console::showMessage(ERROR_SHOW, _("Trying to import from null mii data"));
         return false;
     }
 
     // Cannot happen ...
     if ((miidata->mii_data_size != MIIDATA::MII_DATA_SIZE) && (miidata->mii_data_size != MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE)) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), "", miidata->mii_data_size, MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE + 4);
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), "", miidata->mii_data_size, MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE + 4);
     }
 
     size_t target_location;
@@ -432,7 +432,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
     } else {
         index = this->miis.size();
         if (!this->find_empty_location(target_location)) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find an EMPTY location for the mii in the db"));
+            Console::showMessage(ERROR_CONFIRM, _("Cannot find an EMPTY location for the mii in the db"));
             return false;
         }
     }
@@ -446,7 +446,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
             uint8_t mii_type = (flags & 0b11100000) >> 5;
             uint8_t partial_ts = (flags & 0b00011111);
             if (mii_type == 1) {
-                if (Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"))) {
+                if (Console::promptConfirm(ST_WARNING, _("Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"))) {
                     mii_type = 4;
                     flags = (mii_type << 5) + partial_ts;
                     memcpy(miidata->mii_data + MIIDATA::MII_ID_OFFSET, &flags, 1);
@@ -461,7 +461,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
             uint8_t FFLCreateIDFlags = (flags & 0b11110000) >> 4;
             uint8_t partial_ts = (flags & 0b00001111);
             if ((FFLCreateIDFlags & FFL_CREATE_ID_FLAG_TEMPORARY) == FFL_CREATE_ID_FLAG_TEMPORARY) {
-                if (Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"))) {
+                if (Console::promptConfirm(ST_WARNING, _("Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"))) {
                     FFLCreateIDFlags = FFLCreateIDFlags & 0b1101; // unset temp
                     FFLCreateIDFlags = FFLCreateIDFlags | 0b0100; // set WiiU
                     flags = (FFLCreateIDFlags << 4) + partial_ts;
@@ -470,7 +470,7 @@ bool MiiFileRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, 
             }
         }
         if (this->check_if_miiid_exists(miidata)) {
-            std::string mess = StringUtils::stringFormat(LanguageUtils::gettext("Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n\nYou can generate a new Mii ID for it, and it will become a completely new unique mii.\n\nDo you want me to change Mii Id for this mii?"),
+            std::string mess = StringUtils::stringFormat(_("Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n\nYou can generate a new Mii ID for it, and it will become a completely new unique mii.\n\nDo you want me to change Mii Id for this mii?"),
                                                          miidata->get_mii_name().c_str());
             if (Console::promptConfirm(ST_WARNING, mess.c_str())) {
                 miidata->update_timestamp(target_location);
@@ -517,7 +517,7 @@ template<typename MII, typename MIIDATA>
 bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
 
     if (db_buffer == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("DB %s has not been initialized"), repo_name.c_str());
+        Console::showMessage(ERROR_SHOW, _("DB %s has not been initialized"), repo_name.c_str());
         return false;
     }
 
@@ -532,10 +532,10 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
 
         if (consecutive_not_found < 10) {
             if (i % 3 == 0)
-                Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
+                Console::showMessage(ST_DEBUG, _("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
         } else {
             if (i % 500 == 0)
-                Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
+                Console::showMessage(ST_DEBUG, _("Looking for a Mii in location: %d/%d. Miis found: %d."), i + 1, MIIDATA::DB::MAX_MIIS, index);
         }
 
         /*
@@ -643,7 +643,7 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
     db_buffer = (uint8_t *) MiiData::allocate_memory(MIIDATA::DB::DB_SIZE);
 
     if (db_buffer == nullptr) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for initializing the DB data"), db_filepath.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nCannot create memory buffer for initializing the DB data"), db_filepath.c_str());
         return false;
     }
 
@@ -662,19 +662,19 @@ bool MiiFileRepo<MII, MIIDATA>::init_db_file() {
     std::ofstream db_file;
     db_file.open(db_filepath.c_str(), std::ios_base::binary);
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
     db_file.write((char *) db_buffer, MIIDATA::DB::DB_SIZE);
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error writing file\n\n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         db_file.close();
         goto cleanup_after_io_error;
     }
 
     db_file.close();
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
 

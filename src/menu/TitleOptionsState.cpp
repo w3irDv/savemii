@@ -86,7 +86,7 @@ void TitleOptionsState::render() {
                 DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
             else
                 DrawUtils::setFontColor(BackupSetList::isRootBackupSet() ? COLOR_INFO_AT_CURSOR : COLOR_LIST_DANGER_AT_CURSOR);
-            Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BackupSet: %s"),
+            Console::consolePrintPosAligned(0, 4, 2, _("BackupSet: %s"),
                                             (this->task == BACKUP) ? BackupSetList::ROOT_BS.c_str() : BackupSetList::getBackupSetEntry().c_str());
         }
         entrycount = 2;
@@ -94,43 +94,43 @@ void TitleOptionsState::render() {
         Console::consolePrintPos(M_OFF, 2, "[%08X-%08X] %s (%s)", this->title.highID, this->title.lowID,
                                  this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
         if (this->task == COPY_TO_OTHER_DEVICE) {
-            Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Destination:"));
+            Console::consolePrintPos(M_OFF, 4, _("Destination:"));
             DrawUtils::setFontColor(COLOR_TEXT);
             Console::consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "NAND" : "USB");
         } else if (this->task == PROFILE_TO_PROFILE) {
             DrawUtils::setFontColor(COLOR_TEXT);
-            Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Copy profile savedata to a different profile."));
+            Console::consolePrintPos(M_OFF, 5, _("   Copy profile savedata to a different profile."));
         } else if (this->task == MOVE_PROFILE) {
             DrawUtils::setFontColor(COLOR_TEXT);
-            Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Move profile savedata to a different profile."));
-            Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   - Target profile will be wiped."));
+            Console::consolePrintPos(M_OFF, 4, _("   Move profile savedata to a different profile."));
+            Console::consolePrintPos(M_OFF, 5, _("   - Target profile will be wiped."));
         } else if (this->task == importLoadiine || this->task == exportLoadiine) {
-            Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("version"));
+            Console::consolePrintPos(M_OFF, 4, _("Select %s:"), _("version"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             Console::consolePrintPos(M_OFF, 5, "   < v%u > (%s)", version,
-                                     emptySlot ? LanguageUtils::gettext("Empty")
-                                               : LanguageUtils::gettext("Used"));
+                                     emptySlot ? _("Empty")
+                                               : _("Used"));
         } else if (this->task == WIPE_PROFILE) {
-            Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Delete from:"));
+            Console::consolePrintPos(M_OFF, 4, _("Delete from:"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             Console::consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "USB" : "NAND");
         } else if ((task == BACKUP) || (task == RESTORE)) {
-            Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s [%s]:"), LanguageUtils::gettext("slot"), slotFormat.c_str());
+            Console::consolePrintPos(M_OFF, 4, _("Select %s [%s]:"), _("slot"), slotFormat.c_str());
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             if (((this->title.highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
                 Console::consolePrintPos(M_OFF, 5, "   < SaveGame Manager GX > (%s)",
-                                         emptySlot ? LanguageUtils::gettext("Empty")
-                                                   : LanguageUtils::gettext("Used"));
+                                         emptySlot ? _("Empty")
+                                                   : _("Used"));
             else
                 Console::consolePrintPos(M_OFF, 5, "   < %03u > (%s)", slot,
-                                         emptySlot ? LanguageUtils::gettext("Empty")
-                                                   : LanguageUtils::gettext("Used"));
+                                         emptySlot ? _("Empty")
+                                                   : _("Used"));
         }
 
         if ((task == BACKUP) || (task == RESTORE)) {
             if (!emptySlot) {
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Slot -> Date: %s"),
+                Console::consolePrintPosAligned(15, 4, 1, _("Slot -> Date: %s"),
                                                 slotInfo.c_str());
                 if (tag != "") {
                     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -149,22 +149,22 @@ void TitleOptionsState::render() {
 
             // manage lines related to source data
             if ((task == RESTORE) || (task == BACKUP) || (task == WIPE_PROFILE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE) || (task == importLoadiine) || (task == exportLoadiine)) {
-                Console::consolePrintPos(M_OFF, 7, (task == RESTORE) ? LanguageUtils::gettext("Select SD user to copy from:") : (task == WIPE_PROFILE ? LanguageUtils::gettext("Select Wii U user to wipe:") : LanguageUtils::gettext("Select Wii U user to copy from:")));
+                Console::consolePrintPos(M_OFF, 7, (task == RESTORE) ? _("Select SD user to copy from:") : (task == WIPE_PROFILE ? _("Select Wii U user to wipe:") : _("Select Wii U user to copy from:")));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 if (source_user == -3 && task == WIPE_PROFILE) {
-                    Console::consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("metadata + savedata"));
+                    Console::consolePrintPos(M_OFF, 8, "   < %s >", _("metadata + savedata"));
                 } else if (source_user == -2) {
-                    Console::consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("only common save"));
+                    Console::consolePrintPos(M_OFF, 8, "   < %s >", _("only common save"));
                 } else if (source_user == -1) {
-                    Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("all users"),
-                                             sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                    Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", _("all users"),
+                                             sourceHasRequestedSavedata ? _("Has Save") : _("Empty"));
                 } else {
                     if ((task == RESTORE && !backupRestoreFromSameConsole) || task == importLoadiine || task == exportLoadiine)
                         Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", AccountUtils::getVolAcc()[source_user].persistentID,
-                                                 sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                                                 sourceHasRequestedSavedata ? _("Has Save") : _("Empty"));
                     else
                         Console::consolePrintPos(M_OFF, 8, "   < %s (%s)> (%s)", AccountUtils::getVolAcc()[source_user].miiName, AccountUtils::getVolAcc()[source_user].persistentID,
-                                                 sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                                                 sourceHasRequestedSavedata ? _("Has Save") : _("Empty"));
                 }
             }
 
@@ -173,22 +173,22 @@ void TitleOptionsState::render() {
             if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == PROFILE_TO_PROFILE) || (task == MOVE_PROFILE) || (task == importLoadiine) || (task == exportLoadiine)) {
                 if (source_user > -1)
                     entrycount++;
-                Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("Select Wii U user to copy to:"));
+                Console::consolePrintPos(M_OFF, 10, _("Select Wii U user to copy to:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
                 if (wiiu_user == -2)
-                    Console::consolePrintPos(M_OFF, 11, "   < %s >", LanguageUtils::gettext("only common save"));
+                    Console::consolePrintPos(M_OFF, 11, "   < %s >", _("only common save"));
                 else if (wiiu_user == -1) {
-                    Console::consolePrintPos(M_OFF, 11, "   < %s > (%s)", LanguageUtils::gettext("same user than in source"),
-                                             (hasTargetUserData) ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                    Console::consolePrintPos(M_OFF, 11, "   < %s > (%s)", _("same user than in source"),
+                                             (hasTargetUserData) ? _("Has Save") : _("Empty"));
                 } else {
                     if (task == exportLoadiine) { // allow exportLoadiine to export to "/u"
                         Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", AccountUtils::getVolAcc()[wiiu_user].miiName,
                                                  AccountUtils::getVolAcc()[wiiu_user].persistentID,
-                                                 hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                                                 hasTargetUserData ? _("Has Save") : _("Empty"));
                     } else {
                         Console::consolePrintPos(M_OFF, 11, "   < %s (%s) > (%s)", AccountUtils::getWiiUAcc()[wiiu_user].miiName,
                                                  AccountUtils::getWiiUAcc()[wiiu_user].persistentID,
-                                                 hasTargetUserData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                                                 hasTargetUserData ? _("Has Save") : _("Empty"));
                     }
                 }
             }
@@ -197,20 +197,20 @@ void TitleOptionsState::render() {
             const char *onlyCommon, *commonIncluded;
             switch (this->task) {
                 case BACKUP:
-                    onlyCommon = LanguageUtils::gettext("Source has 'common' savedata, only it will be saved");
-                    commonIncluded = LanguageUtils::gettext("Source has 'common' savedata, it will also be saved");
+                    onlyCommon = _("Source has 'common' savedata, only it will be saved");
+                    commonIncluded = _("Source has 'common' savedata, it will also be saved");
                     break;
                 case RESTORE:
-                    onlyCommon = LanguageUtils::gettext("Source has 'common' savedata, only it will be restored");
-                    commonIncluded = LanguageUtils::gettext("Source has 'common' savedata, it will also be restored");
+                    onlyCommon = _("Source has 'common' savedata, only it will be restored");
+                    commonIncluded = _("Source has 'common' savedata, it will also be restored");
                     break;
                 case WIPE_PROFILE:
-                    onlyCommon = LanguageUtils::gettext("'common' savedata found, only it will be deleted");
-                    commonIncluded = LanguageUtils::gettext("'common' savedata found, it will also be deleted");
+                    onlyCommon = _("'common' savedata found, only it will be deleted");
+                    commonIncluded = _("'common' savedata found, it will also be deleted");
                     break;
                 case COPY_TO_OTHER_DEVICE:
-                    onlyCommon = LanguageUtils::gettext("Source has 'common' savedata, only it will be copied");
-                    commonIncluded = LanguageUtils::gettext("Source 'common' savedata, it will also be copied");
+                    onlyCommon = _("Source has 'common' savedata, only it will be copied");
+                    commonIncluded = _("Source 'common' savedata, it will also be copied");
                     break;
                 default:
                     onlyCommon = "";
@@ -228,8 +228,8 @@ void TitleOptionsState::render() {
                     if (this->source_user != -1) {
                         if ((task == RESTORE) || (task == COPY_TO_OTHER_DEVICE) || (task == importLoadiine) || (task == exportLoadiine)) {
                             DrawUtils::setFontColor(COLOR_TEXT);
-                            Console::consolePrintPosAligned(10, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
-                                                            hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
+                            Console::consolePrintPosAligned(10, 4, 2, _("(Target has 'common': %s)"),
+                                                            hasCommonSaveInTarget ? _("yes") : _("no "));
                         }
                         if (hasCommonSaveInSource) {
                             switch (source_user) {
@@ -243,26 +243,26 @@ void TitleOptionsState::render() {
                                     break;
                                 default:
                                     entrycount++;
-                                    Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev, LanguageUtils::gettext("Include 'common' save?"));
+                                    Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev, _("Include 'common' save?"));
                                     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2 + offsetIfRestoreOrCopyToOtherDev);
                                     Console::consolePrintPos(M_OFF, 11 + 3 * offsetIfRestoreOrCopyToOtherDev, "   < %s >",
-                                                             common ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
+                                                             common ? _("yes") : _("no "));
                                     break;
                             }
                         } else {
                             common = false;
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
-                                                     task == BACKUP ? LanguageUtils::gettext("No 'common' save found.") : LanguageUtils::gettext("Source: No 'common' save found."));
+                                                     task == BACKUP ? _("No 'common' save found.") : _("Source: No 'common' save found."));
                         }
                     } else {
                         if (hasCommonSaveInSource)
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev, commonIncluded);
                         else
                             Console::consolePrintPos(M_OFF, 10 + 3 * offsetIfRestoreOrCopyToOtherDev,
-                                                     task == BACKUP ? LanguageUtils::gettext("No 'common' save found.") : LanguageUtils::gettext("Source: No 'common' save found."));
+                                                     task == BACKUP ? _("No 'common' save found.") : _("Source: No 'common' save found."));
                         if (task == RESTORE || task == COPY_TO_OTHER_DEVICE || (task == importLoadiine) || (task == exportLoadiine))
-                            Console::consolePrintPosAligned(10, 4, 2, LanguageUtils::gettext("(Target has 'common': %s)"),
-                                                            hasCommonSaveInTarget ? LanguageUtils::gettext("yes") : LanguageUtils::gettext("no "));
+                            Console::consolePrintPosAligned(10, 4, 2, _("(Target has 'common': %s)"),
+                                                            hasCommonSaveInTarget ? _("yes") : _("no "));
                         common = false;
                     }
                     break;
@@ -282,17 +282,17 @@ void TitleOptionsState::render() {
 
             common = false;
             DrawUtils::setFontColor(COLOR_TEXT);
-            Console::consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 10 : 7, "%s", (task == BACKUP) ? LanguageUtils::gettext("Source:") : LanguageUtils::gettext("Target:"));
-            Console::consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 11 : 8, "   %s (%s)", LanguageUtils::gettext("Savedata in NAND"),
-                                     hasUserDataInNAND ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+            Console::consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 10 : 7, "%s", (task == BACKUP) ? _("Source:") : _("Target:"));
+            Console::consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 11 : 8, "   %s (%s)", _("Savedata in NAND"),
+                                     hasUserDataInNAND ? _("Has Save") : _("Empty"));
             if (task == WIPE_PROFILE) {
-                Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Select vWii data to wipe:"));
+                Console::consolePrintPos(M_OFF, 7, _("Select vWii data to wipe:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 if (source_user == -3) {
-                    Console::consolePrintPos(M_OFF, 8, "   < %s >", LanguageUtils::gettext("full metadata + savedata"));
+                    Console::consolePrintPos(M_OFF, 8, "   < %s >", _("full metadata + savedata"));
                 } else if (source_user == -1) {
-                    Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", LanguageUtils::gettext("savedata"),
-                                             sourceHasRequestedSavedata ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+                    Console::consolePrintPos(M_OFF, 8, "   < %s > (%s)", _("savedata"),
+                                             sourceHasRequestedSavedata ? _("Has Save") : _("Empty"));
                 }
             }
 
@@ -348,50 +348,50 @@ void TitleOptionsState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         switch (task) {
             case BACKUP:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Backup"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Backup"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Backup  \ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
                 break;
             case RESTORE:
-                Console::consolePrintPos(20, 0, LanguageUtils::gettext("Restore"));
+                Console::consolePrintPos(20, 0, _("Restore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Change BackupSet  \ue000: Restore  \ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Change BackupSet  \ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Change BackupSet  \ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
                 break;
             case WIPE_PROFILE:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Wipe"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Wipe"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Wipe  \ue001: Back"));
                 break;
             case PROFILE_TO_PROFILE:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Copy to Other Profile"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Copy to Other Profile"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Copy  \ue001: Back"));
                 break;
             case MOVE_PROFILE:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Move to Other Profile"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Move to Other Profile"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Move  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Move  \ue001: Back"));
                 break;
             case importLoadiine:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Import Loadiine"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Import Loadiine"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Import  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Import  \ue001: Back"));
                 break;
             case exportLoadiine:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Export Loadiine"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Export Loadiine"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Export  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Export  \ue001: Back"));
                 break;
             case COPY_TO_OTHER_DEVICE:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Copy to Other Device"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Copy to Other Device"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Copy  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Copy  \ue001: Back"));
                 break;
             default:;
         }
@@ -796,22 +796,22 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case RESTORE:
                     if (!(common || sourceHasRequestedSavedata)) {
                         if (this->task == BACKUP)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to backup"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to backup"));
                         else if (this->task == WIPE_PROFILE)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to wipe"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to wipe"));
                         else if (this->task == PROFILE_TO_PROFILE)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to copyToOtherProfile"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to copyToOtherProfile"));
                         else if (this->task == MOVE_PROFILE)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to moveProfile"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to moveProfile"));
                         else if (this->task == COPY_TO_OTHER_DEVICE)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to copy"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to copy"));
                         else if (this->task == RESTORE)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to restore"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to restore"));
                         return SUBSTATE_RUNNING;
                     }
                     if (this->task == RESTORE && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
                         if (!checkIfProfilesInTitleBackupExist(&this->title, slot)) {
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
+                            Console::showMessage(ERROR_CONFIRM, _("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
                             return SUBSTATE_RUNNING;
                         }
                     }
@@ -819,7 +819,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         std::string path = (this->title.isTitleOnUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save");
                         std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), this->title.highID, this->title.lowID, "user");
                         if (!checkIfAllProfilesInFolderExists(srcPath)) {
-                            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
+                            Console::showMessage(ERROR_CONFIRM, _("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
                             return SUBSTATE_RUNNING;
                         }
                     }
@@ -833,42 +833,42 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             switch (this->task) {
                 case BACKUP:
                     if (backupSavedata(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES) == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully backed up!"));
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
                     updateBackupData();
                     break;
                 case RESTORE:
                     if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common) == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully restored!"));
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
                     updateRestoreData();
                     break;
                 case WIPE_PROFILE:
                     if (wipeSavedata(&this->title, source_user_, common, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully wiped!"));
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully wiped!"));
                     cursorPos = 0;
                     updateWipeProfileData();
                     break;
                 case MOVE_PROFILE:
                     if (moveSavedataToOtherProfile(&this->title, source_user_, wiiu_user, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully moved!"));
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully moved!"));
                     updateMoveCopyProfileData();
                     break;
                 case PROFILE_TO_PROFILE:
                     if (copySavedataToOtherProfile(&this->title, source_user_, wiiu_user, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully copied!"));
                     updateMoveCopyProfileData();
                     break;
                 case COPY_TO_OTHER_DEVICE:
                     if (copySavedataToOtherDevice(&this->title, &titles[this->title.dupeID], source_user_, wiiu_user, common, INTERACTIVE, USE_SD_OR_STORAGE_PROFILES) == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully copied!"));
                     updateCopyToOtherDeviceData();
                     break;
                 case importLoadiine:
                     if (importFromLoadiine(&this->title, source_user, wiiu_user, common, version, loadiine_mode))
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully copied!"));
                     break;
                 case exportLoadiine:
                     if (exportToLoadiine(&this->title, source_user, wiiu_user, common, version, loadiine_mode, USE_SD_OR_STORAGE_PROFILES))
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Savedata succesfully copied!"));
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully copied!"));
                     break;
                 default:;
             }

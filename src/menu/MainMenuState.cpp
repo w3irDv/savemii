@@ -30,7 +30,7 @@ bool setOwner(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSE
 
     fserror = FSAChangeMode(FSUtils::handle, FSUtils::newlibtoFSA(path).c_str(), mode);
     if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error\n%s\nsetting permissions for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting permissions for\n%s"), FSAGetStatusStr(fserror), path.c_str());
         return false;
     }
 
@@ -39,7 +39,7 @@ bool setOwner(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSE
     fserror = FS_ERROR_OK;
     FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
     if (!shim) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error creating shim for change perms\n\n%s"), path.c_str());
+        Console::showMessage(ERROR_SHOW, _("Error creating shim for change perms\n\n%s"), path.c_str());
         return false;
     }
 
@@ -53,7 +53,7 @@ bool setOwner(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSE
     free(shim);
 
     if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error\n%s\nsetting owner/group for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting owner/group for\n%s"), FSAGetStatusStr(fserror), path.c_str());
         return false;
     }
 
@@ -71,26 +71,26 @@ void MainMenuState::render() {
     }
     if (this->state == STATE_MAIN_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Main menu"));
+        Console::consolePrintPosAligned(0, 4, 1, _("Main menu"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Wii U Save Management (%u Title%s)"), this->wiiuTitlesCount,
+        Console::consolePrintPos(M_OFF, 2, _("   Wii U Save Management (%u Title%s)"), this->wiiuTitlesCount,
                                  (this->wiiuTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
+        Console::consolePrintPos(M_OFF, 3, _("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
                                  (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Wii U System Titles Save Management (%u Title%s)"), this->wiiuSysTitlesCount,
+        Console::consolePrintPos(M_OFF, 4, _("   Wii U System Titles Save Management (%u Title%s)"), this->wiiuSysTitlesCount,
                                  (this->wiiuSysTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Tasks Management"));
+        Console::consolePrintPos(M_OFF, 6, _("   Batch Tasks Management"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   BackupSet Management"));
+        Console::consolePrintPos(M_OFF, 8, _("   BackupSet Management"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-        Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Mii Management"));
+        Console::consolePrintPos(M_OFF, 10, _("   Mii Management"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + cursorPos + (cursorPos > 2 ? 1 : 0) + (cursorPos > 3 ? 1 : 0) + (cursorPos > 4 ? 1 : 0), "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Options \ue000: Select Mode"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Options \ue000: Select Mode"));
     }
 }
 
@@ -110,7 +110,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, IS_VWII);
                     break;
                 case 2:
-                    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n\nProceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n\nDo you wat to continue?\n\n")))
+                    if (!Console::promptConfirm(ST_WARNING, _("This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n\nProceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n\nDo you wat to continue?\n\n")))
                         return SUBSTATE_RUNNING;
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<TitleListState>(this->wiiusystitles, this->wiiuSysTitlesCount, IS_WIIU);

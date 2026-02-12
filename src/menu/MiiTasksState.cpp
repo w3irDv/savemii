@@ -23,64 +23,64 @@ void MiiTasksState::render() {
         bool fixed_stage_repo = (mii_repo->stage_repo != nullptr);
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPos(22, 0, LanguageUtils::gettext("Mii Tasks"));
+        Console::consolePrintPos(22, 0, _("Mii Tasks"));
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("Selected Repo: %s"), mii_repo->repo_name.c_str());
+        Console::consolePrintPosAligned(0, 4, 2, _("Selected Repo: %s"), mii_repo->repo_name.c_str());
 
         switch (mii_repo->db_kind) {
             case MiiRepo::eDBKind::ACCOUNT: {
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("DB management"));
+                Console::consolePrintPos(M_OFF, 2, _("DB management"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-                Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Backup DB"));
+                Console::consolePrintPos(M_OFF, 3, _("   Backup DB"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-                Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Restore Full DB (Full restore - all account attributes - for one profile)"));
+                Console::consolePrintPos(M_OFF, 4, _("   Restore Full DB (Full restore - all account attributes - for one profile)"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-                Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"));
+                Console::consolePrintPos(M_OFF, 5, _("   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"));
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("Mii Management"));
+                Console::consolePrintPos(M_OFF, 7, _("Mii Management"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-                Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   List Miis"));
+                Console::consolePrintPos(M_OFF, 8, _("   List Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
                 if (fixed_stage_repo)
-                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
+                    Console::consolePrintPos(M_OFF, 9, _("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
                 else
-                    Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Export Miis (account MiiData)"));
+                    Console::consolePrintPos(M_OFF, 9, _("   Export Miis (account MiiData)"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-                Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Import Miis (account MiiData)"));
+                Console::consolePrintPos(M_OFF, 10, _("   Import Miis (account MiiData)"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
-                Console::consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Transform Miis"));
+                Console::consolePrintPos(M_OFF, 11, _("   Transform Miis"));
                 Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 2 ? 2 : 0), "\u2192");
             } break;
             default: {
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("DB management"));
+                Console::consolePrintPos(M_OFF, 2, _("DB management"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-                Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Backup DB"));
+                Console::consolePrintPos(M_OFF, 3, _("   Backup DB"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-                Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Restore DB"));
+                Console::consolePrintPos(M_OFF, 4, _("   Restore DB"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-                Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Wipe DB"));
+                Console::consolePrintPos(M_OFF, 5, _("   Wipe DB"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-                Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Initialize DB"));
+                Console::consolePrintPos(M_OFF, 6, _("   Initialize DB"));
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("Mii Management"));
+                Console::consolePrintPos(M_OFF, 8, _("Mii Management"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-                Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   List Miis"));
+                Console::consolePrintPos(M_OFF, 9, _("   List Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
                 if (fixed_stage_repo)
-                    Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
+                    Console::consolePrintPos(M_OFF, 10, _("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
                 else
-                    Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Export Miis"));
+                    Console::consolePrintPos(M_OFF, 10, _("   Export Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
                 if (fixed_stage_repo)
-                    Console::consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Import Miis (from %s)"), mii_repo->stage_repo->repo_name.c_str());
+                    Console::consolePrintPos(M_OFF, 11, _("   Import Miis (from %s)"), mii_repo->stage_repo->repo_name.c_str());
                 else
-                    Console::consolePrintPos(M_OFF, 11, LanguageUtils::gettext("   Import Miis"));
+                    Console::consolePrintPos(M_OFF, 11, _("   Import Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
-                Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   Wipe Miis"));
+                Console::consolePrintPos(M_OFF, 12, _("   Wipe Miis"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 8);
-                Console::consolePrintPos(M_OFF, 13, LanguageUtils::gettext("   Transform Miis"));
+                Console::consolePrintPos(M_OFF, 13, _("   Transform Miis"));
                 Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 3 ? 2 : 0), "\u2192");
             };
         }
@@ -89,25 +89,25 @@ void MiiTasksState::render() {
         if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
             switch (cursorPos) {
                 case 0:
-                    info = LanguageUtils::gettext("Backup All Wii U Account folders and files");
+                    info = _("Backup All Wii U Account folders and files");
                     break;
                 case 1:
-                    info = LanguageUtils::gettext("Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect.");
+                    info = _("Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect.");
                     break;
                 case 2:
-                    info = LanguageUtils::gettext("Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect.");
+                    info = _("Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect.");
                     break;
                 case 3:
-                    info = LanguageUtils::gettext("List all Miis and some of its attributes");
+                    info = _("List all Miis and some of its attributes");
                     break;
                 case 4:
-                    info = LanguageUtils::gettext("Export Miis to other repos");
+                    info = _("Export Miis to other repos");
                     break;
                 case 5:
-                    info = LanguageUtils::gettext("Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect");
+                    info = _("Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect");
                     break;
                 case 6:
-                    info = LanguageUtils::gettext("Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect");
+                    info = _("Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect");
                     break;
                 default:
                     info = "";
@@ -116,31 +116,31 @@ void MiiTasksState::render() {
         } else {
             switch (cursorPos) {
                 case 0:
-                    info = LanguageUtils::gettext("Backup Mii Database in their enterity");
+                    info = _("Backup Mii Database in their enterity");
                     break;
                 case 1:
-                    info = LanguageUtils::gettext("Restore Mii Database in their enterity");
+                    info = _("Restore Mii Database in their enterity");
                     break;
                 case 2:
-                    info = LanguageUtils::gettext("Wipe Mii Database");
+                    info = _("Wipe Mii Database");
                     break;
                 case 3:
-                    info = LanguageUtils::gettext("Initialize Mii Database with no Miis");
+                    info = _("Initialize Mii Database with no Miis");
                     break;
                 case 4:
-                    info = LanguageUtils::gettext("List all Miis and some of its attributes");
+                    info = _("List all Miis and some of its attributes");
                     break;
                 case 5:
-                    info = LanguageUtils::gettext("Export some Miis from this Database to another one");
+                    info = _("Export some Miis from this Database to another one");
                     break;
                 case 6:
-                    info = LanguageUtils::gettext("Import some Miis from another Database to this one");
+                    info = _("Import some Miis from another Database to this one");
                     break;
                 case 7:
-                    info = LanguageUtils::gettext("Wipe some Miis from the Mii Database");
+                    info = _("Wipe some Miis from the Mii Database");
                     break;
                 case 8:
-                    info = LanguageUtils::gettext("Change attributes (share/copy/miiid/owner) or appareance of miis");
+                    info = _("Change attributes (share/copy/miiid/owner) or appareance of miis");
                     break;
                 default:
                     info = "";
@@ -162,7 +162,7 @@ void MiiTasksState::render() {
         Console::consolePrintPosAutoFormat(M_OFF, 15 + v_info_offset, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Task  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Select Task  \ue001: Back"));
     }
 }
 

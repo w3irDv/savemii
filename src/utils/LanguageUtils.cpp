@@ -197,7 +197,7 @@ bool LanguageUtils::gettextLoadLanguage(const char *langFile) {
     return ret;
 }
 
-const char *LanguageUtils::gettext(const char *msgid) {
+const char *_(const char *msgid) {
     MSG *msg = findMSG(hash_string(msgid));
     return msg ? msg->msgstr : msgid;
 }

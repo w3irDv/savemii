@@ -57,7 +57,7 @@ bool StatManager::apply_stat_file() {
         } catch (...) {
             permErrors++;
             Console::showMessage(ERROR_CONFIRM, "Error parsing stat file %s line:\n%s", statFilePath.c_str(), lineString.c_str());
-            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), permErrors);
+            std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), permErrors);
             if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                 InProgress::abortCopy = true;
                 return false;
@@ -81,7 +81,7 @@ bool StatManager::apply_stat_file() {
             continue;
         if (!FSUtils::setOwnerAndMode(uid, gid, (FSMode) fsmode, filename, fserror)) {
             permErrors++;
-            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), permErrors);
+            std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), permErrors);
             if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                 InProgress::abortCopy = true;
                 return false;
@@ -91,7 +91,7 @@ bool StatManager::apply_stat_file() {
 
     if (ferror(stat_file_handle)) {
         permErrors++;
-        Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("Error reading stat file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        Console::showMessage(OK_CONFIRM, _("Error reading stat file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
         return false;
     }
 
@@ -110,7 +110,7 @@ bool StatManager::apply_default_stat(const std::string &filepath) {
     } else {
         FSError fserror;
         if (!FSUtils::setOwnerAndMode(default_file_stat->uid, default_file_stat->gid, (FSMode) default_file_stat->fsmode, filepath, fserror)) {
-            std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions for file: %s\n\n%s"), filepath.c_str(), FSAGetStatusStr(fserror));
+            std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions for file: %s\n\n%s"), filepath.c_str(), FSAGetStatusStr(fserror));
             Console::showMessage(ERROR_SHOW, "%s", errorMessage.c_str());
             return false;
         }
@@ -136,7 +136,7 @@ bool StatManager::open_stat_file_for_write(Title *title, int slot) {
     stat_file_handle = fopen(statFilePath.c_str(), "w");
 
     if (stat_file_handle == NULL) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
         return false;
     }
 
@@ -156,7 +156,7 @@ bool StatManager::open_stat_file_for_write(const std::string &path) {
     stat_file_handle = fopen(statFilePath.c_str(), "w");
 
     if (stat_file_handle == NULL) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
         return false;
     }
 
@@ -182,7 +182,7 @@ bool StatManager::open_stat_file_for_read(Title *title, int slot) {
 
     stat_file_handle = fopen(statFilePath.c_str(), "r");
     if (stat_file_handle == NULL) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
         return false;
     }
 
@@ -197,7 +197,7 @@ bool StatManager::close_stat_file_for_write() {
     enable_get_stat = false;
 
     if (fclose(stat_file_handle) == EOF) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
         return false;
     }
 
@@ -207,7 +207,7 @@ bool StatManager::close_stat_file_for_write() {
 bool StatManager::close_stat_file_for_read() {
 
     if (fclose(stat_file_handle) == EOF) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file\n\n%s\n\n%s"), statFilePath.c_str(), strerror(errno));
         return false;
     }
 
@@ -268,7 +268,7 @@ bool StatManager::get_stat(const std::string &entryPath) {
     if ((fsmode != default_file_stat->fsmode) || (fsastat.owner != default_file_stat->uid) || (fsastat.group != default_file_stat->gid)) {
         int ret = fprintf(stat_file_handle, "%s %x %x:%x %llx %s\n", entryType.c_str(), fsmode, fsastat.owner, fsastat.group, fsastat.quotaSize, path_wo_device.c_str());
         if (ret == EOF && ferror(stat_file_handle)) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing stat file\n\n%s"), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Error writing stat file\n\n%s"), strerror(errno));
             return false;
         }
     }
@@ -287,7 +287,7 @@ bool StatManager::copy_stat(const std::string &source_file, const std::string &t
     if (FSUtils::setOwnerAndMode(fsastat.owner, fsastat.group, fsastat.mode, target_file, fserror)) {
         return true;
     } else {
-        std::string errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Error setting permissions for file: %s\n\n%s"), target_file.c_str(), FSAGetStatusStr(fserror));
+        std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions for file: %s\n\n%s"), target_file.c_str(), FSAGetStatusStr(fserror));
         Console::showMessage(ERROR_SHOW, "%s", errorMessage.c_str());
         return false;
     }

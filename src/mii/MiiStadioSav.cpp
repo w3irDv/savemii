@@ -164,13 +164,13 @@ bool MiiStadioSav::open_and_load_stadio() {
     std::ifstream db_file;
     db_file.open(db_filepath.c_str(), std::ios_base::binary);
     if (!db_file.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         return false;
     }
     size_t size = std::filesystem::file_size(std::filesystem::path(db_filepath));
 
     if (size < WiiUMiiData::STADIO::STADIO_SIZE) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a DB file: %d. Expected %d bytes or more."), db_filepath.c_str(), size, WiiUMiiData::STADIO::STADIO_SIZE);
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nUnexpected size for a DB file: %d. Expected %d bytes or more."), db_filepath.c_str(), size, WiiUMiiData::STADIO::STADIO_SIZE);
         return false;
     }
 
@@ -178,26 +178,26 @@ bool MiiStadioSav::open_and_load_stadio() {
         stadio_buffer = (uint8_t *) MiiData::allocate_memory(size);
 
     if (stadio_buffer == nullptr) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for reading the DB data"), db_filepath.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nCannot create memory buffer for reading the DB data"), db_filepath.c_str());
         return false;
     }
 
     db_file.read((char *) stadio_buffer, size);
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error reading file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         db_file.close();
         goto free_after_fail;
     }
 
     if (memcmp(stadio_buffer, WiiUMiiData::STADIO::STADIO_MAGIC, 3) != 0) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading db\n%s\nWrong magic number."), db_filepath.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Error reading db\n%s\nWrong magic number."), db_filepath.c_str());
         db_file.close();
         goto free_after_fail;
     }
 
     db_file.close();
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         goto free_after_fail;
     }
 
@@ -247,19 +247,19 @@ bool MiiStadioSav::persist_stadio() {
     std::ofstream tmp_db_file;
     tmp_db_file.open(tmp_db_filepath.c_str(), std::ios_base::binary);
     if (tmp_db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
     tmp_db_file.write((char *) stadio_buffer, WiiUMiiData::STADIO::STADIO_SIZE);
     if (tmp_db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error writing file\n\n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
         tmp_db_file.close();
         goto cleanup_after_io_error;
     }
 
     tmp_db_file.close();
     if (tmp_db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
 
@@ -275,23 +275,23 @@ bool MiiStadioSav::persist_stadio() {
             return true;
             //return false  //CHAOS;
         } else { // the worst has happened
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            Console::showMessage(ERROR_CONFIRM, _("Error renaming file \n%s\n\n%s"), tmp_db_filepath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Unrecoverable Error - Please restore db from a Backup"));
             goto cleanup_managing_real_db;
         }
     } else {
         if (FSUtils::checkEntry(db_filepath.c_str()) == 1) {
-            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
+            Console::showMessage(WARNING_CONFIRM, _("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
             goto cleanup_after_io_error;
         } else {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            Console::showMessage(ERROR_CONFIRM, _("Error removing db file %s\n\n%s\n\n"), db_filepath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Unrecoverable Error - Please restore db from a Backup"));
             goto cleanup_managing_real_db;
         }
     }
 
 cleanup_after_io_error:
-    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error managing temporal db %s\n\nNo action has been made over real mii db."), tmp_db_filepath.c_str());
+    Console::showMessage(ERROR_CONFIRM, _("Error managing temporal db %s\n\nNo action has been made over real mii db."), tmp_db_filepath.c_str());
 cleanup_managing_real_db:
     unlink(tmp_db_filepath.c_str());
     if (stadio_owner != 0)
@@ -336,13 +336,13 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata, eDBKind source_mii
     uint8_t *empty_slot_offset = find_stadio_empty_location(source_mii_repo_kind);
 
     if (empty_slot_offset == nullptr) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find an EMPTY location for the mii in the STADIO db"));
+        Console::showMessage(ERROR_CONFIRM, _("Cannot find an EMPTY location for the mii in the STADIO db"));
         return false;
     }
 
     uint16_t frame;
     if (!find_stadio_empty_frame(frame, source_mii_repo_kind)) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot find an EMPTY frame for the mii in the STADIO db"));
+        Console::showMessage(ERROR_CONFIRM, _("Cannot find an EMPTY frame for the mii in the STADIO db"));
         return false;
     }
 
@@ -397,7 +397,7 @@ bool MiiStadioSav::fill_empty_stadio_file() {
     if (this->account_repo != nullptr) {
         if (account_repo->needs_populate == true) {
             if (!account_repo->populate_repo()) {
-                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Warning: unable to populate Account repo. Non-critical error, you can continue"));
+                Console::showMessage(WARNING_CONFIRM, _("Warning: unable to populate Account repo. Non-critical error, you can continue"));
                 return false;
             }
         }
@@ -405,10 +405,10 @@ bool MiiStadioSav::fill_empty_stadio_file() {
             MiiData *mii_data = account_repo->extract_mii_data(mii_index);
             if (mii_data != nullptr) {
                 if (!this->import_miidata_in_stadio(mii_data, ACCOUNT))
-                    Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"), account_repo->miis.at(mii_index)->mii_name.c_str());
+                    Console::showMessage(WARNING_SHOW, _("Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"), account_repo->miis.at(mii_index)->mii_name.c_str());
                 delete mii_data;
             } else {
-                Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"), account_repo->miis[mii_index]->mii_name.c_str(), account_repo->miis[mii_index]->creator_name.c_str());
+                Console::showMessage(WARNING_SHOW, _("Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"), account_repo->miis[mii_index]->mii_name.c_str(), account_repo->miis[mii_index]->creator_name.c_str());
             }
         }
     }
@@ -425,7 +425,7 @@ bool MiiStadioSav::init_stadio_file() {
     stadio_buffer = (uint8_t *) MiiData::allocate_memory(WiiUMiiData::STADIO::STADIO_SIZE);
 
     if (stadio_buffer == nullptr) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for initializing the DB data"), db_filepath.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nCannot create memory buffer for initializing the DB data"), db_filepath.c_str());
         return false;
     }
 
@@ -442,19 +442,19 @@ bool MiiStadioSav::init_stadio_file() {
     std::ofstream db_file;
     db_file.open(db_filepath.c_str(), std::ios_base::binary);
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
     db_file.write((char *) stadio_buffer, WiiUMiiData::STADIO::STADIO_SIZE);
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error writing file\n\n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         db_file.close();
         goto cleanup_after_io_error;
     }
 
     db_file.close();
     if (db_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), db_filepath.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
 

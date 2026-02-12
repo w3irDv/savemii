@@ -35,7 +35,7 @@ bool MiiUtils::initMiiRepos() {
         goto set_repos;
     }
 
-    Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Unable to obtain MiiMaker title information. Let's try to find it..."));
+    Console::showMessage(WARNING_CONFIRM, _("Unable to obtain MiiMaker title information. Let's try to find it..."));
 
     // let's try the id corresponding to the console region
     switch (AmbientConfig::thisConsoleRegion) {
@@ -72,7 +72,7 @@ bool MiiUtils::initMiiRepos() {
             goto set_repos;
     }
 
-    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unable to obtain MiiMaker region. Disabling Internal WII U MiiDB"));
+    Console::showMessage(ERROR_CONFIRM, _("Unable to obtain MiiMaker region. Disabling Internal WII U MiiDB"));
     enable_ffl = false;
 
 set_repos:
@@ -101,19 +101,19 @@ set_repos:
 
     FSUtils::createFolder(path_sgmgx.c_str());
 
-    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", LanguageUtils::gettext("Internal Wii U Mii Database"), MiiRepo::INTERNAL);
-    MiiRepos["FFL_C"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_C", pathfflc, "mii_bckp_ffl_c", LanguageUtils::gettext("Custom Wii U Mii Database on SD"), MiiRepo::SD);
-    MiiRepos["FFL_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_STAGE", pathffl_Stage, "mii_bckp_ffl_Stage", LanguageUtils::gettext("Stage Folder for Wii U Miis on SD"), MiiRepo::SD);
-    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", LanguageUtils::gettext("Internal vWii Mii Database"), MiiRepo::INTERNAL);
-    MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", LanguageUtils::gettext("Custom vWii Mii Database on SD"), MiiRepo::SD);
-    MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", LanguageUtils::gettext("Stage Folder for vWii Miis on SD"), MiiRepo::SD);
-    MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", LanguageUtils::gettext("Miis from Internal Account DB"), MiiRepo::INTERNAL);
-    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_C", pathaccountc, "mii_bckp_account_c", LanguageUtils::gettext("Miis from Custom Account DB on SD"), MiiRepo::SD);
-    MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", LanguageUtils::gettext("Stage folder for Account Miis on SD"), MiiRepo::SD);
-    MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", LanguageUtils::gettext("SaveGameManager GX Miis stage folder on SD"), MiiRepo::SD);
+    MiiRepos["FFL"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL", pathffl, "mii_bckp_ffl", _("Internal Wii U Mii Database"), MiiRepo::INTERNAL);
+    MiiRepos["FFL_C"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_C", pathfflc, "mii_bckp_ffl_c", _("Custom Wii U Mii Database on SD"), MiiRepo::SD);
+    MiiRepos["FFL_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("FFL_STAGE", pathffl_Stage, "mii_bckp_ffl_Stage", _("Stage Folder for Wii U Miis on SD"), MiiRepo::SD);
+    MiiRepos["RFL"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL", pathrfl, "mii_bckp_rfl", _("Internal vWii Mii Database"), MiiRepo::INTERNAL);
+    MiiRepos["RFL_C"] = new MiiFileRepo<WiiMii, WiiMiiData>("RFL_C", pathrflc, "mii_bckp_rfl_c", _("Custom vWii Mii Database on SD"), MiiRepo::SD);
+    MiiRepos["RFL_STAGE"] = new MiiFolderRepo<WiiMii, WiiMiiData>("RFL_STAGE", pathrfl_Stage, "mii_bckp_rfl_Stage", _("Stage Folder for vWii Miis on SD"), MiiRepo::SD);
+    MiiRepos["ACCOUNT"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT", pathaccount, "mii_bckp_account", _("Miis from Internal Account DB"), MiiRepo::INTERNAL);
+    MiiRepos["ACCOUNT_C"] = new MiiAccountRepo<WiiUMii, WiiUMiiData>("ACCOUNT_C", pathaccountc, "mii_bckp_account_c", _("Miis from Custom Account DB on SD"), MiiRepo::SD);
+    MiiRepos["ACCOUNT_STAGE"] = new MiiFolderRepo<WiiUMii, WiiUMiiData>("ACT_STAGE", pathaccount_Stage, "mii_bckp_account_Stage", _("Stage folder for Account Miis on SD"), MiiRepo::SD);
+    MiiRepos["SGMGX"] = new MiiFolderRepo<WiiMii, WiiMiiData>("SGMGX", path_sgmgx, "mii_bckp_sgmgx", _("SaveGameManager GX Miis stage folder on SD"), MiiRepo::SD);
 
     // STADIO
-    MiiStadios["FFL_ACCOUNT"] = new MiiStadioSav("FFL_ACCOUNT", pathstadio, "mii_bckp_ffl", LanguageUtils::gettext("Internal Stadio save DB"));
+    MiiStadios["FFL_ACCOUNT"] = new MiiStadioSav("FFL_ACCOUNT", pathstadio, "mii_bckp_ffl", _("Internal Stadio save DB"));
 
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_STAGE"]);
     //MiiRepos["FFL_STAGE"]->setStageRepo(MiiRepos["FFL"]);
@@ -173,7 +173,7 @@ set_repos:
     //Found, add it to repos
 set_temp_FFL:
     const std::string pathffl_tmp = mii_maker_path + "/user/common/db/FFL_ODB.dat";
-    MiiRepos["FFL_USB"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_USB", pathffl_tmp, "mii_bckp_ffl", LanguageUtils::gettext("Wii U Mii Database mounted on USB"), MiiRepo::INTERNAL);
+    MiiRepos["FFL_USB"] = new MiiFileRepo<WiiUMii, WiiUMiiData>("FFL_USB", pathffl_tmp, "mii_bckp_ffl", _("Wii U Mii Database mounted on USB"), MiiRepo::INTERNAL);
     mii_repos.push_back(MiiRepos["FFL_USB"]);
 
     return true;
@@ -213,7 +213,7 @@ bool MiiUtils::initial_checkpoint() {
                 FSUtils::copyDir(srcPath, dstPath);
             }
         }
-        Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("In case you need this files in the future, you will find them here:\n%s"), checkpointDirSD.c_str());
+        Console::showMessage(OK_CONFIRM, _("In case you need this files in the future, you will find them here:\n%s"), checkpointDirSD.c_str());
     }
     return true;
 }
@@ -295,20 +295,20 @@ bool MiiUtils::export_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
     auto candidate_miis_count = c2a->size();
 
     if (mii_view == nullptr || c2a == nullptr || mii_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - MiiProcesSharedState is not completely initialized"));
         return false;
     }
 
     MiiRepo *target_repo = mii_process_shared_state->auxiliar_mii_repo;
 
     if (target_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Target Repo is null"));
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - Target Repo is null"));
         return false;
     }
 
     if (target_repo->needs_populate == true)
         if (!target_repo->open_and_load_repo()) {
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open repo %s"), target_repo->repo_name.c_str());
+            Console::showMessage(ERROR_SHOW, _("Aborting Task - Unable to open repo %s"), target_repo->repo_name.c_str());
             return false;
         }
 
@@ -316,7 +316,7 @@ bool MiiUtils::export_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
         if (mii_repo->open_and_load_repo())
             if (mii_repo->populate_repo())
                 goto mii_repo_populated;
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), mii_repo->repo_name.c_str());
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - Unable to open and populate repo %s"), mii_repo->repo_name.c_str());
         return false;
     }
 
@@ -324,7 +324,7 @@ mii_repo_populated:
     if (mii_repo->repo_has_duplicated_miis)
         if (target_repo->db_kind != MiiRepo::FOLDER)
             if (check_for_duplicates_in_selected_miis(mii_repo, mii_view, c2a))
-                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its miiid or normal/special/temp or device info for one of them"));
+                Console::showMessage(WARNING_CONFIRM, _("You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its miiid or normal/special/temp or device info for one of them"));
 
 
     InProgress::totalSteps = 0;
@@ -347,7 +347,7 @@ mii_repo_populated:
                     mii_view->at(mii_index).state = MiiStatus::OK;
                 delete mii_data;
             } else
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
+                Console::showMessage(ERROR_SHOW, _("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             if (mii_view->at(mii_index).state == MiiStatus::KO)
                 errorCounter++;
             InProgress::currentStep++;
@@ -361,7 +361,7 @@ mii_repo_populated:
         }
     }
     if (errorCounter != 0 && target_repo->db_kind == MiiRepo::eDBKind::FILE)
-        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detected during export.\nDo you want to save the database?"))) {
+        if (!Console::promptConfirm(ST_WARNING, _("Errors detected during export.\nDo you want to save the database?"))) {
             goto cleanup_mii_view_if_error;
         }
 
@@ -398,14 +398,14 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
     auto candidate_miis_count = c2a->size();
 
     if (mii_view == nullptr || c2a == nullptr || mii_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - MiiProcesSharedState is not completely initialized"));
         return false;
     }
 
     auto receiving_repo = mii_process_shared_state->primary_mii_repo;
 
     if (receiving_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Target Repo is null"));
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - Target Repo is null"));
         return false;
     }
 
@@ -413,7 +413,7 @@ bool MiiUtils::import_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pr
         if (receiving_repo->open_and_load_repo())
             if (receiving_repo->populate_repo())
                 goto receiving_repo_populated;
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), receiving_repo->repo_name.c_str());
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - Unable to open and populate repo %s"), receiving_repo->repo_name.c_str());
         return false;
     }
 
@@ -422,7 +422,7 @@ receiving_repo_populated:
         if (mii_repo->open_and_load_repo())
             if (mii_repo->populate_repo())
                 goto mii_repo_populated;
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - Unable to open and populate repo %s"), mii_repo->repo_name.c_str());
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - Unable to open and populate repo %s"), mii_repo->repo_name.c_str());
         return false;
     }
 
@@ -430,7 +430,7 @@ mii_repo_populated:
     if (mii_repo->repo_has_duplicated_miis)
         if (receiving_repo->db_kind != MiiRepo::FOLDER)
             if (check_for_duplicates_in_selected_miis(mii_repo, mii_view, c2a))
-                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("You are importing duplicated Miis. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its miiid or normal/special/temp or device info for one of them"));
+                Console::showMessage(WARNING_CONFIRM, _("You are importing duplicated Miis. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its miiid or normal/special/temp or device info for one of them"));
 
 
     InProgress::totalSteps = 0;
@@ -468,7 +468,7 @@ mii_repo_populated:
                 }
                 delete mii_data;
             } else
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
+                Console::showMessage(ERROR_SHOW, _("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
             if (mii_view->at(mii_index).state == MiiStatus::KO)
                 errorCounter++;
 
@@ -484,7 +484,7 @@ mii_repo_populated:
     }
 
     if (errorCounter != 0 && receiving_repo->db_kind == MiiRepo::eDBKind::FILE)
-        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detected during import.\nDo you want to save the database?"))) {
+        if (!Console::promptConfirm(ST_WARNING, _("Errors detected during import.\nDo you want to save the database?"))) {
             goto cleanup_mii_view_if_error;
         }
 
@@ -493,7 +493,7 @@ mii_repo_populated:
             receiving_repo->needs_populate = true;
         if (receiving_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) // We allow duplicates in Folder repos, and for File repo we have already informed of duplicates (except if we are explicitly importing two duplicate miis)
             if (receiving_repo->mark_duplicates())
-                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"));
+                Console::showMessage(WARNING_CONFIRM, _("Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"));
     } else {
         goto cleanup_mii_view_if_error; // can only happen for fileRepos
     }
@@ -520,7 +520,7 @@ bool MiiUtils::wipe_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_proc
     auto candidate_miis_count = c2a->size();
 
     if (mii_view == nullptr || c2a == nullptr || mii_repo == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - MiiProcesSharedState is not completely initialized"));
         return false;
     }
 
@@ -549,11 +549,11 @@ bool MiiUtils::wipe_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_proc
                         delete mii_data;
                         mii_data = nullptr;
                     } else { // Just a warning, we are unable to delete it from favourites
-                        Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Unable to remove %s (by %s) from favorites section. Error extracting MiiData"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
+                        Console::showMessage(WARNING_SHOW, _("Unable to remove %s (by %s) from favorites section. Error extracting MiiData"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
                     }
                 }
             } else {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error wiping MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
+                Console::showMessage(ERROR_SHOW, _("Error wiping MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
                 errorCounter++;
             }
             if (mii_data != nullptr)
@@ -570,7 +570,7 @@ bool MiiUtils::wipe_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_proc
     }
 
     if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE) {
-        if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detected during wipe.\nDo you want to save the database?"))) {
+        if (!Console::promptConfirm(ST_WARNING, _("Errors detected during wipe.\nDo you want to save the database?"))) {
             goto cleanup_mii_view_if_error;
         }
     }
@@ -625,7 +625,7 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
 
     if (savemng::firstSDWrite && target_mii_repo->db_kind == MiiRepo::eDBKind::FOLDER) {
         DrawUtils::setFontColor(COLOR_WHITE);
-        Console::consolePrintPosAligned(4, 0, 1, LanguageUtils::gettext("Please wait. First write to (some) SDs can take several seconds."));
+        Console::consolePrintPosAligned(4, 0, 1, _("Please wait. First write to (some) SDs can take several seconds."));
         savemng::firstSDWrite = false;
     }
 
@@ -638,23 +638,23 @@ void MiiUtils::showMiiOperations(MiiProcessSharedState *mii_process_shared_state
         case MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED:
         case MiiProcess::SELECT_TRANSFORM_TASK:
         case MiiProcess::SELECT_TEMPLATE_MII_FOR_XFER_ATTRIBUTE:
-            Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Transforming mii"));
+            Console::consolePrintPos(-2, 8, _("Transforming mii"));
             break;
         case MiiProcess::SELECT_MIIS_TO_WIPE:
-            Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Wiping mii"));
+            Console::consolePrintPos(-2, 8, _("Wiping mii"));
             break;
         default:
-            Console::consolePrintPos(-2, 8, LanguageUtils::gettext("Copying from: %s"), source_mii_repo->repo_name.c_str());
-            Console::consolePrintPos(-2, 11, LanguageUtils::gettext("To: %s"), target_mii_repo->repo_name.c_str());
+            Console::consolePrintPos(-2, 8, _("Copying from: %s"), source_mii_repo->repo_name.c_str());
+            Console::consolePrintPos(-2, 11, _("To: %s"), target_mii_repo->repo_name.c_str());
     }
 
     if (InProgress::totalSteps > 1) {
         if (InProgress::abortTask) {
             DrawUtils::setFontColor(COLOR_LIST_DANGER);
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("Will abort..."));
+            Console::consolePrintPosAligned(17, 4, 2, _("Will abort..."));
         } else {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("Abort:\ue083+\ue046"));
+            Console::consolePrintPosAligned(17, 4, 2, _("Abort:\ue083+\ue046"));
         }
     }
     DrawUtils::endDraw();
@@ -694,7 +694,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                     bool effective_share_flag = mii_repo->miis[mii_index]->shareable;
                     if (mii_process_shared_state->toggle_share_flag) { // we assume that this memory operation will always succeed, so for sure the outcome would be a shared special mii
                         if (effective_share_flag == false && mii_repo->miis[mii_index]->mii_kind == Mii::eMiiKind::SPECIAL && !mii_process_shared_state->toggle_normal_special_flag) {
-                            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."), mii_repo->miis[mii_index]->mii_name.c_str());
+                            Console::showMessage(WARNING_CONFIRM, _("Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."), mii_repo->miis[mii_index]->mii_name.c_str());
                             delete mii_data;
                             delete original_mii_data;
                             mii_view->at(mii_index).state = MiiStatus::NOT_TRIED;
@@ -721,7 +721,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                     }
                     if (mii_process_shared_state->toggle_normal_special_flag) {
                         if (effective_share_flag && mii_repo->miis[mii_index]->mii_kind == Mii::eMiiKind::NORMAL)
-                            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Share attribute will be disabled for Mii %s as it will be transformed to a Special one."), mii_repo->miis[mii_index]->mii_name.c_str());
+                            Console::showMessage(WARNING_CONFIRM, _("Share attribute will be disabled for Mii %s as it will be transformed to a Special one."), mii_repo->miis[mii_index]->mii_name.c_str());
                         mii_data->toggle_normal_special_flag();
                         effective_share_flag = false;
                     }
@@ -747,7 +747,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                     delete mii_data;
                     delete original_mii_data;
                 } else {
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
+                    Console::showMessage(ERROR_SHOW, _("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
                     errorCounter++;
                 }
                 InProgress::currentStep++;
@@ -761,7 +761,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
             }
         }
         if (errorCounter != 0 && mii_repo->db_kind == MiiRepo::eDBKind::FILE) {
-            if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Errors detected during transform.\nDo you want to save the database?"))) {
+            if (!Console::promptConfirm(ST_WARNING, _("Errors detected during transform.\nDo you want to save the database?"))) {
                 goto cleanup_mii_view_after_error;
             }
         }
@@ -769,7 +769,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
         if (mii_repo->persist_repo()) {
             bool repo_has_duplicates = mii_repo->mark_duplicates();
             if (mii_repo->db_kind != MiiRepo::FOLDER && repo_has_duplicates)
-                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"));
+                Console::showMessage(WARNING_CONFIRM, _("Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n\nNotice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n\nPlease fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"));
             return errorCounter == 0;
         }
 
@@ -785,7 +785,7 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
         }
         return false;
     } else {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Aborting Task - MiiProcesSharedState is not completely initialized"));
+        Console::showMessage(ERROR_SHOW, _("Aborting Task - MiiProcesSharedState is not completely initialized"));
         return false;
     }
 }
@@ -806,20 +806,20 @@ void MiiUtils::get_compatible_repos(std::vector<bool> &mii_repos_candidates, Mii
 bool MiiUtils::ask_if_to_initialize_db(MiiRepo *mii_repo, bool not_found) {
     std::string errorMessage;
     if (not_found)
-        errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("DB file for %s not found. Do you want to initialize it?"), mii_repo->repo_name.c_str());
+        errorMessage = StringUtils::stringFormat(_("DB file for %s not found. Do you want to initialize it?"), mii_repo->repo_name.c_str());
     else
-        errorMessage = StringUtils::stringFormat(LanguageUtils::gettext("Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"), mii_repo->repo_name.c_str());
+        errorMessage = StringUtils::stringFormat(_("Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"), mii_repo->repo_name.c_str());
     if (Console::promptConfirm((Style) (ST_YES_NO | ST_WARNING), errorMessage.c_str())) {
         if (savemng::firstSDWrite)
             sdWriteDisclaimer(COLOR_BACKGROUND);
 
         if (mii_repo->init_db_file()) {
-            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Db file %s initialized"), mii_repo->path_to_repo.c_str());
+            Console::showMessage(OK_SHOW, _("Db file %s initialized"), mii_repo->path_to_repo.c_str());
             return true;
         } else
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error initializing db file %s"), mii_repo->path_to_repo.c_str());
+            Console::showMessage(ERROR_SHOW, _("Error initializing db file %s"), mii_repo->path_to_repo.c_str());
     } else
-        Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Initialize task for %s aborted"), mii_repo->path_to_repo.c_str());
+        Console::showMessage(WARNING_SHOW, _("Initialize task for %s aborted"), mii_repo->path_to_repo.c_str());
 
     return false;
 }
@@ -833,7 +833,7 @@ bool MiiUtils::x_restore_account_mii(uint16_t &errorCounter, MiiProcessSharedSta
     uint8_t result = 1;
 
     if (mii_process_shared_state->auxiliar_mii_repo->db_kind != MiiRepo::ACCOUNT) {
-        Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("This action is not supported on the selected repo."));
+        Console::showMessage(WARNING_SHOW, _("This action is not supported on the selected repo."));
         return false;
     }
 
@@ -859,9 +859,9 @@ bool MiiUtils::x_restore_account_mii(uint16_t &errorCounter, MiiProcessSharedSta
 
     if (!FSUtils::folderEmpty(target_path.c_str())) {
         int slotb = MiiSaveMng::getEmptySlot(target_mii_repo);
-        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
-            if (!(target_mii_repo->backup(slotb, LanguageUtils::gettext("pre-XRestore backup")) == 0)) {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - XRestore aborted !!"));
+        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
+            if (!(target_mii_repo->backup(slotb, _("pre-XRestore backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, _("Backup Failed - XRestore aborted !!"));
                 return false;
             }
     }
@@ -887,22 +887,22 @@ bool MiiUtils::x_restore_account_mii(uint16_t &errorCounter, MiiProcessSharedSta
                         result = 0;
                         goto cleanup;
                     } else {
-                        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+                        Console::showMessage(ERROR_CONFIRM, _("Unrecoverable Error - Please restore db from a Backup"));
                     }
                 } else {
-                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), target_account_dat.c_str(), strerror(errno));
-                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Restored full account %s on %s account. \n\nPlease restore a db Backup if needed."), source_account.c_str(), target_account.c_str());
+                    Console::showMessage(ERROR_CONFIRM, _("Error renaming file \n%s\n\n%s"), target_account_dat.c_str(), strerror(errno));
+                    Console::showMessage(ERROR_CONFIRM, _("Restored full account %s on %s account. \n\nPlease restore a db Backup if needed."), source_account.c_str(), target_account.c_str());
                 }
             } else {
-                Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), source_account_dat.c_str(), strerror(errno));
-                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Restored full account %s on %s account. \n\nPlease restore a db Backup if needed."), source_account.c_str(), target_account.c_str());
+                Console::showMessage(WARNING_CONFIRM, _("Error removing db file %s\n\n%s\n\n"), source_account_dat.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, _("Restored full account %s on %s account. \n\nPlease restore a db Backup if needed."), source_account.c_str(), target_account.c_str());
             }
         } else {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error restoring db file %s\n\n%s\n\n"), source_path.c_str(), strerror(errno));
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            Console::showMessage(ERROR_CONFIRM, _("Error restoring db file %s\n\n%s\n\n"), source_path.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Unrecoverable Error - Please restore db from a Backup"));
         }
     } else {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), target_account_dat.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error renaming file \n%s\n\n%s"), target_account_dat.c_str(), strerror(errno));
     }
 
 cleanup:
@@ -953,7 +953,7 @@ bool MiiUtils::restore_account_mii(MiiProcessSharedState *mii_process_shared_sta
     std::string src_path = mii_process_shared_state->auxiliar_mii_repo->path_to_repo + "/" + account;
     std::string dst_path = mii_process_shared_state->primary_mii_repo->path_to_repo + "/" + account;
     if (FSUtils::checkEntry(dst_path.c_str()) == 0) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Account %s does not exist in primary Account DB %s"), account.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Account %s does not exist in primary Account DB %s"), account.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
         return false;
     }
     // STADIO
@@ -969,7 +969,7 @@ bool MiiUtils::restore_account_mii(MiiProcessSharedState *mii_process_shared_sta
         }
     }
     if (!location_found) { // Cannot happen
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Account %s does not exist in primary Account DB %s"), account.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Account %s does not exist in primary Account DB %s"), account.c_str(), mii_process_shared_state->primary_mii_repo->repo_name.c_str());
         return false;
     }
     if (((MiiAccountRepo<WiiUMii, WiiUMiiData> *) mii_process_shared_state->primary_mii_repo)->restore_account(src_path, dst_path) == 0) {

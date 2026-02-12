@@ -11,9 +11,9 @@
 
 void StartupUtils::disclaimer() {
     Console::consolePrintPosAligned(14, 0, 1, "SaveMii v%u.%u.%u%s", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
-    Console::consolePrintPosAligned(15, 0, 1, LanguageUtils::gettext("Disclaimer:"));
-    Console::consolePrintPosAligned(16, 0, 1, LanguageUtils::gettext("There is always the potential for a brick."));
-    Console::consolePrintPosAligned(17, 0, 1, LanguageUtils::gettext("Everything you do with this software is your own responsibility"));
+    Console::consolePrintPosAligned(15, 0, 1, _("Disclaimer:"));
+    Console::consolePrintPosAligned(16, 0, 1, _("There is always the potential for a brick."));
+    Console::consolePrintPosAligned(17, 0, 1, _("Everything you do with this software is your own responsibility"));
 }
 
 std::vector<const char *> initMessageList;

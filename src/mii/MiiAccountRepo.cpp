@@ -84,7 +84,7 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_f
 
     std::ifstream mii_file(mii_filepath);
     if (!mii_file.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
         return nullptr;
     }
 
@@ -100,7 +100,7 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_f
     }
     mii_file.close();
     if (mii_file.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), mii_filepath.c_str(), strerror(errno));
         return nullptr;
     }
 
@@ -108,25 +108,25 @@ MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_f
     size_t mii_buffer_size = MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE; // make room always for CRC (Account has always MII_DATA_SIZE +  2 0's + 2 CRC bytes)
 
     if (str_size != 2 * mii_buffer_size) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), mii_filepath.c_str(), str_size, 2 * mii_buffer_size, 2 * mii_buffer_size);
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nUnexpected size for a Mii file: %d. Only %d or %d bytes are allowed\nFile will be skipped"), mii_filepath.c_str(), str_size, 2 * mii_buffer_size, 2 * mii_buffer_size);
         return nullptr;
     }
 
     unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(mii_buffer_size);
 
     if (mii_buffer == NULL) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("%s\n\nCannot create memory buffer for reading the mii data"), mii_filepath.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("%s\n\nCannot create memory buffer for reading the mii data"), mii_filepath.c_str());
         return nullptr;
     }
 
     if (!MIIDATA::str_2_raw_mii_data(mii_data_str, mii_buffer, mii_buffer_size)) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error serializing WiiU MiiData"));
+        Console::showMessage(ERROR_SHOW, _("Error serializing WiiU MiiData"));
         free(mii_buffer);
         return nullptr;
     }
 
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(mii_buffer, mii_buffer_size)) { // Only defined for WiiU
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error switching le/be MiiData representation"));
+        Console::showMessage(ERROR_SHOW, _("Error switching le/be MiiData representation"));
         free(mii_buffer);
         return nullptr;
     }
@@ -140,19 +140,19 @@ template<typename MII, typename MIIDATA>
 bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place, size_t index) {
 
     if (miidata == nullptr) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Trying to import from null mii data"));
+        Console::showMessage(ERROR_SHOW, _("Trying to import from null mii data"));
         return false;
     }
 
     if (in_place != IN_PLACE) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Only in_place is allowed for account miidata"));
+        Console::showMessage(ERROR_SHOW, _("Only in_place is allowed for account miidata"));
         return false;
     }
 
     size_t mii_data_size = miidata->mii_data_size;
 
     if (mii_data_size != (MIIDATA::MII_DATA_SIZE + MIIDATA::CRC_SIZE)) { // Cannot happen
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("MiiData buffer is not big enough\n%s"), this->miis.at(index)->location_name.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("MiiData buffer is not big enough\n%s"), this->miis.at(index)->location_name.c_str());
         return false;
     }
 
@@ -166,7 +166,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     miidata->get_birthdate_as_string(birth_month, birth_day);
 
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+        Console::showMessage(ERROR_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
         return false;
     }
 
@@ -180,9 +180,9 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
 
     std::string mii_data_str{};
     if (!MiiData::raw_mii_data_2_str(mii_data_str, miidata->mii_data, mii_data_size)) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error deserializing WiiU MiiData"));
+        Console::showMessage(ERROR_SHOW, _("Error deserializing WiiU MiiData"));
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
-            Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+            Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
         }
         return false;
     }
@@ -192,9 +192,9 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
 
     std::ifstream mii_file(account_dat);
     if (!mii_file.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
-            Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+            Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
         }
         return false;
     }
@@ -204,10 +204,10 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     std::ofstream tempFile(tmp_account_dat);
 
     if (!tempFile.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
         mii_file.close();
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
-            Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+            Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
         }
         unlink(tmp_account_dat.c_str());
         if (db_owner != 0)
@@ -235,7 +235,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
 
     std::ios_base::iostate state = mii_file.rdstate();
     if (state & std::ios_base::badbit) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error reading file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
         tempFile.close();
         mii_file.close();
         goto cleanup_after_io_error;
@@ -244,14 +244,14 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     mii_file.close();
     state = mii_file.rdstate();
     if (state & std::ios_base::badbit) { // probably overkill
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
         tempFile.close();
         goto cleanup_after_io_error;
     }
 
     tempFile.close();
     if (tempFile.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
         goto cleanup_after_io_error;
     }
 
@@ -266,7 +266,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
             if (db_owner != 0)
                 FSUtils::flushVol(account_dat);
             if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
-                Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+                Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
             }
             // STADIO
             if (!in_place) // at the moment, this is always FALSE
@@ -274,31 +274,31 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
                     this->stadio_sav->import_miidata_in_stadio(miidata);
             return true;
         } else { // the worst has happen
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            Console::showMessage(ERROR_CONFIRM, _("Error renaming file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Unrecoverable Error - Please restore db from a Backup"));
             goto cleanup_managing_real_db;
         }
     } else {
         if (FSUtils::checkEntry(account_dat.c_str()) == 1) {
-            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), account_dat.c_str(), strerror(errno));
+            Console::showMessage(WARNING_CONFIRM, _("Error removing db file %s\n\n%s\n\n"), account_dat.c_str(), strerror(errno));
             goto cleanup_after_io_error;
         } else {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error removing db file %s\n\n%s\n\n"), account_dat.c_str(), strerror(errno));
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Unrecoverable Error - Please restore db from a Backup"));
+            Console::showMessage(ERROR_CONFIRM, _("Error removing db file %s\n\n%s\n\n"), account_dat.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Unrecoverable Error - Please restore db from a Backup"));
             goto cleanup_managing_real_db;
         }
     }
     // some error has happpened
-    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error renaming file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
+    Console::showMessage(ERROR_CONFIRM, _("Error renaming file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
 
 cleanup_after_io_error:
-    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error managing temporal db %s\n\nNo action has been made over real mii db."), tmp_account_dat.c_str());
+    Console::showMessage(ERROR_CONFIRM, _("Error managing temporal db %s\n\nNo action has been made over real mii db."), tmp_account_dat.c_str());
 cleanup_managing_real_db:
     unlink(tmp_account_dat.c_str());
     if (db_owner != 0)
         FSUtils::flushVol(account_dat);
     if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
-        Console::showMessage(WARNING_SHOW, LanguageUtils::gettext("Error transforming WiiU MiiData to Account MiiData"));
+        Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
     }
     return false;
 }
@@ -306,7 +306,7 @@ cleanup_managing_real_db:
 template<typename MII, typename MIIDATA>
 bool MiiAccountRepo<MII, MIIDATA>::wipe_miidata([[maybe_unused]] size_t index) {
 
-    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Wipe Mii Operation not supported for Account Data Miis"));
+    Console::showMessage(ERROR_SHOW, _("Wipe Mii Operation not supported for Account Data Miis"));
     return false;
 }
 
@@ -336,7 +336,7 @@ bool MiiAccountRepo<MII, MIIDATA>::populate_repo() {
         MiiData *miidata = this->extract_mii_data(account_dat);
 
         if (miidata == nullptr) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error parsing file \n%s"), account_dat.c_str());
+            Console::showMessage(ERROR_CONFIRM, _("Error parsing file \n%s"), account_dat.c_str());
             continue;
         }
 
@@ -360,7 +360,7 @@ bool MiiAccountRepo<MII, MIIDATA>::populate_repo() {
             push_back_invalid_mii(filename_str, index);
         }
         index++;
-        Console::showMessage(ST_DEBUG, LanguageUtils::gettext("Reading Miis: %d"), index);
+        Console::showMessage(ST_DEBUG, _("Reading Miis: %d"), index);
     }
 
     if (ec.value() != 0) {
@@ -422,9 +422,9 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
 
     if (!FSUtils::folderEmpty(dstPath.c_str())) {
         int slotb = MiiSaveMng::getEmptySlot(this);
-        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, LanguageUtils::gettext("Backup current savedata first to next empty slot?")))
-            if (!(this->backup(slotb, LanguageUtils::gettext("pre-Restore backup")) == 0)) {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Backup Failed - Restore aborted !!"));
+        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
+            if (!(this->backup(slotb, _("pre-Restore backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
                 return -1;
             }
     }
@@ -438,16 +438,16 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, s
             }
 
         } else {
-            errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+            errorMessage.append("\n" + (std::string) _("Error copying data."));
             errorCode = 1;
         }
     } else {
-        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error creating folder."));
+        errorMessage.append("\n" + (std::string) _("Error creating folder."));
         errorCode = 16;
     }
 
     if (errorCode != 0) {
-        errorMessage = (std::string) LanguageUtils::gettext("%s\nRestore failed.") + "\n" + errorMessage;
+        errorMessage = (std::string) _("%s\nRestore failed.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
     }
 
@@ -487,7 +487,7 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int targ
         }
 
     } else {
-        errorMessage.append("\n" + (std::string) LanguageUtils::gettext("Error copying data."));
+        errorMessage.append("\n" + (std::string) _("Error copying data."));
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
         errorCode = 1;
     }

@@ -18,7 +18,7 @@ bool AmbientConfig::get_device_hash() {
                              (uint8_t) device_hash[0], (uint8_t) device_hash[1], (uint8_t) device_hash[2], (uint8_t) device_hash[3], (uint8_t) device_hash[4], (uint8_t) device_hash[5], (uint8_t) device_hash[6], (uint8_t) device_hash[7],
                              result.GetLevel(), result.GetModule(), result.GetSummary());
 
-        Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("Error getting DeviceHash\nOnly affects to WiiU Mii Transfomation > Set Device Hash\n\nAll other savemii functions are unaffected"));
+        Console::showMessage(WARNING_CONFIRM, _("Error getting DeviceHash\nOnly affects to WiiU Mii Transfomation > Set Device Hash\n\nAll other savemii functions are unaffected"));
     }
 
     return ret;

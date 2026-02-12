@@ -37,10 +37,10 @@ class Keyboard {
 
             };
             for (unsigned int i=0;i<keyboardNormal.size();i++) {
-                keysNormal.push_back(stringToWstring(LanguageUtils::gettext(keyboardNormal[i].c_str())));
+                keysNormal.push_back(stringToWstring(_(keyboardNormal[i].c_str())));
                 }
             for (unsigned int i=0;i<keyboardShift.size();i++) {
-                keysShift.push_back(stringToWstring(LanguageUtils::gettext(keyboardShift[i].c_str())));
+                keysShift.push_back(stringToWstring(_(keyboardShift[i].c_str())));
             } 
             currentKeyboard = keysNormal;
             setCurrentKey();

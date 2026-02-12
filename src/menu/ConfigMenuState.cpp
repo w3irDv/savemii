@@ -14,35 +14,35 @@ static std::string language;
 
 void ConfigMenuState::render() {
     DrawUtils::setFontColor(COLOR_INFO);
-    Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Configuration Options"));
+    Console::consolePrintPosAligned(0, 4, 1, _("Configuration Options"));
     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
     language = LanguageUtils::getLoadedLanguage();
-    Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Language: %s"), language.c_str());
+    Console::consolePrintPos(M_OFF, 2, _("   Language: %s"), language.c_str());
 
     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-    Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Always apply Backup Excludes: %s"),
-                             GlobalCfg::global->alwaysApplyExcludes ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+    Console::consolePrintPos(M_OFF, 4, _("   Always apply Backup Excludes: %s"),
+                             GlobalCfg::global->alwaysApplyExcludes ? _("Yes") : _("No"));
 
     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-    Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Ask for backup dir conversion to titleName based format: %s"),
-                             GlobalCfg::global->askForBackupDirConversion ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+    Console::consolePrintPos(M_OFF, 6, _("   Ask for backup dir conversion to titleName based format: %s"),
+                             GlobalCfg::global->askForBackupDirConversion ? _("Yes") : _("No"));
 
     if (GlobalCfg::global->askForBackupDirConversion != TitleListState::getCheckIdVsTitleNameBasedPath()) {
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF + 32, 7, LanguageUtils::gettext("   This session value: %s"),
-                                 TitleListState::getCheckIdVsTitleNameBasedPath() ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF + 32, 7, _("   This session value: %s"),
+                                 TitleListState::getCheckIdVsTitleNameBasedPath() ? _("Yes") : _("No"));
     }
 
     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-    Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Warn and don't allow restore of undefined profiles: %s"),
-                             GlobalCfg::global->dontAllowUndefinedProfiles ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+    Console::consolePrintPos(M_OFF, 8, _("   Warn and don't allow restore of undefined profiles: %s"),
+                             GlobalCfg::global->dontAllowUndefinedProfiles ? _("Yes") : _("No"));
 
     DrawUtils::setFontColor(COLOR_INFO);
-    Console::consolePrintPos(M_OFF + 2, 10, LanguageUtils::gettext("WiiU Serial Id: %s"), AmbientConfig::thisConsoleSerialId.c_str());
+    Console::consolePrintPos(M_OFF + 2, 10, _("WiiU Serial Id: %s"), AmbientConfig::thisConsoleSerialId.c_str());
 
     DrawUtils::setFontColor(COLOR_TEXT);
     Console::consolePrintPos(M_OFF, 2 + cursorPos * 2, "\u2192");
-    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue045 SaveConfig  \ue001: Back"));
+    Console::consolePrintPosAligned(17, 4, 2, _("\ue045 SaveConfig  \ue001: Back"));
 }
 
 ApplicationState::eSubState ConfigMenuState::update(Input *input) {
@@ -57,25 +57,25 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
     if (input->get(ButtonState::TRIGGER, Button::RIGHT)) {
         switch (cursorPos) {
             case 0:
-                if (language == LanguageUtils::gettext("Japanese"))
+                if (language == _("Japanese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__German);
-                else if (language == LanguageUtils::gettext("German"))
+                else if (language == _("German"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Italian);
-                else if (language == LanguageUtils::gettext("Italian"))
+                else if (language == _("Italian"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Portuguese);
-                else if (language == LanguageUtils::gettext("Portuguese"))
+                else if (language == _("Portuguese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Spanish);
-                else if (language == LanguageUtils::gettext("Spanish"))
+                else if (language == _("Spanish"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Chinese1);
-                else if (language == LanguageUtils::gettext("Traditional Chinese"))
+                else if (language == _("Traditional Chinese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Korean);
-                else if (language == LanguageUtils::gettext("Korean"))
+                else if (language == _("Korean"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Russian);
-                else if (language == LanguageUtils::gettext("Russian"))
+                else if (language == _("Russian"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Chinese2);
-                else if (language == LanguageUtils::gettext("Simplified Chinese"))
+                else if (language == _("Simplified Chinese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__English);
-                else if (language == LanguageUtils::gettext("English"))
+                else if (language == _("English"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Japanese);
                 break;
             case 1:
@@ -93,25 +93,25 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
     if (input->get(ButtonState::TRIGGER, Button::LEFT)) {
         switch (cursorPos) {
             case 0:
-                if (language == LanguageUtils::gettext("Japanese"))
+                if (language == _("Japanese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__English);
-                else if (language == LanguageUtils::gettext("English"))
+                else if (language == _("English"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Chinese2);
-                else if (language == LanguageUtils::gettext("Simplified Chinese"))
+                else if (language == _("Simplified Chinese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Russian);
-                else if (language == LanguageUtils::gettext("Russian"))
+                else if (language == _("Russian"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Korean);
-                else if (language == LanguageUtils::gettext("Korean"))
+                else if (language == _("Korean"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Chinese1);
-                else if (language == LanguageUtils::gettext("Traditional Chinese"))
+                else if (language == _("Traditional Chinese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Spanish);
-                else if (language == LanguageUtils::gettext("Spanish"))
+                else if (language == _("Spanish"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Portuguese);
-                else if (language == LanguageUtils::gettext("Portuguese"))
+                else if (language == _("Portuguese"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Italian);
-                else if (language == LanguageUtils::gettext("Italian"))
+                else if (language == _("Italian"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__German);
-                else if (language == LanguageUtils::gettext("German"))
+                else if (language == _("German"))
                     LanguageUtils::loadLanguage(Swkbd_LanguageType__Japanese);
                 break;
             case 1:
@@ -131,11 +131,11 @@ ApplicationState::eSubState ConfigMenuState::update(Input *input) {
             if (savemng::firstSDWrite)
                 sdWriteDisclaimer();
             if (GlobalCfg::global->save())
-                Console::showMessage(OK_CONFIRM, LanguageUtils::gettext("Configuration saved"));
+                Console::showMessage(OK_CONFIRM, _("Configuration saved"));
             else
-                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error saving configuration"));
+                Console::showMessage(ERROR_CONFIRM, _("Error saving configuration"));
         } else
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error processing configuration"));
+            Console::showMessage(ERROR_SHOW, _("Error processing configuration"));
     }
     return SUBSTATE_RUNNING;
 }

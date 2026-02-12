@@ -56,7 +56,7 @@ void MiiDBOptionsState::render() {
         // Account data cannot be wiped
         if ((mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) && (action == MiiProcess::WIPE_DB || action == MiiProcess::INITIALIZE_DB)) {
             DrawUtils::endDraw();
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("This action is not supported on the selected repo."));
+            Console::showMessage(ERROR_SHOW, _("This action is not supported on the selected repo."));
             this->unsupported_action = true;
             DrawUtils::beginDraw();
             DrawUtils::setRedraw(true);
@@ -66,15 +66,15 @@ void MiiDBOptionsState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2, db_name);
         if ((action == MiiProcess::BACKUP_DB) || (action == MiiProcess::RESTORE_DB) || (action == MiiProcess::XRESTORE_DB)) {
-            Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("Select %s:"), LanguageUtils::gettext("slot"));
+            Console::consolePrintPos(M_OFF, 4, _("Select %s:"), _("slot"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             Console::consolePrintPos(M_OFF, 5, "   < %03u > (%s)", slot,
-                                     emptySlot ? LanguageUtils::gettext("Empty")
-                                               : LanguageUtils::gettext("Used"));
+                                     emptySlot ? _("Empty")
+                                               : _("Used"));
 
             if (!emptySlot) {
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPosAligned(15, 4, 1, LanguageUtils::gettext("Slot -> Date: %s"),
+                Console::consolePrintPosAligned(15, 4, 1, _("Slot -> Date: %s"),
                                                 slotInfo.c_str());
                 if (tag != "") {
                     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
@@ -84,16 +84,16 @@ void MiiDBOptionsState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, 7, "%s", (action == MiiProcess::BACKUP_DB) ? LanguageUtils::gettext("Source:") : LanguageUtils::gettext("Target:"));
-        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   %s Mii DB (%s)"), mii_repo->repo_name.c_str(),
-                                 repoHasData ? LanguageUtils::gettext("Has Save") : LanguageUtils::gettext("Empty"));
+        Console::consolePrintPos(M_OFF, 7, "%s", (action == MiiProcess::BACKUP_DB) ? _("Source:") : _("Target:"));
+        Console::consolePrintPos(M_OFF, 8, _("   %s Mii DB (%s)"), mii_repo->repo_name.c_str(),
+                                 repoHasData ? _("Has Save") : _("Empty"));
 
         if (action == MiiProcess::WIPE_DB) {
-            Console::consolePrintPos(M_OFF + 2, 5, LanguageUtils::gettext("DB will be wiped"));
+            Console::consolePrintPos(M_OFF + 2, 5, _("DB will be wiped"));
         }
 
         if (action == MiiProcess::INITIALIZE_DB) {
-            Console::consolePrintPos(M_OFF + 2, 5, LanguageUtils::gettext("DB will be wiped and initialized"));
+            Console::consolePrintPos(M_OFF + 2, 5, _("DB will be wiped and initialized"));
         }
 
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -102,38 +102,38 @@ void MiiDBOptionsState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         switch (action) {
             case MiiProcess::BACKUP_DB:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Backup"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Backup"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Backup  \ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Backup  \ue045 Tag Slot  \ue046 Delete Slot  \ue001: Back"));
                 break;
             case MiiProcess::RESTORE_DB:
-                Console::consolePrintPos(20, 0, LanguageUtils::gettext("Restore"));
+                Console::consolePrintPos(20, 0, _("Restore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Restore  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Restore  \ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Restore  \ue045 Tag Slot  \ue001: Back"));
                 break;
             case MiiProcess::XRESTORE_DB:
-                Console::consolePrintPos(20, 0, LanguageUtils::gettext("CrossRestore"));
+                Console::consolePrintPos(20, 0, _("CrossRestore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: XRestore  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: XRestore  \ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: XRestore  \ue045 Tag Slot  \ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\ue000: XRestore  \ue045 Tag Slot  \ue001: Back"));
                 break;
             case MiiProcess::WIPE_DB:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Wipe"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Wipe"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Wipe  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Wipe  \ue001: Back"));
                 break;
             case MiiProcess::INITIALIZE_DB:
-                Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Initialize"));
+                Console::consolePrintPosAligned(0, 4, 1, _("Initialize"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Initialize  \ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Initialize  \ue001: Back"));
                 break;
             default:;
         }
@@ -217,13 +217,13 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                 case MiiProcess::XRESTORE_DB:
                     if (!(sourceSelectionHasData)) {
                         if (this->action == MiiProcess::BACKUP_DB)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to backup"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to backup"));
                         else if (this->action == MiiProcess::WIPE_DB)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to wipe"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to wipe"));
                         else if (this->action == MiiProcess::RESTORE_DB)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to restore"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to restore"));
                         else if (this->action == MiiProcess::XRESTORE_DB)
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("No data selected to cross-restore"));
+                            Console::showMessage(ERROR_SHOW, _("No data selected to cross-restore"));
                         return SUBSTATE_RUNNING;
                     }
                     break;
@@ -232,20 +232,20 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
             switch (this->action) {
                 case MiiProcess::BACKUP_DB:
                     if (mii_repo->backup(slot) == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully backed up!"));
+                        Console::showMessage(OK_SHOW, _("Data succesfully backed up!"));
                     updateBackupData();
                     break;
                 case MiiProcess::RESTORE_DB:
                     if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
                         if (!backupRestoreFromSameConsole) {
-                            Console::showMessage(WARNING_CONFIRM, LanguageUtils::gettext("It is not allowed to restore Account data from a different console"));
+                            Console::showMessage(WARNING_CONFIRM, _("It is not allowed to restore Account data from a different console"));
                             return SUBSTATE_RUNNING;
                         }
                         if (mii_repo->needs_populate) {
                             if (mii_repo->open_and_load_repo())
                                 if (mii_repo->populate_repo())
                                     goto primary_repo_populated;
-                            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error populating repo %s"), mii_repo->path_to_repo.c_str());
+                            Console::showMessage(ERROR_SHOW, _("Error populating repo %s"), mii_repo->path_to_repo.c_str());
                             return SUBSTATE_RUNNING;
                         }
                     primary_repo_populated:
@@ -254,7 +254,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                         if (slot_mii_repo->open_and_load_repo())
                             if (slot_mii_repo->populate_repo())
                                 goto slot_repo_populated;
-                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error populating repo %s"), slot_mii_repo->path_to_repo.c_str());
+                        Console::showMessage(ERROR_SHOW, _("Error populating repo %s"), slot_mii_repo->path_to_repo.c_str());
                         delete slot_mii_repo;
                         return SUBSTATE_RUNNING;
                     slot_repo_populated:
@@ -264,10 +264,10 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                         return SUBSTATE_RUNNING;
                     } else {
                         if (mii_repo->db_kind == MiiRepo::eDBKind::FILE)
-                            if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nEXISTING MIIS WILL BE OVERWRITTEN")))
+                            if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nEXISTING MIIS WILL BE OVERWRITTEN")))
                                 return SUBSTATE_RUNNING;
                         if (mii_repo->restore(slot) == 0) {
-                            Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully restored!"));
+                            Console::showMessage(OK_SHOW, _("Data succesfully restored!"));
                         }
                         updateRestoreData();
                     }
@@ -281,7 +281,7 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                         if (slot_mii_repo->open_and_load_repo())
                             if (slot_mii_repo->populate_repo())
                                 goto slot_repo_populated_for_xrestore;
-                        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Error populating repo %s"), slot_mii_repo->path_to_repo.c_str());
+                        Console::showMessage(ERROR_SHOW, _("Error populating repo %s"), slot_mii_repo->path_to_repo.c_str());
                         delete slot_mii_repo;
                         return SUBSTATE_RUNNING;
                     slot_repo_populated_for_xrestore:
@@ -292,18 +292,18 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                     }
                     break;
                 case MiiProcess::WIPE_DB:
-                    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
+                    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
                         return SUBSTATE_RUNNING;
                     if (mii_repo->wipe() == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully wiped!"));
+                        Console::showMessage(OK_SHOW, _("Data succesfully wiped!"));
                     cursorPos = 0;
                     updateWipeData();
                     break;
                 case MiiProcess::INITIALIZE_DB:
-                    if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
+                    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
                         return SUBSTATE_RUNNING;
                     if (mii_repo->initialize() == 0)
-                        Console::showMessage(OK_SHOW, LanguageUtils::gettext("Data succesfully initialized!"));
+                        Console::showMessage(OK_SHOW, _("Data succesfully initialized!"));
                     cursorPos = 0;
                     updateWipeData();
                     break;

@@ -24,35 +24,35 @@ void BatchBackupState::render() {
     }
     if (this->state == STATE_BATCH_BACKUP_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Batch Backup"));
+        Console::consolePrintPosAligned(0, 4, 1, _("Batch Backup"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Backup All (%u Title%s)"), this->wiiuTitlesCount + this->vWiiTitlesCount + this->wiiuSysTitlesCount,
+        Console::consolePrintPos(M_OFF, 2, _("   Backup All (%u Title%s)"), this->wiiuTitlesCount + this->vWiiTitlesCount + this->wiiuSysTitlesCount,
                                  ((this->wiiuTitlesCount + this->vWiiTitlesCount) > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   Backup Wii U (%u Title%s)"), this->wiiuTitlesCount,
+        Console::consolePrintPos(M_OFF, 3, _("   Backup Wii U (%u Title%s)"), this->wiiuTitlesCount,
                                  (this->wiiuTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 4, LanguageUtils::gettext("   Backup vWii (%u Title%s)"), this->vWiiTitlesCount,
+        Console::consolePrintPos(M_OFF, 4, _("   Backup vWii (%u Title%s)"), this->vWiiTitlesCount,
                                  (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Backup Wii U System Titles (%u Title%s)"), this->wiiuSysTitlesCount,
+        Console::consolePrintPos(M_OFF, 5, _("   Backup Wii U System Titles (%u Title%s)"), this->wiiuSysTitlesCount,
                                  (this->wiiuSysTitlesCount > 1) ? "s" : "");
 
         if (cursorPos > 0) {
             if (GlobalCfg::global->getAlwaysApplyExcludes()) {
                 DrawUtils::setFontColor(COLOR_INFO);
                 Console::consolePrintPos(M_OFF + 9, 8,
-                                         LanguageUtils::gettext("Reminder: Your Excludes will be applied to\n  'Backup Wii U' and 'Backup vWii' tasks"));
+                                         _("Reminder: Your Excludes will be applied to\n  'Backup Wii U' and 'Backup vWii' tasks"));
             }
         }
 
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPos(M_OFF, 11, LanguageUtils::gettext("Batch Backup allows you to backup savedata:\n* for All titles at once (WiiU+ vWii)\n* for the titles you select (individual 'Wii U' or 'vWii' tasks)"));
+        Console::consolePrintPos(M_OFF, 11, _("Batch Backup allows you to backup savedata:\n* for All titles at once (WiiU+ vWii)\n* for the titles you select (individual 'Wii U' or 'vWii' tasks)"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: BackupSet Management  \ue000: Backup  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\ue002: BackupSet Management  \ue000: Backup  \ue001: Back"));
     }
 }
 
@@ -138,11 +138,11 @@ void BatchBackupState::backup_all_saves() {
     }
 
     if (InProgress::abortTask) {
-        if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), LanguageUtils::gettext("Do you want to wipe this incomplete batch backup?"))) {
+        if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to wipe this incomplete batch backup?"))) {
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
             if (!wipeBackupSet("/batch/" + batchDatetime, true)) {
-                writeBackupAllMetadata(batchDatetime, LanguageUtils::gettext("ERROR WIPING BACKUPSET"));
+                writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
                 BackupSetList::setIsInitializationRequired(true);
             }
             return;
@@ -153,17 +153,17 @@ void BatchBackupState::backup_all_saves() {
 
     std::string tag;
     if (wiiU_backup_failed_counter == 0 && wii_backup_failed_counter == 0 && !InProgress::abortTask) {
-        tag = StringUtils::stringFormat(LanguageUtils::gettext("ALL OK - WU:%d,vW:%d,S:%d titles"),
+        tag = StringUtils::stringFormat(_("ALL OK - WU:%d,vW:%d,S:%d titles"),
                                         wiiU_backup_ok_counter, wii_backup_ok_counter,wiiU_sys_backup_ok_counter);
         writeBackupAllMetadata(batchDatetime, tag.c_str());
     } else {
         if (wiiU_backup_failed_counter > 0 || wii_backup_failed_counter > 0 || wiiU_sys_backup_failed_counter > 0)
-            tag = StringUtils::stringFormat(LanguageUtils::gettext("OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"),
+            tag = StringUtils::stringFormat(_("OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"),
                                             wiiU_backup_ok_counter, wiiU_backup_failed_counter,
                                             wii_backup_ok_counter, wii_backup_failed_counter,
                                             wiiU_sys_backup_ok_counter, wiiU_sys_backup_failed_counter);
         else
-            tag = StringUtils::stringFormat(LanguageUtils::gettext("PARTIAL - WU:%d,vW:%d,S:%d OK"),
+            tag = StringUtils::stringFormat(_("PARTIAL - WU:%d,vW:%d,S:%d OK"),
                                             wiiU_backup_ok_counter, wii_backup_ok_counter, wiiU_sys_backup_ok_counter);
         writeBackupAllMetadata(batchDatetime, tag.c_str());
     }

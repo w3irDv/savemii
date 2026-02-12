@@ -34,10 +34,10 @@ private:
 
     bool isWiiU;
 
-    std::vector<const char *> sortNames = {LanguageUtils::gettext("None"),
-                                           LanguageUtils::gettext("Name"),
-                                           LanguageUtils::gettext("Storage"),
-                                           LanguageUtils::gettext("Storage+Name")};
+    std::vector<const char *> sortNames = {_("None"),
+                                           _("Name"),
+                                           _("Storage"),
+                                           _("Storage+Name")};
 
     int titleSort = 1;
     int scroll = 0;

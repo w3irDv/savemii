@@ -78,18 +78,18 @@ int main() {
     GlobalCfg::global->read();
     GlobalCfg::global->applyConfig();
 
-    StartupUtils::addInitMessage(LanguageUtils::gettext("Initializing WPAD and KPAD"));
+    StartupUtils::addInitMessage(_("Initializing WPAD and KPAD"));
 
     Input::initialize();
 
-    StartupUtils::addInitMessage(LanguageUtils::gettext("Initializing loadWiiU Titles"));
+    StartupUtils::addInitMessage(_("Initializing loadWiiU Titles"));
 
     TitleUtils::loadWiiUTitles(0);
 
-    StartupUtils::addInitMessage(LanguageUtils::gettext("Initializing FS"));
+    StartupUtils::addInitMessage(_("Initializing FS"));
 
     if (!FSUtils::initFS()) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("initFS failed. Please make sure your MochaPayload is up-to-date"));
+        Console::showMessage(ERROR_SHOW, _("initFS failed. Please make sure your MochaPayload is up-to-date"));
         DrawUtils::endDraw();
         romfsExit();
         DrawUtils::deinitFont();
@@ -113,11 +113,11 @@ int main() {
     TitleUtils::sortTitle(TitleUtils::wiiusystitles, TitleUtils::wiiusystitles + TitleUtils::wiiuSysTitlesCount, 1, true);
 
     StartupUtils::resetMessageList();
-    StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing BackupSets metadata."));
+    StartupUtils::addInitMessageWithIcon(_("Initializing BackupSets metadata."));
 
     BackupSetList::initBackupSetList();
 
-    StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing Excludes config."));
+    StartupUtils::addInitMessageWithIcon(_("Initializing Excludes config."));
 
     ExcludesCfg::wiiuExcludes = std::make_unique<ExcludesCfg>("wiiuExcludes", TitleUtils::wiiutitles, TitleUtils::wiiuTitlesCount);
     ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes", TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
@@ -129,7 +129,7 @@ int main() {
     AmbientConfig::get_mac_address();
     AmbientConfig::get_author_id();
 
-    StartupUtils::addInitMessageWithIcon(LanguageUtils::gettext("Initializing Mii repos."));
+    StartupUtils::addInitMessageWithIcon(_("Initializing Mii repos."));
 
     MiiUtils::initMiiRepos();
 
@@ -161,7 +161,7 @@ int main() {
 
             //Console::consolePrintPos(0, 16, "----------------------------------------------------------------------------");
             DrawUtils::drawLine(16, 420, 812, 420, COLOR_TEXT_AT_CURSOR.r, COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
-            Console::consolePrintPos(0, 17, LanguageUtils::gettext("Press \ue044 to exit."));
+            Console::consolePrintPos(0, 17, _("Press \ue044 to exit."));
 
             DrawUtils::setRedraw(false);
             state->render();

@@ -8,6 +8,8 @@
 #include <string>
 #include <wut_types.h>
 
+#define _(STRING) LanguageUtils::gettext(STRING)
+
 typedef enum {
     Swkbd_LanguageType__Japanese = 0,
     Swkbd_LanguageType__English = 1,

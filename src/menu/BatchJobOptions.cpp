@@ -108,8 +108,8 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 this->titles[i].currentDataSource.hasSavedata = false;
                 continue;
             }
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), srcPath.c_str(), strerror(errno));
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
+            Console::showMessage(ERROR_CONFIRM, _("Error opening source dir\n\n%s\n\n%s"), srcPath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_SHOW, _("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
             continue;
         }
         closedir(dir);
@@ -149,7 +149,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 }
             }
         }
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
+        Console::showMessage(ERROR_SHOW, _("Can't Copy/Move To OtherProfile if there is only one profile."));
         substate_return = true;
         return;
     }
@@ -188,16 +188,16 @@ nxtCheck:
             case WIPE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored. You can:\n* Backup it with 'allusers' option or with Batch Backup\n* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."));
+                titlesWithUndefinedProfilesSummary.assign(_("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored. You can:\n* Backup it with 'allusers' option or with Batch Backup\n* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."));
                 break;
             case RESTORE:
-                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
+                titlesWithUndefinedProfilesSummary.assign(_("The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
                 break;
             default:;
         }
-        titlesWithUndefinedProfilesSummary.append(LanguageUtils::gettext("\n\nNon-existent profiles:\n  "));
+        titlesWithUndefinedProfilesSummary.append(_("\n\nNon-existent profiles:\n  "));
         titlesWithUndefinedProfilesSummary += undefinedUsersMessage;
-        titlesWithUndefinedProfilesSummary.append(LanguageUtils::gettext("\nTitles affected:\n"));
+        titlesWithUndefinedProfilesSummary.append(_("\nTitles affected:\n"));
         titleListInColumns(titlesWithUndefinedProfilesSummary, titlesWithNonExistentProfile);
         titlesWithUndefinedProfilesSummary.append("\n");
 
@@ -221,40 +221,40 @@ void BatchJobOptions::render() {
         const char *menuTitle, *sourceUserPrompt, *onlyCommon, *commonIncluded;
         switch (jobType) {
             case RESTORE:
-                menuTitle = LanguageUtils::gettext("BatchJob - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select SD user to copy from:");
-                onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be restored");
-                commonIncluded = LanguageUtils::gettext("'common' savedata will also be restored");
+                menuTitle = _("BatchJob - Options");
+                sourceUserPrompt = _("Select SD user to copy from:");
+                onlyCommon = _("Only 'common' savedata will be restored");
+                commonIncluded = _("'common' savedata will also be restored");
                 break;
             case PROFILE_TO_PROFILE:
-                menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
+                menuTitle = _("Batch ProfileCopy - Options");
+                sourceUserPrompt = _("Select Wii U user to copy from:");
                 onlyCommon = "";
                 commonIncluded = "";
                 break;
             case MOVE_PROFILE:
-                menuTitle = LanguageUtils::gettext("Batch ProfileMove - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
+                menuTitle = _("Batch ProfileMove - Options");
+                sourceUserPrompt = _("Select Wii U user to copy from:");
                 onlyCommon = "";
                 commonIncluded = "";
                 break;
             case WIPE_PROFILE:
-                menuTitle = LanguageUtils::gettext("Batch Wipe - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to wipe:");
-                onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be deleted");
-                commonIncluded = LanguageUtils::gettext("'common' savedata will also be deleted");
+                menuTitle = _("Batch Wipe - Options");
+                sourceUserPrompt = _("Select Wii U user to wipe:");
+                onlyCommon = _("Only 'common' savedata will be deleted");
+                commonIncluded = _("'common' savedata will also be deleted");
                 break;
             case COPY_FROM_NAND_TO_USB:
-                menuTitle = LanguageUtils::gettext("Batch CopyToUSB - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
-                onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be copied");
-                commonIncluded = LanguageUtils::gettext("'common' savedata will also be copied");
+                menuTitle = _("Batch CopyToUSB - Options");
+                sourceUserPrompt = _("Select Wii U user to copy from:");
+                onlyCommon = _("Only 'common' savedata will be copied");
+                commonIncluded = _("'common' savedata will also be copied");
                 break;
             case COPY_FROM_USB_TO_NAND:
-                menuTitle = LanguageUtils::gettext("Batch CopyToNAND - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
-                onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be copied");
-                commonIncluded = LanguageUtils::gettext("'common' savedata will also be copied");
+                menuTitle = _("Batch CopyToNAND - Options");
+                sourceUserPrompt = _("Select Wii U user to copy from:");
+                onlyCommon = _("Only 'common' savedata will be copied");
+                commonIncluded = _("'common' savedata will also be copied");
                 break;
             default:
                 menuTitle = "";
@@ -267,21 +267,21 @@ void BatchJobOptions::render() {
         Console::consolePrintPos(16, 0, menuTitle);
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
         if (jobType == RESTORE)
-            Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BS: %s"), BackupSetList::getBackupSetEntry().c_str());
+            Console::consolePrintPosAligned(0, 4, 2, _("BS: %s"), BackupSetList::getBackupSetEntry().c_str());
         DrawUtils::setFontColor(COLOR_TEXT);
         if (titleType == WIIU || titleType == WIIU_SYS) {
             Console::consolePrintPos(M_OFF, 3, sourceUserPrompt);
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             if (source_user == -2) {
-                Console::consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("only common save"));
+                Console::consolePrintPos(M_OFF, 4, "   < %s >", _("only common save"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 Console::consolePrintPos(M_OFF, 9, onlyCommon);
-                Console::consolePrintPos(M_OFF, 10, "   < %s >", LanguageUtils::gettext("Ok"));
+                Console::consolePrintPos(M_OFF, 10, "   < %s >", _("Ok"));
             } else if (source_user == -1) {
-                Console::consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("all users"));
+                Console::consolePrintPos(M_OFF, 4, "   < %s >", _("all users"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 Console::consolePrintPos(M_OFF, 9, commonIncluded);
-                Console::consolePrintPos(M_OFF, 10, "   < %s >", LanguageUtils::gettext("Ok"));
+                Console::consolePrintPos(M_OFF, 10, "   < %s >", _("Ok"));
             } else {
                 if (jobType == RESTORE)
                     Console::consolePrintPos(M_OFF, 4, "   < %s >", AccountUtils::getVolAcc()[source_user].persistentID);
@@ -292,12 +292,12 @@ void BatchJobOptions::render() {
 
             if (jobType != WIPE_PROFILE) {
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("Select Wii U user to copy to:"));
+                Console::consolePrintPos(M_OFF, 6, _("Select Wii U user to copy to:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 if (this->wiiu_user == -2)
-                    Console::consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("only common save"));
+                    Console::consolePrintPos(M_OFF, 7, "   < %s >", _("only common save"));
                 else if (this->wiiu_user == -1)
-                    Console::consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("same user than in source"));
+                    Console::consolePrintPos(M_OFF, 7, "   < %s >", _("same user than in source"));
                 else
                     Console::consolePrintPos(M_OFF, 7, "   < %s (%s) >",
                                              AccountUtils::getWiiUAcc()[wiiu_user].miiName, AccountUtils::getWiiUAcc()[wiiu_user].persistentID);
@@ -305,31 +305,31 @@ void BatchJobOptions::render() {
 
             if ((source_user != -2 && source_user != -1) && (jobType != PROFILE_TO_PROFILE) && (jobType != MOVE_PROFILE)) {
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("Include 'common' save?"));
+                Console::consolePrintPos(M_OFF, 9, _("Include 'common' save?"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-                Console::consolePrintPos(M_OFF, 10, "   < %s >", common ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No "));
+                Console::consolePrintPos(M_OFF, 10, "   < %s >", common ? _("Yes") : _("No "));
             }
         }
 
         if (jobType != WIPE_PROFILE && jobType != MOVE_PROFILE) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-            Console::consolePrintPos(M_OFF, 12 - (titleType == VWII ? 8 : 0), LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+            Console::consolePrintPos(M_OFF, 12 - (titleType == VWII ? 8 : 0), _("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? _("Yes") : _("No"));
         }
         if (jobType == MOVE_PROFILE) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-            Console::consolePrintPos(M_OFF, 12 - (titleType == VWII ? 8 : 0), LanguageUtils::gettext("   Target user savedata will be wiped"));
+            Console::consolePrintPos(M_OFF, 12 - (titleType == VWII ? 8 : 0), _("   Target user savedata will be wiped"));
         }
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 14 - (titleType == VWII ? 8 : 0), LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 14 - (titleType == VWII ? 8 : 0), _("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? _("Yes") : _("No"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3 + (cursorPos - 3) * 2 + 5) - (titleType == VWII ? 8 : 0), "\u2192");
 
         if (totalNumberOfTitlesWithNonExistentProfiles == 0)
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\ue000: Ok! Go to Title selection  \ue001: Back"));
         else
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
     }
 }
 
@@ -337,7 +337,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
     if (this->state == STATE_BATCH_JOB_OPTIONS_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             if ((jobType == RESTORE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) && (source_user == -1 && totalNumberOfTitlesWithNonExistentProfiles > 0 && GlobalCfg::global->getDontAllowUndefinedProfiles())) {
-                std::string prompt = titlesWithUndefinedProfilesSummary + LanguageUtils::gettext("\nDo you want to continue?\n");
+                std::string prompt = titlesWithUndefinedProfilesSummary + _("\nDo you want to continue?\n");
                 if (!Console::promptConfirm((Style) (ST_YES_NO | ST_WARNING), prompt.c_str()))
                     return SUBSTATE_RUNNING;
             }

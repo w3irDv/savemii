@@ -79,7 +79,7 @@ std::string Metadata::get() {
         std::string metadataMessage{};
         metadataMessage.assign(this->Date);
         if (this->storage != "")
-            metadataMessage.append(LanguageUtils::gettext(", from ")).append(this->storage);
+            metadataMessage.append(_(", from ")).append(this->storage);
         metadataMessage.append(" | ").append(this->serialId);
         return metadataMessage;
     }
@@ -91,7 +91,7 @@ std::string Metadata::simpleFormat() {
         std::string metadataMessage{};
         metadataMessage.assign(this->Date);
         if (this->storage != "")
-            metadataMessage.append(LanguageUtils::gettext(", from ")).append(this->storage);
+            metadataMessage.append(_(", from ")).append(this->storage);
         metadataMessage.append(" | ").append(this->serialId);
         return metadataMessage;
     }
