@@ -413,7 +413,7 @@ void MiiSelectState::render() {
                         Console::consolePrintPos(MM_OFF + 34, i + 2, _("%s"), mii_kind);
                         DrawUtils::setFontColor(color_text);
                         Console::consolePrintPos(MM_OFF + 42, i + 2, _("]"));
-                        Console::consolePrintPos(MM_OFF + 43, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->favorite ? "\\ue017" : "");
+                        Console::consolePrintPos(MM_OFF + 43, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->favorite ? "\ue017" : "");
                         DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
                         Console::consolePrintPos(MM_OFF + 44, i + 2, _("%s"), this->mii_repo->miis[c2a[i + this->scroll]]->dup_mii_id ? "D" : "");
 

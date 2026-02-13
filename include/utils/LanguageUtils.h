@@ -37,7 +37,8 @@ public:
     static void loadLanguage(Swkbd_LanguageType language) __attribute__((cold));
     static std::string getLoadedLanguage();
     static Swkbd_LanguageType getSystemLanguage() __attribute__((cold));
-    static Swkbd_LanguageType getSwkbdLoadedLang() { return loadedLang; } __attribute__((cold));
+    static Swkbd_LanguageType getSwkbdLoadedLang() { return loadedLang; }
+    __attribute__((cold));
     static void gettextCleanUp() __attribute__((__cold__));
     static const char *gettext(const char *msg) __attribute__((__hot__));
 
@@ -46,6 +47,13 @@ private:
     static uint32_t hash_string(const char *str_param);
     static MSG *findMSG(uint32_t id);
     static void setMSG(const char *msgid, const char *msgstr);
+
+    static bool readPO(const std::string &poFile);
+    static bool parseMsgId(FILE *fp, std::string lineString);
+    static void normalize(std::string &msg);
+    static std::string to_utf8(uint32_t cp);
+    static void unicode_to_str(std::string &str);
+
 
     static MSG *baseMSG;
     static Swkbd_LanguageType sysLang;

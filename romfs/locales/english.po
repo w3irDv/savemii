@@ -1,0 +1,4706 @@
+# English translations for json package.
+# Copyright (C) 2026 THE json'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the json package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: json 2po\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-12 16:46+0100\n"
+"PO-Revision-Date: 2026-02-12 16:46+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:41
+#: /home/qwii/hb/savemii/include/menu/TitleListState.h:37
+msgid "None"
+msgstr ""
+
+#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:42
+#: /home/qwii/hb/savemii/include/menu/TitleListState.h:38
+msgid "Name"
+msgstr ""
+
+#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:43
+#: /home/qwii/hb/savemii/include/menu/TitleListState.h:39
+msgid "Storage"
+msgstr ""
+
+#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:44
+msgid "Strg+Nm"
+msgstr ""
+
+#: /home/qwii/hb/savemii/include/menu/TitleListState.h:40
+msgid "Storage+Name"
+msgstr ""
+
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:59
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:118
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:163
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:353
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:507
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:566
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:611
+msgid "Out of memory."
+msgstr "Out of memory."
+
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:275
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:472
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:730
+#, c-format
+msgid "Loaded %i Wii U titles."
+msgstr "Loaded %i Wii U titles."
+
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:429
+#, c-format
+msgid "%s%s (No banner.bin)"
+msgstr "%s%s (No banner.bin)"
+
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:473
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:731
+#, c-format
+msgid "Loaded %i Wii titles."
+msgstr "Loaded %i Wii titles."
+
+#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:732
+#, c-format
+msgid "Loaded %i Wii U Sys titles."
+msgstr "Loaded %i Wii U Sys titles."
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:76
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:60
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:96
+msgid "Japanese"
+msgstr "Japanese"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:78
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:103
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:78
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:98
+msgid "English"
+msgstr "English"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:83
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:62
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:114
+msgid "German"
+msgstr "German"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:85
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:64
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:112
+msgid "Italian"
+msgstr "Italian"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:87
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:68
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:108
+msgid "Spanish"
+msgstr "Spanish"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:89
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:70
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:106
+msgid "Traditional Chinese"
+msgstr "Traditional Chinese"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:91
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:72
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:104
+msgid "Korean"
+msgstr "Korean"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:97
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:66
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:110
+msgid "Portuguese"
+msgstr "Portuguese"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:99
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:74
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:102
+msgid "Russian"
+msgstr "Russian"
+
+#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:101
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:76
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:100
+msgid "Simplified Chinese"
+msgstr "Simplified Chinese"
+
+#: /home/qwii/hb/savemii/src/utils/AmbientConfig.cpp:21
+msgid ""
+"Error getting DeviceHash\n"
+"Only affects to WiiU Mii Transfomation > Set Device Hash\n"
+"\n"
+"All other savemii functions are unaffected"
+msgstr ""
+"Error getting DeviceHash\n"
+"Only affects to WiiU Mii Transfomation > Set Device Hash\n"
+"\n"
+"All other savemii functions are unaffected"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:38
+msgid "Unable to obtain MiiMaker title information. Let's try to find it..."
+msgstr "Unable to obtain MiiMaker title information. Let's try to find it..."
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:75
+msgid "Unable to obtain MiiMaker region. Disabling Internal WII U MiiDB"
+msgstr "Unable to obtain MiiMaker region. Disabling Internal WII U MiiDB"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:104
+msgid "Internal Wii U Mii Database"
+msgstr "Internal Wii U Mii Database"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:105
+msgid "Custom Wii U Mii Database on SD"
+msgstr "Custom Wii U Mii Database on SD"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:106
+msgid "Stage Folder for Wii U Miis on SD"
+msgstr "Stage Folder for Wii U Miis on SD"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:107
+msgid "Internal vWii Mii Database"
+msgstr "Internal vWii Mii Database"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:108
+msgid "Custom vWii Mii Database on SD"
+msgstr "Custom vWii Mii Database on SD"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:109
+msgid "Stage Folder for vWii Miis on SD"
+msgstr "Stage Folder for vWii Miis on SD"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:110
+msgid "Miis from Internal Account DB"
+msgstr "Miis from Internal Account DB"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:111
+msgid "Miis from Custom Account DB on SD"
+msgstr "Miis from Custom Account DB on SD"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:112
+msgid "Stage folder for Account Miis on SD"
+msgstr "Stage folder for Account Miis on SD"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:113
+msgid "SaveGameManager GX Miis stage folder on SD"
+msgstr "SaveGameManager GX Miis stage folder on SD"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:116
+msgid "Internal Stadio save DB"
+msgstr "Internal Stadio save DB"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:176
+msgid "Wii U Mii Database mounted on USB"
+msgstr "Wii U Mii Database mounted on USB"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:216
+#, c-format
+msgid ""
+"In case you need this files in the future, you will find them here:\n"
+"%s"
+msgstr ""
+"In case you need this files in the future, you will find them here:\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:298
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:401
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:523
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:788
+msgid "Aborting Task - MiiProcesSharedState is not completely initialized"
+msgstr "Aborting Task - MiiProcesSharedState is not completely initialized"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:305
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:408
+msgid "Aborting Task - Target Repo is null"
+msgstr "Aborting Task - Target Repo is null"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:311
+#, c-format
+msgid "Aborting Task - Unable to open repo %s"
+msgstr "Aborting Task - Unable to open repo %s"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:319
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:416
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:425
+#, c-format
+msgid "Aborting Task - Unable to open and populate repo %s"
+msgstr "Aborting Task - Unable to open and populate repo %s"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:327
+msgid ""
+"You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
+msgstr ""
+"You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:350
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:471
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:750
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:588
+#, c-format
+msgid "Error extracting MiiData for %s (by %s)"
+msgstr "Error extracting MiiData for %s (by %s)"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:364
+msgid ""
+"Errors detected during export.\n"
+"Do you want to save the database?"
+msgstr ""
+"Errors detected during export.\n"
+"Do you want to save the database?"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:433
+msgid ""
+"You are importing duplicated Miis. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
+msgstr ""
+"You are importing duplicated Miis. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:487
+msgid ""
+"Errors detected during import.\n"
+"Do you want to save the database?"
+msgstr ""
+"Errors detected during import.\n"
+"Do you want to save the database?"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:496
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:772
+msgid ""
+"Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"
+msgstr ""
+"Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:552
+#, c-format
+msgid "Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
+msgstr "Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:556
+#, c-format
+msgid "Error wiping MiiData for %s (by %s)"
+msgstr "Error wiping MiiData for %s (by %s)"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:573
+msgid ""
+"Errors detected during wipe.\n"
+"Do you want to save the database?"
+msgstr ""
+"Errors detected during wipe.\n"
+"Do you want to save the database?"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:628
+#: /home/qwii/hb/savemii/src/savemng.cpp:1426
+msgid "Please wait. First write to (some) SDs can take several seconds."
+msgstr "Please wait. First write to (some) SDs can take several seconds."
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:641
+msgid "Transforming mii"
+msgstr "Transforming mii"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:644
+msgid "Wiping mii"
+msgstr "Wiping mii"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:647
+#, c-format
+msgid "Copying from: %s"
+msgstr "Copying from: %s"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:648
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:587
+#: /home/qwii/hb/savemii/src/savemng.cpp:1578
+#, c-format
+msgid "To: %s"
+msgstr "To: %s"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:654
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:591
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:610
+msgid "Will abort..."
+msgstr "Will abort..."
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:657
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:594
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:613
+msgid "Abort:\\ue083+\\ue046"
+msgstr "Abort:\\ue083+\\ue046"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:697
+#, c-format
+msgid "Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."
+msgstr "Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:724
+#, c-format
+msgid "Share attribute will be disabled for Mii %s as it will be transformed to a Special one."
+msgstr "Share attribute will be disabled for Mii %s as it will be transformed to a Special one."
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:764
+msgid ""
+"Errors detected during transform.\n"
+"Do you want to save the database?"
+msgstr ""
+"Errors detected during transform.\n"
+"Do you want to save the database?"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:809
+#, c-format
+msgid "DB file for %s not found. Do you want to initialize it?"
+msgstr "DB file for %s not found. Do you want to initialize it?"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:811
+#, c-format
+msgid "Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"
+msgstr "Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:817
+#, c-format
+msgid "Db file %s initialized"
+msgstr "Db file %s initialized"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:820
+#, c-format
+msgid "Error initializing db file %s"
+msgstr "Error initializing db file %s"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:822
+#, c-format
+msgid "Initialize task for %s aborted"
+msgstr "Initialize task for %s aborted"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:836
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:59
+msgid "This action is not supported on the selected repo."
+msgstr "This action is not supported on the selected repo."
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:862
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:425
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:130
+#: /home/qwii/hb/savemii/src/savemng.cpp:382
+#: /home/qwii/hb/savemii/src/savemng.cpp:494
+#: /home/qwii/hb/savemii/src/savemng.cpp:555
+#: /home/qwii/hb/savemii/src/savemng.cpp:968
+msgid "Backup current savedata first to next empty slot?"
+msgstr "Backup current savedata first to next empty slot?"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:863
+msgid "pre-XRestore backup"
+msgstr "pre-XRestore backup"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:864
+msgid "Backup Failed - XRestore aborted !!"
+msgstr "Backup Failed - XRestore aborted !!"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:890
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:902
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:279
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:288
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:278
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:287
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:370
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:379
+msgid "Unrecoverable Error - Please restore db from a Backup"
+msgstr "Unrecoverable Error - Please restore db from a Backup"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:893
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:905
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:278
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:277
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:292
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:369
+#, c-format
+msgid ""
+"Error renaming file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error renaming file \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:894
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:898
+#, c-format
+msgid ""
+"Restored full account %s on %s account. \n"
+"\n"
+"Please restore a db Backup if needed."
+msgstr ""
+"Restored full account %s on %s account. \n"
+"\n"
+"Please restore a db Backup if needed."
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:897
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:284
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:287
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:283
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:286
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:375
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:378
+#, c-format
+msgid ""
+"Error removing db file %s\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"Error removing db file %s\n"
+"\n"
+"%s\n"
+"\n"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:901
+#, c-format
+msgid ""
+"Error restoring db file %s\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"Error restoring db file %s\n"
+"\n"
+"%s\n"
+"\n"
+
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:956
+#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:972
+#, c-format
+msgid "Account %s does not exist in primary Account DB %s"
+msgstr "Account %s does not exist in primary Account DB %s"
+
+#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:50
+msgid "Press \\ue000 to continue"
+msgstr "Press \\ue000 to continue"
+
+#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:80
+msgid "\\ue000 Yes - \\ue001 No"
+msgstr "\\ue000 Yes - \\ue001 No"
+
+#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:81
+msgid "\\ue000 Confirm - \\ue001 Cancel"
+msgstr "\\ue000 Confirm - \\ue001 Cancel"
+
+#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:82
+msgid "\\ue003 Confirm - \\ue001 Cancel"
+msgstr "\\ue003 Confirm - \\ue001 Cancel"
+
+#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:154
+msgid "Choose your option"
+msgstr "Choose your option"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:95
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:101
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:170
+#: /home/qwii/hb/savemii/src/savemng.cpp:1540
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:23
+#, c-format
+msgid ""
+"Error while creating folder:\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error while creating folder:\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:130
+#, c-format
+msgid ""
+"Failed to delete folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Failed to delete folder\n"
+"\n"
+"%s\n"
+"\n"
+"º%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:138
+#, c-format
+msgid ""
+"Failed to delete file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Failed to delete file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:154
+#: /home/qwii/hb/savemii/src/savemng.cpp:1767
+#, c-format
+msgid ""
+"Error while reading folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error while reading folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:176
+#, c-format
+msgid ""
+"Error while creating final folder:\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error while creating final folder:\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:221
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:33
+#, c-format
+msgid ""
+"Error\n"
+"%s\n"
+"setting permissions for\n"
+"%s"
+msgstr ""
+"Error\n"
+"%s\n"
+"setting permissions for\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:228
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:42
+#, c-format
+msgid ""
+"Error creating shim for change perms\n"
+"\n"
+"%s"
+msgstr ""
+"Error creating shim for change perms\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:242
+#, c-format
+msgid ""
+"Error\n"
+"%s\n"
+"setting owner %08x /group %08x for\n"
+"%s"
+msgstr ""
+"Error\n"
+"%s\n"
+"setting owner %08x /group %08x for\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:345
+#: /home/qwii/hb/savemii/src/savemng.cpp:1791
+#: /home/qwii/hb/savemii/src/savemng.cpp:1845
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:84
+#, c-format
+msgid ""
+"Cannot open file for read\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Cannot open file for read\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:367
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:373
+#: /home/qwii/hb/savemii/src/savemng.cpp:1876
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:46
+#, c-format
+msgid ""
+"Cannot open file for write\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Cannot open file for write\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:402
+msgid ""
+"\n"
+"\n"
+"beware: if you haven't done it, try to wipe savedata before restoring"
+msgstr ""
+"\n"
+"\n"
+"beware: if you haven't done it, try to wipe savedata before restoring"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:410
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:486
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:428
+#, c-format
+msgid ""
+"Read error\n"
+"\n"
+"%s\n"
+"\n"
+" reading from %s"
+msgstr ""
+"Read error\n"
+"\n"
+"%s\n"
+"\n"
+" reading from %s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:431
+#, c-format
+msgid ""
+"Write error\n"
+"\n"
+"%s\n"
+"\n"
+" copying to %s"
+msgstr ""
+"Write error\n"
+"\n"
+"%s\n"
+"\n"
+" copying to %s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:445
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:720
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:111
+#: /home/qwii/hb/savemii/src/savemng.cpp:136
+#: /home/qwii/hb/savemii/src/savemng.cpp:174
+#, c-format
+msgid ""
+"Error opening source dir\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error opening source dir\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:470
+#, c-format
+msgid ""
+"Error creating folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error creating folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:517
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:550
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:561
+#, c-format
+msgid ""
+"Error copying directory - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Error copying directory - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:526
+#, c-format
+msgid ""
+"Error copying file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Error copying file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:549
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:762
+#, c-format
+msgid ""
+"Error while parsing folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Copy may be incomplete"
+msgstr ""
+"Error while parsing folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Copy may be incomplete"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:560
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:773
+#: /home/qwii/hb/savemii/src/savemng.cpp:1660
+#, c-format
+msgid ""
+"Error while closing folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error while closing folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:585
+#, c-format
+msgid "Copying file: %s"
+msgstr "Copying file: %s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:586
+#, c-format
+msgid "From: %s"
+msgstr "From: %s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:605
+#, c-format
+msgid "Deleting folder %s"
+msgstr "Deleting folder %s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:605
+#, c-format
+msgid "Deleting file %s"
+msgstr "Deleting file %s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:606
+#, c-format
+msgid ""
+"From: \n"
+"%s"
+msgstr ""
+"From: \n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:743
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:763
+#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:774
+#, c-format
+msgid ""
+"Error setting permissions - Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Error setting permissions - Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+
+#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:14
+msgid "Disclaimer:"
+msgstr "Disclaimer:"
+
+#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:15
+msgid "There is always the potential for a brick."
+msgstr "There is always the potential for a brick."
+
+#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:16
+msgid "Everything you do with this software is your own responsibility"
+msgstr "Everything you do with this software is your own responsibility"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:16
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:66
+#, c-format
+msgid ""
+"Error opening FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error opening FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:32
+#, c-format
+msgid ""
+"Error updating FAT32 chars translation file for file\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error updating FAT32 chars translation file for file\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:39
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:114
+#, c-format
+msgid ""
+"Error closing FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error closing FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:79
+#, c-format
+msgid ""
+"Unexpected format for target in FAT32 translation file:\n"
+"%s"
+msgstr ""
+"Unexpected format for target in FAT32 translation file:\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:88
+#, c-format
+msgid ""
+"Unexpected format for taget in FAT32 translation file:\n"
+"%s"
+msgstr ""
+"Unexpected format for taget in FAT32 translation file:\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:92
+#, c-format
+msgid ""
+"Unexpected format for source in FAT32 translation file:\n"
+"%s"
+msgstr ""
+"Unexpected format for source in FAT32 translation file:\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:109
+#, c-format
+msgid ""
+"Error parsing FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error parsing FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:119
+#, c-format
+msgid ""
+"FAT32 chars translation file is empty\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"FAT32 chars translation file is empty\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:130
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:149
+#, c-format
+msgid ""
+"Cannot rename folder \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Cannot rename folder \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:142
+#, c-format
+msgid ""
+"Cannot rename file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Cannot rename file \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:60
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:84
+#, c-format
+msgid ""
+"Error setting permissions - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Error setting permissions - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:94
+#, c-format
+msgid ""
+"Error reading stat file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error reading stat file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:113
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:290
+#, c-format
+msgid ""
+"Error setting permissions for file: %s\n"
+"\n"
+"%s"
+msgstr ""
+"Error setting permissions for file: %s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:139
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:159
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:185
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:167
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:250
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:445
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:87
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:195
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:207
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:60
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:160
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:165
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:272
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:338
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:665
+#, c-format
+msgid ""
+"Error opening file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error opening file \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:200
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:210
+#: /home/qwii/hb/savemii/src/savemng.cpp:1885
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:57
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:102
+#, c-format
+msgid ""
+"Error closing file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error closing file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:271
+#, c-format
+msgid ""
+"Error writing stat file\n"
+"\n"
+"%s"
+msgstr ""
+"Error writing stat file\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/main.cpp:81
+msgid "Initializing WPAD and KPAD"
+msgstr "Initializing WPAD and KPAD"
+
+#: /home/qwii/hb/savemii/src/main.cpp:85
+msgid "Initializing loadWiiU Titles"
+msgstr "Initializing loadWiiU Titles"
+
+#: /home/qwii/hb/savemii/src/main.cpp:89
+msgid "Initializing FS"
+msgstr "Initializing FS"
+
+#: /home/qwii/hb/savemii/src/main.cpp:92
+msgid "initFS failed. Please make sure your MochaPayload is up-to-date"
+msgstr "initFS failed. Please make sure your MochaPayload is up-to-date"
+
+#: /home/qwii/hb/savemii/src/main.cpp:116
+msgid "Initializing BackupSets metadata."
+msgstr "Initializing BackupSets metadata."
+
+#: /home/qwii/hb/savemii/src/main.cpp:120
+msgid "Initializing Excludes config."
+msgstr "Initializing Excludes config."
+
+#: /home/qwii/hb/savemii/src/main.cpp:132
+msgid "Initializing Mii repos."
+msgstr "Initializing Mii repos."
+
+#: /home/qwii/hb/savemii/src/main.cpp:164
+msgid "Press \\ue044 to exit."
+msgstr "\\ue044 Exit"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:173
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:278
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Unexpected size for a DB file: %d. Expected %d bytes or more."
+msgstr ""
+"%s\n"
+"\n"
+"Unexpected size for a DB file: %d. Expected %d bytes or more."
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:181
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:286
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for reading the DB data"
+msgstr ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for reading the DB data"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:187
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:238
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:83
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:292
+#, c-format
+msgid ""
+"Error reading file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error reading file \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:193
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:298
+#, c-format
+msgid ""
+"Error reading db\n"
+"%s\n"
+"Wrong magic number."
+msgstr ""
+"Error reading db\n"
+"%s\n"
+"Wrong magic number."
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:200
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:262
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:457
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:103
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:247
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:254
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:89
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:171
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:305
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:350
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:677
+#, c-format
+msgid ""
+"Error closing file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error closing file \n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:255
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:450
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:343
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:670
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:51
+#, c-format
+msgid ""
+"Error writing file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error writing file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:294
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:295
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:385
+#, c-format
+msgid ""
+"Error managing temporal db %s\n"
+"\n"
+"No action has been made over real mii db."
+msgstr ""
+"Error managing temporal db %s\n"
+"\n"
+"No action has been made over real mii db."
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:339
+msgid "Cannot find an EMPTY location for the mii in the STADIO db"
+msgstr "Cannot find an EMPTY location for the mii in the STADIO db"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:345
+msgid "Cannot find an EMPTY frame for the mii in the STADIO db"
+msgstr "Cannot find an EMPTY frame for the mii in the STADIO db"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:400
+msgid "Warning: unable to populate Account repo. Non-critical error, you can continue"
+msgstr "Warning: unable to populate Account repo. Non-critical error, you can continue"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:408
+#, c-format
+msgid "Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"
+msgstr "Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:411
+#, c-format
+msgid "Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"
+msgstr "Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"
+
+#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:428
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:646
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for initializing the DB data"
+msgstr ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for initializing the DB data"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:111
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:67
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:425
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Unexpected size for a Mii file: %d. Only %d or %d bytes are allowed\n"
+"File will be skipped"
+msgstr ""
+"%s\n"
+"\n"
+"Unexpected size for a Mii file: %d. Only %d or %d bytes are allowed\n"
+"File will be skipped"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:118
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:76
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:401
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for reading the mii data"
+msgstr ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for reading the mii data"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:123
+msgid "Error serializing WiiU MiiData"
+msgstr "Error serializing WiiU MiiData"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:129
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:99
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:135
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:178
+msgid "Error switching le/be MiiData representation"
+msgstr "Error switching le/be MiiData representation"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:143
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:114
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:419
+msgid "Trying to import from null mii data"
+msgstr "Trying to import from null mii data"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:148
+msgid "Only in_place is allowed for account miidata"
+msgstr "Only in_place is allowed for account miidata"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:155
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:145
+#, c-format
+msgid ""
+"MiiData buffer is not big enough\n"
+"%s"
+msgstr ""
+"MiiData buffer is not big enough\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:169
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:185
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:197
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:210
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:269
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:301
+msgid "Error transforming WiiU MiiData to Account MiiData"
+msgstr "Error transforming WiiU MiiData to Account MiiData"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:183
+msgid "Error deserializing WiiU MiiData"
+msgstr "Error deserializing WiiU MiiData"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:309
+msgid "Wipe Mii Operation not supported for Account Data Miis"
+msgstr "Wipe Mii Operation not supported for Account Data Miis"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:339
+#, c-format
+msgid ""
+"Error parsing file \n"
+"%s"
+msgstr ""
+"Error parsing file \n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:363
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:241
+#, c-format
+msgid "Reading Miis: %d"
+msgstr "Reading Miis: %d"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:426
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:131
+#: /home/qwii/hb/savemii/src/savemng.cpp:969
+msgid "pre-Restore backup"
+msgstr "pre-Restore backup"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:427
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:132
+#: /home/qwii/hb/savemii/src/savemng.cpp:384
+#: /home/qwii/hb/savemii/src/savemng.cpp:970
+msgid "Backup Failed - Restore aborted !!"
+msgstr "Backup Failed - Retore aborted !!"
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:441
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:490
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:56
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:80
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:145
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:178
+msgid "Error copying data."
+msgstr "Error copying data."
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:445
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:150
+msgid "Error creating folder."
+msgstr "Error creating folder."
+
+#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:450
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:189
+#: /home/qwii/hb/savemii/src/savemng.cpp:980
+#: /home/qwii/hb/savemii/src/savemng.cpp:1114
+#, c-format
+msgid ""
+"%s\n"
+"Restore failed."
+msgstr ""
+"%s\n"
+"Restore failed."
+
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:124
+#, c-format
+msgid ""
+"Cannot find a name for the mii file:\n"
+"%s\n"
+"%s"
+msgstr ""
+"Cannot find a name for the mii file:\n"
+"%s\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:190
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:237
+#, c-format
+msgid ""
+"%s \n"
+" Failed to delete file:\n"
+"%s\n"
+"%s"
+msgstr ""
+"%s \n"
+" Failed to delete file:\n"
+"%s\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:153
+#, c-format
+msgid "Maximum Numer of Favorite Miis (%d) reached"
+msgstr "Maximum Numer of Favorite Miis (%d) reached"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:193
+#, c-format
+msgid "Mii %s not found in Favorites section"
+msgstr "Mii %s not found in Favorites section"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:435
+msgid "Cannot find an EMPTY location for the mii in the db"
+msgstr "Cannot find an EMPTY location for the mii in the db"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:449
+msgid "Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"
+msgstr "Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:464
+msgid "Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"
+msgstr "Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:473
+#, c-format
+msgid ""
+"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"You can generate a new Mii ID for it, and it will become a completely new unique mii.\n"
+"\n"
+"Do you want me to change Mii Id for this mii?"
+msgstr ""
+"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"You can generate a new Mii ID for it, and it will become a completely new unique mii.\n"
+"\n"
+"Do you want me to change Mii Id for this mii?"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:520
+#, c-format
+msgid "DB %s has not been initialized"
+msgstr "DB %s has not been initialized"
+
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:535
+#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:538
+#, c-format
+msgid "Looking for a Mii in location: %d/%d. Miis found: %d."
+msgstr "Looking for a Mii in location: %d/%d. Miis found: %d."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:25
+#: /home/qwii/hb/savemii/src/savemng.cpp:783
+msgid "Backup found on this slot. Overwrite it?"
+msgstr "Backup found on this slot. Overwrite it?"
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:44
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:102
+#: /home/qwii/hb/savemii/src/savemng.cpp:806
+#: /home/qwii/hb/savemii/src/savemng.cpp:814
+#: /home/qwii/hb/savemii/src/savemng.cpp:917
+#, c-format
+msgid ""
+"%s\n"
+"Backup failed. DO NOT restore from this slot."
+msgstr ""
+"%s\n"
+"Backup failed. DO NOT restore from this slot."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:53
+msgid "Backup aborted."
+msgstr "Backup aborted."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:74
+msgid "Warning - Error copying stadio file"
+msgstr "Warning - Error copying stadio file"
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:95
+msgid "PARTIAL BACKUP"
+msgstr "PARTIAL BACKUP"
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:100
+msgid "NO STADIO"
+msgstr "NO STADIO"
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:104
+#: /home/qwii/hb/savemii/src/savemng.cpp:755
+#: /home/qwii/hb/savemii/src/savemng.cpp:919
+msgid "UNUSABLE SLOT - BACKUP FAILED"
+msgstr "UNUSABLE SLOT - BACKUP FAILED"
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:142
+msgid "Restore aborted."
+msgstr "Restore aborted."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:221
+msgid "Wipe aborted."
+msgstr "Wipe aborted."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:224
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:284
+msgid "Error wiping data."
+msgstr "Error wiping data."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:236
+msgid "Error deleting file."
+msgstr "Error deleting file."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:249
+#: /home/qwii/hb/savemii/src/savemng.cpp:1245
+#, c-format
+msgid ""
+"%s\n"
+"Wipe failed."
+msgstr ""
+"%s\n"
+"Wipe failed."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:281
+msgid "Initialize aborted."
+msgstr "Initialize aborted."
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:297
+#, c-format
+msgid "%s\n"
+msgstr ""
+"%s\n"
+
+#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:300
+#, c-format
+msgid ""
+"%s\n"
+"Initialize db failed."
+msgstr ""
+"%s\n"
+"Initialize db failed."
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:28
+msgid "No Wii U titles found."
+msgstr "No Wii U titles found."
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:28
+msgid "No vWii titles found."
+msgstr "No vWii titles found."
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:35
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:118
+msgid "Wii U Titles"
+msgstr "Wii U Titles"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:35
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:118
+msgid "vWii Titles"
+msgstr "vWii Titles"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:37
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:271
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:281
+#, c-format
+msgid "%s Sort: %s \\ue084"
+msgstr "%s Sort: %s \\ue084"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:54
+msgid " [vWiiInject]"
+msgstr " [vWiiInject]"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:55
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:64
+msgid " [Not Init]"
+msgstr " [Not Init]"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:73
+msgid "\\ue000: Select Game   \\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
+msgstr "\\ue000: Select Game   \\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:97
+msgid "CBHC save. Could be dangerous to modify. Continue?"
+msgstr "CBHC save. Could be dangerous to modify. Continue?"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:98
+msgid "Are you REALLY sure?"
+msgstr "Are you REALLY sure?"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:111
+msgid ""
+"Savedata for this title has not been initialized.\n"
+"You can try to restore it, but in case that the restore fails,\n"
+"please run the Game to create some initial savedata \n"
+"and try again.\n"
+"\n"
+"You can continue to Task Selection"
+msgstr ""
+"Savedata for this title has not been initialized.\n"
+"You can try to restore it, but in case that the restore fails,\n"
+"please run the Game to create some initial savedata \n"
+"and try again.\n"
+"\n"
+"You can continue to Task Selection"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:117
+#, c-format
+msgid ""
+"SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
+"\n"
+"Do you want to rename already created backup folders?\n"
+"\n"
+"\\ue000  Yes, but only for this title\n"
+"\\ue045  Yes, please migrate all %s\n"
+"\\ue001  Not this time\n"
+"\\ue002  Not in this session\n"
+"\n"
+"\n"
+msgstr ""
+"SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
+"\n"
+"Do you want to rename already created backup folders?\n"
+"\n"
+"\\ue000  Yes, but only for this title\n"
+"\\ue045  Yes, please migrate all %s\n"
+"\\ue001  Not this time\n"
+"\\ue002  Not in this session\n"
+"\n"
+"\n"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:138
+#, c-format
+msgid ""
+"Ok, legacy folder '%08x%08x' will be used.\n"
+"\n"
+"Backups in '%s' will not be accessible\n"
+"\n"
+"Manually copy or migrate data beween folders to access them"
+msgstr ""
+"Ok, legacy folder '%08x%08x' will be used.\n"
+"\n"
+"Backups in '%s'\n"
+"will not be accessible\n"
+"\n"
+"Manually copy or migrate data beween folders to access them"
+
+#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:140
+#, c-format
+msgid "Ok, legacy folder '%08x%08x' will be used."
+msgstr "Ok, legacy folder '%08x%08x' will be used."
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:69
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:108
+#, c-format
+msgid "Select %s:"
+msgstr "Select %s:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:69
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:118
+msgid "slot"
+msgstr "slot"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:72
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:89
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:111
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:122
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:126
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:160
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:164
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:167
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:182
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:187
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:191
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:287
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:295
+msgid "Empty"
+msgstr "Empty"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:73
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:112
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:123
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:127
+msgid "Used"
+msgstr "Used"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:77
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:133
+#, c-format
+msgid "Slot -> Date: %s"
+msgstr "Slot -> Date: %s"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:87
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:285
+msgid "Source:"
+msgstr "Source:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:87
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:285
+msgid "Target:"
+msgstr "Target:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:88
+#, c-format
+msgid "   %s Mii DB (%s)"
+msgstr "   %s Mii DB (%s)"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:89
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:160
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:164
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:167
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:182
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:187
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:191
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:287
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:295
+msgid "Has Save"
+msgstr "Has Save"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:92
+msgid "DB will be wiped"
+msgstr "DB will be wiped"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:96
+msgid "DB will be wiped and initialized"
+msgstr "DB will be wiped and initialized"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:105
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:351
+msgid "Backup"
+msgstr "Backup"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:108
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:354
+msgid "\\ue000: Backup  \\ue001: Back"
+msgstr "\\ue000: Backup  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:110
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:356
+msgid "\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
+msgstr "\\ue000: Backup  \\ue045: Tag Slot  \\ue046: Delete Slot  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:113
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:359
+msgid "Restore"
+msgstr "Restore"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:116
+msgid "\\ue000: Restore  \\ue001: Back"
+msgstr "\\ue000: Restore  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:118
+msgid "\\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:121
+msgid "CrossRestore"
+msgstr "CrossRestore"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:124
+msgid "\\ue000: XRestore  \\ue001: Back"
+msgstr "\\ue000: XRestore  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:126
+msgid "\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:129
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:367
+msgid "Wipe"
+msgstr "Wipe"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:131
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:369
+msgid "\\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue000: Wipe  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:134
+msgid "Initialize"
+msgstr "Initialize"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:136
+msgid "\\ue000: Initialize  \\ue001: Back"
+msgstr "\\ue000: Initialize  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:220
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:799
+msgid "No data selected to backup"
+msgstr "No data selected to backup"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:222
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:801
+msgid "No data selected to wipe"
+msgstr "No data selected to wipe"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:224
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:809
+msgid "No data selected to restore"
+msgstr "No data selected to restore"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:226
+msgid "No data selected to cross-restore"
+msgstr "No data selected to cross-restore"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:235
+msgid "Data succesfully backed up!"
+msgstr "Data succesfully backed up!"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:241
+msgid "It is not allowed to restore Account data from a different console"
+msgstr "It is not allowed to restore Account data from a different console"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:248
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:257
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:284
+#, c-format
+msgid "Error populating repo %s"
+msgstr "Error populating repo %s"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:267
+msgid ""
+"Are you sure?\n"
+"\n"
+"EXISTING MIIS WILL BE OVERWRITTEN"
+msgstr ""
+"Are you sure?\n"
+"\n"
+"EXISTING MIIS WILL BE OVERWRITTEN"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:270
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:543
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:619
+msgid "Data succesfully restored!"
+msgstr "Data succesfully restored!"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:295
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:303
+msgid ""
+"Are you sure?\n"
+"\n"
+"ALL MIIS WILL BE WIPED"
+msgstr ""
+"Are you sure?\n"
+"\n"
+"ALL MIIS WILL BE WIPED"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:295
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:303
+msgid ""
+"Hm, are you REALLY sure?\n"
+"\n"
+"ALL MIIS WILL BE WIPED"
+msgstr ""
+"Hm, are you REALLY sure?\n"
+"\n"
+"ALL MIIS WILL BE WIPED"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:298
+msgid "Data succesfully wiped!"
+msgstr "Data succesfully wiped!"
+
+#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:306
+msgid "Data succesfully initialized!"
+msgstr "Data succesfully initialized!"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:150
+msgid "List Miis"
+msgstr "List Miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:151
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:155
+msgid "\\ue002: View  \\ue001: Back"
+msgstr "\\ue002: View  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:153
+msgid "\\ue083\\ue084 View Duplicates  \\ue002: View  \\ue001: Back"
+msgstr "\\ue083\\ue084 View Duplicates  \\ue002: View  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:160
+msgid "Select which Miis to Import"
+msgstr "Select which Miis to Import"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:163
+msgid "\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:165
+msgid "\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:168
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Import  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Import  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:170
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Import  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Import  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:172
+msgid ">> Import"
+msgstr ">> Import"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:173
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:225
+msgid "|Imported|"
+msgstr "|Imported|"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:176
+msgid "Select which Miis to Export"
+msgstr "Select which Miis to Export"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:178
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Export  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Export  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:180
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:181
+msgid ">> Export"
+msgstr ">> Export"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:182
+msgid "|Exported|"
+msgstr "|Exported|"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:186
+msgid "Select which Mii to Restore"
+msgstr "Select which Mii to Restore"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:187
+msgid "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:188
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:221
+msgid ">> Restore"
+msgstr ">> Restore"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:189
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:234
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:222
+msgid "|Restored|"
+msgstr "|Restored|"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:192
+msgid "Select which Miis to Wipe"
+msgstr "Select which Miis to Wipe"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:194
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Wipe  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:196
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:197
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:239
+msgid ">> Wipe"
+msgstr ">> Wipe"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:198
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:240
+msgid "|Wiped|"
+msgstr "|Wiped|"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:201
+msgid "Select which Miis to Transform"
+msgstr "Select which Miis to Transform"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:203
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Tasks  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Tasks  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:205
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  \\ue000: Tasks  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  \\ue000: Tasks  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:206
+msgid ">> Transform"
+msgstr ">> Transform"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:207
+msgid "|Transformed|"
+msgstr "|Transformed|"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:210
+msgid "Select Mii to copy attrs from"
+msgstr "Select Mii to copy attrs from"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:212
+msgid "\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform Miis  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:214
+msgid "\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:215
+msgid ">> Use as template"
+msgstr ">> Use as template"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:219
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:228
+msgid "Select Mii to be overwritten"
+msgstr "Select Mii to be overwritten"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:221
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:230
+msgid "\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:223
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:232
+msgid "\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:224
+msgid ">> Import here"
+msgstr ">> Import here"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:233
+msgid ">> Restore here"
+msgstr ">> Restore here"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:247
+msgid "Basic view"
+msgstr "Basic view"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:250
+msgid "Mii ID view"
+msgstr "Mii ID view"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:253
+msgid "Device view"
+msgstr "Device view"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:256
+msgid "Location view"
+msgstr "Location view"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:259
+msgid "Creator view"
+msgstr "Creator view"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:262
+msgid "Timestamp view"
+msgstr "Timestamp view"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:278
+msgid "There are no miis matching selected filters."
+msgstr "There are no miis matching selected filters."
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:354
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:362
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:331
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:342
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:346
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:350
+msgid ">> Skip"
+msgstr ">> Skip"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:357
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:334
+msgid "[OK]"
+msgstr "[OK]"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:361
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:349
+msgid "[KO]"
+msgstr "[KO]"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:362
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:342
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:346
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:350
+msgid ">> Retry"
+msgstr ">> Retry"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:380
+msgid "[COPY"
+msgstr "[COPY"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:382
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:387
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:413
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:416
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:418
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:434
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:444
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:449
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:456
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:467
+#, c-format
+msgid "%s"
+msgstr "%s"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:383
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:388
+msgid "On"
+msgstr "On"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:383
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:388
+msgid "Off"
+msgstr "Off"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:385
+msgid "| SHARE"
+msgstr "| SHARE"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:390
+msgid "|"
+msgstr "|"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:395
+msgid "NORMAL"
+msgstr "NORMAL"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:398
+msgid "SPECIAL"
+msgstr "SPECIAL"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:401
+msgid "FOREIGN"
+msgstr "FOREIGN"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:404
+msgid "TEMP"
+msgstr "TEMP"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:407
+msgid "S_TEMP"
+msgstr "S_TEMP"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:410
+msgid "UNKNOWN"
+msgstr "UNKNOWN"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:415
+msgid "]"
+msgstr "]"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:452
+#, c-format
+msgid ": by %s"
+msgstr ": by %s"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:454
+#, c-format
+msgid "- %s"
+msgstr "- %s"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:475
+#, c-format
+msgid "%s%s"
+msgstr "%s%s"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:495
+msgid "Please select some miis to work on"
+msgstr "Please select some miis to work on"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:506
+msgid "Miis extraction Ok"
+msgstr "Miis extraction Ok"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:508
+msgid "Task Aborted - Partial extraction Ok"
+msgstr "Task Aborted - Partial extraction Ok"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:511
+msgid "Extraction has failed - Global Error"
+msgstr "Extraction has failed - Global Error"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:513
+#, c-format
+msgid "Extraction has failed for %d miis"
+msgstr "Extraction has failed for %d miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:521
+msgid "Miis import Ok"
+msgstr "Miis import Ok"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:523
+msgid "Task aborted - Partial import Ok"
+msgstr "Task aborted - Partial import Ok"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:526
+msgid "Import has failed - Global Error"
+msgstr "Import has failed - Global Error"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:528
+#, c-format
+msgid "Import has failed for %d miis"
+msgstr "Import has failed for %d miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:537
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:613
+msgid ""
+"Are you sure?\n"
+"\n"
+"MIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN"
+msgstr ""
+"Are you sure?\n"
+"\n"
+"MIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:545
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:621
+msgid "Data restoration has failed!"
+msgstr "Data restoration has failed!"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:557
+msgid "Miis wipe Ok"
+msgstr "Miis wipe Ok"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:559
+msgid "Task Aborted - Partial wipe Ok"
+msgstr "Task Aborted - Partial wipe Ok"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:562
+msgid "Wipe has failed - Global Error"
+msgstr "Wipe has failed - Global Error"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:564
+#, c-format
+msgid "Wipe has failed for %d miis"
+msgstr "Wipe has failed for %d miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:578
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:161
+msgid "Miis transform ok"
+msgstr "Miis transform ok"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:580
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:163
+msgid "Task aborted - Partial Miis transform ok"
+msgstr "Task aborted - Partial Miis transform ok"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:583
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:166
+msgid "Transform has failed - Global Error"
+msgstr "Transform has failed - Global Error"
+
+#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:585
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:168
+#, c-format
+msgid "Transform has failed for %d miis"
+msgstr "Transform has failed for %d miis"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:69
+msgid "BackupSets"
+msgstr "BackupSets"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:71
+msgid "BackupSets (filter applied)"
+msgstr "BackupSets (filter applied)"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:74
+#, c-format
+msgid "\\ue083 Sort: %s \\ue084"
+msgstr "\\ue083 Sort: %s \\ue084"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:97
+msgid "\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"
+msgstr "\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:99
+msgid "\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"
+msgstr "\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:110
+msgid "Root BackupSet cannot be selected for batchRestore"
+msgstr "Root BackupSet cannot be selected for batchRestore"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:118
+#, c-format
+msgid ""
+"BackupSet selected:\n"
+" - TimeStamp: %s\n"
+" - Tag: %s\n"
+" - From console: %s\n"
+"\n"
+"This console: %s"
+msgstr ""
+"BackupSet selected:\n"
+" - TimeStamp: %s\n"
+" - Tag: %s\n"
+" - From console: %s\n"
+"\n"
+"This console: %s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:219
+msgid "Batch Restore - Select"
+msgstr "Batch Restore - Select"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:220
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:225
+msgid "Batch ProfileCopy - Select"
+msgstr "Batch ProfileCopy - Select"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:226
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:227
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:245
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:251
+msgid ">> Copy"
+msgstr ">> Copy"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:228
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:246
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:252
+msgid "|Copied|"
+msgstr "|Copied|"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:231
+msgid "Batch ProfileMove - Select"
+msgstr "Batch ProfileMove - Select"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:232
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:233
+msgid ">> Move"
+msgstr ">> Move"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:234
+msgid "|Moved|"
+msgstr "|Moved|"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:237
+msgid "Batch Wipe - Select"
+msgstr "Batch Wipe - Select"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:238
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:243
+msgid "Batch Copy To USB - Select"
+msgstr "Batch Copy To USB - Select"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:244
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:249
+msgid "Batch Copy To NAND - Select"
+msgstr "Batch Copy To NAND - Select"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:250
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:255
+msgid "Batch Backup - Select & Go"
+msgstr "Batch Backup - Select & Go"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:256
+msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
+msgstr "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:257
+msgid ">> Backup"
+msgstr ">> Backup"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:258
+msgid "|Saved|"
+msgstr "|Saved|"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:275
+msgid "There are no titles matching selected filters."
+msgstr "There are no titles matching selected filters."
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:339
+msgid "[AB-BackupFailed]"
+msgstr "[AB-BackupFailed]"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:341
+msgid "[AB]"
+msgstr "[AB]"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:345
+msgid "[WR]"
+msgstr "[WR]"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:407
+msgid "Please select some titles to work on"
+msgstr "Please select some titles to work on"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:456
+msgid ""
+"\\ue000  Apply saved excludes\n"
+"\\ue045  Save current excludes\n"
+"\\ue001  Back"
+msgstr ""
+"\\ue000  Apply saved excludes\n"
+"\\ue045  Save current excludes\n"
+"\\ue001  Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:471
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:134
+msgid "Configuration saved"
+msgstr "Configuration saved"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:473
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:136
+msgid "Error saving configuration"
+msgstr "Error saving configuration"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:540
+msgid "Batch Restore - Review & Go"
+msgstr "Batch Restore - Review & Go"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:541
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:543
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:544
+msgid "- Restore"
+msgstr "- Restore"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:541
+#, c-format
+msgid "- Restore from %s to < %s (%s) >"
+msgstr "- Restore from %s to < %s (%s) >"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:542
+#, c-format
+msgid "pre-BatchRestore Backup (vWii: %d%s"
+msgstr "pre-BatchRestore Backup (vWii: %d%s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:542
+#, c-format
+msgid "pre-BatchRestore Backup (WiiU: %d%s"
+msgstr "pre-BatchRestore Backup (WiiU: %d%s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:543
+msgid "- Restore allusers"
+msgstr "- Restore allusers"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:544
+msgid "- Restore no user"
+msgstr "- Restore no user"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:545
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Restore failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Restore failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:546
+msgid "Batch Restore paused - Do you want to abort?"
+msgstr "Batch Restore paused - Do you want to abort?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:549
+msgid "Batch ProfileCopy - Review & Go"
+msgstr "Batch ProfileCopy - Review & Go"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:550
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:577
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:586
+#, c-format
+msgid "- Copy from < %s (%s)> to < %s (%s) >"
+msgstr "- Copy from < %s (%s)> to < %s (%s) >"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:551
+#, c-format
+msgid "pre-BatchProfileCopy Backup (WiiU: %d%s"
+msgstr "pre-BatchProfileCopy Backup (WiiU: %d%s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:554
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Copy Profile failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Copy Profile failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:555
+msgid "Batch ProfileCopy paused - Do you want to abort?"
+msgstr "Batch ProfileCopy paused - Do you want to abort?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:558
+msgid "Batch ProfileMove - Review & Go"
+msgstr "Batch ProfileMove - Review & Go"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:559
+#, c-format
+msgid "- Move < %s (%s)> to < %s (%s) >"
+msgstr "- Move < %s (%s)> to < %s (%s) >"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:560
+#, c-format
+msgid "pre-BatchProfileMove Backup (WiiU: %d%s"
+msgstr "pre-BatchProfileMove Backup (WiiU: %d%s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:563
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Move Profile failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Move Profile failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:564
+msgid "Batch ProfileMove paused - Do you want to abort?"
+msgstr "Batch ProfileMove paused - Do you want to abort?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:567
+msgid "Batch Wipe - Review & Go"
+msgstr "Batch Wipe - Review & Go"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:568
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:570
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:571
+msgid "- Wipe"
+msgstr "- Wipe"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:568
+#, c-format
+msgid "- Wipe  < %s (%s)>"
+msgstr "- Wipe  < %s (%s)>"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:569
+#, c-format
+msgid "pre-BatchWipe Backup (vWii: %d%s"
+msgstr "pre-BatchWipe Backup (vWii: %d%s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:569
+#, c-format
+msgid "pre-BatchWipe Backup (WiiU: %d%s"
+msgstr "pre-BatchWipe Backup (WiiU: %d%s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:570
+msgid "- Wipe allusers"
+msgstr "- Wipe allusers"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:571
+msgid "- Wipe no user"
+msgstr "- Wipe no user"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:572
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Wipe failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Wipe failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:573
+msgid "Batch Wipe paused - Do you want to abort?"
+msgstr "Batch Wipe paused - Do you want to abort?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:576
+msgid "Batch Copy To USB - Review & Go"
+msgstr "Batch Copy To USB - Review & Go"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:578
+#, c-format
+msgid "pre-BatchCopyToUSB Backup (WiiU: %d%s"
+msgstr "pre-BatchCopyToUSB Backup (WiiU: %d%s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:579
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:588
+msgid "- Copy allusers"
+msgstr "- Copy allusers"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:580
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:589
+msgid "- Copy no user"
+msgstr "- Copy no user"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:581
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Copy from NAND to USB failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Copy from NAND to USB failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:582
+msgid "Batch Copy To USB paused - Do you want to abort?"
+msgstr "Batch Copy To USB paused - Do you want to abort?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:585
+msgid "Batch Copy To NAND - Review & Go"
+msgstr "Batch Copy To NAND - Review & Go"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:587
+#, c-format
+msgid "pre-BatchCopyToNAND Backup (WiiU: %d%s"
+msgstr "pre-BatchCopyToNAND Backup (WiiU: %d%s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:590
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Copy from USB to NAND failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Copy from USB to NAND failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:591
+msgid "Batch Copy To NAND paused - Do you want to abort?"
+msgstr "Batch Copy To NAND paused - Do you want to abort?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:608
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"You have selected the following options:\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"%s\n"
+"%s\n"
+"\n"
+"Continue?\n"
+"\n"
+"\n"
+msgstr ""
+"%s\n"
+"\n"
+"You have selected the following options:\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"%s\n"
+"%s\n"
+"\n"
+"Continue?\n"
+"\n"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:629
+msgid "- Include common savedata: Yes"
+msgstr "- Include common savedata: Yes"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:629
+msgid "- Include common savedata: No"
+msgstr "- Include common savedata: No"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:630
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:635
+msgid "- Wipe data: Yes"
+msgstr "- Wipe data: Yes"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:630
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:635
+msgid "- Wipe data: No"
+msgstr "- Wipe data: No"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:631
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:636
+msgid "- Perform full backup: Yes"
+msgstr "- Perform full backup: Yes"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:631
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:636
+msgid "- Perform full backup: No"
+msgstr "- Perform full backup: No"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:633
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"You have selected the following options:\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"%s\n"
+"\n"
+"Continue?\n"
+"\n"
+msgstr ""
+"%s\n"
+"\n"
+"You have selected the following options:\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"%s\n"
+"\n"
+"Continue?\n"
+"\n"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:648
+msgid ""
+"You have selected some injected titles.\n"
+"If its restore fails, try them again as a vWii title.\n"
+"\n"
+"You can continue."
+msgstr ""
+"You have selected some injected titles.\n"
+"If its restore fails, try them again as a vWii title.\n"
+"\n"
+"You can continue."
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:653
+msgid ""
+"You have selected uninitialized titles.\n"
+"If its restore fails, run the Game to create \n"
+"some initial savedata and try again.\n"
+"\n"
+"You can continue."
+msgstr ""
+"You have selected uninitialized titles.\n"
+"If its restore fails, run the Game to create \n"
+"some initial savedata and try again.\n"
+"\n"
+"You can continue."
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:688
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:863
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:145
+msgid "ERROR WIPING BACKUPSET"
+msgstr "ERROR WIPING BACKUPSET"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:714
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:723
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:814
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:822
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Task aborted: would have restored savedata to a non-existent profile.\n"
+"\n"
+"Try to restore using 'from/to user' options"
+msgstr ""
+"%s\n"
+"\n"
+"Task aborted: would have restored savedata to a non-existent profile.\n"
+"\n"
+"Try to restore using 'from/to user' options"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:859
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:141
+msgid "Do you want to wipe this incomplete batch backup?"
+msgstr "Do you want to wipe this incomplete batch backup?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:914
+#, c-format
+msgid "PARTIAL - %d %s title%s OK"
+msgstr "PARTIAL - %d %s title%s OK"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:919
+msgid "FAILED - No titles"
+msgstr "FAILED - No titles"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:921
+#, c-format
+msgid "FAILED - OK/KO > %s: %d/%d"
+msgstr "FAILED - OK/KO > %s: %d/%d"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:26
+msgid "Batch Restore"
+msgstr "Batch Restore"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:27
+#, c-format
+msgid "   Restore Wii U (%u Title%s)"
+msgstr "   Restore Wii U (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:28
+#, c-format
+msgid "   Restore vWii (%u Title%s)"
+msgstr "   Restore vWii (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:29
+msgid ""
+"Batch Restore allows you to restore all savedata from a BatchBackup \n"
+"* to the same user profiles\n"
+"* to a different user in the same console \n"
+"* or to a different console where the games are already installed.\n"
+"In the later case, it is recommended to first run the game to initialize the savedata."
+msgstr ""
+"Batch Restore allows you to restore all savedata from a BatchBackup \n"
+"* to the same user profiles\n"
+"* to a different user in the same console \n"
+"* or to a different console where the games are already installed.\n"
+"In the later case, it is recommended to first run the game to initialize the savedata."
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:30
+msgid "\\ue000: Continue to BackupSet selection  \\ue001: Back"
+msgstr "\\ue000: Continue to BackupSet selection  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:33
+msgid "Batch Wipe"
+msgstr "Batch Wipe"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:34
+#, c-format
+msgid "   Wipe Wii U Profiles (%u Title%s)"
+msgstr "   Wipe Wii U Profiles (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:35
+#, c-format
+msgid "   Wipe vWii Savedata (%u Title%s)"
+msgstr "   Wipe vWii Savedata (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:36
+msgid ""
+"Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n"
+"\n"
+"Just:\n"
+"- select which data to wipe\n"
+"- select titles to act on\n"
+"- and go!"
+msgstr ""
+"Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n"
+"\n"
+"Just:\n"
+"- select which data to wipe\n"
+"- select titles to act on\n"
+"- and go!"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:37
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:44
+msgid "\\ue000: Continue to savedata selection  \\ue001: Back"
+msgstr "\\ue000: Continue to savedata selection  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:40
+msgid "Batch Copy To Other Device"
+msgstr "Batch Copy To Other Device"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:41
+msgid "   Copy Wii U Savedata from NAND to USB"
+msgstr "   Copy Wii U Savedata from NAND to USB"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:42
+msgid "   Copy Wii U Savedata from USB to NAND"
+msgstr "   Copy Wii U Savedata from USB to NAND"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:43
+msgid ""
+"Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n"
+"\n"
+"Just:\n"
+"- select which data to copy\n"
+"- select titles to act on\n"
+"- and go!"
+msgstr ""
+"Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n"
+"\n"
+"Just:\n"
+"- select which data to copy\n"
+"- select titles to act on\n"
+"- and go!"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:31
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:41
+#, c-format
+msgid "WiiU Serial Id: %s"
+msgstr "WiiU Serial Id: %s"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:33
+msgid "Tasks"
+msgstr "Tasks"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:39
+msgid "   Backup savedata"
+msgstr "   Backup savedata"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:41
+msgid "   Restore savedata"
+msgstr "   Restore savedata"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:43
+msgid "   Wipe savedata"
+msgstr "   Wipe savedata"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:46
+msgid "   Move savedata to other profile"
+msgstr "   Move savedata to other profile"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:48
+msgid "   Copy savedata to other profile"
+msgstr "   Copy savedata to other profile"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:50
+msgid "   Import from loadiine"
+msgstr "   Import from loadiine"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:52
+msgid "   Export to loadiine"
+msgstr "   Export to loadiine"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:55
+#, c-format
+msgid "   Copy Savedata to Title in %s"
+msgstr "   Copy Savedata to Title in %s"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:69
+msgid ""
+"This title is a inject (vWii or GC title packaged as a WiiU title).\n"
+"If needed, vWii saves can also be managed using\n"
+"  the vWii Save Management section."
+msgstr ""
+"This title is a inject (vWii or GC title packaged as a WiiU title).\n"
+"If needed, vWii saves can also be managed using\n"
+"  the vWii Save Management section."
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:75
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:165
+msgid "\\ue000: Select Task  \\ue001: Back"
+msgstr "\\ue000: Select Task  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:94
+msgid "No save to Backup."
+msgstr "No save to Backup."
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:97
+msgid "No save to Wipe."
+msgstr "No save to Wipe."
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:100
+msgid "No save to Replicate."
+msgstr "No save to Replicate."
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:103
+msgid "No save to Copy."
+msgstr "No save to Copy."
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:106
+msgid "No save to Move."
+msgstr "No save to Move."
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:134
+msgid "Title has no profile savedata"
+msgstr "Title has no profile savedata"
+
+#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:145
+msgid "At least two profiles are needed to Copy/Move To OtherProfile."
+msgstr "At least two profiles are needed to Copy/Move To OtherProfile."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:24
+msgid "Mii Transform Tasks"
+msgstr "Mii Transform Tasks"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:28
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:28
+#, c-format
+msgid "Selected Repo: %s"
+msgstr "Selected Repo: %s"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:31
+msgid "   Transfer physical appearance from another mii:"
+msgstr "   Transfer physical appearance from another mii:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
+#, c-format
+msgid "[%s]"
+msgstr "[%s]"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:310
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:24
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:28
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:33
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:38
+msgid "Yes"
+msgstr "Yes"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:24
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:28
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:33
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:38
+msgid "No"
+msgstr "No"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:36
+msgid "   Transfer Ownership from another mii:"
+msgstr "   Transfer Ownership from another mii:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:40
+msgid "   Make them belong to this console:"
+msgstr "   Make them belong to this console:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:44
+msgid "   Update Mii Id (Timestamp):"
+msgstr "   Update Mii Id (Timestamp):"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:48
+msgid "   Toggle favorite flag:"
+msgstr "   Toggle favorite flag:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:52
+msgid "   Toggle Share/Mingle flag:"
+msgstr "   Toggle Share/Mingle flag:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:56
+msgid "   Toggle Normal/Special flag:"
+msgstr "   Toggle Normal/Special flag:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:60
+msgid "   Toggle Foreign flag:"
+msgstr "   Toggle Foreign flag:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:64
+msgid "   Update CRC:"
+msgstr "   Update CRC:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:71
+msgid "   Togle Copy Flag On/Off:"
+msgstr "   Togle Copy Flag On/Off:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:75
+msgid "   Togle Temporary Flag On/Off:"
+msgstr "   Togle Temporary Flag On/Off:"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:83
+msgid "Selected miis will get the physical appearance of the mii you will select in the next menu."
+msgstr "Selected miis will get the physical appearance of the mii you will select in the next menu."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:86
+msgid "Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost."
+msgstr "Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:89
+msgid "Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost."
+msgstr "Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:92
+msgid "So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)."
+msgstr "So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:95
+msgid "Mark Miis as a favorite one so they appear in games that support them."
+msgstr "Mark Miis as a favorite one so they appear in games that support them."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:98
+msgid "So the mii can travel to other consoles."
+msgstr "So the mii can travel to other consoles."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:101
+msgid "You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost."
+msgstr "You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:104
+msgid "Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost)."
+msgstr "Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost)."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:107
+msgid "CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo)."
+msgstr "CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo)."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:110
+msgid "So people that does not own the mii can modifiy it by creating a copy of the original."
+msgstr "So people that does not own the mii can modifiy it by creating a copy of the original."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:113
+msgid "Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost)."
+msgstr "Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost)."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:127
+msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Select Mii Template  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue000: Select Mii Template  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:129
+msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Transform  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Set/Unset  \\ue000: Transform  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:172
+msgid "Please select an option"
+msgstr "Please select an option"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListFilter.cpp:18
+msgid "Show only BackupSets satisfying all these conditions:"
+msgstr "Show only BackupSets satisfying all these conditions:"
+
+#: /home/qwii/hb/savemii/src/menu/BackupSetListFilter.cpp:25
+msgid "\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"
+msgstr "\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:26
+msgid "Mii Tasks"
+msgstr "Mii Tasks"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:33
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:57
+msgid "DB management"
+msgstr "DB management"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:35
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:59
+msgid "   Backup DB"
+msgstr "   Backup DB"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:37
+msgid "   Restore Full DB (Full restore - all account attributes - for one profile)"
+msgstr "   Restore Full DB (Full restore - all account attributes - for one profile)"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:39
+msgid "   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"
+msgstr "   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:41
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:67
+msgid "Mii Management"
+msgstr "Mii Management"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:43
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:69
+msgid "   List Miis"
+msgstr "   List Miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:46
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:72
+#, c-format
+msgid "   Export Miis (to %s)"
+msgstr "   Export Miis (to %s)"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:48
+msgid "   Export Miis (account MiiData)"
+msgstr "   Export Miis (account MiiData)"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:50
+msgid "   Import Miis (account MiiData)"
+msgstr "   Import Miis (account MiiData)"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:52
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:83
+msgid "   Transform Miis"
+msgstr "   Transform Miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:61
+msgid "   Restore DB"
+msgstr "   Restore DB"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:63
+msgid "   Wipe DB"
+msgstr "   Wipe DB"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:65
+msgid "   Initialize DB"
+msgstr "   Initialize DB"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:74
+msgid "   Export Miis"
+msgstr "   Export Miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:77
+#, c-format
+msgid "   Import Miis (from %s)"
+msgstr "   Import Miis (from %s)"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:79
+msgid "   Import Miis"
+msgstr "   Import Miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:81
+msgid "   Wipe Miis"
+msgstr "   Wipe Miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:92
+msgid "Backup All Wii U Account folders and files"
+msgstr "Backup All Wii U Account folders and files"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:95
+msgid "Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect."
+msgstr "Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:98
+msgid "Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect."
+msgstr "Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect."
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:101
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:131
+msgid "List all Miis and some of its attributes"
+msgstr "List all Miis and some of its attributes"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:104
+msgid "Export Miis to other repos"
+msgstr "Export Miis to other repos"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:107
+msgid "Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+msgstr "Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:110
+msgid "Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+msgstr "Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:119
+msgid "Backup Mii Database in their enterity"
+msgstr "Backup Mii Database in their enterity"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:122
+msgid "Restore Mii Database in their enterity"
+msgstr "Restore Mii Database in their enterity"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:125
+msgid "Wipe Mii Database"
+msgstr "Wipe Mii Database"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:128
+msgid "Initialize Mii Database with no Miis"
+msgstr "Initialize Mii Database with no Miis"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:134
+msgid "Export some Miis from this Database to another one"
+msgstr "Export some Miis from this Database to another one"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:137
+msgid "Import some Miis from another Database to this one"
+msgstr "Import some Miis from another Database to this one"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:140
+msgid "Wipe some Miis from the Mii Database"
+msgstr "Wipe some Miis from the Mii Database"
+
+#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:143
+msgid "Change attributes (share/copy/miiid/owner) or appareance of miis"
+msgstr "Change attributes (share/copy/miiid/owner) or appareance of miis"
+
+#: /home/qwii/hb/savemii/src/menu/KeyboardState.cpp:17
+msgid "Keyboard"
+msgstr "Keyboard"
+
+#: /home/qwii/hb/savemii/src/menu/KeyboardState.cpp:38
+msgid "\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
+msgstr "\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:27
+msgid "Batch Backup"
+msgstr "Batch Backup"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:29
+#, c-format
+msgid "   Backup All (%u Title%s)"
+msgstr "   Backup All (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:32
+#, c-format
+msgid "   Backup Wii U (%u Title%s)"
+msgstr "   Backup Wii U (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:35
+#, c-format
+msgid "   Backup vWii (%u Title%s)"
+msgstr "   Backup vWii (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:38
+#, c-format
+msgid "   Backup Wii U System Titles (%u Title%s)"
+msgstr "   Backup Wii U System Titles (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:45
+msgid ""
+"Reminder: Your Excludes will be applied to\n"
+"  'Backup Wii U' and 'Backup vWii' tasks"
+msgstr ""
+"Reminder: Your Excludes will be applied to\n"
+"  'Backup Wii U' and 'Backup vWii' tasks"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:51
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:57
+msgid ""
+"Batch Backup allows you to backup savedata:\n"
+"* for All titles at once (WiiU+ vWii)\n"
+"* for the titles you select (individual 'Wii U' or 'vWii' tasks)"
+msgstr ""
+"Batch Backup allows you to backup savedata:\n"
+"* for All titles at once (WiiU+ vWii)\n"
+"* for the titles you select (individual 'Wii U' or 'vWii' tasks)"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:55
+msgid "\\ue002: BackupSet Management  \\ue000: Backup  \\ue001: Back"
+msgstr "\\ue002: BackupSet Management  \\ue000: Backup  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:156
+#, c-format
+msgid "ALL OK - WU:%d,vW:%d,S:%d titles"
+msgstr "ALL OK - WU:%d,vW:%d,S:%d titles"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:161
+#, c-format
+msgid "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
+msgstr "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
+
+#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:166
+#, c-format
+msgid "PARTIAL - WU:%d,vW:%d,S:%d OK"
+msgstr "PARTIAL - WU:%d,vW:%d,S:%d OK"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:112
+#, c-format
+msgid ""
+"Savedata information for\n"
+"%s\n"
+"cannot be retrieved"
+msgstr ""
+"Savedata information for\n"
+"%s\n"
+"cannot be retrieved"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:152
+msgid "Can't Copy/Move To OtherProfile if there is only one profile."
+msgstr "Can't Copy/Move To OtherProfile if there is only one profile."
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:191
+msgid ""
+"WARNING\n"
+"Some titles contain savedata for profiles that do not exist in this console\n"
+"This savedata will be ignored. You can:\n"
+"* Backup it with 'allusers' option or with Batch Backup\n"
+"* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."
+msgstr ""
+"WARNING\n"
+"Some titles contain savedata for profiles that do not exist in this console\n"
+"This savedata will be ignored. You can:\n"
+"* Backup it with 'allusers' option or with Batch Backup\n"
+"* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:194
+msgid ""
+"The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n"
+"\n"
+"Recommended action: restore from/to individual users."
+msgstr ""
+"The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n"
+"\n"
+"Recommended action: restore from/to individual users."
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:198
+msgid ""
+"\n"
+"\n"
+"Non-existent profiles:\n"
+"  "
+msgstr ""
+"\n"
+"\n"
+"Non-existent profiles:\n"
+"  "
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:200
+msgid ""
+"\n"
+"Titles affected:\n"
+msgstr ""
+"\n"
+"Titles affected:\n"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:224
+msgid "BatchJob - Options"
+msgstr "BatchJob - Options"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:225
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+msgid "Select SD user to copy from:"
+msgstr "Select SD user to copy from:"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:226
+msgid "Only 'common' savedata will be restored"
+msgstr "Only 'common' savedata will be restored"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:227
+msgid "'common' savedata will also be restored"
+msgstr "'common' savedata will also be restored"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:230
+msgid "Batch ProfileCopy - Options"
+msgstr "Batch ProfileCopy - Options"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:231
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:237
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:249
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:255
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+msgid "Select Wii U user to copy from:"
+msgstr "Select Wii U user to copy from:"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:236
+msgid "Batch ProfileMove - Options"
+msgstr "Batch ProfileMove - Options"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:242
+msgid "Batch Wipe - Options"
+msgstr "Batch Wipe - Options"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:243
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+msgid "Select Wii U user to wipe:"
+msgstr "Select Wii U user to wipe:"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:244
+msgid "Only 'common' savedata will be deleted"
+msgstr "Only 'common' savedata will be deleted"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:245
+msgid "'common' savedata will also be deleted"
+msgstr "'common' savedata will also be deleted"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:248
+msgid "Batch CopyToUSB - Options"
+msgstr "Batch CopyToUSB - Options"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:250
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:256
+msgid "Only 'common' savedata will be copied"
+msgstr "Only 'common' savedata will be copied"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:251
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:257
+msgid "'common' savedata will also be copied"
+msgstr "'common' savedata will also be copied"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:254
+msgid "Batch CopyToNAND - Options"
+msgstr "Batch CopyToNAND - Options"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:270
+#, c-format
+msgid "BS: %s"
+msgstr "BS: %s"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:276
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:298
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:157
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:179
+msgid "only common save"
+msgstr "only common save"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:279
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:284
+msgid "Ok"
+msgstr "Ok"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:281
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:159
+msgid "all users"
+msgstr "all users"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:295
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:176
+msgid "Select Wii U user to copy to:"
+msgstr "Select Wii U user to copy to:"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:300
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:181
+msgid "same user than in source"
+msgstr "same user than in source"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:308
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:246
+msgid "Include 'common' save?"
+msgstr "Include 'common' save?"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:310
+msgid "No "
+msgstr "No "
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
+#, c-format
+msgid "   Wipe target users savedata before restoring: < %s >"
+msgstr "   Wipe target users savedata before restoring: < %s >"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:320
+msgid "   Target user savedata will be wiped"
+msgstr "   Target user savedata will be wiped"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
+#, c-format
+msgid "   Backup all data before restoring (strongly recommended): < %s >"
+msgstr "   Backup all data before restoring (strongly recommended): < %s >"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:330
+msgid "\\ue000: Ok! Go to Title selection  \\ue001: Back"
+msgstr "\\ue000: Ok! Go to Title selection  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:332
+msgid "\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"
+msgstr "\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:340
+msgid ""
+"\n"
+"Do you want to continue?\n"
+msgstr ""
+"\n"
+"Do you want to continue?\n"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:67
+msgid "Select Repo containing the Mii Template"
+msgstr "Select Repo containing the Mii Template"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:68
+msgid "\\ue000: To Select Template Mii Repo  \\ue001: Back"
+msgstr "\\ue000: To Select Template Mii Repo  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:71
+msgid "Select Repo to Import Miis from"
+msgstr "Select Repo to Import Miis from"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:72
+msgid "\\ue000: To Select Miis to Import from this repo  \\ue001: Back"
+msgstr "\\ue000: To Select Miis to Import from this repo  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:75
+msgid "Select Repo to Export Miis to"
+msgstr "Select Repo to Export Miis to"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:76
+msgid "\\ue000: To Select Miis to Export to this repo  \\ue001: Back"
+msgstr "\\ue000: To Select Miis to Export to this repo  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:79
+msgid "Select Mii Repo to Manage"
+msgstr "Select Mii Repo to Manage"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:80
+msgid "\\ue000: Select Repo  \\ue001: Back"
+msgstr "\\ue000: Select Repo  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:89
+msgid "There are no repos matching selected filters."
+msgstr "There are no repos matching selected filters."
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:56
+#, c-format
+msgid ""
+"Error\n"
+"%s\n"
+"setting owner/group for\n"
+"%s"
+msgstr ""
+"Error\n"
+"%s\n"
+"setting owner/group for\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:74
+msgid "Main menu"
+msgstr "Main menu"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:76
+#, c-format
+msgid "   Wii U Save Management (%u Title%s)"
+msgstr "   Wii U Save Management (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:79
+#, c-format
+msgid "   vWii Save Management (%u Title%s)"
+msgstr "   vWii Save Management (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:82
+#, c-format
+msgid "   Wii U System Titles Save Management (%u Title%s)"
+msgstr "   Wii U System Titles Save Management (%u Title%s)"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:85
+msgid "   Batch Tasks Management"
+msgstr "   Batch Tasks Management"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:87
+msgid "   BackupSet Management"
+msgstr "   BackupSet Management"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:89
+msgid "   Mii Management"
+msgstr "   Mii Management"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:93
+msgid "\\ue002: Options \\ue000: Select Mode"
+msgstr "\\ue002: Options \\ue000: Select Mode"
+
+#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:113
+msgid ""
+"This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n"
+"\n"
+"Proceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n"
+"\n"
+"Do you wat to continue?\n"
+"\n"
+msgstr ""
+"This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n"
+"\n"
+"Proceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n"
+"\n"
+"Do you wat to continue?\n"
+"\n"
+
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:17
+msgid "Configuration Options"
+msgstr "Configuration Options"
+
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:20
+#, c-format
+msgid "   Language: %s"
+msgstr "   Language: %s"
+
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:23
+#, c-format
+msgid "   Always apply Backup Excludes: %s"
+msgstr "   Always apply Backup Excludes: %s"
+
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:27
+#, c-format
+msgid "   Ask for backup dir conversion to titleName based format: %s"
+msgstr "   Ask for backup dir conversion to titleName based format: %s"
+
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:32
+#, c-format
+msgid "   This session value: %s"
+msgstr "   This session value: %s"
+
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:37
+#, c-format
+msgid "   Warn and don't allow restore of undefined profiles: %s"
+msgstr "   Warn and don't allow restore of undefined profiles: %s"
+
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:45
+msgid "\\ue045 SaveConfig  \\ue001: Back"
+msgstr "\\ue045 Save Configuration  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:138
+msgid "Error processing configuration"
+msgstr "Error processing configuration"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:89
+#, c-format
+msgid "BackupSet: %s"
+msgstr "BackupSet: %s"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:97
+msgid "Destination:"
+msgstr "Destination:"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:102
+msgid "   Copy profile savedata to a different profile."
+msgstr "   Copy profile savedata to a different profile."
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:105
+msgid "   Move profile savedata to a different profile."
+msgstr "   Move profile savedata to a different profile."
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:106
+msgid "   - Target profile will be wiped."
+msgstr "   - Target profile will be wiped."
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:108
+msgid "version"
+msgstr "version"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:114
+msgid "Delete from:"
+msgstr "Delete from:"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:118
+#, c-format
+msgid "Select %s [%s]:"
+msgstr "Select %s [%s]:"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:155
+msgid "metadata + savedata"
+msgstr "metadata + savedata"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:200
+msgid "Source has 'common' savedata, only it will be saved"
+msgstr "Source has 'common' savedata, only it will be saved"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:201
+msgid "Source has 'common' savedata, it will also be saved"
+msgstr "Source has 'common' savedata, it will also be saved"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:204
+msgid "Source has 'common' savedata, only it will be restored"
+msgstr "Source has 'common' savedata, only it will be restored"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:205
+msgid "Source has 'common' savedata, it will also be restored"
+msgstr "Source has 'common' savedata, it will also be restored"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:208
+msgid "'common' savedata found, only it will be deleted"
+msgstr "'common' savedata found, only it will be deleted"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:209
+msgid "'common' savedata found, it will also be deleted"
+msgstr "'common' savedata found, it will also be deleted"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:212
+msgid "Source has 'common' savedata, only it will be copied"
+msgstr "Source has 'common' savedata, only it will be copied"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:213
+msgid "Source 'common' savedata, it will also be copied"
+msgstr "Source 'common' savedata, it will also be copied"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:231
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:264
+#, c-format
+msgid "(Target has 'common': %s)"
+msgstr "(Target has 'common': %s)"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:232
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:249
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:265
+msgid "yes"
+msgstr "yes"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:232
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:249
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:265
+msgid "no "
+msgstr "no "
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:255
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:262
+msgid "No 'common' save found."
+msgstr "No 'common' save found."
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:255
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:262
+msgid "Source: No 'common' save found."
+msgstr "Source: No 'common' save found."
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:286
+msgid "Savedata in NAND"
+msgstr "Savedata in NAND"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:289
+msgid "Select vWii data to wipe:"
+msgstr "Select vWii data to wipe:"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:292
+msgid "full metadata + savedata"
+msgstr "full metadata + savedata"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:294
+msgid "savedata"
+msgstr "savedata"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:362
+msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
+msgstr "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:364
+msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue002: Change BackupSet  \\ue000: Restore  \\ue045: Tag Slot  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:372
+msgid "Copy to Other Profile"
+msgstr "Copy to Other Profile"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:374
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:394
+msgid "\\ue000: Copy  \\ue001: Back"
+msgstr "\\ue000: Copy  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:377
+msgid "Move to Other Profile"
+msgstr "Move to Other Profile"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:379
+msgid "\\ue000: Move  \\ue001: Back"
+msgstr "\\ue000: Move  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:382
+msgid "Import Loadiine"
+msgstr "Import Loadiine"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:384
+msgid "\\ue000: Import  \\ue001: Back"
+msgstr "\\ue000: Import  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:387
+msgid "Export Loadiine"
+msgstr "Export Loadiine"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:389
+msgid "\\ue000: Export  \\ue001: Back"
+msgstr "\\ue000: Export  \\ue001: Back"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:392
+msgid "Copy to Other Device"
+msgstr "Copy to Other Device"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:803
+msgid "No data selected to copyToOtherProfile"
+msgstr "No data selected to copyToOtherProfile"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:805
+msgid "No data selected to moveProfile"
+msgstr "No data selected to moveProfile"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:807
+msgid "No data selected to copy"
+msgstr "No data selected to copy"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:836
+msgid "Savedata succesfully backed up!"
+msgstr "Savedata succesfully backed up!"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:841
+msgid "Savedata succesfully restored!"
+msgstr "Savedata succesfully restored!"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:846
+msgid "Savedata succesfully wiped!"
+msgstr "Savedata succesfully wiped!"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:852
+msgid "Savedata succesfully moved!"
+msgstr "Savedata succesfully moved!"
+
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:857
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:862
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:867
+#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:871
+msgid "Savedata succesfully copied!"
+msgstr "Savedata succesfully copied!"
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:36
+msgid "Batch Tasks Menu"
+msgstr "Batch Tasks Menu"
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:39
+msgid "   Batch Backup"
+msgstr "   Batch Backup"
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:41
+msgid "   Batch Restore"
+msgstr "   Batch Restore"
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:43
+msgid "   Batch Wipe"
+msgstr "   Batch Wipe"
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:45
+msgid "   Batch Move to Other Profile"
+msgstr "   Batch Move to Other Profile"
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:47
+msgid "   Batch Copy to Other Profile"
+msgstr "   Batch Copy to Other Profile"
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:49
+msgid "   Batch Copy to Other Device"
+msgstr "   Batch Copy to Other Device"
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:60
+msgid ""
+"Batch Restore allows you to restore all savedata from a BatchBackup \n"
+"* to the same user profiles\n"
+"* to a different user in the same console \n"
+"* or to a different console where the games are already installed.\n"
+"Now it is not needed to run the game first to initialize the savedata."
+msgstr ""
+"Batch Restore allows you to restore all savedata from a BatchBackup \n"
+"* to the same user profiles\n"
+"* to a different user in the same console \n"
+"* or to a different console where the games are already installed.\n"
+"Now it is not needed to run the game first to initialize the savedata."
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:63
+msgid "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
+msgstr "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:66
+msgid "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
+msgstr "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:69
+msgid "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
+msgstr "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:72
+msgid "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
+msgstr "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
+
+#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:83
+msgid "\\ue002: Options \\ue000: Select Batch Task"
+msgstr "\\ue002: Options \\ue000: Select Batch Task"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:137
+msgid "Failed to open Loadiine game save directory."
+msgstr "Failed to open Loadiine game save directory."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:158
+#: /home/qwii/hb/savemii/src/savemng.cpp:175
+msgid "Loadiine game folder not found."
+msgstr "Loadiine game folder not found."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:377
+#: /home/qwii/hb/savemii/src/savemng.cpp:489
+#: /home/qwii/hb/savemii/src/savemng.cpp:550
+#: /home/qwii/hb/savemii/src/savemng.cpp:961
+#: /home/qwii/hb/savemii/src/savemng.cpp:1152
+#: /home/qwii/hb/savemii/src/savemng.cpp:1252
+#: /home/qwii/hb/savemii/src/savemng.cpp:1316
+#: /home/qwii/hb/savemii/src/savemng.cpp:1378
+#: /home/qwii/hb/savemii/src/miisavemng.cpp:14
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:383
+msgid "pre-copyToOtherDev backup"
+msgstr "pre-copyToOtherDev backup"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:392
+msgid "Copy failed."
+msgstr "Copy failed."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:402
+#: /home/qwii/hb/savemii/src/savemng.cpp:838
+#: /home/qwii/hb/savemii/src/savemng.cpp:991
+msgid "source_user=-3 is not allowed for this task"
+msgstr "source_user=-3 is not allowed for this task"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:434
+#: /home/qwii/hb/savemii/src/savemng.cpp:870
+msgid "Error copying common savedata."
+msgstr "Error copying common savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:447
+#: /home/qwii/hb/savemii/src/savemng.cpp:879
+msgid "Error copying savedata."
+msgstr "Error copying savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:448
+#: /home/qwii/hb/savemii/src/savemng.cpp:518
+#: /home/qwii/hb/savemii/src/savemng.cpp:880
+msgid "Error copying profile savedata."
+msgstr "Error copying profile savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:468
+#, c-format
+msgid ""
+"%s\n"
+"Copy failed."
+msgstr ""
+"%s\n"
+"Copy failed."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:495
+msgid "pre-copySavedataToOtherProfile backup"
+msgstr "pre-copySavedataToOtherProfile backup"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:496
+#: /home/qwii/hb/savemii/src/savemng.cpp:557
+msgid "Backup Failed - Replicate aborted !!"
+msgstr "Backup Failed - Replicate aborted !!"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:529
+#, c-format
+msgid ""
+"%s\n"
+"Copy profile failed."
+msgstr ""
+"%s\n"
+"Copy profile failed."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:556
+msgid "pre-moveSavedataToOtherProfile backup"
+msgstr "pre-moveSavedataToOtherProfile backup"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:575
+#, c-format
+msgid ""
+"Error deleting savedata folder\n"
+"%s"
+msgstr ""
+"Error deleting savedata folder\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:582
+#, c-format
+msgid ""
+"Unable to rename folder \n"
+"'%s'to\n"
+"'%s'\n"
+"\n"
+"%s\n"
+"\n"
+"Please restore the backup, fix errors and try again"
+msgstr ""
+"Unable to rename folder \n"
+"'%s'to\n"
+"'%s'\n"
+"\n"
+"%s\n"
+"\n"
+"Please restore the backup, fix errors and try again"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:601
+#, c-format
+msgid ""
+"%s\n"
+"Move profile failed."
+msgstr ""
+"%s\n"
+"Move profile failed."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:731
+msgid "Do you want to cancel batch backup?"
+msgstr "Do you want to cancel batch backup?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:756
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Backup failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"%s\n"
+"\n"
+"Backup failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:810
+msgid "BACKUP IN PROGRESS"
+msgstr "BACKUP IN PROGRESS"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:820
+#: /home/qwii/hb/savemii/src/savemng.cpp:905
+msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
+msgstr "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:823
+#: /home/qwii/hb/savemii/src/savemng.cpp:908
+msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
+msgstr "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:888
+msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
+msgstr "Warning - Error copying metadata saveinfo.xml. Not critical."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:897
+msgid "Error closing FAT32 chars translation file"
+msgstr "Error closing FAT32 chars translation file"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:909
+msgid "WARNING - NO PERMS"
+msgstr "WARNING - NO PERMS"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1020
+msgid "Error restoring common savedata."
+msgstr "Error restoring common savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1033
+msgid "Error restoring savedata."
+msgstr "Error restoring savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1034
+msgid "Error restoring profile savedata."
+msgstr "Error restoring profile savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1088
+msgid "Error setting permissions"
+msgstr "Error setting permissions"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1149
+msgid ""
+"This option is a last resort in case something has gone wrong when\n"
+"restoring data. It will wipe metadata and savedata, and the title \n"
+"will become uninitialized. It does nothing to the installed game code.\n"
+"It's equivalent to a complete savedata wipe from \n"
+"the Wii U Data Management menu.\n"
+"\n"
+"Continue?"
+msgstr ""
+"This option is a last resort in case something has gone wrong when\n"
+"restoring data. It will wipe metadata and savedata, and the title \n"
+"will become uninitialized. It does nothing to the installed game code.\n"
+"It's equivalent to a complete savedata wipe from \n"
+"the Wii U Data Management menu.\n"
+"\n"
+"Continue?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1149
+#: /home/qwii/hb/savemii/src/savemng.cpp:1152
+#: /home/qwii/hb/savemii/src/savemng.cpp:1378
+#: /home/qwii/hb/savemii/src/miisavemng.cpp:14
+msgid "Hm, are you REALLY sure?"
+msgstr "Hm, are you REALLY sure?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1157
+#: /home/qwii/hb/savemii/src/savemng.cpp:1255
+msgid "Backup current savedata first?"
+msgstr "Backup current savedata first?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1158
+msgid "pre-Wipe backup"
+msgstr "pre-Wipe backup"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1159
+msgid "Backup Failed - Wipe aborted !!"
+msgstr "Backup Failed - Wipe aborted !!"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1198
+msgid "Error wiping common savedata."
+msgstr "Error wiping common savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1202
+msgid "Error deleting common folder."
+msgstr "Error deleting common folder."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1203
+#, c-format
+msgid ""
+"%s \n"
+" Failed to delete common folder:\n"
+"%s\n"
+"%s"
+msgstr ""
+"%s \n"
+" Failed to delete common folder:\n"
+"%s\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1210
+msgid "Error wiping savedata."
+msgstr "Error wiping savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1211
+msgid "Error wiping profile savedata."
+msgstr "Error wiping profile savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1216
+msgid "Error deleting savedata folder."
+msgstr "Error deleting savedata folder."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1217
+msgid "Error deleting profile savedata folder."
+msgstr "Error deleting profile savedata folder."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1218
+#, c-format
+msgid ""
+"%s \n"
+" Failed to delete user folder:\n"
+"%s\n"
+"%s"
+msgstr ""
+"%s \n"
+" Failed to delete user folder:\n"
+"%s\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1228
+msgid "Error wiping metadata+savedata."
+msgstr "Error wiping metadata+savedata."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1233
+msgid "Error deleting title folder."
+msgstr "Error deleting title folder."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1234
+#, c-format
+msgid ""
+"%s \n"
+" Failed to delete title folder:\n"
+"%s\n"
+"%s"
+msgstr ""
+"%s \n"
+" Failed to delete title folder:\n"
+"%s\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1383
+#: /home/qwii/hb/savemii/src/savemng.cpp:1404
+msgid "Error setting path. Aborting."
+msgstr "Error setting path. Aborting."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1389
+#: /home/qwii/hb/savemii/src/savemng.cpp:1391
+#: /home/qwii/hb/savemii/src/miisavemng.cpp:21
+#: /home/qwii/hb/savemii/src/miisavemng.cpp:23
+#, c-format
+msgid "Failed to delete slot %u."
+msgstr "Failed to delete slot %u."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1393
+#: /home/qwii/hb/savemii/src/miisavemng.cpp:25
+msgid ""
+"Folder $s\n"
+"does not exist."
+msgstr ""
+"Folder $s\n"
+"does not exist."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1400
+msgid "Wipe BackupSet - Are you sure?"
+msgstr "Wipe BackupSet - Are you sure?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1400
+msgid "Wipe BackupSet - Hm, are you REALLY sure?"
+msgstr "Wipe BackupSet - Hm, are you REALLY sure?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1410
+#: /home/qwii/hb/savemii/src/savemng.cpp:1414
+#, c-format
+msgid "Failed to delete backupSet %s."
+msgstr "Failed to delete backupSet %s."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1418
+#, c-format
+msgid ""
+"Folder %s\n"
+"does not exist."
+msgstr ""
+"Folder %s\n"
+"does not exist."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1464
+#, c-format
+msgid ""
+"Task completed. Results:\n"
+"\n"
+"- OK: %d\n"
+"- Warning: %d\n"
+"- KO: %d\n"
+"- Aborted: %d\n"
+"- Skipped: %d\n"
+msgstr ""
+"Task completed. Results:\n"
+"\n"
+"- OK: %d\n"
+"- Warning: %d\n"
+"- KO: %d\n"
+"- Aborted: %d\n"
+"- Skipped: %d\n"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1466
+#, c-format
+msgid ""
+"Task completed. Results:\n"
+"\n"
+"- OK: %d\n"
+"- Warning: %d\n"
+"- KO: %d\n"
+"- Aborted: %d\n"
+"- Skipped: %d (including %d notInitialized)\n"
+msgstr ""
+"Task completed. Results:\n"
+"\n"
+"- OK: %d\n"
+"- Warning: %d\n"
+"- KO: %d\n"
+"- Aborted: %d\n"
+"- Skipped: %d (including %d notInitialized)\n"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1475
+msgid ""
+"\n"
+"Failed Titles:"
+msgstr ""
+"\n"
+"Failed Titles:"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1514
+#, c-format
+msgid ""
+"Unable to merge folder '%08x%08x' with existent folder\n"
+"'%s'\n"
+"\n"
+"Some backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+msgstr ""
+"Unable to merge folder '%08x%08x' with existent folder\n"
+"'%s'\n"
+"\n"
+"Some backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1521
+#, c-format
+msgid ""
+"Error creating/removing (test) target folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Move not tried!\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+msgstr ""
+"Error creating/removing (test) target folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Move not tried!\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1526
+#, c-format
+msgid ""
+"Unable to rename folder '%08x%08x' to\n"
+"'%s'\n"
+"\n"
+"%s\n"
+"\n"
+"Please fix errors and try again, or manually move contents from one folder to the other.\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+msgstr ""
+"Unable to rename folder '%08x%08x' to\n"
+"'%s'\n"
+"\n"
+"%s\n"
+"\n"
+"Please fix errors and try again, or manually move contents from one folder to the other.\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1545
+#, c-format
+msgid ""
+"Failed to delete (test) folder \n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Failed to delete (test) folder \n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1577
+#, c-format
+msgid "Migrating from folder: %08x%08x"
+msgstr "Migrating from folder: %08x%08x"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1583
+#, c-format
+msgid ""
+"Error renaming/moving '%08x%08x' to \n"
+"\n"
+"'%s'\n"
+"\n"
+"Conversion errors so far: %d\n"
+"\n"
+"Do you want to continue?\n"
+msgstr ""
+"Error renaming/moving '%08x%08x' to \n"
+"\n"
+"'%s'\n"
+"\n"
+"Conversion errors so far: %d\n"
+"\n"
+"Do you want to continue?\n"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1610
+#, c-format
+msgid ""
+"Errors so far in this (sub)task: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Errors so far in this (sub)task: %d\n"
+"Do you want to continue?"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1628
+#, c-format
+msgid ""
+"Cannot move %s from '%08x%08x' to\n"
+"\n"
+"%s\n"
+"\n"
+"file already exists in target folder."
+msgstr ""
+"Cannot move %s from '%08x%08x' to\n"
+"\n"
+"%s\n"
+"\n"
+"file already exists in target folder."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1636
+#, c-format
+msgid ""
+"Error creating/removing (test) target folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Move not tried!"
+msgstr ""
+"Error creating/removing (test) target folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Move not tried!"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1644
+#, c-format
+msgid ""
+"Cannot rename folder '%08x%08x/%s' to\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Cannot rename folder '%08x%08x/%s' to\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1653
+#, c-format
+msgid ""
+"Error while parsing folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Migration may be incomplete"
+msgstr ""
+"Error while parsing folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Migration may be incomplete"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1666
+#, c-format
+msgid ""
+"Error merging folders: after moving all slots, folder\n"
+"\n"
+"%s\n"
+"\n"
+"is still not empty and cannot be deleted."
+msgstr ""
+"Error merging folders: after moving all slots, folder\n"
+"\n"
+"%s\n"
+"\n"
+"is still not empty and cannot be deleted."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1672
+#, c-format
+msgid ""
+"Failed to delete (legacy) folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Failed to delete (legacy) folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1707
+#, c-format
+msgid ""
+"Backup contains savedata for the profile '%s',\n"
+"but the profile does not exists in this console"
+msgstr ""
+"Backup contains savedata for the profile '%s',\n"
+"but the profile does not exists in this console"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1746
+#, c-format
+msgid "... and %d more"
+msgstr "... and %d more"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1911
+#, c-format
+msgid ""
+"Error setting quota for \n"
+"%s"
+msgstr ""
+"Error setting quota for \n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1938
+msgid "Error creating init data"
+msgstr "Error creating init data"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:1987
+msgid "Error creating vWii init data"
+msgstr "Error creating vWii init data"
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:2021
+#, c-format
+msgid ""
+"Sourcce saveinfo\n"
+"%s\n"
+" not found."
+msgstr ""
+"Sourcce saveinfo\n"
+"%s\n"
+" not found."
+
+#: /home/qwii/hb/savemii/src/savemng.cpp:2054
+msgid "Warning - Error copying metadata saveinfo.xml. Not critical.\n"
+msgstr ""
+"Warning - Error copying metadata saveinfo.xml. Not critical.\n"
+
+#: /home/qwii/hb/savemii/src/Metadata.cpp:82
+#: /home/qwii/hb/savemii/src/Metadata.cpp:94
+msgid ", from "
+msgstr ", from "
+
+#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:34
+#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:51
+#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:23
+#, c-format
+msgid "Error creating JSON object: %s"
+msgstr "Error creating JSON object: %s"
+
+#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:41
+#, c-format
+msgid "Error creating JSON array: %s"
+msgstr "Error creating JSON array: %s"
+
+#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:74
+#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:35
+#, c-format
+msgid "Error dumping JSON object: %s"
+msgstr "Error dumping JSON object: %s"
+
+#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:92
+#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:51
+#, c-format
+msgid ""
+"Error decoding JSON file\n"
+" %s\n"
+"in line %d:\n"
+"\n"
+"%s"
+msgstr ""
+"Error decoding JSON file\n"
+" %s\n"
+"in line %d:\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:98
+#, c-format
+msgid "Error: unexpected format (%s not an array)"
+msgstr "Error: unexpected format (%s not an array)"
+
+#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:148
+#, c-format
+msgid ""
+"Error parsing values in elements:\n"
+"%s"
+msgstr ""
+"Error parsing values in elements:\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:28
+#, c-format
+msgid ""
+"Critical - Path is not a directory:\n"
+"\n"
+"%s"
+msgstr ""
+"Critical - Path is not a directory:\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:78
+#, c-format
+msgid ""
+"cfgPath was no initialized and cannot be used:\n"
+"\n"
+"%s"
+msgstr ""
+"cfgPath was no initialized and cannot be used:\n"
+"\n"
+"%s"
+
+#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:96
+#, c-format
+msgid ""
+"Error reading file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Error reading file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
