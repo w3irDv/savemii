@@ -19,25 +19,25 @@ msgstr ""
 #: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:41
 #: /home/qwii/hb/savemii/include/menu/TitleListState.h:37
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:42
 #: /home/qwii/hb/savemii/include/menu/TitleListState.h:38
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:43
 #: /home/qwii/hb/savemii/include/menu/TitleListState.h:39
 msgid "Storage"
-msgstr ""
+msgstr "Armazenamento"
 
 #: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:44
 msgid "Strg+Nm"
-msgstr ""
+msgstr "Armz+Nm"
 
 #: /home/qwii/hb/savemii/include/menu/TitleListState.h:40
 msgid "Storage+Name"
-msgstr ""
+msgstr "Armazen+Nome"
 
 #: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:59
 #: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:118
