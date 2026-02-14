@@ -45,7 +45,7 @@ void StartupUtils::addInitMessageWithIcon(const char *newMessage) {
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     disclaimer();
-    DrawUtils::drawTGA(328, 160, 1, icon_tga);
+    DrawUtils::drawTGA(300, 160, 1, icon_tga);
     int line = 0;
     for (auto &message : initMessageList) {
         Console::consolePrintPosAligned(10 + line++, 0, 1, message);

@@ -271,7 +271,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BLACK);
             StartupUtils::disclaimer();
-            DrawUtils::drawTGA(328, 160, 1, icon_tga);
+            DrawUtils::drawTGA(300, 160, 1, icon_tga);
             Console::consolePrintPosAligned(10, 0, 1, _("Loaded %i Wii U titles."), wiiuTitlesCount);
             DrawUtils::endDraw();
         }
@@ -468,7 +468,7 @@ Title *TitleUtils::loadWiiTitles() {
                     DrawUtils::beginDraw();
                     DrawUtils::clear(COLOR_BLACK);
                     StartupUtils::disclaimer();
-                    DrawUtils::drawTGA(328, 160, 1, icon_tga);
+                    DrawUtils::drawTGA(300, 160, 1, icon_tga);
                     Console::consolePrintPosAligned(10, 0, 1, _("Loaded %i Wii U titles."), wiiuTitlesCount);
                     Console::consolePrintPosAligned(11, 0, 1, _("Loaded %i Wii titles."), i);
                     DrawUtils::endDraw();
@@ -726,7 +726,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BLACK);
             StartupUtils::disclaimer();
-            DrawUtils::drawTGA(328, 160, 1, icon_tga);
+            DrawUtils::drawTGA(300, 160, 1, icon_tga);
             Console::consolePrintPosAligned(10, 0, 1, _("Loaded %i Wii U titles."), wiiuTitlesCount);
             Console::consolePrintPosAligned(11, 0, 1, _("Loaded %i Wii titles."), vWiiTitlesCount);
             Console::consolePrintPosAligned(12, 0, 1, _("Loaded %i Wii U Sys titles."), wiiuSysTitlesCount);
