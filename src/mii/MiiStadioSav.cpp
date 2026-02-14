@@ -351,6 +351,8 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata, eDBKind source_mii
 
     memcpy(empty_slot_offset + 0x10, miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
 
+    memset(empty_slot_offset + 0x1C, pose++ % 14, 1);
+    
     stadio_last_mii_index++;
     stadio_last_mii_update++;
     stadio_max_alive_miis++;
