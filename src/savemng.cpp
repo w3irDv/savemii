@@ -14,7 +14,6 @@
 #include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/EscapeFAT32Utils.h>
-#include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StatManager.h>
 #include <utils/StringUtils.h>
@@ -949,12 +948,17 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     std::string dstCommonPath = dstPath + "/common";
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
-    if (isWii || !StatManager::stat_file_exists(title, slot)) {
+    if (!StatManager::stat_file_exists(title, slot)) {
         StatManager::use_legacy_stat_cfg = true;
-        StatManager::set_default_stat_cfg_for_vwii_savedata(title);
     } else {
-        StatManager::set_default_stat_cfg_for_wiiu_savedata(title);
-        StatManager::use_legacy_stat_cfg = false;
+        if (isWii || !StatManager::stat_file_exists(title, slot)) {
+            StatManager::set_default_stat_cfg_for_vwii_savedata(title);
+            // For vWii we will use legacy perms (666, id=, group =, because chown does not always work for SLCCMPT)
+            StatManager::use_legacy_stat_cfg = true;
+        } else {
+            StatManager::set_default_stat_cfg_for_wiiu_savedata(title);
+            StatManager::use_legacy_stat_cfg = false;
+        }
     }
 
     if (interactive) {
@@ -2054,4 +2058,78 @@ bool updateSaveinfo(Title *title, int8_t source_user, int8_t wiiu_user, eJobType
     errorMessage.append("\n" + (std::string) _("Warning - Error copying metadata saveinfo.xml. Not critical.\n"));
     errorCode += 512;
     return false;
+}
+
+bool setOwnerAndModeForTitle(Title *title) {
+
+    uint32_t owner;
+    uint32_t group;
+    FSMode mode = (FSMode) 0x660;
+
+    InProgress::copyErrorsCounter = 0;
+    InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
+    InProgress::titleName.assign(title->shortName);
+    InProgress::jobType = BACKUP;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+
+    const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+
+    if (isWii) {
+        owner = 0x1035;
+        group = 0x3031;
+    } else {
+        owner = title->lowID;
+        group = title->groupID;
+    }
+    //Console::showMessage(ERROR_CONFIRM, "%08x - %08x - %08x - %s", owner, group, mode, srcPath.c_str());
+    
+    FSError fserror;
+    FSUtils::setOwnerAndModeRec(owner, group, mode, srcPath, fserror);
+
+    
+    if (isWii)
+        FSUtils::setOwnerAndMode(owner, group, (FSMode) 0x600, srcPath, fserror);
+    else
+        FSUtils::setOwnerAndMode(0x100000f6, 0x400, (FSMode) 0x600, srcPath, fserror);
+        
+    FSUtils::flushVol(srcPath);
+    
+    return true;
+}
+
+
+bool setLegacyOwnerAndModeForTitle(Title *title) {
+
+    uint32_t owner = 0x1004e200;
+    uint32_t group = 0x400;
+    FSMode mode = (FSMode) 0x666;
+    
+    InProgress::copyErrorsCounter = 0;
+    InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
+    InProgress::titleName.assign(title->shortName);
+    InProgress::jobType = BACKUP;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+
+    const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+
+    //Console::showMessage(ERROR_CONFIRM, "%08x - %08x - %08x - %s", owner, group, mode, srcPath.c_str());
+    
+    FSError fserror;
+    FSUtils::setOwnerAndModeRec(owner, group, mode, srcPath, fserror);
+
+    FSUtils::flushVol(srcPath);
+    
+    return true;
 }

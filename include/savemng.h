@@ -6,6 +6,7 @@
 #include <string>
 #include <utils/Colors.h>
 #include <utils/DrawUtils.h>
+#include <utils/FSUtils.h>
 #include <utils/InProgress.h>
 #include <utils/TitleUtils.h>
 #include <vector>
@@ -92,3 +93,5 @@ bool getProfilesInPath(std::vector<std::string> &source_persistentIDs, const fs:
 bool updateSaveinfo(Title *title, int8_t source_user, int8_t wiiu_user, eJobType jobType, uint8_t slot, Title *source_title, std::string &errorMessage, int &errorCode);
 bool initializeWiiUTitle(Title *title, std::string &errorMessage, int &errorCode);
 bool initializeVWiiInjectTitle(Title *title, std::string &errorMessage, int &errorCode);
+bool setOwnerAndModeForTitle(Title *title);
+bool setLegacyOwnerAndModeForTitle(Title *title);

@@ -173,12 +173,19 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 --cursorPos;
         }
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
-            Console::showMessage(WARNING_CONFIRM, "initiating stat title");
+            Console::showMessage(WARNING_CONFIRM, "initiating stat title gathering");
             statDebugUtils::statTitle(title);
         }
         if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
-            Console::showMessage(WARNING_CONFIRM, "initiating stat save");
+            Console::showMessage(WARNING_CONFIRM, "initiating stat savedata gathering");
             statDebugUtils::statSaves(title);
+        }
+        if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::R)) {
+            Console::showMessage(WARNING_CONFIRM, "Setting 'savemii legacy' savedata permissions");
+            setLegacyOwnerAndModeForTitle(&title);
+        }if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::R)) {
+            Console::showMessage(WARNING_CONFIRM, "Setting WiiU default savedata permissions");
+            setOwnerAndModeForTitle(&title);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);

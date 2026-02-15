@@ -95,7 +95,6 @@ void MainMenuState::render() {
 }
 
 
-
 ApplicationState::eSubState MainMenuState::update(Input *input) {
     if (this->state == STATE_MAIN_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
@@ -154,21 +153,34 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             //pack(1, arg);
             //unpack(1, arg);
             //statDebugUtils::statVol();
-
-            const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/nRFL_DB.dat");
+            //const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/nRFL_DB.dat");
             //FSError fserror;
             //setOwner(0x1000400A,0x400, (FSMode) 0x666, pathrfl,fserror);
             //statDebugUtils::statMiiEdit();
             //statDebugUtils::statMiiMaker();
             //statDebugUtils::statAct();
+            /*
             Console::showMessage(ERROR_CONFIRM, "device_hash %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x",
-                             AmbientConfig::device_hash[0], AmbientConfig::device_hash[1], AmbientConfig::device_hash[2], AmbientConfig::device_hash[3], AmbientConfig::device_hash[4],
-                             AmbientConfig::device_hash[5], AmbientConfig::device_hash[6], AmbientConfig::device_hash[7]);
+                                 AmbientConfig::device_hash[0], AmbientConfig::device_hash[1], AmbientConfig::device_hash[2], AmbientConfig::device_hash[3], AmbientConfig::device_hash[4],
+                                 AmbientConfig::device_hash[5], AmbientConfig::device_hash[6], AmbientConfig::device_hash[7]);
 
-           Console::showMessage(ERROR_CONFIRM, "mac:%02x:%02x:%02x:%02x:%02x:%02x",
-                             AmbientConfig::mac_address.MACAddr[0], AmbientConfig::mac_address.MACAddr[1], AmbientConfig::mac_address.MACAddr[2],
-                             AmbientConfig::mac_address.MACAddr[3], AmbientConfig::mac_address.MACAddr[4], AmbientConfig::mac_address.MACAddr[5]);
-                  
+            Console::showMessage(ERROR_CONFIRM, "mac:%02x:%02x:%02x:%02x:%02x:%02x",
+                                 AmbientConfig::mac_address.MACAddr[0], AmbientConfig::mac_address.MACAddr[1], AmbientConfig::mac_address.MACAddr[2],
+                                 AmbientConfig::mac_address.MACAddr[3], AmbientConfig::mac_address.MACAddr[4], AmbientConfig::mac_address.MACAddr[5]);
+            */
+            Console::showMessage(WARNING_SHOW, "creating non-fat32 files");
+            std::string path = "storage_slccmpt01:/title/00010000/534d4e50/data/file:complain";
+            FILE *fp = fopen(path.c_str(), "w");
+            fputs("Prova\n", fp);
+            fclose(fp);
+            path = "storage_usb01:/usr/save/00050000/10101e00/user/8000000b/file<complain";
+            fp = fopen(path.c_str(), "w");
+            fputs("Prova\n", fp);
+            fclose(fp);
+            path = "storage_usb01:/usr/save/00050000/1010ed00/user/common/file:complain";
+            fp = fopen(path.c_str(), "w");
+            fputs("Prova\n", fp);
+            fclose(fp);
 
             return SUBSTATE_RUNNING;
         }

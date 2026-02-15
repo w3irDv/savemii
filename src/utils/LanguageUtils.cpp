@@ -119,7 +119,7 @@ void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
         */
         case Swkbd_LanguageType__Portuguese:
             DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
-			readPO("romfs:/locales/portuguese.po");
+            readPO("romfs:/locales/portuguese.po");
             break;
         case Swkbd_LanguageType__Russian:
             DrawUtils::setFont(OS_SHAREDDATATYPE_FONT_STANDARD);
@@ -292,6 +292,7 @@ bool LanguageUtils::readPO(const std::string &poFile) {
     }
 
     while (fgets(line, sizeof(line), fp)) {
+        line[strcspn(line, "\n")] = 0;
         lineString.assign(line);
         if (lineString.starts_with("msgid")) {
             LanguageUtils::parseMsgId(fp, lineString);
@@ -306,6 +307,11 @@ bool LanguageUtils::readPO(const std::string &poFile) {
     return true;
 }
 
+
+/// @brief Very simple po parser. Only takes into account msgid and msgstr directives, and translates \n and \uxxxx codes to utf8.
+/// @param fp
+/// @param lineString
+/// @return
 bool LanguageUtils::parseMsgId(FILE *fp, std::string lineString) {
 
     std::string key{};
@@ -323,21 +329,14 @@ bool LanguageUtils::parseMsgId(FILE *fp, std::string lineString) {
     sKey.assign(lineString);
 
     while (fgets(line, sizeof(line), fp)) {
+        line[strcspn(line, "\n")] = 0;
         keyLine.assign(line);
         if (keyLine.starts_with("msgstr")) {
             break;
         } else {
-            //printf("%s",keyLine.c_str());
             normalize(keyLine);
             sKey.append(keyLine);
         }
-    }
-
-    ind = 0;
-    while (ind != std::string::npos) {
-        ind = sKey.find("\\n");
-        if (ind != std::string::npos)
-            sKey.replace(ind, 2, std::string{'\n'});
     }
 
     // lets get strmsg
@@ -349,8 +348,9 @@ bool LanguageUtils::parseMsgId(FILE *fp, std::string lineString) {
     sValue.assign(keyLine);
 
     while (fgets(line, sizeof(line), fp)) {
+        line[strcspn(line, "\n")] = 0;
         valueLine.assign(line);
-        if (valueLine.size() == 1) {
+        if (valueLine.size() == 0) {
             break;
         } else {
             normalize(valueLine);
@@ -358,25 +358,17 @@ bool LanguageUtils::parseMsgId(FILE *fp, std::string lineString) {
         }
     }
 
-    ind = 0;
-    while (ind != std::string::npos) {
-        ind = sValue.find("\\n");
-        if (ind != std::string::npos)
-            sValue.replace(ind, 2, std::string{'\n'});
-    }
-
-
     unicode_to_str(sValue);
     setMSG(sKey.c_str(), sValue.c_str());
 
     return true;
 }
 
-void LanguageUtils::normalize(std::string &msg) {
-    // remove "real" newline character at the end of the string
-    msg.erase(std::remove(msg.begin(), msg.end(), '\n'), msg.cend());
 
-    // parse the rest of escaped substrings
+/// @brief unescape ", unicode and newlines. Remove enclosing "".
+/// @param msg 
+void LanguageUtils::normalize(std::string &msg) {
+
     size_t ind = 0;
     while (ind != std::string::npos) {
         ind = msg.find("\\\"");
@@ -389,10 +381,17 @@ void LanguageUtils::normalize(std::string &msg) {
         if (ind != std::string::npos)
             msg.replace(ind, 3, "\\u");
     }
-    //msg.erase(std::remove(msg.begin(), msg.end(), '"'), msg.cend());
-    //erase first and last characters, they are "
-    msg.erase(0, 1);
-    msg.erase(msg.size() - 1, 1);
+    ind = 0;
+    while (ind != std::string::npos) {
+        ind = msg.find("\\n");
+        if (ind != std::string::npos)
+            msg.replace(ind, 2, std::string{'\n'});
+    }
+    //erase enclosing quoatation marks
+    if (msg.size() > 1) {
+        msg.erase(0, 1);
+        msg.erase(msg.size() - 1, 1);
+    }
 }
 
 // Source - https://stackoverflow.com/a/28553727

@@ -703,7 +703,7 @@ bool FSUtils::folderEmptyIgnoreSavemii(const char *fPath) {
     return empty;
 }
 
-/// @brief Recusrsively set mode and owner usin FSA functions. Reuses InProgress::copyErrorsCounter, so it must be zero before entering the function.
+/// @brief Recusrsively set mode and owner using FSA functions. Reuses InProgress::copyErrorsCounter, so it must be zeroed before entering the function.
 /// @param owner
 /// @param group
 /// @param mode
@@ -731,9 +731,14 @@ bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, st
         std::string tPath = path + StringUtils::stringFormat("/%s", data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-
-            if (!setOwnerAndMode(owner, group, mode, tPath, fserror)) {
+            if (!setOwnerAndModeRec(owner, group, mode, tPath, fserror)) {
                 if (InProgress::abortCopy) {
+                    closedir(dir);
+                    return false;
+                }
+                std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+                if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+                    InProgress::abortCopy = true;
                     closedir(dir);
                     return false;
                 }

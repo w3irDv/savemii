@@ -229,6 +229,9 @@ bool StatManager::stat_file_exists(Title *title, int slot) {
     return (FSUtils::checkEntry(statFilePath.c_str()) == 1);
 }
 
+/// @brief Store in stat_file path to files that have fsmod, uid or gid diferent to the default one (640, uid=tid, gid=0x400)
+/// @param entryPath 
+/// @return 
 bool StatManager::get_stat(const std::string &entryPath) {
 
     FSAStat fsastat;
@@ -312,10 +315,12 @@ void StatManager::set_default_stat_cfg_for_wiiu_savedata(Title *title) {
     default_file_stat->fsmode = 0x660;
 }
 
-void StatManager::set_default_stat_cfg_for_vwii_savedata(Title *title) {
+/// @brief Beware: Despite being called and configured, permissions for vWii will not be used because chmod does not always work in SLCCMPt
+/// @param title 
+void StatManager::set_default_stat_cfg_for_vwii_savedata([[maybe_unused]]Title *title) {
 
-    default_file_stat->uid = title->lowID;
-    default_file_stat->gid = title->groupID;
+    default_file_stat->uid = 0x1035;
+    default_file_stat->gid = 0x3031;
     default_file_stat->fsmode = 0x660;
 }
 
