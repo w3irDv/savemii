@@ -7,134 +7,115 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-12 16:46+0100\n"
+"POT-Creation-Date: 2026-02-15 23:12+0100\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:41
-#: /home/qwii/hb/savemii/include/menu/TitleListState.h:37
+#: include/menu/BatchJobTitleSelectState.h:41 include/menu/TitleListState.h:37
 msgid "None"
 msgstr "없음"
 
-#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:42
-#: /home/qwii/hb/savemii/include/menu/TitleListState.h:38
+#: include/menu/BatchJobTitleSelectState.h:42 include/menu/TitleListState.h:38
 msgid "Name"
 msgstr "이름"
 
-#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:43
-#: /home/qwii/hb/savemii/include/menu/TitleListState.h:39
+#: include/menu/BatchJobTitleSelectState.h:43 include/menu/TitleListState.h:39
 msgid "Storage"
 msgstr "저장 공간"
 
-#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:44
+#: include/menu/BatchJobTitleSelectState.h:44
 msgid "Strg+Nm"
 msgstr "저장+이름"
 
-#: /home/qwii/hb/savemii/include/menu/TitleListState.h:40
+#: include/menu/TitleListState.h:40
 msgid "Storage+Name"
 msgstr "저장 공간+이름"
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:59
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:118
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:163
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:353
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:507
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:566
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:611
+#: src/utils/TitleUtils.cpp:59 src/utils/TitleUtils.cpp:118
+#: src/utils/TitleUtils.cpp:163 src/utils/TitleUtils.cpp:353
+#: src/utils/TitleUtils.cpp:507 src/utils/TitleUtils.cpp:566
+#: src/utils/TitleUtils.cpp:611
 msgid "Out of memory."
 msgstr "메모리가 부족합니다."
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:275
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:472
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:730
+#: src/utils/TitleUtils.cpp:275 src/utils/TitleUtils.cpp:472
+#: src/utils/TitleUtils.cpp:730
 #, c-format
 msgid "Loaded %i Wii U titles."
 msgstr "%i Wii U 타이틀을 불러왔습니다."
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:429
+#: src/utils/TitleUtils.cpp:429
 #, c-format
 msgid "%s%s (No banner.bin)"
 msgstr "%s%s (banner.bin 없음)"
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:473
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:731
+#: src/utils/TitleUtils.cpp:473 src/utils/TitleUtils.cpp:731
 #, c-format
 msgid "Loaded %i Wii titles."
 msgstr "%i Wii 타이틀을 불러왔습니다."
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:732
+#: src/utils/TitleUtils.cpp:732
 #, c-format
 msgid "Loaded %i Wii U Sys titles."
 msgstr "로드된 Wii U 시스템 타이틀 %i개"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:76
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:60
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:96
+#: src/utils/LanguageUtils.cpp:144 src/menu/ConfigMenuState.cpp:60
+#: src/menu/ConfigMenuState.cpp:96
 msgid "Japanese"
 msgstr "일본어"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:78
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:103
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:78
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:98
+#: src/utils/LanguageUtils.cpp:146 src/utils/LanguageUtils.cpp:171
+#: src/menu/ConfigMenuState.cpp:78 src/menu/ConfigMenuState.cpp:98
 msgid "English"
 msgstr "영어"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:83
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:62
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:114
+#: src/utils/LanguageUtils.cpp:151 src/menu/ConfigMenuState.cpp:62
+#: src/menu/ConfigMenuState.cpp:114
 msgid "German"
 msgstr "독일어"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:85
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:64
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:112
+#: src/utils/LanguageUtils.cpp:153 src/menu/ConfigMenuState.cpp:64
+#: src/menu/ConfigMenuState.cpp:112
 msgid "Italian"
 msgstr "이탈리아어"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:87
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:68
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:108
+#: src/utils/LanguageUtils.cpp:155 src/menu/ConfigMenuState.cpp:68
+#: src/menu/ConfigMenuState.cpp:108
 msgid "Spanish"
 msgstr "스페인어"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:89
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:70
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:106
+#: src/utils/LanguageUtils.cpp:157 src/menu/ConfigMenuState.cpp:70
+#: src/menu/ConfigMenuState.cpp:106
 msgid "Traditional Chinese"
 msgstr "중국어 번체"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:91
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:104
+#: src/utils/LanguageUtils.cpp:159 src/menu/ConfigMenuState.cpp:72
+#: src/menu/ConfigMenuState.cpp:104
 msgid "Korean"
 msgstr "한국어"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:97
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:66
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:110
+#: src/utils/LanguageUtils.cpp:165 src/menu/ConfigMenuState.cpp:66
+#: src/menu/ConfigMenuState.cpp:110
 msgid "Portuguese"
 msgstr "포르투갈어"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:99
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:74
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:102
+#: src/utils/LanguageUtils.cpp:167 src/menu/ConfigMenuState.cpp:74
+#: src/menu/ConfigMenuState.cpp:102
 msgid "Russian"
 msgstr "러시아어"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:101
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:76
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:100
+#: src/utils/LanguageUtils.cpp:169 src/menu/ConfigMenuState.cpp:76
+#: src/menu/ConfigMenuState.cpp:100
 msgid "Simplified Chinese"
 msgstr "중국어 간체"
 
-#: /home/qwii/hb/savemii/src/utils/AmbientConfig.cpp:21
+#: src/utils/AmbientConfig.cpp:21
 msgid ""
 "Error getting DeviceHash\n"
 "Only affects to WiiU Mii Transfomation > Set Device Hash\n"
@@ -146,63 +127,63 @@ msgstr ""
 "\n"
 "다른 모든 Mii 저장 기능은 영향을 받지 않습니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:38
+#: src/utils/MiiUtils.cpp:38
 msgid "Unable to obtain MiiMaker title information. Let's try to find it..."
 msgstr "MiiMaker 타이틀 정보를 가져올 수 없습니다. 찾아보겠습니다..."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:75
+#: src/utils/MiiUtils.cpp:75
 msgid "Unable to obtain MiiMaker region. Disabling Internal WII U MiiDB"
 msgstr "MiiMaker 지역을 가져올 수 없습니다. Wii U 내부 MiiDB를 비활성화합니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:104
+#: src/utils/MiiUtils.cpp:104
 msgid "Internal Wii U Mii Database"
 msgstr "내부 Wii U Mii 데이터베이스"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:105
+#: src/utils/MiiUtils.cpp:105
 msgid "Custom Wii U Mii Database on SD"
 msgstr "SD 카드에 저장된 사용자 지정 Wii U Mii 데이터베이스"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:106
+#: src/utils/MiiUtils.cpp:106
 msgid "Stage Folder for Wii U Miis on SD"
 msgstr "SD 카드에 Wii U Miis용 스테이지 폴더"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:107
+#: src/utils/MiiUtils.cpp:107
 msgid "Internal vWii Mii Database"
 msgstr "내부 vWii Mii 데이터베이스"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:108
+#: src/utils/MiiUtils.cpp:108
 msgid "Custom vWii Mii Database on SD"
 msgstr "SD 카드에 저장된 사용자 지정 vWii Mii 데이터베이스"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:109
+#: src/utils/MiiUtils.cpp:109
 msgid "Stage Folder for vWii Miis on SD"
 msgstr "SD 카드에 vWii Miis용 스테이지 폴더"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:110
+#: src/utils/MiiUtils.cpp:110
 msgid "Miis from Internal Account DB"
 msgstr "내부 계정 DB에서 Mii 가져오기"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:111
+#: src/utils/MiiUtils.cpp:111
 msgid "Miis from Custom Account DB on SD"
 msgstr "SD 카드의 사용자 지정 계정 DB에서 Mii 가져오기"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:112
+#: src/utils/MiiUtils.cpp:112
 msgid "Stage folder for Account Miis on SD"
 msgstr "SD 카드에 계정 Miis용 스테이지 폴더"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:113
+#: src/utils/MiiUtils.cpp:113
 msgid "SaveGameManager GX Miis stage folder on SD"
 msgstr "SD 카드의 SaveGameManager GX Miis 스테이지 폴더"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:116
+#: src/utils/MiiUtils.cpp:116
 msgid "Internal Stadio save DB"
 msgstr "내부 Stadio 저장 DB"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:176
+#: src/utils/MiiUtils.cpp:176
 msgid "Wii U Mii Database mounted on USB"
 msgstr "USB에 마운트된 Wii U Mii 데이터베이스"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:216
+#: src/utils/MiiUtils.cpp:216
 #, c-format
 msgid ""
 "In case you need this files in the future, you will find them here:\n"
@@ -211,31 +192,27 @@ msgstr ""
 "나중에 이 파일이 필요한 경우 여기에서 찾을 수 있습니다.\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:298
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:401
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:523
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:788
+#: src/utils/MiiUtils.cpp:298 src/utils/MiiUtils.cpp:401
+#: src/utils/MiiUtils.cpp:523 src/utils/MiiUtils.cpp:788
 msgid "Aborting Task - MiiProcesSharedState is not completely initialized"
 msgstr "작업 중단 - MiiProcesSharedState가 완전히 초기화되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:305
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:408
+#: src/utils/MiiUtils.cpp:305 src/utils/MiiUtils.cpp:408
 msgid "Aborting Task - Target Repo is null"
 msgstr "작업 중단 - 대상 저장소가 null입니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:311
+#: src/utils/MiiUtils.cpp:311
 #, c-format
 msgid "Aborting Task - Unable to open repo %s"
 msgstr "작업 중단 - 저장소 %s를 열 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:319
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:416
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:425
+#: src/utils/MiiUtils.cpp:319 src/utils/MiiUtils.cpp:416
+#: src/utils/MiiUtils.cpp:425
 #, c-format
 msgid "Aborting Task - Unable to open and populate repo %s"
 msgstr "작업 중단 - 저장소 %s를 열고 채울 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:327
+#: src/utils/MiiUtils.cpp:327
 msgid ""
 "You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n"
 "\n"
@@ -249,21 +226,19 @@ msgstr ""
 "\n"
 "중복된 Mii 중 하나의 Mii ID, 일반/특수/임시 또는 장치 정보를 업데이트하여 문제를 해결해 주세요."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:350
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:471
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:750
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:588
+#: src/utils/MiiUtils.cpp:350 src/utils/MiiUtils.cpp:471
+#: src/utils/MiiUtils.cpp:750 src/menu/MiiSelectState.cpp:588
 #, c-format
 msgid "Error extracting MiiData for %s (by %s)"
 msgstr "%s에 대한 MiiData 추출 중 오류 발생(사용자: %s)"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:364
+#: src/utils/MiiUtils.cpp:364
 msgid ""
 "Errors detected during export.\n"
 "Do you want to save the database?"
 msgstr "내보내기 중 오류가 발생했습니다. 데이터베이스를 저장하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:433
+#: src/utils/MiiUtils.cpp:433
 msgid ""
 "You are importing duplicated Miis. They are marked with DUP or D in the listings.\n"
 "\n"
@@ -277,14 +252,13 @@ msgstr ""
 "\n"
 "중복된 Mii 중 하나의 Mii ID, 일반/특수/임시 또는 장치 정보를 업데이트하여 문제를 해결해 주세요."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:487
+#: src/utils/MiiUtils.cpp:487
 msgid ""
 "Errors detected during import.\n"
 "Do you want to save the database?"
 msgstr "가져오기 중 오류가 발생했습니다. 데이터베이스를 저장하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:496
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:772
+#: src/utils/MiiUtils.cpp:496 src/utils/MiiUtils.cpp:772
 msgid ""
 "Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n"
 "\n"
@@ -298,140 +272,123 @@ msgstr ""
 "\n"
 "MiiID를 업데이트하거나, 일반/특수/임시 플래그를 전환하거나, 기기 정보를 업데이트하여 문제를 해결해 주세요."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:552
+#: src/utils/MiiUtils.cpp:552
 #, c-format
 msgid "Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
 msgstr "즐겨찾기 섹션에서 %s(%s에 의해)를 제거할 수 없습니다. MiiData 추출 오류"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:556
+#: src/utils/MiiUtils.cpp:556
 #, c-format
 msgid "Error wiping MiiData for %s (by %s)"
 msgstr "%s 계정의 MiiData를 삭제하는 중 오류 발생(사용자: %s)"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:573
+#: src/utils/MiiUtils.cpp:573
 msgid ""
 "Errors detected during wipe.\n"
 "Do you want to save the database?"
 msgstr "삭제 중 오류가 발생했습니다. 데이터베이스를 저장하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:628
-#: /home/qwii/hb/savemii/src/savemng.cpp:1426
+#: src/utils/MiiUtils.cpp:628 src/savemng.cpp:1430
 msgid "Please wait. First write to (some) SDs can take several seconds."
 msgstr "잠시만 기다려 주십시오. (일부) SD에 처음 쓰는 데 몇 초 정도 걸릴 수 있습니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:641
+#: src/utils/MiiUtils.cpp:641
 msgid "Transforming mii"
 msgstr "mii 변환 중"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:644
+#: src/utils/MiiUtils.cpp:644
 msgid "Wiping mii"
 msgstr "Mii 삭제 중"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:647
+#: src/utils/MiiUtils.cpp:647
 #, c-format
 msgid "Copying from: %s"
 msgstr "복사 위치: %s"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:648
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:587
-#: /home/qwii/hb/savemii/src/savemng.cpp:1578
+#: src/utils/MiiUtils.cpp:648 src/utils/FSUtils.cpp:587 src/savemng.cpp:1582
 #, c-format
 msgid "To: %s"
 msgstr "%s 에"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:654
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:591
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:610
+#: src/utils/MiiUtils.cpp:654 src/utils/FSUtils.cpp:591
+#: src/utils/FSUtils.cpp:610
 msgid "Will abort..."
 msgstr "중단합니다..."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:657
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:594
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:613
+#: src/utils/MiiUtils.cpp:657 src/utils/FSUtils.cpp:594
+#: src/utils/FSUtils.cpp:613
 msgid "Abort:\\ue083+\\ue046"
 msgstr "중단:\\ue083+\\ue046"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:697
+#: src/utils/MiiUtils.cpp:697
 #, c-format
 msgid "Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."
 msgstr "Mii %s는 특수 Mii이며 공유 플래그가 켜져 있으면 Mii 편집기에서 삭제됩니다. 먼저 일반 Mii로 변환하십시오."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:724
+#: src/utils/MiiUtils.cpp:724
 #, c-format
 msgid "Share attribute will be disabled for Mii %s as it will be transformed to a Special one."
 msgstr "Mii %s는 특수 Mii로 변환되므로 공유 속성이 비활성화됩니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:764
+#: src/utils/MiiUtils.cpp:764
 msgid ""
 "Errors detected during transform.\n"
 "Do you want to save the database?"
 msgstr "변환 중 오류가 발생했습니다. 데이터베이스를 저장하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:809
+#: src/utils/MiiUtils.cpp:809
 #, c-format
 msgid "DB file for %s not found. Do you want to initialize it?"
 msgstr "%s에 대한 DB 파일을 찾을 수 없습니다. 초기화하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:811
+#: src/utils/MiiUtils.cpp:811
 #, c-format
 msgid "Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"
 msgstr "DB 파일 %s를 초기화하시겠습니까? (모든 Mii가 삭제됩니다!!!)"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:817
+#: src/utils/MiiUtils.cpp:817
 #, c-format
 msgid "Db file %s initialized"
 msgstr "데이터베이스 파일 %s가 초기화되었습니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:820
+#: src/utils/MiiUtils.cpp:820
 #, c-format
 msgid "Error initializing db file %s"
 msgstr "db 파일 %s 초기화 중 오류 발생"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:822
+#: src/utils/MiiUtils.cpp:822
 #, c-format
 msgid "Initialize task for %s aborted"
 msgstr "%s 작업에 대한 초기화가 중단되었습니다"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:836
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:59
+#: src/utils/MiiUtils.cpp:836 src/menu/MiiDBOptionsState.cpp:59
 msgid "This action is not supported on the selected repo."
 msgstr " 선택한 저장소에서는 이 작업이 지원되지 않습니다."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:862
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:425
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:130
-#: /home/qwii/hb/savemii/src/savemng.cpp:382
-#: /home/qwii/hb/savemii/src/savemng.cpp:494
-#: /home/qwii/hb/savemii/src/savemng.cpp:555
-#: /home/qwii/hb/savemii/src/savemng.cpp:968
+#: src/utils/MiiUtils.cpp:862 src/mii/MiiAccountRepo.cpp:425
+#: src/mii/MiiRepo.cpp:130 src/savemng.cpp:381 src/savemng.cpp:493
+#: src/savemng.cpp:554 src/savemng.cpp:972
 msgid "Backup current savedata first to next empty slot?"
 msgstr "현재 저장데이터를 먼저 다음 빈 슬롯에 백업하겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:863
+#: src/utils/MiiUtils.cpp:863
 msgid "pre-XRestore backup"
 msgstr "pre-XRestore backup"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:864
+#: src/utils/MiiUtils.cpp:864
 msgid "Backup Failed - XRestore aborted !!"
 msgstr "백업 실패 - XRestore가 중단되었습니다!!"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:890
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:902
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:279
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:288
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:278
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:287
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:370
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:379
+#: src/utils/MiiUtils.cpp:890 src/utils/MiiUtils.cpp:902
+#: src/mii/MiiStadioSav.cpp:279 src/mii/MiiStadioSav.cpp:288
+#: src/mii/MiiAccountRepo.cpp:278 src/mii/MiiAccountRepo.cpp:287
+#: src/mii/MiiFileRepo.cpp:370 src/mii/MiiFileRepo.cpp:379
 msgid "Unrecoverable Error - Please restore db from a Backup"
 msgstr "복구할 수 없는 오류 - 백업에서 데이터베이스를 복원하십시오."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:893
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:905
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:278
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:277
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:292
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:369
+#: src/utils/MiiUtils.cpp:893 src/utils/MiiUtils.cpp:905
+#: src/mii/MiiStadioSav.cpp:278 src/mii/MiiAccountRepo.cpp:277
+#: src/mii/MiiAccountRepo.cpp:292 src/mii/MiiFileRepo.cpp:369
 #, c-format
 msgid ""
 "Error renaming file \n"
@@ -444,8 +401,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:894
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:898
+#: src/utils/MiiUtils.cpp:894 src/utils/MiiUtils.cpp:898
 #, c-format
 msgid ""
 "Restored full account %s on %s account. \n"
@@ -456,13 +412,10 @@ msgstr ""
 "\n"
 "필요한 경우 DB 백업을 복원하십시오."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:897
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:284
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:287
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:283
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:286
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:375
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:378
+#: src/utils/MiiUtils.cpp:897 src/mii/MiiStadioSav.cpp:284
+#: src/mii/MiiStadioSav.cpp:287 src/mii/MiiAccountRepo.cpp:283
+#: src/mii/MiiAccountRepo.cpp:286 src/mii/MiiFileRepo.cpp:375
+#: src/mii/MiiFileRepo.cpp:378
 #, c-format
 msgid ""
 "Error removing db file %s\n"
@@ -475,7 +428,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:901
+#: src/utils/MiiUtils.cpp:901
 #, c-format
 msgid ""
 "Error restoring db file %s\n"
@@ -488,37 +441,65 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:956
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:972
+#: src/utils/MiiUtils.cpp:956 src/utils/MiiUtils.cpp:972
 #, c-format
 msgid "Account %s does not exist in primary Account DB %s"
 msgstr "기본 계정 DB %s에 계정 %s가 없습니다."
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:50
+#: src/utils/ConsoleUtils.cpp:50
 msgid "Press \\ue000 to continue"
 msgstr "계속하려면 \\ue000을 누르세요."
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:80
+#: src/utils/ConsoleUtils.cpp:80
 msgid "\\ue000 Yes - \\ue001 No"
 msgstr "\\ue000 예 - \\ue001 아니오"
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:81
+#: src/utils/ConsoleUtils.cpp:81
 msgid "\\ue000 Confirm - \\ue001 Cancel"
 msgstr "\\ue000 확인 - \\ue001 취소"
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:82
+#: src/utils/ConsoleUtils.cpp:82
 msgid "\\ue003 Confirm - \\ue001 Cancel"
 msgstr "\\ue003 확인 - \\ue001 취소"
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:154
+#: src/utils/ConsoleUtils.cpp:154
 msgid "Choose your option"
 msgstr "옵션 선택"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:95
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:101
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:170
-#: /home/qwii/hb/savemii/src/savemng.cpp:1540
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:23
+#: include/utils/KeyboardUtils.h:27
+msgid "KB_N_0"
+msgstr "1234567890-="
+
+#: include/utils/KeyboardUtils.h:28
+msgid "KB_N_1"
+msgstr "qwertyuiop[]|"
+
+#: include/utils/KeyboardUtils.h:29
+msgid "KB_N_2"
+msgstr "asdfghjkl;'"
+
+#: include/utils/KeyboardUtils.h:30
+msgid "KB_N_3"
+msgstr "zxcvbnm ,./"
+
+#: include/utils/KeyboardUtils.h:33
+msgid "KB_S_0"
+msgstr "!@#$%^&*()_+~"
+
+#: include/utils/KeyboardUtils.h:34
+msgid "KB_S_1"
+msgstr "QWERTYUIOP{}\\"
+
+#: include/utils/KeyboardUtils.h:35
+msgid "KB_S_2"
+msgstr "ASDFGHJKL:\""
+
+#: include/utils/KeyboardUtils.h:36
+msgid "KB_S_3"
+msgstr "ZXCVBNM <>"
+
+#: src/utils/FSUtils.cpp:95 src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:170
+#: src/savemng.cpp:1544 src/cfg/BaseCfg.cpp:23
 #, c-format
 msgid ""
 "Error while creating folder:\n"
@@ -533,7 +514,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:130
+#: src/utils/FSUtils.cpp:130
 #, c-format
 msgid ""
 "Failed to delete folder\n"
@@ -547,7 +528,7 @@ msgstr ""
 "폴더 삭제 실패\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:138
+#: src/utils/FSUtils.cpp:138
 #, c-format
 msgid ""
 "Failed to delete file\n"
@@ -561,8 +542,7 @@ msgstr ""
 "파일 삭제 실패\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:154
-#: /home/qwii/hb/savemii/src/savemng.cpp:1767
+#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1771
 #, c-format
 msgid ""
 "Error while reading folder content\n"
@@ -577,7 +557,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:176
+#: src/utils/FSUtils.cpp:176
 #, c-format
 msgid ""
 "Error while creating final folder:\n"
@@ -592,8 +572,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:221
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:33
+#: src/utils/FSUtils.cpp:221 src/menu/MainMenuState.cpp:34
 #, c-format
 msgid ""
 "Error\n"
@@ -606,8 +585,7 @@ msgstr ""
 "권한 설정 중\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:228
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:42
+#: src/utils/FSUtils.cpp:228 src/menu/MainMenuState.cpp:43
 #, c-format
 msgid ""
 "Error creating shim for change perms\n"
@@ -618,7 +596,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:242
+#: src/utils/FSUtils.cpp:242
 #, c-format
 msgid ""
 "Error\n"
@@ -631,10 +609,8 @@ msgstr ""
 "소유자 %08x / 그룹 %08x 설정 중\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:345
-#: /home/qwii/hb/savemii/src/savemng.cpp:1791
-#: /home/qwii/hb/savemii/src/savemng.cpp:1845
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:84
+#: src/utils/FSUtils.cpp:345 src/savemng.cpp:1795 src/savemng.cpp:1849
+#: src/cfg/BaseCfg.cpp:84
 #, c-format
 msgid ""
 "Cannot open file for read\n"
@@ -649,10 +625,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:367
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:373
-#: /home/qwii/hb/savemii/src/savemng.cpp:1876
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:46
+#: src/utils/FSUtils.cpp:367 src/utils/FSUtils.cpp:373 src/savemng.cpp:1880
+#: src/cfg/BaseCfg.cpp:46
 #, c-format
 msgid ""
 "Cannot open file for write\n"
@@ -667,7 +641,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:402
+#: src/utils/FSUtils.cpp:402
 msgid ""
 "\n"
 "\n"
@@ -677,8 +651,7 @@ msgstr ""
 "\n"
 "주의: 아직 삭제하지 않은 경우 복원 전에 저장 데이터를 삭제해 보세요."
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:410
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
 #, c-format
 msgid ""
 "Error creating permission file - Backup/Restore is not reliable\n"
@@ -686,7 +659,7 @@ msgid ""
 "Do you want to continue?"
 msgstr "권한 파일 생성 오류 - 백업/복원이 불안정합니다. 지금까지 발생한 오류: %d개. 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:428
+#: src/utils/FSUtils.cpp:428
 #, c-format
 msgid ""
 "Read error\n"
@@ -701,7 +674,7 @@ msgstr ""
 "\n"
 " %s에서 읽는 중"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:431
+#: src/utils/FSUtils.cpp:431
 #, c-format
 msgid ""
 "Write error\n"
@@ -716,11 +689,8 @@ msgstr ""
 "\n"
 " %s로 복사 중"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:445
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:720
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:111
-#: /home/qwii/hb/savemii/src/savemng.cpp:136
-#: /home/qwii/hb/savemii/src/savemng.cpp:174
+#: src/utils/FSUtils.cpp:445 src/utils/FSUtils.cpp:720
+#: src/menu/BatchJobOptions.cpp:111 src/savemng.cpp:135 src/savemng.cpp:173
 #, c-format
 msgid ""
 "Error opening source dir\n"
@@ -735,7 +705,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:470
+#: src/utils/FSUtils.cpp:470
 #, c-format
 msgid ""
 "Error creating folder\n"
@@ -750,9 +720,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:517
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:550
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:561
+#: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
+#: src/utils/FSUtils.cpp:561
 #, c-format
 msgid ""
 "Error copying directory - Backup/Restore is not reliable\n"
@@ -763,7 +732,7 @@ msgstr ""
 "현재 오류: %d\n"
 "계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:526
+#: src/utils/FSUtils.cpp:526
 #, c-format
 msgid ""
 "Error copying file - Backup/Restore is not reliable\n"
@@ -774,8 +743,7 @@ msgstr ""
 "현재 오류: %d\n"
 "계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:549
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:762
+#: src/utils/FSUtils.cpp:549 src/utils/FSUtils.cpp:767
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -794,9 +762,7 @@ msgstr ""
 "\n"
 "복사가 완료되지 않았을 수 있습니다"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:560
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:773
-#: /home/qwii/hb/savemii/src/savemng.cpp:1660
+#: src/utils/FSUtils.cpp:560 src/utils/FSUtils.cpp:778 src/savemng.cpp:1664
 #, c-format
 msgid ""
 "Error while closing folder\n"
@@ -811,27 +777,27 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:585
+#: src/utils/FSUtils.cpp:585
 #, c-format
 msgid "Copying file: %s"
 msgstr "파일 복사 중: %s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:586
+#: src/utils/FSUtils.cpp:586
 #, c-format
 msgid "From: %s"
 msgstr "%s 에서"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:605
+#: src/utils/FSUtils.cpp:605
 #, c-format
 msgid "Deleting folder %s"
 msgstr "%s 폴더 삭제 중"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:605
+#: src/utils/FSUtils.cpp:605
 #, c-format
 msgid "Deleting file %s"
 msgstr "%s 파일 삭제 중"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:606
+#: src/utils/FSUtils.cpp:606
 #, c-format
 msgid ""
 "From: \n"
@@ -840,9 +806,8 @@ msgstr ""
 "%s\n"
 "에서"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:743
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:763
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:774
+#: src/utils/FSUtils.cpp:739 src/utils/FSUtils.cpp:748
+#: src/utils/FSUtils.cpp:768 src/utils/FSUtils.cpp:779
 #, c-format
 msgid ""
 "Error setting permissions - Restore is not reliable\n"
@@ -850,20 +815,19 @@ msgid ""
 "Do you want to continue?"
 msgstr "권한 설정 오류 - 복원이 안정적이지 않습니다. 지금까지 발생한 오류 수: %d. 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:14
+#: src/utils/StartupUtils.cpp:14
 msgid "Disclaimer:"
 msgstr "면책 조항:"
 
-#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:15
+#: src/utils/StartupUtils.cpp:15
 msgid "There is always the potential for a brick."
 msgstr "벽돌의 가능성은 항상 있습니다."
 
-#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:16
+#: src/utils/StartupUtils.cpp:16
 msgid "Everything you do with this software is your own responsibility"
 msgstr "이 소프트웨어로 수행하는 모든 작업은 사용자의 책임입니다"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:16
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:66
+#: src/utils/EscapeFAT32Utils.cpp:16 src/utils/EscapeFAT32Utils.cpp:66
 #, c-format
 msgid ""
 "Error opening FAT32 chars translation file \n"
@@ -876,7 +840,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:32
+#: src/utils/EscapeFAT32Utils.cpp:32
 #, c-format
 msgid ""
 "Error updating FAT32 chars translation file for file\n"
@@ -889,8 +853,7 @@ msgstr ""
 "\n"
 "%s에 대한 FAT32 문자 변환 파일 업데이트 오류"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:39
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:114
+#: src/utils/EscapeFAT32Utils.cpp:39 src/utils/EscapeFAT32Utils.cpp:114
 #, c-format
 msgid ""
 "Error closing FAT32 chars translation file \n"
@@ -903,7 +866,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:79
+#: src/utils/EscapeFAT32Utils.cpp:79
 #, c-format
 msgid ""
 "Unexpected format for target in FAT32 translation file:\n"
@@ -912,7 +875,7 @@ msgstr ""
 "FAT32 변환 파일의 대상 형식이 예상치 못한 형식입니다:\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:88
+#: src/utils/EscapeFAT32Utils.cpp:88
 #, c-format
 msgid ""
 "Unexpected format for taget in FAT32 translation file:\n"
@@ -921,7 +884,7 @@ msgstr ""
 "FAT32 변환 파일의 대상 형식이 예상치 못한 형식입니다:\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:92
+#: src/utils/EscapeFAT32Utils.cpp:92
 #, c-format
 msgid ""
 "Unexpected format for source in FAT32 translation file:\n"
@@ -930,7 +893,7 @@ msgstr ""
 "FAT32 변환 파일의 소스 형식이 예상치 못한 형식입니다:\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:109
+#: src/utils/EscapeFAT32Utils.cpp:109
 #, c-format
 msgid ""
 "Error parsing FAT32 chars translation file \n"
@@ -943,7 +906,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:119
+#: src/utils/EscapeFAT32Utils.cpp:119
 #, c-format
 msgid ""
 "FAT32 chars translation file is empty\n"
@@ -956,8 +919,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:130
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:149
+#: src/utils/EscapeFAT32Utils.cpp:130 src/utils/EscapeFAT32Utils.cpp:149
 #, c-format
 msgid ""
 "Cannot rename folder \n"
@@ -970,7 +932,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:142
+#: src/utils/EscapeFAT32Utils.cpp:142
 #, c-format
 msgid ""
 "Cannot rename file \n"
@@ -983,8 +945,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:60
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:84
+#: src/utils/StatManager.cpp:60 src/utils/StatManager.cpp:84
 #, c-format
 msgid ""
 "Error setting permissions - Backup/Restore is not reliable\n"
@@ -992,7 +953,7 @@ msgid ""
 "Do you want to continue?"
 msgstr "권한 설정 오류 - 백업/복원이 안정적이지 않습니다. 지금까지 발생한 오류 수: %d. 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:94
+#: src/utils/StatManager.cpp:94
 #, c-format
 msgid ""
 "Error reading stat file\n"
@@ -1007,8 +968,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:113
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:290
+#: src/utils/StatManager.cpp:113 src/utils/StatManager.cpp:293
 #, c-format
 msgid ""
 "Error setting permissions for file: %s\n"
@@ -1019,21 +979,14 @@ msgstr ""
 "\n"
 "%s에 대한 권한 설정 오류 발생"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:139
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:159
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:185
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:167
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:250
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:445
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:87
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:195
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:207
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:60
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:160
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:165
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:272
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:338
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:665
+#: src/utils/StatManager.cpp:139 src/utils/StatManager.cpp:159
+#: src/utils/StatManager.cpp:185 src/mii/MiiStadioSav.cpp:167
+#: src/mii/MiiStadioSav.cpp:250 src/mii/MiiStadioSav.cpp:447
+#: src/mii/MiiAccountRepo.cpp:87 src/mii/MiiAccountRepo.cpp:195
+#: src/mii/MiiAccountRepo.cpp:207 src/mii/MiiFolderRepo.cpp:60
+#: src/mii/MiiFolderRepo.cpp:160 src/mii/MiiFolderRepo.cpp:165
+#: src/mii/MiiFileRepo.cpp:272 src/mii/MiiFileRepo.cpp:338
+#: src/mii/MiiFileRepo.cpp:665
 #, c-format
 msgid ""
 "Error opening file \n"
@@ -1046,11 +999,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:200
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:210
-#: /home/qwii/hb/savemii/src/savemng.cpp:1885
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:57
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:102
+#: src/utils/StatManager.cpp:200 src/utils/StatManager.cpp:210
+#: src/savemng.cpp:1889 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:102
 #, c-format
 msgid ""
 "Error closing file\n"
@@ -1065,7 +1015,14 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:271
+#: src/utils/StatManager.cpp:242
+#, fuzzy, c-format
+msgid "Error getting stat for %s: %s"
+msgstr ""
+"\n"
+"%s에 대한 할당량 설정 오류"
+
+#: src/utils/StatManager.cpp:274
 #, c-format
 msgid ""
 "Error writing stat file\n"
@@ -1076,40 +1033,39 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/main.cpp:81
+#: src/main.cpp:81
 msgid "Initializing WPAD and KPAD"
 msgstr "WPAD 및 KPAD 초기화 중"
 
-#: /home/qwii/hb/savemii/src/main.cpp:85
+#: src/main.cpp:85
 msgid "Initializing loadWiiU Titles"
 msgstr "loadWiiU 타이틀 초기화 중"
 
-#: /home/qwii/hb/savemii/src/main.cpp:89
+#: src/main.cpp:89
 msgid "Initializing FS"
 msgstr "FS 초기화 중"
 
-#: /home/qwii/hb/savemii/src/main.cpp:92
+#: src/main.cpp:92
 msgid "initFS failed. Please make sure your MochaPayload is up-to-date"
 msgstr "initFS에 실패했습니다. MochaPayload가 최신 버전인지 확인하십시오."
 
-#: /home/qwii/hb/savemii/src/main.cpp:116
+#: src/main.cpp:116
 msgid "Initializing BackupSets metadata."
 msgstr "백업 세트 메타데이터를 초기화하는 중입니다."
 
-#: /home/qwii/hb/savemii/src/main.cpp:120
+#: src/main.cpp:120
 msgid "Initializing Excludes config."
 msgstr "제외 구성을 초기화하는 중입니다."
 
-#: /home/qwii/hb/savemii/src/main.cpp:132
+#: src/main.cpp:132
 msgid "Initializing Mii repos."
 msgstr "Mii 저장소 초기화 중"
 
-#: /home/qwii/hb/savemii/src/main.cpp:164
+#: src/main.cpp:164
 msgid "Press \\ue044 to exit."
 msgstr "\\ue044: 출구"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:173
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:278
+#: src/mii/MiiStadioSav.cpp:173 src/mii/MiiFileRepo.cpp:278
 #, c-format
 msgid ""
 "%s\n"
@@ -1120,8 +1076,7 @@ msgstr ""
 "\n"
 "DB 파일의 크기가 예상치 못한 크기입니다: %d. %d바이트 이상이 필요합니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:181
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:286
+#: src/mii/MiiStadioSav.cpp:181 src/mii/MiiFileRepo.cpp:286
 #, c-format
 msgid ""
 "%s\n"
@@ -1132,10 +1087,8 @@ msgstr ""
 "\n"
 "DB 데이터를 읽기 위한 메모리 버퍼를 생성할 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:187
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:238
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:83
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:292
+#: src/mii/MiiStadioSav.cpp:187 src/mii/MiiAccountRepo.cpp:238
+#: src/mii/MiiFolderRepo.cpp:83 src/mii/MiiFileRepo.cpp:292
 #, c-format
 msgid ""
 "Error reading file \n"
@@ -1147,8 +1100,7 @@ msgstr ""
 "\n"
 "%s 읽는 중 오류 발생"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:193
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:298
+#: src/mii/MiiStadioSav.cpp:193 src/mii/MiiFileRepo.cpp:298
 #, c-format
 msgid ""
 "Error reading db\n"
@@ -1159,17 +1111,12 @@ msgstr ""
 "%s\n"
 "잘못된 매직 넘버."
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:200
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:262
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:457
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:103
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:247
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:254
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:89
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:171
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:305
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:350
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:677
+#: src/mii/MiiStadioSav.cpp:200 src/mii/MiiStadioSav.cpp:262
+#: src/mii/MiiStadioSav.cpp:459 src/mii/MiiAccountRepo.cpp:103
+#: src/mii/MiiAccountRepo.cpp:247 src/mii/MiiAccountRepo.cpp:254
+#: src/mii/MiiFolderRepo.cpp:89 src/mii/MiiFolderRepo.cpp:171
+#: src/mii/MiiFileRepo.cpp:305 src/mii/MiiFileRepo.cpp:350
+#: src/mii/MiiFileRepo.cpp:677
 #, c-format
 msgid ""
 "Error closing file \n"
@@ -1182,11 +1129,9 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:255
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:450
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:343
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:670
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:51
+#: src/mii/MiiStadioSav.cpp:255 src/mii/MiiStadioSav.cpp:452
+#: src/mii/MiiFileRepo.cpp:343 src/mii/MiiFileRepo.cpp:670
+#: src/cfg/BaseCfg.cpp:51
 #, c-format
 msgid ""
 "Error writing file\n"
@@ -1201,9 +1146,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:294
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:295
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:385
+#: src/mii/MiiStadioSav.cpp:294 src/mii/MiiAccountRepo.cpp:295
+#: src/mii/MiiFileRepo.cpp:385
 #, c-format
 msgid ""
 "Error managing temporal db %s\n"
@@ -1214,30 +1158,29 @@ msgstr ""
 "\n"
 "실제 Mii db에 대한 작업이 수행되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:339
+#: src/mii/MiiStadioSav.cpp:339
 msgid "Cannot find an EMPTY location for the mii in the STADIO db"
 msgstr "STADIO 데이터베이스에서 해당 Mii에 대한 빈 위치를 찾을 수 없습니다"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:345
+#: src/mii/MiiStadioSav.cpp:345
 msgid "Cannot find an EMPTY frame for the mii in the STADIO db"
 msgstr "STADIO 데이터베이스에서 해당 Mii에 대한 빈 프레임을 찾을 수 없습니다"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:400
+#: src/mii/MiiStadioSav.cpp:402
 msgid "Warning: unable to populate Account repo. Non-critical error, you can continue"
 msgstr "경고: 계정 저장소를 채울 수 없습니다. 심각하지 않은 오류이므로 계속 진행할 수 있습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:408
+#: src/mii/MiiStadioSav.cpp:410
 #, c-format
 msgid "Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"
 msgstr "경고: STADIO에 mii %s를 가져올 수 없습니다. 심각하지 않은 오류이므로 계속 진행할 수 있습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:411
+#: src/mii/MiiStadioSav.cpp:413
 #, c-format
 msgid "Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"
 msgstr "경고: %s(사용자: %s)의 MiiData를 추출할 수 없습니다. 심각하지 않은 오류이므로 계속 진행할 수 있습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:428
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:646
+#: src/mii/MiiStadioSav.cpp:430 src/mii/MiiFileRepo.cpp:646
 #, c-format
 msgid ""
 "%s\n"
@@ -1248,9 +1191,8 @@ msgstr ""
 "\n"
 "DB 데이터 초기화를 위한 메모리 버퍼를 생성할 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:111
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:67
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:425
+#: src/mii/MiiAccountRepo.cpp:111 src/mii/MiiFolderRepo.cpp:67
+#: src/mii/MiiFileRepo.cpp:425
 #, c-format
 msgid ""
 "%s\n"
@@ -1263,9 +1205,8 @@ msgstr ""
 "Mii 파일의 크기가 예상치 못한 크기입니다: %d. %d 또는 %d 바이트만 허용됩니다.\n"
 "파일을 건너뜁니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:118
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:76
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:401
+#: src/mii/MiiAccountRepo.cpp:118 src/mii/MiiFolderRepo.cpp:76
+#: src/mii/MiiFileRepo.cpp:401
 #, c-format
 msgid ""
 "%s\n"
@@ -1276,29 +1217,25 @@ msgstr ""
 "\n"
 "Mii 데이터 읽기를 위한 메모리 버퍼를 생성할 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:123
+#: src/mii/MiiAccountRepo.cpp:123
 msgid "Error serializing WiiU MiiData"
 msgstr "WiiU MiiData 직렬화 중 오류 발생"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:129
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:99
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:135
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:178
+#: src/mii/MiiAccountRepo.cpp:129 src/mii/MiiFolderRepo.cpp:99
+#: src/mii/MiiFolderRepo.cpp:135 src/mii/MiiFolderRepo.cpp:178
 msgid "Error switching le/be MiiData representation"
 msgstr "MiiData 표현 방식 전환 오류"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:143
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:114
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:419
+#: src/mii/MiiAccountRepo.cpp:143 src/mii/MiiFolderRepo.cpp:114
+#: src/mii/MiiFileRepo.cpp:419
 msgid "Trying to import from null mii data"
 msgstr "null mii 데이터에서 가져오기 시도 중"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:148
+#: src/mii/MiiAccountRepo.cpp:148
 msgid "Only in_place is allowed for account miidata"
 msgstr "계정 miidata는 in_place만 허용"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:155
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:145
+#: src/mii/MiiAccountRepo.cpp:155 src/mii/MiiFolderRepo.cpp:145
 #, c-format
 msgid ""
 "MiiData buffer is not big enough\n"
@@ -1307,24 +1244,21 @@ msgstr ""
 "MiiData 버퍼 크기가 충분하지 않습니다\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:169
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:185
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:197
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:210
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:269
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:301
+#: src/mii/MiiAccountRepo.cpp:169 src/mii/MiiAccountRepo.cpp:185
+#: src/mii/MiiAccountRepo.cpp:197 src/mii/MiiAccountRepo.cpp:210
+#: src/mii/MiiAccountRepo.cpp:269 src/mii/MiiAccountRepo.cpp:301
 msgid "Error transforming WiiU MiiData to Account MiiData"
 msgstr "WiiU MiiData를 계정 MiiData로 변환하는 중 오류"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:183
+#: src/mii/MiiAccountRepo.cpp:183
 msgid "Error deserializing WiiU MiiData"
 msgstr "WiiU MiiData 역직렬화 오류."
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:309
+#: src/mii/MiiAccountRepo.cpp:309
 msgid "Wipe Mii Operation not supported for Account Data Miis"
 msgstr "계정 데이터 Mii에 대해서는 Mii 삭제 작업이 지원되지 않습니다"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:339
+#: src/mii/MiiAccountRepo.cpp:339
 #, c-format
 msgid ""
 "Error parsing file \n"
@@ -1333,43 +1267,32 @@ msgstr ""
 "파일 구문 분석 오류\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:363
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:241
+#: src/mii/MiiAccountRepo.cpp:363 src/mii/MiiFolderRepo.cpp:241
 #, c-format
 msgid "Reading Miis: %d"
 msgstr "Mii 읽는 중: %d"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:426
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:131
-#: /home/qwii/hb/savemii/src/savemng.cpp:969
+#: src/mii/MiiAccountRepo.cpp:426 src/mii/MiiRepo.cpp:131 src/savemng.cpp:973
 msgid "pre-Restore backup"
 msgstr "사전 복사 복원 백업"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:427
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:132
-#: /home/qwii/hb/savemii/src/savemng.cpp:384
-#: /home/qwii/hb/savemii/src/savemng.cpp:970
+#: src/mii/MiiAccountRepo.cpp:427 src/mii/MiiRepo.cpp:132 src/savemng.cpp:383
+#: src/savemng.cpp:974
 msgid "Backup Failed - Restore aborted !!"
 msgstr "백업 실패 - 복원 중단!!"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:441
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:490
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:56
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:80
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:145
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:178
+#: src/mii/MiiAccountRepo.cpp:441 src/mii/MiiAccountRepo.cpp:490
+#: src/mii/MiiRepo.cpp:56 src/mii/MiiRepo.cpp:80 src/mii/MiiRepo.cpp:145
+#: src/mii/MiiRepo.cpp:178
 msgid "Error copying data."
 msgstr "데이터 복사 중 오류 발생."
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:445
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:150
+#: src/mii/MiiAccountRepo.cpp:445 src/mii/MiiRepo.cpp:150
 msgid "Error creating folder."
 msgstr "폴더 생성 오류."
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:450
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:189
-#: /home/qwii/hb/savemii/src/savemng.cpp:980
-#: /home/qwii/hb/savemii/src/savemng.cpp:1114
+#: src/mii/MiiAccountRepo.cpp:450 src/mii/MiiRepo.cpp:189 src/savemng.cpp:984
+#: src/savemng.cpp:1118
 #, c-format
 msgid ""
 "%s\n"
@@ -1378,7 +1301,7 @@ msgstr ""
 "%s\n"
 "복원 실패."
 
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:124
+#: src/mii/MiiFolderRepo.cpp:124
 #, c-format
 msgid ""
 "Cannot find a name for the mii file:\n"
@@ -1389,8 +1312,7 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:190
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:237
+#: src/mii/MiiFolderRepo.cpp:190 src/mii/MiiRepo.cpp:237
 #, c-format
 msgid ""
 "%s \n"
@@ -1403,29 +1325,29 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:153
+#: src/mii/MiiFileRepo.cpp:153
 #, c-format
 msgid "Maximum Numer of Favorite Miis (%d) reached"
 msgstr "즐겨찾는 Mii 최대 개수(%d)에 도달했습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:193
+#: src/mii/MiiFileRepo.cpp:193
 #, c-format
 msgid "Mii %s not found in Favorites section"
 msgstr "즐겨찾기 섹션에서 Mii %s를 찾을 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:435
+#: src/mii/MiiFileRepo.cpp:435
 msgid "Cannot find an EMPTY location for the mii in the db"
 msgstr "데이터베이스에서 해당 Mii에 대한 빈 위치를 찾을 수 없습니다"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:449
+#: src/mii/MiiFileRepo.cpp:449
 msgid "Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"
 msgstr "주의:이것은 MiiId 슬라이스 0x1/3의 일반 Mii이며, Mii 채널을 열면 삭제될 가능성이 높습니다. 더 안전한 슬라이스(0x4/3)로 변경하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:464
+#: src/mii/MiiFileRepo.cpp:464
 msgid "Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"
 msgstr "주의: 이것은 임시 Mii이므로 MiiMaker에 나타나지 않습니다. 영구 Mii로 변경하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:473
+#: src/mii/MiiFileRepo.cpp:473
 #, c-format
 msgid ""
 "Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n"
@@ -1440,27 +1362,22 @@ msgstr ""
 "\n"
 "이 Mii의 Mii ID를 변경하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:520
+#: src/mii/MiiFileRepo.cpp:520
 #, c-format
 msgid "DB %s has not been initialized"
 msgstr "데이터베이스 %s가 초기화되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:535
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:538
+#: src/mii/MiiFileRepo.cpp:535 src/mii/MiiFileRepo.cpp:538
 #, c-format
 msgid "Looking for a Mii in location: %d/%d. Miis found: %d."
 msgstr "위치: %d/%d에서 Mii를 찾는 중. 찾은 Mii: %d개"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:25
-#: /home/qwii/hb/savemii/src/savemng.cpp:783
+#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:782
 msgid "Backup found on this slot. Overwrite it?"
 msgstr "이 슬롯에서 백업을 찾았습니다. 덮어쓰겠습니까?"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:44
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:102
-#: /home/qwii/hb/savemii/src/savemng.cpp:806
-#: /home/qwii/hb/savemii/src/savemng.cpp:814
-#: /home/qwii/hb/savemii/src/savemng.cpp:917
+#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:805
+#: src/savemng.cpp:813 src/savemng.cpp:916
 #, c-format
 msgid ""
 "%s\n"
@@ -1469,47 +1386,43 @@ msgstr ""
 "%s\n"
 "백업에 실패했습니다. 이 슬롯에서 복원하지 마세요."
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:53
+#: src/mii/MiiRepo.cpp:53
 msgid "Backup aborted."
 msgstr "백업이 중단되었습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:74
+#: src/mii/MiiRepo.cpp:74
 msgid "Warning - Error copying stadio file"
 msgstr "경고 - stadio 파일 복사 오류"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:95
+#: src/mii/MiiRepo.cpp:95
 msgid "PARTIAL BACKUP"
 msgstr "부분 백업"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:100
+#: src/mii/MiiRepo.cpp:100
 msgid "NO STADIO"
 msgstr "스테이디오 없음"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:104
-#: /home/qwii/hb/savemii/src/savemng.cpp:755
-#: /home/qwii/hb/savemii/src/savemng.cpp:919
+#: src/mii/MiiRepo.cpp:104 src/savemng.cpp:754 src/savemng.cpp:918
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr "사용할 수 없는 슬롯 - 백업 실패"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:142
+#: src/mii/MiiRepo.cpp:142
 msgid "Restore aborted."
 msgstr "복원이 중단되었습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:221
+#: src/mii/MiiRepo.cpp:221
 msgid "Wipe aborted."
 msgstr "삭제 중단됨."
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:224
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:284
+#: src/mii/MiiRepo.cpp:224 src/mii/MiiRepo.cpp:284
 msgid "Error wiping data."
 msgstr "데이터 삭제 오류"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:236
+#: src/mii/MiiRepo.cpp:236
 msgid "Error deleting file."
 msgstr "파일 삭제 오류"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:249
-#: /home/qwii/hb/savemii/src/savemng.cpp:1245
+#: src/mii/MiiRepo.cpp:249 src/savemng.cpp:1249
 #, c-format
 msgid ""
 "%s\n"
@@ -1518,17 +1431,16 @@ msgstr ""
 "%s\n"
 "삭제 실패."
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:281
+#: src/mii/MiiRepo.cpp:281
 msgid "Initialize aborted."
 msgstr "초기화가 중단되었습니다."
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:297
+#: src/mii/MiiRepo.cpp:297
 #, c-format
 msgid "%s\n"
-msgstr ""
-"%s\n"
+msgstr "%s\n"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:300
+#: src/mii/MiiRepo.cpp:300
 #, c-format
 msgid ""
 "%s\n"
@@ -1537,53 +1449,49 @@ msgstr ""
 "%s\n"
 "DB 초기화 실패."
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:28
+#: src/menu/TitleListState.cpp:28
 msgid "No Wii U titles found."
 msgstr "Wii U 타이틀이 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:28
+#: src/menu/TitleListState.cpp:28
 msgid "No vWii titles found."
 msgstr "vWii 타이틀을 찾을 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:35
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:118
+#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:118
 msgid "Wii U Titles"
 msgstr "Wii U 타이틀"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:35
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:118
+#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:118
 msgid "vWii Titles"
 msgstr "vWii 타이틀"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:271
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:281
+#: src/menu/TitleListState.cpp:37 src/menu/BatchJobTitleSelectState.cpp:271
+#: src/menu/BatchJobTitleSelectState.cpp:281
 #, c-format
 msgid "%s Sort: %s \\ue084"
 msgstr "%s 정렬: %s \\ue084"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:54
+#: src/menu/TitleListState.cpp:54
 msgid " [vWiiInject]"
 msgstr " [vWiiInject]"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:55
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:64
+#: src/menu/TitleListState.cpp:55 src/menu/TitleListState.cpp:64
 msgid " [Not Init]"
 msgstr " [초기화 아님]"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:73
+#: src/menu/TitleListState.cpp:73
 msgid "\\ue000: Select Game   \\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue000: 게임 선택 \\ue085\\ue07e\\ue086: 페이지 이동 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:97
+#: src/menu/TitleListState.cpp:97
 msgid "CBHC save. Could be dangerous to modify. Continue?"
 msgstr "CBHC 저장입니다. 수정하면 위험할 수 있습니다. 계속하겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:98
+#: src/menu/TitleListState.cpp:98
 msgid "Are you REALLY sure?"
 msgstr "정말로 확신합니까?"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:111
+#: src/menu/TitleListState.cpp:111
 msgid ""
 "Savedata for this title has not been initialized.\n"
 "You can try to restore it, but in case that the restore fails,\n"
@@ -1593,7 +1501,7 @@ msgid ""
 "You can continue to Task Selection"
 msgstr "이 타이틀의 저장 데이터가 초기화되지 않았습니다. 복원을 시도할 수 있지만, 복원이 실패할 경우 게임을 실행하여 초기 저장 데이터를 생성한 후 다시 시도하십시오. 작업 선택으로 계속할 수 있습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:117
+#: src/menu/TitleListState.cpp:117
 #, c-format
 msgid ""
 "SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
@@ -1618,7 +1526,7 @@ msgstr ""
 "\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:138
+#: src/menu/TitleListState.cpp:138
 #, c-format
 msgid ""
 "Ok, legacy folder '%08x%08x' will be used.\n"
@@ -1633,179 +1541,152 @@ msgstr ""
 "의 백업에 액세스할 수 없습니다.\n"
 "폴더 간에 데이터를 수동으로 복사하거나 마이그레이션하여 액세스하세요."
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:140
+#: src/menu/TitleListState.cpp:140
 #, c-format
 msgid "Ok, legacy folder '%08x%08x' will be used."
 msgstr "확인, 기존 폴더 '%08x%08x'가 사용됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:69
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:108
+#: src/menu/MiiDBOptionsState.cpp:69 src/menu/TitleOptionsState.cpp:108
 #, c-format
 msgid "Select %s:"
 msgstr "%s 선택:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:69
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:118
+#: src/menu/MiiDBOptionsState.cpp:69 src/menu/TitleOptionsState.cpp:118
 msgid "slot"
 msgstr "슬롯"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:89
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:111
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:122
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:126
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:160
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:164
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:167
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:182
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:187
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:191
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:287
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:295
+#: src/menu/MiiDBOptionsState.cpp:72 src/menu/MiiDBOptionsState.cpp:89
+#: src/menu/TitleOptionsState.cpp:111 src/menu/TitleOptionsState.cpp:122
+#: src/menu/TitleOptionsState.cpp:126 src/menu/TitleOptionsState.cpp:160
+#: src/menu/TitleOptionsState.cpp:164 src/menu/TitleOptionsState.cpp:167
+#: src/menu/TitleOptionsState.cpp:182 src/menu/TitleOptionsState.cpp:187
+#: src/menu/TitleOptionsState.cpp:191 src/menu/TitleOptionsState.cpp:287
+#: src/menu/TitleOptionsState.cpp:295
 msgid "Empty"
 msgstr "빈"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:73
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:112
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:123
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:127
+#: src/menu/MiiDBOptionsState.cpp:73 src/menu/TitleOptionsState.cpp:112
+#: src/menu/TitleOptionsState.cpp:123 src/menu/TitleOptionsState.cpp:127
 msgid "Used"
 msgstr "사용된"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:77
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:133
+#: src/menu/MiiDBOptionsState.cpp:77 src/menu/TitleOptionsState.cpp:133
 #, c-format
 msgid "Slot -> Date: %s"
 msgstr "슬롯 -> 날짜: %s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:87
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:285
+#: src/menu/MiiDBOptionsState.cpp:87 src/menu/TitleOptionsState.cpp:285
 msgid "Source:"
 msgstr "원본:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:87
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:285
+#: src/menu/MiiDBOptionsState.cpp:87 src/menu/TitleOptionsState.cpp:285
 msgid "Target:"
 msgstr "대상:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:88
+#: src/menu/MiiDBOptionsState.cpp:88
 #, c-format
 msgid "   %s Mii DB (%s)"
 msgstr "   %s Mii DB (%s)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:89
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:160
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:164
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:167
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:182
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:187
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:191
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:287
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:295
+#: src/menu/MiiDBOptionsState.cpp:89 src/menu/TitleOptionsState.cpp:160
+#: src/menu/TitleOptionsState.cpp:164 src/menu/TitleOptionsState.cpp:167
+#: src/menu/TitleOptionsState.cpp:182 src/menu/TitleOptionsState.cpp:187
+#: src/menu/TitleOptionsState.cpp:191 src/menu/TitleOptionsState.cpp:287
+#: src/menu/TitleOptionsState.cpp:295
 msgid "Has Save"
 msgstr "저장 있음"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:92
+#: src/menu/MiiDBOptionsState.cpp:92
 msgid "DB will be wiped"
 msgstr "데이터베이스가 삭제됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:96
+#: src/menu/MiiDBOptionsState.cpp:96
 msgid "DB will be wiped and initialized"
 msgstr "데이터베이스가 삭제되고 초기화됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:105
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:351
+#: src/menu/MiiDBOptionsState.cpp:105 src/menu/TitleOptionsState.cpp:351
 msgid "Backup"
 msgstr "백업"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:108
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:354
+#: src/menu/MiiDBOptionsState.cpp:108 src/menu/TitleOptionsState.cpp:354
 msgid "\\ue000: Backup  \\ue001: Back"
 msgstr "\\ue000: 백업  \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:110
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:356
+#: src/menu/MiiDBOptionsState.cpp:110 src/menu/TitleOptionsState.cpp:356
 msgid "\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
 msgstr "\\ue000: 백업  \\ue045: 태그 슬롯  \\ue046: 슬롯 삭제  \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:113
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:359
+#: src/menu/MiiDBOptionsState.cpp:113 src/menu/TitleOptionsState.cpp:359
 msgid "Restore"
 msgstr "복원"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:116
+#: src/menu/MiiDBOptionsState.cpp:116
 msgid "\\ue000: Restore  \\ue001: Back"
 msgstr "\\ue000: 복원 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:118
+#: src/menu/MiiDBOptionsState.cpp:118
 msgid "\\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue000: 복원 \\ue045 태그 슬롯 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:121
+#: src/menu/MiiDBOptionsState.cpp:121
 msgid "CrossRestore"
 msgstr "크로스 복원"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:124
+#: src/menu/MiiDBOptionsState.cpp:124
 msgid "\\ue000: XRestore  \\ue001: Back"
 msgstr "\\ue000: XRestore \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:126
+#: src/menu/MiiDBOptionsState.cpp:126
 msgid "\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue000: XRestore \\ue045 태그 슬롯 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:129
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:367
+#: src/menu/MiiDBOptionsState.cpp:129 src/menu/TitleOptionsState.cpp:367
 msgid "Wipe"
 msgstr "삭제"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:131
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:369
+#: src/menu/MiiDBOptionsState.cpp:131 src/menu/TitleOptionsState.cpp:369
 msgid "\\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue000: 지우기  \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:134
+#: src/menu/MiiDBOptionsState.cpp:134
 msgid "Initialize"
 msgstr "초기화"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:136
+#: src/menu/MiiDBOptionsState.cpp:136
 msgid "\\ue000: Initialize  \\ue001: Back"
 msgstr "\\ue000: 초기화 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:220
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:799
+#: src/menu/MiiDBOptionsState.cpp:220 src/menu/TitleOptionsState.cpp:799
 msgid "No data selected to backup"
 msgstr "백업할 데이터가 선택되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:222
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:801
+#: src/menu/MiiDBOptionsState.cpp:222 src/menu/TitleOptionsState.cpp:801
 msgid "No data selected to wipe"
 msgstr "삭제할 데이터가 선택되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:224
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:809
+#: src/menu/MiiDBOptionsState.cpp:224 src/menu/TitleOptionsState.cpp:809
 msgid "No data selected to restore"
 msgstr "복원할 데이터가 선택되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:226
+#: src/menu/MiiDBOptionsState.cpp:226
 msgid "No data selected to cross-restore"
 msgstr "교차 복원할 데이터가 선택되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:235
+#: src/menu/MiiDBOptionsState.cpp:235
 msgid "Data succesfully backed up!"
 msgstr "데이터 백업이 성공적으로 완료되었습니다!"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:241
+#: src/menu/MiiDBOptionsState.cpp:241
 msgid "It is not allowed to restore Account data from a different console"
 msgstr "다른 콘솔의 계정 데이터를 복원할 수 없습니다"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:248
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:257
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:284
+#: src/menu/MiiDBOptionsState.cpp:248 src/menu/MiiDBOptionsState.cpp:257
+#: src/menu/MiiDBOptionsState.cpp:284
 #, c-format
 msgid "Error populating repo %s"
 msgstr "저장소 %s 채우기 오류"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:267
+#: src/menu/MiiDBOptionsState.cpp:267
 msgid ""
 "Are you sure?\n"
 "\n"
@@ -1815,14 +1696,12 @@ msgstr ""
 "\n"
 "기존 MIIS가 덮어쓰기됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:270
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:543
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:619
+#: src/menu/MiiDBOptionsState.cpp:270 src/menu/MiiSelectState.cpp:543
+#: src/menu/MiiSelectState.cpp:619
 msgid "Data succesfully restored!"
 msgstr "데이터 복원이 성공적으로 완료되었습니다!"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:295
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:303
+#: src/menu/MiiDBOptionsState.cpp:295 src/menu/MiiDBOptionsState.cpp:303
 msgid ""
 "Are you sure?\n"
 "\n"
@@ -1832,8 +1711,7 @@ msgstr ""
 "\n"
 "모든 MIIS가 삭제됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:295
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:303
+#: src/menu/MiiDBOptionsState.cpp:295 src/menu/MiiDBOptionsState.cpp:303
 msgid ""
 "Hm, are you REALLY sure?\n"
 "\n"
@@ -1843,349 +1721,328 @@ msgstr ""
 "\n"
 "모든 MIIS가 삭제됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:298
+#: src/menu/MiiDBOptionsState.cpp:298
 msgid "Data succesfully wiped!"
 msgstr "데이터 삭제가 성공적으로 완료되었습니다!"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:306
+#: src/menu/MiiDBOptionsState.cpp:306
 msgid "Data succesfully initialized!"
 msgstr "데이터 초기화가 성공적으로 완료되었습니다!"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:150
+#: src/menu/MiiSelectState.cpp:150
 msgid "List Miis"
 msgstr "Mii 목록 표시"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:151
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:155
+#: src/menu/MiiSelectState.cpp:151 src/menu/MiiSelectState.cpp:155
 msgid "\\ue002: View  \\ue001: Back"
 msgstr "\\ue002: 보기 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:153
+#: src/menu/MiiSelectState.cpp:153
 msgid "\\ue083\\ue084 View Duplicates  \\ue002: View  \\ue001: Back"
 msgstr "\\ue083\\ue084 중복 보기 \\ue002: 보기 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:160
+#: src/menu/MiiSelectState.cpp:160
 msgid "Select which Miis to Import"
 msgstr "가져올 Mii를 선택하세요"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:163
+#: src/menu/MiiSelectState.cpp:163
 msgid "\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue002\\ue084: 보기 \\ue000: Mii 가져오기 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:165
+#: src/menu/MiiSelectState.cpp:165
 msgid "\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue002: 보기 \\ue000: Mii 가져오기 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:168
+#: src/menu/MiiSelectState.cpp:168
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Import  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보기 \\ue000: 가져오기 \\ue001:뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:170
+#: src/menu/MiiSelectState.cpp:170
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Import  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046:모두 설정/설정 해제 \\ue002: 보기 \\ue000: 가져오기 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:172
+#: src/menu/MiiSelectState.cpp:172
 msgid ">> Import"
 msgstr ">> 가져오기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:173
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:225
+#: src/menu/MiiSelectState.cpp:173 src/menu/MiiSelectState.cpp:225
 msgid "|Imported|"
 msgstr "|가져오기 완료|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:176
+#: src/menu/MiiSelectState.cpp:176
 msgid "Select which Miis to Export"
 msgstr "내보낼 Mii를 선택하세요"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:178
+#: src/menu/MiiSelectState.cpp:178
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Export  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보기 \\ue000: 내보내기 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:180
+#: src/menu/MiiSelectState.cpp:180
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue0045\\ue046: 모두 설정/해제 \\ue002: 보기 \\ue000: 내보내기 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:181
+#: src/menu/MiiSelectState.cpp:181
 msgid ">> Export"
 msgstr ">> 내보내기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:182
+#: src/menu/MiiSelectState.cpp:182
 msgid "|Exported|"
 msgstr "|내보내기됨|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:186
+#: src/menu/MiiSelectState.cpp:186
 msgid "Select which Mii to Restore"
 msgstr "복원할 Mii를 선택하세요"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:187
+#: src/menu/MiiSelectState.cpp:187
 msgid "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue002\\ue083\\ue084: 보기 \\ue000: Mii 복원 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:188
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:221
+#: src/menu/MiiSelectState.cpp:188 src/menu/BatchJobTitleSelectState.cpp:221
 msgid ">> Restore"
 msgstr ">> 복원"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:189
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:234
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:222
+#: src/menu/MiiSelectState.cpp:189 src/menu/MiiSelectState.cpp:234
+#: src/menu/BatchJobTitleSelectState.cpp:222
 msgid "|Restored|"
 msgstr "|복원됨|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:192
+#: src/menu/MiiSelectState.cpp:192
 msgid "Select which Miis to Wipe"
 msgstr " 삭제할 Mii를 선택하세요"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:194
+#: src/menu/MiiSelectState.cpp:194
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보기 \\ue000: 삭제 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:196
+#: src/menu/MiiSelectState.cpp:196
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 설정/설정 해제 \\ue002: 보기 \\ue000: 지우기 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:197
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:239
+#: src/menu/MiiSelectState.cpp:197 src/menu/BatchJobTitleSelectState.cpp:239
 msgid ">> Wipe"
 msgstr ">> 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:198
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:240
+#: src/menu/MiiSelectState.cpp:198 src/menu/BatchJobTitleSelectState.cpp:240
 msgid "|Wiped|"
 msgstr "|삭제됨|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:201
+#: src/menu/MiiSelectState.cpp:201
 msgid "Select which Miis to Transform"
 msgstr "변환할 Mii를 선택하세요"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:203
+#: src/menu/MiiSelectState.cpp:203
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Tasks  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보기 \\ue000: 작업 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:205
+#: src/menu/MiiSelectState.cpp:205
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  \\ue000: Tasks  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002: 보기 \\ue000: 작업 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:206
+#: src/menu/MiiSelectState.cpp:206
 msgid ">> Transform"
 msgstr ">> 변형"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:207
+#: src/menu/MiiSelectState.cpp:207
 msgid "|Transformed|"
 msgstr "|변형됨|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:210
+#: src/menu/MiiSelectState.cpp:210
 msgid "Select Mii to copy attrs from"
 msgstr "속성을 복사할 Mii 선택"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:212
+#: src/menu/MiiSelectState.cpp:212
 msgid "\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 템플릿 선택 \\ue002\\ue084: 보기 \\ue000: Mii 변환 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:214
+#: src/menu/MiiSelectState.cpp:214
 msgid "\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 템플릿 선택 \\ue002: 보기 \\ue000: Mii 변환 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:215
+#: src/menu/MiiSelectState.cpp:215
 msgid ">> Use as template"
 msgstr ">> 템플릿으로 사용"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:219
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:228
+#: src/menu/MiiSelectState.cpp:219 src/menu/MiiSelectState.cpp:228
 msgid "Select Mii to be overwritten"
 msgstr "덮어쓸 Mii 선택"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:221
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:230
+#: src/menu/MiiSelectState.cpp:221 src/menu/MiiSelectState.cpp:230
 msgid "\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 대상 Mii 선택 \\ue002\\ue084: 보기 \\ue000: 계속 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:223
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:232
+#: src/menu/MiiSelectState.cpp:223 src/menu/MiiSelectState.cpp:232
 msgid "\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 대상 Mii 선택 \\ue002: 보기 \\ue000: 계속 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:224
+#: src/menu/MiiSelectState.cpp:224
 msgid ">> Import here"
 msgstr ">> 여기에서 가져오기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:233
+#: src/menu/MiiSelectState.cpp:233
 msgid ">> Restore here"
 msgstr ">> 여기에서 복원"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:247
+#: src/menu/MiiSelectState.cpp:247
 msgid "Basic view"
 msgstr "기본 보기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:250
+#: src/menu/MiiSelectState.cpp:250
 msgid "Mii ID view"
 msgstr "Mii ID 보기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:253
+#: src/menu/MiiSelectState.cpp:253
 msgid "Device view"
 msgstr "장치 보기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:256
+#: src/menu/MiiSelectState.cpp:256
 msgid "Location view"
 msgstr "위치 보기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:259
+#: src/menu/MiiSelectState.cpp:259
 msgid "Creator view"
 msgstr "크리에이터 보기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:262
+#: src/menu/MiiSelectState.cpp:262
 msgid "Timestamp view"
 msgstr "타임스탬프 보기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:278
+#: src/menu/MiiSelectState.cpp:278
 msgid "There are no miis matching selected filters."
 msgstr "선택한 필터와 일치하는 Miis가 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:354
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:362
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:331
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:342
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:346
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:350
+#: src/menu/MiiSelectState.cpp:354 src/menu/MiiSelectState.cpp:362
+#: src/menu/BatchJobTitleSelectState.cpp:331
+#: src/menu/BatchJobTitleSelectState.cpp:342
+#: src/menu/BatchJobTitleSelectState.cpp:346
+#: src/menu/BatchJobTitleSelectState.cpp:350
 msgid ">> Skip"
 msgstr ">> 건너뛰기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:357
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:334
+#: src/menu/MiiSelectState.cpp:357 src/menu/BatchJobTitleSelectState.cpp:334
 msgid "[OK]"
 msgstr "[확인]"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:361
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:349
+#: src/menu/MiiSelectState.cpp:361 src/menu/BatchJobTitleSelectState.cpp:349
 msgid "[KO]"
 msgstr "[KO]"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:362
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:342
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:346
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:350
+#: src/menu/MiiSelectState.cpp:362 src/menu/BatchJobTitleSelectState.cpp:342
+#: src/menu/BatchJobTitleSelectState.cpp:346
+#: src/menu/BatchJobTitleSelectState.cpp:350
 msgid ">> Retry"
 msgstr ">> 다시 시도"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:380
+#: src/menu/MiiSelectState.cpp:380
 msgid "[COPY"
 msgstr " [복사"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:382
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:387
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:413
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:416
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:418
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:434
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:444
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:449
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:456
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:467
+#: src/menu/MiiSelectState.cpp:382 src/menu/MiiSelectState.cpp:387
+#: src/menu/MiiSelectState.cpp:413 src/menu/MiiSelectState.cpp:416
+#: src/menu/MiiSelectState.cpp:418 src/menu/MiiSelectState.cpp:434
+#: src/menu/MiiSelectState.cpp:444 src/menu/MiiSelectState.cpp:449
+#: src/menu/MiiSelectState.cpp:456 src/menu/MiiSelectState.cpp:467
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:383
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:388
+#: src/menu/MiiSelectState.cpp:383 src/menu/MiiSelectState.cpp:388
 msgid "On"
 msgstr "켜기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:383
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:388
+#: src/menu/MiiSelectState.cpp:383 src/menu/MiiSelectState.cpp:388
 msgid "Off"
 msgstr "끄기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:385
+#: src/menu/MiiSelectState.cpp:385
 msgid "| SHARE"
 msgstr "| 공유"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:390
+#: src/menu/MiiSelectState.cpp:390
 msgid "|"
 msgstr "|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:395
+#: src/menu/MiiSelectState.cpp:395
 msgid "NORMAL"
 msgstr "일반"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:398
+#: src/menu/MiiSelectState.cpp:398
 msgid "SPECIAL"
 msgstr "특수"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:401
+#: src/menu/MiiSelectState.cpp:401
 msgid "FOREIGN"
 msgstr "외국어"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:404
+#: src/menu/MiiSelectState.cpp:404
 msgid "TEMP"
 msgstr "임시"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:407
+#: src/menu/MiiSelectState.cpp:407
 msgid "S_TEMP"
 msgstr "S_TEMP"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:410
+#: src/menu/MiiSelectState.cpp:410
 msgid "UNKNOWN"
 msgstr "알 수 없음"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:415
+#: src/menu/MiiSelectState.cpp:415
 msgid "]"
 msgstr "]"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:452
+#: src/menu/MiiSelectState.cpp:452
 #, c-format
 msgid ": by %s"
 msgstr ": %s님"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:454
+#: src/menu/MiiSelectState.cpp:454
 #, c-format
 msgid "- %s"
 msgstr "- %s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:475
+#: src/menu/MiiSelectState.cpp:475
 #, c-format
 msgid "%s%s"
 msgstr "%s%s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:495
+#: src/menu/MiiSelectState.cpp:495
 msgid "Please select some miis to work on"
 msgstr "작업할 mii를 선택하세요"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:506
+#: src/menu/MiiSelectState.cpp:506
 msgid "Miis extraction Ok"
 msgstr "Mii 추출 완료"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:508
+#: src/menu/MiiSelectState.cpp:508
 msgid "Task Aborted - Partial extraction Ok"
 msgstr "작업 중단됨 - 부분 추출 완료"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:511
+#: src/menu/MiiSelectState.cpp:511
 msgid "Extraction has failed - Global Error"
 msgstr "추출에 실패했습니다 - 전역 오류"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:513
+#: src/menu/MiiSelectState.cpp:513
 #, c-format
 msgid "Extraction has failed for %d miis"
 msgstr "%d개의 Mii 추출에 실패했습니다"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:521
+#: src/menu/MiiSelectState.cpp:521
 msgid "Miis import Ok"
 msgstr "Mii 가져오기 완료"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:523
+#: src/menu/MiiSelectState.cpp:523
 msgid "Task aborted - Partial import Ok"
 msgstr "작업 중단됨 - 부분 가져오기 완료"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:526
+#: src/menu/MiiSelectState.cpp:526
 msgid "Import has failed - Global Error"
 msgstr "가져오기에 실패했습니다 - 전역 오류"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:528
+#: src/menu/MiiSelectState.cpp:528
 #, c-format
 msgid "Import has failed for %d miis"
 msgstr "%d개의 MIIS 가져오기에 실패했습니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:537
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:613
+#: src/menu/MiiSelectState.cpp:537 src/menu/MiiSelectState.cpp:613
 msgid ""
 "Are you sure?\n"
 "\n"
@@ -2195,75 +2052,70 @@ msgstr ""
 "\n"
 "이 계정의 MIIDATA가 덮어쓰기됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:545
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:621
+#: src/menu/MiiSelectState.cpp:545 src/menu/MiiSelectState.cpp:621
 msgid "Data restoration has failed!"
 msgstr "데이터 복원에 실패했습니다!"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:557
+#: src/menu/MiiSelectState.cpp:557
 msgid "Miis wipe Ok"
 msgstr "Mii 삭제 완료"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:559
+#: src/menu/MiiSelectState.cpp:559
 msgid "Task Aborted - Partial wipe Ok"
 msgstr " 작업 중단됨 - 부분 삭제 완료"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:562
+#: src/menu/MiiSelectState.cpp:562
 msgid "Wipe has failed - Global Error"
 msgstr "삭제 실패 - 전역 오류"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:564
+#: src/menu/MiiSelectState.cpp:564
 #, c-format
 msgid "Wipe has failed for %d miis"
 msgstr "%d개의 Mii 삭제에 실패했습니다"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:578
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:161
+#: src/menu/MiiSelectState.cpp:578 src/menu/MiiTransformTasksState.cpp:161
 msgid "Miis transform ok"
 msgstr "Mii 변환 완료"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:580
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:163
+#: src/menu/MiiSelectState.cpp:580 src/menu/MiiTransformTasksState.cpp:163
 msgid "Task aborted - Partial Miis transform ok"
 msgstr "작업 중단됨 - 부분 Miis 변환 완료"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:583
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:166
+#: src/menu/MiiSelectState.cpp:583 src/menu/MiiTransformTasksState.cpp:166
 msgid "Transform has failed - Global Error"
 msgstr "변환 실패 - 전역 오류"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:585
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:168
+#: src/menu/MiiSelectState.cpp:585 src/menu/MiiTransformTasksState.cpp:168
 #, c-format
 msgid "Transform has failed for %d miis"
 msgstr "변환이 %d개의 mii에 대해 실패했습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:69
+#: src/menu/BackupSetListState.cpp:69
 msgid "BackupSets"
 msgstr "백업 세트"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:71
+#: src/menu/BackupSetListState.cpp:71
 msgid "BackupSets (filter applied)"
 msgstr "백업 세트(필터 적용됨)"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:74
+#: src/menu/BackupSetListState.cpp:74
 #, c-format
 msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 정렬: %s \\ue084"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:97
+#: src/menu/BackupSetListState.cpp:97
 msgid "\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"
 msgstr "\\ue000백업 세트 선택  \\ue045태그 백업 세트  \\ue046BS 삭제  \\ue003필터 목록  \\ue001뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:99
+#: src/menu/BackupSetListState.cpp:99
 msgid "\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"
 msgstr "\\ue000: 백업 세트 선택 \\ue003: 필터 목록 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:110
+#: src/menu/BackupSetListState.cpp:110
 msgid "Root BackupSet cannot be selected for batchRestore"
 msgstr "배치 복원을 위해 루트 백업 세트를 선택할 수 없습니다"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:118
+#: src/menu/BackupSetListState.cpp:118
 #, c-format
 msgid ""
 "BackupSet selected:\n"
@@ -2280,111 +2132,111 @@ msgstr ""
 "\n"
 "이 콘솔: %s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:219
+#: src/menu/BatchJobTitleSelectState.cpp:219
 msgid "Batch Restore - Select"
 msgstr "일괄 복원 - 선택"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:220
+#: src/menu/BatchJobTitleSelectState.cpp:220
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 설정/설정 해제 \\ue000: 제목 복원 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:225
+#: src/menu/BatchJobTitleSelectState.cpp:225
 msgid "Batch ProfileCopy - Select"
 msgstr "일괄 프로필 복사 - 선택"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:226
+#: src/menu/BatchJobTitleSelectState.cpp:226
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: 프로필 복사 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:227
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:245
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:251
+#: src/menu/BatchJobTitleSelectState.cpp:227
+#: src/menu/BatchJobTitleSelectState.cpp:245
+#: src/menu/BatchJobTitleSelectState.cpp:251
 msgid ">> Copy"
 msgstr ">> 복사"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:228
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:246
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:252
+#: src/menu/BatchJobTitleSelectState.cpp:228
+#: src/menu/BatchJobTitleSelectState.cpp:246
+#: src/menu/BatchJobTitleSelectState.cpp:252
 msgid "|Copied|"
 msgstr "|복사됨|"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:231
+#: src/menu/BatchJobTitleSelectState.cpp:231
 msgid "Batch ProfileMove - Select"
 msgstr "일괄 프로필 이동 - 선택"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:232
+#: src/menu/BatchJobTitleSelectState.cpp:232
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: 프로필 이동 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:233
+#: src/menu/BatchJobTitleSelectState.cpp:233
 msgid ">> Move"
 msgstr ">> 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:234
+#: src/menu/BatchJobTitleSelectState.cpp:234
 msgid "|Moved|"
 msgstr "|이동됨|"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:237
+#: src/menu/BatchJobTitleSelectState.cpp:237
 msgid "Batch Wipe - Select"
 msgstr "일괄 삭제 - 선택"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:238
+#: src/menu/BatchJobTitleSelectState.cpp:238
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: WipeProfile \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:243
+#: src/menu/BatchJobTitleSelectState.cpp:243
 msgid "Batch Copy To USB - Select"
 msgstr "USB로 일괄 복사 - 선택"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:244
+#: src/menu/BatchJobTitleSelectState.cpp:244
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: CopyToUSB \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:249
+#: src/menu/BatchJobTitleSelectState.cpp:249
 msgid "Batch Copy To NAND - Select"
 msgstr "NAND에 일괄 복사 - 선택"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:250
+#: src/menu/BatchJobTitleSelectState.cpp:250
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: CopyToNAND \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:255
+#: src/menu/BatchJobTitleSelectState.cpp:255
 msgid "Batch Backup - Select & Go"
 msgstr "일괄 백업 - 선택 및 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:256
+#: src/menu/BatchJobTitleSelectState.cpp:256
 msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
 msgstr "\\ue003\\ue07e설정/설정 해제 \\ue045\\ue046모두 설정/설정 해제 \\ue002제외 \\ue000백업 \\ue001뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:257
+#: src/menu/BatchJobTitleSelectState.cpp:257
 msgid ">> Backup"
 msgstr ">> 백업"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:258
+#: src/menu/BatchJobTitleSelectState.cpp:258
 msgid "|Saved|"
 msgstr "|저장됨|"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:275
+#: src/menu/BatchJobTitleSelectState.cpp:275
 msgid "There are no titles matching selected filters."
 msgstr "선택한 필터와 일치하는 제목이 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:339
+#: src/menu/BatchJobTitleSelectState.cpp:339
 msgid "[AB-BackupFailed]"
 msgstr "[AB-BackupFailed]"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:341
+#: src/menu/BatchJobTitleSelectState.cpp:341
 msgid "[AB]"
 msgstr "[AB]"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:345
+#: src/menu/BatchJobTitleSelectState.cpp:345
 msgid "[WR]"
 msgstr "[WR]"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:407
+#: src/menu/BatchJobTitleSelectState.cpp:407
 msgid "Please select some titles to work on"
 msgstr "작업할 타이틀을 선택하세요"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:456
+#: src/menu/BatchJobTitleSelectState.cpp:456
 msgid ""
 "\\ue000  Apply saved excludes\n"
 "\\ue045  Save current excludes\n"
@@ -2394,50 +2246,48 @@ msgstr ""
 "\\ue045 현재 제외 항목 저장 \n"
 "\\ue001 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:471
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:134
+#: src/menu/BatchJobTitleSelectState.cpp:471 src/menu/ConfigMenuState.cpp:134
 msgid "Configuration saved"
 msgstr "구성 저장됨"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:473
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:136
+#: src/menu/BatchJobTitleSelectState.cpp:473 src/menu/ConfigMenuState.cpp:136
 msgid "Error saving configuration"
 msgstr "구성을 저장하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:540
+#: src/menu/BatchJobTitleSelectState.cpp:540
 msgid "Batch Restore - Review & Go"
 msgstr "일괄 복원 - 검토 후 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:541
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:543
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:544
+#: src/menu/BatchJobTitleSelectState.cpp:541
+#: src/menu/BatchJobTitleSelectState.cpp:543
+#: src/menu/BatchJobTitleSelectState.cpp:544
 msgid "- Restore"
 msgstr "- 복원"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:541
+#: src/menu/BatchJobTitleSelectState.cpp:541
 #, c-format
 msgid "- Restore from %s to < %s (%s) >"
 msgstr "- %s에서 <%s(%s)>(으)로 복원"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:542
+#: src/menu/BatchJobTitleSelectState.cpp:542
 #, c-format
 msgid "pre-BatchRestore Backup (vWii: %d%s"
 msgstr "pre-BatchRestore Backup (vWii: %d%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:542
+#: src/menu/BatchJobTitleSelectState.cpp:542
 #, c-format
 msgid "pre-BatchRestore Backup (WiiU: %d%s"
 msgstr "pre-BatchRestore Backup (WiiU: %d%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:543
+#: src/menu/BatchJobTitleSelectState.cpp:543
 msgid "- Restore allusers"
 msgstr "- 모든 사용자 복원"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:544
+#: src/menu/BatchJobTitleSelectState.cpp:544
 msgid "- Restore no user"
 msgstr "- 사용자 없음 복원"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:545
+#: src/menu/BatchJobTitleSelectState.cpp:545
 #, c-format
 msgid ""
 "%s\n"
@@ -2452,27 +2302,27 @@ msgstr ""
 "현재까지 발생한 오류: %d\n"
 "다음 타이틀로 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:546
+#: src/menu/BatchJobTitleSelectState.cpp:546
 msgid "Batch Restore paused - Do you want to abort?"
 msgstr "일괄 복원이 일시 중지되었습니다. 취소하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:549
+#: src/menu/BatchJobTitleSelectState.cpp:549
 msgid "Batch ProfileCopy - Review & Go"
 msgstr "일괄 프로필 복사 - 검토 후 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:550
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:577
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:586
+#: src/menu/BatchJobTitleSelectState.cpp:550
+#: src/menu/BatchJobTitleSelectState.cpp:577
+#: src/menu/BatchJobTitleSelectState.cpp:586
 #, c-format
 msgid "- Copy from < %s (%s)> to < %s (%s) >"
 msgstr "- <%s(%s)>에서 <%s(%s)>로 복사"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:551
+#: src/menu/BatchJobTitleSelectState.cpp:551
 #, c-format
 msgid "pre-BatchProfileCopy Backup (WiiU: %d%s"
 msgstr "프로필 일괄 복사 전 백업(WiiU: %d%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:554
+#: src/menu/BatchJobTitleSelectState.cpp:554
 #, c-format
 msgid ""
 "%s\n"
@@ -2487,25 +2337,25 @@ msgstr ""
 "현재까지 발생한 오류: %d\n"
 "다음 타이틀로 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:555
+#: src/menu/BatchJobTitleSelectState.cpp:555
 msgid "Batch ProfileCopy paused - Do you want to abort?"
 msgstr "프로필 일괄 복사 - 취소하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:558
+#: src/menu/BatchJobTitleSelectState.cpp:558
 msgid "Batch ProfileMove - Review & Go"
 msgstr "일괄 프로필 이동 - 검토 및 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:559
+#: src/menu/BatchJobTitleSelectState.cpp:559
 #, c-format
 msgid "- Move < %s (%s)> to < %s (%s) >"
 msgstr "- <%s(%s)>을(를) <%s(%s)>(으)로 이동합니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:560
+#: src/menu/BatchJobTitleSelectState.cpp:560
 #, c-format
 msgid "pre-BatchProfileMove Backup (WiiU: %d%s"
 msgstr "pre-BatchProfileMove Backup (WiiU: %d%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:563
+#: src/menu/BatchJobTitleSelectState.cpp:563
 #, c-format
 msgid ""
 "%s\n"
@@ -2520,44 +2370,44 @@ msgstr ""
 "현재까지 발생한 오류: %d\n"
 "다음 타이틀로 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:564
+#: src/menu/BatchJobTitleSelectState.cpp:564
 msgid "Batch ProfileMove paused - Do you want to abort?"
 msgstr "일괄 프로필 이동이 일시 중지되었습니다. 취소하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:567
+#: src/menu/BatchJobTitleSelectState.cpp:567
 msgid "Batch Wipe - Review & Go"
 msgstr "일괄 삭제 - 검토 및 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:568
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:570
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:571
+#: src/menu/BatchJobTitleSelectState.cpp:568
+#: src/menu/BatchJobTitleSelectState.cpp:570
+#: src/menu/BatchJobTitleSelectState.cpp:571
 msgid "- Wipe"
 msgstr "- 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:568
+#: src/menu/BatchJobTitleSelectState.cpp:568
 #, c-format
 msgid "- Wipe  < %s (%s)>"
 msgstr "- <%s(%s)> 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:569
+#: src/menu/BatchJobTitleSelectState.cpp:569
 #, c-format
 msgid "pre-BatchWipe Backup (vWii: %d%s"
 msgstr "pre-BatchWipe Backup (vWii: %d%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:569
+#: src/menu/BatchJobTitleSelectState.cpp:569
 #, c-format
 msgid "pre-BatchWipe Backup (WiiU: %d%s"
 msgstr "pre-BatchWipe Backup (WiiU: %d%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:570
+#: src/menu/BatchJobTitleSelectState.cpp:570
 msgid "- Wipe allusers"
 msgstr "- 모든 사용자 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:571
+#: src/menu/BatchJobTitleSelectState.cpp:571
 msgid "- Wipe no user"
 msgstr "- 사용자 삭제 없음"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:572
+#: src/menu/BatchJobTitleSelectState.cpp:572
 #, c-format
 msgid ""
 "%s\n"
@@ -2572,30 +2422,30 @@ msgstr ""
 "현재까지 발생한 오류: %d\n"
 "다음 게임으로 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:573
+#: src/menu/BatchJobTitleSelectState.cpp:573
 msgid "Batch Wipe paused - Do you want to abort?"
 msgstr "일괄 삭제가 일시 중지되었습니다. 취소하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:576
+#: src/menu/BatchJobTitleSelectState.cpp:576
 msgid "Batch Copy To USB - Review & Go"
 msgstr "USB로 일괄 복사 - 검토 후 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:578
+#: src/menu/BatchJobTitleSelectState.cpp:578
 #, c-format
 msgid "pre-BatchCopyToUSB Backup (WiiU: %d%s"
 msgstr " USB 일괄 복사 전 백업(WiiU: %d%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:579
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:588
+#: src/menu/BatchJobTitleSelectState.cpp:579
+#: src/menu/BatchJobTitleSelectState.cpp:588
 msgid "- Copy allusers"
 msgstr "- 모든 사용자 복사"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:580
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:589
+#: src/menu/BatchJobTitleSelectState.cpp:580
+#: src/menu/BatchJobTitleSelectState.cpp:589
 msgid "- Copy no user"
 msgstr "- 사용자 복사 안 함"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:581
+#: src/menu/BatchJobTitleSelectState.cpp:581
 #, c-format
 msgid ""
 "%s\n"
@@ -2610,20 +2460,20 @@ msgstr ""
 "현재까지 발생한 오류: %d\n"
 "다음 타이틀로 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:582
+#: src/menu/BatchJobTitleSelectState.cpp:582
 msgid "Batch Copy To USB paused - Do you want to abort?"
 msgstr "USB로 일괄 복사 - 취소하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:585
+#: src/menu/BatchJobTitleSelectState.cpp:585
 msgid "Batch Copy To NAND - Review & Go"
 msgstr "NAND에 일괄 복사 - 검토 및 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:587
+#: src/menu/BatchJobTitleSelectState.cpp:587
 #, c-format
 msgid "pre-BatchCopyToNAND Backup (WiiU: %d%s"
 msgstr "NAND 일괄 복사 전 백업(WiiU: %d%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:590
+#: src/menu/BatchJobTitleSelectState.cpp:590
 #, c-format
 msgid ""
 "%s\n"
@@ -2638,11 +2488,11 @@ msgstr ""
 "현재까지 발생한 오류: %d\n"
 "다음 타이틀로 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:591
+#: src/menu/BatchJobTitleSelectState.cpp:591
 msgid "Batch Copy To NAND paused - Do you want to abort?"
 msgstr "NAND로 일괄 복사 - 취소하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:608
+#: src/menu/BatchJobTitleSelectState.cpp:608
 #, c-format
 msgid ""
 "%s\n"
@@ -2673,35 +2523,35 @@ msgstr ""
 "\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:629
+#: src/menu/BatchJobTitleSelectState.cpp:629
 msgid "- Include common savedata: Yes"
 msgstr "- 공통 저장 데이터 포함: 예"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:629
+#: src/menu/BatchJobTitleSelectState.cpp:629
 msgid "- Include common savedata: No"
 msgstr "- 공통 저장 데이터 포함: 아니요"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:630
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:635
+#: src/menu/BatchJobTitleSelectState.cpp:630
+#: src/menu/BatchJobTitleSelectState.cpp:635
 msgid "- Wipe data: Yes"
 msgstr "- 데이터 삭제: 예"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:630
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:635
+#: src/menu/BatchJobTitleSelectState.cpp:630
+#: src/menu/BatchJobTitleSelectState.cpp:635
 msgid "- Wipe data: No"
 msgstr "- 데이터 삭제: 아니요"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:631
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:636
+#: src/menu/BatchJobTitleSelectState.cpp:631
+#: src/menu/BatchJobTitleSelectState.cpp:636
 msgid "- Perform full backup: Yes"
 msgstr "- 전체 백업 수행: 예"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:631
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:636
+#: src/menu/BatchJobTitleSelectState.cpp:631
+#: src/menu/BatchJobTitleSelectState.cpp:636
 msgid "- Perform full backup: No"
 msgstr "- 전체 백업 수행: 아니요"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:633
+#: src/menu/BatchJobTitleSelectState.cpp:633
 #, c-format
 msgid ""
 "%s\n"
@@ -2728,7 +2578,7 @@ msgstr ""
 "계속하시겠습니까?\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:648
+#: src/menu/BatchJobTitleSelectState.cpp:648
 msgid ""
 "You have selected some injected titles.\n"
 "If its restore fails, try them again as a vWii title.\n"
@@ -2740,7 +2590,7 @@ msgstr ""
 "\n"
 "계속할 수 있습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:653
+#: src/menu/BatchJobTitleSelectState.cpp:653
 msgid ""
 "You have selected uninitialized titles.\n"
 "If its restore fails, run the Game to create \n"
@@ -2753,16 +2603,14 @@ msgstr ""
 "\n"
 "계속 진행할 수 있습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:688
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:863
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:145
+#: src/menu/BatchJobTitleSelectState.cpp:688
+#: src/menu/BatchJobTitleSelectState.cpp:863 src/menu/BatchBackupState.cpp:145
 msgid "ERROR WIPING BACKUPSET"
 msgstr "백업 세트 삭제 오류"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:714
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:723
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:814
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:822
+#: src/menu/BatchJobTitleSelectState.cpp:714
+#: src/menu/BatchJobTitleSelectState.cpp:723 src/menu/TitleOptionsState.cpp:814
+#: src/menu/TitleOptionsState.cpp:822
 #, c-format
 msgid ""
 "%s\n"
@@ -2777,40 +2625,39 @@ msgstr ""
 "\n"
 "'사용자 이름/암호화 대상' 옵션을 사용하여 복원해 보세요."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:859
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:141
+#: src/menu/BatchJobTitleSelectState.cpp:859 src/menu/BatchBackupState.cpp:141
 msgid "Do you want to wipe this incomplete batch backup?"
 msgstr "이 불완전한 일괄 백업을 삭제하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:914
+#: src/menu/BatchJobTitleSelectState.cpp:914
 #, c-format
 msgid "PARTIAL - %d %s title%s OK"
 msgstr "부분 - %d %s 제목%s 완료"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:919
+#: src/menu/BatchJobTitleSelectState.cpp:919
 msgid "FAILED - No titles"
 msgstr "실패 - 제목 없음"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:921
+#: src/menu/BatchJobTitleSelectState.cpp:921
 #, c-format
 msgid "FAILED - OK/KO > %s: %d/%d"
 msgstr "실패 - OK/KO > %s: %d/%d"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:26
+#: src/menu/BatchJobState.cpp:26
 msgid "Batch Restore"
 msgstr "일괄 복원"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:27
+#: src/menu/BatchJobState.cpp:27
 #, c-format
 msgid "   Restore Wii U (%u Title%s)"
 msgstr "   Wii U 복원(%u 제목%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:28
+#: src/menu/BatchJobState.cpp:28
 #, c-format
 msgid "   Restore vWii (%u Title%s)"
 msgstr "   vWii 복원(%u 제목%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:29
+#: src/menu/BatchJobState.cpp:29
 msgid ""
 "Batch Restore allows you to restore all savedata from a BatchBackup \n"
 "* to the same user profiles\n"
@@ -2824,25 +2671,25 @@ msgstr ""
 "* 또는 게임이 이미 설치된 다른 콘솔로 복원할 수 있습니다.\n"
 "후자의 경우, 먼저 게임을 실행하여 저장 데이터를 초기화하는 것이 좋습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:30
+#: src/menu/BatchJobState.cpp:30
 msgid "\\ue000: Continue to BackupSet selection  \\ue001: Back"
 msgstr "\\ue000: BackupSet 선택 항목으로 이동 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:33
+#: src/menu/BatchJobState.cpp:33
 msgid "Batch Wipe"
 msgstr "일괄 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:34
+#: src/menu/BatchJobState.cpp:34
 #, c-format
 msgid "   Wipe Wii U Profiles (%u Title%s)"
 msgstr "   Wii U 프로필 삭제(%u 제목%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:35
+#: src/menu/BatchJobState.cpp:35
 #, c-format
 msgid "   Wipe vWii Savedata (%u Title%s)"
 msgstr "   vWii 저장 데이터 삭제(%u 제목%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:36
+#: src/menu/BatchJobState.cpp:36
 msgid ""
 "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n"
 "\n"
@@ -2858,24 +2705,23 @@ msgstr ""
 "- 작업할 타이틀 선택\n"
 "- 그리고 시작하세요!"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:44
+#: src/menu/BatchJobState.cpp:37 src/menu/BatchJobState.cpp:44
 msgid "\\ue000: Continue to savedata selection  \\ue001: Back"
 msgstr "\\ue000: savedata 선택 항목으로 이동 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:40
+#: src/menu/BatchJobState.cpp:40
 msgid "Batch Copy To Other Device"
 msgstr "다른 기기에 일괄 복사"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:41
+#: src/menu/BatchJobState.cpp:41
 msgid "   Copy Wii U Savedata from NAND to USB"
 msgstr "   NAND에서 USB로 Wii U 저장 데이터 복사"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:42
+#: src/menu/BatchJobState.cpp:42
 msgid "   Copy Wii U Savedata from USB to NAND"
 msgstr "   USB에서 NAND로 Wii U 저장 데이터 복사"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:43
+#: src/menu/BatchJobState.cpp:43
 msgid ""
 "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n"
 "\n"
@@ -2891,50 +2737,49 @@ msgstr ""
 "- 작업할 타이틀을 선택하고\n"
 "- 시작하세요!"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:31
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:41
+#: src/menu/TitleTaskState.cpp:31 src/menu/ConfigMenuState.cpp:41
 #, c-format
 msgid "WiiU Serial Id: %s"
 msgstr "WiiU 시리얼 ID: %s"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:33
+#: src/menu/TitleTaskState.cpp:33
 msgid "Tasks"
 msgstr "작업"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:39
+#: src/menu/TitleTaskState.cpp:39
 msgid "   Backup savedata"
 msgstr "   저장데이터 백업"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:41
+#: src/menu/TitleTaskState.cpp:41
 msgid "   Restore savedata"
 msgstr "   저장데이터 복원"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:43
+#: src/menu/TitleTaskState.cpp:43
 msgid "   Wipe savedata"
 msgstr "   저장 데이터 지우기"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:46
+#: src/menu/TitleTaskState.cpp:46
 msgid "   Move savedata to other profile"
 msgstr "   저장 데이터를 다른 프로필로 이동합니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:48
+#: src/menu/TitleTaskState.cpp:48
 msgid "   Copy savedata to other profile"
 msgstr "   저장 데이터를 다른 프로필에 복사합니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:50
+#: src/menu/TitleTaskState.cpp:50
 msgid "   Import from loadiine"
 msgstr "   loadiine에서 가져오기"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:52
+#: src/menu/TitleTaskState.cpp:52
 msgid "   Export to loadiine"
 msgstr "   loadiine으로 내보내기"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:55
+#: src/menu/TitleTaskState.cpp:55
 #, c-format
 msgid "   Copy Savedata to Title in %s"
 msgstr "   저장데이터를 %s의 제목으로 복사"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:69
+#: src/menu/TitleTaskState.cpp:69
 msgid ""
 "This title is a inject (vWii or GC title packaged as a WiiU title).\n"
 "If needed, vWii saves can also be managed using\n"
@@ -2943,394 +2788,377 @@ msgstr ""
 "이 게임은 인젝션(vWii 또는 GC 게임을 WiiU 게임으로 패키징한 것)입니다.\n"
 "필요한 경우, vWii 저장 파일 관리 섹션을 사용하여 vWii 저장 파일을 관리할 수도 있습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:75
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:165
+#: src/menu/TitleTaskState.cpp:75 src/menu/MiiTasksState.cpp:165
 msgid "\\ue000: Select Task  \\ue001: Back"
 msgstr "\\ue000: 작업 선택  \\ue001: 취로"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:94
+#: src/menu/TitleTaskState.cpp:94
 msgid "No save to Backup."
 msgstr "백업에 저장할 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:97
+#: src/menu/TitleTaskState.cpp:97
 msgid "No save to Wipe."
 msgstr "지우기에 저장할 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:100
+#: src/menu/TitleTaskState.cpp:100
 msgid "No save to Replicate."
 msgstr "복제할 데이터가 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:103
+#: src/menu/TitleTaskState.cpp:103
 msgid "No save to Copy."
 msgstr "복사하기에 저장할 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:106
+#: src/menu/TitleTaskState.cpp:106
 msgid "No save to Move."
 msgstr "이동할 저장 데이터가 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:134
+#: src/menu/TitleTaskState.cpp:134
 msgid "Title has no profile savedata"
 msgstr "제목에 프로필 저장 데이터가 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:145
+#: src/menu/TitleTaskState.cpp:145
 msgid "At least two profiles are needed to Copy/Move To OtherProfile."
 msgstr "다른 프로필로 복사/이동하려면 최소 두 개의 프로필이 필요합니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:24
+#: src/menu/MiiTransformTasksState.cpp:24
 msgid "Mii Transform Tasks"
 msgstr "Mii 변환 작업"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:28
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:28
+#: src/menu/MiiTransformTasksState.cpp:28 src/menu/MiiTasksState.cpp:28
 #, c-format
 msgid "Selected Repo: %s"
 msgstr "선택된 저장소: %s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:31
+#: src/menu/MiiTransformTasksState.cpp:31
 msgid "   Transfer physical appearance from another mii:"
 msgstr "   다른 Mii에서 외형 이전:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76
 #, c-format
 msgid "[%s]"
 msgstr "[%s]"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:310
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:24
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:28
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:33
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:38
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:310
+#: src/menu/BatchJobOptions.cpp:316 src/menu/BatchJobOptions.cpp:324
+#: src/menu/ConfigMenuState.cpp:24 src/menu/ConfigMenuState.cpp:28
+#: src/menu/ConfigMenuState.cpp:33 src/menu/ConfigMenuState.cpp:38
 msgid "Yes"
 msgstr "예"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:24
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:28
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:33
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:38
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:316
+#: src/menu/BatchJobOptions.cpp:324 src/menu/ConfigMenuState.cpp:24
+#: src/menu/ConfigMenuState.cpp:28 src/menu/ConfigMenuState.cpp:33
+#: src/menu/ConfigMenuState.cpp:38
 msgid "No"
 msgstr "아니요"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:36
+#: src/menu/MiiTransformTasksState.cpp:36
 msgid "   Transfer Ownership from another mii:"
 msgstr "   다른 Mii에서 소유권 이전:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:40
+#: src/menu/MiiTransformTasksState.cpp:40
 msgid "   Make them belong to this console:"
 msgstr "   이 콘솔에 속하도록 설정:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:44
+#: src/menu/MiiTransformTasksState.cpp:44
 msgid "   Update Mii Id (Timestamp):"
 msgstr "   Mii ID 업데이트(타임스탬프):"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:48
+#: src/menu/MiiTransformTasksState.cpp:48
 msgid "   Toggle favorite flag:"
 msgstr "   즐겨찾기 표시 켜기/ 끄기 :"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:52
+#: src/menu/MiiTransformTasksState.cpp:52
 msgid "   Toggle Share/Mingle flag:"
 msgstr "   공유/혼합 표시 켜기 / 끄기:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:56
+#: src/menu/MiiTransformTasksState.cpp:56
 msgid "   Toggle Normal/Special flag:"
 msgstr "   일반/특수 표시 켜기 / 끄기:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:60
+#: src/menu/MiiTransformTasksState.cpp:60
 msgid "   Toggle Foreign flag:"
 msgstr "   외국어 표시 켜기 / 끄기 :"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:64
+#: src/menu/MiiTransformTasksState.cpp:64
 msgid "   Update CRC:"
 msgstr "   CRC 업데이트:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:71
+#: src/menu/MiiTransformTasksState.cpp:71
 msgid "   Togle Copy Flag On/Off:"
 msgstr "   복사 표시 켜기 / 끄기:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:75
+#: src/menu/MiiTransformTasksState.cpp:75
 msgid "   Togle Temporary Flag On/Off:"
 msgstr "   임시 표시 켜기 / 끄기:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:83
+#: src/menu/MiiTransformTasksState.cpp:83
 msgid "Selected miis will get the physical appearance of the mii you will select in the next menu."
 msgstr "선택한 Mii는 사용자가 선택한 Mii의 외형을 가지게 됩니다 다음 메뉴에서."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:86
+#: src/menu/MiiTransformTasksState.cpp:86
 msgid "Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost."
 msgstr "선택한 Mii는 템플릿 Mii의 소유권 속성을 가지게 되므로 이후 템플릿 콘솔에 속하게 됩니다. 현재 게임 연결은 해제됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:89
+#: src/menu/MiiTransformTasksState.cpp:89
 msgid "Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost."
 msgstr "Mii의 MAC 주소와 AuthID(WiiU)를 업데이트하여 이 콘솔에서 생성된 것처럼 표시되도록 합니다. Mii ID가 업데이트되므로 게임 연결이 손실됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:92
+#: src/menu/MiiTransformTasksState.cpp:92
 msgid "So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)."
 msgstr "Mii에 새로운 고유 Mii ID가 부여됩니다(주의! 이전 Mii ID를 사용하는 게임에는 더 이상 연결되지 않습니다)."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:95
+#: src/menu/MiiTransformTasksState.cpp:95
 msgid "Mark Miis as a favorite one so they appear in games that support them."
 msgstr "Mii를 즐겨찾기로 표시하여 해당 Mii를 지원하는 게임에 표시되도록 합니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:98
+#: src/menu/MiiTransformTasksState.cpp:98
 msgid "So the mii can travel to other consoles."
 msgstr "Mii를 다른 콘솔로 옮길 수 있도록 합니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:101
+#: src/menu/MiiTransformTasksState.cpp:101
 msgid "You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost."
 msgstr "일반 Mii를 특수 Mii로, 또는 그 반대로 변환할 수 있습니다. 이렇게 하면 Mii ID가 업데이트되므로 게임 연결이 손실됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:104
+#: src/menu/MiiTransformTasksState.cpp:104
 msgid "Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost)."
 msgstr "Wii Mii는 생성 위치에 관계없이 외부 Mii로 강제로 설정할 수 있습니다. 이렇게 하면 Mii ID가 업데이트됩니다(Mii 게임 연결이 손실됨)."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:107
+#: src/menu/MiiTransformTasksState.cpp:107
 msgid "CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo)."
 msgstr "선택한 항목에 대한 CRC가 다시 계산됩니다 mii (ffsd, bin, cfsd 또는 rsd 파일에 있는 경우) 또는 전체 DB (FFL 또는 RFL 파일 저장소에 있는 mii의 경우)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:110
+#: src/menu/MiiTransformTasksState.cpp:110
 msgid "So people that does not own the mii can modifiy it by creating a copy of the original."
 msgstr "Mii를 소유하지 않은 사람이 원본을 복사하여 수정할 수 있도록 합니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:113
+#: src/menu/MiiTransformTasksState.cpp:113
 msgid "Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost)."
 msgstr "임시 Miis는 FFL DB에서 볼 수 없습니다. 이 작업은 Mii ID를 업데이트합니다(Mii 게임 연결이 손실됨)."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:127
+#: src/menu/MiiTransformTasksState.cpp:127
 msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Select Mii Template  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue000: Mii 템플릿 선택 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:129
+#: src/menu/MiiTransformTasksState.cpp:129
 msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Transform  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 설정/해제 \\ue000: 변형 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:172
+#: src/menu/MiiTransformTasksState.cpp:172
 msgid "Please select an option"
 msgstr "옵션을 선택하세요"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListFilter.cpp:18
+#: src/menu/BackupSetListFilter.cpp:18
 msgid "Show only BackupSets satisfying all these conditions:"
 msgstr "다음 조건을 모두 충족하는 백업 세트만 표시합니다."
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListFilter.cpp:25
+#: src/menu/BackupSetListFilter.cpp:25
 msgid "\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"
 msgstr "\\ue000: 필터 적용 \\ue002: 필터 재설정 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:26
+#: src/menu/MiiTasksState.cpp:26
 msgid "Mii Tasks"
 msgstr "Mii 작업"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:33
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:57
+#: src/menu/MiiTasksState.cpp:33 src/menu/MiiTasksState.cpp:57
 msgid "DB management"
 msgstr "데이터베이스 관리"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:35
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:59
+#: src/menu/MiiTasksState.cpp:35 src/menu/MiiTasksState.cpp:59
 msgid "   Backup DB"
 msgstr "   DB 백업"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:37
+#: src/menu/MiiTasksState.cpp:37
 msgid "   Restore Full DB (Full restore - all account attributes - for one profile)"
 msgstr "   전체 DB 복원 (전체 복원 - 모든 계정 속성 - 하나의 프로필)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:39
+#: src/menu/MiiTasksState.cpp:39
 msgid "   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"
 msgstr "   DB Mii 섹션 복원 (MiiData 및 MiiImg 계정 간 복원)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:41
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:67
+#: src/menu/MiiTasksState.cpp:41 src/menu/MiiTasksState.cpp:67
 msgid "Mii Management"
 msgstr "Mii 관리"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:43
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:69
+#: src/menu/MiiTasksState.cpp:43 src/menu/MiiTasksState.cpp:69
 msgid "   List Miis"
 msgstr "   Mii 목록 표시"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:46
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:72
+#: src/menu/MiiTasksState.cpp:46 src/menu/MiiTasksState.cpp:72
 #, c-format
 msgid "   Export Miis (to %s)"
 msgstr "   Mii 내보내기(%s로)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:48
+#: src/menu/MiiTasksState.cpp:48
 msgid "   Export Miis (account MiiData)"
 msgstr "   Mii 내보내기(계정 MiiData)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:50
+#: src/menu/MiiTasksState.cpp:50
 msgid "   Import Miis (account MiiData)"
 msgstr "   MIIS 가져오기(계정 MIISData)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:52
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:83
+#: src/menu/MiiTasksState.cpp:52 src/menu/MiiTasksState.cpp:83
 msgid "   Transform Miis"
 msgstr "   Mii 변환 중"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:61
+#: src/menu/MiiTasksState.cpp:61
 msgid "   Restore DB"
 msgstr "   DB 복원"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:63
+#: src/menu/MiiTasksState.cpp:63
 msgid "   Wipe DB"
 msgstr "   데이터베이스 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:65
+#: src/menu/MiiTasksState.cpp:65
 msgid "   Initialize DB"
 msgstr "   DB 초기화"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:74
+#: src/menu/MiiTasksState.cpp:74
 msgid "   Export Miis"
 msgstr "   Mii 내보내기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:77
+#: src/menu/MiiTasksState.cpp:77
 #, c-format
 msgid "   Import Miis (from %s)"
 msgstr "   MIIS 가져오기(%s에서)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:79
+#: src/menu/MiiTasksState.cpp:79
 msgid "   Import Miis"
 msgstr "   MIIS 가져오기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:81
+#: src/menu/MiiTasksState.cpp:81
 msgid "   Wipe Miis"
 msgstr "   Mii 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:92
+#: src/menu/MiiTasksState.cpp:92
 msgid "Backup All Wii U Account folders and files"
 msgstr "모든 Wii U 계정 폴더 및 파일 백업"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:95
+#: src/menu/MiiTasksState.cpp:95
 msgid "Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect."
 msgstr "Wii U 계정 파일 복원(MiiData를 포함한 모든 정보). 변경 사항을 적용하려면 콘솔을 다시 시작해야 합니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:98
+#: src/menu/MiiTasksState.cpp:98
 msgid "Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect."
 msgstr "한 Wii U 계정에서 다른 계정으로 MiiData + MiiImg 복원 (둘 다 아님) NNID, PNID 또는 기타 속성은 수정되지 않습니다. 변경 사항을 적용하려면 콘솔을 다시 시작해야 합니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:101
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:131
+#: src/menu/MiiTasksState.cpp:101 src/menu/MiiTasksState.cpp:131
 msgid "List all Miis and some of its attributes"
 msgstr "모든 Mii와 일부 속성 목록 표시"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:104
+#: src/menu/MiiTasksState.cpp:104
 msgid "Export Miis to other repos"
 msgstr "다른 저장소로 Mii 내보내기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:107
+#: src/menu/MiiTasksState.cpp:107
 msgid "Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
 msgstr "다른 저장소의 MIIS에서 MiiData를 가져옵니다. 모든 변경 사항을 적용하려면 콘솔을 다시 시작하고 사용자를 다시 등록해야 합니다(사용자 설정 > MIIS 변경 > 등록된 MIIS 편집 > 등록)."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:110
+#: src/menu/MiiTasksState.cpp:110
 msgid "Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
 msgstr "Mii의 속성(공유/복사/MiiID/소유자) 또는 외형을 변경합니다. 변경 사항을 완전히 적용하려면 콘솔을 다시 시작하고 사용자를 다시 등록해야 합니다(사용자 설정 > Mii 변경 > 등록된 Mi 편집 > 등록)."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:119
+#: src/menu/MiiTasksState.cpp:119
 msgid "Backup Mii Database in their enterity"
 msgstr "Mii 데이터베이스 전체 백업"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:122
+#: src/menu/MiiTasksState.cpp:122
 msgid "Restore Mii Database in their enterity"
 msgstr "Mii 데이터베이스 전체 복원"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:125
+#: src/menu/MiiTasksState.cpp:125
 msgid "Wipe Mii Database"
 msgstr "Mii 데이터베이스 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:128
+#: src/menu/MiiTasksState.cpp:128
 msgid "Initialize Mii Database with no Miis"
 msgstr "Mii 없이 Mii 데이터베이스 초기화"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:134
+#: src/menu/MiiTasksState.cpp:134
 msgid "Export some Miis from this Database to another one"
 msgstr "이 데이터베이스에서 다른 데이터베이스로 일부 Mii 내보내기"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:137
+#: src/menu/MiiTasksState.cpp:137
 msgid "Import some Miis from another Database to this one"
 msgstr "다른 데이터베이스에서 이 데이터베이스로 일부 MIIS를 가져옵니다."
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:140
+#: src/menu/MiiTasksState.cpp:140
 msgid "Wipe some Miis from the Mii Database"
 msgstr "Mii 데이터베이스에서 일부 Mii 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:143
+#: src/menu/MiiTasksState.cpp:143
 msgid "Change attributes (share/copy/miiid/owner) or appareance of miis"
 msgstr "Mii의 속성(공유/복사/MiiID/소유자) 또는 외형을 변경합니다"
 
-#: /home/qwii/hb/savemii/src/menu/KeyboardState.cpp:17
+#: src/menu/KeyboardState.cpp:17
 msgid "Keyboard"
 msgstr "키보드"
 
-#: /home/qwii/hb/savemii/src/menu/KeyboardState.cpp:38
+#: src/menu/KeyboardState.cpp:38
 msgid "\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
 msgstr "\\ue000: 키 누르기 \\ue003: Shift \\ue002: Del \\ue045: 확인! \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:27
+#: src/menu/BatchBackupState.cpp:27
 msgid "Batch Backup"
 msgstr "일괄 백업"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:29
+#: src/menu/BatchBackupState.cpp:29
 #, c-format
 msgid "   Backup All (%u Title%s)"
 msgstr "   모두 백업 (%u 타이틀%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:32
+#: src/menu/BatchBackupState.cpp:32
 #, c-format
 msgid "   Backup Wii U (%u Title%s)"
 msgstr "   Wii U 백업 (%u 타이틀%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:35
+#: src/menu/BatchBackupState.cpp:35
 #, c-format
 msgid "   Backup vWii (%u Title%s)"
 msgstr "   vWii 백업 (%u 타이틀%s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:38
+#: src/menu/BatchBackupState.cpp:38
 #, c-format
 msgid "   Backup Wii U System Titles (%u Title%s)"
 msgstr "   Wii U 시스템 타이틀(%u 타이틀%s) 백업"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:45
+#: src/menu/BatchBackupState.cpp:45
 msgid ""
 "Reminder: Your Excludes will be applied to\n"
 "  'Backup Wii U' and 'Backup vWii' tasks"
 msgstr "알림: 제외 항목이 'Wii U 백업' 및 'vWii 백업' 작업에 적용됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:51
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:57
+#: src/menu/BatchBackupState.cpp:51 src/menu/BatchTasksState.cpp:57
 msgid ""
 "Batch Backup allows you to backup savedata:\n"
 "* for All titles at once (WiiU+ vWii)\n"
@@ -3340,26 +3168,26 @@ msgstr ""
 "* 모든 타이틀의 저장 데이터를 한 번에 백업합니다(WiiU+ vWii)\n"
 "* 선택한 타이틀의 저장 데이터(개별 'Wii U' 또는 'vWii' 작업)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:55
+#: src/menu/BatchBackupState.cpp:55
 msgid "\\ue002: BackupSet Management  \\ue000: Backup  \\ue001: Back"
 msgstr "\\ue002: 백업 세트 관리 \\ue000: 백업 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:156
+#: src/menu/BatchBackupState.cpp:156
 #, c-format
 msgid "ALL OK - WU:%d,vW:%d,S:%d titles"
 msgstr "모두 정상 - WU:%d, vW:%d, S:%d 타이틀"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:161
+#: src/menu/BatchBackupState.cpp:161
 #, c-format
 msgid "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
 msgstr "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:166
+#: src/menu/BatchBackupState.cpp:166
 #, c-format
 msgid "PARTIAL - WU:%d,vW:%d,S:%d OK"
 msgstr "부분 - WU:%d,vW:%d,S:%d 완료"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:112
+#: src/menu/BatchJobOptions.cpp:112
 #, c-format
 msgid ""
 "Savedata information for\n"
@@ -3367,11 +3195,11 @@ msgid ""
 "cannot be retrieved"
 msgstr "%s의 저장 데이터 정보를 가져올 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:152
+#: src/menu/BatchJobOptions.cpp:152
 msgid "Can't Copy/Move To OtherProfile if there is only one profile."
 msgstr "프로필이 하나만 있는 경우 다른 프로필로 복사/이동할 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:191
+#: src/menu/BatchJobOptions.cpp:191
 msgid ""
 "WARNING\n"
 "Some titles contain savedata for profiles that do not exist in this console\n"
@@ -3383,7 +3211,7 @@ msgstr ""
 "* 'allusers' 옵션 또는 일괄 백업을 사용하여 백업합니다.\n"
 "* '일괄 삭제/다른 프로필로 일괄 복사' 작업을 사용하여 데이터를 삭제하거나 이동합니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:194
+#: src/menu/BatchJobOptions.cpp:194
 msgid ""
 "The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n"
 "\n"
@@ -3393,7 +3221,7 @@ msgstr ""
 "\n"
 "권장 작업: 복원 개별 사용자와의 통신입니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:198
+#: src/menu/BatchJobOptions.cpp:198
 msgid ""
 "\n"
 "\n"
@@ -3404,7 +3232,7 @@ msgstr ""
 "\n"
 "존재하지 않는 프로필:\n"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:200
+#: src/menu/BatchJobOptions.cpp:200
 msgid ""
 "\n"
 "Titles affected:\n"
@@ -3412,138 +3240,125 @@ msgstr ""
 "\n"
 "영향을 받는 타이틀:\n"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:224
+#: src/menu/BatchJobOptions.cpp:224
 msgid "BatchJob - Options"
 msgstr "일괄 복원 - 옵션"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:225
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+#: src/menu/BatchJobOptions.cpp:225 src/menu/TitleOptionsState.cpp:152
 msgid "Select SD user to copy from:"
 msgstr "복사할 SD 사용자 선택:"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:226
+#: src/menu/BatchJobOptions.cpp:226
 msgid "Only 'common' savedata will be restored"
 msgstr "'공통' 저장 데이터만 복원됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:227
+#: src/menu/BatchJobOptions.cpp:227
 msgid "'common' savedata will also be restored"
 msgstr "'공통' 저장 데이터도 복원됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:230
+#: src/menu/BatchJobOptions.cpp:230
 msgid "Batch ProfileCopy - Options"
 msgstr "일괄 프로필 복사 - 옵션"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:231
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:237
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:249
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:255
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+#: src/menu/BatchJobOptions.cpp:231 src/menu/BatchJobOptions.cpp:237
+#: src/menu/BatchJobOptions.cpp:249 src/menu/BatchJobOptions.cpp:255
+#: src/menu/TitleOptionsState.cpp:152
 msgid "Select Wii U user to copy from:"
 msgstr "복사할 Wii U 사용자 선택:"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:236
+#: src/menu/BatchJobOptions.cpp:236
 msgid "Batch ProfileMove - Options"
 msgstr "일괄 프로필 이동 - 옵션"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:242
+#: src/menu/BatchJobOptions.cpp:242
 msgid "Batch Wipe - Options"
 msgstr "일괄 삭제 - 옵션"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:243
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+#: src/menu/BatchJobOptions.cpp:243 src/menu/TitleOptionsState.cpp:152
 msgid "Select Wii U user to wipe:"
 msgstr "삭제할 Wii U 사용자를 선택하세요.:"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:244
+#: src/menu/BatchJobOptions.cpp:244
 msgid "Only 'common' savedata will be deleted"
 msgstr "'공통' 저장 데이터만 삭제됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:245
+#: src/menu/BatchJobOptions.cpp:245
 msgid "'common' savedata will also be deleted"
 msgstr "'공통' 저장 데이터도 삭제됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:248
+#: src/menu/BatchJobOptions.cpp:248
 msgid "Batch CopyToUSB - Options"
 msgstr "USB로 일괄 복사 - 옵션"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:250
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:256
+#: src/menu/BatchJobOptions.cpp:250 src/menu/BatchJobOptions.cpp:256
 msgid "Only 'common' savedata will be copied"
 msgstr "'공통' 저장 데이터만 복사됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:251
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:257
+#: src/menu/BatchJobOptions.cpp:251 src/menu/BatchJobOptions.cpp:257
 msgid "'common' savedata will also be copied"
 msgstr "'공통' 저장 데이터도 복사됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:254
+#: src/menu/BatchJobOptions.cpp:254
 msgid "Batch CopyToNAND - Options"
 msgstr "NAND에 일괄 복사 - 옵션"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:270
+#: src/menu/BatchJobOptions.cpp:270
 #, c-format
 msgid "BS: %s"
 msgstr "BS: %s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:276
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:298
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:157
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:179
+#: src/menu/BatchJobOptions.cpp:276 src/menu/BatchJobOptions.cpp:298
+#: src/menu/TitleOptionsState.cpp:157 src/menu/TitleOptionsState.cpp:179
 msgid "only common save"
 msgstr "일반 저장만 허용"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:279
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:284
+#: src/menu/BatchJobOptions.cpp:279 src/menu/BatchJobOptions.cpp:284
 msgid "Ok"
 msgstr "확인"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:281
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:159
+#: src/menu/BatchJobOptions.cpp:281 src/menu/TitleOptionsState.cpp:159
 msgid "all users"
 msgstr "모든 사용자"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:295
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:176
+#: src/menu/BatchJobOptions.cpp:295 src/menu/TitleOptionsState.cpp:176
 msgid "Select Wii U user to copy to:"
 msgstr "복사할 Wii U 사용자 선택:"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:300
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:181
+#: src/menu/BatchJobOptions.cpp:300 src/menu/TitleOptionsState.cpp:181
 msgid "same user than in source"
 msgstr "소스와 동일한 사용자"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:308
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:246
+#: src/menu/BatchJobOptions.cpp:308 src/menu/TitleOptionsState.cpp:246
 msgid "Include 'common' save?"
 msgstr "'공통' 저장을 포함하겠습니까?"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:310
+#: src/menu/BatchJobOptions.cpp:310
 msgid "No "
 msgstr "아니요"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
+#: src/menu/BatchJobOptions.cpp:316
 #, c-format
 msgid "   Wipe target users savedata before restoring: < %s >"
 msgstr "   복원 전 대상 사용자의 저장 데이터 삭제: < %s >"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:320
+#: src/menu/BatchJobOptions.cpp:320
 msgid "   Target user savedata will be wiped"
 msgstr "   대상 사용자 저장 데이터가 삭제됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
+#: src/menu/BatchJobOptions.cpp:324
 #, c-format
 msgid "   Backup all data before restoring (strongly recommended): < %s >"
 msgstr "   복원 전 모든 데이터 백업(강력 권장): < %s >"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:330
+#: src/menu/BatchJobOptions.cpp:330
 msgid "\\ue000: Ok! Go to Title selection  \\ue001: Back"
 msgstr "\\ue000: 확인! 제목 선택으로 이동 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:332
+#: src/menu/BatchJobOptions.cpp:332
 msgid "\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"
 msgstr "\\ue002: 정의되지 않은 프로필 \\ue000: 확인! 제목 선택 항목으로 이동 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:340
+#: src/menu/BatchJobOptions.cpp:340
 msgid ""
 "\n"
 "Do you want to continue?\n"
@@ -3551,43 +3366,43 @@ msgstr ""
 "\n"
 "계속하시겠습니까?\n"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:67
+#: src/menu/MiiRepoSelectState.cpp:67
 msgid "Select Repo containing the Mii Template"
 msgstr "Mii 템플릿이 포함된 저장소 선택"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:68
+#: src/menu/MiiRepoSelectState.cpp:68
 msgid "\\ue000: To Select Template Mii Repo  \\ue001: Back"
 msgstr "\\ue000: 템플릿 Mii 저장소 선택 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:71
+#: src/menu/MiiRepoSelectState.cpp:71
 msgid "Select Repo to Import Miis from"
 msgstr "Mii를 가져올 저장소 선택"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:72
+#: src/menu/MiiRepoSelectState.cpp:72
 msgid "\\ue000: To Select Miis to Import from this repo  \\ue001: Back"
 msgstr "\\ue000: 이 저장소에서 가져올 Mii 선택 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:75
+#: src/menu/MiiRepoSelectState.cpp:75
 msgid "Select Repo to Export Miis to"
 msgstr "Mii를 내보낼 저장소 선택"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:76
+#: src/menu/MiiRepoSelectState.cpp:76
 msgid "\\ue000: To Select Miis to Export to this repo  \\ue001: Back"
 msgstr "\\ue000: 이 저장소로 내보낼 Mii 선택 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:79
+#: src/menu/MiiRepoSelectState.cpp:79
 msgid "Select Mii Repo to Manage"
 msgstr "관리할 Mii 저장소 선택"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:80
+#: src/menu/MiiRepoSelectState.cpp:80
 msgid "\\ue000: Select Repo  \\ue001: Back"
 msgstr "\\ue000: 저장소 선택 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:89
+#: src/menu/MiiRepoSelectState.cpp:89
 msgid "There are no repos matching selected filters."
 msgstr " 선택한 필터와 일치하는 저장소가 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:56
+#: src/menu/MainMenuState.cpp:57
 #, c-format
 msgid ""
 "Error\n"
@@ -3600,42 +3415,42 @@ msgstr ""
 "소유자/그룹 설정 중\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:74
+#: src/menu/MainMenuState.cpp:75
 msgid "Main menu"
 msgstr "메인 메뉴"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:76
+#: src/menu/MainMenuState.cpp:77
 #, c-format
 msgid "   Wii U Save Management (%u Title%s)"
 msgstr "   Wii U 저장 관리 (%u 타이틀%s)"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:79
+#: src/menu/MainMenuState.cpp:80
 #, c-format
 msgid "   vWii Save Management (%u Title%s)"
 msgstr "   vWii 저장 관리(%u 타이틀%s)"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:82
+#: src/menu/MainMenuState.cpp:83
 #, c-format
 msgid "   Wii U System Titles Save Management (%u Title%s)"
 msgstr "   Wii U 시스템 타이틀 저장 관리(%u 타이틀%s)"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:85
+#: src/menu/MainMenuState.cpp:86
 msgid "   Batch Tasks Management"
 msgstr "   일괄 작업 관리"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:87
+#: src/menu/MainMenuState.cpp:88
 msgid "   BackupSet Management"
 msgstr "   백업 세트 관리"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:89
+#: src/menu/MainMenuState.cpp:90
 msgid "   Mii Management"
 msgstr "   Mii 관리"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:93
+#: src/menu/MainMenuState.cpp:94
 msgid "\\ue002: Options \\ue000: Select Mode"
 msgstr "\\ue002: 옵션 \\ue000: 모드 선택"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:113
+#: src/menu/MainMenuState.cpp:113
 msgid ""
 "This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n"
 "\n"
@@ -3651,266 +3466,258 @@ msgstr ""
 "계속하시겠습니까?\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:17
+#: src/menu/ConfigMenuState.cpp:17
 msgid "Configuration Options"
 msgstr "구성 옵션"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:20
+#: src/menu/ConfigMenuState.cpp:20
 #, c-format
 msgid "   Language: %s"
 msgstr "    언어: %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:23
+#: src/menu/ConfigMenuState.cpp:23
 #, c-format
 msgid "   Always apply Backup Excludes: %s"
 msgstr "    항상 백업 제외 항목 적용: %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:27
+#: src/menu/ConfigMenuState.cpp:27
 #, c-format
 msgid "   Ask for backup dir conversion to titleName based format: %s"
 msgstr "    백업 디렉터리를 제목이름 기반 형식으로 변환할지 묻습니다: %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:32
+#: src/menu/ConfigMenuState.cpp:32
 #, c-format
 msgid "   This session value: %s"
 msgstr "   이 세션 값: %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:37
+#: src/menu/ConfigMenuState.cpp:37
 #, c-format
 msgid "   Warn and don't allow restore of undefined profiles: %s"
 msgstr "   정의되지 않은 프로필의 복원을 허용하지 않고 경고합니다. %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:45
+#: src/menu/ConfigMenuState.cpp:45
 msgid "\\ue045 SaveConfig  \\ue001: Back"
 msgstr "\\ue045 구성 저장 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:138
+#: src/menu/ConfigMenuState.cpp:138
 msgid "Error processing configuration"
 msgstr "구성 처리 중 오류 발생"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:89
+#: src/menu/TitleOptionsState.cpp:89
 #, c-format
 msgid "BackupSet: %s"
 msgstr "백업 세트: %s"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:97
+#: src/menu/TitleOptionsState.cpp:97
 msgid "Destination:"
 msgstr "대상:"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:102
+#: src/menu/TitleOptionsState.cpp:102
 msgid "   Copy profile savedata to a different profile."
 msgstr "   프로필 저장 데이터를 다른 프로필에 복사합니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:105
+#: src/menu/TitleOptionsState.cpp:105
 msgid "   Move profile savedata to a different profile."
 msgstr "   프로필 저장 데이터를 다른 프로필로 이동합니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:106
+#: src/menu/TitleOptionsState.cpp:106
 msgid "   - Target profile will be wiped."
 msgstr "   - 대상 프로필이 삭제됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:108
+#: src/menu/TitleOptionsState.cpp:108
 msgid "version"
 msgstr "버전"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:114
+#: src/menu/TitleOptionsState.cpp:114
 msgid "Delete from:"
 msgstr "삭제"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:118
+#: src/menu/TitleOptionsState.cpp:118
 #, c-format
 msgid "Select %s [%s]:"
 msgstr "%s 선택 [%s]:"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:155
+#: src/menu/TitleOptionsState.cpp:155
 msgid "metadata + savedata"
 msgstr "메타데이터 + 저장 데이터"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:200
+#: src/menu/TitleOptionsState.cpp:200
 msgid "Source has 'common' savedata, only it will be saved"
 msgstr "원본에 '공통' 저장 데이터가 있습니다. 해당 데이터만 저장됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:201
+#: src/menu/TitleOptionsState.cpp:201
 msgid "Source has 'common' savedata, it will also be saved"
 msgstr "원본에 '공통' 저장 데이터가 있습니다. 해당 데이터도 저장됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:204
+#: src/menu/TitleOptionsState.cpp:204
 msgid "Source has 'common' savedata, only it will be restored"
 msgstr "원본에 '공통' 저장 데이터가 있습니다. 해당 데이터만 복원됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:205
+#: src/menu/TitleOptionsState.cpp:205
 msgid "Source has 'common' savedata, it will also be restored"
 msgstr "원본에 '공통' 저장 데이터가 있습니다. 해당 데이터도 복원됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:208
+#: src/menu/TitleOptionsState.cpp:208
 msgid "'common' savedata found, only it will be deleted"
 msgstr "' 공통' 저장 데이터가 발견되었습니다. 해당 데이터만 삭제됩니다"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:209
+#: src/menu/TitleOptionsState.cpp:209
 msgid "'common' savedata found, it will also be deleted"
 msgstr " '공통' 저장 데이터가 발견되었습니다. 해당 데이터도 삭제됩니다"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:212
+#: src/menu/TitleOptionsState.cpp:212
 msgid "Source has 'common' savedata, only it will be copied"
 msgstr "원본에 '공통' 저장 데이터가 있습니다. 해당 데이터만 복사됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:213
+#: src/menu/TitleOptionsState.cpp:213
 msgid "Source 'common' savedata, it will also be copied"
 msgstr "원본 '공통' 저장 데이터가 있습니다. 해당 데이터도 복사됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:231
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:264
+#: src/menu/TitleOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:264
 #, c-format
 msgid "(Target has 'common': %s)"
 msgstr "(대상에 '공통'이 있습니다: %s)"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:232
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:249
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:265
+#: src/menu/TitleOptionsState.cpp:232 src/menu/TitleOptionsState.cpp:249
+#: src/menu/TitleOptionsState.cpp:265
 msgid "yes"
 msgstr "예"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:232
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:249
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:265
+#: src/menu/TitleOptionsState.cpp:232 src/menu/TitleOptionsState.cpp:249
+#: src/menu/TitleOptionsState.cpp:265
 msgid "no "
 msgstr "아니오"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:255
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:262
+#: src/menu/TitleOptionsState.cpp:255 src/menu/TitleOptionsState.cpp:262
 msgid "No 'common' save found."
 msgstr "'일반' 저장 파일을 찾을 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:255
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:262
+#: src/menu/TitleOptionsState.cpp:255 src/menu/TitleOptionsState.cpp:262
 msgid "Source: No 'common' save found."
 msgstr "원본: '공통' 저장 데이터를 찾을 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:286
+#: src/menu/TitleOptionsState.cpp:286
 msgid "Savedata in NAND"
 msgstr "NAND에 저장된 저장 데이터"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:289
+#: src/menu/TitleOptionsState.cpp:289
 msgid "Select vWii data to wipe:"
 msgstr "삭제할 vWii 데이터 선택:"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:292
+#: src/menu/TitleOptionsState.cpp:292
 msgid "full metadata + savedata"
 msgstr "전체 메타데이터 + 저장 데이터"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:294
+#: src/menu/TitleOptionsState.cpp:294
 msgid "savedata"
 msgstr "저장 데이터"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:362
+#: src/menu/TitleOptionsState.cpp:362
 msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
 msgstr "\\ue002: 백업 세트 변경 \\ue000: 복원 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:364
+#: src/menu/TitleOptionsState.cpp:364
 msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue002: 백업 세트 변경  \\ue000: 복원  \\ue045: 태그 슬롯  \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:372
+#: src/menu/TitleOptionsState.cpp:372
 msgid "Copy to Other Profile"
 msgstr "다른 프로필에 복사합니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:374
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:394
+#: src/menu/TitleOptionsState.cpp:374 src/menu/TitleOptionsState.cpp:394
 msgid "\\ue000: Copy  \\ue001: Back"
 msgstr "\\ue000: 복사  \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:377
+#: src/menu/TitleOptionsState.cpp:377
 msgid "Move to Other Profile"
 msgstr "다른 프로필로 이동"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:379
+#: src/menu/TitleOptionsState.cpp:379
 msgid "\\ue000: Move  \\ue001: Back"
 msgstr "\\ue000: 이동 \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:382
+#: src/menu/TitleOptionsState.cpp:382
 msgid "Import Loadiine"
 msgstr "로드 데이터 가져오기"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:384
+#: src/menu/TitleOptionsState.cpp:384
 msgid "\\ue000: Import  \\ue001: Back"
 msgstr "\\ue000: 가져오기  \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:387
+#: src/menu/TitleOptionsState.cpp:387
 msgid "Export Loadiine"
 msgstr "로드 파일 내보내기"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:389
+#: src/menu/TitleOptionsState.cpp:389
 msgid "\\ue000: Export  \\ue001: Back"
 msgstr "\\ue000: 내보내기  \\ue001: 뒤로"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:392
+#: src/menu/TitleOptionsState.cpp:392
 msgid "Copy to Other Device"
 msgstr "다른 장치에 복사합니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:803
+#: src/menu/TitleOptionsState.cpp:803
 msgid "No data selected to copyToOtherProfile"
 msgstr "다른 프로필로 복사할 데이터가 선택되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:805
+#: src/menu/TitleOptionsState.cpp:805
 msgid "No data selected to moveProfile"
 msgstr "이동할 프로필 데이터가 선택되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:807
+#: src/menu/TitleOptionsState.cpp:807
 msgid "No data selected to copy"
 msgstr "복사할 데이터가 선택되지 않았습니다."
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:836
+#: src/menu/TitleOptionsState.cpp:836
 msgid "Savedata succesfully backed up!"
 msgstr "저장 데이터 백업 성공!"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:841
+#: src/menu/TitleOptionsState.cpp:841
 msgid "Savedata succesfully restored!"
 msgstr "저장 데이터 복원 성공!"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:846
+#: src/menu/TitleOptionsState.cpp:846
 msgid "Savedata succesfully wiped!"
 msgstr "저장 데이터 삭제 성공!"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:852
+#: src/menu/TitleOptionsState.cpp:852
 msgid "Savedata succesfully moved!"
 msgstr "저장 데이터 이동 성공!"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:857
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:862
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:867
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:871
+#: src/menu/TitleOptionsState.cpp:857 src/menu/TitleOptionsState.cpp:862
+#: src/menu/TitleOptionsState.cpp:867 src/menu/TitleOptionsState.cpp:871
 msgid "Savedata succesfully copied!"
 msgstr "저장 데이터 복사 성공!"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:36
+#: src/menu/BatchTasksState.cpp:36
 msgid "Batch Tasks Menu"
 msgstr "일괄 작업 메뉴"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:39
+#: src/menu/BatchTasksState.cpp:39
 msgid "   Batch Backup"
 msgstr "   일괄 백업"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:41
+#: src/menu/BatchTasksState.cpp:41
 msgid "   Batch Restore"
 msgstr "   일괄 복원"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:43
+#: src/menu/BatchTasksState.cpp:43
 msgid "   Batch Wipe"
 msgstr "   일괄 삭제"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:45
+#: src/menu/BatchTasksState.cpp:45
 msgid "   Batch Move to Other Profile"
 msgstr "   다른 프로필로 일괄 이동"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:47
+#: src/menu/BatchTasksState.cpp:47
 msgid "   Batch Copy to Other Profile"
 msgstr "   다른 프로필에 일괄 복사"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:49
+#: src/menu/BatchTasksState.cpp:49
 msgid "   Batch Copy to Other Device"
 msgstr "   다른 기기에 일괄 복사"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:60
+#: src/menu/BatchTasksState.cpp:60
 msgid ""
 "Batch Restore allows you to restore all savedata from a BatchBackup \n"
 "* to the same user profiles\n"
@@ -3924,78 +3731,65 @@ msgstr ""
 "* 또는 게임이 이미 설치된 다른 콘솔로 복원할 수 있습니다.\n"
 "이제 저장 데이터를 초기화하기 위해 게임을 먼저 실행할 필요가 없습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:63
+#: src/menu/BatchTasksState.cpp:63
 msgid "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
 msgstr "일괄 삭제를 사용하면 선택한 모든 타이틀에서 지정된 프로필에 속하는 저장 데이터를 삭제할 수 있습니다. 콘솔에 정의되지 않은 프로필에 속하는 저장 데이터도 감지합니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:66
+#: src/menu/BatchTasksState.cpp:66
 msgid "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
 msgstr "다른 프로필로 일괄 이동을 사용하면 한 사용자 프로필에서 다른 사용자 프로필로 저장 데이터를 이동할 수 있습니다. 데이터 복사는 없고 폴더 이름만 변경되므로 매우 빠릅니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:69
+#: src/menu/BatchTasksState.cpp:69
 msgid "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
 msgstr "다른 프로필로 일괄 복사를 사용하면 한 사용자 프로필에서 다른 사용자 프로필로 저장 데이터를 전송할 수 있습니다. 원본 데이터의 저장 데이터는 그대로 유지됩니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:72
+#: src/menu/BatchTasksState.cpp:72
 msgid "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
 msgstr "다른 장치로 일괄 복사를 사용하면 NAND와 USB 모두에 저장 데이터가 있는 선택한 모든 타이틀의 저장 데이터를 전송할 수 있습니다."
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:83
+#: src/menu/BatchTasksState.cpp:83
 msgid "\\ue002: Options \\ue000: Select Batch Task"
 msgstr "\\ue002: 옵션 \\ue000: 일괄 작업 선택"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:137
+#: src/savemng.cpp:136
 msgid "Failed to open Loadiine game save directory."
 msgstr "Loadiine 게임 저장 디렉토리를 열지 못했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:158
-#: /home/qwii/hb/savemii/src/savemng.cpp:175
+#: src/savemng.cpp:157 src/savemng.cpp:174
 msgid "Loadiine game folder not found."
 msgstr "Loadiine 게임 폴더를 찾을 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:377
-#: /home/qwii/hb/savemii/src/savemng.cpp:489
-#: /home/qwii/hb/savemii/src/savemng.cpp:550
-#: /home/qwii/hb/savemii/src/savemng.cpp:961
-#: /home/qwii/hb/savemii/src/savemng.cpp:1152
-#: /home/qwii/hb/savemii/src/savemng.cpp:1252
-#: /home/qwii/hb/savemii/src/savemng.cpp:1316
-#: /home/qwii/hb/savemii/src/savemng.cpp:1378
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:14
+#: src/savemng.cpp:376 src/savemng.cpp:488 src/savemng.cpp:549
+#: src/savemng.cpp:965 src/savemng.cpp:1156 src/savemng.cpp:1256
+#: src/savemng.cpp:1320 src/savemng.cpp:1382 src/miisavemng.cpp:14
 msgid "Are you sure?"
 msgstr "확실하나요?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:383
+#: src/savemng.cpp:382
 msgid "pre-copyToOtherDev backup"
 msgstr "사전 복사 다른 장치 백업"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:392
+#: src/savemng.cpp:391
 msgid "Copy failed."
 msgstr "복사에 실패했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:402
-#: /home/qwii/hb/savemii/src/savemng.cpp:838
-#: /home/qwii/hb/savemii/src/savemng.cpp:991
+#: src/savemng.cpp:401 src/savemng.cpp:837 src/savemng.cpp:995
 msgid "source_user=-3 is not allowed for this task"
 msgstr "source_user=-3은 이 작업에 허용되지 않습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:434
-#: /home/qwii/hb/savemii/src/savemng.cpp:870
+#: src/savemng.cpp:433 src/savemng.cpp:869
 msgid "Error copying common savedata."
 msgstr "공통 저장 데이터를 복사하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:447
-#: /home/qwii/hb/savemii/src/savemng.cpp:879
+#: src/savemng.cpp:446 src/savemng.cpp:878
 msgid "Error copying savedata."
 msgstr "저장 데이터를 복사하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:448
-#: /home/qwii/hb/savemii/src/savemng.cpp:518
-#: /home/qwii/hb/savemii/src/savemng.cpp:880
+#: src/savemng.cpp:447 src/savemng.cpp:517 src/savemng.cpp:879
 msgid "Error copying profile savedata."
 msgstr "프로필 저장 데이터를 복사하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:468
+#: src/savemng.cpp:467
 #, c-format
 msgid ""
 "%s\n"
@@ -4004,16 +3798,15 @@ msgstr ""
 "%s\n"
 "복사 실패."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:495
+#: src/savemng.cpp:494
 msgid "pre-copySavedataToOtherProfile backup"
 msgstr "사전 복사 저장 데이터 다른 프로필 백업"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:496
-#: /home/qwii/hb/savemii/src/savemng.cpp:557
+#: src/savemng.cpp:495 src/savemng.cpp:556
 msgid "Backup Failed - Replicate aborted !!"
 msgstr "백업 실패 - 복제 중단!!"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:529
+#: src/savemng.cpp:528
 #, c-format
 msgid ""
 "%s\n"
@@ -4022,11 +3815,11 @@ msgstr ""
 "%s\n"
 "프로필 복사에 실패했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:556
+#: src/savemng.cpp:555
 msgid "pre-moveSavedataToOtherProfile backup"
 msgstr "이동 전 저장 데이터 다른 프로필로 백업"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:575
+#: src/savemng.cpp:574
 #, c-format
 msgid ""
 "Error deleting savedata folder\n"
@@ -4035,7 +3828,7 @@ msgstr ""
 "저장 데이터 폴더 삭제 오류\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:582
+#: src/savemng.cpp:581
 #, c-format
 msgid ""
 "Unable to rename folder \n"
@@ -4050,9 +3843,10 @@ msgstr ""
 "'%s'의 이름을 \n"
 "'%s'(으)로 변경할 수 없습니다.\n"
 "\n"
-"%s\n백업을 복원하고 오류를 수정한 후 다시 시도하세요."
+"%s\n"
+"백업을 복원하고 오류를 수정한 후 다시 시도하세요."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:601
+#: src/savemng.cpp:600
 #, c-format
 msgid ""
 "%s\n"
@@ -4061,11 +3855,11 @@ msgstr ""
 "%s\n"
 "프로필 이동에 실패했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:731
+#: src/savemng.cpp:730
 msgid "Do you want to cancel batch backup?"
 msgstr "일괄 백업을 취소하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:756
+#: src/savemng.cpp:755
 #, c-format
 msgid ""
 "%s\n"
@@ -4080,49 +3874,47 @@ msgstr ""
 "현재 오류: %d\n"
 "계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:810
+#: src/savemng.cpp:809
 msgid "BACKUP IN PROGRESS"
 msgstr "백업 진행 중"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:820
-#: /home/qwii/hb/savemii/src/savemng.cpp:905
+#: src/savemng.cpp:819 src/savemng.cpp:904
 msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
 msgstr "백업 시 권한이 유지되지 않습니다. 시스템 타이틀이므로 문제를 해결해야만 백업이 진행됩니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:823
-#: /home/qwii/hb/savemii/src/savemng.cpp:908
+#: src/savemng.cpp:822 src/savemng.cpp:907
 msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
 msgstr "백업 시 권한이 유지되지 않습니다. 레거시 모드로 작동할 수는 있지만 문제를 해결한 후 다시 시도하는 것이 좋습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:888
+#: src/savemng.cpp:887
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
 msgstr "경고 - 메타데이터 saveinfo.xml 복사 오류. 심각하지 않음."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:897
+#: src/savemng.cpp:896
 msgid "Error closing FAT32 chars translation file"
 msgstr "FAT32 문자 변환 파일을 닫는 중 오류 발생"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:909
+#: src/savemng.cpp:908
 msgid "WARNING - NO PERMS"
 msgstr "경고 - 권한 없음"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1020
+#: src/savemng.cpp:1024
 msgid "Error restoring common savedata."
 msgstr "공통 저장 데이터를 복원하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1033
+#: src/savemng.cpp:1037
 msgid "Error restoring savedata."
 msgstr "저장 데이터를 복원하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1034
+#: src/savemng.cpp:1038
 msgid "Error restoring profile savedata."
 msgstr "프로필 저장 데이터를 복원하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1088
+#: src/savemng.cpp:1092
 msgid "Error setting permissions"
 msgstr "권한 설정 오류"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1149
+#: src/savemng.cpp:1153
 msgid ""
 "This option is a last resort in case something has gone wrong when\n"
 "restoring data. It will wipe metadata and savedata, and the title \n"
@@ -4133,35 +3925,32 @@ msgid ""
 "Continue?"
 msgstr "이 옵션은 데이터 복원 중 문제가 발생했을 경우 최후의 수단입니다. 메타데이터와 저장 데이터가 모두 삭제되고, 게임 타이틀은 초기화되지 않은 상태가 됩니다. 설치된 게임 코드에는 아무런 영향을 미치지 않습니다. Wii U 데이터 관리 메뉴에서 저장 데이터를 완전히 삭제하는 것과 동일한 기능입니다. 계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1149
-#: /home/qwii/hb/savemii/src/savemng.cpp:1152
-#: /home/qwii/hb/savemii/src/savemng.cpp:1378
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:14
+#: src/savemng.cpp:1153 src/savemng.cpp:1156 src/savemng.cpp:1382
+#: src/miisavemng.cpp:14
 msgid "Hm, are you REALLY sure?"
 msgstr "흠, 정말 확신하나요?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1157
-#: /home/qwii/hb/savemii/src/savemng.cpp:1255
+#: src/savemng.cpp:1161 src/savemng.cpp:1259
 msgid "Backup current savedata first?"
 msgstr "현재 저장 데이터를 먼저 백업하겠습니까?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1158
+#: src/savemng.cpp:1162
 msgid "pre-Wipe backup"
 msgstr "사전 삭제 백업"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1159
+#: src/savemng.cpp:1163
 msgid "Backup Failed - Wipe aborted !!"
 msgstr "백업 실패 - 삭제 중단!!"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1198
+#: src/savemng.cpp:1202
 msgid "Error wiping common savedata."
 msgstr "공통 저장 데이터를 삭제하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1202
+#: src/savemng.cpp:1206
 msgid "Error deleting common folder."
 msgstr "공통 폴더를 삭제하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1203
+#: src/savemng.cpp:1207
 #, c-format
 msgid ""
 "%s \n"
@@ -4174,23 +3963,23 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1210
+#: src/savemng.cpp:1214
 msgid "Error wiping savedata."
 msgstr "저장 데이터를 삭제하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1211
+#: src/savemng.cpp:1215
 msgid "Error wiping profile savedata."
 msgstr "프로필 저장 데이터를 삭제하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1216
+#: src/savemng.cpp:1220
 msgid "Error deleting savedata folder."
 msgstr "저장 데이터 폴더를 삭제하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1217
+#: src/savemng.cpp:1221
 msgid "Error deleting profile savedata folder."
 msgstr "프로필 저장 데이터 폴더를 삭제하는 중 오류가 발생했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1218
+#: src/savemng.cpp:1222
 #, c-format
 msgid ""
 "%s \n"
@@ -4203,15 +3992,15 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1228
+#: src/savemng.cpp:1232
 msgid "Error wiping metadata+savedata."
 msgstr "메타데이터 및 저장 데이터 삭제 오류"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1233
+#: src/savemng.cpp:1237
 msgid "Error deleting title folder."
 msgstr "타이틀 폴더 삭제 오류"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1234
+#: src/savemng.cpp:1238
 #, c-format
 msgid ""
 "%s \n"
@@ -4224,21 +4013,17 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1383
-#: /home/qwii/hb/savemii/src/savemng.cpp:1404
+#: src/savemng.cpp:1387 src/savemng.cpp:1408
 msgid "Error setting path. Aborting."
 msgstr "경로를 설정하는 중 오류가 발생했습니다. 중단합니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1389
-#: /home/qwii/hb/savemii/src/savemng.cpp:1391
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:21
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:23
+#: src/savemng.cpp:1393 src/savemng.cpp:1395 src/miisavemng.cpp:21
+#: src/miisavemng.cpp:23
 #, c-format
 msgid "Failed to delete slot %u."
 msgstr "슬롯 %u을(를) 삭제하지 못했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1393
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:25
+#: src/savemng.cpp:1397 src/miisavemng.cpp:25
 msgid ""
 "Folder $s\n"
 "does not exist."
@@ -4246,21 +4031,20 @@ msgstr ""
 "폴더 $s\n"
 "이 존재하지 않습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1400
+#: src/savemng.cpp:1404
 msgid "Wipe BackupSet - Are you sure?"
 msgstr "백업 세트 삭제 - 정말 삭제하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1400
+#: src/savemng.cpp:1404
 msgid "Wipe BackupSet - Hm, are you REALLY sure?"
 msgstr "백업 세트 삭제 - 정말 삭제하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1410
-#: /home/qwii/hb/savemii/src/savemng.cpp:1414
+#: src/savemng.cpp:1414 src/savemng.cpp:1418
 #, c-format
 msgid "Failed to delete backupSet %s."
 msgstr "백업 세트 %s을 삭제하지 못했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1418
+#: src/savemng.cpp:1422
 #, c-format
 msgid ""
 "Folder %s\n"
@@ -4269,7 +4053,7 @@ msgstr ""
 "폴더 %s\n"
 "이 존재하지 않습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1464
+#: src/savemng.cpp:1468
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4288,7 +4072,7 @@ msgstr ""
 "- 중단: %d\n"
 "- 건너뜀: %d\n"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1466
+#: src/savemng.cpp:1470
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4307,7 +4091,7 @@ msgstr ""
 "- 중단: %d\n"
 "- 건너뜀: %d(초기화되지 않은 %d개 포함)\n"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1475
+#: src/savemng.cpp:1479
 msgid ""
 "\n"
 "Failed Titles:"
@@ -4315,7 +4099,7 @@ msgstr ""
 "\n"
 "실패한 타이틀:"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1514
+#: src/savemng.cpp:1518
 #, c-format
 msgid ""
 "Unable to merge folder '%08x%08x' with existent folder\n"
@@ -4332,7 +4116,7 @@ msgstr ""
 "\n"
 "백업/복원 작업은 이전 '%08x%08x' 폴더를 계속 사용합니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1521
+#: src/savemng.cpp:1525
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -4355,7 +4139,7 @@ msgstr ""
 "\n"
 "백업/복원 작업은 이전 '%08x%08x' 폴더를 계속 사용합니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1526
+#: src/savemng.cpp:1530
 #, c-format
 msgid ""
 "Unable to rename folder '%08x%08x' to\n"
@@ -4377,7 +4161,7 @@ msgstr ""
 "\n"
 "백업/복원 작업은 이전 '%08x%08x' 폴더를 계속 사용합니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1545
+#: src/savemng.cpp:1549
 #, c-format
 msgid ""
 "Failed to delete (test) folder \n"
@@ -4392,12 +4176,12 @@ msgstr ""
 "\n"
 "%s을(를) 삭제하지 못했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1577
+#: src/savemng.cpp:1581
 #, c-format
 msgid "Migrating from folder: %08x%08x"
 msgstr "폴더에서 마이그레이션 중: %08x%08x"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1583
+#: src/savemng.cpp:1587
 #, c-format
 msgid ""
 "Error renaming/moving '%08x%08x' to \n"
@@ -4416,7 +4200,7 @@ msgstr ""
 "\n"
 "계속하시겠습니까?\n"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1610
+#: src/savemng.cpp:1614
 #, c-format
 msgid ""
 "Errors so far in this (sub)task: %d\n"
@@ -4425,7 +4209,7 @@ msgstr ""
 "이 (하위)작업에서 현재까지 발생한 오류: %d\n"
 "계속하시겠습니까?"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1628
+#: src/savemng.cpp:1632
 #, c-format
 msgid ""
 "Cannot move %s from '%08x%08x' to\n"
@@ -4434,10 +4218,11 @@ msgid ""
 "\n"
 "file already exists in target folder."
 msgstr ""
-"%s을(를) '%08x%08x'에서\n%s(으)로 이동할 수 없습니다.\n"
+"%s을(를) '%08x%08x'에서\n"
+"%s(으)로 이동할 수 없습니다.\n"
 "대상 폴더에 파일이 이미 있습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1636
+#: src/savemng.cpp:1640
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -4456,7 +4241,7 @@ msgstr ""
 "\n"
 "이동을 시도하지 않았습니다!"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1644
+#: src/savemng.cpp:1648
 #, c-format
 msgid ""
 "Cannot rename folder '%08x%08x/%s' to\n"
@@ -4469,7 +4254,7 @@ msgstr ""
 "%s\n"
 "%s(으)로 변경할 수 없습니다"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1653
+#: src/savemng.cpp:1657
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -4488,7 +4273,7 @@ msgstr ""
 "\n"
 "마이그레이션이 완료되지 않았을 수 있습니다"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1666
+#: src/savemng.cpp:1670
 #, c-format
 msgid ""
 "Error merging folders: after moving all slots, folder\n"
@@ -4503,7 +4288,7 @@ msgstr ""
 "\n"
 "이(가) 비어 있지 않아 삭제할 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1672
+#: src/savemng.cpp:1676
 #, c-format
 msgid ""
 "Failed to delete (legacy) folder\n"
@@ -4518,7 +4303,7 @@ msgstr ""
 "\n"
 "%s을(를) 삭제하지 못했습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1707
+#: src/savemng.cpp:1711
 #, c-format
 msgid ""
 "Backup contains savedata for the profile '%s',\n"
@@ -4527,12 +4312,12 @@ msgstr ""
 "백업에 '%s' 프로필의 저장된 데이터가 포함되어 있지만\n"
 "해당 프로필은 이 콘솔에 없습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1746
+#: src/savemng.cpp:1750
 #, c-format
 msgid "... and %d more"
 msgstr "... 및 %d개 추가"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1911
+#: src/savemng.cpp:1915
 #, c-format
 msgid ""
 "Error setting quota for \n"
@@ -4541,15 +4326,15 @@ msgstr ""
 "\n"
 "%s에 대한 할당량 설정 오류"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1938
+#: src/savemng.cpp:1942
 msgid "Error creating init data"
 msgstr "초기화 데이터 생성 오류"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1987
+#: src/savemng.cpp:1991
 msgid "Error creating vWii init data"
 msgstr "vWii 초기화 데이터 생성 오류"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:2021
+#: src/savemng.cpp:2025
 #, c-format
 msgid ""
 "Sourcce saveinfo\n"
@@ -4560,36 +4345,31 @@ msgstr ""
 "%s\n"
 "을 찾을 수 없습니다."
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:2054
+#: src/savemng.cpp:2058
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical.\n"
-msgstr ""
-"경고 - 메타데이터 saveinfo.xml 복사 오류. 심각하지 않음.\n"
+msgstr "경고 - 메타데이터 saveinfo.xml 복사 오류. 심각하지 않음.\n"
 
-#: /home/qwii/hb/savemii/src/Metadata.cpp:82
-#: /home/qwii/hb/savemii/src/Metadata.cpp:94
+#: src/Metadata.cpp:82 src/Metadata.cpp:94
 msgid ", from "
 msgstr ", 출처: "
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:34
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:51
-#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:23
+#: src/cfg/ExcludesCfg.cpp:34 src/cfg/ExcludesCfg.cpp:51
+#: src/cfg/GlobalCfg.cpp:23
 #, c-format
 msgid "Error creating JSON object: %s"
 msgstr "JSON 객체 생성 오류: %s"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:41
+#: src/cfg/ExcludesCfg.cpp:41
 #, c-format
 msgid "Error creating JSON array: %s"
 msgstr "JSON 배열 생성 오류: %s"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:74
-#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:35
+#: src/cfg/ExcludesCfg.cpp:74 src/cfg/GlobalCfg.cpp:35
 #, c-format
 msgid "Error dumping JSON object: %s"
 msgstr "JSON 객체를 덤프하는 중 오류가 발생했습니다: %s"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:92
-#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:51
+#: src/cfg/ExcludesCfg.cpp:92 src/cfg/GlobalCfg.cpp:51
 #, c-format
 msgid ""
 "Error decoding JSON file\n"
@@ -4604,12 +4384,12 @@ msgstr ""
 "\n"
 "%s 디코딩 오류"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:98
+#: src/cfg/ExcludesCfg.cpp:98
 #, c-format
 msgid "Error: unexpected format (%s not an array)"
 msgstr "오류: 예기치 않은 형식(%s은(는) 배열이 아닙니다)"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:148
+#: src/cfg/ExcludesCfg.cpp:148
 #, c-format
 msgid ""
 "Error parsing values in elements:\n"
@@ -4618,7 +4398,7 @@ msgstr ""
 "요소의 값을 구문 분석하는 중 오류 발생:\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:28
+#: src/cfg/BaseCfg.cpp:28
 #, c-format
 msgid ""
 "Critical - Path is not a directory:\n"
@@ -4629,7 +4409,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:78
+#: src/cfg/BaseCfg.cpp:78
 #, c-format
 msgid ""
 "cfgPath was no initialized and cannot be used:\n"
@@ -4640,7 +4420,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:96
+#: src/cfg/BaseCfg.cpp:96
 #, c-format
 msgid ""
 "Error reading file\n"
@@ -4654,4 +4434,3 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
-

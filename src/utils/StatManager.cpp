@@ -239,7 +239,7 @@ bool StatManager::get_stat(const std::string &entryPath) {
     FSStatFlags fsstatflags;
     FSError fserror = FSAGetStat(FSUtils::handle, FSUtils::newlibtoFSA(entryPath).c_str(), &fsastat);
     if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_CONFIRM, "Error gtting stat for %s: %s", entryPath.c_str(), FSAGetStatusStr(fserror));
+        Console::showMessage(ERROR_CONFIRM, _("Error getting stat for %s: %s"), entryPath.c_str(), FSAGetStatusStr(fserror));
         return false;
     }
     fsmode = fsastat.mode;

@@ -509,7 +509,7 @@ dir_created:
         std::string targetPath = StringUtils::stringFormat("%s/%s", tPath.c_str(), data->d_name);
 
         if ((data->d_type & DT_DIR) != 0) {
-            if (!copyDir(sPath + StringUtils::stringFormat("/%s", data->d_name), targetPath, if_generate_FAT32_translation_file)) {
+            if (!copyDir(sPath + StringUtils::stringFormat("/%s", data->d_name), targetPath, if_generate_FAT32_translation_file, enable_stat_manager)) {
                 if (InProgress::abortCopy) {
                     closedir(dir);
                     return false;
@@ -522,7 +522,7 @@ dir_created:
                 }
             }
         } else {
-            if (!copyFile(sPath + StringUtils::stringFormat("/%s", data->d_name), targetPath, if_generate_FAT32_translation_file)) {
+            if (!copyFile(sPath + StringUtils::stringFormat("/%s", data->d_name), targetPath, if_generate_FAT32_translation_file, enable_stat_manager)) {
                 std::string errorMessage = StringUtils::stringFormat(_("Error copying file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
                 if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                     InProgress::abortCopy = true;

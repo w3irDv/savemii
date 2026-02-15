@@ -366,7 +366,7 @@ bool LanguageUtils::parseMsgId(FILE *fp, std::string lineString) {
 
 
 /// @brief unescape ", unicode and newlines. Remove enclosing "".
-/// @param msg 
+/// @param msg
 void LanguageUtils::normalize(std::string &msg) {
 
     size_t ind = 0;
@@ -433,15 +433,21 @@ std::string LanguageUtils::to_utf8(uint32_t cp) {
 // Source - https://stackoverflow.com/a/28553727
 // Posted by Remy Lebeau, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-02-13, License - CC BY-SA 4.0
+// Tailored to read savemii PO files
 
 void LanguageUtils::unicode_to_str(std::string &str) {
     std::string::size_type startIdx = 0;
     do {
         startIdx = str.find("\\u", startIdx);
-        if (startIdx == std::string::npos) break;
+        if (startIdx == std::string::npos)
+            break;
 
         std::string::size_type endIdx = str.find_first_not_of("0123456789abcdefABCDEF", startIdx + 2);
-        if (endIdx == std::string::npos) break;
+        if (endIdx == std::string::npos)
+            endIdx = str.size(); // Updated
+
+        if (endIdx - startIdx > 6) // Updated
+            endIdx = startIdx + 6;
 
         std::string tmpStr = str.substr(startIdx + 2, endIdx - (startIdx + 2));
         std::istringstream iss(tmpStr);

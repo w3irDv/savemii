@@ -7,133 +7,114 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-12 16:46+0100\n"
+"POT-Creation-Date: 2026-02-15 23:12+0100\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:41
-#: /home/qwii/hb/savemii/include/menu/TitleListState.h:37
+#: include/menu/BatchJobTitleSelectState.h:41 include/menu/TitleListState.h:37
 msgid "None"
 msgstr "無"
 
-#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:42
-#: /home/qwii/hb/savemii/include/menu/TitleListState.h:38
+#: include/menu/BatchJobTitleSelectState.h:42 include/menu/TitleListState.h:38
 msgid "Name"
 msgstr "名稱"
 
-#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:43
-#: /home/qwii/hb/savemii/include/menu/TitleListState.h:39
+#: include/menu/BatchJobTitleSelectState.h:43 include/menu/TitleListState.h:39
 msgid "Storage"
 msgstr "存儲"
 
-#: /home/qwii/hb/savemii/include/menu/BatchJobTitleSelectState.h:44
+#: include/menu/BatchJobTitleSelectState.h:44
 msgid "Strg+Nm"
 msgstr "字串+名稱"
 
-#: /home/qwii/hb/savemii/include/menu/TitleListState.h:40
+#: include/menu/TitleListState.h:40
 msgid "Storage+Name"
 msgstr "字串+名稱"
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:59
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:118
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:163
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:353
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:507
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:566
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:611
+#: src/utils/TitleUtils.cpp:59 src/utils/TitleUtils.cpp:118
+#: src/utils/TitleUtils.cpp:163 src/utils/TitleUtils.cpp:353
+#: src/utils/TitleUtils.cpp:507 src/utils/TitleUtils.cpp:566
+#: src/utils/TitleUtils.cpp:611
 msgid "Out of memory."
 msgstr "記憶體不足。"
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:275
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:472
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:730
+#: src/utils/TitleUtils.cpp:275 src/utils/TitleUtils.cpp:472
+#: src/utils/TitleUtils.cpp:730
 #, c-format
 msgid "Loaded %i Wii U titles."
 msgstr "已加載 %i 個Wii U軟體。"
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:429
+#: src/utils/TitleUtils.cpp:429
 #, c-format
 msgid "%s%s (No banner.bin)"
 msgstr "%s%s（沒有banner.bin資料）"
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:473
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:731
+#: src/utils/TitleUtils.cpp:473 src/utils/TitleUtils.cpp:731
 #, c-format
 msgid "Loaded %i Wii titles."
 msgstr "已加載 %i 個Wii軟體。"
 
-#: /home/qwii/hb/savemii/src/utils/TitleUtils.cpp:732
+#: src/utils/TitleUtils.cpp:732
 #, c-format
 msgid "Loaded %i Wii U Sys titles."
 msgstr "加載 %i 個 Wii U 系統遊戲。"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:76
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:60
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:96
+#: src/utils/LanguageUtils.cpp:144 src/menu/ConfigMenuState.cpp:60
+#: src/menu/ConfigMenuState.cpp:96
 msgid "Japanese"
 msgstr "Japanese"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:78
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:103
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:78
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:98
+#: src/utils/LanguageUtils.cpp:146 src/utils/LanguageUtils.cpp:171
+#: src/menu/ConfigMenuState.cpp:78 src/menu/ConfigMenuState.cpp:98
 msgid "English"
 msgstr "English"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:83
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:62
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:114
+#: src/utils/LanguageUtils.cpp:151 src/menu/ConfigMenuState.cpp:62
+#: src/menu/ConfigMenuState.cpp:114
 msgid "German"
 msgstr "German"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:85
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:64
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:112
+#: src/utils/LanguageUtils.cpp:153 src/menu/ConfigMenuState.cpp:64
+#: src/menu/ConfigMenuState.cpp:112
 msgid "Italian"
 msgstr "Italian"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:87
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:68
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:108
+#: src/utils/LanguageUtils.cpp:155 src/menu/ConfigMenuState.cpp:68
+#: src/menu/ConfigMenuState.cpp:108
 msgid "Spanish"
 msgstr "Spanish"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:89
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:70
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:106
+#: src/utils/LanguageUtils.cpp:157 src/menu/ConfigMenuState.cpp:70
+#: src/menu/ConfigMenuState.cpp:106
 msgid "Traditional Chinese"
 msgstr "繁体中文"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:91
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:104
+#: src/utils/LanguageUtils.cpp:159 src/menu/ConfigMenuState.cpp:72
+#: src/menu/ConfigMenuState.cpp:104
 msgid "Korean"
 msgstr "Korean"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:97
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:66
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:110
+#: src/utils/LanguageUtils.cpp:165 src/menu/ConfigMenuState.cpp:66
+#: src/menu/ConfigMenuState.cpp:110
 msgid "Portuguese"
 msgstr "Portuguese"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:99
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:74
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:102
+#: src/utils/LanguageUtils.cpp:167 src/menu/ConfigMenuState.cpp:74
+#: src/menu/ConfigMenuState.cpp:102
 msgid "Russian"
 msgstr "Russian"
 
-#: /home/qwii/hb/savemii/src/utils/LanguageUtils.cpp:101
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:76
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:100
+#: src/utils/LanguageUtils.cpp:169 src/menu/ConfigMenuState.cpp:76
+#: src/menu/ConfigMenuState.cpp:100
 msgid "Simplified Chinese"
 msgstr "简体中文"
 
-#: /home/qwii/hb/savemii/src/utils/AmbientConfig.cpp:21
+#: src/utils/AmbientConfig.cpp:21
 msgid ""
 "Error getting DeviceHash\n"
 "Only affects to WiiU Mii Transfomation > Set Device Hash\n"
@@ -145,63 +126,63 @@ msgstr ""
 "\n"
 "其他所有儲存 Mii 的功能均不受影響"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:38
+#: src/utils/MiiUtils.cpp:38
 msgid "Unable to obtain MiiMaker title information. Let's try to find it..."
 msgstr "無法取得 MiiMaker 標題資訊。讓我們嘗試尋找它…"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:75
+#: src/utils/MiiUtils.cpp:75
 msgid "Unable to obtain MiiMaker region. Disabling Internal WII U MiiDB"
 msgstr "無法取得 MiiMaker 區域。正在停用 Wii U 內部 MiiDB"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:104
+#: src/utils/MiiUtils.cpp:104
 msgid "Internal Wii U Mii Database"
 msgstr "內部 Wii U Mii 資料庫"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:105
+#: src/utils/MiiUtils.cpp:105
 msgid "Custom Wii U Mii Database on SD"
 msgstr "SD卡上的自訂Wii U Mii資料庫"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:106
+#: src/utils/MiiUtils.cpp:106
 msgid "Stage Folder for Wii U Miis on SD"
 msgstr "SD 卡上 Wii U Mii 的舞台資料夾"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:107
+#: src/utils/MiiUtils.cpp:107
 msgid "Internal vWii Mii Database"
 msgstr "內部 vWii Mii 資料庫"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:108
+#: src/utils/MiiUtils.cpp:108
 msgid "Custom vWii Mii Database on SD"
 msgstr "SD卡上的自訂vWii Mii資料庫"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:109
+#: src/utils/MiiUtils.cpp:109
 msgid "Stage Folder for vWii Miis on SD"
 msgstr "SD 卡上 vWii Mii 的舞台資料夾"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:110
+#: src/utils/MiiUtils.cpp:110
 msgid "Miis from Internal Account DB"
 msgstr "來自內部帳戶資料庫的 Miis"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:111
+#: src/utils/MiiUtils.cpp:111
 msgid "Miis from Custom Account DB on SD"
 msgstr "來自 SD 上自訂帳戶資料庫的 Miis"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:112
+#: src/utils/MiiUtils.cpp:112
 msgid "Stage folder for Account Miis on SD"
 msgstr "SD 卡上帳號 Mii 的舞台資料夾"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:113
+#: src/utils/MiiUtils.cpp:113
 msgid "SaveGameManager GX Miis stage folder on SD"
 msgstr "SD 卡上的 SaveGameManager GX Mii 舞台資料夾"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:116
+#: src/utils/MiiUtils.cpp:116
 msgid "Internal Stadio save DB"
 msgstr "內部 Stadio 存檔資料庫"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:176
+#: src/utils/MiiUtils.cpp:176
 msgid "Wii U Mii Database mounted on USB"
 msgstr "Wii U Mii 資料庫已掛載至 USB"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:216
+#: src/utils/MiiUtils.cpp:216
 #, c-format
 msgid ""
 "In case you need this files in the future, you will find them here:\n"
@@ -210,31 +191,27 @@ msgstr ""
 "如果您將來需要這些文件，可以在這裡找到它們：\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:298
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:401
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:523
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:788
+#: src/utils/MiiUtils.cpp:298 src/utils/MiiUtils.cpp:401
+#: src/utils/MiiUtils.cpp:523 src/utils/MiiUtils.cpp:788
 msgid "Aborting Task - MiiProcesSharedState is not completely initialized"
 msgstr "中止任務 - MiiProcesSharedState 未完全初始化"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:305
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:408
+#: src/utils/MiiUtils.cpp:305 src/utils/MiiUtils.cpp:408
 msgid "Aborting Task - Target Repo is null"
 msgstr "中止任務 - 目標儲存庫為空"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:311
+#: src/utils/MiiUtils.cpp:311
 #, c-format
 msgid "Aborting Task - Unable to open repo %s"
 msgstr "中止任務 - 無法開啟儲存庫 %s"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:319
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:416
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:425
+#: src/utils/MiiUtils.cpp:319 src/utils/MiiUtils.cpp:416
+#: src/utils/MiiUtils.cpp:425
 #, c-format
 msgid "Aborting Task - Unable to open and populate repo %s"
 msgstr "中止任務 - 無法開啟和填滿儲存庫 %s"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:327
+#: src/utils/MiiUtils.cpp:327
 msgid ""
 "You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n"
 "\n"
@@ -248,15 +225,13 @@ msgstr ""
 "\n"
 "請更新其中一個Mii角色的Miiid、普通/特殊/臨時或設備信息，以修復此問題。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:350
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:471
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:750
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:588
+#: src/utils/MiiUtils.cpp:350 src/utils/MiiUtils.cpp:471
+#: src/utils/MiiUtils.cpp:750 src/menu/MiiSelectState.cpp:588
 #, c-format
 msgid "Error extracting MiiData for %s (by %s)"
 msgstr "提取 %s（由 %s 操作）的 Mii 資料時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:364
+#: src/utils/MiiUtils.cpp:364
 msgid ""
 "Errors detected during export.\n"
 "Do you want to save the database?"
@@ -264,7 +239,7 @@ msgstr ""
 "匯出過程中偵測到錯誤。\n"
 "是否儲存資料庫？"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:433
+#: src/utils/MiiUtils.cpp:433
 msgid ""
 "You are importing duplicated Miis. They are marked with DUP or D in the listings.\n"
 "\n"
@@ -278,7 +253,7 @@ msgstr ""
 "\n"
 "請更新其中一個Mii角色的Miiid、普通/特殊/臨時或設備信息，以修復此問題。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:487
+#: src/utils/MiiUtils.cpp:487
 msgid ""
 "Errors detected during import.\n"
 "Do you want to save the database?"
@@ -286,8 +261,7 @@ msgstr ""
 "導入過程中偵測到錯誤。\n"
 "是否儲存資料庫？"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:496
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:772
+#: src/utils/MiiUtils.cpp:496 src/utils/MiiUtils.cpp:772
 msgid ""
 "Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n"
 "\n"
@@ -301,17 +275,17 @@ msgstr ""
 "\n"
 "請透過更新其MiiID、切換普通/特殊/臨時標誌或更新其中一個角色的裝置資訊來修復它。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:552
+#: src/utils/MiiUtils.cpp:552
 #, c-format
 msgid "Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
 msgstr "無法從收藏夾中移除 %s（由 %s 移除）。提取 Mii 數據時出錯。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:556
+#: src/utils/MiiUtils.cpp:556
 #, c-format
 msgid "Error wiping MiiData for %s (by %s)"
 msgstr "清除 %s 的 Mii 資料時出錯（由 %s 執行）"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:573
+#: src/utils/MiiUtils.cpp:573
 msgid ""
 "Errors detected during wipe.\n"
 "Do you want to save the database?"
@@ -319,54 +293,49 @@ msgstr ""
 "擦除過程中偵測到錯誤。\n"
 "是否儲存資料庫？"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:628
-#: /home/qwii/hb/savemii/src/savemng.cpp:1426
+#: src/utils/MiiUtils.cpp:628 src/savemng.cpp:1430
 msgid "Please wait. First write to (some) SDs can take several seconds."
 msgstr "请稍候。首次写入SD卡可能需要几秒钟。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:641
+#: src/utils/MiiUtils.cpp:641
 msgid "Transforming mii"
 msgstr "正在轉換 mii 文件"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:644
+#: src/utils/MiiUtils.cpp:644
 msgid "Wiping mii"
 msgstr "正在清除 Mii"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:647
+#: src/utils/MiiUtils.cpp:647
 #, c-format
 msgid "Copying from: %s"
 msgstr "正在從：%s 複製"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:648
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:587
-#: /home/qwii/hb/savemii/src/savemng.cpp:1578
+#: src/utils/MiiUtils.cpp:648 src/utils/FSUtils.cpp:587 src/savemng.cpp:1582
 #, c-format
 msgid "To: %s"
 msgstr "到: %s"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:654
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:591
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:610
+#: src/utils/MiiUtils.cpp:654 src/utils/FSUtils.cpp:591
+#: src/utils/FSUtils.cpp:610
 msgid "Will abort..."
 msgstr "   將中止..."
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:657
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:594
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:613
+#: src/utils/MiiUtils.cpp:657 src/utils/FSUtils.cpp:594
+#: src/utils/FSUtils.cpp:613
 msgid "Abort:\\ue083+\\ue046"
 msgstr "中止:\\ue083+\\ue046"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:697
+#: src/utils/MiiUtils.cpp:697
 #, c-format
 msgid "Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."
 msgstr "Mii %s 是特殊角色，如果開啟了分享功能，Mii 編輯器會將其刪除。請先將其轉換為普通角色。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:724
+#: src/utils/MiiUtils.cpp:724
 #, c-format
 msgid "Share attribute will be disabled for Mii %s as it will be transformed to a Special one."
 msgstr "Mii %s 的共享屬性將被停用，因為它將轉換為特殊 Mii。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:764
+#: src/utils/MiiUtils.cpp:764
 msgid ""
 "Errors detected during transform.\n"
 "Do you want to save the database?"
@@ -374,71 +343,59 @@ msgstr ""
 "轉換過程中偵測到錯誤。\n"
 "是否儲存資料庫？"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:809
+#: src/utils/MiiUtils.cpp:809
 #, c-format
 msgid "DB file for %s not found. Do you want to initialize it?"
 msgstr "未找到資料庫檔案 %s。是否要初始化它？"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:811
+#: src/utils/MiiUtils.cpp:811
 #, c-format
 msgid "Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"
 msgstr "是否要初始化資料庫檔案%s？ （所有Mii角色都將被擦除！！！）"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:817
+#: src/utils/MiiUtils.cpp:817
 #, c-format
 msgid "Db file %s initialized"
 msgstr "資料庫檔案 %s 已初始化"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:820
+#: src/utils/MiiUtils.cpp:820
 #, c-format
 msgid "Error initializing db file %s"
 msgstr "初始化資料庫檔案 %s 時出錯"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:822
+#: src/utils/MiiUtils.cpp:822
 #, c-format
 msgid "Initialize task for %s aborted"
 msgstr "初始化任務 %s 已中止"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:836
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:59
+#: src/utils/MiiUtils.cpp:836 src/menu/MiiDBOptionsState.cpp:59
 msgid "This action is not supported on the selected repo."
 msgstr "所選倉庫不支援此操作。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:862
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:425
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:130
-#: /home/qwii/hb/savemii/src/savemng.cpp:382
-#: /home/qwii/hb/savemii/src/savemng.cpp:494
-#: /home/qwii/hb/savemii/src/savemng.cpp:555
-#: /home/qwii/hb/savemii/src/savemng.cpp:968
+#: src/utils/MiiUtils.cpp:862 src/mii/MiiAccountRepo.cpp:425
+#: src/mii/MiiRepo.cpp:130 src/savemng.cpp:381 src/savemng.cpp:493
+#: src/savemng.cpp:554 src/savemng.cpp:972
 msgid "Backup current savedata first to next empty slot?"
 msgstr "首先將當前保存數據備份到下一個空插槽？"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:863
+#: src/utils/MiiUtils.cpp:863
 msgid "pre-XRestore backup"
 msgstr "預跨平台恢復備份"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:864
+#: src/utils/MiiUtils.cpp:864
 msgid "Backup Failed - XRestore aborted !!"
 msgstr "備份失敗 - XRestore 遊戲已中止！"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:890
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:902
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:279
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:288
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:278
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:287
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:370
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:379
+#: src/utils/MiiUtils.cpp:890 src/utils/MiiUtils.cpp:902
+#: src/mii/MiiStadioSav.cpp:279 src/mii/MiiStadioSav.cpp:288
+#: src/mii/MiiAccountRepo.cpp:278 src/mii/MiiAccountRepo.cpp:287
+#: src/mii/MiiFileRepo.cpp:370 src/mii/MiiFileRepo.cpp:379
 msgid "Unrecoverable Error - Please restore db from a Backup"
 msgstr "無法恢復的錯誤 - 請從備份中恢復資料庫"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:893
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:905
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:278
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:277
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:292
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:369
+#: src/utils/MiiUtils.cpp:893 src/utils/MiiUtils.cpp:905
+#: src/mii/MiiStadioSav.cpp:278 src/mii/MiiAccountRepo.cpp:277
+#: src/mii/MiiAccountRepo.cpp:292 src/mii/MiiFileRepo.cpp:369
 #, c-format
 msgid ""
 "Error renaming file \n"
@@ -452,8 +409,7 @@ msgstr ""
 "\n"
 "%s 時出錯"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:894
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:898
+#: src/utils/MiiUtils.cpp:894 src/utils/MiiUtils.cpp:898
 #, c-format
 msgid ""
 "Restored full account %s on %s account. \n"
@@ -464,13 +420,10 @@ msgstr ""
 "\n"
 "如有需要，請還原資料庫備份。"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:897
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:284
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:287
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:283
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:286
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:375
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:378
+#: src/utils/MiiUtils.cpp:897 src/mii/MiiStadioSav.cpp:284
+#: src/mii/MiiStadioSav.cpp:287 src/mii/MiiAccountRepo.cpp:283
+#: src/mii/MiiAccountRepo.cpp:286 src/mii/MiiFileRepo.cpp:375
+#: src/mii/MiiFileRepo.cpp:378
 #, c-format
 msgid ""
 "Error removing db file %s\n"
@@ -484,7 +437,7 @@ msgstr ""
 "\n"
 "%s 時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:901
+#: src/utils/MiiUtils.cpp:901
 #, c-format
 msgid ""
 "Error restoring db file %s\n"
@@ -498,37 +451,65 @@ msgstr ""
 "\n"
 "%s 時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:956
-#: /home/qwii/hb/savemii/src/utils/MiiUtils.cpp:972
+#: src/utils/MiiUtils.cpp:956 src/utils/MiiUtils.cpp:972
 #, c-format
 msgid "Account %s does not exist in primary Account DB %s"
 msgstr "帳戶 %s 在主帳戶資料庫 %s 中不存在。"
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:50
+#: src/utils/ConsoleUtils.cpp:50
 msgid "Press \\ue000 to continue"
 msgstr "按\\ue000继续"
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:80
+#: src/utils/ConsoleUtils.cpp:80
 msgid "\\ue000 Yes - \\ue001 No"
 msgstr "\\ue000 是 - \\ue001 否"
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:81
+#: src/utils/ConsoleUtils.cpp:81
 msgid "\\ue000 Confirm - \\ue001 Cancel"
 msgstr "\\ue000 確認 - \\ue001 取消"
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:82
+#: src/utils/ConsoleUtils.cpp:82
 msgid "\\ue003 Confirm - \\ue001 Cancel"
 msgstr "\\ue003 确认 - \\ue001 取消"
 
-#: /home/qwii/hb/savemii/src/utils/ConsoleUtils.cpp:154
+#: src/utils/ConsoleUtils.cpp:154
 msgid "Choose your option"
 msgstr "選擇你的選項"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:95
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:101
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:170
-#: /home/qwii/hb/savemii/src/savemng.cpp:1540
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:23
+#: include/utils/KeyboardUtils.h:27
+msgid "KB_N_0"
+msgstr "1234567890-="
+
+#: include/utils/KeyboardUtils.h:28
+msgid "KB_N_1"
+msgstr "qwertyuiop[]|"
+
+#: include/utils/KeyboardUtils.h:29
+msgid "KB_N_2"
+msgstr "asdfghjkl;'"
+
+#: include/utils/KeyboardUtils.h:30
+msgid "KB_N_3"
+msgstr "zxcvbnm ,./"
+
+#: include/utils/KeyboardUtils.h:33
+msgid "KB_S_0"
+msgstr "!@#$%^&*()_+~"
+
+#: include/utils/KeyboardUtils.h:34
+msgid "KB_S_1"
+msgstr "QWERTYUIOP{}\\"
+
+#: include/utils/KeyboardUtils.h:35
+msgid "KB_S_2"
+msgstr "ASDFGHJKL:\""
+
+#: include/utils/KeyboardUtils.h:36
+msgid "KB_S_3"
+msgstr "ZXCVBNM <>"
+
+#: src/utils/FSUtils.cpp:95 src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:170
+#: src/savemng.cpp:1544 src/cfg/BaseCfg.cpp:23
 #, c-format
 msgid ""
 "Error while creating folder:\n"
@@ -543,7 +524,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:130
+#: src/utils/FSUtils.cpp:130
 #, c-format
 msgid ""
 "Failed to delete folder\n"
@@ -558,7 +539,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:138
+#: src/utils/FSUtils.cpp:138
 #, c-format
 msgid ""
 "Failed to delete file\n"
@@ -573,8 +554,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:154
-#: /home/qwii/hb/savemii/src/savemng.cpp:1767
+#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1771
 #, c-format
 msgid ""
 "Error while reading folder content\n"
@@ -589,7 +569,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:176
+#: src/utils/FSUtils.cpp:176
 #, c-format
 msgid ""
 "Error while creating final folder:\n"
@@ -604,8 +584,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:221
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:33
+#: src/utils/FSUtils.cpp:221 src/menu/MainMenuState.cpp:34
 #, c-format
 msgid ""
 "Error\n"
@@ -618,8 +597,7 @@ msgstr ""
 "設定權限時發生錯誤\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:228
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:42
+#: src/utils/FSUtils.cpp:228 src/menu/MainMenuState.cpp:43
 #, c-format
 msgid ""
 "Error creating shim for change perms\n"
@@ -630,7 +608,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:242
+#: src/utils/FSUtils.cpp:242
 #, c-format
 msgid ""
 "Error\n"
@@ -643,10 +621,8 @@ msgstr ""
 "設定擁有者 %08x / 群組 %08x 時發生錯誤\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:345
-#: /home/qwii/hb/savemii/src/savemng.cpp:1791
-#: /home/qwii/hb/savemii/src/savemng.cpp:1845
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:84
+#: src/utils/FSUtils.cpp:345 src/savemng.cpp:1795 src/savemng.cpp:1849
+#: src/cfg/BaseCfg.cpp:84
 #, c-format
 msgid ""
 "Cannot open file for read\n"
@@ -661,10 +637,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:367
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:373
-#: /home/qwii/hb/savemii/src/savemng.cpp:1876
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:46
+#: src/utils/FSUtils.cpp:367 src/utils/FSUtils.cpp:373 src/savemng.cpp:1880
+#: src/cfg/BaseCfg.cpp:46
 #, c-format
 msgid ""
 "Cannot open file for write\n"
@@ -679,7 +653,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:402
+#: src/utils/FSUtils.cpp:402
 msgid ""
 "\n"
 "\n"
@@ -689,8 +663,7 @@ msgstr ""
 "\n"
 "注意: 如果您還沒有這樣做，請嘗試在恢復之前擦除已儲存的資料"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:410
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
 #, c-format
 msgid ""
 "Error creating permission file - Backup/Restore is not reliable\n"
@@ -701,7 +674,7 @@ msgstr ""
 "目前為止的錯誤數：%d\n"
 "是否繼續？"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:428
+#: src/utils/FSUtils.cpp:428
 #, c-format
 msgid ""
 "Read error\n"
@@ -716,7 +689,7 @@ msgstr ""
 "\n"
 "從%s讀取時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:431
+#: src/utils/FSUtils.cpp:431
 #, c-format
 msgid ""
 "Write error\n"
@@ -731,11 +704,8 @@ msgstr ""
 "\n"
 " 複製到 %s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:445
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:720
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:111
-#: /home/qwii/hb/savemii/src/savemng.cpp:136
-#: /home/qwii/hb/savemii/src/savemng.cpp:174
+#: src/utils/FSUtils.cpp:445 src/utils/FSUtils.cpp:720
+#: src/menu/BatchJobOptions.cpp:111 src/savemng.cpp:135 src/savemng.cpp:173
 #, c-format
 msgid ""
 "Error opening source dir\n"
@@ -750,7 +720,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:470
+#: src/utils/FSUtils.cpp:470
 #, c-format
 msgid ""
 "Error creating folder\n"
@@ -765,9 +735,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:517
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:550
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:561
+#: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
+#: src/utils/FSUtils.cpp:561
 #, c-format
 msgid ""
 "Error copying directory - Backup/Restore is not reliable\n"
@@ -778,7 +747,7 @@ msgstr ""
 "迄今為止的錯誤: %d\n"
 "您想繼續嗎？"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:526
+#: src/utils/FSUtils.cpp:526
 #, c-format
 msgid ""
 "Error copying file - Backup/Restore is not reliable\n"
@@ -789,8 +758,7 @@ msgstr ""
 "迄今為止的錯誤: %d\n"
 "您想繼續嗎？"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:549
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:762
+#: src/utils/FSUtils.cpp:549 src/utils/FSUtils.cpp:767
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -809,9 +777,7 @@ msgstr ""
 "\n"
 "複製可能不完整"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:560
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:773
-#: /home/qwii/hb/savemii/src/savemng.cpp:1660
+#: src/utils/FSUtils.cpp:560 src/utils/FSUtils.cpp:778 src/savemng.cpp:1664
 #, c-format
 msgid ""
 "Error while closing folder\n"
@@ -826,27 +792,27 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:585
+#: src/utils/FSUtils.cpp:585
 #, c-format
 msgid "Copying file: %s"
 msgstr "複製資料: %s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:586
+#: src/utils/FSUtils.cpp:586
 #, c-format
 msgid "From: %s"
 msgstr "從: %s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:605
+#: src/utils/FSUtils.cpp:605
 #, c-format
 msgid "Deleting folder %s"
 msgstr "刪除資料夾 %s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:605
+#: src/utils/FSUtils.cpp:605
 #, c-format
 msgid "Deleting file %s"
 msgstr "刪除資料 %s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:606
+#: src/utils/FSUtils.cpp:606
 #, c-format
 msgid ""
 "From: \n"
@@ -855,9 +821,8 @@ msgstr ""
 "從: \n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:743
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:763
-#: /home/qwii/hb/savemii/src/utils/FSUtils.cpp:774
+#: src/utils/FSUtils.cpp:739 src/utils/FSUtils.cpp:748
+#: src/utils/FSUtils.cpp:768 src/utils/FSUtils.cpp:779
 #, c-format
 msgid ""
 "Error setting permissions - Restore is not reliable\n"
@@ -868,20 +833,19 @@ msgstr ""
 "目前錯誤數：%d\n"
 "是否繼續？"
 
-#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:14
+#: src/utils/StartupUtils.cpp:14
 msgid "Disclaimer:"
 msgstr "注意: "
 
-#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:15
+#: src/utils/StartupUtils.cpp:15
 msgid "There is always the potential for a brick."
 msgstr "請盡量小心使用本程式，它可能會使你的機器變磚。"
 
-#: /home/qwii/hb/savemii/src/utils/StartupUtils.cpp:16
+#: src/utils/StartupUtils.cpp:16
 msgid "Everything you do with this software is your own responsibility"
 msgstr "你所使用本程式所做的一切都是你自己的責任"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:16
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:66
+#: src/utils/EscapeFAT32Utils.cpp:16 src/utils/EscapeFAT32Utils.cpp:66
 #, c-format
 msgid ""
 "Error opening FAT32 chars translation file \n"
@@ -894,7 +858,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:32
+#: src/utils/EscapeFAT32Utils.cpp:32
 #, c-format
 msgid ""
 "Error updating FAT32 chars translation file for file\n"
@@ -907,8 +871,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:39
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:114
+#: src/utils/EscapeFAT32Utils.cpp:39 src/utils/EscapeFAT32Utils.cpp:114
 #, c-format
 msgid ""
 "Error closing FAT32 chars translation file \n"
@@ -921,7 +884,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:79
+#: src/utils/EscapeFAT32Utils.cpp:79
 #, c-format
 msgid ""
 "Unexpected format for target in FAT32 translation file:\n"
@@ -930,7 +893,7 @@ msgstr ""
 "FAT32 轉換檔案中目標檔案的格式意外：\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:88
+#: src/utils/EscapeFAT32Utils.cpp:88
 #, c-format
 msgid ""
 "Unexpected format for taget in FAT32 translation file:\n"
@@ -939,7 +902,7 @@ msgstr ""
 "FAT32 轉換檔案中目標檔案的格式意外：\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:92
+#: src/utils/EscapeFAT32Utils.cpp:92
 #, c-format
 msgid ""
 "Unexpected format for source in FAT32 translation file:\n"
@@ -948,7 +911,7 @@ msgstr ""
 "FAT32 轉換檔案中原始檔案的格式意外：\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:109
+#: src/utils/EscapeFAT32Utils.cpp:109
 #, c-format
 msgid ""
 "Error parsing FAT32 chars translation file \n"
@@ -961,7 +924,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:119
+#: src/utils/EscapeFAT32Utils.cpp:119
 #, c-format
 msgid ""
 "FAT32 chars translation file is empty\n"
@@ -974,8 +937,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:130
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:149
+#: src/utils/EscapeFAT32Utils.cpp:130 src/utils/EscapeFAT32Utils.cpp:149
 #, c-format
 msgid ""
 "Cannot rename folder \n"
@@ -988,7 +950,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/EscapeFAT32Utils.cpp:142
+#: src/utils/EscapeFAT32Utils.cpp:142
 #, c-format
 msgid ""
 "Cannot rename file \n"
@@ -1001,8 +963,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:60
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:84
+#: src/utils/StatManager.cpp:60 src/utils/StatManager.cpp:84
 #, c-format
 msgid ""
 "Error setting permissions - Backup/Restore is not reliable\n"
@@ -1013,7 +974,7 @@ msgstr ""
 "目前錯誤數：%d\n"
 "是否繼續？"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:94
+#: src/utils/StatManager.cpp:94
 #, c-format
 msgid ""
 "Error reading stat file\n"
@@ -1028,8 +989,7 @@ msgstr ""
 "\n"
 "%s 時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:113
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:290
+#: src/utils/StatManager.cpp:113 src/utils/StatManager.cpp:293
 #, c-format
 msgid ""
 "Error setting permissions for file: %s\n"
@@ -1040,21 +1000,14 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:139
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:159
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:185
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:167
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:250
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:445
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:87
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:195
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:207
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:60
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:160
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:165
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:272
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:338
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:665
+#: src/utils/StatManager.cpp:139 src/utils/StatManager.cpp:159
+#: src/utils/StatManager.cpp:185 src/mii/MiiStadioSav.cpp:167
+#: src/mii/MiiStadioSav.cpp:250 src/mii/MiiStadioSav.cpp:447
+#: src/mii/MiiAccountRepo.cpp:87 src/mii/MiiAccountRepo.cpp:195
+#: src/mii/MiiAccountRepo.cpp:207 src/mii/MiiFolderRepo.cpp:60
+#: src/mii/MiiFolderRepo.cpp:160 src/mii/MiiFolderRepo.cpp:165
+#: src/mii/MiiFileRepo.cpp:272 src/mii/MiiFileRepo.cpp:338
+#: src/mii/MiiFileRepo.cpp:665
 #, c-format
 msgid ""
 "Error opening file \n"
@@ -1067,11 +1020,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:200
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:210
-#: /home/qwii/hb/savemii/src/savemng.cpp:1885
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:57
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:102
+#: src/utils/StatManager.cpp:200 src/utils/StatManager.cpp:210
+#: src/savemng.cpp:1889 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:102
 #, c-format
 msgid ""
 "Error closing file\n"
@@ -1086,7 +1036,14 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/utils/StatManager.cpp:271
+#: src/utils/StatManager.cpp:242
+#, fuzzy, c-format
+msgid "Error getting stat for %s: %s"
+msgstr ""
+"設定配額錯誤 \n"
+"%s"
+
+#: src/utils/StatManager.cpp:274
 #, c-format
 msgid ""
 "Error writing stat file\n"
@@ -1097,40 +1054,39 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/main.cpp:81
+#: src/main.cpp:81
 msgid "Initializing WPAD and KPAD"
 msgstr "初始化 WPAD 和 KPAD"
 
-#: /home/qwii/hb/savemii/src/main.cpp:85
+#: src/main.cpp:85
 msgid "Initializing loadWiiU Titles"
 msgstr "初始化loadWiiU Titles"
 
-#: /home/qwii/hb/savemii/src/main.cpp:89
+#: src/main.cpp:89
 msgid "Initializing FS"
 msgstr "初始化FS"
 
-#: /home/qwii/hb/savemii/src/main.cpp:92
+#: src/main.cpp:92
 msgid "initFS failed. Please make sure your MochaPayload is up-to-date"
 msgstr "initFS 失敗。請確保您的 MochaPayload 已更新。"
 
-#: /home/qwii/hb/savemii/src/main.cpp:116
+#: src/main.cpp:116
 msgid "Initializing BackupSets metadata."
 msgstr "初始化存檔集数据。"
 
-#: /home/qwii/hb/savemii/src/main.cpp:120
+#: src/main.cpp:120
 msgid "Initializing Excludes config."
 msgstr "初始化排除配置。"
 
-#: /home/qwii/hb/savemii/src/main.cpp:132
+#: src/main.cpp:132
 msgid "Initializing Mii repos."
 msgstr "正在初始化 Mii 儲存庫。"
 
-#: /home/qwii/hb/savemii/src/main.cpp:164
+#: src/main.cpp:164
 msgid "Press \\ue044 to exit."
 msgstr "\\ue044: 退出"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:173
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:278
+#: src/mii/MiiStadioSav.cpp:173 src/mii/MiiFileRepo.cpp:278
 #, c-format
 msgid ""
 "%s\n"
@@ -1141,8 +1097,7 @@ msgstr ""
 "\n"
 "資料庫檔案大小異常：%d。預期大小為%d位元組或更多。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:181
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:286
+#: src/mii/MiiStadioSav.cpp:181 src/mii/MiiFileRepo.cpp:286
 #, c-format
 msgid ""
 "%s\n"
@@ -1153,10 +1108,8 @@ msgstr ""
 "\n"
 "無法建立用於讀取資料庫資料的記憶體緩衝區"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:187
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:238
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:83
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:292
+#: src/mii/MiiStadioSav.cpp:187 src/mii/MiiAccountRepo.cpp:238
+#: src/mii/MiiFolderRepo.cpp:83 src/mii/MiiFileRepo.cpp:292
 #, c-format
 msgid ""
 "Error reading file \n"
@@ -1169,8 +1122,7 @@ msgstr ""
 "\n"
 "%s 時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:193
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:298
+#: src/mii/MiiStadioSav.cpp:193 src/mii/MiiFileRepo.cpp:298
 #, c-format
 msgid ""
 "Error reading db\n"
@@ -1181,17 +1133,12 @@ msgstr ""
 "%s\n"
 "魔數錯誤。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:200
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:262
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:457
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:103
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:247
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:254
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:89
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:171
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:305
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:350
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:677
+#: src/mii/MiiStadioSav.cpp:200 src/mii/MiiStadioSav.cpp:262
+#: src/mii/MiiStadioSav.cpp:459 src/mii/MiiAccountRepo.cpp:103
+#: src/mii/MiiAccountRepo.cpp:247 src/mii/MiiAccountRepo.cpp:254
+#: src/mii/MiiFolderRepo.cpp:89 src/mii/MiiFolderRepo.cpp:171
+#: src/mii/MiiFileRepo.cpp:305 src/mii/MiiFileRepo.cpp:350
+#: src/mii/MiiFileRepo.cpp:677
 #, c-format
 msgid ""
 "Error closing file \n"
@@ -1204,11 +1151,9 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:255
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:450
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:343
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:670
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:51
+#: src/mii/MiiStadioSav.cpp:255 src/mii/MiiStadioSav.cpp:452
+#: src/mii/MiiFileRepo.cpp:343 src/mii/MiiFileRepo.cpp:670
+#: src/cfg/BaseCfg.cpp:51
 #, c-format
 msgid ""
 "Error writing file\n"
@@ -1223,9 +1168,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:294
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:295
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:385
+#: src/mii/MiiStadioSav.cpp:294 src/mii/MiiAccountRepo.cpp:295
+#: src/mii/MiiFileRepo.cpp:385
 #, c-format
 msgid ""
 "Error managing temporal db %s\n"
@@ -1236,30 +1180,29 @@ msgstr ""
 "\n"
 "未對真實 Mii 資料庫執行任何操作。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:339
+#: src/mii/MiiStadioSav.cpp:339
 msgid "Cannot find an EMPTY location for the mii in the STADIO db"
 msgstr "在 STADIO 資料庫中找不到 mii 的空 位置"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:345
+#: src/mii/MiiStadioSav.cpp:345
 msgid "Cannot find an EMPTY frame for the mii in the STADIO db"
 msgstr "在 STADIO 資料庫中找不到 mii 的空幀"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:400
+#: src/mii/MiiStadioSav.cpp:402
 msgid "Warning: unable to populate Account repo. Non-critical error, you can continue"
 msgstr "警告：無法填充帳戶存儲庫。非嚴重錯誤，您可以繼續"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:408
+#: src/mii/MiiStadioSav.cpp:410
 #, c-format
 msgid "Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"
 msgstr "警告：無法在 STADIO 中匯入 mii %s。非嚴重錯誤，您可以繼續"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:411
+#: src/mii/MiiStadioSav.cpp:413
 #, c-format
 msgid "Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"
 msgstr "警告：無法提取 %s 的 Mii 數據（由 %s 創建）。非嚴重錯誤，您可以繼續"
 
-#: /home/qwii/hb/savemii/src/mii/MiiStadioSav.cpp:428
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:646
+#: src/mii/MiiStadioSav.cpp:430 src/mii/MiiFileRepo.cpp:646
 #, c-format
 msgid ""
 "%s\n"
@@ -1270,9 +1213,8 @@ msgstr ""
 "\n"
 "無法建立用於初始化資料庫資料的記憶體緩衝區"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:111
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:67
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:425
+#: src/mii/MiiAccountRepo.cpp:111 src/mii/MiiFolderRepo.cpp:67
+#: src/mii/MiiFileRepo.cpp:425
 #, c-format
 msgid ""
 "%s\n"
@@ -1285,9 +1227,8 @@ msgstr ""
 "Mii 檔案大小異常：%d。僅允許 %d 或 %d 位元組\n"
 "檔案將被跳過"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:118
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:76
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:401
+#: src/mii/MiiAccountRepo.cpp:118 src/mii/MiiFolderRepo.cpp:76
+#: src/mii/MiiFileRepo.cpp:401
 #, c-format
 msgid ""
 "%s\n"
@@ -1298,29 +1239,25 @@ msgstr ""
 "\n"
 "無法建立用於讀取Mii資料的記憶體緩衝區"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:123
+#: src/mii/MiiAccountRepo.cpp:123
 msgid "Error serializing WiiU MiiData"
 msgstr "WiiU Mii資料序列化錯誤"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:129
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:99
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:135
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:178
+#: src/mii/MiiAccountRepo.cpp:129 src/mii/MiiFolderRepo.cpp:99
+#: src/mii/MiiFolderRepo.cpp:135 src/mii/MiiFolderRepo.cpp:178
 msgid "Error switching le/be MiiData representation"
 msgstr "切換 le/be Mii資料表示形式錯誤"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:143
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:114
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:419
+#: src/mii/MiiAccountRepo.cpp:143 src/mii/MiiFolderRepo.cpp:114
+#: src/mii/MiiFileRepo.cpp:419
 msgid "Trying to import from null mii data"
 msgstr "嘗試從空 mii 資料匯入"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:148
+#: src/mii/MiiAccountRepo.cpp:148
 msgid "Only in_place is allowed for account miidata"
 msgstr "帳戶 miidata 僅允許使用 in_place 操作。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:155
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:145
+#: src/mii/MiiAccountRepo.cpp:155 src/mii/MiiFolderRepo.cpp:145
 #, c-format
 msgid ""
 "MiiData buffer is not big enough\n"
@@ -1329,24 +1266,21 @@ msgstr ""
 "MiiData 緩衝區不夠大\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:169
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:185
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:197
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:210
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:269
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:301
+#: src/mii/MiiAccountRepo.cpp:169 src/mii/MiiAccountRepo.cpp:185
+#: src/mii/MiiAccountRepo.cpp:197 src/mii/MiiAccountRepo.cpp:210
+#: src/mii/MiiAccountRepo.cpp:269 src/mii/MiiAccountRepo.cpp:301
 msgid "Error transforming WiiU MiiData to Account MiiData"
 msgstr "將 WiiU Mii資料轉換為帳號 Mii資料時出錯"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:183
+#: src/mii/MiiAccountRepo.cpp:183
 msgid "Error deserializing WiiU MiiData"
 msgstr "反序列化 WiiU Mii 資料時出錯"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:309
+#: src/mii/MiiAccountRepo.cpp:309
 msgid "Wipe Mii Operation not supported for Account Data Miis"
 msgstr "帳號資料 Mii 不支援清除 Mii 操作"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:339
+#: src/mii/MiiAccountRepo.cpp:339
 #, c-format
 msgid ""
 "Error parsing file \n"
@@ -1355,43 +1289,32 @@ msgstr ""
 "解析檔案時發生錯誤\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:363
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:241
+#: src/mii/MiiAccountRepo.cpp:363 src/mii/MiiFolderRepo.cpp:241
 #, c-format
 msgid "Reading Miis: %d"
 msgstr "正在讀取Mii：%d"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:426
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:131
-#: /home/qwii/hb/savemii/src/savemng.cpp:969
+#: src/mii/MiiAccountRepo.cpp:426 src/mii/MiiRepo.cpp:131 src/savemng.cpp:973
 msgid "pre-Restore backup"
 msgstr "预还原备份"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:427
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:132
-#: /home/qwii/hb/savemii/src/savemng.cpp:384
-#: /home/qwii/hb/savemii/src/savemng.cpp:970
+#: src/mii/MiiAccountRepo.cpp:427 src/mii/MiiRepo.cpp:132 src/savemng.cpp:383
+#: src/savemng.cpp:974
 msgid "Backup Failed - Restore aborted !!"
 msgstr "備份失敗 - 還原已中止！！"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:441
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:490
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:56
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:80
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:145
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:178
+#: src/mii/MiiAccountRepo.cpp:441 src/mii/MiiAccountRepo.cpp:490
+#: src/mii/MiiRepo.cpp:56 src/mii/MiiRepo.cpp:80 src/mii/MiiRepo.cpp:145
+#: src/mii/MiiRepo.cpp:178
 msgid "Error copying data."
 msgstr "複製資料時發生錯誤。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:445
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:150
+#: src/mii/MiiAccountRepo.cpp:445 src/mii/MiiRepo.cpp:150
 msgid "Error creating folder."
 msgstr "建立資料夾時發生錯誤。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiAccountRepo.cpp:450
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:189
-#: /home/qwii/hb/savemii/src/savemng.cpp:980
-#: /home/qwii/hb/savemii/src/savemng.cpp:1114
+#: src/mii/MiiAccountRepo.cpp:450 src/mii/MiiRepo.cpp:189 src/savemng.cpp:984
+#: src/savemng.cpp:1118
 #, c-format
 msgid ""
 "%s\n"
@@ -1400,7 +1323,7 @@ msgstr ""
 "%s\n"
 "还原失败。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:124
+#: src/mii/MiiFolderRepo.cpp:124
 #, c-format
 msgid ""
 "Cannot find a name for the mii file:\n"
@@ -1411,8 +1334,7 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFolderRepo.cpp:190
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:237
+#: src/mii/MiiFolderRepo.cpp:190 src/mii/MiiRepo.cpp:237
 #, c-format
 msgid ""
 "%s \n"
@@ -1425,29 +1347,29 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:153
+#: src/mii/MiiFileRepo.cpp:153
 #, c-format
 msgid "Maximum Numer of Favorite Miis (%d) reached"
 msgstr "已達到收藏數量上限 (%d)"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:193
+#: src/mii/MiiFileRepo.cpp:193
 #, c-format
 msgid "Mii %s not found in Favorites section"
 msgstr "在收藏夾中找不到 Mii %s"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:435
+#: src/mii/MiiFileRepo.cpp:435
 msgid "Cannot find an EMPTY location for the mii in the db"
 msgstr "在資料庫中找不到 mii 的空位置"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:449
+#: src/mii/MiiFileRepo.cpp:449
 msgid "Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"
 msgstr "注意：這是一個來自 MiiID 切片 0x1/3 的普通 Mii，打開 Mii 頻道時可能會被刪除。您想讓我把它改成更安全的切片（0x4/3）嗎？"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:464
+#: src/mii/MiiFileRepo.cpp:464
 msgid "Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"
 msgstr "注意：這是一個臨時 Mii，所以它不會出現在 MiiMkaker 中。您想讓我把它改成永久 Mii 嗎？"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:473
+#: src/mii/MiiFileRepo.cpp:473
 #, c-format
 msgid ""
 "Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n"
@@ -1462,27 +1384,22 @@ msgstr ""
 "\n"
 "您想讓我更改此Mii角色的Mii ID嗎？"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:520
+#: src/mii/MiiFileRepo.cpp:520
 #, c-format
 msgid "DB %s has not been initialized"
 msgstr "資料庫 %s 尚未初始化"
 
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:535
-#: /home/qwii/hb/savemii/src/mii/MiiFileRepo.cpp:538
+#: src/mii/MiiFileRepo.cpp:535 src/mii/MiiFileRepo.cpp:538
 #, c-format
 msgid "Looking for a Mii in location: %d/%d. Miis found: %d."
 msgstr "正在位置 %d/%d 查找 Mii。已找到 %d 個 Mii。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:25
-#: /home/qwii/hb/savemii/src/savemng.cpp:783
+#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:782
 msgid "Backup found on this slot. Overwrite it?"
 msgstr "在此槽位上找到備份。覆蓋？"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:44
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:102
-#: /home/qwii/hb/savemii/src/savemng.cpp:806
-#: /home/qwii/hb/savemii/src/savemng.cpp:814
-#: /home/qwii/hb/savemii/src/savemng.cpp:917
+#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:805
+#: src/savemng.cpp:813 src/savemng.cpp:916
 #, c-format
 msgid ""
 "%s\n"
@@ -1491,47 +1408,43 @@ msgstr ""
 "%s\n"
 "備份失敗。請不要從該槽位恢復。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:53
+#: src/mii/MiiRepo.cpp:53
 msgid "Backup aborted."
 msgstr "備份已中止。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:74
+#: src/mii/MiiRepo.cpp:74
 msgid "Warning - Error copying stadio file"
 msgstr "警告 - 複製 stadio 檔案時出錯"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:95
+#: src/mii/MiiRepo.cpp:95
 msgid "PARTIAL BACKUP"
 msgstr "部分備份"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:100
+#: src/mii/MiiRepo.cpp:100
 msgid "NO STADIO"
 msgstr "無 STADIO"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:104
-#: /home/qwii/hb/savemii/src/savemng.cpp:755
-#: /home/qwii/hb/savemii/src/savemng.cpp:919
+#: src/mii/MiiRepo.cpp:104 src/savemng.cpp:754 src/savemng.cpp:918
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr "无法使用的槽位！备份失败！"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:142
+#: src/mii/MiiRepo.cpp:142
 msgid "Restore aborted."
 msgstr "恢復已中止。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:221
+#: src/mii/MiiRepo.cpp:221
 msgid "Wipe aborted."
 msgstr "清除操作已中止。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:224
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:284
+#: src/mii/MiiRepo.cpp:224 src/mii/MiiRepo.cpp:284
 msgid "Error wiping data."
 msgstr "擦除資料時出錯。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:236
+#: src/mii/MiiRepo.cpp:236
 msgid "Error deleting file."
 msgstr "刪除檔案時出錯。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:249
-#: /home/qwii/hb/savemii/src/savemng.cpp:1245
+#: src/mii/MiiRepo.cpp:249 src/savemng.cpp:1249
 #, c-format
 msgid ""
 "%s\n"
@@ -1540,17 +1453,16 @@ msgstr ""
 "%s\n"
 "擦除失敗。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:281
+#: src/mii/MiiRepo.cpp:281
 msgid "Initialize aborted."
 msgstr "   初始化已中止。"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:297
+#: src/mii/MiiRepo.cpp:297
 #, c-format
 msgid "%s\n"
-msgstr ""
-"%s\n"
+msgstr "%s\n"
 
-#: /home/qwii/hb/savemii/src/mii/MiiRepo.cpp:300
+#: src/mii/MiiRepo.cpp:300
 #, c-format
 msgid ""
 "%s\n"
@@ -1559,53 +1471,49 @@ msgstr ""
 "%s\n"
 "資料庫初始化失敗。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:28
+#: src/menu/TitleListState.cpp:28
 msgid "No Wii U titles found."
 msgstr "未找到Wii U軟體。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:28
+#: src/menu/TitleListState.cpp:28
 msgid "No vWii titles found."
 msgstr "未发现vWii软件。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:35
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:118
+#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:118
 msgid "Wii U Titles"
 msgstr "Wii U软件"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:35
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:118
+#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:118
 msgid "vWii Titles"
 msgstr "vWii软件"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:271
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:281
+#: src/menu/TitleListState.cpp:37 src/menu/BatchJobTitleSelectState.cpp:271
+#: src/menu/BatchJobTitleSelectState.cpp:281
 #, c-format
 msgid "%s Sort: %s \\ue084"
 msgstr "%s 排序: %s \\ue084"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:54
+#: src/menu/TitleListState.cpp:54
 msgid " [vWiiInject]"
 msgstr " [vWii注入]"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:55
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:64
+#: src/menu/TitleListState.cpp:55 src/menu/TitleListState.cpp:64
 msgid " [Not Init]"
 msgstr " [未初始化]"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:73
+#: src/menu/TitleListState.cpp:73
 msgid "\\ue000: Select Game   \\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue000：選擇遊戲 \\ue085\\ue07e\\ue086：分頁 \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:97
+#: src/menu/TitleListState.cpp:97
 msgid "CBHC save. Could be dangerous to modify. Continue?"
 msgstr "此爲CBHC保存資料。修改可能很危險。繼續？"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:98
+#: src/menu/TitleListState.cpp:98
 msgid "Are you REALLY sure?"
 msgstr "你真的確定嗎？"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:111
+#: src/menu/TitleListState.cpp:111
 msgid ""
 "Savedata for this title has not been initialized.\n"
 "You can try to restore it, but in case that the restore fails,\n"
@@ -1621,7 +1529,7 @@ msgstr ""
 "\n"
 "您可以繼續進行任務選擇"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:117
+#: src/menu/TitleListState.cpp:117
 #, c-format
 msgid ""
 "SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
@@ -1646,7 +1554,7 @@ msgstr ""
 "\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:138
+#: src/menu/TitleListState.cpp:138
 #, c-format
 msgid ""
 "Ok, legacy folder '%08x%08x' will be used.\n"
@@ -1661,179 +1569,152 @@ msgstr ""
 "\n"
 "請在資料夾之間手動複製或遷移資料才能訪問它們"
 
-#: /home/qwii/hb/savemii/src/menu/TitleListState.cpp:140
+#: src/menu/TitleListState.cpp:140
 #, c-format
 msgid "Ok, legacy folder '%08x%08x' will be used."
 msgstr "好的，將使用舊資料夾‘%08x%08x’。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:69
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:108
+#: src/menu/MiiDBOptionsState.cpp:69 src/menu/TitleOptionsState.cpp:108
 #, c-format
 msgid "Select %s:"
 msgstr "選擇 %s:"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:69
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:118
+#: src/menu/MiiDBOptionsState.cpp:69 src/menu/TitleOptionsState.cpp:118
 msgid "slot"
 msgstr "資料槽位"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:89
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:111
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:122
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:126
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:160
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:164
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:167
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:182
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:187
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:191
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:287
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:295
+#: src/menu/MiiDBOptionsState.cpp:72 src/menu/MiiDBOptionsState.cpp:89
+#: src/menu/TitleOptionsState.cpp:111 src/menu/TitleOptionsState.cpp:122
+#: src/menu/TitleOptionsState.cpp:126 src/menu/TitleOptionsState.cpp:160
+#: src/menu/TitleOptionsState.cpp:164 src/menu/TitleOptionsState.cpp:167
+#: src/menu/TitleOptionsState.cpp:182 src/menu/TitleOptionsState.cpp:187
+#: src/menu/TitleOptionsState.cpp:191 src/menu/TitleOptionsState.cpp:287
+#: src/menu/TitleOptionsState.cpp:295
 msgid "Empty"
 msgstr "空"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:73
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:112
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:123
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:127
+#: src/menu/MiiDBOptionsState.cpp:73 src/menu/TitleOptionsState.cpp:112
+#: src/menu/TitleOptionsState.cpp:123 src/menu/TitleOptionsState.cpp:127
 msgid "Used"
 msgstr "被使用"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:77
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:133
+#: src/menu/MiiDBOptionsState.cpp:77 src/menu/TitleOptionsState.cpp:133
 #, c-format
 msgid "Slot -> Date: %s"
 msgstr "時段 -> 日期: %s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:87
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:285
+#: src/menu/MiiDBOptionsState.cpp:87 src/menu/TitleOptionsState.cpp:285
 msgid "Source:"
 msgstr "來源: "
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:87
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:285
+#: src/menu/MiiDBOptionsState.cpp:87 src/menu/TitleOptionsState.cpp:285
 msgid "Target:"
 msgstr "目標: "
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:88
+#: src/menu/MiiDBOptionsState.cpp:88
 #, c-format
 msgid "   %s Mii DB (%s)"
 msgstr "   %s Mii 資料庫 (%s)"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:89
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:160
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:164
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:167
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:182
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:187
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:191
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:287
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:295
+#: src/menu/MiiDBOptionsState.cpp:89 src/menu/TitleOptionsState.cpp:160
+#: src/menu/TitleOptionsState.cpp:164 src/menu/TitleOptionsState.cpp:167
+#: src/menu/TitleOptionsState.cpp:182 src/menu/TitleOptionsState.cpp:187
+#: src/menu/TitleOptionsState.cpp:191 src/menu/TitleOptionsState.cpp:287
+#: src/menu/TitleOptionsState.cpp:295
 msgid "Has Save"
 msgstr "该使用者有保存資料"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:92
+#: src/menu/MiiDBOptionsState.cpp:92
 msgid "DB will be wiped"
 msgstr "資料庫將被擦除"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:96
+#: src/menu/MiiDBOptionsState.cpp:96
 msgid "DB will be wiped and initialized"
 msgstr "資料庫將被擦除並初始化"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:105
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:351
+#: src/menu/MiiDBOptionsState.cpp:105 src/menu/TitleOptionsState.cpp:351
 msgid "Backup"
 msgstr "备份"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:108
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:354
+#: src/menu/MiiDBOptionsState.cpp:108 src/menu/TitleOptionsState.cpp:354
 msgid "\\ue000: Backup  \\ue001: Back"
 msgstr "\\ue000: 備份 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:110
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:356
+#: src/menu/MiiDBOptionsState.cpp:110 src/menu/TitleOptionsState.cpp:356
 msgid "\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
 msgstr "\\ue000: 备份  \\ue045: 标记槽位  \\ue046: 删除槽位  \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:113
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:359
+#: src/menu/MiiDBOptionsState.cpp:113 src/menu/TitleOptionsState.cpp:359
 msgid "Restore"
 msgstr "还原"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:116
+#: src/menu/MiiDBOptionsState.cpp:116
 msgid "\\ue000: Restore  \\ue001: Back"
 msgstr "\\ue000: 恢復 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:118
+#: src/menu/MiiDBOptionsState.cpp:118
 msgid "\\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue000: 恢復 \\ue045 標籤槽 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:121
+#: src/menu/MiiDBOptionsState.cpp:121
 msgid "CrossRestore"
 msgstr "跨平台恢復"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:124
+#: src/menu/MiiDBOptionsState.cpp:124
 msgid "\\ue000: XRestore  \\ue001: Back"
 msgstr "\\ue000: XRestore \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:126
+#: src/menu/MiiDBOptionsState.cpp:126
 msgid "\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue000: XRestore \\ue045 標籤槽 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:129
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:367
+#: src/menu/MiiDBOptionsState.cpp:129 src/menu/TitleOptionsState.cpp:367
 msgid "Wipe"
 msgstr "删除"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:131
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:369
+#: src/menu/MiiDBOptionsState.cpp:131 src/menu/TitleOptionsState.cpp:369
 msgid "\\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue000: 刪除 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:134
+#: src/menu/MiiDBOptionsState.cpp:134
 msgid "Initialize"
 msgstr "初始化"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:136
+#: src/menu/MiiDBOptionsState.cpp:136
 msgid "\\ue000: Initialize  \\ue001: Back"
 msgstr "\\ue000: 初始化 \\ue001: 回傳"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:220
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:799
+#: src/menu/MiiDBOptionsState.cpp:220 src/menu/TitleOptionsState.cpp:799
 msgid "No data selected to backup"
 msgstr "未選擇要備份的資料"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:222
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:801
+#: src/menu/MiiDBOptionsState.cpp:222 src/menu/TitleOptionsState.cpp:801
 msgid "No data selected to wipe"
 msgstr "未選擇要清除的資料"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:224
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:809
+#: src/menu/MiiDBOptionsState.cpp:224 src/menu/TitleOptionsState.cpp:809
 msgid "No data selected to restore"
 msgstr "未選擇要恢復的資料"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:226
+#: src/menu/MiiDBOptionsState.cpp:226
 msgid "No data selected to cross-restore"
 msgstr "未選擇要交叉恢復的資料"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:235
+#: src/menu/MiiDBOptionsState.cpp:235
 msgid "Data succesfully backed up!"
 msgstr "資料備份成功！"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:241
+#: src/menu/MiiDBOptionsState.cpp:241
 msgid "It is not allowed to restore Account data from a different console"
 msgstr "不允許從其他主機恢復帳戶資料"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:248
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:257
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:284
+#: src/menu/MiiDBOptionsState.cpp:248 src/menu/MiiDBOptionsState.cpp:257
+#: src/menu/MiiDBOptionsState.cpp:284
 #, c-format
 msgid "Error populating repo %s"
 msgstr "填滿儲存庫 %s 時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:267
+#: src/menu/MiiDBOptionsState.cpp:267
 msgid ""
 "Are you sure?\n"
 "\n"
@@ -1843,14 +1724,12 @@ msgstr ""
 "\n"
 "現有 MII 將被覆蓋"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:270
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:543
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:619
+#: src/menu/MiiDBOptionsState.cpp:270 src/menu/MiiSelectState.cpp:543
+#: src/menu/MiiSelectState.cpp:619
 msgid "Data succesfully restored!"
 msgstr "資料恢復成功！"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:295
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:303
+#: src/menu/MiiDBOptionsState.cpp:295 src/menu/MiiDBOptionsState.cpp:303
 msgid ""
 "Are you sure?\n"
 "\n"
@@ -1860,8 +1739,7 @@ msgstr ""
 "\n"
 "所有 MII 將被清除"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:295
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:303
+#: src/menu/MiiDBOptionsState.cpp:295 src/menu/MiiDBOptionsState.cpp:303
 msgid ""
 "Hm, are you REALLY sure?\n"
 "\n"
@@ -1871,349 +1749,328 @@ msgstr ""
 "\n"
 "所有 Mii 都會被清除"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:298
+#: src/menu/MiiDBOptionsState.cpp:298
 msgid "Data succesfully wiped!"
 msgstr "資料抹除成功！"
 
-#: /home/qwii/hb/savemii/src/menu/MiiDBOptionsState.cpp:306
+#: src/menu/MiiDBOptionsState.cpp:306
 msgid "Data succesfully initialized!"
 msgstr "資料初始化成功！"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:150
+#: src/menu/MiiSelectState.cpp:150
 msgid "List Miis"
 msgstr "列出 Mii"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:151
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:155
+#: src/menu/MiiSelectState.cpp:151 src/menu/MiiSelectState.cpp:155
 msgid "\\ue002: View  \\ue001: Back"
 msgstr "\\ue002: 查看 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:153
+#: src/menu/MiiSelectState.cpp:153
 msgid "\\ue083\\ue084 View Duplicates  \\ue002: View  \\ue001: Back"
 msgstr "\\ue083\\ue084 檢視重複項 \\ue002: 查看 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:160
+#: src/menu/MiiSelectState.cpp:160
 msgid "Select which Miis to Import"
 msgstr "選擇要匯入的Mii角色"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:163
+#: src/menu/MiiSelectState.cpp:163
 msgid "\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue002\\ue084：檢視 \\ue000：導入 Mii \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:165
+#: src/menu/MiiSelectState.cpp:165
 msgid "\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 設定/取消設定 \\ue002: 檢視 \\ue000: 匯入 Mii \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:168
+#: src/menu/MiiSelectState.cpp:168
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Import  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue045\\ue046：全部切換 \\ue002\\ue084：查看 \\ue000：導入 \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:170
+#: src/menu/MiiSelectState.cpp:170
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Import  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue045\\ue046：全部設定/取消設定 \\ue002：檢視 \\ue000：匯入 \\ue001：回傳"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:172
+#: src/menu/MiiSelectState.cpp:172
 msgid ">> Import"
 msgstr ">> 匯入"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:173
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:225
+#: src/menu/MiiSelectState.cpp:173 src/menu/MiiSelectState.cpp:225
 msgid "|Imported|"
 msgstr "|已匯入|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:176
+#: src/menu/MiiSelectState.cpp:176
 msgid "Select which Miis to Export"
 msgstr "選擇要轉換的Mii角色"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:178
+#: src/menu/MiiSelectState.cpp:178
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Export  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue045\\ue046：全部切換 \\ue002\\ue084：檢視 \\ue000：匯出 \\ue001：回傳"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:180
+#: src/menu/MiiSelectState.cpp:180
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue045\\ue046：全部設定/取消設定 \\ue002：檢視 \\ue000：匯出 \\ue001：回傳"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:181
+#: src/menu/MiiSelectState.cpp:181
 msgid ">> Export"
 msgstr ">> 匯出"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:182
+#: src/menu/MiiSelectState.cpp:182
 msgid "|Exported|"
 msgstr "|已匯出|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:186
+#: src/menu/MiiSelectState.cpp:186
 msgid "Select which Mii to Restore"
 msgstr "選擇要恢復的Mii角色"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:187
+#: src/menu/MiiSelectState.cpp:187
 msgid "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue002\\ue083\\ue084：檢視 \\ue000：恢復 Mii \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:188
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:221
+#: src/menu/MiiSelectState.cpp:188 src/menu/BatchJobTitleSelectState.cpp:221
 msgid ">> Restore"
 msgstr ">> 恢復"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:189
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:234
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:222
+#: src/menu/MiiSelectState.cpp:189 src/menu/MiiSelectState.cpp:234
+#: src/menu/BatchJobTitleSelectState.cpp:222
 msgid "|Restored|"
 msgstr "|已还原|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:192
+#: src/menu/MiiSelectState.cpp:192
 msgid "Select which Miis to Wipe"
 msgstr "選擇要擦除的Mii角色"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:194
+#: src/menu/MiiSelectState.cpp:194
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue045\\ue046：全部切換 \\ue002\\ue084：檢視 \\ue000：任務 \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:196
+#: src/menu/MiiSelectState.cpp:196
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 設定/取消設定 \\ue045\\ue046: 全部設定/取消設定 \\ue002: 檢視 \\ue000: 清除 \\ue001: 回傳"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:197
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:239
+#: src/menu/MiiSelectState.cpp:197 src/menu/BatchJobTitleSelectState.cpp:239
 msgid ">> Wipe"
 msgstr ">> 擦除"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:198
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:240
+#: src/menu/MiiSelectState.cpp:198 src/menu/BatchJobTitleSelectState.cpp:240
 msgid "|Wiped|"
 msgstr "|已擦除|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:201
+#: src/menu/MiiSelectState.cpp:201
 msgid "Select which Miis to Transform"
 msgstr "選擇要轉換的Mii角色"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:203
+#: src/menu/MiiSelectState.cpp:203
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Tasks  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue045\\ue046：全部切換 \\ue002\\ue084：檢視 \\ue000：任務 \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:205
+#: src/menu/MiiSelectState.cpp:205
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  \\ue000: Tasks  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 設定/取消設定 \\ue045\\ue046: 全部切換 \\ue002: 檢視 \\ue000: 任務 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:206
+#: src/menu/MiiSelectState.cpp:206
 msgid ">> Transform"
 msgstr ">>轉換"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:207
+#: src/menu/MiiSelectState.cpp:207
 msgid "|Transformed|"
 msgstr "|已轉換|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:210
+#: src/menu/MiiSelectState.cpp:210
 msgid "Select Mii to copy attrs from"
 msgstr "選擇要從中複製屬性的Mii角色"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:212
+#: src/menu/MiiSelectState.cpp:212
 msgid "\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e：選擇範本 \\ue002\\ue084：檢視 \\ue000：變換Mii \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:214
+#: src/menu/MiiSelectState.cpp:214
 msgid "\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e：選擇範本 \\ue002：檢視 \\ue000：變換Mii \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:215
+#: src/menu/MiiSelectState.cpp:215
 msgid ">> Use as template"
 msgstr ">> 用作模板"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:219
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:228
+#: src/menu/MiiSelectState.cpp:219 src/menu/MiiSelectState.cpp:228
 msgid "Select Mii to be overwritten"
 msgstr "選擇要覆蓋的Mii角色"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:221
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:230
+#: src/menu/MiiSelectState.cpp:221 src/menu/MiiSelectState.cpp:230
 msgid "\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  \\ue001: Back"
 msgstr "\\ue003\\ue07e：選擇目標Mii \\ue002\\ue084：檢視 \\ue000：繼續 \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:223
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:232
+#: src/menu/MiiSelectState.cpp:223 src/menu/MiiSelectState.cpp:232
 msgid "\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  \\ue001: Back"
 msgstr "\\ue003\\ue07e：選擇目標Mii \\ue002：查看 \\ue000：繼續 \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:224
+#: src/menu/MiiSelectState.cpp:224
 msgid ">> Import here"
 msgstr ">> 從這裡匯入"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:233
+#: src/menu/MiiSelectState.cpp:233
 msgid ">> Restore here"
 msgstr ">> 在此處恢復"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:247
+#: src/menu/MiiSelectState.cpp:247
 msgid "Basic view"
 msgstr "基本視圖"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:250
+#: src/menu/MiiSelectState.cpp:250
 msgid "Mii ID view"
 msgstr "Mii ID檢視"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:253
+#: src/menu/MiiSelectState.cpp:253
 msgid "Device view"
 msgstr "設備視圖"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:256
+#: src/menu/MiiSelectState.cpp:256
 msgid "Location view"
 msgstr "位置視圖"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:259
+#: src/menu/MiiSelectState.cpp:259
 msgid "Creator view"
 msgstr "創建者視圖"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:262
+#: src/menu/MiiSelectState.cpp:262
 msgid "Timestamp view"
 msgstr "時間戳視圖"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:278
+#: src/menu/MiiSelectState.cpp:278
 msgid "There are no miis matching selected filters."
 msgstr "沒有符合所選篩選條件的Mii角色。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:354
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:362
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:331
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:342
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:346
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:350
+#: src/menu/MiiSelectState.cpp:354 src/menu/MiiSelectState.cpp:362
+#: src/menu/BatchJobTitleSelectState.cpp:331
+#: src/menu/BatchJobTitleSelectState.cpp:342
+#: src/menu/BatchJobTitleSelectState.cpp:346
+#: src/menu/BatchJobTitleSelectState.cpp:350
 msgid ">> Skip"
 msgstr ">> 跳过"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:357
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:334
+#: src/menu/MiiSelectState.cpp:357 src/menu/BatchJobTitleSelectState.cpp:334
 msgid "[OK]"
 msgstr "[OK]"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:361
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:349
+#: src/menu/MiiSelectState.cpp:361 src/menu/BatchJobTitleSelectState.cpp:349
 msgid "[KO]"
 msgstr "[KO]"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:362
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:342
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:346
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:350
+#: src/menu/MiiSelectState.cpp:362 src/menu/BatchJobTitleSelectState.cpp:342
+#: src/menu/BatchJobTitleSelectState.cpp:346
+#: src/menu/BatchJobTitleSelectState.cpp:350
 msgid ">> Retry"
 msgstr ">>重試"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:380
+#: src/menu/MiiSelectState.cpp:380
 msgid "[COPY"
 msgstr "複製"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:382
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:387
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:413
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:416
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:418
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:434
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:444
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:449
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:456
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:467
+#: src/menu/MiiSelectState.cpp:382 src/menu/MiiSelectState.cpp:387
+#: src/menu/MiiSelectState.cpp:413 src/menu/MiiSelectState.cpp:416
+#: src/menu/MiiSelectState.cpp:418 src/menu/MiiSelectState.cpp:434
+#: src/menu/MiiSelectState.cpp:444 src/menu/MiiSelectState.cpp:449
+#: src/menu/MiiSelectState.cpp:456 src/menu/MiiSelectState.cpp:467
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:383
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:388
+#: src/menu/MiiSelectState.cpp:383 src/menu/MiiSelectState.cpp:388
 msgid "On"
 msgstr "開啟"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:383
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:388
+#: src/menu/MiiSelectState.cpp:383 src/menu/MiiSelectState.cpp:388
 msgid "Off"
 msgstr "關閉"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:385
+#: src/menu/MiiSelectState.cpp:385
 msgid "| SHARE"
 msgstr "| 分享"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:390
+#: src/menu/MiiSelectState.cpp:390
 msgid "|"
 msgstr "|"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:395
+#: src/menu/MiiSelectState.cpp:395
 msgid "NORMAL"
 msgstr "正常"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:398
+#: src/menu/MiiSelectState.cpp:398
 msgid "SPECIAL"
 msgstr "特殊"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:401
+#: src/menu/MiiSelectState.cpp:401
 msgid "FOREIGN"
 msgstr "FOREIGN"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:404
+#: src/menu/MiiSelectState.cpp:404
 msgid "TEMP"
 msgstr "TEMP"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:407
+#: src/menu/MiiSelectState.cpp:407
 msgid "S_TEMP"
 msgstr "S_TEMP"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:410
+#: src/menu/MiiSelectState.cpp:410
 msgid "UNKNOWN"
 msgstr "未知"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:415
+#: src/menu/MiiSelectState.cpp:415
 msgid "]"
 msgstr "]"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:452
+#: src/menu/MiiSelectState.cpp:452
 #, c-format
 msgid ": by %s"
 msgstr "：由 %s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:454
+#: src/menu/MiiSelectState.cpp:454
 #, c-format
 msgid "- %s"
 msgstr "- %s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:475
+#: src/menu/MiiSelectState.cpp:475
 #, c-format
 msgid "%s%s"
 msgstr "%s%s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:495
+#: src/menu/MiiSelectState.cpp:495
 msgid "Please select some miis to work on"
 msgstr "請選擇一些要處理的 mii"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:506
+#: src/menu/MiiSelectState.cpp:506
 msgid "Miis extraction Ok"
 msgstr "Miis 提取成功"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:508
+#: src/menu/MiiSelectState.cpp:508
 msgid "Task Aborted - Partial extraction Ok"
 msgstr "任務中止 - 部分提取成功"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:511
+#: src/menu/MiiSelectState.cpp:511
 msgid "Extraction has failed - Global Error"
 msgstr "提取失敗 - 全局錯誤"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:513
+#: src/menu/MiiSelectState.cpp:513
 #, c-format
 msgid "Extraction has failed for %d miis"
 msgstr "提取 %d 個 Mii 失敗"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:521
+#: src/menu/MiiSelectState.cpp:521
 msgid "Miis import Ok"
 msgstr "Miis 導入成功"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:523
+#: src/menu/MiiSelectState.cpp:523
 msgid "Task aborted - Partial import Ok"
 msgstr "任務中止 - 部分導入成功"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:526
+#: src/menu/MiiSelectState.cpp:526
 msgid "Import has failed - Global Error"
 msgstr "匯入失敗 - 全域錯誤"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:528
+#: src/menu/MiiSelectState.cpp:528
 #, c-format
 msgid "Import has failed for %d miis"
 msgstr "匯入失敗，涉及 %d 個 Mii"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:537
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:613
+#: src/menu/MiiSelectState.cpp:537 src/menu/MiiSelectState.cpp:613
 msgid ""
 "Are you sure?\n"
 "\n"
@@ -2223,75 +2080,70 @@ msgstr ""
 "\n"
 "此帳戶的 MII 資料將被覆蓋"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:545
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:621
+#: src/menu/MiiSelectState.cpp:545 src/menu/MiiSelectState.cpp:621
 msgid "Data restoration has failed!"
 msgstr "資料恢復失敗！"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:557
+#: src/menu/MiiSelectState.cpp:557
 msgid "Miis wipe Ok"
 msgstr "Mii 擦除成功"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:559
+#: src/menu/MiiSelectState.cpp:559
 msgid "Task Aborted - Partial wipe Ok"
 msgstr "任務中止 - 部分擦除成功"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:562
+#: src/menu/MiiSelectState.cpp:562
 msgid "Wipe has failed - Global Error"
 msgstr "清除失敗 - 全域錯誤"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:564
+#: src/menu/MiiSelectState.cpp:564
 #, c-format
 msgid "Wipe has failed for %d miis"
 msgstr "清除 %d 個 Mii 失敗"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:578
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:161
+#: src/menu/MiiSelectState.cpp:578 src/menu/MiiTransformTasksState.cpp:161
 msgid "Miis transform ok"
 msgstr "Mii 轉換成功"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:580
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:163
+#: src/menu/MiiSelectState.cpp:580 src/menu/MiiTransformTasksState.cpp:163
 msgid "Task aborted - Partial Miis transform ok"
 msgstr "任務中止 - 部分 Mii 轉換成功"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:583
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:166
+#: src/menu/MiiSelectState.cpp:583 src/menu/MiiTransformTasksState.cpp:166
 msgid "Transform has failed - Global Error"
 msgstr "轉換失敗 - 全域錯誤"
 
-#: /home/qwii/hb/savemii/src/menu/MiiSelectState.cpp:585
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:168
+#: src/menu/MiiSelectState.cpp:585 src/menu/MiiTransformTasksState.cpp:168
 #, c-format
 msgid "Transform has failed for %d miis"
 msgstr "轉換失敗，涉及 %d 個 mii 文件"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:69
+#: src/menu/BackupSetListState.cpp:69
 msgid "BackupSets"
 msgstr "存檔集"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:71
+#: src/menu/BackupSetListState.cpp:71
 msgid "BackupSets (filter applied)"
 msgstr "存檔集（过滤器已启用）"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:74
+#: src/menu/BackupSetListState.cpp:74
 #, c-format
 msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 排序方式: %s \\ue084"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:97
+#: src/menu/BackupSetListState.cpp:97
 msgid "\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"
 msgstr "\\ue000 选择存檔集  \\ue045 标记存檔集  \\ue046 删除存檔集  \\ue003 过滤器  \\ue001 返回"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:99
+#: src/menu/BackupSetListState.cpp:99
 msgid "\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"
 msgstr "\\ue000: 選擇備份集 \\ue003: 過濾清單 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:110
+#: src/menu/BackupSetListState.cpp:110
 msgid "Root BackupSet cannot be selected for batchRestore"
 msgstr "Root存檔集不适用于批量还原"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListState.cpp:118
+#: src/menu/BackupSetListState.cpp:118
 #, c-format
 msgid ""
 "BackupSet selected:\n"
@@ -2308,111 +2160,111 @@ msgstr ""
 " \n"
 "此控制台: %s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:219
+#: src/menu/BatchJobTitleSelectState.cpp:219
 msgid "Batch Restore - Select"
 msgstr "批次恢復 - 選擇"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:220
+#: src/menu/BatchJobTitleSelectState.cpp:220
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
 msgstr "\\ue003\\ue07e設定/取消設定 \\ue045\\ue046設定/取消設定全部 \\ue000恢復標題 \\ue001返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:225
+#: src/menu/BatchJobTitleSelectState.cpp:225
 msgid "Batch ProfileCopy - Select"
 msgstr "批次設定檔複製 - 選擇"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:226
+#: src/menu/BatchJobTitleSelectState.cpp:226
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
 msgstr "\\ue003\\ue07e設定/取消設定 \\ue045\\ue046設定/取消設定全部 \\ue000設定檔複製 \\ue001返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:227
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:245
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:251
+#: src/menu/BatchJobTitleSelectState.cpp:227
+#: src/menu/BatchJobTitleSelectState.cpp:245
+#: src/menu/BatchJobTitleSelectState.cpp:251
 msgid ">> Copy"
 msgstr ">>複製"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:228
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:246
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:252
+#: src/menu/BatchJobTitleSelectState.cpp:228
+#: src/menu/BatchJobTitleSelectState.cpp:246
+#: src/menu/BatchJobTitleSelectState.cpp:252
 msgid "|Copied|"
 msgstr "|已複製|"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:231
+#: src/menu/BatchJobTitleSelectState.cpp:231
 msgid "Batch ProfileMove - Select"
 msgstr "大量移動檔案 - 選擇"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:232
+#: src/menu/BatchJobTitleSelectState.cpp:232
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue045\\ue046：全部設定/取消設定 \\ue000：個人資料移動 \\ue001：後退"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:233
+#: src/menu/BatchJobTitleSelectState.cpp:233
 msgid ">> Move"
 msgstr ">> 移動"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:234
+#: src/menu/BatchJobTitleSelectState.cpp:234
 msgid "|Moved|"
 msgstr "|已移動|"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:237
+#: src/menu/BatchJobTitleSelectState.cpp:237
 msgid "Batch Wipe - Select"
 msgstr "批量擦除 - 選擇"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:238
+#: src/menu/BatchJobTitleSelectState.cpp:238
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 設定/取消設定 \\ue045\\ue046: 設定/取消全部 \\ue000: 清除設定檔 \\ue001: 回傳"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:243
+#: src/menu/BatchJobTitleSelectState.cpp:243
 msgid "Batch Copy To USB - Select"
 msgstr "批量複製到USB - 選擇"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:244
+#: src/menu/BatchJobTitleSelectState.cpp:244
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 設定/取消設定 \\ue045\\ue046: 設定/取消全部 \\ue000: 複製到USB \\ue001: 回傳"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:249
+#: src/menu/BatchJobTitleSelectState.cpp:249
 msgid "Batch Copy To NAND - Select"
 msgstr "批量複製到NAND - 選擇"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:250
+#: src/menu/BatchJobTitleSelectState.cpp:250
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 設定/取消設定 \\ue045\\ue046: 設定/取消全部 \\ue000: 複製到NAND \\ue001: 回傳"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:255
+#: src/menu/BatchJobTitleSelectState.cpp:255
 msgid "Batch Backup - Select & Go"
 msgstr "批量備份 - 選擇並執行"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:256
+#: src/menu/BatchJobTitleSelectState.cpp:256
 msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
-msgstr "\\ue003\\ue07e設定/取消設定\\ue045\\ue046設定/取消設定全部\\ue002Excludes\\ue000Backup\\ue001Back"
+msgstr "\\ue003\\ue07e設定/取消設定\\ue045\\ue046設定/取消設定全部\\ue002排除\\ue000備份\\ue001返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:257
+#: src/menu/BatchJobTitleSelectState.cpp:257
 msgid ">> Backup"
 msgstr ">>備份"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:258
+#: src/menu/BatchJobTitleSelectState.cpp:258
 msgid "|Saved|"
 msgstr "|已儲存|"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:275
+#: src/menu/BatchJobTitleSelectState.cpp:275
 msgid "There are no titles matching selected filters."
 msgstr "没有匹配过滤器的结果"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:339
+#: src/menu/BatchJobTitleSelectState.cpp:339
 msgid "[AB-BackupFailed]"
 msgstr "[AB-備份失敗]"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:341
+#: src/menu/BatchJobTitleSelectState.cpp:341
 msgid "[AB]"
 msgstr "[AB]"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:345
+#: src/menu/BatchJobTitleSelectState.cpp:345
 msgid "[WR]"
 msgstr "[WR]"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:407
+#: src/menu/BatchJobTitleSelectState.cpp:407
 msgid "Please select some titles to work on"
 msgstr "「請選擇」一些需要處理的遊戲"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:456
+#: src/menu/BatchJobTitleSelectState.cpp:456
 msgid ""
 "\\ue000  Apply saved excludes\n"
 "\\ue045  Save current excludes\n"
@@ -2422,50 +2274,48 @@ msgstr ""
 "\\ue045 儲存目前排除\n"
 "\\ue001 返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:471
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:134
+#: src/menu/BatchJobTitleSelectState.cpp:471 src/menu/ConfigMenuState.cpp:134
 msgid "Configuration saved"
 msgstr "配置已儲存"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:473
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:136
+#: src/menu/BatchJobTitleSelectState.cpp:473 src/menu/ConfigMenuState.cpp:136
 msgid "Error saving configuration"
 msgstr "儲存配置時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:540
+#: src/menu/BatchJobTitleSelectState.cpp:540
 msgid "Batch Restore - Review & Go"
 msgstr "批量恢復 - 查看並開始"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:541
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:543
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:544
+#: src/menu/BatchJobTitleSelectState.cpp:541
+#: src/menu/BatchJobTitleSelectState.cpp:543
+#: src/menu/BatchJobTitleSelectState.cpp:544
 msgid "- Restore"
 msgstr "- 恢復"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:541
+#: src/menu/BatchJobTitleSelectState.cpp:541
 #, c-format
 msgid "- Restore from %s to < %s (%s) >"
 msgstr "- 从 %s 还原到 < %s (%s) >"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:542
+#: src/menu/BatchJobTitleSelectState.cpp:542
 #, c-format
 msgid "pre-BatchRestore Backup (vWii: %d%s"
 msgstr "預批次恢復備份（vWii：%d%s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:542
+#: src/menu/BatchJobTitleSelectState.cpp:542
 #, c-format
 msgid "pre-BatchRestore Backup (WiiU: %d%s"
 msgstr "預批次恢復備份（WiiU：%d%s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:543
+#: src/menu/BatchJobTitleSelectState.cpp:543
 msgid "- Restore allusers"
 msgstr "- 还原所有用户"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:544
+#: src/menu/BatchJobTitleSelectState.cpp:544
 msgid "- Restore no user"
 msgstr "- 恢復無用戶"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:545
+#: src/menu/BatchJobTitleSelectState.cpp:545
 #, c-format
 msgid ""
 "%s\n"
@@ -2479,27 +2329,27 @@ msgstr ""
 "恢復失敗。\n"
 "%d為止的錯誤數：目前是否繼續處理一個標題？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:546
+#: src/menu/BatchJobTitleSelectState.cpp:546
 msgid "Batch Restore paused - Do you want to abort?"
 msgstr "批次恢復已暫停 - 是否中止？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:549
+#: src/menu/BatchJobTitleSelectState.cpp:549
 msgid "Batch ProfileCopy - Review & Go"
 msgstr "批次設定檔複製 - 查看並開始"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:550
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:577
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:586
+#: src/menu/BatchJobTitleSelectState.cpp:550
+#: src/menu/BatchJobTitleSelectState.cpp:577
+#: src/menu/BatchJobTitleSelectState.cpp:586
 #, c-format
 msgid "- Copy from < %s (%s)> to < %s (%s) >"
 msgstr "- 從 < %s (%s)> 複製到 < %s (%s) >"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:551
+#: src/menu/BatchJobTitleSelectState.cpp:551
 #, c-format
 msgid "pre-BatchProfileCopy Backup (WiiU: %d%s"
 msgstr "預先批次設定檔複製備份（WiiU：%d%s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:554
+#: src/menu/BatchJobTitleSelectState.cpp:554
 #, c-format
 msgid ""
 "%s\n"
@@ -2514,25 +2364,25 @@ msgstr ""
 "目前為止的錯誤數：%d\n"
 "是否繼續處理下一個標題？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:555
+#: src/menu/BatchJobTitleSelectState.cpp:555
 msgid "Batch ProfileCopy paused - Do you want to abort?"
 msgstr "批次設定檔複製已暫停 - 是否中止？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:558
+#: src/menu/BatchJobTitleSelectState.cpp:558
 msgid "Batch ProfileMove - Review & Go"
 msgstr "大量移動檔案 - 查看並執行"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:559
+#: src/menu/BatchJobTitleSelectState.cpp:559
 #, c-format
 msgid "- Move < %s (%s)> to < %s (%s) >"
 msgstr "- 將 < %s (%s)> 移到 < %s (%s) >"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:560
+#: src/menu/BatchJobTitleSelectState.cpp:560
 #, c-format
 msgid "pre-BatchProfileMove Backup (WiiU: %d%s"
 msgstr "預批次設定檔移動備份（WiiU：%d%s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:563
+#: src/menu/BatchJobTitleSelectState.cpp:563
 #, c-format
 msgid ""
 "%s\n"
@@ -2547,44 +2397,44 @@ msgstr ""
 "目前為止的錯誤數：%d\n"
 "是否繼續處理下一個標題？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:564
+#: src/menu/BatchJobTitleSelectState.cpp:564
 msgid "Batch ProfileMove paused - Do you want to abort?"
 msgstr "批次設定檔移動已暫停 - 是否中止？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:567
+#: src/menu/BatchJobTitleSelectState.cpp:567
 msgid "Batch Wipe - Review & Go"
 msgstr "批量擦除 - 查看並繼續"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:568
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:570
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:571
+#: src/menu/BatchJobTitleSelectState.cpp:568
+#: src/menu/BatchJobTitleSelectState.cpp:570
+#: src/menu/BatchJobTitleSelectState.cpp:571
 msgid "- Wipe"
 msgstr "- 擦除"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:568
+#: src/menu/BatchJobTitleSelectState.cpp:568
 #, c-format
 msgid "- Wipe  < %s (%s)>"
 msgstr "- 擦除 < %s (%s)>"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:569
+#: src/menu/BatchJobTitleSelectState.cpp:569
 #, c-format
 msgid "pre-BatchWipe Backup (vWii: %d%s"
 msgstr "預先批次擦除備份（vWii：%d%s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:569
+#: src/menu/BatchJobTitleSelectState.cpp:569
 #, c-format
 msgid "pre-BatchWipe Backup (WiiU: %d%s"
 msgstr "預批次擦除備份（WiiU：%d%s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:570
+#: src/menu/BatchJobTitleSelectState.cpp:570
 msgid "- Wipe allusers"
 msgstr "- 擦除所有使用者"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:571
+#: src/menu/BatchJobTitleSelectState.cpp:571
 msgid "- Wipe no user"
 msgstr "- 不擦除任何使用者"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:572
+#: src/menu/BatchJobTitleSelectState.cpp:572
 #, c-format
 msgid ""
 "%s\n"
@@ -2599,30 +2449,30 @@ msgstr ""
 "目前為止的錯誤數：%d\n"
 "是否要繼續處理下一個標題？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:573
+#: src/menu/BatchJobTitleSelectState.cpp:573
 msgid "Batch Wipe paused - Do you want to abort?"
 msgstr "批次清除已暫停 - 是否中止？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:576
+#: src/menu/BatchJobTitleSelectState.cpp:576
 msgid "Batch Copy To USB - Review & Go"
 msgstr "批量複製到USB - 查看並開始"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:578
+#: src/menu/BatchJobTitleSelectState.cpp:578
 #, c-format
 msgid "pre-BatchCopyToUSB Backup (WiiU: %d%s"
 msgstr "批量複製到 USB 前的備份（WiiU： %d%s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:579
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:588
+#: src/menu/BatchJobTitleSelectState.cpp:579
+#: src/menu/BatchJobTitleSelectState.cpp:588
 msgid "- Copy allusers"
 msgstr "- 複製所有使用者"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:580
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:589
+#: src/menu/BatchJobTitleSelectState.cpp:580
+#: src/menu/BatchJobTitleSelectState.cpp:589
 msgid "- Copy no user"
 msgstr "- 不複製任何用戶"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:581
+#: src/menu/BatchJobTitleSelectState.cpp:581
 #, c-format
 msgid ""
 "%s\n"
@@ -2637,20 +2487,20 @@ msgstr ""
 "目前為止的錯誤數：%d\n"
 "是否繼續處理下一個標題？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:582
+#: src/menu/BatchJobTitleSelectState.cpp:582
 msgid "Batch Copy To USB paused - Do you want to abort?"
 msgstr "批次複製到 USB 已暫停 - 是否要中止？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:585
+#: src/menu/BatchJobTitleSelectState.cpp:585
 msgid "Batch Copy To NAND - Review & Go"
 msgstr "批量複製到NAND - 查看並開始"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:587
+#: src/menu/BatchJobTitleSelectState.cpp:587
 #, c-format
 msgid "pre-BatchCopyToNAND Backup (WiiU: %d%s"
 msgstr "批量複製到 NAND 前的備份（WiiU：%d%s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:590
+#: src/menu/BatchJobTitleSelectState.cpp:590
 #, c-format
 msgid ""
 "%s\n"
@@ -2665,11 +2515,11 @@ msgstr ""
 "目前為止的錯誤數：%d\n"
 "是否要繼續處理下一個標題？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:591
+#: src/menu/BatchJobTitleSelectState.cpp:591
 msgid "Batch Copy To NAND paused - Do you want to abort?"
 msgstr "批量複製到 NAND 已暫停 - 是否要中止？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:608
+#: src/menu/BatchJobTitleSelectState.cpp:608
 #, c-format
 msgid ""
 "%s\n"
@@ -2700,35 +2550,35 @@ msgstr ""
 "\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:629
+#: src/menu/BatchJobTitleSelectState.cpp:629
 msgid "- Include common savedata: Yes"
 msgstr "- 包含通用存檔資料：是"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:629
+#: src/menu/BatchJobTitleSelectState.cpp:629
 msgid "- Include common savedata: No"
 msgstr "- 包含通用存檔資料：否"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:630
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:635
+#: src/menu/BatchJobTitleSelectState.cpp:630
+#: src/menu/BatchJobTitleSelectState.cpp:635
 msgid "- Wipe data: Yes"
 msgstr "- 清除資料：是"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:630
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:635
+#: src/menu/BatchJobTitleSelectState.cpp:630
+#: src/menu/BatchJobTitleSelectState.cpp:635
 msgid "- Wipe data: No"
 msgstr "- 清除資料：否"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:631
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:636
+#: src/menu/BatchJobTitleSelectState.cpp:631
+#: src/menu/BatchJobTitleSelectState.cpp:636
 msgid "- Perform full backup: Yes"
 msgstr "- 執行完整備份：是"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:631
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:636
+#: src/menu/BatchJobTitleSelectState.cpp:631
+#: src/menu/BatchJobTitleSelectState.cpp:636
 msgid "- Perform full backup: No"
 msgstr "- 執行完整備份：否"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:633
+#: src/menu/BatchJobTitleSelectState.cpp:633
 #, c-format
 msgid ""
 "%s\n"
@@ -2755,7 +2605,7 @@ msgstr ""
 "繼續？\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:648
+#: src/menu/BatchJobTitleSelectState.cpp:648
 msgid ""
 "You have selected some injected titles.\n"
 "If its restore fails, try them again as a vWii title.\n"
@@ -2767,7 +2617,7 @@ msgstr ""
 "\n"
 "您可以繼續。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:653
+#: src/menu/BatchJobTitleSelectState.cpp:653
 msgid ""
 "You have selected uninitialized titles.\n"
 "If its restore fails, run the Game to create \n"
@@ -2780,16 +2630,14 @@ msgstr ""
 "\n"
 "您可以繼續。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:688
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:863
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:145
+#: src/menu/BatchJobTitleSelectState.cpp:688
+#: src/menu/BatchJobTitleSelectState.cpp:863 src/menu/BatchBackupState.cpp:145
 msgid "ERROR WIPING BACKUPSET"
 msgstr "擦除備份集時發生錯誤"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:714
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:723
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:814
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:822
+#: src/menu/BatchJobTitleSelectState.cpp:714
+#: src/menu/BatchJobTitleSelectState.cpp:723 src/menu/TitleOptionsState.cpp:814
+#: src/menu/TitleOptionsState.cpp:822
 #, c-format
 msgid ""
 "%s\n"
@@ -2804,40 +2652,39 @@ msgstr ""
 "\n"
 "請嘗試使用'來自/到使用者'選項進行復原"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:859
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:141
+#: src/menu/BatchJobTitleSelectState.cpp:859 src/menu/BatchBackupState.cpp:141
 msgid "Do you want to wipe this incomplete batch backup?"
 msgstr "是否要擦除此不完整的批量備份？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:914
+#: src/menu/BatchJobTitleSelectState.cpp:914
 #, c-format
 msgid "PARTIAL - %d %s title%s OK"
 msgstr "部分備份 - %d %s 標題%s 成功"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:919
+#: src/menu/BatchJobTitleSelectState.cpp:919
 msgid "FAILED - No titles"
 msgstr "失敗 - 無標題"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobTitleSelectState.cpp:921
+#: src/menu/BatchJobTitleSelectState.cpp:921
 #, c-format
 msgid "FAILED - OK/KO > %s: %d/%d"
 msgstr "失敗 - OK/KO > %s: %d/%d"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:26
+#: src/menu/BatchJobState.cpp:26
 msgid "Batch Restore"
 msgstr "批量还原"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:27
+#: src/menu/BatchJobState.cpp:27
 #, c-format
 msgid "   Restore Wii U (%u Title%s)"
 msgstr "   还原Wii U（%u 软件%s）"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:28
+#: src/menu/BatchJobState.cpp:28
 #, c-format
 msgid "   Restore vWii (%u Title%s)"
 msgstr "   还原vWii（%u 软件%s）"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:29
+#: src/menu/BatchJobState.cpp:29
 msgid ""
 "Batch Restore allows you to restore all savedata from a BatchBackup \n"
 "* to the same user profiles\n"
@@ -2852,25 +2699,25 @@ msgstr ""
 "在後一種情況下，建議先執行遊戲\n"
 "以初始化保存資料。 」"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:30
+#: src/menu/BatchJobState.cpp:30
 msgid "\\ue000: Continue to BackupSet selection  \\ue001: Back"
 msgstr "\\ue000: 繼續選擇備份集 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:33
+#: src/menu/BatchJobState.cpp:33
 msgid "Batch Wipe"
 msgstr "批次擦除"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:34
+#: src/menu/BatchJobState.cpp:34
 #, c-format
 msgid "   Wipe Wii U Profiles (%u Title%s)"
 msgstr "   擦除 Wii U 個人檔案 (%u 標題 %s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:35
+#: src/menu/BatchJobState.cpp:35
 #, c-format
 msgid "   Wipe vWii Savedata (%u Title%s)"
 msgstr "   擦除 vWii 存檔資料 (%u 標題 %s)"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:36
+#: src/menu/BatchJobState.cpp:36
 msgid ""
 "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n"
 "\n"
@@ -2886,24 +2733,23 @@ msgstr ""
 "- 選擇要操作的遊戲\n"
 "- 然後開始！ 」"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:44
+#: src/menu/BatchJobState.cpp:37 src/menu/BatchJobState.cpp:44
 msgid "\\ue000: Continue to savedata selection  \\ue001: Back"
 msgstr "\\ue000: 繼續選擇儲存資料 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:40
+#: src/menu/BatchJobState.cpp:40
 msgid "Batch Copy To Other Device"
 msgstr "批量複製到其他設備"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:41
+#: src/menu/BatchJobState.cpp:41
 msgid "   Copy Wii U Savedata from NAND to USB"
 msgstr "   將 Wii U 存檔資料從 NAND 複製到 USB"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:42
+#: src/menu/BatchJobState.cpp:42
 msgid "   Copy Wii U Savedata from USB to NAND"
 msgstr "   將 Wii U 存檔資料從 USB 複製到 NAND"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobState.cpp:43
+#: src/menu/BatchJobState.cpp:43
 msgid ""
 "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n"
 "\n"
@@ -2919,50 +2765,49 @@ msgstr ""
 "- 選擇要操作的遊戲\n"
 "- 然後開始！"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:31
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:41
+#: src/menu/TitleTaskState.cpp:31 src/menu/ConfigMenuState.cpp:41
 #, c-format
 msgid "WiiU Serial Id: %s"
 msgstr "WiiU序列号: %s"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:33
+#: src/menu/TitleTaskState.cpp:33
 msgid "Tasks"
 msgstr "进程"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:39
+#: src/menu/TitleTaskState.cpp:39
 msgid "   Backup savedata"
 msgstr "   備份保存數據"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:41
+#: src/menu/TitleTaskState.cpp:41
 msgid "   Restore savedata"
 msgstr "   恢復保存數據"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:43
+#: src/menu/TitleTaskState.cpp:43
 msgid "   Wipe savedata"
 msgstr "   刪除保存數據"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:46
+#: src/menu/TitleTaskState.cpp:46
 msgid "   Move savedata to other profile"
 msgstr "   將存檔資料移至其他檔案"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:48
+#: src/menu/TitleTaskState.cpp:48
 msgid "   Copy savedata to other profile"
 msgstr "   將已儲存的資料複製到其他設定檔"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:50
+#: src/menu/TitleTaskState.cpp:50
 msgid "   Import from loadiine"
 msgstr "   從loadiine導入"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:52
+#: src/menu/TitleTaskState.cpp:52
 msgid "   Export to loadiine"
 msgstr "   導出到loadiine"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:55
+#: src/menu/TitleTaskState.cpp:55
 #, c-format
 msgid "   Copy Savedata to Title in %s"
 msgstr "   將Savedata複製到軟體 %s 中。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:69
+#: src/menu/TitleTaskState.cpp:69
 msgid ""
 "This title is a inject (vWii or GC title packaged as a WiiU title).\n"
 "If needed, vWii saves can also be managed using\n"
@@ -2971,394 +2816,377 @@ msgstr ""
 "此遊戲為注入遊戲（將 vWii 或 GC 遊戲打包為 WiiU 遊戲）。\n"
 "如有需要，您也可以使用vWii 存檔管理部分管理 vWii 存檔。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:75
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:165
+#: src/menu/TitleTaskState.cpp:75 src/menu/MiiTasksState.cpp:165
 msgid "\\ue000: Select Task  \\ue001: Back"
 msgstr "\\ue000: 選擇任務 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:94
+#: src/menu/TitleTaskState.cpp:94
 msgid "No save to Backup."
 msgstr "沒有保存資料可以備份。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:97
+#: src/menu/TitleTaskState.cpp:97
 msgid "No save to Wipe."
 msgstr "沒有保存資料可以刪除。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:100
+#: src/menu/TitleTaskState.cpp:100
 msgid "No save to Replicate."
 msgstr "無需保存即可複製。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:103
+#: src/menu/TitleTaskState.cpp:103
 msgid "No save to Copy."
 msgstr "沒有保存資料可以復制。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:106
+#: src/menu/TitleTaskState.cpp:106
 msgid "No save to Move."
 msgstr "沒有要移動的存檔。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:134
+#: src/menu/TitleTaskState.cpp:134
 msgid "Title has no profile savedata"
 msgstr "標題沒有個人資料保存數據"
 
-#: /home/qwii/hb/savemii/src/menu/TitleTaskState.cpp:145
+#: src/menu/TitleTaskState.cpp:145
 msgid "At least two profiles are needed to Copy/Move To OtherProfile."
 msgstr "複製/移動到其他檔案至少需要兩個檔案。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:24
+#: src/menu/MiiTransformTasksState.cpp:24
 msgid "Mii Transform Tasks"
 msgstr "Mii 轉換任務"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:28
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:28
+#: src/menu/MiiTransformTasksState.cpp:28 src/menu/MiiTasksState.cpp:28
 #, c-format
 msgid "Selected Repo: %s"
 msgstr "選定的儲存庫：%s"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:31
+#: src/menu/MiiTransformTasksState.cpp:31
 msgid "   Transfer physical appearance from another mii:"
 msgstr "   從另一個 Mii轉移外觀："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76
 #, c-format
 msgid "[%s]"
 msgstr "[%s]"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:310
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:24
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:28
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:33
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:38
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:310
+#: src/menu/BatchJobOptions.cpp:316 src/menu/BatchJobOptions.cpp:324
+#: src/menu/ConfigMenuState.cpp:24 src/menu/ConfigMenuState.cpp:28
+#: src/menu/ConfigMenuState.cpp:33 src/menu/ConfigMenuState.cpp:38
 msgid "Yes"
 msgstr "是的"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:32
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:37
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:41
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:45
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:49
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:53
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:57
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:61
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:65
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:72
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:76
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:24
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:28
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:33
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:38
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:316
+#: src/menu/BatchJobOptions.cpp:324 src/menu/ConfigMenuState.cpp:24
+#: src/menu/ConfigMenuState.cpp:28 src/menu/ConfigMenuState.cpp:33
+#: src/menu/ConfigMenuState.cpp:38
 msgid "No"
 msgstr "不"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:36
+#: src/menu/MiiTransformTasksState.cpp:36
 msgid "   Transfer Ownership from another mii:"
 msgstr "   從另一個Mii 轉移所有權："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:40
+#: src/menu/MiiTransformTasksState.cpp:40
 msgid "   Make them belong to this console:"
 msgstr "   將它們歸屬於此主機："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:44
+#: src/menu/MiiTransformTasksState.cpp:44
 msgid "   Update Mii Id (Timestamp):"
 msgstr "   更新 Mii ID（時間戳記）："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:48
+#: src/menu/MiiTransformTasksState.cpp:48
 msgid "   Toggle favorite flag:"
 msgstr "   切換收藏標記："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:52
+#: src/menu/MiiTransformTasksState.cpp:52
 msgid "   Toggle Share/Mingle flag:"
 msgstr "   切換分享/混合標記："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:56
+#: src/menu/MiiTransformTasksState.cpp:56
 msgid "   Toggle Normal/Special flag:"
 msgstr "   切換普通/特殊標記："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:60
+#: src/menu/MiiTransformTasksState.cpp:60
 msgid "   Toggle Foreign flag:"
 msgstr "   切換外國標記："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:64
+#: src/menu/MiiTransformTasksState.cpp:64
 msgid "   Update CRC:"
 msgstr "   更新 CRC："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:71
+#: src/menu/MiiTransformTasksState.cpp:71
 msgid "   Togle Copy Flag On/Off:"
 msgstr "   切換複製標記開/關："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:75
+#: src/menu/MiiTransformTasksState.cpp:75
 msgid "   Togle Temporary Flag On/Off:"
 msgstr "   切換臨時標記開/關："
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:83
+#: src/menu/MiiTransformTasksState.cpp:83
 msgid "Selected miis will get the physical appearance of the mii you will select in the next menu."
 msgstr "選定的Mii角色將獲得您在下一個選單中選擇的Mii角色的外觀。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:86
+#: src/menu/MiiTransformTasksState.cpp:86
 msgid "Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost."
 msgstr "選定的 Mii 將獲得模板 Mii 的所有權屬性，因此之後它們將屬於模板主機。當前遊戲關聯已遺失。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:89
+#: src/menu/MiiTransformTasksState.cpp:89
 msgid "Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost."
 msgstr "更新 Mii 的 MAC 位址和 AuthID（WiiU），使其顯示為在此主機上建立。更新 Mii ID，因此遊戲關聯將丟失。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:92
+#: src/menu/MiiTransformTasksState.cpp:92
 msgid "So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)."
 msgstr "因此，Mii 角色擁有了一個新的唯一 Mii ID（注意！它將不再與任何需要舊 Mii ID 的遊戲關聯）。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:95
+#: src/menu/MiiTransformTasksState.cpp:95
 msgid "Mark Miis as a favorite one so they appear in games that support them."
 msgstr "將 Mii 標記為收藏，以便它們出現在支持它們的遊戲中。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:98
+#: src/menu/MiiTransformTasksState.cpp:98
 msgid "So the mii can travel to other consoles."
 msgstr "這樣，該 Mii 角色就可以在其他主機上使用"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:101
+#: src/menu/MiiTransformTasksState.cpp:101
 msgid "You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost."
 msgstr "您可以將普通Mii角色轉換為特殊Mii角色，反之亦然。這將更新Mii ID，因此遊戲關聯將會丟失。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:104
+#: src/menu/MiiTransformTasksState.cpp:104
 msgid "Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost)."
 msgstr "無論 Wii Mii 的創建地點如何，都可以強制將其設置為外國 Mii。這將更新 Mii ID（Mii 遊戲關聯將丟失）。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:107
+#: src/menu/MiiTransformTasksState.cpp:107
 msgid "CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo)."
 msgstr "將重新計算所選Mii（如果位於ffsd、bin、cfsd或rsd文件中）或整個資料庫（對於位於FFL或RFL文件庫中的Mii）的CRC校驗碼。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:110
+#: src/menu/MiiTransformTasksState.cpp:110
 msgid "So people that does not own the mii can modifiy it by creating a copy of the original."
 msgstr "這樣，即使沒有該 Mii 角色的人也可以通過創建原始 Mii 角色的副本來修改它。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:113
+#: src/menu/MiiTransformTasksState.cpp:113
 msgid "Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost)."
 msgstr "臨時Mii角色無法在FFL資料庫中查看。此操作會更新Mii ID（Mii遊戲關聯將丟失）。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:127
+#: src/menu/MiiTransformTasksState.cpp:127
 msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Select Mii Template  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue000：選擇Mii範本 \\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:129
+#: src/menu/MiiTransformTasksState.cpp:129
 msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Transform  \\ue001: Back"
 msgstr "\\ue003\\ue07e：設定/取消設定 \\ue000：變換\\ue001：返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTransformTasksState.cpp:172
+#: src/menu/MiiTransformTasksState.cpp:172
 msgid "Please select an option"
 msgstr "請選擇一個選項"
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListFilter.cpp:18
+#: src/menu/BackupSetListFilter.cpp:18
 msgid "Show only BackupSets satisfying all these conditions:"
 msgstr "仅显示满足以下所有条件的存檔集: "
 
-#: /home/qwii/hb/savemii/src/menu/BackupSetListFilter.cpp:25
+#: src/menu/BackupSetListFilter.cpp:25
 msgid "\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"
 msgstr "\\ue000: 应用过滤器  \\ue002:重置过滤器  \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:26
+#: src/menu/MiiTasksState.cpp:26
 msgid "Mii Tasks"
 msgstr "Mii 任務"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:33
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:57
+#: src/menu/MiiTasksState.cpp:33 src/menu/MiiTasksState.cpp:57
 msgid "DB management"
 msgstr "資料庫管理"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:35
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:59
+#: src/menu/MiiTasksState.cpp:35 src/menu/MiiTasksState.cpp:59
 msgid "   Backup DB"
 msgstr "   備份資料庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:37
+#: src/menu/MiiTasksState.cpp:37
 msgid "   Restore Full DB (Full restore - all account attributes - for one profile)"
 msgstr "   恢復完整資料庫（完整恢復 - 所有帳號屬性 - 針對單一設定檔）"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:39
+#: src/menu/MiiTasksState.cpp:39
 msgid "   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"
 msgstr "   恢復資料庫Mii部分（Mii資料和Mii影像跨帳號恢復）"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:41
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:67
+#: src/menu/MiiTasksState.cpp:41 src/menu/MiiTasksState.cpp:67
 msgid "Mii Management"
 msgstr "Mii 管理"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:43
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:69
+#: src/menu/MiiTasksState.cpp:43 src/menu/MiiTasksState.cpp:69
 msgid "   List Miis"
 msgstr "   列出 Mii"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:46
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:72
+#: src/menu/MiiTasksState.cpp:46 src/menu/MiiTasksState.cpp:72
 #, c-format
 msgid "   Export Miis (to %s)"
 msgstr "   將 Mii（匯出到 %s）"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:48
+#: src/menu/MiiTasksState.cpp:48
 msgid "   Export Miis (account MiiData)"
 msgstr "   匯出 Mii（帳戶 Mii 資料）"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:50
+#: src/menu/MiiTasksState.cpp:50
 msgid "   Import Miis (account MiiData)"
 msgstr "   導入 Mii（帳戶 Mii 資料）"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:52
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:83
+#: src/menu/MiiTasksState.cpp:52 src/menu/MiiTasksState.cpp:83
 msgid "   Transform Miis"
 msgstr "   轉換 mii 文件"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:61
+#: src/menu/MiiTasksState.cpp:61
 msgid "   Restore DB"
 msgstr "   恢復資料庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:63
+#: src/menu/MiiTasksState.cpp:63
 msgid "   Wipe DB"
 msgstr "   清除資料庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:65
+#: src/menu/MiiTasksState.cpp:65
 msgid "   Initialize DB"
 msgstr "   初始化資料庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:74
+#: src/menu/MiiTasksState.cpp:74
 msgid "   Export Miis"
 msgstr "   匯出 Mii"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:77
+#: src/menu/MiiTasksState.cpp:77
 #, c-format
 msgid "   Import Miis (from %s)"
 msgstr "   導入 Mii（來自 %s）"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:79
+#: src/menu/MiiTasksState.cpp:79
 msgid "   Import Miis"
 msgstr "   導入 Mii"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:81
+#: src/menu/MiiTasksState.cpp:81
 msgid "   Wipe Miis"
 msgstr "   清除 Mii"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:92
+#: src/menu/MiiTasksState.cpp:92
 msgid "Backup All Wii U Account folders and files"
 msgstr "備份所有 Wii U 帳戶資料夾和檔案"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:95
+#: src/menu/MiiTasksState.cpp:95
 msgid "Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect."
 msgstr "恢復一個 Wii U 帳號的檔案（所有訊息，包括但不限於 Mii 資料）。需要重新啟動主機才能生效。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:98
+#: src/menu/MiiTasksState.cpp:98
 msgid "Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect."
 msgstr "恢復 MiiData + MiiImg將一個 Wii U 帳號轉移到另一個帳號（NNID、PNID 或其他屬性均未修改）。需要重新啟動主機才能生效。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:101
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:131
+#: src/menu/MiiTasksState.cpp:101 src/menu/MiiTasksState.cpp:131
 msgid "List all Miis and some of its attributes"
 msgstr "列出所有 Mii 及其部分屬性"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:104
+#: src/menu/MiiTasksState.cpp:104
 msgid "Export Miis to other repos"
 msgstr "將 Mii 匯出到其他儲存庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:107
+#: src/menu/MiiTasksState.cpp:107
 msgid "Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
 msgstr "從另一個倉庫中的 Mii 匯入 Mii 資料需要重新啟動資料才能註冊、程式碼"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:110
+#: src/menu/MiiTasksState.cpp:110
 msgid "Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
 msgstr "更改Mii的屬性（共享/複製/Miiid/所有者）或外觀。需要重啟主機並重新註冊用戶（用戶設定 > 更改Mii > 編輯已註冊的Mii > 註冊）才能完全生效。"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:119
+#: src/menu/MiiTasksState.cpp:119
 msgid "Backup Mii Database in their enterity"
 msgstr "備份其全部Mii資料庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:122
+#: src/menu/MiiTasksState.cpp:122
 msgid "Restore Mii Database in their enterity"
 msgstr "恢復Mii資料庫實體"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:125
+#: src/menu/MiiTasksState.cpp:125
 msgid "Wipe Mii Database"
 msgstr "清除 Mii 資料庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:128
+#: src/menu/MiiTasksState.cpp:128
 msgid "Initialize Mii Database with no Miis"
 msgstr "初始化 Mii 資料庫（無 Mii）"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:134
+#: src/menu/MiiTasksState.cpp:134
 msgid "Export some Miis from this Database to another one"
 msgstr "將此資料庫中的部分 Mii 匯出到另一個資料庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:137
+#: src/menu/MiiTasksState.cpp:137
 msgid "Import some Miis from another Database to this one"
 msgstr "將一些 Mii 從另一個資料庫導入到此資料庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:140
+#: src/menu/MiiTasksState.cpp:140
 msgid "Wipe some Miis from the Mii Database"
 msgstr "從 Mii 資料庫清除一些 Mii"
 
-#: /home/qwii/hb/savemii/src/menu/MiiTasksState.cpp:143
+#: src/menu/MiiTasksState.cpp:143
 msgid "Change attributes (share/copy/miiid/owner) or appareance of miis"
 msgstr "更改Mii的屬性（共享/複製/Miiid/所有者）或外觀"
 
-#: /home/qwii/hb/savemii/src/menu/KeyboardState.cpp:17
+#: src/menu/KeyboardState.cpp:17
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: /home/qwii/hb/savemii/src/menu/KeyboardState.cpp:38
+#: src/menu/KeyboardState.cpp:38
 msgid "\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
 msgstr "\\ue000: 输入  \\ue003: Shift  \\ue002: 退格  \\ue045: 结束  \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:27
+#: src/menu/BatchBackupState.cpp:27
 msgid "Batch Backup"
 msgstr "批量备份"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:29
+#: src/menu/BatchBackupState.cpp:29
 #, c-format
 msgid "   Backup All (%u Title%s)"
 msgstr "   全部備份（%u 軟體%s）"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:32
+#: src/menu/BatchBackupState.cpp:32
 #, c-format
 msgid "   Backup Wii U (%u Title%s)"
 msgstr "   備份Wii U軟體（%u 軟體%s）"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:35
+#: src/menu/BatchBackupState.cpp:35
 #, c-format
 msgid "   Backup vWii (%u Title%s)"
 msgstr "   備份vWii軟體（%u 軟體%s）"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:38
+#: src/menu/BatchBackupState.cpp:38
 #, c-format
 msgid "   Backup Wii U System Titles (%u Title%s)"
 msgstr "   備份 Wii U 系統遊戲（%u 遊戲%s）"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:45
+#: src/menu/BatchBackupState.cpp:45
 msgid ""
 "Reminder: Your Excludes will be applied to\n"
 "  'Backup Wii U' and 'Backup vWii' tasks"
 msgstr "提醒: 您的排除將應用於「備份 Wii U」和「備份 vWii」任務。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:51
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:57
+#: src/menu/BatchBackupState.cpp:51 src/menu/BatchTasksState.cpp:57
 msgid ""
 "Batch Backup allows you to backup savedata:\n"
 "* for All titles at once (WiiU+ vWii)\n"
@@ -3368,26 +3196,26 @@ msgstr ""
 "* 一次備份所有遊戲（WiiU+ vWii）\n"
 "* 您選擇的遊戲（單獨的「Wii U」或「vWii」任務）"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:55
+#: src/menu/BatchBackupState.cpp:55
 msgid "\\ue002: BackupSet Management  \\ue000: Backup  \\ue001: Back"
 msgstr "\\ue002:備份集管理 \\ue000:備份 \\ue001:返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:156
+#: src/menu/BatchBackupState.cpp:156
 #, c-format
 msgid "ALL OK - WU:%d,vW:%d,S:%d titles"
 msgstr "一切正常 - WU:%d,vW:%d,S:%d 標題"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:161
+#: src/menu/BatchBackupState.cpp:161
 #, c-format
 msgid "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
 msgstr "OK/KO > WU:%d/%d,vW:%d/%d,S:%d/%d"
 
-#: /home/qwii/hb/savemii/src/menu/BatchBackupState.cpp:166
+#: src/menu/BatchBackupState.cpp:166
 #, c-format
 msgid "PARTIAL - WU:%d,vW:%d,S:%d OK"
 msgstr "部分備份 - WU:%d,vW:%d,S:%d 成功"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:112
+#: src/menu/BatchJobOptions.cpp:112
 #, c-format
 msgid ""
 "Savedata information for\n"
@@ -3395,11 +3223,11 @@ msgid ""
 "cannot be retrieved"
 msgstr "無法檢索 %s 的存檔訊息"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:152
+#: src/menu/BatchJobOptions.cpp:152
 msgid "Can't Copy/Move To OtherProfile if there is only one profile."
 msgstr "如果只有一個檔案，則無法複製/移動到其他檔案。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:191
+#: src/menu/BatchJobOptions.cpp:191
 msgid ""
 "WARNING\n"
 "Some titles contain savedata for profiles that do not exist in this console\n"
@@ -3412,7 +3240,7 @@ msgstr ""
 "* 使用「所有使用者」選項或批次備份進行備份\n"
 "* 使用「批次清除/批次複製到其他設定檔」任務進行清除或移動。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:194
+#: src/menu/BatchJobOptions.cpp:194
 msgid ""
 "The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n"
 "\n"
@@ -3422,7 +3250,7 @@ msgstr ""
 "\n"
 "建議的操作：恢復來自/傳送給個人使用者。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:198
+#: src/menu/BatchJobOptions.cpp:198
 msgid ""
 "\n"
 "\n"
@@ -3433,7 +3261,7 @@ msgstr ""
 "\n"
 "不存在的設定檔：\n"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:200
+#: src/menu/BatchJobOptions.cpp:200
 msgid ""
 "\n"
 "Titles affected:\n"
@@ -3441,138 +3269,125 @@ msgstr ""
 "\n"
 "受影響的遊戲：\n"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:224
+#: src/menu/BatchJobOptions.cpp:224
 msgid "BatchJob - Options"
 msgstr "批量还原 - 选项"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:225
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+#: src/menu/BatchJobOptions.cpp:225 src/menu/TitleOptionsState.cpp:152
 msgid "Select SD user to copy from:"
 msgstr "選擇從SD復制資料的使用者: "
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:226
+#: src/menu/BatchJobOptions.cpp:226
 msgid "Only 'common' savedata will be restored"
 msgstr "僅恢復‘通用’存檔資料"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:227
+#: src/menu/BatchJobOptions.cpp:227
 msgid "'common' savedata will also be restored"
 msgstr "‘通用’存檔資料也將被恢復"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:230
+#: src/menu/BatchJobOptions.cpp:230
 msgid "Batch ProfileCopy - Options"
 msgstr "批次設定檔複製 - 選項"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:231
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:237
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:249
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:255
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+#: src/menu/BatchJobOptions.cpp:231 src/menu/BatchJobOptions.cpp:237
+#: src/menu/BatchJobOptions.cpp:249 src/menu/BatchJobOptions.cpp:255
+#: src/menu/TitleOptionsState.cpp:152
 msgid "Select Wii U user to copy from:"
 msgstr "選擇要從中複製的 Wii U 用戶："
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:236
+#: src/menu/BatchJobOptions.cpp:236
 msgid "Batch ProfileMove - Options"
 msgstr "批次移動檔案 - 選項"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:242
+#: src/menu/BatchJobOptions.cpp:242
 msgid "Batch Wipe - Options"
 msgstr "批量擦除 - 選項"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:243
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:152
+#: src/menu/BatchJobOptions.cpp:243 src/menu/TitleOptionsState.cpp:152
 msgid "Select Wii U user to wipe:"
 msgstr "選擇要擦除的 Wii U 用戶:"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:244
+#: src/menu/BatchJobOptions.cpp:244
 msgid "Only 'common' savedata will be deleted"
 msgstr "僅刪除‘通用’存檔資料"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:245
+#: src/menu/BatchJobOptions.cpp:245
 msgid "'common' savedata will also be deleted"
 msgstr "‘通用’存檔資料也將被刪除"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:248
+#: src/menu/BatchJobOptions.cpp:248
 msgid "Batch CopyToUSB - Options"
 msgstr "批量複製到USB - 選項"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:250
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:256
+#: src/menu/BatchJobOptions.cpp:250 src/menu/BatchJobOptions.cpp:256
 msgid "Only 'common' savedata will be copied"
 msgstr "僅複製‘通用’存檔資料"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:251
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:257
+#: src/menu/BatchJobOptions.cpp:251 src/menu/BatchJobOptions.cpp:257
 msgid "'common' savedata will also be copied"
 msgstr "‘通用’存檔資料也將被複製"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:254
+#: src/menu/BatchJobOptions.cpp:254
 msgid "Batch CopyToNAND - Options"
 msgstr "批量複製到NAND - 選項"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:270
+#: src/menu/BatchJobOptions.cpp:270
 #, c-format
 msgid "BS: %s"
 msgstr "存檔集: %s"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:276
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:298
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:157
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:179
+#: src/menu/BatchJobOptions.cpp:276 src/menu/BatchJobOptions.cpp:298
+#: src/menu/TitleOptionsState.cpp:157 src/menu/TitleOptionsState.cpp:179
 msgid "only common save"
 msgstr "僅通用存檔"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:279
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:284
+#: src/menu/BatchJobOptions.cpp:279 src/menu/BatchJobOptions.cpp:284
 msgid "Ok"
 msgstr "確定"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:281
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:159
+#: src/menu/BatchJobOptions.cpp:281 src/menu/TitleOptionsState.cpp:159
 msgid "all users"
 msgstr "所有使用者"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:295
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:176
+#: src/menu/BatchJobOptions.cpp:295 src/menu/TitleOptionsState.cpp:176
 msgid "Select Wii U user to copy to:"
 msgstr "选择目标Wii U用户:"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:300
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:181
+#: src/menu/BatchJobOptions.cpp:300 src/menu/TitleOptionsState.cpp:181
 msgid "same user than in source"
 msgstr "与备份数据的目标用户相同"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:308
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:246
+#: src/menu/BatchJobOptions.cpp:308 src/menu/TitleOptionsState.cpp:246
 msgid "Include 'common' save?"
 msgstr "包括'common'保存資料？"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:310
+#: src/menu/BatchJobOptions.cpp:310
 msgid "No "
 msgstr "否"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:316
+#: src/menu/BatchJobOptions.cpp:316
 #, c-format
 msgid "   Wipe target users savedata before restoring: < %s >"
 msgstr "   恢復前擦除目標用戶的保存資料: < %s >"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:320
+#: src/menu/BatchJobOptions.cpp:320
 msgid "   Target user savedata will be wiped"
 msgstr "   目標用戶的保存資料將會被清除"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:324
+#: src/menu/BatchJobOptions.cpp:324
 #, c-format
 msgid "   Backup all data before restoring (strongly recommended): < %s >"
 msgstr "   恢復之前備份所有資料（強烈建議）: < %s >"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:330
+#: src/menu/BatchJobOptions.cpp:330
 msgid "\\ue000: Ok! Go to Title selection  \\ue001: Back"
 msgstr "\\ue000: 完成！打开软件选择  \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:332
+#: src/menu/BatchJobOptions.cpp:332
 msgid "\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"
 msgstr "\\ue002: 未定義設定檔 \\ue000: 確定！前往標題選擇 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/BatchJobOptions.cpp:340
+#: src/menu/BatchJobOptions.cpp:340
 msgid ""
 "\n"
 "Do you want to continue?\n"
@@ -3580,43 +3395,43 @@ msgstr ""
 "\n"
 "是否繼續？\n"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:67
+#: src/menu/MiiRepoSelectState.cpp:67
 msgid "Select Repo containing the Mii Template"
 msgstr "選擇包含Mii模板的存儲庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:68
+#: src/menu/MiiRepoSelectState.cpp:68
 msgid "\\ue000: To Select Template Mii Repo  \\ue001: Back"
 msgstr "\\ue000: 選擇模板 mii 存儲庫 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:71
+#: src/menu/MiiRepoSelectState.cpp:71
 msgid "Select Repo to Import Miis from"
 msgstr "選擇要從中導入Mii角色的存儲庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:72
+#: src/menu/MiiRepoSelectState.cpp:72
 msgid "\\ue000: To Select Miis to Import from this repo  \\ue001: Back"
 msgstr "\\ue000: 選擇要從此存儲庫導入的 mii \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:75
+#: src/menu/MiiRepoSelectState.cpp:75
 msgid "Select Repo to Export Miis to"
 msgstr "選擇要將Mii導出到的存儲庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:76
+#: src/menu/MiiRepoSelectState.cpp:76
 msgid "\\ue000: To Select Miis to Export to this repo  \\ue001: Back"
 msgstr "\\ue000: 選擇要匯出到此倉庫的 Mii 角色 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:79
+#: src/menu/MiiRepoSelectState.cpp:79
 msgid "Select Mii Repo to Manage"
 msgstr "選擇要管理的Mii儲存庫"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:80
+#: src/menu/MiiRepoSelectState.cpp:80
 msgid "\\ue000: Select Repo  \\ue001: Back"
 msgstr "\\ue000: 選擇存儲庫 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/MiiRepoSelectState.cpp:89
+#: src/menu/MiiRepoSelectState.cpp:89
 msgid "There are no repos matching selected filters."
 msgstr "沒有符合所選篩選條件的倉庫。"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:56
+#: src/menu/MainMenuState.cpp:57
 #, c-format
 msgid ""
 "Error\n"
@@ -3629,42 +3444,42 @@ msgstr ""
 "設定擁有者/群組時發生錯誤\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:74
+#: src/menu/MainMenuState.cpp:75
 msgid "Main menu"
 msgstr "主菜单"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:76
+#: src/menu/MainMenuState.cpp:77
 #, c-format
 msgid "   Wii U Save Management (%u Title%s)"
 msgstr "   Wii U保存資料管理（%u 軟體%s）"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:79
+#: src/menu/MainMenuState.cpp:80
 #, c-format
 msgid "   vWii Save Management (%u Title%s)"
 msgstr "   vWii保存資料管理（%u 軟體%s）"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:82
+#: src/menu/MainMenuState.cpp:83
 #, c-format
 msgid "   Wii U System Titles Save Management (%u Title%s)"
 msgstr "   Wii U 系統遊戲存檔管理 (%u 遊戲%s)"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:85
+#: src/menu/MainMenuState.cpp:86
 msgid "   Batch Tasks Management"
 msgstr "   批次任務管理"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:87
+#: src/menu/MainMenuState.cpp:88
 msgid "   BackupSet Management"
 msgstr "   存檔集管理"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:89
+#: src/menu/MainMenuState.cpp:90
 msgid "   Mii Management"
 msgstr "   Mii 管理"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:93
+#: src/menu/MainMenuState.cpp:94
 msgid "\\ue002: Options \\ue000: Select Mode"
 msgstr "\\ue002: 選項 \\ue000: 選擇模式"
 
-#: /home/qwii/hb/savemii/src/menu/MainMenuState.cpp:113
+#: src/menu/MainMenuState.cpp:113
 msgid ""
 "This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n"
 "\n"
@@ -3680,266 +3495,258 @@ msgstr ""
 "是否繼續？\n"
 "\n"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:17
+#: src/menu/ConfigMenuState.cpp:17
 msgid "Configuration Options"
 msgstr "设置"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:20
+#: src/menu/ConfigMenuState.cpp:20
 #, c-format
 msgid "   Language: %s"
 msgstr "   当前语言: %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:23
+#: src/menu/ConfigMenuState.cpp:23
 #, c-format
 msgid "   Always apply Backup Excludes: %s"
 msgstr "   始終套用備份排除: %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:27
+#: src/menu/ConfigMenuState.cpp:27
 #, c-format
 msgid "   Ask for backup dir conversion to titleName based format: %s"
 msgstr "   請求將備份目錄轉換為基於 標題名稱 的格式: %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:32
+#: src/menu/ConfigMenuState.cpp:32
 #, c-format
 msgid "   This session value: %s"
 msgstr "   本次會話值: %s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:37
+#: src/menu/ConfigMenuState.cpp:37
 #, c-format
 msgid "   Warn and don't allow restore of undefined profiles: %s"
 msgstr "   警告，請勿允許恢復未定義的設定檔：%s"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:45
+#: src/menu/ConfigMenuState.cpp:45
 msgid "\\ue045 SaveConfig  \\ue001: Back"
 msgstr "\\ue045 儲存配置 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/ConfigMenuState.cpp:138
+#: src/menu/ConfigMenuState.cpp:138
 msgid "Error processing configuration"
 msgstr "處理配置時出錯"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:89
+#: src/menu/TitleOptionsState.cpp:89
 #, c-format
 msgid "BackupSet: %s"
 msgstr "存檔集: %s"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:97
+#: src/menu/TitleOptionsState.cpp:97
 msgid "Destination:"
 msgstr "目標定位: "
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:102
+#: src/menu/TitleOptionsState.cpp:102
 msgid "   Copy profile savedata to a different profile."
 msgstr "   將設定檔儲存的資料複製到不同的設定檔。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:105
+#: src/menu/TitleOptionsState.cpp:105
 msgid "   Move profile savedata to a different profile."
 msgstr "   將檔案的存檔資料移至其他檔案。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:106
+#: src/menu/TitleOptionsState.cpp:106
 msgid "   - Target profile will be wiped."
 msgstr "   - 目標檔案將會被擦除。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:108
+#: src/menu/TitleOptionsState.cpp:108
 msgid "version"
 msgstr "Ver"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:114
+#: src/menu/TitleOptionsState.cpp:114
 msgid "Delete from:"
 msgstr "刪除: "
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:118
+#: src/menu/TitleOptionsState.cpp:118
 #, c-format
 msgid "Select %s [%s]:"
 msgstr "選擇 %s [%s]:"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:155
+#: src/menu/TitleOptionsState.cpp:155
 msgid "metadata + savedata"
 msgstr "元資料+保存資料"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:200
+#: src/menu/TitleOptionsState.cpp:200
 msgid "Source has 'common' savedata, only it will be saved"
 msgstr "來源存檔為‘通用’存檔，僅將保存。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:201
+#: src/menu/TitleOptionsState.cpp:201
 msgid "Source has 'common' savedata, it will also be saved"
 msgstr "來源存檔為‘通用’存檔，也將被保存。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:204
+#: src/menu/TitleOptionsState.cpp:204
 msgid "Source has 'common' savedata, only it will be restored"
 msgstr "來源存檔為‘通用’存檔，僅將恢復。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:205
+#: src/menu/TitleOptionsState.cpp:205
 msgid "Source has 'common' savedata, it will also be restored"
 msgstr "源存檔為‘通用’存檔，也將恢復。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:208
+#: src/menu/TitleOptionsState.cpp:208
 msgid "'common' savedata found, only it will be deleted"
 msgstr "發現‘通用’存檔，僅刪除此存檔。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:209
+#: src/menu/TitleOptionsState.cpp:209
 msgid "'common' savedata found, it will also be deleted"
 msgstr "發現‘通用’存檔，也將被刪除。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:212
+#: src/menu/TitleOptionsState.cpp:212
 msgid "Source has 'common' savedata, only it will be copied"
 msgstr "來源存檔為‘通用’存檔，僅將被複製。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:213
+#: src/menu/TitleOptionsState.cpp:213
 msgid "Source 'common' savedata, it will also be copied"
 msgstr "來源存檔為‘通用’存檔，也將被複製。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:231
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:264
+#: src/menu/TitleOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:264
 #, c-format
 msgid "(Target has 'common': %s)"
 msgstr "（目標有‘共同點’: %s）"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:232
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:249
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:265
+#: src/menu/TitleOptionsState.cpp:232 src/menu/TitleOptionsState.cpp:249
+#: src/menu/TitleOptionsState.cpp:265
 msgid "yes"
 msgstr "是"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:232
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:249
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:265
+#: src/menu/TitleOptionsState.cpp:232 src/menu/TitleOptionsState.cpp:249
+#: src/menu/TitleOptionsState.cpp:265
 msgid "no "
 msgstr "不"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:255
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:262
+#: src/menu/TitleOptionsState.cpp:255 src/menu/TitleOptionsState.cpp:262
 msgid "No 'common' save found."
 msgstr "未找到'common'保存資料。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:255
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:262
+#: src/menu/TitleOptionsState.cpp:255 src/menu/TitleOptionsState.cpp:262
 msgid "Source: No 'common' save found."
 msgstr "來源存檔：未找到‘通用’存檔。"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:286
+#: src/menu/TitleOptionsState.cpp:286
 msgid "Savedata in NAND"
 msgstr "將資料保存在 NAND 中"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:289
+#: src/menu/TitleOptionsState.cpp:289
 msgid "Select vWii data to wipe:"
 msgstr "選擇要清除的vWii："
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:292
+#: src/menu/TitleOptionsState.cpp:292
 msgid "full metadata + savedata"
 msgstr "完整元資料 + 儲存資料"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:294
+#: src/menu/TitleOptionsState.cpp:294
 msgid "savedata"
 msgstr "存檔資料"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:362
+#: src/menu/TitleOptionsState.cpp:362
 msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
 msgstr "\\ue002: 更改存檔集  \\ue000: 还原  \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:364
+#: src/menu/TitleOptionsState.cpp:364
 msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue002: 更改存檔集  \\ue000: 还原  \\ue045: 标记槽位  \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:372
+#: src/menu/TitleOptionsState.cpp:372
 msgid "Copy to Other Profile"
 msgstr "複製到其他個人資料"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:374
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:394
+#: src/menu/TitleOptionsState.cpp:374 src/menu/TitleOptionsState.cpp:394
 msgid "\\ue000: Copy  \\ue001: Back"
 msgstr "\\ue000: 複製 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:377
+#: src/menu/TitleOptionsState.cpp:377
 msgid "Move to Other Profile"
 msgstr "移動到其他檔案"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:379
+#: src/menu/TitleOptionsState.cpp:379
 msgid "\\ue000: Move  \\ue001: Back"
 msgstr "\\ue000：移動 \\ue001：後退"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:382
+#: src/menu/TitleOptionsState.cpp:382
 msgid "Import Loadiine"
 msgstr "从loadiine导入"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:384
+#: src/menu/TitleOptionsState.cpp:384
 msgid "\\ue000: Import  \\ue001: Back"
 msgstr "\\ue000: 導入 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:387
+#: src/menu/TitleOptionsState.cpp:387
 msgid "Export Loadiine"
 msgstr "导出到Loadiine"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:389
+#: src/menu/TitleOptionsState.cpp:389
 msgid "\\ue000: Export  \\ue001: Back"
 msgstr "\\ue000: 導出 \\ue001: 返回"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:392
+#: src/menu/TitleOptionsState.cpp:392
 msgid "Copy to Other Device"
 msgstr "复制到其它存储设备"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:803
+#: src/menu/TitleOptionsState.cpp:803
 msgid "No data selected to copyToOtherProfile"
 msgstr "未選擇要複製到其他設定檔的資料"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:805
+#: src/menu/TitleOptionsState.cpp:805
 msgid "No data selected to moveProfile"
 msgstr "未選擇要移動檔案的數據"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:807
+#: src/menu/TitleOptionsState.cpp:807
 msgid "No data selected to copy"
 msgstr "未選擇要複製的資料"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:836
+#: src/menu/TitleOptionsState.cpp:836
 msgid "Savedata succesfully backed up!"
 msgstr "存檔資料備份成功！"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:841
+#: src/menu/TitleOptionsState.cpp:841
 msgid "Savedata succesfully restored!"
 msgstr "存檔資料恢復成功！"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:846
+#: src/menu/TitleOptionsState.cpp:846
 msgid "Savedata succesfully wiped!"
 msgstr "存檔資料擦除成功！"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:852
+#: src/menu/TitleOptionsState.cpp:852
 msgid "Savedata succesfully moved!"
 msgstr "存檔資料移動成功！"
 
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:857
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:862
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:867
-#: /home/qwii/hb/savemii/src/menu/TitleOptionsState.cpp:871
+#: src/menu/TitleOptionsState.cpp:857 src/menu/TitleOptionsState.cpp:862
+#: src/menu/TitleOptionsState.cpp:867 src/menu/TitleOptionsState.cpp:871
 msgid "Savedata succesfully copied!"
 msgstr "存檔資料複製成功！"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:36
+#: src/menu/BatchTasksState.cpp:36
 msgid "Batch Tasks Menu"
 msgstr "批次任務選單"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:39
+#: src/menu/BatchTasksState.cpp:39
 msgid "   Batch Backup"
 msgstr "   批量備份"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:41
+#: src/menu/BatchTasksState.cpp:41
 msgid "   Batch Restore"
 msgstr "   批量还原"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:43
+#: src/menu/BatchTasksState.cpp:43
 msgid "   Batch Wipe"
 msgstr "   批次擦除"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:45
+#: src/menu/BatchTasksState.cpp:45
 msgid "   Batch Move to Other Profile"
 msgstr "   大量移動到其他檔案"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:47
+#: src/menu/BatchTasksState.cpp:47
 msgid "   Batch Copy to Other Profile"
 msgstr "   批量複製到其他設定檔"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:49
+#: src/menu/BatchTasksState.cpp:49
 msgid "   Batch Copy to Other Device"
 msgstr "   批量複製到其他設備"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:60
+#: src/menu/BatchTasksState.cpp:60
 msgid ""
 "Batch Restore allows you to restore all savedata from a BatchBackup \n"
 "* to the same user profiles\n"
@@ -3948,78 +3755,65 @@ msgid ""
 "Now it is not needed to run the game first to initialize the savedata."
 msgstr "批次恢復可讓您將批次備份中的所有存檔資料還原到以下位置：* 相同使用者設定檔；* 同一主機中的不同使用者；* 或已安裝遊戲的其他主機。現在無需先運行遊戲即可初始化存檔資料。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:63
+#: src/menu/BatchTasksState.cpp:63
 msgid "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
 msgstr "批次清除可讓您清除所有選定遊戲中屬於給定設定檔的存檔資料。它還可以偵測主機中未定義的設定檔的存檔資料。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:66
+#: src/menu/BatchTasksState.cpp:66
 msgid "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
 msgstr "批次移動到其他設定檔可讓您將存檔資料從一個使用者設定檔移至另一個使用者設定檔。無需複製數據，只需重命名資料夾，因此速度非常快。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:69
+#: src/menu/BatchTasksState.cpp:69
 msgid "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
 msgstr "大量複製到其他設定檔可讓您將存檔資料從一個使用者設定檔傳輸到另一個使用者設定檔。來源存檔資料將保持不變。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:72
+#: src/menu/BatchTasksState.cpp:72
 msgid "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
 msgstr "批量複製到其他設備允許您在 NAND 和 USB 數據 存檔之間已在兩種選擇配置中傳輸遊戲配置文件之間的所有遊戲配置文件。"
 
-#: /home/qwii/hb/savemii/src/menu/BatchTasksState.cpp:83
+#: src/menu/BatchTasksState.cpp:83
 msgid "\\ue002: Options \\ue000: Select Batch Task"
 msgstr "\\ue002: 選項 \\ue000: 選擇批次任務"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:137
+#: src/savemng.cpp:136
 msgid "Failed to open Loadiine game save directory."
 msgstr "打開Loadiine遊戲保存資料夾失敗。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:158
-#: /home/qwii/hb/savemii/src/savemng.cpp:175
+#: src/savemng.cpp:157 src/savemng.cpp:174
 msgid "Loadiine game folder not found."
 msgstr "未找到Loadiine遊戲資料夾。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:377
-#: /home/qwii/hb/savemii/src/savemng.cpp:489
-#: /home/qwii/hb/savemii/src/savemng.cpp:550
-#: /home/qwii/hb/savemii/src/savemng.cpp:961
-#: /home/qwii/hb/savemii/src/savemng.cpp:1152
-#: /home/qwii/hb/savemii/src/savemng.cpp:1252
-#: /home/qwii/hb/savemii/src/savemng.cpp:1316
-#: /home/qwii/hb/savemii/src/savemng.cpp:1378
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:14
+#: src/savemng.cpp:376 src/savemng.cpp:488 src/savemng.cpp:549
+#: src/savemng.cpp:965 src/savemng.cpp:1156 src/savemng.cpp:1256
+#: src/savemng.cpp:1320 src/savemng.cpp:1382 src/miisavemng.cpp:14
 msgid "Are you sure?"
 msgstr "你確定嗎？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:383
+#: src/savemng.cpp:382
 msgid "pre-copyToOtherDev backup"
 msgstr "预复制到其它设备备份"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:392
+#: src/savemng.cpp:391
 msgid "Copy failed."
 msgstr "複製失敗。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:402
-#: /home/qwii/hb/savemii/src/savemng.cpp:838
-#: /home/qwii/hb/savemii/src/savemng.cpp:991
+#: src/savemng.cpp:401 src/savemng.cpp:837 src/savemng.cpp:995
 msgid "source_user=-3 is not allowed for this task"
 msgstr "此任務不允許使用 source_user=-3"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:434
-#: /home/qwii/hb/savemii/src/savemng.cpp:870
+#: src/savemng.cpp:433 src/savemng.cpp:869
 msgid "Error copying common savedata."
 msgstr "複製常見保存資料時發生錯誤。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:447
-#: /home/qwii/hb/savemii/src/savemng.cpp:879
+#: src/savemng.cpp:446 src/savemng.cpp:878
 msgid "Error copying savedata."
 msgstr "複製已儲存的資料時發生錯誤。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:448
-#: /home/qwii/hb/savemii/src/savemng.cpp:518
-#: /home/qwii/hb/savemii/src/savemng.cpp:880
+#: src/savemng.cpp:447 src/savemng.cpp:517 src/savemng.cpp:879
 msgid "Error copying profile savedata."
 msgstr "複製設定檔儲存資料時發生錯誤。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:468
+#: src/savemng.cpp:467
 #, c-format
 msgid ""
 "%s\n"
@@ -4028,16 +3822,15 @@ msgstr ""
 "%s\n"
 "複製失敗。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:495
+#: src/savemng.cpp:494
 msgid "pre-copySavedataToOtherProfile backup"
 msgstr "pre-copySavedataToOtherProfile 備份"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:496
-#: /home/qwii/hb/savemii/src/savemng.cpp:557
+#: src/savemng.cpp:495 src/savemng.cpp:556
 msgid "Backup Failed - Replicate aborted !!"
 msgstr "備份失敗 - 複製中止！！"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:529
+#: src/savemng.cpp:528
 #, c-format
 msgid ""
 "%s\n"
@@ -4046,11 +3839,11 @@ msgstr ""
 "%s\n"
 "複製檔案失敗。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:556
+#: src/savemng.cpp:555
 msgid "pre-moveSavedataToOtherProfile backup"
 msgstr "將存檔資料移至其他檔案前備份"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:575
+#: src/savemng.cpp:574
 #, c-format
 msgid ""
 "Error deleting savedata folder\n"
@@ -4059,7 +3852,7 @@ msgstr ""
 "刪除存檔資料夾時發生錯誤\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:582
+#: src/savemng.cpp:581
 #, c-format
 msgid ""
 "Unable to rename folder \n"
@@ -4078,7 +3871,7 @@ msgstr ""
 "\n"
 "請還原備份，修復錯誤，然後重試"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:601
+#: src/savemng.cpp:600
 #, c-format
 msgid ""
 "%s\n"
@@ -4087,11 +3880,11 @@ msgstr ""
 "%s\n"
 "移動檔案失敗。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:731
+#: src/savemng.cpp:730
 msgid "Do you want to cancel batch backup?"
 msgstr "是否取消批量備份？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:756
+#: src/savemng.cpp:755
 #, c-format
 msgid ""
 "%s\n"
@@ -4106,49 +3899,47 @@ msgstr ""
 "目前為止的錯誤數：%d\n"
 "是否要繼續？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:810
+#: src/savemng.cpp:809
 msgid "BACKUP IN PROGRESS"
 msgstr "備份正在進行中"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:820
-#: /home/qwii/hb/savemii/src/savemng.cpp:905
+#: src/savemng.cpp:819 src/savemng.cpp:904
 msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
 msgstr "備份不會保留權限。這是一個系統遊戲，只有在您解決問題後備份才會繼續。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:823
-#: /home/qwii/hb/savemii/src/savemng.cpp:908
+#: src/savemng.cpp:822 src/savemng.cpp:907
 msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
 msgstr "備份不會保留權限。雖然在傳統模式下可以運行，但建議您先解決問題再重試。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:888
+#: src/savemng.cpp:887
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
 msgstr "警告 - 複製元資料 saveinfo.xml 時出錯。非關鍵錯誤。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:897
+#: src/savemng.cpp:896
 msgid "Error closing FAT32 chars translation file"
 msgstr "關閉FAT32字元轉換檔時出錯"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:909
+#: src/savemng.cpp:908
 msgid "WARNING - NO PERMS"
 msgstr "警告 - 無權限"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1020
+#: src/savemng.cpp:1024
 msgid "Error restoring common savedata."
 msgstr "恢復常見保存資料時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1033
+#: src/savemng.cpp:1037
 msgid "Error restoring savedata."
 msgstr "恢復已儲存的資料時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1034
+#: src/savemng.cpp:1038
 msgid "Error restoring profile savedata."
 msgstr "恢復個人資料保存資料時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1088
+#: src/savemng.cpp:1092
 msgid "Error setting permissions"
 msgstr "設定權限錯誤"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1149
+#: src/savemng.cpp:1153
 msgid ""
 "This option is a last resort in case something has gone wrong when\n"
 "restoring data. It will wipe metadata and savedata, and the title \n"
@@ -4163,35 +3954,32 @@ msgstr ""
 "\n"
 "繼續嗎？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1149
-#: /home/qwii/hb/savemii/src/savemng.cpp:1152
-#: /home/qwii/hb/savemii/src/savemng.cpp:1378
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:14
+#: src/savemng.cpp:1153 src/savemng.cpp:1156 src/savemng.cpp:1382
+#: src/miisavemng.cpp:14
 msgid "Hm, are you REALLY sure?"
 msgstr "蛤？你真的確定嗎？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1157
-#: /home/qwii/hb/savemii/src/savemng.cpp:1255
+#: src/savemng.cpp:1161 src/savemng.cpp:1259
 msgid "Backup current savedata first?"
 msgstr "先備份當前的保存數據？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1158
+#: src/savemng.cpp:1162
 msgid "pre-Wipe backup"
 msgstr "预删除备份"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1159
+#: src/savemng.cpp:1163
 msgid "Backup Failed - Wipe aborted !!"
 msgstr "備份失敗 - 擦除中止！！"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1198
+#: src/savemng.cpp:1202
 msgid "Error wiping common savedata."
 msgstr "擦除常見保存資料時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1202
+#: src/savemng.cpp:1206
 msgid "Error deleting common folder."
 msgstr "刪除公共資料夾時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1203
+#: src/savemng.cpp:1207
 #, c-format
 msgid ""
 "%s \n"
@@ -4204,23 +3992,23 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1210
+#: src/savemng.cpp:1214
 msgid "Error wiping savedata."
 msgstr "擦除已儲存的資料時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1211
+#: src/savemng.cpp:1215
 msgid "Error wiping profile savedata."
 msgstr "擦除個人資料保存資料時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1216
+#: src/savemng.cpp:1220
 msgid "Error deleting savedata folder."
 msgstr "刪除儲存資料資料夾時發生錯誤。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1217
+#: src/savemng.cpp:1221
 msgid "Error deleting profile savedata folder."
 msgstr "刪除設定檔儲存資料資料夾時發生錯誤。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1218
+#: src/savemng.cpp:1222
 #, c-format
 msgid ""
 "%s \n"
@@ -4233,15 +4021,15 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1228
+#: src/savemng.cpp:1232
 msgid "Error wiping metadata+savedata."
 msgstr "擦除元資料和存檔資料時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1233
+#: src/savemng.cpp:1237
 msgid "Error deleting title folder."
 msgstr "刪除資料夾時出錯。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1234
+#: src/savemng.cpp:1238
 #, c-format
 msgid ""
 "%s \n"
@@ -4254,21 +4042,17 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1383
-#: /home/qwii/hb/savemii/src/savemng.cpp:1404
+#: src/savemng.cpp:1387 src/savemng.cpp:1408
 msgid "Error setting path. Aborting."
 msgstr "错误的路径设置！已取消操作。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1389
-#: /home/qwii/hb/savemii/src/savemng.cpp:1391
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:21
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:23
+#: src/savemng.cpp:1393 src/savemng.cpp:1395 src/miisavemng.cpp:21
+#: src/miisavemng.cpp:23
 #, c-format
 msgid "Failed to delete slot %u."
 msgstr "无法删除槽位%u。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1393
-#: /home/qwii/hb/savemii/src/miisavemng.cpp:25
+#: src/savemng.cpp:1397 src/miisavemng.cpp:25
 msgid ""
 "Folder $s\n"
 "does not exist."
@@ -4276,21 +4060,20 @@ msgstr ""
 "資料夾 $s\n"
 "不存在"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1400
+#: src/savemng.cpp:1404
 msgid "Wipe BackupSet - Are you sure?"
 msgstr "删除存檔集 - 是否继续？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1400
+#: src/savemng.cpp:1404
 msgid "Wipe BackupSet - Hm, are you REALLY sure?"
 msgstr "删除存檔集 - 你真的真的要这样做吗？？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1410
-#: /home/qwii/hb/savemii/src/savemng.cpp:1414
+#: src/savemng.cpp:1414 src/savemng.cpp:1418
 #, c-format
 msgid "Failed to delete backupSet %s."
 msgstr "无法删除存檔集%s。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1418
+#: src/savemng.cpp:1422
 #, c-format
 msgid ""
 "Folder %s\n"
@@ -4299,7 +4082,7 @@ msgstr ""
 "資料夾 %s\n"
 "不存在"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1464
+#: src/savemng.cpp:1468
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4318,7 +4101,7 @@ msgstr ""
 "- 已中止：%d\n"
 "- 已跳過：%d\n"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1466
+#: src/savemng.cpp:1470
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4337,7 +4120,7 @@ msgstr ""
 "- 已中止：%d\n"
 "- 已跳過：%d（​​包括 %d 個未初始化的配置檔案）\n"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1475
+#: src/savemng.cpp:1479
 msgid ""
 "\n"
 "Failed Titles:"
@@ -4345,7 +4128,7 @@ msgstr ""
 "\n"
 "失敗的標題: "
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1514
+#: src/savemng.cpp:1518
 #, c-format
 msgid ""
 "Unable to merge folder '%08x%08x' with existent folder\n"
@@ -4361,7 +4144,7 @@ msgstr ""
 "\n"
 "備份/還原作業仍將使用舊的「%08x%08x」資料夾"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1521
+#: src/savemng.cpp:1525
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -4384,7 +4167,7 @@ msgstr ""
 "\n"
 "備份/恢復操作仍將使用舊的‘%08x%08x’資料夾"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1526
+#: src/savemng.cpp:1530
 #, c-format
 msgid ""
 "Unable to rename folder '%08x%08x' to\n"
@@ -4404,7 +4187,7 @@ msgstr ""
 "\n"
 "備份/還原作業仍將使用舊的「%08x%08x」資料夾"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1545
+#: src/savemng.cpp:1549
 #, c-format
 msgid ""
 "Failed to delete (test) folder \n"
@@ -4419,12 +4202,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1577
+#: src/savemng.cpp:1581
 #, c-format
 msgid "Migrating from folder: %08x%08x"
 msgstr "從資料夾移轉: %08x%08x"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1583
+#: src/savemng.cpp:1587
 #, c-format
 msgid ""
 "Error renaming/moving '%08x%08x' to \n"
@@ -4442,7 +4225,7 @@ msgstr ""
 "\n"
 "您想繼續嗎？\n"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1610
+#: src/savemng.cpp:1614
 #, c-format
 msgid ""
 "Errors so far in this (sub)task: %d\n"
@@ -4451,7 +4234,7 @@ msgstr ""
 "此（子）任務目前為止的錯誤: %d \n"
 "您想繼續嗎？"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1628
+#: src/savemng.cpp:1632
 #, c-format
 msgid ""
 "Cannot move %s from '%08x%08x' to\n"
@@ -4466,7 +4249,7 @@ msgstr ""
 "\n"
 "檔案已存在於目標資料夾中。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1636
+#: src/savemng.cpp:1640
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -4485,7 +4268,7 @@ msgstr ""
 "\n"
 "未嘗試移動！"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1644
+#: src/savemng.cpp:1648
 #, c-format
 msgid ""
 "Cannot rename folder '%08x%08x/%s' to\n"
@@ -4500,7 +4283,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1653
+#: src/savemng.cpp:1657
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -4519,7 +4302,7 @@ msgstr ""
 "\n"
 "遷移可能不完整"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1666
+#: src/savemng.cpp:1670
 #, c-format
 msgid ""
 "Error merging folders: after moving all slots, folder\n"
@@ -4534,7 +4317,7 @@ msgstr ""
 "\n"
 "仍然不為空，無法刪除。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1672
+#: src/savemng.cpp:1676
 #, c-format
 msgid ""
 "Failed to delete (legacy) folder\n"
@@ -4549,7 +4332,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1707
+#: src/savemng.cpp:1711
 #, c-format
 msgid ""
 "Backup contains savedata for the profile '%s',\n"
@@ -4558,12 +4341,12 @@ msgstr ""
 "備份包含設定檔 '%s' 的保存數據，\n"
 "但此設定檔在此控制台中不存在"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1746
+#: src/savemng.cpp:1750
 #, c-format
 msgid "... and %d more"
 msgstr "... 以及 %d 個"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1911
+#: src/savemng.cpp:1915
 #, c-format
 msgid ""
 "Error setting quota for \n"
@@ -4572,15 +4355,15 @@ msgstr ""
 "設定配額錯誤 \n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1938
+#: src/savemng.cpp:1942
 msgid "Error creating init data"
 msgstr "創建初始化資料時出錯"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:1987
+#: src/savemng.cpp:1991
 msgid "Error creating vWii init data"
 msgstr "建立 vWii 初始化資料時出錯"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:2021
+#: src/savemng.cpp:2025
 #, c-format
 msgid ""
 "Sourcce saveinfo\n"
@@ -4591,36 +4374,31 @@ msgstr ""
 "%s\n"
 "。"
 
-#: /home/qwii/hb/savemii/src/savemng.cpp:2054
+#: src/savemng.cpp:2058
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical.\n"
-msgstr ""
-"警告 - 複製元資料 saveinfo.xml 時出錯。非嚴重錯誤。\n"
+msgstr "警告 - 複製元資料 saveinfo.xml 時出錯。非嚴重錯誤。\n"
 
-#: /home/qwii/hb/savemii/src/Metadata.cpp:82
-#: /home/qwii/hb/savemii/src/Metadata.cpp:94
+#: src/Metadata.cpp:82 src/Metadata.cpp:94
 msgid ", from "
 msgstr "，来自"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:34
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:51
-#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:23
+#: src/cfg/ExcludesCfg.cpp:34 src/cfg/ExcludesCfg.cpp:51
+#: src/cfg/GlobalCfg.cpp:23
 #, c-format
 msgid "Error creating JSON object: %s"
 msgstr "創建 JSON 物件時出錯: %s"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:41
+#: src/cfg/ExcludesCfg.cpp:41
 #, c-format
 msgid "Error creating JSON array: %s"
 msgstr "建立 JSON 陣列時出錯: %s"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:74
-#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:35
+#: src/cfg/ExcludesCfg.cpp:74 src/cfg/GlobalCfg.cpp:35
 #, c-format
 msgid "Error dumping JSON object: %s"
 msgstr "轉儲 JSON 物件時出錯: %s"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:92
-#: /home/qwii/hb/savemii/src/cfg/GlobalCfg.cpp:51
+#: src/cfg/ExcludesCfg.cpp:92 src/cfg/GlobalCfg.cpp:51
 #, c-format
 msgid ""
 "Error decoding JSON file\n"
@@ -4635,12 +4413,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:98
+#: src/cfg/ExcludesCfg.cpp:98
 #, c-format
 msgid "Error: unexpected format (%s not an array)"
 msgstr "錯誤: 格式意外（%s不是數組）"
 
-#: /home/qwii/hb/savemii/src/cfg/ExcludesCfg.cpp:148
+#: src/cfg/ExcludesCfg.cpp:148
 #, c-format
 msgid ""
 "Error parsing values in elements:\n"
@@ -4649,7 +4427,7 @@ msgstr ""
 "解析元素中的值時出錯::\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:28
+#: src/cfg/BaseCfg.cpp:28
 #, c-format
 msgid ""
 "Critical - Path is not a directory:\n"
@@ -4660,7 +4438,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:78
+#: src/cfg/BaseCfg.cpp:78
 #, c-format
 msgid ""
 "cfgPath was no initialized and cannot be used:\n"
@@ -4671,7 +4449,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: /home/qwii/hb/savemii/src/cfg/BaseCfg.cpp:96
+#: src/cfg/BaseCfg.cpp:96
 #, c-format
 msgid ""
 "Error reading file\n"
@@ -4685,4 +4463,3 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
-
