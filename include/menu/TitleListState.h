@@ -13,7 +13,10 @@
 class TitleListState : public ApplicationState {
 public:
     explicit TitleListState(Title *titles, int titlesCount, bool isWiiU) : titles(titles),
-                                                                           titlesCount(titlesCount), isWiiU(isWiiU) {}
+                                                                           titlesCount(titlesCount), isWiiU(isWiiU) {
+                BackupSetList::setBackupSetEntry(BackupSetList::getSelectedEntryForIndividualTitles());
+                BackupSetList::setBackupSetSubPath();
+                                                                           }
     enum eState {
         STATE_TITLE_LIST,
         STATE_DO_SUBSTATE,

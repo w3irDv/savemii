@@ -114,6 +114,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
             if (finalScreen) {
+                BackupSetList::setSelectedEntryForIndividualTitles(cursorPos + scroll); 
                 char message[256];
                 const char *messageTemplate = _("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
                 snprintf(message, 256, messageTemplate,
