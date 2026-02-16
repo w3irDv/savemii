@@ -66,8 +66,8 @@ void AccountUtils::getAccountsWiiU() {
 /// @param title
 /// @param slot_or_version
 /// @param jobType
-/// @param gameBackupPath
-void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupPath) {
+/// @param gameBackupBasePath
+void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupBasePath) {
     vol_accn = 0;
     if (vol_acc != nullptr)
         free(vol_acc);
@@ -77,7 +77,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
     std::string path;
     switch (jobType) {
         case RESTORE:
-            srcPath = StringUtils::stringFormat("%s/%u", gameBackupPath.c_str(), slot_or_version);
+            srcPath = StringUtils::stringFormat("%s/%u", gameBackupBasePath.c_str(), slot_or_version);
             break;
         case BACKUP:
         case WIPE_PROFILE:
@@ -90,9 +90,9 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         }
         case importLoadiine:
             if (slot_or_version != 0)
-                srcPath = StringUtils::stringFormat("%s/v%u", gameBackupPath.c_str(), slot_or_version);
+                srcPath = StringUtils::stringFormat("%s/v%u", gameBackupBasePath.c_str(), slot_or_version);
             else
-                srcPath = gameBackupPath;
+                srcPath = gameBackupBasePath;
             break;
         case exportLoadiine:
             path = (title->is_Wii ? "storage_slcc01:/title" : (title->isTitleOnUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));

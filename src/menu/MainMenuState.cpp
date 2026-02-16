@@ -202,6 +202,17 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             } else {
                 Console::showMessage(ERROR_CONFIRM, "%s %s", path.c_str(), strerror(errno));
             }
+            path = "storage_usb01:/usr/save/00050000/10184e00/user/common/file_complain";
+            fp = fopen(path.c_str(), "w");
+            if (fp != nullptr) {
+                fprintf(fp, "Prova\n");
+                fclose(fp);
+                fserror = FSARename(FSUtils::handle, "/vol/storage_usb01/usr/save/00050000/10184e00/user/common/file_complain", "/vol/storage_usb01/usr/save/00050000/10184e00/user/common/file<complain");
+                Console::showMessage(ERROR_CONFIRM, "%s %s", FSAGetStatusStr(fserror), path.c_str());
+            } else {
+                Console::showMessage(ERROR_CONFIRM, "%s %s", path.c_str(), strerror(errno));
+            }
+
             FSUtils::flushVol(path);
 
             return SUBSTATE_RUNNING;
@@ -210,6 +221,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             unlink("storage_slcc01:/title/00010000/534d4e50/data/file:ko");
             unlink("storage_usb01:/usr/save/00050000/10101e00/user/8000000b/file:complain");
             unlink("storage_usb01:/usr/save/00050000/1010ed00/user/common/file<complain");
+            unlink("storage_usb01:/usr/save/00050000/10184e00/user/common/file<complain");
             return SUBSTATE_RUNNING;
         } 
     } else if (this->state == STATE_DO_SUBSTATE) {

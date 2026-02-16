@@ -1050,7 +1050,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             StatManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/common", lowID);
             StatManager::enable_filtered_stat = true;
             StatManager::needs_profile_translation = false;
-            FAT32EscapeFileManager::source_profile_subpath = common;
+            FAT32EscapeFileManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/common", lowID);
             FAT32EscapeFileManager::enable_filtered_escape_path = true;
             FAT32EscapeFileManager::needs_profile_translation = false;
             break;
