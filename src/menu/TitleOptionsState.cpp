@@ -794,8 +794,10 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case MOVE_PROFILE:
                 case COPY_TO_OTHER_DEVICE:
                 case RESTORE:
+                case exportLoadiine:
+                case importLoadiine:
                     if (!(common || sourceHasRequestedSavedata)) {
-                        if (this->task == BACKUP)
+                        if (this->task == BACKUP || this->task == exportLoadiine)
                             Console::showMessage(ERROR_SHOW, _("No data selected to backup"));
                         else if (this->task == WIPE_PROFILE)
                             Console::showMessage(ERROR_SHOW, _("No data selected to wipe"));
@@ -805,7 +807,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                             Console::showMessage(ERROR_SHOW, _("No data selected to moveProfile"));
                         else if (this->task == COPY_TO_OTHER_DEVICE)
                             Console::showMessage(ERROR_SHOW, _("No data selected to copy"));
-                        else if (this->task == RESTORE)
+                        else if (this->task == RESTORE || this->task == importLoadiine)
                             Console::showMessage(ERROR_SHOW, _("No data selected to restore"));
                         return SUBSTATE_RUNNING;
                     }
@@ -863,12 +865,14 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateCopyToOtherDeviceData();
                     break;
                 case importLoadiine:
-                    if (importFromLoadiine(&this->title, source_user, wiiu_user, common, version, loadiine_mode))
+                    if (importFromLoadiine(&this->title, source_user_, wiiu_user, common, version, loadiine_mode))
                         Console::showMessage(OK_SHOW, _("Savedata succesfully copied!"));
+                    updateLoadiine();
                     break;
                 case exportLoadiine:
-                    if (exportToLoadiine(&this->title, source_user, wiiu_user, common, version, loadiine_mode, USE_SD_OR_STORAGE_PROFILES))
+                    if (exportToLoadiine(&this->title, source_user_, wiiu_user, common, version, loadiine_mode, USE_SD_OR_STORAGE_PROFILES))
                         Console::showMessage(OK_SHOW, _("Savedata succesfully copied!"));
+                    updateLoadiine();
                     break;
                 default:;
             }
@@ -900,8 +904,10 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             }
             if (this->substateCalled == STATE_BACKUPSET_MENU) {
                 slot = 0;
-                gameBackupBasePath = getDynamicBackupBasePath(&this->title);
-                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath);
+                if (this->task == RESTORE) {
+                    gameBackupBasePath = getDynamicBackupBasePath(&this->title);
+                    AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath);
+                }
                 cursorPos = 0;
                 updateRestoreData();
             }
@@ -1056,7 +1062,10 @@ void TitleOptionsState::updateMoveCopyProfileData() {
 
 void TitleOptionsState::updateLoadiine() {
     updateLoadiineVersion();
-    updateLoadiineMode(source_user);
+    if (task == importLoadiine)
+        updateLoadiineMode(source_user);
+    else
+        updateLoadiineMode(wiiu_user);
     updateHasCommonSaveInTarget();
     updateHasCommonSaveInSource();
     updateSourceHasRequestedSavedata();
@@ -1080,9 +1089,12 @@ void TitleOptionsState::updateLoadiineVersion() {
 }
 
 void TitleOptionsState::updateSlotContentFlagForLoadiine() {
-    if (task == importLoadiine) {
-        emptySlot = !(hasCommonSaveInSource || sourceHasRequestedSavedata);
-    } else {
-        emptySlot = !(hasCommonSaveInTarget || hasTargetUserData);
+
+    emptySlot = true;
+    if (FSUtils::checkEntry(gameBackupBasePath.c_str()) == 2) {
+        std::string srcPath = gameBackupBasePath;
+        if (version != 0)
+            srcPath.append(StringUtils::stringFormat("/v%u", version));
+        emptySlot = FSUtils::folderEmpty(srcPath.c_str());
     }
 }

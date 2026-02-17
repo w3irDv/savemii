@@ -282,7 +282,6 @@ bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_
                 snprintf(srcPath, PATH_SIZE, "%.1000s/%.20s", gamePath, user);
         }
     }
-
     if (FSUtils::checkEntry(srcPath) == 2)
         if (!FSUtils::folderEmpty(srcPath))
             return true;
@@ -1271,12 +1270,15 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
         sprintf(srcPath + strlen(srcPath), "/v%i", version);
     //std::string userID = getUserID();
 
-    uint32_t srcOffset = strlen(srcPath);
-    sprintf(srcPath + srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
-
     sprintf(dstPath, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
-    Console::showMessage(WARNING_CONFIRM, "createFolder %s", dstPath);
-    /*
+
+    uint32_t srcOffset = strlen(srcPath);
+    uint32_t dstOffset = strlen(dstPath);
+
+    if (source_user > -1) {
+        sprintf(srcPath + srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
+        Console::showMessage(WARNING_CONFIRM, "createFolder %s", dstPath);
+        /*
     if (!FSUtils::createFolderUnlocked(dstPath)) {
         Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
         return false;
@@ -1287,18 +1289,18 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
         return false;
     }
         */
-    uint32_t dstOffset = strlen(dstPath);
-    sprintf(dstPath + dstOffset, "/%s", AccountUtils::getWiiUAcc()[wiiu_user].persistentID);
-    //if (FSUtils::checkEntry(srcPath) == 2) {
-    Console::showMessage(WARNING_CONFIRM, "copyDir %s > %s", srcPath, dstPath);
-    /*
+        sprintf(dstPath + dstOffset, "/%s", AccountUtils::getWiiUAcc()[wiiu_user].persistentID);
+        //if (FSUtils::checkEntry(srcPath) == 2) {
+        Console::showMessage(WARNING_CONFIRM, "copyDir %s > %s", srcPath, dstPath);
+        /*
     FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
     if (!FSUtils::copyDir(srcPath, dstPath)) {
         Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
         return false;
     }
         */
-    //}
+        //}
+    }
     if (common) {
         if (loadiine_mode == LOADIINE_SHARED_SAVEDATA)
             strcpy(srcPath + srcOffset, "/c\0");
@@ -1336,31 +1338,29 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
     sprintf(srcPath, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
     uint32_t srcOffset = strlen(srcPath);
 
-    if (loadiine_mode == LOADIINE_SHARED_SAVEDATA) {
-        sprintf(srcPath + srcOffset, "/u");
-    } else {
+    if (source_user > -1) {
         if (accountSource == USE_SD_OR_STORAGE_PROFILES)
             sprintf(srcPath + srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
         else
-            sprintf(srcPath + srcOffset, "/%s", AccountUtils::getWiiUAcc()[source_user].persistentID);
-    }
+            sprintf(srcPath + srcOffset, "/%s", AccountUtils::getWiiUAcc()[source_user].persistentID); // this option would need changes in TitleOptionsState, that assumes that source uses is from getVolAcc.
 
-    Console::showMessage(WARNING_CONFIRM, "createFolder %s", dstPath);
-    /*
+        Console::showMessage(WARNING_CONFIRM, "createFolder %s", dstPath);
+        /*
     if (!FSUtils::createFolder(dstPath)) {
         Console::showMessage(ERROR_SHOW, _("Failed to export savedata to loadiine."));
         return false;
     }
     */
-    //if (FSUtils::checkEntry(srcPath) == 2) {
-    Console::showMessage(WARNING_CONFIRM, "copyDir %s > %s", srcPath, dstPath);
-    /*
+        //if (FSUtils::checkEntry(srcPath) == 2) {
+        Console::showMessage(WARNING_CONFIRM, "copyDir %s > %s", srcPath, dstPath);
+        /*
     if (!FSUtils::copyDir(srcPath, dstPath)) {
         Console::showMessage(ERROR_SHOW, _("Failed to export savedata to loadiine."));
         return false;
     }
         */
-    //}
+        //}
+    }
     if (common) {
         if (loadiine_mode == LOADIINE_SHARED_SAVEDATA)
             strcpy(dstPath + dstOffset, "/c\0");
@@ -2088,18 +2088,18 @@ bool setOwnerAndModeForTitle(Title *title) {
         group = title->groupID;
     }
     //Console::showMessage(ERROR_CONFIRM, "%08x - %08x - %08x - %s", owner, group, mode, srcPath.c_str());
-    
+
     FSError fserror;
     FSUtils::setOwnerAndModeRec(owner, group, mode, srcPath, fserror);
 
-    
+
     if (isWii)
         FSUtils::setOwnerAndMode(owner, group, (FSMode) 0x600, srcPath, fserror);
     else
         FSUtils::setOwnerAndMode(0x100000f6, 0x400, (FSMode) 0x600, srcPath, fserror);
-        
+
     FSUtils::flushVol(srcPath);
-    
+
     return true;
 }
 
@@ -2109,7 +2109,7 @@ bool setLegacyOwnerAndModeForTitle(Title *title) {
     uint32_t owner = 0x1004e200;
     uint32_t group = 0x400;
     FSMode mode = (FSMode) 0x666;
-    
+
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
     InProgress::immediateAbort = false;
@@ -2125,11 +2125,11 @@ bool setLegacyOwnerAndModeForTitle(Title *title) {
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
     //Console::showMessage(ERROR_CONFIRM, "%08x - %08x - %08x - %s", owner, group, mode, srcPath.c_str());
-    
+
     FSError fserror;
     FSUtils::setOwnerAndModeRec(owner, group, mode, srcPath, fserror);
 
     FSUtils::flushVol(srcPath);
-    
+
     return true;
 }
