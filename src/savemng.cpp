@@ -178,7 +178,6 @@ bool getLoadiineSaveVersionList(std::vector<unsigned int> &versionList, const ch
     unsigned int i = 0;
     versionList.clear();
     versionList.push_back(0);
-    unsigned int max_version = 0;
     struct dirent *data;
     while (i < 256 && (data = readdir(dir)) != nullptr)
         if (((data->d_type & DT_DIR) != 0) && (data->d_name[0] == 'v')) {
@@ -186,12 +185,12 @@ bool getLoadiineSaveVersionList(std::vector<unsigned int> &versionList, const ch
             unsigned int version_number = strtoul((data->d_name) + 1, nullptr, 10);
             if (errno == EINVAL || errno == ERANGE)
                 continue;
-            if (max_version < version_number)
-                max_version = version_number;
             versionList.push_back(version_number);
             i++;
         }
-    // fill up to 256 values ...
+    // sort & fill up to 256 values ...
+    std::sort(versionList.begin(),versionList.end());
+    unsigned int max_version = versionList.back();
     unsigned int offset = 1;
     for (; i < 256; i++) {
         versionList.push_back(max_version + offset++);
@@ -1268,38 +1267,27 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
         return false;
     if (version != 0)
         sprintf(srcPath + strlen(srcPath), "/v%i", version);
-    //std::string userID = getUserID();
 
     sprintf(dstPath, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
+
+    if (!FSUtils::createFolderUnlocked(dstPath)) {
+        Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
+        return false;
+    }
 
     uint32_t srcOffset = strlen(srcPath);
     uint32_t dstOffset = strlen(dstPath);
 
     if (source_user > -1) {
         sprintf(srcPath + srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
-        Console::showMessage(WARNING_CONFIRM, "createFolder %s", dstPath);
-        /*
-    if (!FSUtils::createFolderUnlocked(dstPath)) {
-        Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
-        return false;
-    }
-
-    if (!FSUtils::createFolder(dstPath)) {
-        Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
-        return false;
-    }
-        */
         sprintf(dstPath + dstOffset, "/%s", AccountUtils::getWiiUAcc()[wiiu_user].persistentID);
-        //if (FSUtils::checkEntry(srcPath) == 2) {
-        Console::showMessage(WARNING_CONFIRM, "copyDir %s > %s", srcPath, dstPath);
-        /*
-    FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
-    if (!FSUtils::copyDir(srcPath, dstPath)) {
-        Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
-        return false;
-    }
-        */
-        //}
+        if (FSUtils::checkEntry(srcPath) == 2) {
+            FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
+            if (!FSUtils::copyDir(srcPath, dstPath)) {
+                Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
+                return false;
+            }
+        }
     }
     if (common) {
         if (loadiine_mode == LOADIINE_SHARED_SAVEDATA)
@@ -1307,13 +1295,12 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
         else
             strcpy(srcPath + srcOffset, "/common\0");
         strcpy(dstPath + dstOffset, "/common\0");
-        Console::showMessage(WARNING_CONFIRM, "common copyDir %s > %s", srcPath, dstPath);
-        /*
+
         FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->commonSaveSize);
-        if (!FSUtils::copyDir(srcPath, dstPath))
-            Console::showMessage(ERROR_SHOW, _("Common save not found."));
-        return false;
-        */
+        if (!FSUtils::copyDir(srcPath, dstPath)) {
+            Console::showMessage(ERROR_SHOW, _("Error restoring common savedata."));
+            return false;
+        }
     }
     return true;
 }
@@ -1332,34 +1319,33 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
         return false;
     if (version != 0)
         sprintf(dstPath + strlen(dstPath), "/v%u", version);
-    uint32_t dstOffset = strlen(dstPath);
-    sprintf(dstPath + dstOffset, "/%s", AccountUtils::getVolAcc()[wiiu_user].persistentID);
+
+    if (savemng::firstSDWrite)
+        sdWriteDisclaimer();
+
+    if (!FSUtils::createFolder(dstPath)) {
+        Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
+        return false;
+    }
 
     sprintf(srcPath, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
+
     uint32_t srcOffset = strlen(srcPath);
+    uint32_t dstOffset = strlen(dstPath);
 
     if (source_user > -1) {
+        sprintf(dstPath + dstOffset, "/%s", AccountUtils::getVolAcc()[wiiu_user].persistentID);
         if (accountSource == USE_SD_OR_STORAGE_PROFILES)
             sprintf(srcPath + srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
         else
             sprintf(srcPath + srcOffset, "/%s", AccountUtils::getWiiUAcc()[source_user].persistentID); // this option would need changes in TitleOptionsState, that assumes that source uses is from getVolAcc.
 
-        Console::showMessage(WARNING_CONFIRM, "createFolder %s", dstPath);
-        /*
-    if (!FSUtils::createFolder(dstPath)) {
-        Console::showMessage(ERROR_SHOW, _("Failed to export savedata to loadiine."));
-        return false;
-    }
-    */
-        //if (FSUtils::checkEntry(srcPath) == 2) {
-        Console::showMessage(WARNING_CONFIRM, "copyDir %s > %s", srcPath, dstPath);
-        /*
-    if (!FSUtils::copyDir(srcPath, dstPath)) {
-        Console::showMessage(ERROR_SHOW, _("Failed to export savedata to loadiine."));
-        return false;
-    }
-        */
-        //}
+        if (FSUtils::checkEntry(srcPath) == 2) {
+            if (!FSUtils::copyDir(srcPath, dstPath)) {
+                Console::showMessage(ERROR_SHOW, _("Failed to export savedata to loadiine."));
+                return false;
+            }
+        }
     }
     if (common) {
         if (loadiine_mode == LOADIINE_SHARED_SAVEDATA)
@@ -1367,13 +1353,10 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
         else
             strcpy(dstPath + dstOffset, "/common\0");
         strcpy(srcPath + srcOffset, "/common\0");
-        Console::showMessage(WARNING_CONFIRM, "common copyDir %s > %s", srcPath, dstPath);
-        /*
         if (!FSUtils::copyDir(srcPath, dstPath)) {
-            Console::showMessage(ERROR_SHOW, _("Common save not found."));
+            Console::showMessage(ERROR_SHOW, _("Error copying common savedata."));
             return false;
         }
-            */
     }
     return true;
 }
