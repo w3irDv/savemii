@@ -162,6 +162,11 @@ add_loadiine_shared_account:
     if (jobType == exportLoadiine || jobType == importLoadiine) {
         vol_accn++;
         initial_index = 1;
+        if (profiles.size() == 0){ // ARTIFICIAL USER TO FORCE UNIQUE LOADIINE SAVEDATA MODE
+            initial_index++;
+            vol_accn++;
+        }
+
     }
 
     vol_acc = (Account *) malloc(vol_accn * sizeof(Account));
@@ -172,7 +177,17 @@ add_loadiine_shared_account:
         vol_acc[0].pID = 0;
         vol_acc[0].slot = 0;
         strcpy(vol_acc[0].miiName, "loadiine");
+
+        // USER CAN FORCE LOADIINE_UNIQUE_MODE
+        if (profiles.size() == 0) { // if we select this user (that will appear as an empty profile), loadiine unique mode will be used and we will find 'common' folder for games with no profiles)
+            strcpy(vol_acc[0].persistentID, "shared");
+            strcpy(vol_acc[1].persistentID, "unique");
+            vol_acc[1].pID = 0;
+            vol_acc[1].slot = 0;
+            strcpy(vol_acc[1].miiName, "loadiine");
+        }
     }
+
 
     int i = initial_index;
     for (const uint32_t &pID : profiles) {
