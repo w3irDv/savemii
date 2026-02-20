@@ -658,16 +658,12 @@ msgstr ""
 "\n"
 "注意: 如果您尚未执行此操作，请尝试在恢复之前擦除保存数据"
 
-#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:410
 #, c-format
 msgid ""
-"Error creating permission file - Backup/Restore is not reliable\n"
-"Errors so far: %d\n"
-"Do you want to continue?"
+"Error creating permission file - Backup/Restore is not reliable"
 msgstr ""
-"创建权限文件时出错 - 备份/恢复功能不可靠\n"
-"目前为止的错误数：%d\n"
-"是否继续？"
+"创建权限文件时出错 - 备份/恢复功能不可靠"
 
 #: src/utils/FSUtils.cpp:428
 #, c-format
@@ -729,6 +725,17 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#: src/utils/FSUtils.cpp:486
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"创建权限文件时出错 - 备份/恢复功能不可靠\n"
+"目前为止的错误数：%d\n"
+"是否继续？"
 
 #: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
 #: src/utils/FSUtils.cpp:561

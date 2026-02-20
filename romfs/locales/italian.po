@@ -662,16 +662,12 @@ msgstr ""
 "Attenzione: se non l'hai ancora fatto, prova a cancellare i dati salvati \n"
 "prima di ripristinare"
 
-#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:410
 #, c-format
 msgid ""
-"Error creating permission file - Backup/Restore is not reliable\n"
-"Errors so far: %d\n"
-"Do you want to continue?"
+"Error creating permission file - Backup/Restore is not reliable"
 msgstr ""
-"Errore durante la creazione del file di autorizzazione - Backup/Ripristino non affidabile\n"
-"Errori finora: %d\n"
-"Vuoi continuare?"
+"Errore durante la creazione del file di autorizzazione - Backup/Ripristino non affidabile"
 
 #: src/utils/FSUtils.cpp:428
 #, c-format
@@ -733,6 +729,17 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#: src/utils/FSUtils.cpp:486
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Errore durante la creazione del file di autorizzazione - Backup/Ripristino non affidabile\n"
+"Errori finora: %d\n"
+"Vuoi continuare?"
 
 #: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
 #: src/utils/FSUtils.cpp:561

@@ -407,7 +407,7 @@ copy_file:
         // backup
         if (StatManager::enable_get_stat) {
             if (!StatManager::get_stat(sPath)) {
-                Console::showMessage(ERROR_CONFIRM, _("Error creating permission file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
+                Console::showMessage(ERROR_CONFIRM, _("Error creating permission file - Backup/Restore is not reliable"));
                 return false;
             }
         }
@@ -523,6 +523,7 @@ dir_created:
             }
         } else {
             if (!copyFile(sPath + StringUtils::stringFormat("/%s", data->d_name), targetPath, if_generate_FAT32_translation_file, enable_stat_manager)) {
+                InProgress::copyErrorsCounter++;
                 std::string errorMessage = StringUtils::stringFormat(_("Error copying file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
                 if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                     InProgress::abortCopy = true;

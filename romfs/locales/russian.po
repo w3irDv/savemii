@@ -662,16 +662,12 @@ msgstr ""
 "будьте осторожны: если вы этого не сделали, попробуйте стереть данные \n"
 "сохранения перед восстановлением"
 
-#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:410
 #, c-format
 msgid ""
-"Error creating permission file - Backup/Restore is not reliable\n"
-"Errors so far: %d\n"
-"Do you want to continue?"
+"Error creating permission file - Backup/Restore is not reliable"
 msgstr ""
-"Ошибка создания файла разрешений - Резервное копирование/восстановление ненадежно\n"
-"Ошибки на данный момент: %d\n"
-"Вы хотите продолжить?"
+"Ошибка создания файла разрешений - Резервное копирование/восстановление ненадежно"
 
 #: src/utils/FSUtils.cpp:428
 #, c-format
@@ -733,6 +729,17 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Ошибка создания файла разрешений - Резервное копирование/восстановление ненадежно\n"
+"Ошибки на данный момент: %d\n"
+"Вы хотите продолжить?"
 
 #: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
 #: src/utils/FSUtils.cpp:561

@@ -659,16 +659,12 @@ msgstr ""
 "\n"
 "注意: セーブデータを消去していない場合は、復元前に消去してみてください"
 
-#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:410
 #, c-format
 msgid ""
-"Error creating permission file - Backup/Restore is not reliable\n"
-"Errors so far: %d\n"
-"Do you want to continue?"
+"Error creating permission file - Backup/Restore is not reliable"
 msgstr ""
-"権限ファイルの作成中にエラーが発生しました - バックアップ/復元は信頼できません\n"
-"これまでのエラー: %d\n"
-"続行しますか?"
+"権限ファイルの作成中にエラーが発生しました - バックアップ/復元は信頼できません"
 
 #: src/utils/FSUtils.cpp:428
 #, c-format
@@ -730,6 +726,17 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#: src/utils/FSUtils.cpp:486
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"権限ファイルの作成中にエラーが発生しました - バックアップ/復元は信頼できません\n"
+"これまでのエラー: %d\n"
+"続行しますか?"
 
 #: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
 #: src/utils/FSUtils.cpp:561

@@ -653,16 +653,12 @@ msgstr ""
 "\n"
 "Eps! si no lo has hecho, intenta borrar los savedata antes de restaurar"
 
-#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:410
 #, c-format
 msgid ""
-"Error creating permission file - Backup/Restore is not reliable\n"
-"Errors so far: %d\n"
-"Do you want to continue?"
+"Error creating permission file - Backup/Restore is not reliable"
 msgstr ""
-"Error al crear el archivo de permisos: la copia de seguridad/restauración no es fiable\n"
-"Errores hasta el momento: %d\n"
-"¿Desea continuar?"
+"Error al crear el archivo de permisos: la copia de seguridad/restauración no es fiable"
 
 #: src/utils/FSUtils.cpp:428
 #, c-format
@@ -724,6 +720,17 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#: src/utils/FSUtils.cpp:486
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Error al crear el archivo de permisos: la copia de seguridad/restauración no es fiable\n"
+"Errores hasta el momento: %d\n"
+"¿Desea continuar?"
 
 #: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
 #: src/utils/FSUtils.cpp:561

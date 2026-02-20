@@ -651,13 +651,11 @@ msgstr ""
 "\n"
 "주의: 아직 삭제하지 않은 경우 복원 전에 저장 데이터를 삭제해 보세요."
 
-#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:410
 #, c-format
 msgid ""
-"Error creating permission file - Backup/Restore is not reliable\n"
-"Errors so far: %d\n"
-"Do you want to continue?"
-msgstr "권한 파일 생성 오류 - 백업/복원이 불안정합니다. 지금까지 발생한 오류: %d개. 계속하시겠습니까?"
+"Error creating permission file - Backup/Restore is not reliable"
+msgstr "권한 파일 생성 오류 - 백업/복원이 불안정합니다."
 
 #: src/utils/FSUtils.cpp:428
 #, c-format
@@ -719,6 +717,14 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#: src/utils/FSUtils.cpp:486
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr "권한 파일 생성 오류 - 백업/복원이 불안정합니다. 지금까지 발생한 오류: %d개. 계속하시겠습니까?"
 
 #: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
 #: src/utils/FSUtils.cpp:561
