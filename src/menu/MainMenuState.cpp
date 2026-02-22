@@ -110,7 +110,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, IS_VWII);
                     break;
                 case 2:
-                    if (!Console::promptConfirm(ST_WARNING, _("This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n\nProceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n\nDo you wat to continue?\n\n")))
+                    if (!Console::promptConfirm(ST_WARNING, _("This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n\nProceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n\nDo you want to continue?\n\n")))
                         return SUBSTATE_RUNNING;
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<TitleListState>(this->wiiusystitles, this->wiiuSysTitlesCount, IS_WIIU);

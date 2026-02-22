@@ -643,7 +643,7 @@
   "There are no repos matching selected filters.": "沒有符合所選篩選條件的倉庫。",
   "This action is not supported on the selected repo.": "所選倉庫不支援此操作。",
   "This option is a last resort in case something has gone wrong when\nrestoring data. It will wipe metadata and savedata, and the title \nwill become uninitialized. It does nothing to the installed game code.\nIt's equivalent to a complete savedata wipe from \nthe Wii U Data Management menu.\n\nContinue?": "如果恢復數據時出現問題，此選項是最後的手段。它會清除元數據和存檔數據，並且遊戲標題將變為未初始化狀態。它不會對已安裝的遊戲代碼進行任何操作。\n這相當於從Wii U數據管理菜單中完全清除存檔數據。\n\n繼續嗎？",
-  "This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n\nProceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n\nDo you wat to continue?\n\n": "此任務可讓您備份/恢復 MiiMaker、網路瀏覽器和其他系統遊戲的存檔資料。\n\n請謹慎操作，並清楚您正在修改的內容！某些存檔可能會影響系統行為，誤用可能會導致意想不到的後果！\n\n是否繼續？\n\n",
+  "This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n\nProceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n\nDo you want to continue?\n\n": "此任務可讓您備份/恢復 MiiMaker、網路瀏覽器和其他系統遊戲的存檔資料。\n\n請謹慎操作，並清楚您正在修改的內容！某些存檔可能會影響系統行為，誤用可能會導致意想不到的後果！\n\n是否繼續？\n\n",
   "This title is a inject (vWii or GC title packaged as a WiiU title).\nIf needed, vWii saves can also be managed using\n  the vWii Save Management section.": "此遊戲為注入遊戲（將 vWii 或 GC 遊戲打包為 WiiU 遊戲）。\n如有需要，您也可以使用vWii 存檔管理部分管理 vWii 存檔。",
   "Timestamp view": "時間戳視圖",
   "   Toggle favorite flag:": "   切換收藏標記：",

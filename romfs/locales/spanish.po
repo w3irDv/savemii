@@ -3463,7 +3463,7 @@ msgid ""
 "\n"
 "Proceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n"
 "\n"
-"Do you wat to continue?\n"
+"Do you want to continue?\n"
 "\n"
 msgstr "Esta tarea permite realizar copias de seguridad/restaurar datos guardados para MiiMaker, el navegador de Internet y otros títulos del sistema.¡Procede con precaución y ten cuidado con lo que modificas! Algunas partidas guardadas pueden afectar el funcionamiento del sistema, y ​​un mal uso de ellas puede tener consecuencias inesperadas. ¿Quieres continuar?"
 

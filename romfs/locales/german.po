@@ -3493,7 +3493,7 @@ msgid ""
 "\n"
 "Proceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n"
 "\n"
-"Do you wat to continue?\n"
+"Do you want to continue?\n"
 "\n"
 msgstr "Mit dieser Aufgabe können Sie Speicherdaten für MiiMaker, Internet Browser und andere Systemtitel sichern/wiederherstellen.Gehen Sie mit Vorsicht vor und seien Sie sich der Änderungen bewusst! Einige Spielstände können das Systemverhalten beeinflussen, und ein Missbrauch kann unerwartete Folgen haben! Möchten Sie fortfahren?"
 
