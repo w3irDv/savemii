@@ -57,6 +57,7 @@ public:
     std::string simpleFormat();
     std::string get();
     bool set(const std::string &date, bool isUSB);
+    bool set(const std::string &date, const std::string &source);
     std::string getDate() { return Date; };
     std::string getTag() { return tag; };
     void setTag(const std::string &tag_) { this->tag = tag_; };

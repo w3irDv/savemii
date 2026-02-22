@@ -107,6 +107,15 @@ bool Metadata::set(const std::string &date, bool isUSB) {
     return write();
 }
 
+bool Metadata::set(const std::string &date, const std::string &source) {
+
+    this->Date = date;
+    this->storage = source.c_str();
+    this->serialId = AmbientConfig::thisConsoleSerialId;
+
+    return write();
+}
+
 bool Metadata::write() {
     json_t *config = json_object();
     if (config == nullptr)

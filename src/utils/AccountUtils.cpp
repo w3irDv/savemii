@@ -5,6 +5,7 @@
 #include <utils/AccountUtils.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
+#include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
 
 uint8_t AccountUtils::getVolAccn() {
@@ -101,6 +102,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         default:;
     }
 
+    // rename_shared_ wil be set to true only in RESTORE tasks. Can only happen if the user has manually copied loadiine save data in an standard slot
     bool rename_shared_loadiine_account = false;
     bool rename_shared_loadiine_common = false;
     std::vector<uint32_t> profiles;
@@ -125,6 +127,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         closedir(dir);
     }
 
+    bool unable_to_convert_from_loaddine = false;
     if (rename_shared_loadiine_account) {
         std::string loadiineSharedAccountPath = srcPath + "/u";
         if (FSUtils::checkEntry(loadiineSharedAccountPath.c_str()) != 2)
@@ -140,6 +143,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
             }
             profiles.push_back(currentPersistentID);
         } else {
+            unable_to_convert_from_loaddine = true;
             Console::showMessage(ERROR_CONFIRM, "Found loadiine 'u' and dedicated '%s' profiles in backup. Please remove the unneeded one", currentUserID.c_str());
         }
     }
@@ -148,25 +152,42 @@ rename_shared_loadiine_common:
     if (rename_shared_loadiine_common) {
         std::string loadiineSharedAccountPath = srcPath + "/c";
         if (FSUtils::checkEntry(loadiineSharedAccountPath.c_str()) != 2)
-            goto add_loadiine_shared_account;
+            goto loadiine_savedata_renamed;
         std::string uniqueAccountPath = srcPath + "/common";
         if (FSUtils::checkEntry(uniqueAccountPath.c_str()) == 0) {
             rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str());
         } else {
+            unable_to_convert_from_loaddine = true;
             Console::showMessage(ERROR_CONFIRM, "Found loadiine 'c' and dedicated 'common' profiles in backup. Please remove the unneeded one");
         }
     }
 
-add_loadiine_shared_account:
+loadiine_savedata_renamed:
+
+    if (rename_shared_loadiine_common || rename_shared_loadiine_account) {
+        std::string savemii_meta_json = srcPath + "/savemiiMeta.json";
+        if (FSUtils::checkEntry(savemii_meta_json.c_str()) == 0) {
+            if (savemng::firstSDWrite)
+                sdWriteDisclaimer();
+            const std::string source{"SD"};
+            if (unable_to_convert_from_loaddine) {
+                const std::string tagMessage{_("UNABLE TO CONVERT FROM LOADIINE")};
+                writeMetadataWithTag(title, (uint8_t) slot_or_version, source, tagMessage);
+            } else {
+                const std::string tagMessage{_("CONVERTED FROM LOADIINE")};
+                writeMetadataWithTag(title, (uint8_t) slot_or_version, source, tagMessage);
+            }
+        }
+    }
+
     vol_accn = profiles.size();
     if (jobType == exportLoadiine || jobType == importLoadiine) {
         vol_accn++;
         initial_index = 1;
-        if (profiles.size() == 0){ // ARTIFICIAL USER TO FORCE UNIQUE LOADIINE SAVEDATA MODE
+        if (profiles.size() == 0) { // ARTIFICIAL USER TO FORCE UNIQUE LOADIINE SAVEDATA MODE
             initial_index++;
             vol_accn++;
         }
-
     }
 
     vol_acc = (Account *) malloc(vol_accn * sizeof(Account));

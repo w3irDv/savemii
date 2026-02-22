@@ -636,6 +636,13 @@ void writeMetadataWithTag(Title *title, uint8_t slot, bool isUSB, const std::str
     delete metadataObj;
 }
 
+void writeMetadataWithTag(Title *title, uint8_t slot, const std::string &source, const std::string &tag) {
+    Metadata *metadataObj = new Metadata(title, slot);
+    metadataObj->setTag(tag);
+    metadataObj->set(getNowDate(), source);
+    delete metadataObj;
+}
+
 void writeMetadataWithTag(Title *title, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag) {
     Metadata *metadataObj = new Metadata(title, slot, batchDatetime);
     metadataObj->setTag(tag);

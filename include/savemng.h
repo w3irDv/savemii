@@ -52,6 +52,8 @@ void writeMetadata(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB) __
 void writeMetadata(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, const std::string &batchDatetime) __attribute__((hot));
 void writeMetadataWithTag(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, const std::string &tag) __attribute__((hot));
 void writeMetadataWithTag(uint32_t highID, uint32_t lowID, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag) __attribute__((hot));
+void writeMetadataWithTag(Title *title, uint8_t slot, bool isUSB, const std::string &tag) __attribute__((hot));
+void writeMetadataWithTag(Title *title, uint8_t slot, const std::string &source, const std::string &tag);
 void writeBackupAllMetadata(const std::string &Date, const std::string &tag);
 int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles = false) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
