@@ -202,7 +202,10 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                     toggle_share_flag = !toggle_share_flag;
                     break;
                 case 6:
-                    toggle_normal_special_flag = !toggle_normal_special_flag;
+                if (this->mii_repo->db_kind != MiiRepo::eDBKind::ACCOUNT)
+                        toggle_normal_special_flag = !toggle_normal_special_flag;
+                    else
+                        toggle_normal_special_flag = false;
                     break;
                 case 7:
                     if (this->mii_repo->db_type == MiiRepo::eDBType::RFL)
@@ -217,7 +220,10 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                     toggle_copy_flag = !toggle_copy_flag;
                     break;
                 case 10:
-                    toggle_temp_flag = !toggle_temp_flag;
+                if (this->mii_repo->db_kind != MiiRepo::eDBKind::ACCOUNT)
+                        toggle_temp_flag = !toggle_temp_flag;
+                    else
+                        toggle_temp_flag = false;
                     break;
                 default:
                     break;
