@@ -43,7 +43,6 @@ public:
     static const char *gettext(const char *msg) __attribute__((__hot__));
 
 private:
-    static bool gettextLoadLanguage(const char *langFile);
     static uint32_t hash_string(const char *str_param);
     static MSG *findMSG(uint32_t id);
     static void setMSG(const char *msgid, const char *msgstr);
