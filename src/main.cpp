@@ -154,6 +154,7 @@ int main() {
             DrawUtils::beginDraw();
             DrawUtils::clear(COLOR_BACKGROUND);
 
+            DrawUtils::setFontColor(COLOR_TEXT);
             Console::consolePrintPos(0, 0, "SaveMii v%u.%u.%u%s", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO, VERSION_FIX);
             //Console::consolePrintPos(0, 1, "----------------------------------------------------------------------------");
             DrawUtils::drawLine(16, 60, 812, 60, COLOR_TEXT_AT_CURSOR.r, COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
