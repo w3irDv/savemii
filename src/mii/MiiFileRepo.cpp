@@ -546,7 +546,7 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         MiiData *current_miidata = new MIIDATA(raw_mii_data, MIIDATA::MII_DATA_SIZE);
 
         if (has_a_mii(raw_mii_data)) {
-            Mii *mii = MII::populate_mii(index, raw_mii_data);
+            Mii *mii = MII::populate_mii(index, raw_mii_data, this);
             if (mii != nullptr) {
                 mii->location_name = "slot " + std::to_string(i);
                 if (MIIDATA::DB::DB_TYPE == MiiRepo::eDBType::FFL) {
@@ -558,8 +558,8 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
                 mii->index = index;
                 mii->location_name = "slot " + std::to_string(i);
                 mii->mii_name = mii->location_name;
+                mii->mii_repo = this;
             }
-            mii->mii_repo = this;
             this->miis.push_back(mii);
             this->mii_location.push_back(i);
             index++;

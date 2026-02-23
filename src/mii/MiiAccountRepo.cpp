@@ -340,11 +340,10 @@ bool MiiAccountRepo<MII, MIIDATA>::populate_repo() {
             continue;
         }
 
-        Mii *mii = MII::populate_mii(index, miidata->mii_data);
+        Mii *mii = MII::populate_mii(index, miidata->mii_data, this);
         delete miidata;
 
         if (mii != nullptr) {
-            mii->mii_repo = this;
             mii->location_name = filename_str.substr(filename_str.find_last_of("/") + 1, std::string::npos);
             this->miis.push_back(mii);
             this->mii_filepath.push_back(account_dat);

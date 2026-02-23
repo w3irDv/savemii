@@ -55,7 +55,7 @@ public:
     eMiiKind mii_kind = NORMAL;
     bool dup_mii_id = false;
 
-    virtual Mii *v_populate_mii(uint8_t *mii_data) = 0;
+    virtual Mii *v_populate_mii(uint8_t *mii_data, MiiRepo *mii_repo) = 0;
     
     const char *get_birth_platform_as_string();
 };

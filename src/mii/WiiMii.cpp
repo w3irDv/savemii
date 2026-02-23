@@ -137,12 +137,12 @@ std::string WiiMiiData::get_name_as_hex_string() {
     return name_hex;
 }
 
-WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
+WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data, MiiRepo *mii_repo) {
 
     MII_DATA_STRUCT *mii_data = (MII_DATA_STRUCT *) raw_mii_data;
 
     eBirthPlatform birth_platform = REV; // manualy forged ... does not exist in miidata
-    bool copyable = true;                // non-existent in wii ...
+    bool copyable = false;                // non-existent in wii ...
     uint64_t author_id = 0;
 
     bool favorite = mii_data->isFavorite == 1;
@@ -204,15 +204,15 @@ WiiMii *WiiMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
 
     bool shareable = (mingleOff == 0);
 
-    WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, favorite, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
+    WiiMii *wii_mii = new WiiMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, favorite, copyable, shareable, mii_id_flags, birth_platform, mii_repo, index);
 
     wii_mii->is_valid = true;
 
     return wii_mii;
 }
 
-WiiMii *WiiMii::v_populate_mii(uint8_t *mii_data) {
-    WiiMii *new_mii = WiiMii::populate_mii(this->index, mii_data);
+WiiMii *WiiMii::v_populate_mii(uint8_t *mii_data, MiiRepo *mii_repo) {
+    WiiMii *new_mii = WiiMii::populate_mii(this->index, mii_data, mii_repo);
     return new_mii;
 }
 

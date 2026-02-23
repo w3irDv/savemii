@@ -36,7 +36,7 @@ MiiData *WiiUMiiData::clone() {
     return miidata;
 }
 
-WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
+WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data, MiiRepo *mii_repo) {
 
     FFLiMiiDataOfficial *mii_data = (FFLiMiiDataOfficial *) raw_mii_data;
 
@@ -106,15 +106,15 @@ WiiUMii *WiiUMii::populate_mii(size_t index, uint8_t *raw_mii_data) {
         deviceHash.append(hexhex);
     }
 
-    WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, favorite, copyable, shareable, mii_id_flags, birth_platform, nullptr, index);
+    WiiUMii *wiiu_mii = new WiiUMii(miiName, creatorName, timestamp, mii_id_timestamp, deviceHash, author_id, favorite, copyable, shareable, mii_id_flags, birth_platform, mii_repo, index);
 
     wiiu_mii->is_valid = true;
 
     return wiiu_mii;
 }
 
-WiiUMii *WiiUMii::v_populate_mii(uint8_t *mii_data) {
-    WiiUMii *new_mii = WiiUMii::populate_mii(this->index, mii_data);
+WiiUMii *WiiUMii::v_populate_mii(uint8_t *mii_data, MiiRepo *mii_repo) {
+    WiiUMii *new_mii = WiiUMii::populate_mii(this->index, mii_data, mii_repo);
     return new_mii;
 }
 
