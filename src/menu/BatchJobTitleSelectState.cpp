@@ -27,6 +27,7 @@ bool testForceSaveInitFalse = true
 #define MAX_TITLE_SHOW    14
 #define MAX_WINDOW_SCROLL 6
 
+
         BatchJobTitleSelectState::BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup,
                                                            Title *titles, int titlesCount, eTitleType titleType, eJobType jobType) : source_user(source_user),
      wiiu_user(wiiu_user),
@@ -152,6 +153,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCoun
             (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0))) {
             this->titles[i].currentDataSource.selectedForBackup = false;
             this->titles[i].currentDataSource.candidateForBackup = false;
+            excludedFromCandidates++;
             continue;
         }
 
@@ -678,7 +680,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             else
                 targetTitle.currentDataSource.selectedForBackup = false;
         }
-        InProgress::totalSteps = InProgress::totalSteps + countTitlesToSave(this->titles, this->titlesCount, true);
+        InProgress::totalSteps = InProgress::totalSteps + countTitlesToSave(this->titles, this->titlesCount, ONLY_SELECTED_TITLES);
         int titles_ok_counter = 0;
         int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, titles_ok_counter, ONLY_SELECTED_TITLES);
         if (InProgress::abortTask) { // user has aborted job in the backup phase, we can safely remove the backupset
@@ -885,8 +887,10 @@ void BatchJobTitleSelectState::executeBatchBackup() {
     for (int i = 0; i < this->candidatesCount; i++) {
         uint32_t highID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiHighID : this->titles[c2t[i]].highID;
         uint32_t lowID = this->titles[c2t[i]].noFwImg ? this->titles[c2t[i]].vWiiLowID : this->titles[c2t[i]].lowID;
-        if (highID == 0 || lowID == 0) //|| !this->titles[c2t[i]].saveInit)  - notInit have been marked with backup OK
+        if (highID == 0 || lowID == 0) { //|| !this->titles[c2t[i]].saveInit)  - notInit have been marked with backup OK
             titlesNotInitialized++;
+            continue;
+        }
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchBackupState) {
             case OK:

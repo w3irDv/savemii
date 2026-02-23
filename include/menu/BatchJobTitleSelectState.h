@@ -52,7 +52,8 @@ private:
     bool noTitles = false;
 
     std::vector<int> c2t;
-    int candidatesCount;
+    int candidatesCount = 0;
+    int excludedFromCandidates = 0;
 
     void updateC2t();
 
