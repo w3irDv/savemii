@@ -646,13 +646,11 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
         }
         if (input->get(ButtonState::TRIGGER, Button::Y) || input->get(ButtonState::TRIGGER, Button::RIGHT) || input->get(ButtonState::TRIGGER, Button::LEFT)) {
             if (action != MiiProcess::LIST_MIIS) {
-                //if (this->mii_view[c2a[cursorPos + this->scroll]].state != MiiStatus::OK) {
                     if (selectOnlyOneMii) {
                         this->mii_view[c2a[currentlySelectedMii]].selected = false;
                     }
                     currentlySelectedMii = cursorPos + this->scroll;
                     this->mii_view[c2a[currentlySelectedMii]].selected = !this->mii_view[c2a[currentlySelectedMii]].selected;
-                //}
             }
             return SUBSTATE_RUNNING;
         }

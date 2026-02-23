@@ -223,14 +223,6 @@ bool MiiFolderRepo<MII, MIIDATA>::populate_repo() {
                 mii->location_name = filename_str.substr(filename_str.find_last_of("/") + 1, std::string::npos);
                 this->miis.push_back(mii);
                 this->mii_filepath.push_back(filename_str);
-                // to test, we will use creator_name
-                std::string creatorName = mii->creator_name;
-                std::vector<size_t> *owners_v = owners[creatorName];
-                if (owners_v == nullptr) {
-                    owners_v = new std::vector<size_t>;
-                    owners[creatorName] = owners_v;
-                }
-                owners_v->push_back(index);
             } else {
                 push_back_invalid_mii(filename_str, index);
             }
@@ -270,13 +262,7 @@ bool MiiFolderRepo<MII, MIIDATA>::empty_repo() {
         delete mii;
     }
 
-    for (auto it = owners.begin(); it != owners.end(); ++it) {
-        owners[it->first]->clear();
-        delete owners[it->first];
-    }
-
     this->miis.clear();
-    this->owners.clear();
     this->mii_filepath.clear();
 
     return true;

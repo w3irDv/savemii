@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <map>
 #include <mii/Mii.h>
 #include <mii/MiiStadioSav.h>
 #include <string>
@@ -84,8 +83,7 @@ public:
     uint8_t *db_buffer = nullptr;
 
     std::vector<Mii *> miis;
-    std::map<std::string, std::vector<size_t> *> owners;
-
+    
     bool repo_has_duplicated_miis = false;
 
     const static inline std::string BACKUP_ROOT = "fs:/vol/external01/wiiu/backups/MiiRepoBckp";

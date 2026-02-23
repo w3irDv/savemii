@@ -549,14 +549,6 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
             Mii *mii = MII::populate_mii(index, raw_mii_data);
             if (mii != nullptr) {
                 mii->location_name = "slot " + std::to_string(i);
-                // to test, we will use creator_name
-                std::string creatorName = mii->creator_name;
-                std::vector<size_t> *owners_v = owners[creatorName];
-                if (owners_v == nullptr) {
-                    owners_v = new std::vector<size_t>;
-                    owners[creatorName] = owners_v;
-                }
-                owners_v->push_back(index);
                 if (MIIDATA::DB::DB_TYPE == MiiRepo::eDBType::FFL) {
                     mii->favorite = check_if_favorite(current_miidata);
                 }
@@ -590,13 +582,7 @@ bool MiiFileRepo<MII, MIIDATA>::empty_repo() {
         delete mii;
     }
 
-    for (auto it = owners.begin(); it != owners.end(); ++it) {
-        owners[it->first]->clear();
-        delete owners[it->first];
-    }
-
     this->miis.clear();
-    this->owners.clear();
     this->mii_location.clear();
 
     return true;
