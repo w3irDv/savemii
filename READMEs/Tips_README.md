@@ -107,7 +107,15 @@ w.chown("FCL_DB.dat",0x1004a200,0x400)
 w.chown("FFL_HDB.dat",0x1004a200,0x400)
 w.chown("FFL_ODB.dat",0x1004a200,0x400)
 w.chown("FFL_ODB_OLD.dat",0x1004a200,0x400)
+
+flush_mlc()
+
+exit()
 ```
+
+- Stop `wupserver`, go back to the `Recovery Menu` main screen, Stop the Wii U
+- Power On the Wii U. It should start as usual.
+
 
 
 
