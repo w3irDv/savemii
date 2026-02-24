@@ -22,3 +22,5 @@ If you follow an online guide, it will likely tell you to create/find a hexadeci
 ## Transfer Savedata to/from your Pretendo account
 
 You can follow this [procedure](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)
+
+## Recover your Wii U in case of a brick after a faulty restore

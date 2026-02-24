@@ -9,8 +9,8 @@
 Allows you to backup/restore/wipe individual titles.
 
 1. First select the title you want to manage.
-	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. <img src="new.png" width="40" align="center"> From SaveMii v1.8.0 you can try to manage it (restore saveadata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
-		1. <img src="new.png" width="40" align="center">  An special case of this are vWii injects. They will appear in "Wii U Title Management" marked as "vWii injects". They have savedata in the vWii side, but for "real" vWii injects (GameCube injects are excluded), from saveMii 1.8.0 you can manage the its Savedata directly from the WiiU Title entry.    
+	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. From SaveMii v1.8.0 you can try to manage it (restore saveadata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
+		1. An special case of this are vWii injects. They will appear in "Wii U Title Management" marked as "vWii injects". They have savedata in the vWii side, but for "real" vWii injects (GameCube injects are excluded), from saveMii 1.8.0 you can manage the its Savedata directly from the WiiU Title entry.    
 2. Select the task you want to do:
 	1. Backup: Copy savedata from USB/NAND to SD
 	2. Restore: Copy savedata from SD to USB/NAND
@@ -20,7 +20,7 @@ Allows you to backup/restore/wipe individual titles.
 	6. Export / Import to Loadiine: Legacy options to manage Loadiine savedata
 	7. Copy to other Device: If savedata for a title is present in USB and NAND, copy it from one storage to the other
 
-<img src="new.png" width="40" align="center"> You can now manage Wii U Sistem titles (MiiMaker, Browser, ... ). But take extra careful when you backup/wipe/restore them, because an error with them can have unexpected consequences, and in some cases can provoke a brick. 
+<img src="new.png" width="40" align="center">   You can now manage Wii U Sistem titles (MiiMaker, Browser, ... ). But take extra careful when you backup/wipe/restore them, because if you left them unconsistent you can in some cases (semi) brick your Wii U. Nothing that in most cases cannot be fixed with UDPIH and the Recovery Menu (see [Tips](Tips_README.md#recovery)). 
 
 ### Backup
 1. Select a slot to store the savedata. You can select any number from 0 to 255, each one representing a different folder in the SD card. Individual backups will always be stored in the `Root backupSet`. Next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. 
