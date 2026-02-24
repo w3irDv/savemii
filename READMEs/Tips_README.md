@@ -24,7 +24,7 @@ If you follow an online guide, it will likely tell you to create/find a hexadeci
 You can follow this [tutorial](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)
 
 
-## Recover your Wii U in case of a brick after a faulty restore
+## Recover your Wii U in case of a brick after a faulty System title restore
 
 In extreme cases, a faulty restore of a system title can provoke a brick of your console. For example, you decide to wipe de Mii Make savedata expecting that the next time you open it all  mii database will be initialized from scratch. But MiiMaker savedata contains also some FaceLib that the Wii U Menu uses to render miis. It does not find them, and the startup process hangs on the Wii U splash forever ...
 
