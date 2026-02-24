@@ -1,15 +1,16 @@
 <p align="right">
-<a href="https://github.com/w3irdv/savemii/" title="SaveMii">Back</a>&nbsp&nbsp
-<a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
+<a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii">Back</a>&nbsp&nbsp
+<a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
 <p align="right">
 
-## Wii U Title Management / vWii Title Management
+
+## Wii U Title Management / vWii Title Management / `(New)` Wii U System Titles Management
 
 Allows you to backup/restore/wipe individual titles.
 
 1. First select the title you want to manage.
-	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. You can try to manage it (restore from a previous backup), but the outcome is uncertain. It is recommended to first play and create "real" savedata before trying to restore any backup.
-		1. An special case of this are vWii injects. They have both a Wii U title with no savedata  that will appear in "Wii U Title Management" marked as "Not init", and a vWii title where the game's savedata is that will appear in vWii Title Management after you play it and create an initial game savedata. Savedata for these titles must be managed from the vWii Management tasks. Just in case, SaveMii allows you to manage the Wii U title portion, but it usually doesn't contain any savedata.   
+	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. `(New)` From SaveMii v1.8.0 you can try to manage it (restore saveadata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
+		1. `(New)`  An special case of this are vWii injects. They will appear in "Wii U Title Management" marked as "vWii injects". They have a Wii U title with no savedata, but for "real" vWii injects (GameCube injects are excluded), from saveMii 1.8.0 you can manage the real vWii Savedata directly from the WiiU Title entry.    
 2. Select the task you want to do:
 	1. Backup: Copy savedata from USB/NAND to SD
 	2. Restore: Copy savedata from SD to USB/NAND
