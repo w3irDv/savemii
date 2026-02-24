@@ -28,6 +28,8 @@ You can follow this [procedure](../tutorials/Pretendo%20Network%20savedata%20Tra
 
 In extreme cases, a faulty restore of a system title can provoke a brick of your console. For example, you decide to wipe de Mii Make savedata expecting that the next time you open it all  mii database will be initialized from scratch. But MiiMaker savedata contains also some FaceLib that the Wii U Menu uses to render miis. It does not find them, and the startup process hangs on the Wii U splash forever ...
 
+You will need a backup of the Mii Maker savedata
+
 To recover from such a semi-brick  you can use [UDPIH: USB Host Stack exploit + Recovery Menu](https://gbatemp.net/threads/udpih-usb-host-stack-exploit-recovery-menu.613369/). 
 
 At a glance:
@@ -42,7 +44,7 @@ key=<your wifikeyhere>
 key_type=WPA2_PSK_AES
 ```
 - Start your Wii, connect the device with the UDPIH explot when the Wii U logo appear. 
-- Once you are in the recovery menu, enter in to `Load Network Configuration`.
+- Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
 - Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U wil appear on the screen.
 - Download this `wupclient.py` file to your computer, update this line:
 ```python
@@ -54,6 +56,46 @@ with the IP assigned to the Wii U console.
 
 ```sh
 python -i wupclient.py
+```
+
+- And now execute this lines inside the interactive prompt:
+
+```python
+w.cd("/vol/storage_mlc01/usr/save/00050010/1004a200")
+
+w.chmod("user",0x600)
+w.chown("user",0x100000f6,0x400)
+
+w.cd("/vol/storage_mlc01/usr/save/00050010/1004a200/user")
+
+w.mkquota("common",0x660,0x1790000)
+w.chown("common",0x1004a200,0x400)
+
+w.cd("common")
+
+w.up("just_init/stadio.sav","stadio.sav")
+w.chmod("stadio.sav",0x660)
+w.chown("stadio.sav",0x1004a200,0x400)
+
+w.mkdir("db",0x644)
+w.chown("db",0x1004a200,0x400)
+
+w.cd("db")
+
+w.up("just_init/db/FCL_DB.dat","FCL_DB.dat")
+w.up("just_init/db/FFL_HDB.dat","FFL_HDB.dat")
+w.up("just_init/db/FFL_ODB.dat","FFL_ODB.dat")
+w.up("just_init/db/FFL_ODB_OLD.dat","FFL_ODB_OLD.dat")
+
+w.chmod("FCL_DB.dat",0x666)
+w.chmod("FFL_HDB.dat",0x666)
+w.chmod("FFL_ODB.dat",0x666)
+w.chmod("FFL_ODB_OLD.dat",0x666)
+
+w.chown("FCL_DB.dat",0x1004a200,0x400)
+w.chown("FFL_HDB.dat",0x1004a200,0x400)
+w.chown("FFL_ODB.dat",0x1004a200,0x400)
+w.chown("FFL_ODB_OLD.dat",0x1004a200,0x400)
 ```
 
 
