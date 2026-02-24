@@ -99,3 +99,16 @@ This task will only appear if the game has savedata in the Loadiine folder `SD:/
 3. Select the WiiU User to copy to. Depending on the user you choose, one of the Loadine Savedata Modes will be used. If you select  users `u` or `shared`, shared savedata mode will be used. In this mode profile savedata is located in the `u` folder, and common savedata is located in the `c`folder. If you select a nomal profile (any `8000000x`) or the user `unique`, unique mode will be used. In this case profile savedata is locaed in the wii u default folders  (`8000000x` for profiles, and `common` for common).
 4. If there is `common` savedata in the loadiine folder, select whether to copy it (in most cases, you will). The selected source user will determine where to look for shared saved data. For `u` or `shared` users, the `c` folder will be used. For `unique` or normal profiles, the usual `common` folder will be used.
 5. Press `A` to initiate the export.
+
+## Configuration Options
+
+Press `X` in the Main Menu to enter the Options screen. You can:
+
+- Select Language
+- Decide if Backup Excludes are always applied when entering the Title Select screen in Batch Backup
+- Enable/disable the prompt for folder format conversion between the legacy hex format (`xxxxxxxxyyyyyyy`) and the title name format (`Title Name [xxxxxxxx-yyyyyyy]`)
+- Enable/disable the prompt to delete savedata from non-existent profiles and to allow/not allow restores to non-existent profiles.
+
+Configuration can be saved by pressing `+`
+
+
