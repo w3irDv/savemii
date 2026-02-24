@@ -1,5 +1,5 @@
 <p align="right">
-<a href="https://github.com/w3irdv/savemii/" title="SaveMii">Back</a>&nbsp&nbsp&nbsp
+<a href="https://github.com/w3irdv/savemii/" title="SaveMii">Back</a>&nbsp&nbsp
 <a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
 <p align="right">
 

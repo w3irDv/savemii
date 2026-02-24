@@ -30,7 +30,8 @@ Use it at your own risk and please report any issues that may occur.
 
 
 ## Detailed HowTos
-<p align="left"><a href="READMEs/Saves_README.md" title="Base"><img src="READMEs/savemii_base.png" width="40" align="center"> Base tasks</a></p>
+<p align="left"><a href="READMEs/Saves_README.md" title="Base"><img src="READMEs/savemii_base.png" width="40" align="center"></a>&nbsp
+<p align="left"><a href="READMEs/Saves_README.md" title="Base">Base tasks</a>
 <p align="left">
 
 <p align="left"><a href="READMEs/Batch_README.md" title="Base"><img src="READMEs/batch.png" width="40" align="center"> Batch Process</a></p>

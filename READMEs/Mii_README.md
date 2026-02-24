@@ -1,4 +1,6 @@
-<p align="right"><a href="https://github.com/w3irdv/savemii/" title="SaveMii">Back&nbsp&nbsp&nbsp<img src="../savemii.png" width="125" align="center"></a>
+<p align="right">
+<a href="https://github.com/w3irdv/savemii/" title="SaveMii">Back</a>&nbsp&nbsp
+<a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
 <p align="right">
 
 ## Mii Management
