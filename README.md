@@ -41,23 +41,10 @@ Use it at your own risk and please report any issues that may occur.
 <p align="left">
 
 <p align="left">
-<a href="READMEs/Batch_README.md" title="Batch"><img src="READMEs/batch_2.png" width="40" align="center"></a>&nbsp
-<a href="READMEs/Batch_README.md" title="Batch">Batch Process</a>
-<p align="left">
-
-
-<p align="left">
 <a href="READMEs/Mii_README.md" title="Miis"><img src="READMEs/miis.png" width="40" align="center"></a>&nbsp
 <a href="READMEs/Mii_README.md" title="Miis">Mii Management</a>
 </p>
 <p align="left">
-
-<p align="left">
-<a href="READMEs/Tips_README.md" title="Tips"><img src="READMEs/tips_5.png" width="40" align="center"></a>&nbsp
-<a href="READMEs/Tips_README.md" title="Tips">Tips</a>
-</p>
-<p align="left">
-
 
 ----
 
