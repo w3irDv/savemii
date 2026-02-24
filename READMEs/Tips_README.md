@@ -58,10 +58,10 @@ with the IP assigned to the Wii U console.
 ```
 wupclient.py
 mm_bckp/stadio.sav
-mm_bckp/db/FCL_DB.dat"
-mm_bckp/db/FFL_HDB.dat"
-mm_bckp/db/FFL_ODB.dat"
-mm_bckp/db/FFL_ODB_OLD.dat"
+mm_bckp/db/FCL_DB.dat
+mm_bckp/db/FFL_HDB.dat
+mm_bckp/db/FFL_ODB.dat
+mm_bckp/db/FFL_ODB_OLD.dat
 ``` 
 - Now execute:
 
