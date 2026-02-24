@@ -21,7 +21,7 @@ If you follow an online guide, it will likely tell you to create/find a hexadeci
 
 ## Transfer Savedata to/from your Pretendo account
 
-You can follow this [procedure](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)
+You can follow this [tutorial](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)
 
 
 ## Recover your Wii U in case of a brick after a faulty restore
@@ -35,7 +35,7 @@ To recover from such a semi-brick  you can use [UDPIH: USB Host Stack exploit + 
 At a glance:
 - [Flash your device](https://github.com/GaryOderNichts/udpih#device-setup) with the UDPIH exploit image.
 - Put the [Recovery Menu](https://github.com/GaryOderNichts/recovery_menu/releases) on the root of the SD card 
-- Put a network.cfg file on the root of the SD card with the right information:
+- Put a `network.cfg` file on the root of the SD card with the right information:
 
 ```
 type=wifi
@@ -43,10 +43,10 @@ ssid=<your ssidhere>
 key=<your wifikeyhere>
 key_type=WPA2_PSK_AES
 ```
-- Start your Wii, connect the device with the UDPIH explot when the Wii U logo appear. 
+- Power On your Wii u, connect the device with the UDPIH explot when the Wii U logo appear. 
 - Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
-- Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U wil appear on the screen.
-- Download this `wupclient.py` file to your computer, update this line:
+- Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U will appear on the screen.
+- Download this [wupclient.py](../scripts/wupclient.py) file to your computer, and update this line:
 ```python
 def __init__(self, ip='192.168.1.33', port=1337)
 ```
