@@ -32,7 +32,7 @@ sd:/wiiu/backups/batch/
 ### Backup All
 This task will backup all initialized wiiU and vWii titles in a backup set. No exclude is applied.
 
-### Backup Wii U / Backup vWii titles
+### Backup Wii U / Backup vWii titles / Backup Wii U System titles
 You can select the titles you want to back up. Press `Y` `<-` `->` to select or deselect titles. Press `+` `-` to select or deselect all titles.
 Press `X` to access the "Backup Excludes" menu. There you can:
 
@@ -98,8 +98,6 @@ This task allows you to move  savedata between NAND and USB  for titles that hav
 
 
 ## Backupset management
-
-
 
 In this menu you can tag backupsets (`+`) or delete the ones you don't need (`-`). You can also set the one you want to use to restore savedata (`A`).
 

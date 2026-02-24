@@ -9,7 +9,7 @@
 Allows you to backup/restore/wipe individual titles.
 
 1. First select the title you want to manage.
-	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. From SaveMii v1.8.0 you can try to manage it (restore saveadata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
+	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. Starting from SaveMii v1.8.0 you can try to manage it (restore saveadata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
 		1. An special case of this are vWii injects. They will appear in "Wii U Title Management" marked as "vWii injects". They have savedata in the vWii side, but for "real" vWii injects (GameCube injects are excluded), from saveMii 1.8.0 you can manage the its Savedata directly from the WiiU Title entry.    
 2. Select the task you want to do:
 	1. Backup: Copy savedata from USB/NAND to SD
@@ -20,7 +20,7 @@ Allows you to backup/restore/wipe individual titles.
 	6. Export / Import to Loadiine: Legacy options to manage Loadiine savedata
 	7. Copy to other Device: If savedata for a title is present in USB and NAND, copy it from one storage to the other
 
-<img src="new.png" width="40" align="center">   You can now manage Wii U Sistem titles (MiiMaker, Browser, ... ). But take extra careful when you backup/wipe/restore them, because if you left them unconsistent you can in some cases (semi) brick your Wii U. Nothing that in most cases cannot be fixed with UDPIH and the Recovery Menu (see [Tips]Tips_README.md#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-restore). 
+<img src="new.png" width="40" align="center">   You can now manage Wii U Sistem titles (MiiMaker, Browser, ... ). But take extra careful when you backup/wipe/restore them, because if you left them unconsistent you can in some extreme cases (semi) brick your Wii U. Nothing that probably cannot be fixed with UDPIH and the Recovery Menu (see [Tips]Tips_README.md#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-restore). 
 
 ### Backup
 1. Select a slot to store the savedata. You can select any number from 0 to 255, each one representing a different folder in the SD card. Individual backups will always be stored in the `Root backupSet`. Next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. 
@@ -63,7 +63,7 @@ For vWii titles, savedata is directly under the slot folder.
 	 4. Press `A` to initiate the restore. 
 	    **Note**: Starting with version 1.7.0, the `From: All Users` restore will detect and not allow restoring savedata to non-existent user profiles. In this case, perform specific `From: Select Source User / To: Select Destination User` restores, selecting the correct users.
 
-**Note**: If you have manually copied a Loadiiine savedata in shared mode format (`/u` and `/c` folders) to a nomal backup slot, SaveMii will detect it and will rename the folders to the current user (`/8000000x` and `/common`), so you can afterwards restore it from this menu task.
+**Note**: If you have manually copied a Loadiine savedata in shared mode format (`/u` and `/c` folders) to a nomal backup slot, SaveMii will detect it and will rename the folders to the current user (`/8000000x` and `/common`), so you can afterwards restore it from this menu task.
 
 ### Wipe
 Sometimes you will need to wipe savedata in the console before restoring a previous backup: If a restore is unsuccesful, you can try to wipe previous data before attempting a new restore. Options are the same than in the *Backup* task, but now refer to savedata for the specified title in the NAND or in the USB. 

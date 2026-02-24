@@ -52,11 +52,12 @@ Use it at your own risk and please report any issues that may occur.
 
 - Fully compatible with Aroma
 - You can manage Miis
+- You can manage Wii U System Titles
+- You can restore uninitialized titles (WiiU and injects), without needing to run the game before restoring
 - Addresses critical issues present in previous versions of the mod
 - Includes options to move/copy profiles, very useful for finalizing `Pretendo` setups
 - Performs error checks on all backup and restore operations to ensure they complete successfully.
 - All operations can be performed in batches.
-- You can restore uninitialized titles (WiiU and injects), without needing to run the game before restoring
 - It preserves file permissions (WiiU) and can backup saves with FAT32 non-compliant chars in its filename
 - Maintained
 - WUT port additions to the original:
@@ -76,3 +77,4 @@ Use it at your own risk and please report any issues that may occur.
 - V10lator for helping with a lot of stuff
 - Vague Rant for testing
 - xploit-U, for creating the WUT port
+- HEYimHeroic, David Hawley, WiiBrew and WUT MiiData information has been very useful in developing mii management features 
