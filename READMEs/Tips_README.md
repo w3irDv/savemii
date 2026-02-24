@@ -28,7 +28,12 @@ You can follow this [procedure](../tutorials/Pretendo%20Network%20savedata%20Tra
 
 In extreme cases, a faulty restore of a system title can provoke a brick of your console. For example, you decide to wipe de Mii Make savedata expecting that the next time you open it all  mii database will be initialized from scratch. But MiiMaker savedata contains also some FaceLib that the Wii U Menu uses to render miis. It does not find them, and the startup process hangs on the Wii U splash forever ...
 
-To recover from such a semi-brick  you can follow [UDPIH: USB Host Stack exploit + Recovery Menu](https://gbatemp.net/threads/udpih-usb-host-stack-exploit-recovery-menu.613369/. Put a network,cfg file on the root of the SD with the right information:
+To recover from such a semi-brick  you can use [UDPIH: USB Host Stack exploit + Recovery Menu](https://gbatemp.net/threads/udpih-usb-host-stack-exploit-recovery-menu.613369/). 
+
+At a glance:
+- [Flash your device](https://github.com/GaryOderNichts/udpih#device-setup) with the UDPIH exploit image.
+- Put the [Recovery Menu](https://github.com/GaryOderNichts/recovery_menu/releases) on the root of the SD card 
+- Put a network.cfg file on the root of the SD card with the right information:
 
 ```
 type=wifi
@@ -36,19 +41,21 @@ ssid=<your ssidhere>
 key=<your wifikeyhere>
 key_type=WPA2_PSK_AES
 ```
-
-Once you are in the recovery menu, enter in to `Load Network Configuration`. once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U wil appear on the screen.
-
-Download this `wupclient.py` file, and update this line
+- Start your Wii, connect the device with the UDPIH explot when the Wii U logo appear. 
+- Once you are in the recovery menu, enter in to `Load Network Configuration`.
+- Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U wil appear on the screen.
+- Download this `wupclient.py` file to your computer, update this line:
 ```python
 def __init__(self, ip='192.168.1.33', port=1337)
 ```
 with the IP assigned to the Wii U console.
 
-Execute:
+- Execute:
 
 ```sh
-python -i wupclient.pu
+python -i wupclient.py
 ```
+
+
 
 
