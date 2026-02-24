@@ -20,7 +20,7 @@ Allows you to backup/restore/wipe individual titles.
 	6. Export / Import to Loadiine: Legacy options to manage Loadiine savedata
 	7. Copy to other Device: If savedata for a title is present in USB and NAND, copy it from one storage to the other
 
-<img src="new.png" width="40" align="center">   You can now manage Wii U Sistem titles (MiiMaker, Browser, ... ). But take extra careful when you backup/wipe/restore them, because if you left them unconsistent you can in some cases (semi) brick your Wii U. Nothing that in most cases cannot be fixed with UDPIH and the Recovery Menu (see [Tips](Tips_README.md#recovery)). 
+<img src="new.png" width="40" align="center">   You can now manage Wii U Sistem titles (MiiMaker, Browser, ... ). But take extra careful when you backup/wipe/restore them, because if you left them unconsistent you can in some cases (semi) brick your Wii U. Nothing that in most cases cannot be fixed with UDPIH and the Recovery Menu (see [Tips]Tips_README.md#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-restore). 
 
 ### Backup
 1. Select a slot to store the savedata. You can select any number from 0 to 255, each one representing a different folder in the SD card. Individual backups will always be stored in the `Root backupSet`. Next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. 
