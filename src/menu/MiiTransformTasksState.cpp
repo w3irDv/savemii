@@ -178,7 +178,7 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN))
             if (++cursorPos == entrycount)
                 --cursorPos;
-        if (input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::TRIGGER, Button::RIGHT)) {
+        if (input->get(ButtonState::TRIGGER, Button::Y) || input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::TRIGGER, Button::RIGHT)) {
             switch (cursorPos) {
                 case 0:
                     transfer_physical_appearance = !transfer_physical_appearance;
