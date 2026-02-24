@@ -37,8 +37,7 @@ Use it at your own risk and please report any issues that may occur.
 <p align="left">
 
 <p align="left">
-<a href="READMEs/Mii_README.md" title="Base"><img src="READMEs/miis.png" width="35"> Mii Management</a>
-<a href="Mii_README.md> Mii management</a>
+<a href="Mii_README.md" title="Base"><img src="READMEs/miis.png" width="35"> Mii Management</a>
 </p>
 <p align="left">
 
