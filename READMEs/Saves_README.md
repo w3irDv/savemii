@@ -9,7 +9,7 @@
 Allows you to backup/restore/wipe individual titles.
 
 1. First select the title you want to manage.
-	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. $\color{red}{\textbf{NEW}}$ From SaveMii v1.8.0 you can try to manage it (restore saveadata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
+	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. $\color{red}{\textbf{(NEW!)}}$ From SaveMii v1.8.0 you can try to manage it (restore saveadata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
 		1. `(New)`  An special case of this are vWii injects. They will appear in "Wii U Title Management" marked as "vWii injects". They have a Wii U title with no savedata, but for "real" vWii injects (GameCube injects are excluded), from saveMii 1.8.0 you can manage the real vWii Savedata directly from the WiiU Title entry.    
 2. Select the task you want to do:
 	1. Backup: Copy savedata from USB/NAND to SD
