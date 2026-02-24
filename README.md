@@ -30,15 +30,19 @@ Use it at your own risk and please report any issues that may occur.
 
 
 ## Detailed HowTos
-<p align="left"><a href="READMEs/Saves_README.md" title="Base"><img src="READMEs/savemii_base.png" width="40" align="center"></a>&nbsp
+<p align="left">
+<a href="READMEs/Saves_README.md" title="Base"><img src="READMEs/savemii_base.png" width="40" align="center"></a>&nbsp
 <a href="READMEs/Saves_README.md" title="Base">Base tasks</a>
 <p align="left">
 
-<p align="left"><a href="READMEs/Batch_README.md" title="Base"><img src="READMEs/batch.png" width="40" align="center"> Batch Process</a></p>
+<p align="left">
+<a href="READMEs/Batch_README.md" title="Base"><img src="READMEs/batch.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Batch_README.md" title="Base">Batch Process</a>
 <p align="left">
 
 <p align="left">
-<a href="READMEs/Mii_README.md" title="Base"><img src="READMEs/miis.png" width="40" align="center"> Mii Management</a>
+<a href="READMEs/Mii_README.md" title="Base"><img src="READMEs/miis.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Mii_README.md" title="Base">Mii Management</a>
 </p>
 <p align="left">
 
