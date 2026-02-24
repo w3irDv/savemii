@@ -43,7 +43,7 @@ ssid=<your ssidhere>
 key=<your wifikeyhere>
 key_type=WPA2_PSK_AES
 ```
-- Power On your Wii u, connect the device with the UDPIH explot when the Wii U logo appear. 
+- Power On your Wii U, connect the device with the UDPIH explot when the Wii U logo appear. 
 - Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
 - Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U will appear on the screen.
 - Download this [wupclient.py](../scripts/wupclient.py) file to your computer, and update this line:
@@ -52,10 +52,21 @@ def __init__(self, ip='192.168.1.33', port=1337)
 ```
 with the IP assigned to the Wii U console.
 
-- Execute:
+- Create a directory `mm_bckp` in the folder where you downloaded `wupclient.py`
+- Copy the backup of the Mii Maker `common` folder `mm_bckp`
+- The layout should be:
+```
+wupclient.py
+mm_bckp/stadio.sav
+mm_bckp/db/FCL_DB.dat"
+mm_bckp/db/FFL_HDB.dat"
+mm_bckp/db/FFL_ODB.dat"
+mm_bckp/db/FFL_ODB_OLD.dat"
+``` 
+- Now execute:
 
 ```sh
-python -i wupclient.py
+python3 -i wupclient.py
 ```
 
 - And now execute this lines inside the interactive prompt:
@@ -73,7 +84,7 @@ w.chown("common",0x1004a200,0x400)
 
 w.cd("common")
 
-w.up("just_init/stadio.sav","stadio.sav")
+w.up("mm_bckp/stadio.sav","stadio.sav")
 w.chmod("stadio.sav",0x660)
 w.chown("stadio.sav",0x1004a200,0x400)
 
@@ -82,10 +93,10 @@ w.chown("db",0x1004a200,0x400)
 
 w.cd("db")
 
-w.up("just_init/db/FCL_DB.dat","FCL_DB.dat")
-w.up("just_init/db/FFL_HDB.dat","FFL_HDB.dat")
-w.up("just_init/db/FFL_ODB.dat","FFL_ODB.dat")
-w.up("just_init/db/FFL_ODB_OLD.dat","FFL_ODB_OLD.dat")
+w.up("mm_bckp/db/FCL_DB.dat","FCL_DB.dat")
+w.up("mm_bckp/db/FFL_HDB.dat","FFL_HDB.dat")
+w.up("mm_bckp/db/FFL_ODB.dat","FFL_ODB.dat")
+w.up("mm_bckp/db/FFL_ODB_OLD.dat","FFL_ODB_OLD.dat")
 
 w.chmod("FCL_DB.dat",0x666)
 w.chmod("FFL_HDB.dat",0x666)
