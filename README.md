@@ -47,7 +47,7 @@ Use it at your own risk and please report any issues that may occur.
 <p align="left">
 
 <p align="left">
-<a href="READMEs/Tips_README.md" title="Tips"><img src="READMEs/tips.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Tips_README.md" title="Tips"><img src="READMEs/tips2.png" width="40" align="center"></a>&nbsp
 <a href="READMEs/Tips_README.md" title="Tips">Tips</a>
 </p>
 <p align="left">
