@@ -1,6 +1,6 @@
 # SaveMii WUT Port /ProcessMod /SaveMyMiis
 
-<p align="center"><a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="savemii.png" width="300"></a></p>
+<p align="center"><a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="savemii.png" width="350"></a></p>
 <p align="center">
 <a href="https://github.com/w3irdv/savemii/releases" title="Releases"><img src="https://img.shields.io/github/v/release/w3irdv/savemii?logo=github"></a>
 </p>
@@ -30,14 +30,14 @@ Use it at your own risk and please report any issues that may occur.
 
 
 ## Detailed HowTos
-<p align="left"><a href="READMEs/Saves_README.md" title="Base"><img src="READMEs/savemii_base.png" width="35"> Base tasks</a></p>
+<p align="left"><a href="READMEs/Saves_README.md" title="Base"><img src="READMEs/savemii_base.png" width="40"> Base tasks</a></p>
 <p align="left">
 
-<p align="left"><a href="READMEs/Batch_README.md" title="Base"><img src="READMEs/batch.png" width="35"> Batch Process</a></p>
+<p align="left"><a href="READMEs/Batch_README.md" title="Base"><img src="READMEs/batch.png" width="40"> Batch Process</a></p>
 <p align="left">
 
 <p align="left">
-<a href="Mii_README.md" title="Base"><img src="READMEs/miis.png" width="35"> Mii Management</a>
+<a href="READMEs/Mii_README.md" title="Base"><img src="READMEs/miis.png" width="40"> Mii Management</a>
 </p>
 <p align="left">
 
