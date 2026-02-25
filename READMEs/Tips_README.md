@@ -26,7 +26,7 @@ You can follow this [tutorial](../tutorials/Pretendo%20Network%20savedata%20Tran
 
 ## Recover your Wii U in case of a brick after a faulty System title restore
 
-In extreme cases, a faulty restore of a system title can provoke a brick of your console. For example, you decide to wipe de Mii Make savedata expecting that the next time you open it all  mii database will be initialized from scratch. But MiiMaker savedata contains also some FaceLib lib files that the Wii U Menu uses to render miis. It does not find them, and the startup process hangs on the Wii U splash forever ...
+In extreme cases, a faulty restore of a system title can lead to a brick of your console. For example, you decide to wipe de Mii Make savedata expecting that the next time you open it the mii database will be initialized from scratch with the right permissions. But Mii Maker savedata contains also some FaceLib lib files that the Wii U Menu uses to render miis in the initial selection screen. It does not find them, and the startup process hangs on the Wii U logo forever ...
 
 You will need a backup of the Mii Maker savedata. Always perform an `All Users` backup before trying any restore!
 
