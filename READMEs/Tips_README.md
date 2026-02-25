@@ -39,8 +39,8 @@ At a glance:
 
 ```
 type=wifi
-ssid=<your ssidhere>
-key=<your wifikeyhere>
+ssid=<your ssid here>
+key=<your wifikey here>
 key_type=WPA2_PSK_AES
 ```
 - Power On your Wii U, connect the device with the UDPIH explot when the Wii U logo appear. 
