@@ -111,7 +111,7 @@ and then use procedure `(C)`, but executing step 1 from the new Wii U console an
 ### (E) I don't have access to the Wii U console, but I have a NAND backup
 IN procedures (C) or (D), extract stadio.sav and FFL_ODB.dat with wfs-extract
 
-### (F) Mame imported miis as belonging to the new console
+### (F) Make imported miis as belonging to the new console
 Imported miis from a different console will appear as foreign miis and cannot be edited. If you want to convert them in first-class citizens of the new console so they can be modified:
 
 `Mii Management >> (select repo RFL o FFL) >> Trasnform tasks >> (select miis to be made local) >> Make them belong to this console : Yes >> (Press A)`
