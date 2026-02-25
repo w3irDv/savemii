@@ -54,10 +54,10 @@ Miis in you new Wii U will be kept.
 1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Export Miis`. All miis are selected. Just press `A` to export. This will copy all miis to the FFLStage repo.
 2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and backup new console miis.
 3. Go Back to the Select Repo menu. Select now `FFLStage repo`
-3. Go to `Import Miis`. Select the miis you want to import and pre `A`. This will add the new miis to the FFL repo.
+3. Go to `Import Miis`. Select the miis you want to import and press `A`. This will add the new miis to the FFL repo.
 
 ### (D) Restoring vWii miis
-You can use procedure (B) or (C), but selecting in this case RFL repo or RFLStage repo.
+You can use procedures (B) or (C), but selecting in this case RFL repo or RFLStage repo instead of the FFL ones.
 
 ### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii
 Miis in the new mii will be wiped. You need to copy this files from the Wii U console to the SD:
@@ -92,7 +92,6 @@ Old miis will be added to the new ones. You need to copy this files from the Wii
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/stadio.sav
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat
 
-
 to
 
 SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/
@@ -102,13 +101,20 @@ SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/
 /vol/storage/slccmpt01/shared2/menu/FaceLib/RFL_DB.dat
 
 to
+
 SD:/wiiu/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat
 ```
 
 and then use procedure `(C)`, but executing step 1 from the new Wii U console and selecting as source repo `FFLC` or `RFLC`
 
-### (E) I don't have access to the Wii U console, but I have a NAND backup
-In procedures (C) or (D), extract stadio.sav and FFL_ODB.dat with wfs-extract
+### (E) I don't have access to the Wii U console, but I have a MLC backup
+In procedures (C) or (D), extract stadio.sav and FFL_ODB.dat with [wfs-extract](https://github.com/koolkdev/wfs-tools)
+
+
+```sh
+wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --dump-path /usr/save/00050010/1004a200/user/common
+#  1004a100 for USA; 1004a000 for JPN
+```
 
 ### (F) Make imported miis as belonging to the new console
 Imported miis from a different console will appear as foreign miis and cannot be edited. If you want to convert them in first-class citizens of the new console so they can be modified:
