@@ -62,7 +62,7 @@ You can use procedure (B) or (C), but selecting in this case RFL repo or RFLStag
 ### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii
 Miis in the new mii will be wiped. You need to copy this files from the Wii U console to the SD:
 
-```
+```sh
 #### Wii U 
 
 #### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
@@ -72,7 +72,8 @@ Miis in the new mii will be wiped. You need to copy this files from the Wii U co
 to
 
 SD:/wiiu/backups/..../FFL_repo/(new number)/...
-
+```
+```sh
 #### vWii
 /vol/storage/slccmpt01/shared2/menu/FaceLib/RFL_DB.dat
 
@@ -86,7 +87,7 @@ and then use procedure `(B)`
 ### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii, and I want to keep miis created in the new Wii U
 Old miis will be added to the new ones. You need to copy this files from the Wii U console to the SD:
 
-```
+```sh
 #### Wii U 
 
 #### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
@@ -97,7 +98,8 @@ Old miis will be added to the new ones. You need to copy this files from the Wii
 to
 
 SD:/wiiu/backups/..../FFLC_repo/(new number)/...
-
+```
+```sh
 #### vWii
 /vol/storage/slccmpt01/shared2/menu/FaceLib/RFL_DB.dat
 
