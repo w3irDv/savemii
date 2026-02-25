@@ -38,7 +38,7 @@ This will delete all miis in your new Wii U.
 3. Restore the save with `Manage Wii U System Titles >> (Select Mii Maker title) >> Restore (with All Users option)`
 4. If all goes OK, continue (optional step) with the secion `Modify the mii so they will seem to be created in the new console`
 5. If the restore fails, restore the backup hat you have made in step 2.
- **Important**: Don't leave Savemii or restart your console unless the restore has succeed. If not, you will need to recover from a (semi)brick (See [recovery]())
+ **Important**: Don't leave Savemii or restart your console unless the restore has succeed. If not, you will need to recover from a (semi)brick (See [recovery process](#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore))
 
 ### (B) Restoring Wii U Miis by restoring Mii FFL repo
 This will delete all miis in your new Wii U.
@@ -103,8 +103,18 @@ to
 SD:/wiiu/backups/..../RFLC_repo/(new number)/...
 ```
 
-and then use procedure `(C)`, but executing step 1 from the new Wii U console ans selecting as source repo `FFLC` or `RFLC`
+and then use procedure `(C)`, but executing step 1 from the new Wii U console and selecting as source repo `FFLC` or `RFLC`
 
+### (E) I don't have access to the Wii U console, but I have a NAND backup
+IN procedures (C) or (D), extract stadio.sav and FFL_ODB.dat with wfs-extract
+
+### (F) Mame imported miis as belonging to the new console
+Imported miis from a different console will appear as foreign miis and cannot be edited. If you want to convert them in first-class citizens of the new console so they can be modified:
+
+`Mii Management >> (select repo RFL o FFL) >> Trasnform tasks >> (select miis to be made local) >> Make them belong to this console : Yes >> (Press A)`
+
+**Beware**: mii swill have a new Mii Id and association with games will be lost. At all effects, they are neww miis created on the new console.
+ 
 <p>
 <p>
 
