@@ -80,17 +80,7 @@ to
 SD:/wiiu/backups/..../RFL_repo/(new number)/...
 ```
 
-and the use proceure `(B)`
-
-
-
-
-
-
-
-
-
-
+and then use procedure `(B)`
 
 
 
