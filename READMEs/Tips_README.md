@@ -86,9 +86,8 @@ and then use procedure `(B)`
 ### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii, and I want to keep miis created in the new Wii U
 Old miis will be added to the new ones. You need to copy this files from the Wii U console to the SD:
 
-```sh
 #### Wii U 
-
+```sh
 #### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/stadio.sav
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat
@@ -98,8 +97,8 @@ to
 
 SD:/wiiu/backups/..../FFLC_repo/(new number)/...
 ```
-```sh
 #### vWii
+```sh
 /vol/storage/slccmpt01/shared2/menu/FaceLib/RFL_DB.dat
 
 to
