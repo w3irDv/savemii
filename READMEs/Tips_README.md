@@ -18,11 +18,84 @@ You can then return to SaveMii and restore this slot (deleting the destination d
 
 If you follow an online guide, it will likely tell you to create/find a hexadecimal folder (`xxxxxxxxxyyyyyyyy`) for storing the title savedata. SaveMii will still detect savedata stored using this format, but will prompt you to convert it to the new format. If you do so, the new savedata will be moved to the first free slot available in the  backups for the given title (usually, savedata will be stored in the last slot). 
 
-
+<p>
+<p>
 ## Transfer Savedata to/from your Pretendo account
 
 You can follow this [tutorial](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)
 
+<p>
+<p>
+
+## Restore youe miis from your previous console
+You can restore your miis from a Wii U or Wii in a new Wii U. The Wii U side can be restored in several ways:
+
+### (A) Restoring Wii U Miis through Mii Maker savedata
+This will delete all miis in your new Wii U.
+
+1. If you have access to your previous Wii U and you can run Savemii, perform a backup of Mii Maker from `Manage Wii U System Titles >> (Select Mii Maker title) >> Backup (with All Users optipon)`
+2. Then in the new Wii U, wipe the Mii Maker savedata: `Manage Wii U System Titles >> (Select Mii Maker title) >> Wipe (with All Users option)`. **Important**: Say yes when Savemii ask to perform a backup, and put in in a new free slot
+3. Restore the save with `Manage Wii U System Titles >> (Select Mii Maker title) >> Restore (with All Users option)`
+4. If all goes OK, continue (optional step) with the secion `Modify the mii so they will seem to be created in the new console`
+5. If the restore fails, restore the backup hat you have made in step 2.
+ **Important**: Don't leave Savemii or restart your console unless the restore has succeed. If not, you will need to recover from a (semi)brick (See [recovery]())
+
+### (B) Restoring Wii U Miis through Mii FFL repo
+This will delete all miis in your new Wii U.
+1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Backup DB`
+2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and backup or export the new console miis (if any).
+3. Restore the FFL repo  with `Restore DB`
+4. If all goes OK, continue (optional step) with the secion `Modify the mii so they will seem to be created in the new console`
+5. If the restore fails, restore the backup that you have made in step 2.
+6. As last resor,t you can `Wipe DB`, exit SaveMii, and start Mii Maker. It will create a new empty DB.
+
+### (C) Restoring Wii U Miis by Mii Export/Import
+Miis in you new Wii U will be kept.
+1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Export Miis`. All miis are selected. Just press `A` to export. This will copy all miis to the FFLStage repo.
+2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and backup new console miis.
+3. Go Back to the Select Repo menu. Select now `FFLStage repo`
+3. Go to `Import Miis`. Select the miis you want to import and pre `A`. This will add the new miis to the FFL repo.
+
+### (D) Restoring vWii miis
+You can use procedure (B) or (C), but selecting in this case RFL repo or RFLStage repo.
+
+### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii
+You need to copy this files from the Wii U console to the SD:
+
+```
+#### Wii U 
+
+/vol/storage_mlc01/usr/save/00050010/1004a200/user/common/stadio.sav
+/vol/storage_mlc01/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat
+
+to
+
+SD:/wiiu/backups/..../FFL_repo/(new number)/...
+
+#### vWii
+/vol/storage/slccmpt01/shared2/menu/FaceLib/RFL_DB.dat
+
+to
+
+SD:/wiiu/backups/..../RFL_repo/(new number)/...
+```
+
+and the use proceure `(B)`
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>
+<p>
 
 ## Recover your Wii U in case of a brick after a faulty System title restore
 
@@ -46,14 +119,13 @@ key_type=WPA2_PSK_AES
 - Power On your Wii U, connect the device with the UDPIH explot when the Wii U logo appear. 
 - Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
 - Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U will appear on the screen.
-- Download this [wupclient.py](../scripts/wupclient.py) file to your computer, and update this line:
+- Download this [wupclient.py](../scripts/wupclient.py) file to your computer, and update this line with the IP assigned to the Wii U console.:
 ```python
 def __init__(self, ip='192.168.1.33', port=1337)
 ```
-with the IP assigned to the Wii U console.
 
 - Create a directory `mm_bckp` in the folder where you downloaded `wupclient.py`
-- Copy the backup of the Mii Maker `common` folder `mm_bckp`
+- Copy the backup of the Mii Maker `common` folder into `mm_bckp`
 - The layout should be:
 ```
 wupclient.py
@@ -69,7 +141,7 @@ mm_bckp/db/FFL_ODB_OLD.dat
 python3 -i wupclient.py
 ```
 
-- And now execute this lines inside the interactive prompt (replacing the vale of `mii_maker` with that of for your region) :
+- Finally execute this lines inside the interactive prompt (replacing the vale of `mii_maker` with that of for your region) :
 
 ```python
 
@@ -77,8 +149,11 @@ mii_maker_jpn="1004a000"
 mii_maker_usa="1004a100"
 mii_maker_eur="1004a200"
 
-# replace mii_maker_eur with the one for your region
+########################
+# replace her emii_maker_eur with the one for your region
+########################
 mii_maker=mii_maker_eur
+########################
 
 owner=int("0x"+mii_maker)
 
@@ -123,7 +198,7 @@ flush_mlc()
 exit
 ```
 
-- Stop `wupserver`, go back to the `Recovery Menu` main screen, Stop the Wii U
+- Stop `wupserver`, go back to the `Recovery Menu` main screen, and Stop the Wii U
 - Power On the Wii U. It should start as usual.
 
 
