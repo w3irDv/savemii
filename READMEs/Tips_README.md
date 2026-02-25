@@ -70,7 +70,7 @@ Miis in the new mii will be wiped. You need to copy this files from the Wii U co
 
 to
 
-SD:/wiiu/backups/..../FFL_repo/(new number)/...
+SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/
 ```
 #### vWii
 ```sh
@@ -78,7 +78,7 @@ SD:/wiiu/backups/..../FFL_repo/(new number)/...
 
 to
 
-SD:/wiiu/backups/..../RFL_repo/(new number)/...
+SD:/wiiu/backups/MiiRepoBckp/mii_bckp_rfl/(new number)/RFL_DB.dat
 ```
 
 and then use procedure `(B)`
@@ -95,21 +95,20 @@ Old miis will be added to the new ones. You need to copy this files from the Wii
 
 to
 
-SD:/wiiu/backups/..../FFLC_repo/(new number)/...
+SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/
 ```
 #### vWii
 ```sh
 /vol/storage/slccmpt01/shared2/menu/FaceLib/RFL_DB.dat
 
 to
-
-SD:/wiiu/backups/..../RFLC_repo/(new number)/...
+SD:/wiiu/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat
 ```
 
 and then use procedure `(C)`, but executing step 1 from the new Wii U console and selecting as source repo `FFLC` or `RFLC`
 
 ### (E) I don't have access to the Wii U console, but I have a NAND backup
-IN procedures (C) or (D), extract stadio.sav and FFL_ODB.dat with wfs-extract
+In procedures (C) or (D), extract stadio.sav and FFL_ODB.dat with wfs-extract
 
 ### (F) Make imported miis as belonging to the new console
 Imported miis from a different console will appear as foreign miis and cannot be edited. If you want to convert them in first-class citizens of the new console so they can be modified:
