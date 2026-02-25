@@ -47,10 +47,13 @@ style iddbsd fill:#f9f,stroke:#333,stroke-width:1px
 style idstage fill:#f9f,stroke:#333,stroke-width:1px
 ```
 
-### Tasks operating on full repos
+### Mnaging a Mii repo
 
+1. Enter into  _Mii Management_ task
 1. First, select the repo you want to manage
 2. Select the task you want to perform on it.
+
+### Tasks operating on full repos
 
 #### Backup / Restore  Tasks
 1. Select the slot you want to use
@@ -59,7 +62,9 @@ style idstage fill:#f9f,stroke:#333,stroke-width:1px
 Backup will include:
 * Internal Wii U: FFL_ODB.dat and stadio.sav files. Can be moved between consoles.
 * Internal Wii: RFL_DB.dat file. Can be moved between consoles
-* Wii U Account database: all files under the act  profile folder for each profile in the console ( `account.dat`, `miiimgXX.dat`). `account.dat` has an attribute with the Mii image data (MiiData) but also contain the pasword of the profile and a lot of other stuff. For this reason, **Savemii only allows you to restore account data if it belongs to the same console** (i.e, if the serial id of the backup is the same than the serial id of the console when you are trying to restore). This check can be spoofed, **so be sure of what you are doing** in the case that you are restoring between different consoles, or if you try to restore a backup of a reinstalled console (which will probably share the serial id). In the later case, **the safe approach is just to Import indivdually each account Mii or use the Restore DB Mii Section task**. `miimgXX.dat` are static pictures of the Mii that the Wii U apps can use. Is updated when you register a Mii against a profile. 
+* Wii U Account database: all files under the act  profile folder for each profile in the console ( `account.dat`, `miiimgXX.dat`).
+    `account.dat` has an attribute with the Mii image data (MiiData) but also contain the pasword of the profile and a lot of other stuff. For this reason, **Savemii only allows you to restore account data if it belongs to the same console** (i.e, if the serial id of the backup is the same than the serial id of the console when you are trying to restore). This check can be spoofed, **so be sure of what you are doing** in the case that you are restoring between different consoles, or if you try to restore a backup of a reinstalled console (which will probably share the serial id). In the later case, **the safe approach is just to Import indivdually each account Mii or use the Restore DB Mii Section task**.
+    `miimgXX.dat` are static pictures of the Mii that the Wii U apps can use. Is updated when you register a Mii against a profile. 
 * Stage folders: copy of the individual Mii files
 * Custom DB folders: same files that in the case of internal ones.
 
