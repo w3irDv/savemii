@@ -40,7 +40,7 @@ This will delete all miis in your new Wii U.
 5. If the restore fails, restore the backup hat you have made in step 2.
  **Important**: Don't leave Savemii or restart your console unless the restore has succeed. If not, you will need to recover from a (semi)brick (See [recovery]())
 
-### (B) Restoring Wii U Miis through Mii FFL repo
+### (B) Restoring Wii U Miis by restoring Mii FFL repo
 This will delete all miis in your new Wii U.
 1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Backup DB`
 2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and backup or export the new console miis (if any).
@@ -60,7 +60,7 @@ Miis in you new Wii U will be kept.
 You can use procedure (B) or (C), but selecting in this case RFL repo or RFLStage repo.
 
 ### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii
-You need to copy this files from the Wii U console to the SD:
+Miis in the new mii will be wiped. You need to copy this files from the Wii U console to the SD:
 
 ```
 #### Wii U 
@@ -82,7 +82,28 @@ SD:/wiiu/backups/..../RFL_repo/(new number)/...
 
 and then use procedure `(B)`
 
+### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii, and I want to keep miis created in the new Wii U
+Old miis will be added to the new ones. You need to copy this files from the Wii U console to the SD:
 
+```
+#### Wii U 
+
+/vol/storage_mlc01/usr/save/00050010/1004a200/user/common/stadio.sav
+/vol/storage_mlc01/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat
+
+to
+
+SD:/wiiu/backups/..../FFLC_repo/(new number)/...
+
+#### vWii
+/vol/storage/slccmpt01/shared2/menu/FaceLib/RFL_DB.dat
+
+to
+
+SD:/wiiu/backups/..../RFLC_repo/(new number)/...
+```
+
+and then use procedure `(C)`, but executing step 1 from the new Wii U console ans selecting as source repo `FFLC` or `RFLC`
 
 <p>
 <p>
