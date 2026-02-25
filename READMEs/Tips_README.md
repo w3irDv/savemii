@@ -27,8 +27,8 @@ You can follow this [tutorial](../tutorials/Pretendo%20Network%20savedata%20Tran
 <p>
 <p>
 
-## Restore youe miis from your previous console
-You can restore your miis from a Wii U or Wii in a new Wii U. The Wii U side can be restored in several ways:
+## Restore miis from your previous console
+You can restore your miis from a Wii U or Wii in a new Wii U. This can be done in several ways:
 
 ### (A) Restoring Wii U Miis through Mii Maker savedata
 This will delete all miis in your new Wii U.
