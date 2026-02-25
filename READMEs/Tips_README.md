@@ -112,11 +112,12 @@ In procedures (C) or (D), extract stadio.sav and FFL_ODB.dat with [wfs-extract](
 
 
 ```sh
-wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --dump-path /usr/save/00050010/1004a200/user/common
 #  1004a100 for USA; 1004a000 for JPN
+wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --dump-path /usr/save/00050010/1004a200/user/common
+
 ```
 
-### (F) Make imported miis as belonging to the new console
+### (F) Make imported Miis as belonging to the new console
 Imported miis from a different console will appear as foreign miis and cannot be edited. If you want to convert them in first-class citizens of the new console so they can be modified:
 
 `Mii Management >> (select repo RFL o FFL) >> Trasnform tasks >> (select miis to be made local) >> Make them belong to this console : Yes >> (Press A)`
