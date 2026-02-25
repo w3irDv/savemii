@@ -65,11 +65,9 @@ Miis in the new mii will be wiped. You need to copy this files from the Wii U co
 ```
 #### Wii U 
 
+#### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/stadio.sav
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat
-
-#### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
-
 
 to
 
@@ -91,10 +89,10 @@ Old miis will be added to the new ones. You need to copy this files from the Wii
 ```
 #### Wii U 
 
+#### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/stadio.sav
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat
 
-#### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
 
 to
 
@@ -176,7 +174,7 @@ mii_maker_usa="1004a100"
 mii_maker_eur="1004a200"
 
 ########################
-# replace her emii_maker_eur with the one for your region
+# replace here mii_maker_eur with the one for your region
 ########################
 mii_maker=mii_maker_eur
 ########################
