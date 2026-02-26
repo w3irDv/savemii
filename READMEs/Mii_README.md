@@ -84,7 +84,7 @@ You must initialize custom databases if you want to play with them.
 #### List Miis
 All Miis in te selected repo will be shown. With `X` you can cycle between different screens showing different Miis attributes:
 - copyable, shareable, normal/special/temp, favourite, duplicated.
-    - Duplicate Miis are marked with a D or DUP. Mii Maker will delete any all but one duplicate Miis, Mii Channel don't seem to pay attention to this fact.
+    - Duplicate Miis are marked with a D or DUP. Mii Maker will delete any all but one duplicates. Mii Channel don't seem to pay attention to this fact.
 - partial device_hash and author_id where the Mii was created
 - mii_id (some flags + timestamp) , partial device_hash
 - location (slot number for FFL or RFL databases, filename for Stage or Account databases)
@@ -92,18 +92,18 @@ All Miis in te selected repo will be shown. With `X` you can cycle between diffe
 - timestamp
 
 #### Export Miis
-Export individual Miis from one repo to a different one. Press `A` to initiaate the task. For internal Databases, the Miis will be copied to the associated Stage Repo. For other databases, a new menu will appear where you can select the repo to export to. Press `A` again after moving the cursor to the desired repo. The Mii selection menu will appear. Select/Deselect individual Miis with `Y`, `DPAD-L/R`, or use `+/-` to select/deselect all at once. Then Press `A` to initiate the export. 
+Export individual Miis from one repo to a different one. Press `A` to initiate the task. For internal Databases, the Miis will be copied to the associated Stage Repo. For other databases, a new menu will appear where you can select the repo to export to. Press `A` again after moving the cursor to the desired repo. The Mii selection menu will appear. Select/Deselect individual Miis with `Y`, `DPAD-L/R`, or use `+/-` to select/deselect all at once. Then Press `A` to initiate the export. 
 
 #### Import Miis
 You can Import individual Miis from a repo to the currently selected repo. For internal Databases, the Miis will be searched for and copied from the associated Stage Repo. For other databases, you can select the repo to import from. Press `A`to initiate the task. Press `A` again after moving the cursor to the desired repo. Then select the Miis you want to import with `Y`, `DPAD-L/R`, or `+/-` and press `A` to proceed with the import.
 
-**Note**: When you improt a Mii in a Account repo tou mist select wich account Mii to overwrite. All Usual Mii data (appearance, name, flags, ... ) will be copied from the Mii to the account Mii.
+**Note**: When importing a Mii into an account repository, you must select which account Mii to overwrite. All the usual Mii data (appearance, name, flags, etc.) will be copied from the Mii to the account Mii.
 
 #### Wipe Miis
 Select/Deselect the individual Miis to wipe with `Y`, `DPAD-L/R`, or `+/-` for select/deselect all. Then Press `A`
 
 #### Transform Miis
-Here you can apply a series of transfromation to a Mii. First select the Miis you want to modify with `Y`, `DPAD-L/R`, or `+/-`, as usual. Press `A`. The *Transform Tasks* menu will appear. You can scroll up or down through the different tasks and select or deselect the ones you want to apply to the selected Miis iusing `Y`, `DPAD-L/R`. Press `A` when you have selected all the tasks that you need to apply. Tue *Trasfer Appearance* and *Transfer ownership* tasks require a Mii as a template. First select the Repo where the template Mii is located, then select the template Mii. Finally press `A` to transform the selected Miis.
+Here you can apply a series of transformations to a Mii. First, as usual, select the Miis you want to modify with `Y`, `DPAD-L/R`, or `+/-`. Press `A`. The *Transform Tasks* menu will appear. You can scroll up or down through the different tasks and select or deselect the ones you want to apply to the selected Miis iusing `Y`, `DPAD-L/R`. Press `A` when you have selected all the tasks that you need to apply. *Trasfer Appearance* and *Transfer ownership* tasks require a Mii as a template. First select the Repo where the template Mii is located, then select the template Mii. Finally press `A` to transform the selected Miis.
 
 Available tasks:
 - Transfer physical appearance from another Mii: Selected Miis will get the physical appearance of the Mii you will select in the next menu
