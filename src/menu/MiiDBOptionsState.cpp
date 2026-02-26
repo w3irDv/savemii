@@ -264,8 +264,9 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                         return SUBSTATE_RUNNING;
                     } else {
                         if (mii_repo->db_kind == MiiRepo::eDBKind::FILE)
-                            if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nEXISTING MIIS WILL BE OVERWRITTEN")))
-                                return SUBSTATE_RUNNING;
+                            if (repoHasData)
+                                if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nEXISTING MIIS WILL BE OVERWRITTEN")))
+                                    return SUBSTATE_RUNNING;
                         if (mii_repo->restore(slot) == 0) {
                             Console::showMessage(OK_SHOW, _("Data succesfully restored!"));
                         }
@@ -292,16 +293,18 @@ ApplicationState::eSubState MiiDBOptionsState::update(Input *input) {
                     }
                     break;
                 case MiiProcess::WIPE_DB:
-                    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
-                        return SUBSTATE_RUNNING;
+                    if (repoHasData)
+                        if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
+                            return SUBSTATE_RUNNING;
                     if (mii_repo->wipe() == 0)
                         Console::showMessage(OK_SHOW, _("Data succesfully wiped!"));
                     cursorPos = 0;
                     updateWipeData();
                     break;
                 case MiiProcess::INITIALIZE_DB:
-                    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
-                        return SUBSTATE_RUNNING;
+                    if (repoHasData)
+                        if (!Console::promptConfirm(ST_WARNING, _("Are you sure?\n\nALL MIIS WILL BE WIPED")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?\n\nALL MIIS WILL BE WIPED")))
+                            return SUBSTATE_RUNNING;
                     if (mii_repo->initialize() == 0)
                         Console::showMessage(OK_SHOW, _("Data succesfully initialized!"));
                     cursorPos = 0;
@@ -367,20 +370,9 @@ void MiiDBOptionsState::updateSlotMetadata() {
 }
 
 void MiiDBOptionsState::updateRepoHasData() {
-    repoHasData = false;
-    switch (this->mii_repo->db_kind) {
-        case MiiRepo::eDBKind::ACCOUNT:
-        case MiiRepo::eDBKind::FOLDER: {
-            if (FSUtils::checkEntry(this->mii_repo->path_to_repo.c_str()) == 2)
-                if (!FSUtils::folderEmpty(this->mii_repo->path_to_repo.c_str()))
-                    repoHasData = true;
-        } break;
-        case MiiRepo::eDBKind::FILE: {
-            if (FSUtils::checkEntry(this->mii_repo->path_to_repo.c_str()) == 1)
-                repoHasData = true;
-        } break;
-        default:;
-    }
+
+    repoHasData = this->mii_repo->repo_has_data();
+
 }
 
 

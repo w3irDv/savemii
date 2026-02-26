@@ -58,6 +58,7 @@ public:
     int restore(int slot);
     int wipe();
     int initialize();
+    bool repo_has_data();
 
     void setStageRepo(MiiRepo *stage_repo) { this->stage_repo = stage_repo; };
     void setStadioSav(MiiStadioSav *stadio_sav);
@@ -86,7 +87,7 @@ public:
     
     bool repo_has_duplicated_miis = false;
 
-    const static inline std::string BACKUP_ROOT = "fs:/vol/external01/wiiu/backups/MiiRepoBckp";
+    const static inline std::string BACKUP_ROOT = "fs:/vol/external01/wiiu/backups/mii_repos_bckp";
 
     bool needs_populate = true;
 

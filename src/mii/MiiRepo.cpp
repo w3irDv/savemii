@@ -125,7 +125,7 @@ int MiiRepo::restore(int slot) {
     std::string srcPath = this->backup_base_path + "/" + std::to_string(slot);
     std::string dstPath = this->path_to_repo;
 
-    if (!FSUtils::folderEmpty(dstPath.c_str())) {
+    if (repo_has_data()) {
         int slotb = MiiSaveMng::getEmptySlot(this);
         if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
             if (!(this->backup(slotb, _("pre-Restore backup")) == 0)) {
@@ -211,6 +211,15 @@ int MiiRepo::wipe() {
 
     std::string path = this->path_to_repo;
 
+    if (repo_has_data()) {
+        int slotb = MiiSaveMng::getEmptySlot(this);
+        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
+            if (!(this->backup(slotb, _("pre-Wipe backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, _("Backup Failed - Wipe aborted !!"));
+                return -1;
+            }
+    }
+
     if (savemng::firstSDWrite)
         sdWriteDisclaimer(COLOR_BACKGROUND);
 
@@ -271,6 +280,15 @@ int MiiRepo::initialize() {
 
     std::string path = this->path_to_repo;
 
+    if (repo_has_data()) {
+        int slotb = MiiSaveMng::getEmptySlot(this);
+        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
+            if (!(this->backup(slotb, _("pre-Restore backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
+                return -1;
+            }
+    }
+    
     if (savemng::firstSDWrite)
         sdWriteDisclaimer(COLOR_BACKGROUND);
 
@@ -375,3 +393,23 @@ void MiiRepo::setStadioSav(MiiStadioSav *stadio_sav) {
     this->stadio_sav = stadio_sav;
     stadio_sav->setAccountRepo(this);
 };
+
+
+bool MiiRepo::repo_has_data() {
+    bool repoHasData = false;
+    switch (this->db_kind) {
+        case MiiRepo::eDBKind::ACCOUNT:
+        case MiiRepo::eDBKind::FOLDER: {
+            if (FSUtils::checkEntry(this->path_to_repo.c_str()) == 2)
+                if (!FSUtils::folderEmpty(this->path_to_repo.c_str()))
+                    repoHasData = true;
+        } break;
+        case MiiRepo::eDBKind::FILE: {
+            if (FSUtils::checkEntry(this->path_to_repo.c_str()) == 1)
+                repoHasData = true;
+        } break;
+        default:;
+    }
+    return repoHasData;
+
+}
