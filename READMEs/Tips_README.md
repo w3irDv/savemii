@@ -117,12 +117,12 @@ wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --du
 
 ```
 
-### (F) Make imported Miis as belonging to the new console
-Imported miis from a different console will appear as foreign miis and cannot be edited. If you want to convert them in first-class citizens of the new console so they can be modified:
+### (F) Make imported Miis belong to the new console
+Imported miis from a different console will appear as foreign miis and cannot be edited. If you want to convert them to first-class citizens of the new console so they can be modified:
 
 `Mii Management >> (select repo RFL o FFL) >> Trasnform tasks >> (select miis to be made local) >> Make them belong to this console : Yes >> (Press A)`
 
-**Beware**: mii swill have a new Mii Id and association with games will be lost. At all effects, they are neww miis created on the new console.
+**Beware**: mii will receive a new Mii Id so association with games will be lost. At all effects, they are neww miis created on the new console.
  
 <p>
 <p>

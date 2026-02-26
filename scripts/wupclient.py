@@ -964,6 +964,77 @@ def flush_mlc():
     ret = w.close(handle)
     print(hex(ret))
 
+def wipe_mii_maker(region):
+    match region:
+        case eur:
+            mii_maker="1004a200"
+        case usa:
+            mii_maker="1004a100"
+        case jpn:
+            mii_maker="1004a000"
+        case _:
+            print("please select a valid region: eur  usa  jpn")
+            return
+
+    owner=int("0x"+mii_maker)
+
+    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/")
+
+
+
+def restore_mii_maker(region):
+    match region:
+        case eur:
+            mii_maker="1004a200"
+        case usa:
+            mii_maker="1004a100"
+        case jpn:
+            mii_maker="1004a000"
+        case _:
+            print("please select a valid region: eur  usa  jpn")
+            return
+
+    owner=int("0x"+mii_maker)
+
+    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker)
+
+    w.chmod("user",0x600)
+    w.chown("user",0x100000f6,0x400)
+
+    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
+
+    w.mkquota("common",0x660,0x1790000)
+    w.chown("common",owner,0x400)
+
+    w.cd("common")
+
+    w.up("mm_bckp/stadio.sav","stadio.sav")
+    w.chmod("stadio.sav",0x660)
+    w.chown("stadio.sav",owner,0x400)
+
+    w.mkdir("db",0x644)
+    w.chown("db",owner,0x400)
+
+    w.cd("db")
+
+    w.up("mm_bckp/db/FCL_DB.dat","FCL_DB.dat")
+    w.up("mm_bckp/db/FFL_HDB.dat","FFL_HDB.dat")
+    w.up("mm_bckp/db/FFL_ODB.dat","FFL_ODB.dat")
+    w.up("mm_bckp/db/FFL_ODB_OLD.dat","FFL_ODB_OLD.dat")
+
+    w.chmod("FCL_DB.dat",0x666)
+    w.chmod("FFL_HDB.dat",0x666)
+    w.chmod("FFL_ODB.dat",0x666)
+    w.chmod("FFL_ODB_OLD.dat",0x666)
+
+    w.chown("FCL_DB.dat",owner,0x400)
+    w.chown("FFL_HDB.dat",owner,0x400)
+    w.chown("FFL_ODB.dat",owner,0x400)
+    w.chown("FFL_ODB_OLD.dat",owner,0x400)
+
+    flush_mlc()        
+
+
 if __name__ == '__main__':
     w = wupclient()
     mount_sd()
