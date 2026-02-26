@@ -133,7 +133,7 @@ To recover from such a semi-brick  you can use [UDPIH: USB Host Stack exploit + 
 At a glance:
 - [Flash your device](https://github.com/GaryOderNichts/udpih#device-setup) with the UDPIH exploit image.
 - Put the [Recovery Menu](https://github.com/GaryOderNichts/recovery_menu/releases) on the root of the SD card 
-- Put a `network.cfg` file on the root of the SD card with the right information:
+- Put a `network.cfg` file on the root of the SD card with the following information:
 
 ```
 type=wifi
@@ -166,12 +166,10 @@ mm_bckp/db/FFL_ODB_OLD.dat
 python3 -i wupclient.py
 ```
 
-- Run these lines inside the interactive prompt:
+- Run these lines inside the interactive prompt. Substitute `your_region_here` by eur, usa or jpn
+
 
 ```python
-
-# substitute your_region_here by eur, usa or jpn
-
 wipe_mii_maker(your_region_here)
 
 check_mii_maker_is_clear(your_region_here)

@@ -13,7 +13,7 @@ This menu allows you to:
     - Make a Mii local to the console, transfer ownership from one Mii to another, transfer physical attributes from one Mii to another, convert betwen Normal/Special/Temporal Miis, togle copy and share attributes, update Mii Id, make a Mii a favorite one, update its CRC checksum
 
 ### Relation between repos and tasks.
-Savemii has configured the following type of repos:
+Savemii has the following type of repos configured:
 - Internal Wii U (FFL), Account and Wii (RFL) databases.
 - Stage folders: folder on the SD where you can put individual Mii files (FFL_Stage, Account_Stage and RFL_Stage).
 - Custom DB Files: FFL/RFL or Account databases on the SD , for testing puposes. They live on the SD. When ready (after importing and transforming Miis as you wish), can be copied to CEMU or Dolphin installations.
@@ -47,7 +47,9 @@ style iddbsd fill:#f9f,stroke:#333,stroke-width:1px
 style idstage fill:#f9f,stroke:#333,stroke-width:1px
 ```
 
-### Mnaging a Mii repo
+## Managing Mii Repos
+
+### Select the repo to be managed
 
 1. Enter into  _Mii Management_ task
 1. First, select the repo you want to manage
@@ -63,7 +65,7 @@ Backup will include:
 * Internal Wii U: FFL_ODB.dat and stadio.sav files. Can be moved between consoles.
 * Internal Wii: RFL_DB.dat file. Can be moved between consoles
 * Wii U Account database: all files under the act  profile folder for each profile in the console ( `account.dat`, `miiimgXX.dat`).
-    `account.dat` has an attribute with the Mii image data (MiiData) but also contain the pasword of the profile and a lot of other stuff. For this reason, **Savemii only allows you to restore account data if it belongs to the same console** (i.e, if the serial id of the backup is the same than the serial id of the console when you are trying to restore). This check can be spoofed, **so be sure of what you are doing** in the case that you are restoring between different consoles, or if you try to restore a backup of a reinstalled console (which will probably share the serial id). In the later case, **the safe approach is just to Import indivdually each account Mii or use the Restore DB Mii Section task**.
+    `account.dat` has an attribute with the Mii image data (MiiData) but also contain the pasword of the profile and a lot of other stuff. For this reason, **Savemii only allows you to restore account data if it belongs to the same console** (i.e, if the serial id of the backup is the same than the serial id of the console when you are trying to restore). This check can be spoofed, **so be sure of what you are doing** in the case that you are restoring between different consoles, or if you try to restore a backup of a reinstalled console (which will probably share the serial id). In the later case, **the safe approach is just to Import individually each account Mii or use the Restore DB Mii Section task**.
     `miimgXX.dat` are static pictures of the Mii that the Wii U apps can use. Is updated when you register a Mii against a profile. 
 * Stage folders: copy of the individual Mii files
 * Custom DB folders: same files that in the case of internal ones.
@@ -73,7 +75,7 @@ Backup will include:
 
 
 #### Initialize DB task
-1. Press `A` to initialize a database. *Beware: This will delete of Miis in the selected database*. In the case of a stage folder, it is equivalent to a wipe. For internal Wii U or Wii databases, it will create an empty  FFL/RFL dat file ready to accept Miis from the import/export tasks. For the internal Wii U database it will also create a stadio.sav file containing information from the account Miis. Account databases cannot be initialized. 
+1. Press `A` to initialize a database. **Beware: This will delete of Miis in the selected database**. In the case of a stage folder, it is equivalent to a wipe. For internal Wii U or Wii databases, it will create an empty  FFL/RFL dat file ready to accept Miis from the import/export tasks. For the internal Wii U database it will also create a `stadio.sav` file containing information from the account Miis. Account databases cannot be initialized. 
 
 You must initialize custom databases if you want to play with them.
 
@@ -81,7 +83,8 @@ You must initialize custom databases if you want to play with them.
 
 #### List Miis
 All Miis in te selected repo will be shown. With `X` you can cycle between different screens showing different Miis attributes:
-- copyable, shareable, normal/special/temp, favourite, duplicated. Duplicate Miis are marked with a D or DUP. Mii Maker will delete any all but one duplicate Miis, Mii Channel don't seem to pay attention to this fact.
+- copyable, shareable, normal/special/temp, favourite, duplicated.
+    - Duplicate Miis are marked with a D or DUP. Mii Maker will delete any all but one duplicate Miis, Mii Channel don't seem to pay attention to this fact.
 - partial device_hash and author_id where the Mii was created
 - mii_id (some flags + timestamp) , partial device_hash
 - location (slot number for FFL or RFL databases, filename for Stage or Account databases)
