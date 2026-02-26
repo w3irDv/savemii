@@ -56,7 +56,7 @@ This task allows you to restore the savedata for all titles already installed in
 7. The list of all titles will appear again, now showing the restored status. You can try to select failed titles and restore them again to see what the error is. Successfully restored titles will be skipped.
 
 
-*Note*: Yo cannnot batch restore system titles. To restore the savedata from a batch backup, go to the individual system title restore menu and select the BatchBackupSet which contains the data you want to restore by pressing `X. Then restore "as usual". 
+*Note*: You cannnot batch restore system titles. To restore the savedata from a batch backup, go to the individual system title restore menu and select the BatchBackupSet which contains the data you want to restore by pressing `X. Then restore "as usual". 
 
 ## Batch Wipe
 
