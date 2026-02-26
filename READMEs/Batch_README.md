@@ -56,6 +56,7 @@ This task allows you to restore the savedata for all titles already installed in
 7. The list of all titles will appear again, now showing the restored status. You can try to select failed titles and restore them again to see what the error is. Successfully restored titles will be skipped.
 
 
+*Note*: Yo cannnot batch restore system titles. To restore the savedata from a batch backup, go to the individual system title restore menu and select the BatchBackupSet which contains the data you want to restore by pressing `X. Then restore "as usual". 
 
 ## Batch Wipe
 
@@ -94,7 +95,6 @@ This task allows you to move  savedata between NAND and USB  for titles that hav
 5. Once the copy is completed, a summary screen will show the number of sucess/failed/skipped titles.
 6. The list of all titles will appear again, now showing the copy status. You can try to select failed titles and restore them again to see what the error is. Successfully copied titles will be skipped.
    **Note**: Step 1 will detect savedata that is already stored in the console but that belongs to  user profiles that are no longer defined. If you select `All users` option, a warning will appear: by default, SaveMii will not  allow you to restore this backup (unless that you disable this check in the Options menu, but this is discouraged). You can copy the savedata using the option  `From: select source user / To: select target user`. `To users` are always defined in the console, or delete it with Batch Wipe.   
-
 
 
 ## Backupset management
