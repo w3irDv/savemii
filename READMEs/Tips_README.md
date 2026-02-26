@@ -33,12 +33,12 @@ You can restore your miis from a Wii U or Wii in a new Wii U. This can be done i
 ### (A) Restoring Wii U Miis through Mii Maker savedata
 This will delete all miis in your new Wii U.
 
-1. If you have access to your previous Wii U and you can run Savemii, perform a backup of Mii Maker from `Manage Wii U System Titles >> (Select Mii Maker title) >> Backup (with All Users optipon)`
-2. Then in the new Wii U, wipe the Mii Maker savedata: `Manage Wii U System Titles >> (Select Mii Maker title) >> Wipe (with All Users option)`. **Important**: Say yes when Savemii ask to perform a backup, and put in in a new free slot
-3. Restore the save with `Manage Wii U System Titles >> (Select Mii Maker title) >> Restore (with All Users option)`
-4. If all goes OK, continue (optional step) with the secion `Modify the mii so they will seem to be created in the new console`
+1. If you have access to your previous Wii U and you can run Savemii, perform a backup of Mii Maker from `Manage Wii U System Titles >> (Select Mii Maker title) >> Backup (with All Users optipon)`.
+2. Then in the new Wii U, wipe the Mii Maker savedata: `Manage Wii U System Titles >> (Select Mii Maker title) >> Wipe (with All Users option)`. **Important**: Say yes when Savemii ask to perform a backup.
+3. Restore the save with `Manage Wii U System Titles >> (Select Mii Maker title) >> Restore (with All Users option)`.
+4. If all goes OK, continue (optional step) with the section [Make Imported Miis belong to the new console](#f-make-imported-miis-belong-to-the-new-console).
 5. If the restore fails, restore the backup hat you have made in step 2.
- **Important**: Don't leave Savemii or restart your console unless the restore has succeed. If not, you will need to recover from a (semi)brick (See [recovery process](#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore))
+ **Important**: Don't leave Savemii or restart your console unless the restore has succeed. If not, you will need to recover from a (semi)brick (See [recovery process](#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore)).
 
 ### (B) Restoring Wii U Miis by restoring Mii FFL repo
 This will delete all miis in your new Wii U.
@@ -50,17 +50,16 @@ This will delete all miis in your new Wii U.
 6. As last resor,t you can `Wipe DB`, exit SaveMii, and start Mii Maker. It will create a new empty DB.
 
 ### (C) Restoring Wii U Miis by Mii Export/Import
-Miis in you new Wii U will be kept.
-1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Export Miis`. All miis are selected. Just press `A` to export. This will copy all miis to the FFLStage repo.
-2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and backup new console miis.
-3. Go Back to the Select Repo menu. Select now `FFLStage repo`
-3. Go to `Import Miis`. Select the miis you want to import and press `A`. This will add the new miis to the FFL repo.
+Miis in you new Wii U will be kept, and old Miis will we added to it.
+1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Export Miis`. All miis are selected by default. Just press `A` to export. This will copy all miis to the `FFLStage` repo.
+2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and then `Backup DB`.
+3. After go to `Import Miis (from FFL stage)`. Select the Miis you want to import and press `A`. This will add the new miis to the FFL repo.
 
 ### (D) Restoring vWii miis
-You can use procedures (B) or (C), but selecting in this case RFL repo or RFLStage repo instead of the FFL ones.
+You can use procedures (B) or (C), but selecting in this case `RFL` repo or `RFLStage` repo instead of the `FFL` ones.
 
-### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii
-Miis in the new mii will be wiped. You need to copy this files from the Wii U console to the SD:
+### (E) I cannot execute SaveMii in the old console, but I can access through ftp or using the recovery menu, I don't mind what happens to the new console Miis
+Miis in the new Wii U will be wiped. You need to copy this files from the old Wii U console to the SD:
 
 #### Wii U 
 ```sh
@@ -83,7 +82,7 @@ SD:/wiiu/backups/MiiRepoBckp/mii_bckp_rfl/(new number)/RFL_DB.dat
 
 and then use procedure `(B)`
 
-### (E) I have access to the Wii U console through ftp or using the recovery menu, but I cannot execute Savemii, and I want to keep miis created in the new Wii U
+### (E) I cannot execute SaveMii in the old console, but I can access through ftp or using the recovery menu, and I want to keep miis created in the new Wii U
 Old miis will be added to the new ones. You need to copy this files from the Wii U console to the SD:
 
 #### Wii U 
@@ -114,18 +113,14 @@ In procedures (C) or (D), extract stadio.sav and FFL_ODB.dat with [wfs-extract](
 ```sh
 #  1004a100 for USA; 1004a000 for JPN
 wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --dump-path /usr/save/00050010/1004a200/user/common
-
 ```
 
 ### (F) Make imported Miis belong to the new console
-Imported miis from a different console will appear as foreign miis and cannot be edited. If you want to convert them to first-class citizens of the new console so they can be modified:
+Imported miis from a different console will appear as foreign miis in Mii Maker and cannot be edited. If you want to convert them to first-class citizens of the new console (so they can be modified if needed):
 
 `Mii Management >> (select repo RFL o FFL) >> Trasnform tasks >> (select miis to be made local) >> Make them belong to this console : Yes >> (Press A)`
 
 **Beware**: mii will receive a new Mii Id so association with games will be lost. At all effects, they are neww miis created on the new console.
- 
-<p>
-<p>
 
 ## Recover your Wii U in case of a brick after a faulty System title restore
 
@@ -171,59 +166,21 @@ mm_bckp/db/FFL_ODB_OLD.dat
 python3 -i wupclient.py
 ```
 
-- Finally execute this lines inside the interactive prompt (replacing the vale of `mii_maker` with that of for your region) :
+- Run these lines inside the interactive prompt:
 
 ```python
 
-mii_maker_jpn="1004a000"
-mii_maker_usa="1004a100"
-mii_maker_eur="1004a200"
+# substitute your_region_here by eur, usa or jpn
 
-########################
-# replace here mii_maker_eur with the one for your region
-########################
-mii_maker=mii_maker_eur
-########################
+wipe_mii_maker(your_region_here)
 
-owner=int("0x"+mii_maker)
+check_mii_maker_is_clear(your_region_here)
+```
 
-w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker)
+- Once the Mii Maker folder is empty, restore the backup with:
 
-w.chmod("user",0x600)
-w.chown("user",0x100000f6,0x400)
-
-w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
-
-w.mkquota("common",0x660,0x1790000)
-w.chown("common",owner,0x400)
-
-w.cd("common")
-
-w.up("mm_bckp/stadio.sav","stadio.sav")
-w.chmod("stadio.sav",0x660)
-w.chown("stadio.sav",owner,0x400)
-
-w.mkdir("db",0x644)
-w.chown("db",owner,0x400)
-
-w.cd("db")
-
-w.up("mm_bckp/db/FCL_DB.dat","FCL_DB.dat")
-w.up("mm_bckp/db/FFL_HDB.dat","FFL_HDB.dat")
-w.up("mm_bckp/db/FFL_ODB.dat","FFL_ODB.dat")
-w.up("mm_bckp/db/FFL_ODB_OLD.dat","FFL_ODB_OLD.dat")
-
-w.chmod("FCL_DB.dat",0x666)
-w.chmod("FFL_HDB.dat",0x666)
-w.chmod("FFL_ODB.dat",0x666)
-w.chmod("FFL_ODB_OLD.dat",0x666)
-
-w.chown("FCL_DB.dat",owner,0x400)
-w.chown("FFL_HDB.dat",owner,0x400)
-w.chown("FFL_ODB.dat",owner,0x400)
-w.chown("FFL_ODB_OLD.dat",owner,0x400)
-
-flush_mlc()
+```python
+restore_mii_maker(your_region_here)
 
 exit
 ```

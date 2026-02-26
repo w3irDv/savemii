@@ -978,9 +978,45 @@ def wipe_mii_maker(region):
 
     owner=int("0x"+mii_maker)
 
-    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/")
+    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common/db")
 
+    w.rm("FCL_DB.dat")
+    w.rm("FFL_HDB.dat")
+    w.rm("FFL_ODB.dat")
+    w.rm("FFL_ODB_OLD.dat")
 
+    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common")
+
+    w.rmdir("db")
+
+    w.rm("stadio.sav")
+
+    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
+
+    w.rmdir("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common")
+
+    flush_mlc()
+
+def check_mii_maker_is_clear(region)
+
+    match region:
+        case eur:
+            mii_maker="1004a200"
+        case usa:
+            mii_maker="1004a100"
+        case jpn:
+            mii_maker="1004a000"
+        case _:
+            print("please select a valid region: eur  usa  jpn")
+            return
+
+    if len(w.ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user", True)) == 0:
+        print("folder is clear")
+    else:
+        print("folder /vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user is not empty. Delete this files before continuing")
+        w.ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
+        
+        
 
 def restore_mii_maker(region):
     match region:
