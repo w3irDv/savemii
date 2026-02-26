@@ -179,26 +179,39 @@ set_temp_FFL:
     return true;
 }
 
+void MiiUtils::checkpointFFL(const std::string &checkpointDir) {
+    if (MiiRepos.count("FFL")) {
+        std::string srcPath = MiiRepos["FFL"]->path_to_repo;
+        std::string dstPath = checkpointDir + "/FFL_ODB.dat";
+        if (FSUtils::checkEntry(srcPath.c_str()) == 1)
+            FSUtils::copyFile(srcPath, dstPath);
+        srcPath = MiiRepos["FFL"]->stadio_sav->path_to_stadio;
+        dstPath = checkpointDir + "/stadio.sav";
+        if (FSUtils::checkEntry(srcPath.c_str()) == 1)
+            FSUtils::copyFile(srcPath, dstPath);
+        srcPath = MiiRepos["FFL"]->path_to_repo;
+        std::string savedataPath = srcPath.substr(0, srcPath.find("/FFL_ODB.dat"));
+        dstPath = checkpointDir + "/db";
+        FSUtils::createFolder(dstPath.c_str());
+        FSUtils::copyDir(savedataPath, dstPath);
+    }
+}
+
 bool MiiUtils::initial_checkpoint() {
     std::string checkpointDir = "fs:/vol/external01/wiiu/backups/mii_db_checkpoint/" + AmbientConfig::thisConsoleSerialId;
     std::string checkpointDirSD = "SD:/wiiu/backups/mii_db_checkpoint/" + AmbientConfig::thisConsoleSerialId;
+    std::string checkpointFFLDir = checkpointDir + "/FFL_ODB.dat";
+
+    if (FSUtils::checkEntry(checkpointFFLDir.c_str()) == 1)
+        return true;
+        
+    Console::showMessage(OK_SHOW, "AUTOMATIC BACKUP OF MII DBs in Progress");
+
     if (FSUtils::checkEntry(checkpointDir.c_str()) == 0) {
-        Console::showMessage(OK_SHOW, "AUTOMATIC BACKUP OF MII DBs in Progress");
         if (savemng::firstSDWrite)
             sdWriteDisclaimer(COLOR_BACKGROUND);
         FSUtils::createFolder(checkpointDir.c_str());
-        {
-            if (MiiRepos.count("FFL")) {
-                std::string srcPath = MiiRepos["FFL"]->path_to_repo;
-                std::string dstPath = checkpointDir + "/FFL_ODB.dat";
-                if (FSUtils::checkEntry(srcPath.c_str()) == 1)
-                    FSUtils::copyFile(srcPath, dstPath);
-                srcPath = MiiRepos["FFL"]->stadio_sav->path_to_stadio;
-                dstPath = checkpointDir + "/stadio.sav";
-                if (FSUtils::checkEntry(srcPath.c_str()) == 1)
-                    FSUtils::copyFile(srcPath, dstPath);
-            }
-        }
+        checkpointFFL(checkpointDir);
         {
             std::string srcPath = MiiRepos["RFL"]->path_to_repo;
             std::string dstPath = checkpointDir + "/RFL_DB.dat";
@@ -213,8 +226,18 @@ bool MiiUtils::initial_checkpoint() {
                 FSUtils::copyDir(srcPath, dstPath);
             }
         }
-        Console::showMessage(OK_CONFIRM, _("In case you need this files in the future, you will find them here:\n%s"), checkpointDirSD.c_str());
     }
+
+    // Just in case in a previous (first) execution we encountered a problem with MiiMaker identification ...
+    if (MiiRepos.count("FFL")) {
+        if (FSUtils::checkEntry(checkpointFFLDir.c_str()) == 0) {
+            if (savemng::firstSDWrite)
+                sdWriteDisclaimer(COLOR_BACKGROUND);
+            checkpointFFL(checkpointDir);
+        }
+    }
+
+    Console::showMessage(OK_CONFIRM, _("In case you need this files in the future, you will find them here:\n%s"), checkpointDirSD.c_str());
     return true;
 }
 
@@ -226,7 +249,7 @@ void MiiUtils::deinitMiiRepos() {
     delete MiiUtils::MiiRepos["RFL_STAGE"];
     delete MiiUtils::MiiRepos["RFL_C"];
     delete MiiUtils::MiiRepos["SGMGX"],
-            delete MiiUtils::MiiRepos["ACCOUNT"];
+    delete MiiUtils::MiiRepos["ACCOUNT"];
     delete MiiUtils::MiiRepos["ACCOUNT_STAGE"];
     delete MiiUtils::MiiRepos["ACCOUNT_C"];
     delete MiiUtils::MiiStadios["FFL_ACCOUNT"];

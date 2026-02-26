@@ -17,6 +17,7 @@ namespace MiiUtils {
     bool initMiiRepos();
     void deinitMiiRepos();
     bool initial_checkpoint();
+    void checkpointFFL(const std::string &checkpointDir);
 
     inline std::map<std::string, MiiRepo *> MiiRepos;
 
