@@ -439,6 +439,18 @@ class wupclient:
         else:
             print("cd error : path does not exist (%s)" % (path))
             return -1
+#silent version
+        def cd(self, path):
+        if path[0] != "/" and self.cwd[0] == "/":
+            return self.cd(self.cwd + "/" + path)
+        fsa_handle = self.get_fsa_handle()
+        ret, dir_handle = self.FSA_OpenDir(fsa_handle, path if path != None else self.cwd)
+        if ret == 0:
+            self.cwd = path
+            self.FSA_CloseDir(fsa_handle, dir_handle)
+            return 0
+        else:
+            return -1
 
     def ls(self, path = None, return_data = False):
         fsa_handle = self.get_fsa_handle()
@@ -688,6 +700,29 @@ class wupclient:
             print("rmdir : " + hex(ret))
         else:
             print("rmdir aborted")
+
+#silent versions
+    def silent_rm(self, filename):
+        fsa_handle = self.get_fsa_handle()
+        if filename[0] != "/":
+            filename = self.cwd + "/" + filename
+        ret, file_handle = self.FSA_OpenFile(fsa_handle, filename, "r")
+        if ret != 0x0:
+            return
+        self.FSA_CloseFile(fsa_handle, file_handle)
+        ret = self.FSA_Remove(fsa_handle, filename)
+        
+    def silent_rmdir(self, path):
+        fsa_handle = self.get_fsa_handle()
+        if path[0] != "/":
+            path = self.cwd + "/" + path
+        ret, dir_handle = self.FSA_OpenDir(fsa_handle, path)
+        if ret != 0x0:
+            return
+        self.FSA_CloseDir(fsa_handle, dir_handle)
+        if len(self.ls(path, True)) != 0:
+            return
+        ret = self.FSA_Remove(fsa_handle, path)
 
     def up(self, local_filename, filename = None):
         fsa_handle = self.get_fsa_handle()
@@ -978,22 +1013,18 @@ def wipe_mii_maker(region):
 
     owner=int("0x"+mii_maker)
 
-    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common/db")
+    if(w.silent_cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common/db") == 0):
+        w.silent_rm("FCL_DB.dat")
+        w.silent_rm("FFL_HDB.dat")
+        w.silent_rm("FFL_ODB.dat")
+        w.silent_rm("FFL_ODB_OLD.dat")
+        w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common")
+        w.silent_rmdir("db")
 
-    w.rm("FCL_DB.dat")
-    w.rm("FFL_HDB.dat")
-    w.rm("FFL_ODB.dat")
-    w.rm("FFL_ODB_OLD.dat")
-
-    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common")
-
-    w.rmdir("db")
-
-    w.rm("stadio.sav")
-
-    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
-
-    w.rmdir("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common")
+    if (w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common")== 0):
+        w.silent_rm("stadio.sav")
+        w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
+        w.silent_rmdir("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common")
 
     flush_mlc()
 
@@ -1013,7 +1044,7 @@ def check_mii_maker_is_clear(region)
     if len(w.ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user", True)) == 0:
         print("folder is clear")
     else:
-        print("folder /vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user is not empty. Delete this files before continuing")
+        print("folder /vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user is not empty. Delete this files before continuing.")
         w.ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
         
         
