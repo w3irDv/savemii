@@ -43,7 +43,7 @@ This will delete all miis in your new Wii U.
 ### (B) Restoring Wii U Miis by restoring Mii FFL repo
 This will delete all miis in your new Wii U.
 1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Backup DB`
-2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and backup or export the new console miis (if any).
+2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` `Backup DB` or `Export Miis` to create a backup of the data just in case something goes wrong.
 3. Restore the FFL repo  with `Restore DB`
 4. If all goes OK, continue (optional step) with the secion `Modify the mii so they will seem to be created in the new console`
 5. If the restore fails, restore the backup that you have made in step 2.
@@ -52,7 +52,7 @@ This will delete all miis in your new Wii U.
 ### (C) Restoring Wii U Miis by Mii Export/Import
 Miis in you new Wii U will be kept, and old Miis will we added to it.
 1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Export Miis`. All miis are selected by default. Just press `A` to export. This will copy all miis to the `FFLStage` repo.
-2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and then `Backup DB`.
+2. Then in the new Wii U, select `Mii Management >> (select FFL repo)` and then `Backup DB` or `Export Miis` to create a backup of the data just in case something goes wrong.
 3. After go to `Import Miis (from FFL stage)`. Select the Miis you want to import and press `A`. This will add the new miis to the FFL repo.
 
 ### (D) Restoring vWii miis
