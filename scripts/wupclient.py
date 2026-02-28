@@ -31,7 +31,7 @@ def get_string(buffer, offset):
 class wupclient:
     s=None
 
-    def __init__(self, ip='192.168.1.45', port=1337):
+    def __init__(self, ip='YOUR.IP.HE.RE', port=1337):
         self.s=socket.socket()
         self.s.connect((ip, port))
         self.fsa_handle = None
@@ -1050,7 +1050,7 @@ def wipe_mii_maker(region):
 
     flush_mlc()
 
-def check_mii_maker_is_clear(region):
+def check_mii_maker_is_wiped(region):
 
     match region:
         case "eur":
@@ -1064,7 +1064,7 @@ def check_mii_maker_is_clear(region):
             return
 
     if len(w.silent_ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user", True)) == 0:
-        print("folder is clear")
+        print("folder is wiped")
     else:
         print("folder /vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user is not empty. Delete these files before continuing.")
         w.ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
