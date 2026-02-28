@@ -31,7 +31,7 @@ def get_string(buffer, offset):
 class wupclient:
     s=None
 
-    def __init__(self, ip='192.168.1.33', port=1337):
+    def __init__(self, ip='192.168.1.45', port=1337):
         self.s=socket.socket()
         self.s.connect((ip, port))
         self.fsa_handle = None
@@ -440,7 +440,7 @@ class wupclient:
             print("cd error : path does not exist (%s)" % (path))
             return -1
 #silent version
-        def cd(self, path):
+    def silent_cd(self, path):
         if path[0] != "/" and self.cwd[0] == "/":
             return self.cd(self.cwd + "/" + path)
         fsa_handle = self.get_fsa_handle()
@@ -474,6 +474,30 @@ class wupclient:
                 entries += [data]
         ret = self.FSA_CloseDir(fsa_handle, dir_handle)
         return entries if return_data else None
+
+#silent
+    def silent_ls(self, path = None, return_data = False):
+        fsa_handle = self.get_fsa_handle()
+        if path != None and path[0] != "/":
+            path = self.cwd + "/" + path
+        ret, dir_handle = self.FSA_OpenDir(fsa_handle, path if path != None else self.cwd)
+        if ret != 0x0:
+            return [] if return_data else None
+        entries = []
+        while True:
+            ret, data = self.FSA_ReadDir(fsa_handle, dir_handle)
+            if ret != 0:
+                break
+            if not(return_data):
+                if data["is_file"]:
+                    print("     %s" % data["name"])
+                else:
+                    print("     %s/" % data["name"])
+            else:
+                entries += [data]
+        ret = self.FSA_CloseDir(fsa_handle, dir_handle)
+        return entries if return_data else None
+
 
     def dldir(self, path):
         if path[0] != "/":
@@ -991,27 +1015,25 @@ def read_and_dump(adr,size):
 
 def flush_mlc():
     handle = w.open("/dev/fsa", 0)
-    print(hex(handle))
+    print("handle: "+hex(handle))
 
     ret = w.FSA_FlushVolume(handle, "/vol/storage_mlc01")
-    print(hex(ret))
+    print("flush_mlc returned: "+hex(ret))
 
     ret = w.close(handle)
     print(hex(ret))
 
 def wipe_mii_maker(region):
     match region:
-        case eur:
+        case "eur":
             mii_maker="1004a200"
-        case usa:
+        case "usa":
             mii_maker="1004a100"
-        case jpn:
+        case "jpn":
             mii_maker="1004a000"
         case _:
             print("please select a valid region: eur  usa  jpn")
             return
-
-    owner=int("0x"+mii_maker)
 
     if(w.silent_cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user/common/db") == 0):
         w.silent_rm("FCL_DB.dat")
@@ -1028,40 +1050,39 @@ def wipe_mii_maker(region):
 
     flush_mlc()
 
-def check_mii_maker_is_clear(region)
+def check_mii_maker_is_clear(region):
 
     match region:
-        case eur:
+        case "eur":
             mii_maker="1004a200"
-        case usa:
+        case "usa":
             mii_maker="1004a100"
-        case jpn:
+        case "jpn":
             mii_maker="1004a000"
         case _:
             print("please select a valid region: eur  usa  jpn")
             return
 
-    if len(w.ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user", True)) == 0:
+    if len(w.silent_ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user", True)) == 0:
         print("folder is clear")
     else:
-        print("folder /vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user is not empty. Delete this files before continuing.")
+        print("folder /vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user is not empty. Delete these files before continuing.")
         w.ls("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
         
         
-
 def restore_mii_maker(region):
     match region:
-        case eur:
+        case "eur":
             mii_maker="1004a200"
-        case usa:
+        case "usa":
             mii_maker="1004a100"
-        case jpn:
+        case "jpn":
             mii_maker="1004a000"
         case _:
             print("please select a valid region: eur  usa  jpn")
             return
 
-    owner=int("0x"+mii_maker)
+    owner=int(mii_maker,16)
 
     w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker)
 
