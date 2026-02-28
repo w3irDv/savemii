@@ -3,27 +3,10 @@
 <link rel="stylesheet" type="text/css" href="readme.css">.
 </head>
 
-<p style="text-align:left;">
-    TIPS
-    <span style="float:right;">
-        <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii">Back</a>&nbsp&nbsp
-        <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
-    </span>
-</p>
-
-
-<p style="text-align:left;">
-    TIPS
-    <span style="float:right;">
-RIGHT
-    </span>
-</p>
-
-<h1>
-  <span>Align me left</span>
-  <a href="">align me right</a>
-</h1>
-
+<div class="container">
+  <div class="left-element">Text on the left</div>
+  <div class="right-element">Text on the right</div>
+</div>
 
 <p align="right">
 <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii">Back</a>&nbsp&nbsp
