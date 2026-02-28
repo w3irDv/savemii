@@ -174,7 +174,7 @@ python3 -i wupclient.py
 ```python
 wipe_mii_maker("your_region_here")
 
-check_mii_maker_is_clear("your_region_here")
+check_mii_maker_is_wiped("your_region_here")
 ```
 
 - Once the Mii Maker folder is empty, restore the backup with:
