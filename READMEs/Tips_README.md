@@ -129,6 +129,7 @@ To recover from such a semi-brick  you can use [UDPIH: USB Host Stack exploit + 
 
 At a glance:
 - [Flash your device](https://github.com/GaryOderNichts/udpih#device-setup) with the UDPIH exploit image.
+- Insert the SDCard in your PC
 - Put the [Recovery Menu](https://github.com/GaryOderNichts/recovery_menu/releases) on the root of the SD card 
 - Put a `network.cfg` file on the root of the SD card with the following information:
 
@@ -138,16 +139,11 @@ ssid=<your ssid here>
 key=<your wifikey here>
 key_type=WPA2_PSK_AES
 ```
-- Power On your Wii U, connect the device with the UDPIH explot when the Wii U logo appear. 
-- Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
-- Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U will appear on the screen.
-- Download this [wupclient.py](../scripts/wupclient.py) file to your computer, and update this line with the IP assigned to the Wii U console.:
-```python
-def __init__(self, ip='192.168.1.33', port=1337)
-```
-
+- Download this [wupclient.py](../scripts/wupclient.py) file to your computer
 - Create a directory `mm_bckp` in the folder where you downloaded `wupclient.py`
 - Copy the backup of the Mii Maker `common` folder into `mm_bckp`
+    - use the last backup you have
+    - If you don't have one handy, keep in mind that the first time SaveMii ran a Mii management task, it created a backup in `sd:/wiiu/backups/mii_db_checkpoint/(WiiU serial number)`   
 - The layout should be:
 ```
 wupclient.py
@@ -157,6 +153,11 @@ mm_bckp/db/FFL_HDB.dat
 mm_bckp/db/FFL_ODB.dat
 mm_bckp/db/FFL_ODB_OLD.dat
 ``` 
+- Put the SD card on your Wii U
+- Power On your Wii U, connect the device with the UDPIH explot when the Wii U logo appear. 
+- Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
+- Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U will appear on the screen.
+
 - Now execute:
 
 ```sh

@@ -77,4 +77,4 @@ Use it at your own risk and please report any issues that may occur.
 - V10lator for helping with a lot of stuff
 - Vague Rant for testing
 - xploit-U, for creating the WUT port
-- HEYimHeroic, David Hawley, WiiBrew and WUT MiiData information has been very useful in developing mii management features 
+- HEYimHeroic, WiiBrew and WUT MiiData information has been very useful in developing mii management features 
