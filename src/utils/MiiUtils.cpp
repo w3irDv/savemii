@@ -151,7 +151,7 @@ set_repos:
     // Look for temporary MiiMaker on USB due to a NAND mounted as USB (after ISFSHax recovery)
     if (mii_maker_path.find("storage_usb") == std::string::npos) {
         mii_maker_owner = TitleUtils::getMiiMakerOwner();
-        mii_maker_path = "storage_usb01:/usr/save/00050010/" + mii_maker_owner;
+        mii_maker_path = StringUtils::stringFormat("storage_usb01:/usr/save/00050010/%08x",mii_maker_owner);
         if (FSUtils::checkEntry(mii_maker_path.c_str()) == 2)
             goto set_temp_FFL;
         mii_maker_path = "storage_usb01:/usr/save/00050010/1004a100";

@@ -148,7 +148,6 @@ void MiiSelectState::render() {
         switch (action) {
             case MiiProcess::LIST_MIIS:
                 menuTitle = _("List Miis");
-                screenOptions = _("\\ue002: View  \\ue001: Back");
                 if (mii_repo->repo_has_duplicated_miis)
                     screenOptions = _("\\ue083\\ue084 View Duplicates  \\ue002: View  \\ue001: Back");
                 else
@@ -419,7 +418,7 @@ void MiiSelectState::render() {
 
                         break;
                     case SYSTEM_DEVICE:
-                        if ((mii_repo->db_type == MiiRepo::eDBType::RFL)) {
+                        if (mii_repo->db_type == MiiRepo::eDBType::RFL) {
                             Console::consolePrintPos(MM_OFF + 20, i + 2, "[D:%s",
                                                      this->mii_repo->miis[c2a[i + this->scroll]]->device_hash.c_str());
                             Console::consolePrintPos(MM_OFF + 34, i + 2, "]");

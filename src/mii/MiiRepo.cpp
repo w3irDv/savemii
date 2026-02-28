@@ -283,12 +283,12 @@ int MiiRepo::initialize() {
     if (repo_has_data()) {
         int slotb = MiiSaveMng::getEmptySlot(this);
         if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
-            if (!(this->backup(slotb, _("pre-Restore backup")) == 0)) {
-                Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
+            if (!(this->backup(slotb, _("pre-Initialize backup")) == 0)) {
+                Console::showMessage(ERROR_SHOW, _("Backup Failed - Initialize aborted !!"));
                 return -1;
             }
     }
-    
+
     if (savemng::firstSDWrite)
         sdWriteDisclaimer(COLOR_BACKGROUND);
 
