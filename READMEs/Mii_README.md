@@ -109,9 +109,9 @@ Select/Deselect the individual Miis to wipe with `Y`, `DPAD-L/R`, or `+/-` for s
 Here you can apply a series of transformations to a Mii. First, as usual, select the Miis you want to modify with `Y`, `DPAD-L/R`, or `+/-`. Press `A`. The *Transform Tasks* menu will appear. You can scroll up or down through the different tasks and select or deselect the ones you want to apply to the selected Miis iusing `Y`, `DPAD-L/R`. Press `A` when you have selected all the tasks that you need to apply. *Trasfer Appearance* and *Transfer ownership* tasks require a Mii as a template. First select the Repo where the template Mii is located, then select the template Mii. Finally press `A` to transform the selected Miis.
 
 Available tasks:
-- Transfer physical appearance from another Mii: Selected Miis will get the physical appearance of the Mii you will select in the next menu
-- Transfer Ownership from another Mii: Selected Miis will get the ownership attributes of the template Mii, so after they will belong to template console. Current games association is lost
-- Make them belong to this console: Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost
+- _Transfer physical appearance from another Mii_: Selected Miis will get the physical appearance of the Mii you will select in the next menu
+- _Transfer Ownership from another Mii_: Selected Miis will get the ownership attributes of the template Mii, so after they will belong to template console. Current games association is lost
+- _Make them belong to this console_: Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost
 - Update Mii Id (Timestamp): So the Mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)
 - Toggle favorite flag: Mark Miis as a favorite one so they appear in games that support them
 - Toggle Share/Mingle flag: So the Mii can travel to other consoles
