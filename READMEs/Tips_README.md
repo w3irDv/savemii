@@ -48,7 +48,7 @@ This will delete all miis in your new Wii U.
 1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Backup DB`. Move the SD card to the new Wii U.
 2. Then, on the new Wii U, select `Mii Management >> (select FFL repository)` and then `Backup DB` or `Export Miis` to create a backup of the data in case something goes wrong.
 3. Restore the FFL repo  with `Restore DB`
-4. If all goes OK, continue (optional step) with the secion `Modify the mii so they will seem to be created in the new console`
+4. If all goes OK, continue (optional step) with the section [Make Imported Miis belong to the new console]
 5. If the restore fails, restore the backup that you have made in step 2.
 6. As last resort,t you can `Wipe DB`, exit SaveMii, and start Mii Maker. It will create a new empty DB.
 
@@ -57,6 +57,7 @@ Miis in you new Wii U will be kept, and old Miis will we added to it.
 1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Export Miis`. All miis are selected by default. Just press `A` to export. This will copy all miis to the `FFLStage` repo. Move the SD card to the new Wii U.
 2. Onn the new Wii U, select `Mii Management >> (select FFL repository)` and then `Backup DB` or `Export Miis` to create a backup of the data in case something goes wrong.
 3. After go to `Import Miis (from FFL stage)`. Select the Miis you want to import and press `A`. This will add the new miis to the FFL repo.
+4. If all goes OK, continue (optional step) with the section [Make Imported Miis belong to the new console]
 
 ### (D) Restoring vWii miis
 You can use procedures (B) or (C), but selecting in this case `RFL` repo or `RFLStage` repo instead of the `FFL` ones.
