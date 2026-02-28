@@ -7,7 +7,7 @@
 
 **WiiU/vWii Save + Mii Manager**
 
-`Original by Ryuzaki-MrL - Mod by GabyPCGeek - WUT Port by DaThinkingChair`<p>
+`Original by Ryuzaki-MrL - Mod by GabyPCGeek - WUT Port by DaThinkingChair`<br>
 `/ProcessMod & /SaveMyMiis by w3irDv.`
 
 This homebrew allows you to back up your Wii U and vWii saved games and miis to the SD card and restore them later.
