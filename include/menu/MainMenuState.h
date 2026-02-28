@@ -42,4 +42,5 @@ private:
     int wiiuSysTitlesCount;
 
     inline static int cursorPos = 0;
+    bool showSystemTitlesManagementDisclaimer = true;
 };
