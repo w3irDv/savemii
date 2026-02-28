@@ -112,14 +112,14 @@ Available tasks:
 - _Transfer physical appearance from another Mii_: Selected Miis will get the physical appearance of the Mii you will select in the next menu
 - _Transfer Ownership from another Mii_: Selected Miis will get the ownership attributes of the template Mii, so after they will belong to template console. Current games association is lost
 - _Make them belong to this console_: Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost
-- Update Mii Id (Timestamp): So the Mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)
-- Toggle favorite flag: Mark Miis as a favorite one so they appear in games that support them
-- Toggle Share/Mingle flag: So the Mii can travel to other consoles
-- Toggle Normal/Special flag: You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost
-- Toggle Foreign flag: Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (Mii games association is lost)
-- Update CRC: CRC will be recalculated for the selected Mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for Miis in a FFL or RFL file repo)
-- Togle Copy Flag On/Off: So people that does not own the Mii can modifiy it by creating a copy of the original
-- Togle Temporary Flag On/Off: Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (Mii games association is lost)
+- _Update Mii Id (Timestamp)_: So the Mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)
+- _Toggle favorite flag_: Mark Miis as a favorite one so they appear in games that support them
+- _Toggle Share/Mingle flag_: So the Mii can travel to other consoles
+- _Toggle Normal/Special flag_: You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost
+- _Toggle Foreign flag_: Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (Mii games association is lost)
+- _Update CRC_: CRC will be recalculated for the selected Mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for Miis in a FFL or RFL file repo)
+- _Togle Copy Flag On/Off_: So people that does not own the Mii can modifiy it by creating a copy of the original
+- _Togle Temporary Flag On/Off_: Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (Mii games association is lost)
 
 **Note**: Not all tasks can be selected on all repos. It the tasks is not available for the type of repo that you are managing, you won't be able to select it.
 
