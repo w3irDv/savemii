@@ -3,8 +3,7 @@
 <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
 <p align="right">
 
-
-# TOC 
+ 
 - [Restoring savedata not belonging to your WiiU](#restoring-savedata-not-belonging-to-your-wiiu)
 - [Transfer Savedata to/from your Pretendo account]()
 - [Restore miis from your previous console]()
