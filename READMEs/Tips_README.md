@@ -4,6 +4,12 @@
 <p align="right">
 
 
+# TOC 
+- [Restoring savedata not belonging to your WiiU](#restoring-savedata-not-belonging-to-your-wiiu)
+- [Transfer Savedata to/from your Pretendo account]()
+- [Restore miis from your previous console]()
+- [Recover your Wii U in case of a brick after a faulty System title restore]()
+
 ## Restoring savedata not belonging to your WiiU
 
 If you want to restore saved data obtained from internet or from any other "foreign" source, it's recommended to back up your game's save data first from your console. Then, find the backup folder on your SD card under `sd:/wiiu/backups/` (for new titles, this is very easy, as the folder is named after the title), create a new "slot" folder inside (the next available number will do), and copy the "foreign" savedata there. The content in the "slot" folder should look similar to:

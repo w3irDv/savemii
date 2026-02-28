@@ -18,7 +18,9 @@ Savemii has the following type of repos configured:
 - Stage folders: folder on the SD where you can put individual Mii files (FFL_Stage, Account_Stage and RFL_Stage).
 - Custom DB Files: FFL/RFL or Account databases on the SD , for testing puposes. They live on the SD. When ready (after importing and transforming Miis as you wish), can be copied to CEMU or Dolphin installations.
 
-**Note**: You can create an account custom db, by making an Account Mii Database backup and manually copying `8000000x/` folders from `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_account/(slot_number)/`  to `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_account_c`.
+**Notes**
+    - You can create an account custom db, by making an Account Mii Database backup and manually copying `8000000x/` folders from `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_account/(slot_number)/`  to `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_account_c`.
+    - If a FFL database is founf on the USB (mounting a NAND as a USB using ISFSHax), it will appear as `FFL_USB` repo.
 
 You can backup/restore any repo to/from a slot (whole databases). Each repo has its own set of slots, named from 0 to 255 (you can optionally tag them)
 
