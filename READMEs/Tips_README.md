@@ -98,7 +98,6 @@ Old miis will be added to the new ones. You need to copy this files from the Wii
 #### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat
 
-
 to
 
 # watch out: no nested db folder
