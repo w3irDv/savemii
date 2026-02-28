@@ -66,7 +66,7 @@ For vWii titles, savedata is directly under the slot folder.
 	 4. Press `A` to initiate the restore. 
 	    **Note**: Starting with version 1.7.0, the `From: All Users` restore will detect and not allow restoring savedata to non-existent user profiles. In this case, perform specific `From: Select Source User / To: Select Destination User` restores, selecting the correct users.
 
-**Note**: If you have manually copied a Loadiine savedata in shared mode format (`/u` and `/c` folders) to a nomal backup slot, SaveMii will detect it and will rename the folders to the current user (`/8000000x` and `/common`), so you can afterwards restore it from this menu task.
+**Note**: If you have manually copied  to a nomal backup slot a Loadiine savedata in shared mode format (`/u` and `/c` folders), SaveMii will detect it and will rename the folders to the current user (`/8000000x` and `/common`), so you can afterwards restore it from this menu task.
 
 ### Wipe
 Sometimes you will need to wipe savedata in the console before restoring a previous backup: If a restore is unsuccesful, you can try to wipe previous data before attempting a new restore. Options are the same than in the *Backup* task, but now refer to savedata for the specified title in the NAND or in the USB. 
@@ -92,6 +92,17 @@ If a title has savedata in  NAND and in USB, you can transfer it between both st
 
 ### Import from Loadiine
 This task will only appear if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to import this savedata in to the console game savedata folders in NAND or USB. `SaveMii` will search for folders containing the the four letters game's product code, its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
+
+All these variants will be found:
+
+```
+SD:/wiiu/saves/AXFE/
+SD:/wiiu/saves/AXFE01/
+SD:/wiiu/saves/0005000010144f00/
+SD:/wiiu/saves/Smash Bross [AXFE]/
+...
+```
+
 1. Select the `version` number to get data from. 
 2. Select the WiiU User to copy from. Depending on the user you choose, one of the Loadiine Savedata Modes will be used. If you select users `u` or `shared`, shared savedata mode will be used. In this mode profile savedata is located in the `u` folder, and common savedata is located in the `c`folder. If you select a nomal profile (any `8000000x`) or the user `unique`, unique mode will be used. In this case profile savedata is locaed in the Wii U default folders  (`8000000x` and `common`).
 3. Select the WiiU user to copy to. This can only be one of the real profiles (`8000000x`).
@@ -100,6 +111,7 @@ This task will only appear if the game has savedata in the Loadiine folder `SD:/
 
 ### Export to Loadiine
 This task will only appear if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to export game savedata in NAND or USB to the SD loaddine save folder. `SaveMii` will search for folders containing the four letters game's product code (`AXFP`, for example), its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
+
 1. Select the `version` number where you want to save the game savedata. 
 2. Select the Wii U User to copy savedata from. User `u` will appear always as Empty. Select  the real non-empty profile with savetada  (`8000000x`) that you want to export (soem games have only savedata in the `common` folder, an all profiles will appear as empty).
 3. Select the Wii U User to copy to. Depending on the user you choose, one of the Loadine Savedata Modes will be used. If you select  users `u` or `shared`, shared savedata mode will be used. In this mode profile savedata is located in the `u` folder, and common savedata is located in the `c`folder. If you select a nomal profile (any `8000000x`) or the user `unique`, unique mode will be used. In this case profile savedata is locaed in the wii u default folders  (`8000000x` for profiles, and `common` for common).

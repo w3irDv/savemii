@@ -53,6 +53,7 @@ This task allows you to restore the savedata for all titles already installed in
 2. Select the backupSet you want to restore from
 3. Select wich data to restore. Options are the same than in the *Restore* task. You can also choose if you want to perform a full backup (recommended) or to wipe data before restoring it.
 4. The list of all titles that are installed, that have a backup in the backupset, and that match  the savedata criteria chosen in the previous step will appear. You can choose which ones to restore: Press `Y` `<-` `->` to select or deselect individual  titles. Press `+` `-` to select or deselect all titles. Titles with "Not Init" will be skipped by default.
+
    **Note**: If you select `All users`and the the backup contains savedata from a non-existent profile, a warning will appear: by default, SaveMii will not  allow you to restore this backup (unless that you disable this check in the Options menu, but this is discouraged). You can restore the backup using the option  `From: select source user / To: select target user`. `To users` are always defined in the console.  
 5. Once you have reviewed the list of titles to be restored, press `A`. A summary screen will appear, and if it is OK, you can initiate the restore.
 6. Once the restore is completed, a summary screen will show the number of sucess/failed/skipped titles.
@@ -70,6 +71,7 @@ This task allows you to wipe  savedata belonging to the selected list of titles.
 3. Once you have reviewed the list of titles to be wiped, press `A`. A summary screen will appear, and if it is OK, you can initiate the wipe.
 4. Once the wipe is completed, a summary screen will show the number of sucess/failed/skipped titles.
 5. The list of all titles will appear again, now showing the wipestatus. You can try to select failed titles and wipe them again to see what the error is. Successfully wiped titles will be skipped.
+
    **Note**: Step 1 will detect savedata that is already stored in the console but that belongs to profiles that no longer exists. In these cases, you can choose to delete it (or  ignore it). 
 
 
@@ -83,6 +85,7 @@ This task allows you to move / copy  savedata from one profile to a different pr
 3. Once you have reviewed the list of titles to be moved/copied, press `A`. A summary screen will appear, and if it is OK, you can initiate the operation.
 4. Once the move/copy is completed, a summary screen will show the number of sucess/failed/skipped titles.
 5. The list of all titles will appear again, now showing the copy status. You can try to select failed titles and move/copy them again to see what the error is. Succesfully moved/copied titles will be skipped.
+
 **Note**: Step 1 will detect savedata that is already stored in the console but that belongs to profiles that no longer exist. In these cases, you can  move it to an existent profile, or use Batch Wipe to delete it.
 
 
@@ -97,6 +100,7 @@ This task allows you to move  savedata between NAND and USB  for titles that hav
 4. Once you have reviewed the list of titles to be restored, press `A`. A summary screen will appear, and if it is OK, you can initiate the copy.
 5. Once the copy is completed, a summary screen will show the number of sucess/failed/skipped titles.
 6. The list of all titles will appear again, now showing the copy status. You can try to select failed titles and restore them again to see what the error is. Successfully copied titles will be skipped.
+
    **Note**: Step 1 will detect savedata that is already stored in the console but that belongs to  user profiles that are no longer defined. If you select `All users` option, a warning will appear: by default, SaveMii will not  allow you to restore this backup (unless that you disable this check in the Options menu, but this is discouraged). You can copy the savedata using the option  `From: select source user / To: select target user`. `To users` are always defined in the console, or delete it with Batch Wipe.   
 
 
