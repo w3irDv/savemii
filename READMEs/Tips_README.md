@@ -7,7 +7,7 @@
 # Tips
 - [Restoring savedata not belonging to your WiiU](#restoring-savedata-not-belonging-to-your-wiiu)
 - [Transfer Savedata to/from your Pretendo account](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)
-- [Restore miis from your previous console](d#restore-miis-from-your-previous-console)
+- [Restore miis from your previous console](#restore-miis-from-your-previous-console)
 - [Recover your Wii U in case of a brick after a faulty System title restore](#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore)
 ---
 
