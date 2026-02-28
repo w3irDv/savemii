@@ -96,18 +96,13 @@ Old miis will be added to the new ones. You need to copy this files from the Wii
 #### Wii U 
 ```sh
 #### this applies to a EUR console, for JPN use 1004a000, and for USA use 1004a100
-/vol/storage_mlc01/usr/save/00050010/1004a200/user/common/stadio.sav
 /vol/storage_mlc01/usr/save/00050010/1004a200/user/common/db/FFL_ODB.dat
 
 
 to
 
-### watch out: db folder needed!
-SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/stadio.sav
-SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/db/FFL_ODB.dat
-
-### for completeness, you can also copy the rest of files in db: FCL_DB.dat, FFL_HDB.dat, FFL_DB_OLD.dat
-### but they are not needed for this procedure to work
+# watch out: no nested db folder
+SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat
 ```
 #### vWii
 ```sh
@@ -131,7 +126,7 @@ wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --du
 
 Extracted data should be copied to the SD:
 - For (B), Pick files and copy to `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/stadio.sav` and `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/FFL_ODB.dat`
-- For (C), `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/`
+- For (C), `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat`
 
 ### Make imported Miis belong to the new console
 Imported miis from a different console will appear as foreign miis in Mii Maker and cannot be edited. If you want to convert them to first-class citizens of the new console (so they can be modified if needed):
