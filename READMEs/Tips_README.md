@@ -129,7 +129,7 @@ To recover from such a semi-brick  you can use [UDPIH: USB Host Stack exploit + 
 
 At a glance:
 - [Flash your device](https://github.com/GaryOderNichts/udpih#device-setup) with the UDPIH exploit image.
-- Insert the SDCard in your PC
+- Insert the SD card in your PC
 - Put the [Recovery Menu](https://github.com/GaryOderNichts/recovery_menu/releases) on the root of the SD card 
 - Put a `network.cfg` file on the root of the SD card with the following information:
 
@@ -154,9 +154,13 @@ mm_bckp/db/FFL_ODB.dat
 mm_bckp/db/FFL_ODB_OLD.dat
 ``` 
 - Put the SD card on your Wii U
-- Power On your Wii U, connect the device with the UDPIH explot when the Wii U logo appear. 
+- Power On your Wii U, connect the device with the UDPIH exploit when the Wii U logo appear. 
 - Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
 - Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U will appear on the screen.
+- Update this line in `upclient.py`with the IP assigned to the Wii U console.:
+```python
+def __init__(self, ip='YOUR.IP.HE.RE', port=1337)
+```
 
 - Now execute:
 
