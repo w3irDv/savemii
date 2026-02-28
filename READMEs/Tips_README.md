@@ -157,7 +157,7 @@ mm_bckp/db/FFL_ODB_OLD.dat
 - Power On your Wii U, connect the device with the UDPIH exploit when the Wii U logo appear. 
 - Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
 - Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U will appear on the screen.
-- Update this line in `upclient.py`with the IP assigned to the Wii U console.:
+- Update this line in `wupclient.py`with the IP assigned to the Wii U:
 ```python
 def __init__(self, ip='YOUR.IP.HE.RE', port=1337)
 ```
@@ -168,19 +168,19 @@ def __init__(self, ip='YOUR.IP.HE.RE', port=1337)
 python3 -i wupclient.py
 ```
 
-- Run these lines inside the interactive prompt. Substitute `your_region_here` by eur, usa or jpn
+- Run these lines inside the interactive prompt. Substitute `"your_region_here"` by `"eur"`, "usa" or "jpn"
 
 
 ```python
-wipe_mii_maker(your_region_here)
+wipe_mii_maker("your_region_here")
 
-check_mii_maker_is_clear(your_region_here)
+check_mii_maker_is_clear("your_region_here")
 ```
 
 - Once the Mii Maker folder is empty, restore the backup with:
 
 ```python
-restore_mii_maker(your_region_here)
+restore_mii_maker("your_region_here")
 
 exit
 ```
