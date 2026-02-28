@@ -31,7 +31,7 @@ If you follow an online guide, it will likely tell you to create/find a hexadeci
 You can follow this [tutorial](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)
 
 ## Restore miis from your previous console
-You can restore your miis from a Wii U or Wii in a new Wii U. This can be done in several ways:
+You can restore your miis from a Wii U or Wii in a new Wii U. This can be done in several ways. Pick the one that you prefer:
 
 ### (A) Restoring Wii U Miis through Mii Maker savedata
 This will delete all miis in your new Wii U.
@@ -39,7 +39,7 @@ This will delete all miis in your new Wii U.
 1. If you have access to your previous Wii U and you can run Savemii, perform a backup of Mii Maker from `Manage Wii U System Titles >> (Select Mii Maker title) >> Backup (with All Users optipon)`.
 2. Then in the new Wii U, wipe the Mii Maker savedata: `Manage Wii U System Titles >> (Select Mii Maker title) >> Wipe (with All Users option)`. **Important**: Say yes when Savemii ask to perform a backup.
 3. Restore the save with `Manage Wii U System Titles >> (Select Mii Maker title) >> Restore (with All Users option)`.
-4. If all goes OK, continue (optional step) with the section [Make Imported Miis belong to the new console](#f-make-imported-miis-belong-to-the-new-console).
+4. If all goes OK, continue (optional step) with the section [Make Imported Miis belong to the new console](#make-imported-miis-belong-to-the-new-console).
 5. If the restore fails, restore the backup hat you have made in step 2.
  **Important**: Don't leave Savemii or restart your console unless the restore has succeed. If not, you will need to recover from a (semi)brick (See [recovery process](#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore)).
 
@@ -87,7 +87,7 @@ SD:/wiiu/backups/MiiRepoBckp/mii_bckp_rfl/(new number)/RFL_DB.dat
 
 and then use procedure `(B)`
 
-### (E) I cannot execute SaveMii in the old console, but I can access through ftp or using the recovery menu, and I want to keep miis created in the new Wii U
+### (F) I cannot execute SaveMii in the old console, but I can access through ftp or using the recovery menu, and I want to keep miis created in the new Wii U
 Old miis will be added to the new ones. You need to copy this files from the Wii U console to the SD:
 
 #### Wii U 
@@ -111,7 +111,7 @@ SD:/wiiu/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat
 
 and then use procedure `(C)`, but executing step 1 from the new Wii U console and selecting as source repo `FFLC` or `RFLC`
 
-### (E) I don't have access to the Wii U console, but I have a MLC backup
+### (G) I don't have access to the Wii U console, but I have a MLC backup
 Extract stadio.sav and FFL_ODB.dat with [wfs-extract](https://github.com/koolkdev/wfs-tools), and then follow procedures (C) or (D), 
 
 
@@ -120,7 +120,7 @@ Extract stadio.sav and FFL_ODB.dat with [wfs-extract](https://github.com/koolkde
 wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --dump-path /usr/save/00050010/1004a200/user/common
 ```
 
-### (F) Make imported Miis belong to the new console
+### Make imported Miis belong to the new console
 Imported miis from a different console will appear as foreign miis in Mii Maker and cannot be edited. If you want to convert them to first-class citizens of the new console (so they can be modified if needed):
 
 `Mii Management >> (select repo RFL o FFL) >> Trasnform tasks >> (select miis to be made local) >> Make them belong to this console : Yes >> (Press A)`
