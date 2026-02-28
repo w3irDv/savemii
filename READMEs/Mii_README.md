@@ -32,7 +32,7 @@ flowchart TD
 
 iddb[("Wii U, vWii, Account Internal DB Files")] <-- Export/Import --> idstage("Stage Folders")
 iddb <-- Export/Import --> iddbsd[("Custom DB Files")]
-iddbsd <-- Exporet/Import --> idstage
+iddbsd <-- Export/Import --> idstage
 
 iddb & idstage & iddbsd <== Backup/Restore ==> idslots([Backup Slots])
 
