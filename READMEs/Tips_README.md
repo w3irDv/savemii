@@ -134,7 +134,7 @@ Imported miis from a different console will appear as foreign miis in Mii Maker 
 
 `Mii Management >> (select repo RFL o FFL) >> Trasnform tasks >> (select miis to be made local) >> Make them belong to this console : Yes >> (Press A)`
 
-**Beware**: mii will receive a new Mii Id so association with games will be lost. At all effects, they are neww miis created on the new console.
+**Beware**: Miis will receive a new Mii Id so association with games will be lost. At all effects, they are new Miis created on the new console that are physically identical to the old ones.
 
 ## Recover your Wii U in case of a brick after a faulty System title restore
 
