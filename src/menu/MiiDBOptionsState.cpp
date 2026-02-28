@@ -33,10 +33,10 @@ MiiDBOptionsState::MiiDBOptionsState(MiiRepo *mii_repo, MiiProcess::eMiiProcessA
         default:
             switch (mii_repo->db_type) {
                 case MiiRepo::FFL:
-                    db_name = "cafe Face Lib DB";
+                    db_name = "caFe Face Lib";
                     break;
                 case MiiRepo::RFL:
-                    db_name = "Revolution Face Lib DB";
+                    db_name = "Revolution Face Lib";
                     break;
                 default:;
             };
@@ -63,8 +63,15 @@ void MiiDBOptionsState::render() {
             return;
         }
 
+        DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+        Console::consolePrintPosAligned(0, 4, 2, _("Selected Repo: %s"), mii_repo->repo_name.c_str());
+
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 2, db_name);
+        DrawUtils::setFontColor(COLOR_INFO);
+        Console::consolePrintPos(19, 2, ">> %s",mii_repo->repo_description.c_str());
+        DrawUtils::setFontColor(COLOR_TEXT);
+
         if ((action == MiiProcess::BACKUP_DB) || (action == MiiProcess::RESTORE_DB) || (action == MiiProcess::XRESTORE_DB)) {
             Console::consolePrintPos(M_OFF, 4, _("Select %s:"), _("slot"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
