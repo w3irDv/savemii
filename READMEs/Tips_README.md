@@ -36,25 +36,25 @@ You can restore your miis from a Wii U or Wii in a new Wii U. This can be done i
 ### (A) Restoring Wii U Miis through Mii Maker savedata
 This will delete all miis in your new Wii U.
 
-1. If you have access to your previous Wii U and you can run Savemii, perform a backup of Mii Maker from `Manage Wii U System Titles >> (Select Mii Maker title) >> Backup (with All Users optipon)`.
+1. If you have access to your previous Wii U and you can run Savemii, perform a backup of Mii Maker from `Manage Wii U System Titles >> (Select Mii Maker title) >> Backup (with All Users optipon)`. Move the SD card to the new Wii U.
 2. Then in the new Wii U, wipe the Mii Maker savedata: `Manage Wii U System Titles >> (Select Mii Maker title) >> Wipe (with All Users option)`. **Important**: Say yes when Savemii ask to perform a backup.
 3. Restore the save with `Manage Wii U System Titles >> (Select Mii Maker title) >> Restore (with All Users option)`.
 4. If all goes OK, continue (optional step) with the section [Make Imported Miis belong to the new console](#make-imported-miis-belong-to-the-new-console).
 5. If the restore fails, restore the backup hat you have made in step 2.
  **Important**: Don't leave Savemii or restart your console unless the restore has succeed. If not, you will need to recover from a (semi)brick (See [recovery process](#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore)).
 
-### (B) Restoring Wii U Miis by restoring Mii FFL repo
+### (B) Restoring Wii U Miis by restoring Mii FFL repo, delete new Wii U Miis
 This will delete all miis in your new Wii U.
-1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Backup DB`
+1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Backup DB`. Move the SD card to the new Wii U.
 2. Then, on the new Wii U, select `Mii Management >> (select FFL repository)` and then `Backup DB` or `Export Miis` to create a backup of the data in case something goes wrong.
 3. Restore the FFL repo  with `Restore DB`
 4. If all goes OK, continue (optional step) with the secion `Modify the mii so they will seem to be created in the new console`
 5. If the restore fails, restore the backup that you have made in step 2.
 6. As last resort,t you can `Wipe DB`, exit SaveMii, and start Mii Maker. It will create a new empty DB.
 
-### (C) Restoring Wii U Miis by Mii Export/Import
+### (C) Restoring Wii U Miis by Mii Export/Import, keep new Wii U miis
 Miis in you new Wii U will be kept, and old Miis will we added to it.
-1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Export Miis`. All miis are selected by default. Just press `A` to export. This will copy all miis to the `FFLStage` repo.
+1. If you have access to your previous Wii U and you can run Savemii, go to `Mii Management >> (select FFL repo) >> Export Miis`. All miis are selected by default. Just press `A` to export. This will copy all miis to the `FFLStage` repo. Move the SD card to the new Wii U.
 2. Onn the new Wii U, select `Mii Management >> (select FFL repository)` and then `Backup DB` or `Export Miis` to create a backup of the data in case something goes wrong.
 3. After go to `Import Miis (from FFL stage)`. Select the Miis you want to import and press `A`. This will add the new miis to the FFL repo.
 
@@ -74,7 +74,9 @@ You need to copy these files from the old Wii U console to the SD:
 
 to
 
-SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/
+# watch out: no nested db folder
+SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/stadio.sav
+SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/FFL_ODB.dat     
 ```
 #### vWii
 ```sh
@@ -85,7 +87,7 @@ to
 SD:/wiiu/backups/MiiRepoBckp/mii_bckp_rfl/(new number)/RFL_DB.dat
 ```
 
-and then use procedure `(B)`
+and then use procedure `(B)` from step 2.
 
 ### (F) I cannot execute SaveMii in the old console, but I can access through ftp or using the recovery menu, and I want to keep miis created in the new Wii U
 Old miis will be added to the new ones. You need to copy this files from the Wii U console to the SD:
@@ -98,7 +100,9 @@ Old miis will be added to the new ones. You need to copy this files from the Wii
 
 to
 
-SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/
+### watch out: db folder needed!
+SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/stadio.sav
+SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/db/FFL_ODB.dat
 ```
 #### vWii
 ```sh
@@ -109,16 +113,20 @@ to
 SD:/wiiu/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat
 ```
 
-and then use procedure `(C)`, but executing step 1 from the new Wii U console and selecting as source repo `FFLC` or `RFLC`
+and then use procedure `(C)`, but executing step 1 from the new Wii U console and selecting as source repo `FFL_C` or `RFL_C`
 
 ### (G) I don't have access to the Wii U console, but I have a MLC backup
-Extract stadio.sav and FFL_ODB.dat with [wfs-extract](https://github.com/koolkdev/wfs-tools), and then follow procedures (C) or (D), 
+Extract stadio.sav and FFL_ODB.dat with [wfs-extract](https://github.com/koolkdev/wfs-tools), and then follow procedures (B) or (C), 
 
 
 ```sh
 #  1004a100 for USA; 1004a000 for JPN
 wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --dump-path /usr/save/00050010/1004a200/user/common
 ```
+
+Extracted data should be copied to the SD:
+- For (B), Pick files and copy to `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/stadio.sav` and `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/FFL_ODB.dat`
+- For (C), `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/`
 
 ### Make imported Miis belong to the new console
 Imported miis from a different console will appear as foreign miis in Mii Maker and cannot be edited. If you want to convert them to first-class citizens of the new console (so they can be modified if needed):
