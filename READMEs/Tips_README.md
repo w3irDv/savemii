@@ -2,9 +2,19 @@
     TIPS
     <span style="float:right;">
         <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii">Back</a>&nbsp&nbsp
-<a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
+        <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
     </span>
 </p>
+
+
+<p style="text-align:left;">
+    TIPS
+    <span style="float:right;">
+RIGHT
+    </span>
+</p>
+
+
 
 <p align="right">
 <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii">Back</a>&nbsp&nbsp
