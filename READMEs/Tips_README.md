@@ -15,6 +15,16 @@ RIGHT
 </p>
 
 
+h1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+<h1>
+  <span>Align me left</span>
+  <a href="">align me right</a>
+</h1>
+
 
 <p align="right">
 <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii">Back</a>&nbsp&nbsp
