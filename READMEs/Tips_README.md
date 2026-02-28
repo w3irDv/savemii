@@ -155,15 +155,15 @@ key_type=WPA2_PSK_AES
     - use the last backup you have
     - If you don't have one handy, keep in mind that the first time SaveMii ran a Mii management task, it created a backup in `sd:/wiiu/backups/mii_db_checkpoint/(WiiU serial number)`   
 
-The layout should be:
-```
-wupclient.py
-mm_bckp/stadio.sav
-mm_bckp/db/FCL_DB.dat
-mm_bckp/db/FFL_HDB.dat
-mm_bckp/db/FFL_ODB.dat
-mm_bckp/db/FFL_ODB_OLD.dat
-``` 
+    The layout should be:
+    ```
+    wupclient.py
+    mm_bckp/stadio.sav
+    mm_bckp/db/FCL_DB.dat
+    mm_bckp/db/FFL_HDB.dat
+    mm_bckp/db/FFL_ODB.dat
+    mm_bckp/db/FFL_ODB_OLD.dat
+    ``` 
 - Put the SD card on your Wii U
 - Power On your Wii U, connect the device with the UDPIH exploit when the Wii U logo appear. 
 - Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
