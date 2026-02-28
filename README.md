@@ -1,6 +1,6 @@
 # SaveMii WUT Port /ProcessMod /SaveMyMiis
 
-<p align="center"><a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="savemii.png" width="300"></a></p>
+<p align="center"><a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="savemii.png" width="350"></a></p>
 <p align="center">
 <a href="https://github.com/w3irdv/savemii/releases" title="Releases"><img src="https://img.shields.io/github/v/release/w3irdv/savemii?logo=github"></a>
 </p>
@@ -30,22 +30,27 @@ Use it at your own risk and please report any issues that may occur.
 
 
 ## Detailed HowTos
-<p align="left"><a href="READMEs/Saves_README.md" title="Base"><img src="READMEs/savemii_base.png" width="25"> Base tasks</a></p>
+<p align="left">
+<a href="READMEs/Saves_README.md" title="Base"><img src="READMEs/savemii_base.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Saves_README.md" title="Base">Savedata tasks</a>
 <p align="left">
 
-<p align="left"><a href="READMEs/Batch_README.md" title="Base"><img src="READMEs/batch.png" width="25"> Batch Process</a></p>
+<p align="left">
+<a href="READMEs/Batch_README.md" title="Batch"><img src="READMEs/batch.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Batch_README.md" title="Batch">Batch Process</a>
 <p align="left">
 
 <p align="left">
-<a href="READMEs/Mii_README.md" title="Base"><img src="READMEs/miis.png" width="25"> Mii Management</a>
-<a href="READMEs/Mii_README.md> Mii management</a>
+<a href="READMEs/Mii_README.md" title="Miis"><img src="READMEs/miis.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Mii_README.md" title="Miis">Mii Management</a>
 </p>
 <p align="left">
 
-
-[Configuration](READMEs/Configuration_README.md)
-
-[Tips](READMEs/Tips_README.md)
+<p align="left">
+<a href="READMEs/Tips_README.md" title="Miis"><img src="READMEs/tips.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Tips_README.md" title="Miis">Tips</a>
+</p>
+<p align="left">
 
 ----
 
@@ -53,18 +58,17 @@ Use it at your own risk and please report any issues that may occur.
 
 - Fully compatible with Aroma
 - You can manage Miis
+- You can manage Wii U System Titles
+- You can restore uninitialized titles (WiiU and injects), without needing to run the game before restoring
 - Addresses critical issues present in previous versions of the mod
 - Includes options to move/copy profiles, very useful for finalizing `Pretendo` setups
 - Performs error checks on all backup and restore operations to ensure they complete successfully.
 - All operations can be performed in batches.
-- You can restore uninitialized titles (WiiU and injects), without needing to run the game before restoring
 - It preserves file permissions (WiiU) and can backup saves with FAT32 non-compliant chars in its filename
 - Maintained
 - WUT port additions to the original:
   - Faster copy speeds
   - VC injects are shown
-  - If VC is vWii, the user is warned to go to the vWii saves section instead
-  - Demo support
   - Fixes issues present in the mod version
   - Shows useful info about the saves like its date and time of creation
 
@@ -73,7 +77,9 @@ Use it at your own risk and please report any issues that may occur.
 
 - Bruno Vinicius, for the icon
 - Maschell, for libmocha and countless help
-- Crementif for helping with freetype
-- V10lator for helping with a lot of stuff
-- Vague Rant for testing
+- Crementif, for helping with freetype
+- V10lator, for helping with a lot of stuff
+- Vague Rant, for testing
 - xploit-U, for creating the WUT port
+- HEYimHeroic, WiiBrew and WUT MiiData, for the unvaluable information on mii stuff
+- GaryOderNichts, for UDPIH, that was a blessing after an unfortunate test 
