@@ -1,3 +1,8 @@
+
+<head>
+<link rel="stylesheet" type="text/css" href="readme.css">.
+</head>
+
 <p style="text-align:left;">
     TIPS
     <span style="float:right;">
@@ -13,12 +18,6 @@
 RIGHT
     </span>
 </p>
-
-
-h1 {
-  display: flex;
-  justify-content: space-between;
-}
 
 <h1>
   <span>Align me left</span>
