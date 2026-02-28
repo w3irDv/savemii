@@ -124,9 +124,9 @@ Extract stadio.sav and FFL_ODB.dat with [wfs-extract](https://github.com/koolkde
 wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --dump-path /usr/save/00050010/1004a200/user/common
 ```
 
-Extracted data should be copied to the SD:
+From extracted data, `FFL_ODB.dat` and `stadio.sav` should be copied to the SD:
 - For (B), Pick files and copy to `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/stadio.sav` and `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/FFL_ODB.dat`
-- For (C), `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat`
+- For (C), to `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat`
 
 ### Make imported Miis belong to the new console
 Imported miis from a different console will appear as foreign miis in Mii Maker and cannot be edited. If you want to convert them to first-class citizens of the new console (so they can be modified if needed):
