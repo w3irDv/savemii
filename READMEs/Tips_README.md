@@ -133,7 +133,7 @@ In extreme cases, a faulty restore of a system title can lead to a brick of your
 
 We will cover the case that an error manipulating Mii Maker savedata leads to a brick. For orher cases, a straighforward adaption of functions `wipe_mii_maker/check_mii_maker_is_wiped/restore_mii_maker` in `wupclient.py` will be needed. 
 
-You will need a backup of the Mii Maker savedata. Always perform an `All Users` backup before trying any restore!
+You will need a backup of the Mii Maker savedata. Always perform an `All Users` backup before trying any restore! At worst, you will have the initial checkpoint backup in `sd:/wiiu/backups/mii_db_checkpoint/(WiiU serial number)`.
 
 To recover from such a semi-brick  you can use [UDPIH: USB Host Stack exploit + Recovery Menu](https://gbatemp.net/threads/udpih-usb-host-stack-exploit-recovery-menu.613369/). 
 
