@@ -16,7 +16,7 @@ This menu allows you to:
 ### Relation between repos and tasks.
 Savemii has the following type of repos configured:
 - Internal Wii U (FFL), Account and Wii (RFL) databases.
-- Stage folders: folder on the SD where you can put individual Mii files (FFL_Stage, Account_Stage and RFL_Stage).
+- Stage folders: folder on the SD where you can put individual Mii files (FFL_Stage, Account_Stage, RFL_Stage and SGMX).
 - Custom DB Files: FFL/RFL or Account databases on the SD , for testing puposes. They live on the SD. When ready (after importing and transforming Miis as you wish), can be copied to CEMU or Dolphin installations.
 
 **Notes**
@@ -95,7 +95,7 @@ All Miis in te selected repo will be shown. With `X` you can cycle between diffe
 - timestamp
 
 #### Export Miis
-Export individual Miis from one repo to a different one. Press `A` to initiate the task. For internal Databases, the Miis will be copied to the associated Stage Repo. For other databases, a new menu will appear where you can select the repo to export to. Press `A` again after moving the cursor to the desired repo. The Mii selection menu will appear. Select/Deselect individual Miis with `Y`, `DPAD-L/R`, or use `+/-` to select/deselect all at once. Then Press `A` to initiate the export. 
+Export individual Miis from one repo to a different one. Press `A` to initiate the task. For internal Databases, the Miis will be copied to the associated Stage Repo. For other databases, a new menu will appear where you can select the repo to export to. Press `A` again after moving the cursor to the desired repo. The Mii selection menu will appear. Select/Deselect individual Miis from the original repo with `Y`, `DPAD-L/R`, or use `+/-` to select/deselect all at once. Then Press `A` to initiate the export. 
 
 #### Import Miis
 You can Import individual Miis from a repo to the currently selected repo. For internal Databases, the Miis will be searched for and copied from the associated Stage Repo. For other databases, you can select the repo to import from. Press `A`to initiate the task. Press `A` again after moving the cursor to the desired repo. Then select the Miis you want to import with `Y`, `DPAD-L/R`, or `+/-` and press `A` to proceed with the import.
