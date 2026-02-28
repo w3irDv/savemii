@@ -1,18 +1,12 @@
 
 <head>
     <style>
-        .container {
-  display: flex;
-  justify-content: space-between; /* Pushes the elements to opposite ends */
-  width: 100%; /* Ensure the container spans the full width */
-}
-
 .left-element {
-  /* Aligns to the start (left) */
+  float: left;
 }
 
 .right-element {
-  /* Aligns to the end (right) */
+  float: right;
 }
 
     </style>
