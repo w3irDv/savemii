@@ -6,6 +6,7 @@
 <div class="container">
   <div class="left-element">Text on the left</div>
   <div class="right-element">Text on the right</div>
+  <div style="clear: both;"></div> <!-- Clears the float property -->
 </div>
 
 <p align="right">
