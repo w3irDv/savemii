@@ -48,11 +48,12 @@ public:
     uint64_t stadio_last_mii_index = 0;
     uint64_t stadio_last_mii_update = 0;
     uint32_t stadio_max_alive_miis = 0;
-    uint32_t pose = 0;
+    uint8_t pose = 0;
 
     size_t stadio_last_empty_location = 0;
     size_t stadio_last_empty_frame_index = 0;
     std::vector<bool> stadio_empty_frames;
+    uint8_t pseudo_random_initial_pose();
 
     FSMode stadio_fsmode = (FSMode) 0x666;
     uint32_t stadio_owner = 0;

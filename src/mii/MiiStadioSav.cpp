@@ -230,6 +230,8 @@ bool MiiStadioSav::open_and_load_stadio() {
                 stadio_empty_frames.at(frame) = false;
         }
     }
+
+    pose = pseudo_random_initial_pose();
     return true;
 
 free_after_fail:
@@ -352,7 +354,7 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata, eDBKind source_mii
     memcpy(empty_slot_offset + 0x10, miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
 
     memset(empty_slot_offset + 0x1C, pose++ % 14, 1);
-    
+
     stadio_last_mii_index++;
     stadio_last_mii_update++;
     stadio_max_alive_miis++;
@@ -473,4 +475,8 @@ cleanup_after_io_error:
     if (stadio_owner != 0)
         FSUtils::flushVol(db_filepath);
     return false;
+}
+
+uint8_t MiiStadioSav::pseudo_random_initial_pose() {
+    return (uint8_t) (OSGetTick() % 14); 	
 }
