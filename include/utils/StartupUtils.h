@@ -2,8 +2,6 @@
 
 namespace StartupUtils {
 
-    void getWiiUSerialId();
-
     void disclaimer();
 
     void addInitMessage(const char *newMessage);

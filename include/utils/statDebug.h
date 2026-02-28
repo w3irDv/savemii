@@ -8,4 +8,11 @@ namespace statDebugUtils {
     void statSaves(const Title &title);
     void statTitle(const Title &title);
     void showFile(const std::string &file, const std::string &toRemove);
+
+    void statMiiMaker();
+
+    void statMiiEdit();
+    void statVol();
+    void statAct();
 } // namespace statDebug
+

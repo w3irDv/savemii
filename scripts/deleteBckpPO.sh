@@ -1,0 +1,1 @@
+rm romfs/locales/*.po~

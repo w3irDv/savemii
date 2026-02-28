@@ -28,9 +28,9 @@ BackupSetListState::BackupSetListState() {
     }
 }
 
-BackupSetListState::BackupSetListState(Title *titles, int titlesCount, bool isWiiUBatchJob) : titles(titles),
+BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleType titleType) : titles(titles),
                                                                                               titlesCount(titlesCount),
-                                                                                              isWiiUBatchJob(isWiiUBatchJob) {
+                                                                                              titleType(titleType) {
     finalScreen = false;
     if (BackupSetList::getIsInitializationRequired()) {
         BackupSetList::initBackupSetList();
@@ -66,12 +66,12 @@ void BackupSetListState::render() {
         std::string backupSetItem;
         DrawUtils::setFontColor(COLOR_INFO);
         if (BackupSetList::currentBackupSetList->entriesView == BackupSetList::currentBackupSetList->entries) {
-            Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets"));
+            Console::consolePrintPosAligned(0, 4, 1, _("BackupSets"));
         } else {
-            Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("BackupSets (filter applied)"));
+            Console::consolePrintPosAligned(0, 4, 1, _("BackupSets (filter applied)"));
         }
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("\ue083 Sort: %s \ue084"),
+        Console::consolePrintPosAligned(0, 4, 2, _("\\ue083 Sort: %s \\ue084"),
                                         this->sortAscending ? "\u2191" : "\u2193");
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + scroll < 0 || i + scroll >= BackupSetList::currentBackupSetList->entriesView)
@@ -94,9 +94,9 @@ void BackupSetListState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         if (cursorPos + scroll > 0)
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BS  \ue045: Tag BS  \ue046: Wipe BS  \ue003: Filter List  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"));
         else
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select BackupSet  \ue003: Filter List  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"));
     }
 }
 
@@ -107,26 +107,27 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             if (!finalScreen) {
                 if (cursorPos + scroll == 0) {
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Root BackupSet cannot be selected for batchRestore"));
+                    Console::showMessage(ERROR_SHOW, _("Root BackupSet cannot be selected for batchRestore"));
                     return SUBSTATE_RUNNING;
                 }
             }
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
             if (finalScreen) {
+                BackupSetList::setSelectedEntryForIndividualTitles(cursorPos + scroll); 
                 char message[256];
-                const char *messageTemplate = LanguageUtils::gettext("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
+                const char *messageTemplate = _("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
                 snprintf(message, 256, messageTemplate,
                          BackupSetList::currentBackupSetList->at(cursorPos + scroll).c_str(),
                          BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll).c_str(),
                          BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos + scroll).c_str(),
-                         Metadata::thisConsoleSerialId.c_str());
+                         AmbientConfig::thisConsoleSerialId.c_str());
                 Console::showMessage(OK_CONFIRM, message);
                 return SUBSTATE_RETURN;
             } else // is a step in batchRestore
             {
                 this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, isWiiUBatchJob, RESTORE);
+                this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::Y)) {

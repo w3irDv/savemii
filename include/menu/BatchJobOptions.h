@@ -9,7 +9,7 @@
 
 class BatchJobOptions : public ApplicationState {
 public:
-    BatchJobOptions(Title *titles, int titlesCount, bool isWiiUBatchJob, eJobType jobType);
+    BatchJobOptions(Title *titles, int titlesCount, eTitleType titleType, eJobType jobType);
 
     enum eState {
         STATE_BATCH_JOB_OPTIONS_MENU,
@@ -39,11 +39,11 @@ private:
     int cursorPos;
     int minCursorPos;
 
-    bool isWiiUBatchJob;
+    eTitleType titleType;
 
     eJobType jobType;
     int wiiUAccountsTotalNumber;
-    int sourceAccountsTotalNumber;
+    int volAccountsTotalNumber;
 
     bool nonExistentProfileInTitleBackup = false;
 

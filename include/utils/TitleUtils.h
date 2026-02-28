@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <string_view>
+#include <tuple>
 
 enum eBatchJobState {
     NOT_TRIED = 0,
@@ -47,6 +49,7 @@ struct Title {
     bool is_Wii;
     bool is_Inject;
     bool noFwImg;
+    bool is_WiiUSysTitle;
     uint16_t dupeID;
     uint8_t *iconBuf;
     uint64_t accountSaveSize;
@@ -66,12 +69,20 @@ struct Saves {
 
 namespace TitleUtils {
 
-    inline int wiiuTitlesCount = 0, vWiiTitlesCount = 0;
+    inline int wiiuTitlesCount = 0, wiiuSysTitlesCount = 0, vWiiTitlesCount = 0;
+
+    inline Title *wiiutitles = nullptr;
+    inline Title *wiititles = nullptr;
+    inline Title *wiiusystitles = nullptr;
 
     Title *loadWiiTitles();
     Title *loadWiiUTitles(int run);
+    Title *loadWiiUSysTitles(int run);
 
     void unloadTitles(Title *titles, int count);
+
+    uint32_t getMiiMakerOwner();
+    bool getMiiMakerisTitleOnUSB();
 
     template<class It>
     void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true);
@@ -80,7 +91,7 @@ namespace TitleUtils {
 
     void setTitleNameBasedDirName(Title *title);
 
-    void reset_backup_state(Title *titles,int title_count);
+    void reset_backup_state(Title *titles, int title_count);
 
     template<class It>
     void sortTitle(It titles, It last, int tsort /*= 1*/, bool sortAscending /*= true*/) {

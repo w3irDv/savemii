@@ -7,10 +7,13 @@
 
 class BatchBackupState : public ApplicationState {
 public:
-    BatchBackupState(Title *wiiutitles, Title *wiititles, int wiiuTitlesCount, int vWiiTitlesCount) : wiiutitles(wiiutitles),
-                                                                                                      wiititles(wiititles),
-                                                                                                      wiiuTitlesCount(wiiuTitlesCount),
-                                                                                                      vWiiTitlesCount(vWiiTitlesCount) {}
+    BatchBackupState(Title *wiiutitles, Title *wiititles, Title *wiiusystitles,
+                  int wiiuTitlesCount, int vWiiTitlesCount, int wiiuSysTitlesCount) : wiiutitles(wiiutitles),
+                                                                                      wiititles(wiititles),
+                                                                                      wiiusystitles(wiiusystitles),
+                                                                                      wiiuTitlesCount(wiiuTitlesCount),
+                                                                                      vWiiTitlesCount(vWiiTitlesCount),
+                                                                                      wiiuSysTitlesCount(wiiuSysTitlesCount) {}
     enum eState {
         STATE_BATCH_BACKUP_MENU,
         STATE_DO_SUBSTATE,
@@ -26,9 +29,11 @@ private:
 
     Title *wiiutitles;
     Title *wiititles;
+    Title *wiiusystitles;
 
     int wiiuTitlesCount;
     int vWiiTitlesCount;
+    int wiiuSysTitlesCount;
 
     inline static int cursorPos = 0;
 

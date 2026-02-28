@@ -9,7 +9,7 @@
 #include <malloc.h>
 #include <memory>
 #include <proc_ui/procui.h>
-#include <tga_reader.h>
+#include <tga_reader/tga_reader.h>
 #include <utils/Colors.h>
 #include <utils/DrawUtils.h>
 
@@ -238,6 +238,39 @@ void DrawUtils::setFontColorByCursor(Color col, Color colAtCursor, int cursorPos
         font_col = colAtCursor;
     else
         font_col = col;
+}
+
+void DrawUtils::setFontColorByCursorForToggles(Color col, Color colAtCursor, int cursorPos, int line, bool toggle) {
+
+     if (toggle) {
+        colAtCursor.a = 0xff;
+        colAtCursor.b = col.b/8;
+        colAtCursor.r = col.r/8;
+        colAtCursor.g = (0xff - colAtCursor.g) * 3 / 4 + colAtCursor.g;
+        
+        col.b = col.b/4;
+        col.r = col.r/4;
+        col.g = (0xff - col.g) * 3 / 4 + col.g;
+    }
+
+    if (cursorPos == line)
+        font_col = colAtCursor;
+    else
+        font_col = col;
+}
+
+void DrawUtils::setFontColorForToggles(Color col, bool toggle) {
+    if (toggle) {
+        col.a = 0xff;
+        col.g = (0xff - col.g) / 2 + col.g;
+        col.r = (0xff - col.r) / 2 + col.r;
+    } else {
+        col.a = 0xcc;
+        col.g = col.g * 4 / 5;
+        col.r = col.r * 4 / 5;
+    }
+
+    font_col = col;
 }
 
 static void draw_freetype_bitmap(SFT_Image *bmp, int32_t x, int32_t y) {

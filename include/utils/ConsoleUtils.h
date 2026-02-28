@@ -7,6 +7,8 @@
 #include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
 
+#define M_OFF     1
+
 enum Style {
     ST_YES_NO = 1,
     ST_CONFIRM_CANCEL = 2,
@@ -24,7 +26,8 @@ enum Style {
     ERROR_SHOW = 136,
     ST_WIPE = 256,
     ST_MULTIPLE_CHOICE = 512,
-    MULTIPLE_CHOICE_CONFIRM = 516 // used to show a 2nd message after a promptMultipleChoice call
+    MULTIPLE_CHOICE_CONFIRM = 516, // used to show a 2nd message after a promptMultipleChoice call
+    ST_DEBUG = 1024
 };
 
 #define DEFAULT_ERROR_WAIT 2

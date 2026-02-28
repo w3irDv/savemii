@@ -6,6 +6,7 @@
 #include <menu/BatchJobOptions.h>
 #include <menu/BatchJobTitleSelectState.h>
 #include <savemng.h>
+#include <utils/AccountUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/InputUtils.h>
@@ -20,17 +21,12 @@
 
 #define ENTRYCOUNT 5
 
-extern Account *vol_acc;
-extern uint8_t vol_accn;
-
-extern Account *wiiu_acc;
-
 static bool substate_return = false;
 
 BatchJobOptions::BatchJobOptions(Title *titles,
-                                 int titlesCount, bool isWiiUBatchJob, eJobType jobType) : titles(titles),
-                                                                                           titlesCount(titlesCount), isWiiUBatchJob(isWiiUBatchJob), jobType(jobType) {
-    minCursorPos = isWiiUBatchJob ? 0 : (jobType != WIPE_PROFILE ? 3 : 4);
+                                 int titlesCount, eTitleType titleType, eJobType jobType) : titles(titles),
+                                                                                            titlesCount(titlesCount), titleType(titleType), jobType(jobType) {
+    minCursorPos = (titleType == VWII) ? (jobType != WIPE_PROFILE ? 3 : 4) : 0;
     cursorPos = minCursorPos;
     for (int i = 0; i < this->titlesCount; i++) {
         this->titles[i].currentDataSource = {};
@@ -64,7 +60,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) // skip CBHC savedata
             continue;
-        //if (this->titles[i].is_Wii && isWiiUBatchJob) // wii titles installed as wiiU appear in vWii restore
+        //if (this->titles[i].is_Wii && (titleType != VWII)) // wii titles installed as wiiU appear in vWii restore
         //    continue;
         std::string srcPath{};
         std::string path{};
@@ -105,15 +101,15 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                     this->titles[i].currentDataSource.hasSavedata = true;
                 }
             } else {
-                this->titles[i].currentDataSource.hasSavedata = !folderEmpty(srcPath.c_str());
+                this->titles[i].currentDataSource.hasSavedata = !FSUtils::folderEmpty(srcPath.c_str());
             }
         } else {
             if (errno == ENOENT) {
                 this->titles[i].currentDataSource.hasSavedata = false;
                 continue;
             }
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening source dir\n\n%s\n\n%s"), srcPath.c_str(), strerror(errno));
-            Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
+            Console::showMessage(ERROR_CONFIRM, _("Error opening source dir\n\n%s\n\n%s"), srcPath.c_str(), strerror(errno));
+            Console::showMessage(ERROR_SHOW, _("Savedata information for\n%s\ncannot be retrieved"), this->titles[i].shortName);
             continue;
         }
         closedir(dir);
@@ -125,35 +121,35 @@ BatchJobOptions::BatchJobOptions(Title *titles,
         }
     }
 
-    if (vol_acc != nullptr)
-        free(vol_acc);
-    vol_accn = sourceUsers.size();
+    if (AccountUtils::vol_acc != nullptr)
+        free(AccountUtils::vol_acc);
+    AccountUtils::vol_accn = sourceUsers.size();
 
     int i = 0;
-    vol_acc = (Account *) malloc(vol_accn * sizeof(Account));
+    AccountUtils::vol_acc = (Account *) malloc(AccountUtils::vol_accn * sizeof(Account));
     for (auto user : sourceUsers) {
-        strcpy(vol_acc[i].persistentID, user.substr(0, 8).c_str());
-        vol_acc[i].pID = strtoul(user.c_str(), nullptr, 16);
-        vol_acc[i].slot = i;
+        strcpy(AccountUtils::vol_acc[i].persistentID, user.substr(0, 8).c_str());
+        AccountUtils::vol_acc[i].pID = strtoul(user.c_str(), nullptr, 16);
+        AccountUtils::vol_acc[i].slot = i;
         i++;
     }
 
-    sourceAccountsTotalNumber = getVolAccn();
-    wiiUAccountsTotalNumber = getWiiUAccn();
+    volAccountsTotalNumber = AccountUtils::getVolAccn();
+    wiiUAccountsTotalNumber = AccountUtils::getWiiUAccn();
 
     substate_return = false;
     if (jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE) {
         common = false;
-        for (int i = 0; i < sourceAccountsTotalNumber; i++) {
+        for (int i = 0; i < volAccountsTotalNumber; i++) {
             for (int j = 0; j < wiiUAccountsTotalNumber; j++) {
-                if (getVolAcc()[i].pID != getWiiUAcc()[j].pID) {
+                if (AccountUtils::getVolAcc()[i].pID != AccountUtils::getWiiUAcc()[j].pID) {
                     source_user = i;
                     wiiu_user = j;
                     goto nxtCheck;
                 }
             }
         }
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Can't Copy/Move To OtherProfile if there is only one profile."));
+        Console::showMessage(ERROR_SHOW, _("Can't Copy/Move To OtherProfile if there is only one profile."));
         substate_return = true;
         return;
     }
@@ -163,11 +159,11 @@ nxtCheck:
         wipeBeforeRestore = true;
 
     if (jobType == PROFILE_TO_PROFILE || jobType == MOVE_PROFILE || jobType == WIPE_PROFILE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) {
-        for (int i = 0; i < sourceAccountsTotalNumber; i++) {
-            strcpy(vol_acc[i].miiName, "undefined");
+        for (int i = 0; i < volAccountsTotalNumber; i++) {
+            strcpy(AccountUtils::vol_acc[i].miiName, "undefined");
             for (int j = 0; j < wiiUAccountsTotalNumber; j++) {
-                if (vol_acc[i].pID == wiiu_acc[j].pID) {
-                    strcpy(vol_acc[i].miiName, wiiu_acc[j].miiName);
+                if (AccountUtils::vol_acc[i].pID == AccountUtils::wiiu_acc[j].pID) {
+                    strcpy(AccountUtils::vol_acc[i].miiName, AccountUtils::wiiu_acc[j].miiName);
                     break;
                 }
             }
@@ -192,16 +188,16 @@ nxtCheck:
             case WIPE_PROFILE:
             case COPY_FROM_NAND_TO_USB:
             case COPY_FROM_USB_TO_NAND:
-                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored. You can:\n* Backup it with 'allusers' option or with Batch Backup\n* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."));
+                titlesWithUndefinedProfilesSummary.assign(_("WARNING\nSome titles contain savedata for profiles that do not exist in this console\nThis savedata will be ignored. You can:\n* Backup it with 'allusers' option or with Batch Backup\n* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."));
                 break;
             case RESTORE:
-                titlesWithUndefinedProfilesSummary.assign(LanguageUtils::gettext("The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
+                titlesWithUndefinedProfilesSummary.assign(_("The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n\nRecommended action: restore from/to individual users."));
                 break;
             default:;
         }
-        titlesWithUndefinedProfilesSummary.append(LanguageUtils::gettext("\n\nNon-existent profiles:\n  "));
+        titlesWithUndefinedProfilesSummary.append(_("\n\nNon-existent profiles:\n  "));
         titlesWithUndefinedProfilesSummary += undefinedUsersMessage;
-        titlesWithUndefinedProfilesSummary.append(LanguageUtils::gettext("\nTitles affected:\n"));
+        titlesWithUndefinedProfilesSummary.append(_("\nTitles affected:\n"));
         titleListInColumns(titlesWithUndefinedProfilesSummary, titlesWithNonExistentProfile);
         titlesWithUndefinedProfilesSummary.append("\n");
 
@@ -225,40 +221,40 @@ void BatchJobOptions::render() {
         const char *menuTitle, *sourceUserPrompt, *onlyCommon, *commonIncluded;
         switch (jobType) {
             case RESTORE:
-                menuTitle = LanguageUtils::gettext("BatchJob - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select SD user to copy from:");
-                onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be restored");
-                commonIncluded = LanguageUtils::gettext("'common' savedata will also be restored");
+                menuTitle = _("BatchJob - Options");
+                sourceUserPrompt = _("Select SD user to copy from:");
+                onlyCommon = _("Only 'common' savedata will be restored");
+                commonIncluded = _("'common' savedata will also be restored");
                 break;
             case PROFILE_TO_PROFILE:
-                menuTitle = LanguageUtils::gettext("Batch ProfileCopy - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
+                menuTitle = _("Batch ProfileCopy - Options");
+                sourceUserPrompt = _("Select Wii U user to copy from:");
                 onlyCommon = "";
                 commonIncluded = "";
                 break;
             case MOVE_PROFILE:
-                menuTitle = LanguageUtils::gettext("Batch ProfileMove - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
+                menuTitle = _("Batch ProfileMove - Options");
+                sourceUserPrompt = _("Select Wii U user to copy from:");
                 onlyCommon = "";
                 commonIncluded = "";
                 break;
             case WIPE_PROFILE:
-                menuTitle = LanguageUtils::gettext("Batch Wipe - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to wipe:");
-                onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be deleted");
-                commonIncluded = LanguageUtils::gettext("'common' savedata will also be deleted");
+                menuTitle = _("Batch Wipe - Options");
+                sourceUserPrompt = _("Select Wii U user to wipe:");
+                onlyCommon = _("Only 'common' savedata will be deleted");
+                commonIncluded = _("'common' savedata will also be deleted");
                 break;
             case COPY_FROM_NAND_TO_USB:
-                menuTitle = LanguageUtils::gettext("Batch CopyToUSB - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
-                onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be copied");
-                commonIncluded = LanguageUtils::gettext("'common' savedata will also be copied");
+                menuTitle = _("Batch CopyToUSB - Options");
+                sourceUserPrompt = _("Select Wii U user to copy from:");
+                onlyCommon = _("Only 'common' savedata will be copied");
+                commonIncluded = _("'common' savedata will also be copied");
                 break;
             case COPY_FROM_USB_TO_NAND:
-                menuTitle = LanguageUtils::gettext("Batch CopyToNAND - Options");
-                sourceUserPrompt = LanguageUtils::gettext("Select Wii U user to copy from:");
-                onlyCommon = LanguageUtils::gettext("Only 'common' savedata will be copied");
-                commonIncluded = LanguageUtils::gettext("'common' savedata will also be copied");
+                menuTitle = _("Batch CopyToNAND - Options");
+                sourceUserPrompt = _("Select Wii U user to copy from:");
+                onlyCommon = _("Only 'common' savedata will be copied");
+                commonIncluded = _("'common' savedata will also be copied");
                 break;
             default:
                 menuTitle = "";
@@ -271,69 +267,69 @@ void BatchJobOptions::render() {
         Console::consolePrintPos(16, 0, menuTitle);
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
         if (jobType == RESTORE)
-            Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("BS: %s"), BackupSetList::getBackupSetEntry().c_str());
+            Console::consolePrintPosAligned(0, 4, 2, _("BS: %s"), BackupSetList::getBackupSetEntry().c_str());
         DrawUtils::setFontColor(COLOR_TEXT);
-        if (isWiiUBatchJob) {
+        if (titleType == WIIU || titleType == WIIU_SYS) {
             Console::consolePrintPos(M_OFF, 3, sourceUserPrompt);
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             if (source_user == -2) {
-                Console::consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("no profile user"));
+                Console::consolePrintPos(M_OFF, 4, "   < %s >", _("only common save"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 Console::consolePrintPos(M_OFF, 9, onlyCommon);
-                Console::consolePrintPos(M_OFF, 10, "   < %s >", LanguageUtils::gettext("Ok"));
+                Console::consolePrintPos(M_OFF, 10, "   < %s >", _("Ok"));
             } else if (source_user == -1) {
-                Console::consolePrintPos(M_OFF, 4, "   < %s >", LanguageUtils::gettext("all users"));
+                Console::consolePrintPos(M_OFF, 4, "   < %s >", _("all users"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 Console::consolePrintPos(M_OFF, 9, commonIncluded);
-                Console::consolePrintPos(M_OFF, 10, "   < %s >", LanguageUtils::gettext("Ok"));
+                Console::consolePrintPos(M_OFF, 10, "   < %s >", _("Ok"));
             } else {
                 if (jobType == RESTORE)
-                    Console::consolePrintPos(M_OFF, 4, "   < %s >", getVolAcc()[source_user].persistentID);
+                    Console::consolePrintPos(M_OFF, 4, "   < %s >", AccountUtils::getVolAcc()[source_user].persistentID);
                 else
                     Console::consolePrintPos(M_OFF, 4, "   < %s (%s) >",
-                                             getVolAcc()[source_user].miiName, getVolAcc()[source_user].persistentID);
+                                             AccountUtils::getVolAcc()[source_user].miiName, AccountUtils::getVolAcc()[source_user].persistentID);
             }
 
             if (jobType != WIPE_PROFILE) {
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("Select Wii U user to copy to:"));
+                Console::consolePrintPos(M_OFF, 6, _("Select Wii U user to copy to:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 if (this->wiiu_user == -2)
-                    Console::consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("no profile user"));
+                    Console::consolePrintPos(M_OFF, 7, "   < %s >", _("only common save"));
                 else if (this->wiiu_user == -1)
-                    Console::consolePrintPos(M_OFF, 7, "   < %s >", LanguageUtils::gettext("same user than in source"));
+                    Console::consolePrintPos(M_OFF, 7, "   < %s >", _("same user than in source"));
                 else
                     Console::consolePrintPos(M_OFF, 7, "   < %s (%s) >",
-                                             getWiiUAcc()[wiiu_user].miiName, getWiiUAcc()[wiiu_user].persistentID);
+                                             AccountUtils::getWiiUAcc()[wiiu_user].miiName, AccountUtils::getWiiUAcc()[wiiu_user].persistentID);
             }
 
             if ((source_user != -2 && source_user != -1) && (jobType != PROFILE_TO_PROFILE) && (jobType != MOVE_PROFILE)) {
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("Include 'common' save?"));
+                Console::consolePrintPos(M_OFF, 9, _("Include 'common' save?"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-                Console::consolePrintPos(M_OFF, 10, "   < %s >", common ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No "));
+                Console::consolePrintPos(M_OFF, 10, "   < %s >", common ? _("Yes") : _("No "));
             }
         }
 
         if (jobType != WIPE_PROFILE && jobType != MOVE_PROFILE) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-            Console::consolePrintPos(M_OFF, 12 - (isWiiUBatchJob ? 0 : 8), LanguageUtils::gettext("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+            Console::consolePrintPos(M_OFF, 12 - (titleType == VWII ? 8 : 0), _("   Wipe target users savedata before restoring: < %s >"), wipeBeforeRestore ? _("Yes") : _("No"));
         }
         if (jobType == MOVE_PROFILE) {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-            Console::consolePrintPos(M_OFF, 12 - (isWiiUBatchJob ? 0 : 8), LanguageUtils::gettext("   Target user savedata will be wiped"));
+            Console::consolePrintPos(M_OFF, 12 - (titleType == VWII ? 8 : 0), _("   Target user savedata will be wiped"));
         }
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 14 - (isWiiUBatchJob ? 0 : 8), LanguageUtils::gettext("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? LanguageUtils::gettext("Yes") : LanguageUtils::gettext("No"));
+        Console::consolePrintPos(M_OFF, 14 - (titleType == VWII ? 8 : 0), _("   Backup all data before restoring (strongly recommended): < %s >"), fullBackup ? _("Yes") : _("No"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3 + (cursorPos - 3) * 2 + 5) - (isWiiUBatchJob ? 0 : 8), "\u2192");
+        Console::consolePrintPos(M_OFF, 4 + (cursorPos < 3 ? cursorPos * 3 : 3 + (cursorPos - 3) * 2 + 5) - (titleType == VWII ? 8 : 0), "\u2192");
 
         if (totalNumberOfTitlesWithNonExistentProfiles == 0)
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Ok! Go to Title selection  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Ok! Go to Title selection  \\ue001: Back"));
         else
-            Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue002: Undefined Profiles  \ue000: Ok! Go to Title selection  \ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"));
     }
 }
 
@@ -341,12 +337,12 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
     if (this->state == STATE_BATCH_JOB_OPTIONS_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             if ((jobType == RESTORE || jobType == COPY_FROM_NAND_TO_USB || jobType == COPY_FROM_USB_TO_NAND) && (source_user == -1 && totalNumberOfTitlesWithNonExistentProfiles > 0 && GlobalCfg::global->getDontAllowUndefinedProfiles())) {
-                std::string prompt = titlesWithUndefinedProfilesSummary + LanguageUtils::gettext("\nDo you want to continue?\n");
+                std::string prompt = titlesWithUndefinedProfilesSummary + _("\nDo you want to continue?\n");
                 if (!Console::promptConfirm((Style) (ST_YES_NO | ST_WARNING), prompt.c_str()))
                     return SUBSTATE_RUNNING;
             }
             this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<BatchJobTitleSelectState>(source_user, wiiu_user, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, isWiiUBatchJob, jobType);
+            this->subState = std::make_unique<BatchJobTitleSelectState>(source_user, wiiu_user, common, wipeBeforeRestore, fullBackup, this->titles, this->titlesCount, titleType, jobType);
         }
         if (input->get(ButtonState::TRIGGER, Button::B) || substate_return == true)
             return SUBSTATE_RETURN;
@@ -407,12 +403,12 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                     switch (cursorPos) {
                         case 0:
                             this->source_user = ((this->source_user == 0) ? 0 : (this->source_user - 1));
-                            if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
+                            if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = (source_user + 1) % wiiUAccountsTotalNumber;
                             break;
                         case 1:
                             wiiu_user = (--wiiu_user == -1) ? (wiiUAccountsTotalNumber - 1) : (wiiu_user);
-                            if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
+                            if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = (wiiu_user - 1) % wiiUAccountsTotalNumber;
                             wiiu_user = (wiiu_user < 0) ? (wiiUAccountsTotalNumber - 1) : wiiu_user;
                             break;
@@ -447,7 +443,7 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                 case COPY_FROM_USB_TO_NAND:
                     switch (cursorPos) {
                         case 0:
-                            source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
+                            source_user = ((source_user == (volAccountsTotalNumber - 1)) ? (volAccountsTotalNumber - 1) : (source_user + 1));
                             wiiu_user = (source_user < 0) ? source_user : wiiu_user;
                             wiiu_user = ((source_user > -1) && (wiiu_user < 0)) ? 0 : wiiu_user;
                             break;
@@ -466,13 +462,13 @@ ApplicationState::eSubState BatchJobOptions::update(Input *input) {
                 case MOVE_PROFILE:
                     switch (cursorPos) {
                         case 0:
-                            source_user = ((source_user == (sourceAccountsTotalNumber - 1)) ? (sourceAccountsTotalNumber - 1) : (source_user + 1));
-                            if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
+                            source_user = ((source_user == (volAccountsTotalNumber - 1)) ? (volAccountsTotalNumber - 1) : (source_user + 1));
+                            if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = (wiiu_user + 1) % wiiUAccountsTotalNumber;
                             break;
                         case 1:
                             wiiu_user = (++wiiu_user == wiiUAccountsTotalNumber) ? 0 : wiiu_user;
-                            if (getVolAcc()[source_user].pID == getWiiUAcc()[wiiu_user].pID)
+                            if (AccountUtils::getVolAcc()[source_user].pID == AccountUtils::getWiiUAcc()[wiiu_user].pID)
                                 wiiu_user = (wiiu_user + 1) % wiiUAccountsTotalNumber;
                             break;
                         default:

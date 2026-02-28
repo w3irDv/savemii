@@ -1,0 +1,4483 @@
+# Russian translations for json package.
+# Copyright (C) 2026 THE json'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the json package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: json 2po\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-15 23:12+0100\n"
+"PO-Revision-Date: 2026-02-12 16:46+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: include/menu/BatchJobTitleSelectState.h:41 include/menu/TitleListState.h:37
+msgid "None"
+msgstr "Нет"
+
+#: include/menu/BatchJobTitleSelectState.h:42 include/menu/TitleListState.h:38
+msgid "Name"
+msgstr "Имя"
+
+#: include/menu/BatchJobTitleSelectState.h:43 include/menu/TitleListState.h:39
+msgid "Storage"
+msgstr "Хранилище"
+
+#: include/menu/BatchJobTitleSelectState.h:44
+msgid "Strg+Nm"
+msgstr "Хран+Имя"
+
+#: include/menu/TitleListState.h:40
+msgid "Storage+Name"
+msgstr "Хран+Имя"
+
+#: src/utils/TitleUtils.cpp:59 src/utils/TitleUtils.cpp:118
+#: src/utils/TitleUtils.cpp:163 src/utils/TitleUtils.cpp:353
+#: src/utils/TitleUtils.cpp:507 src/utils/TitleUtils.cpp:566
+#: src/utils/TitleUtils.cpp:611
+msgid "Out of memory."
+msgstr "Недостаточно памяти."
+
+#: src/utils/TitleUtils.cpp:275 src/utils/TitleUtils.cpp:472
+#: src/utils/TitleUtils.cpp:730
+#, c-format
+msgid "Loaded %i Wii U titles."
+msgstr "Загружено %i тайтлов Wii U."
+
+#: src/utils/TitleUtils.cpp:429
+#, c-format
+msgid "%s%s (No banner.bin)"
+msgstr "%s%s (No banner.bin)"
+
+#: src/utils/TitleUtils.cpp:473 src/utils/TitleUtils.cpp:731
+#, c-format
+msgid "Loaded %i Wii titles."
+msgstr "Загружено %i тайтлов Wii."
+
+#: src/utils/TitleUtils.cpp:732
+#, c-format
+msgid "Loaded %i Wii U Sys titles."
+msgstr "Загружено %i игр Wii U Sys."
+
+#: src/utils/LanguageUtils.cpp:144 src/menu/ConfigMenuState.cpp:60
+#: src/menu/ConfigMenuState.cpp:96
+msgid "Japanese"
+msgstr "Японский"
+
+#: src/utils/LanguageUtils.cpp:146 src/utils/LanguageUtils.cpp:171
+#: src/menu/ConfigMenuState.cpp:78 src/menu/ConfigMenuState.cpp:98
+msgid "English"
+msgstr "Английский"
+
+#: src/utils/LanguageUtils.cpp:151 src/menu/ConfigMenuState.cpp:62
+#: src/menu/ConfigMenuState.cpp:114
+msgid "German"
+msgstr "Немецкий"
+
+#: src/utils/LanguageUtils.cpp:153 src/menu/ConfigMenuState.cpp:64
+#: src/menu/ConfigMenuState.cpp:112
+msgid "Italian"
+msgstr "Итальянский"
+
+#: src/utils/LanguageUtils.cpp:155 src/menu/ConfigMenuState.cpp:68
+#: src/menu/ConfigMenuState.cpp:108
+msgid "Spanish"
+msgstr "Испанский"
+
+#: src/utils/LanguageUtils.cpp:157 src/menu/ConfigMenuState.cpp:70
+#: src/menu/ConfigMenuState.cpp:106
+msgid "Traditional Chinese"
+msgstr "Традиционный китайский"
+
+#: src/utils/LanguageUtils.cpp:159 src/menu/ConfigMenuState.cpp:72
+#: src/menu/ConfigMenuState.cpp:104
+msgid "Korean"
+msgstr "Корейский"
+
+#: src/utils/LanguageUtils.cpp:165 src/menu/ConfigMenuState.cpp:66
+#: src/menu/ConfigMenuState.cpp:110
+msgid "Portuguese"
+msgstr "Португальский"
+
+#: src/utils/LanguageUtils.cpp:167 src/menu/ConfigMenuState.cpp:74
+#: src/menu/ConfigMenuState.cpp:102
+msgid "Russian"
+msgstr "Русский"
+
+#: src/utils/LanguageUtils.cpp:169 src/menu/ConfigMenuState.cpp:76
+#: src/menu/ConfigMenuState.cpp:100
+msgid "Simplified Chinese"
+msgstr "Упрощенный китайский"
+
+#: src/utils/AmbientConfig.cpp:21
+msgid ""
+"Error getting DeviceHash\n"
+"Only affects to WiiU Mii Transfomation > Set Device Hash\n"
+"\n"
+"All other savemii functions are unaffected"
+msgstr ""
+"Ошибка получения DeviceHash\n"
+"Затрагивает только преобразование Mii в WiiU > Установка Device Hash\n"
+"\n"
+"Все остальные функции savemii не затронуты"
+
+#: src/utils/MiiUtils.cpp:38
+msgid "Unable to obtain MiiMaker title information. Let's try to find it..."
+msgstr "Не удалось получить информацию о названии MiiMaker. Давайте попробуем найти ее..."
+
+#: src/utils/MiiUtils.cpp:75
+msgid "Unable to obtain MiiMaker region. Disabling Internal WII U MiiDB"
+msgstr "Не удалось получить регион MiiMaker. Отключение внутренней базы данных MiiDB для WII U"
+
+#: src/utils/MiiUtils.cpp:104
+msgid "Internal Wii U Mii Database"
+msgstr "Внутренняя база данных Mii Wii U"
+
+#: src/utils/MiiUtils.cpp:105
+msgid "Custom Wii U Mii Database on SD"
+msgstr "Пользовательская база данных Mii Wii U на SD"
+
+#: src/utils/MiiUtils.cpp:106
+msgid "Stage Folder for Wii U Miis on SD"
+msgstr "Папка Stage для Miis Wii U на SD"
+
+#: src/utils/MiiUtils.cpp:107
+msgid "Internal vWii Mii Database"
+msgstr "Внутренняя база данных Mii vWii"
+
+#: src/utils/MiiUtils.cpp:108
+msgid "Custom vWii Mii Database on SD"
+msgstr "Пользовательская база данных Mii vWii на SD"
+
+#: src/utils/MiiUtils.cpp:109
+msgid "Stage Folder for vWii Miis on SD"
+msgstr "Папка Stage для Miis vWii на SD"
+
+#: src/utils/MiiUtils.cpp:110
+msgid "Miis from Internal Account DB"
+msgstr "Mii из внутренней базы данных учетных записей"
+
+#: src/utils/MiiUtils.cpp:111
+msgid "Miis from Custom Account DB on SD"
+msgstr "Mii из базы данных пользовательских учетных записей на SD-карте"
+
+#: src/utils/MiiUtils.cpp:112
+msgid "Stage folder for Account Miis on SD"
+msgstr "Папка Stage для Miis учетной записи на SD"
+
+#: src/utils/MiiUtils.cpp:113
+msgid "SaveGameManager GX Miis stage folder on SD"
+msgstr "Папка этапов Miis SaveGameManager GX на SD-карте"
+
+#: src/utils/MiiUtils.cpp:116
+msgid "Internal Stadio save DB"
+msgstr "Внутренняя база данных сохранений Stadio"
+
+#: src/utils/MiiUtils.cpp:176
+msgid "Wii U Mii Database mounted on USB"
+msgstr "База данных Mii Wii U смонтирована на USB"
+
+#: src/utils/MiiUtils.cpp:216
+#, c-format
+msgid ""
+"In case you need this files in the future, you will find them here:\n"
+"%s"
+msgstr ""
+"Если вам понадобятся эти файлы в будущем, вы найдете их здесь:\n"
+"%s"
+
+#: src/utils/MiiUtils.cpp:298 src/utils/MiiUtils.cpp:401
+#: src/utils/MiiUtils.cpp:523 src/utils/MiiUtils.cpp:788
+msgid "Aborting Task - MiiProcesSharedState is not completely initialized"
+msgstr "Прерывание задачи - MiiProcesSharedState не полностью инициализирован"
+
+#: src/utils/MiiUtils.cpp:305 src/utils/MiiUtils.cpp:408
+msgid "Aborting Task - Target Repo is null"
+msgstr "Прерывание задачи - Целевой репозиторий равен null"
+
+#: src/utils/MiiUtils.cpp:311
+#, c-format
+msgid "Aborting Task - Unable to open repo %s"
+msgstr "Прерывание задачи - Невозможно открыть репозиторий %s"
+
+#: src/utils/MiiUtils.cpp:319 src/utils/MiiUtils.cpp:416
+#: src/utils/MiiUtils.cpp:425
+#, c-format
+msgid "Aborting Task - Unable to open and populate repo %s"
+msgstr "Прерывание задачи - Невозможно открыть и заполнить репозиторий %s"
+
+#: src/utils/MiiUtils.cpp:327
+msgid ""
+"You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
+msgstr ""
+"Вы экспортируете дубликаты Mii. В списках они помечены как DUP или D.\n"
+"\n"
+"Обратите внимание, что MiiMaker удалит все дубликаты Mii, кроме одного, в то время как MiiChannel, похоже, это не волнует.\n"
+"\n"
+"Пожалуйста, исправьте это, обновив информацию о miiid или normal/special/temp или device для одного из них."
+
+#: src/utils/MiiUtils.cpp:350 src/utils/MiiUtils.cpp:471
+#: src/utils/MiiUtils.cpp:750 src/menu/MiiSelectState.cpp:588
+#, c-format
+msgid "Error extracting MiiData for %s (by %s)"
+msgstr "Ошибка извлечения MiiData для %s (от %s)"
+
+#: src/utils/MiiUtils.cpp:364
+msgid ""
+"Errors detected during export.\n"
+"Do you want to save the database?"
+msgstr ""
+"Обнаружены ошибки во время экспорта.\n"
+"Вы хотите сохранить базу данных?"
+
+#: src/utils/MiiUtils.cpp:433
+msgid ""
+"You are importing duplicated Miis. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
+msgstr ""
+"Вы импортируете дубликаты Mii. В списках они помечены как DUP или D.\n"
+"\n"
+"Обратите внимание, что MiiMaker удалит все дубликаты Mii, кроме одного, в то время как MiiChannel, похоже, это не волнует.\n"
+"\n"
+"Пожалуйста, исправьте это, обновив информацию о miiid или normal/special/temp или device для одного из них."
+
+#: src/utils/MiiUtils.cpp:487
+msgid ""
+"Errors detected during import.\n"
+"Do you want to save the database?"
+msgstr ""
+"Обнаружены ошибки во время импорта.\n"
+"Вы хотите сохранить базу данных?"
+
+#: src/utils/MiiUtils.cpp:496 src/utils/MiiUtils.cpp:772
+msgid ""
+"Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n"
+"\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"Please fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"
+msgstr ""
+"В репозитории обнаружены дубликаты MIIS. Они помечены как DUP или D в списках.\n"
+"\n"
+"Обратите внимание, что все дубликаты MIIS, кроме одного, будут удалены MiiMaker, в то время как MiiChannel, похоже, это не волнует.\n"
+"\n"
+"Пожалуйста, исправьте это, обновив его MiiId, или переключив флаг normal/special/temp, или обновив информацию об устройстве для одного из них."
+
+#: src/utils/MiiUtils.cpp:552
+#, c-format
+msgid "Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
+msgstr "Не удалось удалить %s (по %s) из раздела избранного. Ошибка извлечения MiiData"
+
+#: src/utils/MiiUtils.cpp:556
+#, c-format
+msgid "Error wiping MiiData for %s (by %s)"
+msgstr "Ошибка очистки MiiData для %s (от %s)"
+
+#: src/utils/MiiUtils.cpp:573
+msgid ""
+"Errors detected during wipe.\n"
+"Do you want to save the database?"
+msgstr ""
+"Обнаружены ошибки во время очистки.\n"
+"Вы хотите сохранить базу данных?"
+
+#: src/utils/MiiUtils.cpp:628 src/savemng.cpp:1430
+msgid "Please wait. First write to (some) SDs can take several seconds."
+msgstr "Пожалуйста, подождите. Первая запись на (некоторые) SD может занять несколько секунд."
+
+#: src/utils/MiiUtils.cpp:641
+msgid "Transforming mii"
+msgstr "Преобразование mii"
+
+#: src/utils/MiiUtils.cpp:644
+msgid "Wiping mii"
+msgstr "Очистка Mii"
+
+#: src/utils/MiiUtils.cpp:647
+#, c-format
+msgid "Copying from: %s"
+msgstr "Копирование из: %s"
+
+#: src/utils/MiiUtils.cpp:648 src/utils/FSUtils.cpp:587 src/savemng.cpp:1582
+#, c-format
+msgid "To: %s"
+msgstr "В %s"
+
+#: src/utils/MiiUtils.cpp:654 src/utils/FSUtils.cpp:591
+#: src/utils/FSUtils.cpp:610
+msgid "Will abort..."
+msgstr "Будет прервано..."
+
+#: src/utils/MiiUtils.cpp:657 src/utils/FSUtils.cpp:594
+#: src/utils/FSUtils.cpp:613
+msgid "Abort:\\ue083+\\ue046"
+msgstr "Abort:\\ue083+\\ue046"
+
+#: src/utils/MiiUtils.cpp:697
+#, c-format
+msgid "Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."
+msgstr "Mii %s является специальным и будет удален редактором Mii, если у него включен флаг Share. Пожалуйста, сначала преобразуйте его в обычный."
+
+#: src/utils/MiiUtils.cpp:724
+#, c-format
+msgid "Share attribute will be disabled for Mii %s as it will be transformed to a Special one."
+msgstr "Атрибут Share будет отключен для Mii %s, так как он будет преобразован в Special."
+
+#: src/utils/MiiUtils.cpp:764
+msgid ""
+"Errors detected during transform.\n"
+"Do you want to save the database?"
+msgstr ""
+"Обнаружены ошибки во время преобразования.\n"
+"Вы хотите сохранить базу данных?"
+
+#: src/utils/MiiUtils.cpp:809
+#, c-format
+msgid "DB file for %s not found. Do you want to initialize it?"
+msgstr "Файл базы данных для %s не найден. Хотите ли вы его инициализировать?"
+
+#: src/utils/MiiUtils.cpp:811
+#, c-format
+msgid "Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"
+msgstr "Вы хотите инициализировать файл базы данных %s? (ВСЕ MIIS БУДУТ УДАЛЕНЫ!!!)"
+
+#: src/utils/MiiUtils.cpp:817
+#, c-format
+msgid "Db file %s initialized"
+msgstr "Файл базы данных %s инициализирован"
+
+#: src/utils/MiiUtils.cpp:820
+#, c-format
+msgid "Error initializing db file %s"
+msgstr "Ошибка инициализации файла базы данных %s"
+
+#: src/utils/MiiUtils.cpp:822
+#, c-format
+msgid "Initialize task for %s aborted"
+msgstr "Задача инициализации для %s прервана"
+
+#: src/utils/MiiUtils.cpp:836 src/menu/MiiDBOptionsState.cpp:59
+msgid "This action is not supported on the selected repo."
+msgstr "Это действие не поддерживается для выбранного репозитория."
+
+#: src/utils/MiiUtils.cpp:862 src/mii/MiiAccountRepo.cpp:425
+#: src/mii/MiiRepo.cpp:130 src/savemng.cpp:381 src/savemng.cpp:493
+#: src/savemng.cpp:554 src/savemng.cpp:972
+msgid "Backup current savedata first to next empty slot?"
+msgstr "Сохранить текущее сохранение в следующий пустой слот?"
+
+#: src/utils/MiiUtils.cpp:863
+msgid "pre-XRestore backup"
+msgstr "pre-XRestore backup"
+
+#: src/utils/MiiUtils.cpp:864
+msgid "Backup Failed - XRestore aborted !!"
+msgstr "Резервное копирование не удалось — XRestore прервано!!"
+
+#: src/utils/MiiUtils.cpp:890 src/utils/MiiUtils.cpp:902
+#: src/mii/MiiStadioSav.cpp:279 src/mii/MiiStadioSav.cpp:288
+#: src/mii/MiiAccountRepo.cpp:278 src/mii/MiiAccountRepo.cpp:287
+#: src/mii/MiiFileRepo.cpp:370 src/mii/MiiFileRepo.cpp:379
+msgid "Unrecoverable Error - Please restore db from a Backup"
+msgstr "Неустранимая ошибка - пожалуйста, восстановите базу данных из резервной копии"
+
+#: src/utils/MiiUtils.cpp:893 src/utils/MiiUtils.cpp:905
+#: src/mii/MiiStadioSav.cpp:278 src/mii/MiiAccountRepo.cpp:277
+#: src/mii/MiiAccountRepo.cpp:292 src/mii/MiiFileRepo.cpp:369
+#, c-format
+msgid ""
+"Error renaming file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка переименования файла \n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/MiiUtils.cpp:894 src/utils/MiiUtils.cpp:898
+#, c-format
+msgid ""
+"Restored full account %s on %s account. \n"
+"\n"
+"Please restore a db Backup if needed."
+msgstr ""
+"Восстановлена ​​полная учетная запись %s в учетной записи %s. \n"
+"\n"
+"При необходимости восстановите резервную копию базы данных."
+
+#: src/utils/MiiUtils.cpp:897 src/mii/MiiStadioSav.cpp:284
+#: src/mii/MiiStadioSav.cpp:287 src/mii/MiiAccountRepo.cpp:283
+#: src/mii/MiiAccountRepo.cpp:286 src/mii/MiiFileRepo.cpp:375
+#: src/mii/MiiFileRepo.cpp:378
+#, c-format
+msgid ""
+"Error removing db file %s\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"Ошибка удаления файла базы данных %s\n"
+"\n"
+"%s\n"
+"\n"
+
+#: src/utils/MiiUtils.cpp:901
+#, c-format
+msgid ""
+"Error restoring db file %s\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"Ошибка восстановления файла базы данных %s\n"
+"\n"
+"%s\n"
+"\n"
+
+#: src/utils/MiiUtils.cpp:956 src/utils/MiiUtils.cpp:972
+#, c-format
+msgid "Account %s does not exist in primary Account DB %s"
+msgstr "Учетная запись %s не существует в основной базе данных учетных записей %s"
+
+#: src/utils/ConsoleUtils.cpp:50
+msgid "Press \\ue000 to continue"
+msgstr "Нажмите \\ue000, чтобы продолжить"
+
+#: src/utils/ConsoleUtils.cpp:80
+msgid "\\ue000 Yes - \\ue001 No"
+msgstr "\\ue000 Да - \\ue001 Нет"
+
+#: src/utils/ConsoleUtils.cpp:81
+msgid "\\ue000 Confirm - \\ue001 Cancel"
+msgstr "\\ue000 Подтвердить - \\ue001 Отмена"
+
+#: src/utils/ConsoleUtils.cpp:82
+msgid "\\ue003 Confirm - \\ue001 Cancel"
+msgstr "\\ue003 Подтвердить - \\ue001 Отмена"
+
+#: src/utils/ConsoleUtils.cpp:154
+msgid "Choose your option"
+msgstr "Выберите свой вариант"
+
+#: include/utils/KeyboardUtils.h:27
+msgid "KB_N_0"
+msgstr "1234567890-="
+
+#: include/utils/KeyboardUtils.h:28
+msgid "KB_N_1"
+msgstr "qwertyuiop[]|"
+
+#: include/utils/KeyboardUtils.h:29
+msgid "KB_N_2"
+msgstr "asdfghjkl;'"
+
+#: include/utils/KeyboardUtils.h:30
+msgid "KB_N_3"
+msgstr "zxcvbnm ,./"
+
+#: include/utils/KeyboardUtils.h:33
+msgid "KB_S_0"
+msgstr "!@#$%^&*()_+~"
+
+#: include/utils/KeyboardUtils.h:34
+msgid "KB_S_1"
+msgstr "QWERTYUIOP{}\\"
+
+#: include/utils/KeyboardUtils.h:35
+msgid "KB_S_2"
+msgstr "ASDFGHJKL:\""
+
+#: include/utils/KeyboardUtils.h:36
+msgid "KB_S_3"
+msgstr "ZXCVBNM <>"
+
+#: src/utils/FSUtils.cpp:95 src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:170
+#: src/savemng.cpp:1544 src/cfg/BaseCfg.cpp:23
+#, c-format
+msgid ""
+"Error while creating folder:\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка при создании папки:\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:130
+#, c-format
+msgid ""
+"Failed to delete folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Не удалось удалить папку\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:138
+#, c-format
+msgid ""
+"Failed to delete file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Не удалось удалить файл\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1771
+#, c-format
+msgid ""
+"Error while reading folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка при чтении содержимого папки\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:176
+#, c-format
+msgid ""
+"Error while creating final folder:\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка при создании конечной папки:\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:221 src/menu/MainMenuState.cpp:34
+#, c-format
+msgid ""
+"Error\n"
+"%s\n"
+"setting permissions for\n"
+"%s"
+msgstr ""
+"Ошибка\n"
+"%s\n"
+"установка прав доступа для\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:228 src/menu/MainMenuState.cpp:43
+#, c-format
+msgid ""
+"Error creating shim for change perms\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка создания заглушки для изменения разрешений\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:242
+#, c-format
+msgid ""
+"Error\n"
+"%s\n"
+"setting owner %08x /group %08x for\n"
+"%s"
+msgstr ""
+"Ошибка\n"
+"%s\n"
+"установка владельца %08x /группы %08x для\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:345 src/savemng.cpp:1795 src/savemng.cpp:1849
+#: src/cfg/BaseCfg.cpp:84
+#, c-format
+msgid ""
+"Cannot open file for read\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Невозможно открыть файл для чтения\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:367 src/utils/FSUtils.cpp:373 src/savemng.cpp:1880
+#: src/cfg/BaseCfg.cpp:46
+#, c-format
+msgid ""
+"Cannot open file for write\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Невозможно открыть файл для записи\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:402
+msgid ""
+"\n"
+"\n"
+"beware: if you haven't done it, try to wipe savedata before restoring"
+msgstr ""
+"\n"
+"\n"
+"будьте осторожны: если вы этого не сделали, попробуйте стереть данные \n"
+"сохранения перед восстановлением"
+
+#: src/utils/FSUtils.cpp:410
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable"
+msgstr ""
+"Ошибка создания файла разрешений - Резервное копирование/восстановление ненадежно"
+
+#: src/utils/FSUtils.cpp:428
+#, c-format
+msgid ""
+"Read error\n"
+"\n"
+"%s\n"
+"\n"
+" reading from %s"
+msgstr ""
+"Ошибка чтения\n"
+"\n"
+"%s\n"
+"\n"
+" чтение из %s"
+
+#: src/utils/FSUtils.cpp:431
+#, c-format
+msgid ""
+"Write error\n"
+"\n"
+"%s\n"
+"\n"
+" copying to %s"
+msgstr ""
+"Ошибка записи\n"
+"\n"
+"%s\n"
+"\n"
+" копирование в %s"
+
+#: src/utils/FSUtils.cpp:445 src/utils/FSUtils.cpp:720
+#: src/menu/BatchJobOptions.cpp:111 src/savemng.cpp:135 src/savemng.cpp:173
+#, c-format
+msgid ""
+"Error opening source dir\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка открытия исходного каталога\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:470
+#, c-format
+msgid ""
+"Error creating folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка создания папки\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:410 src/utils/FSUtils.cpp:486
+#, c-format
+msgid ""
+"Error creating permission file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Ошибка создания файла разрешений - Резервное копирование/восстановление ненадежно\n"
+"Ошибки на данный момент: %d\n"
+"Вы хотите продолжить?"
+
+#: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:550
+#: src/utils/FSUtils.cpp:561
+#, c-format
+msgid ""
+"Error copying directory - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Ошибка копирования каталога - Резервное копирование/восстановление ненадежно\n"
+"Ошибок на данный момент: %d\n"
+"Продолжить?"
+
+#: src/utils/FSUtils.cpp:526
+#, c-format
+msgid ""
+"Error copying file - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Ошибка копирования файла - Резервное копирование/восстановление ненадежно\n"
+"Ошибок на данный момент: %d\n"
+"Продолжить?"
+
+#: src/utils/FSUtils.cpp:549 src/utils/FSUtils.cpp:767
+#, c-format
+msgid ""
+"Error while parsing folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Copy may be incomplete"
+msgstr ""
+"Ошибка при анализе содержимого папки\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Копирование может быть неполным"
+
+#: src/utils/FSUtils.cpp:560 src/utils/FSUtils.cpp:778 src/savemng.cpp:1664
+#, c-format
+msgid ""
+"Error while closing folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка при закрытии папки\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/FSUtils.cpp:585
+#, c-format
+msgid "Copying file: %s"
+msgstr "Копируемый файл: %s"
+
+#: src/utils/FSUtils.cpp:586
+#, c-format
+msgid "From: %s"
+msgstr "Из %s"
+
+#: src/utils/FSUtils.cpp:605
+#, c-format
+msgid "Deleting folder %s"
+msgstr "Удаление папки %s"
+
+#: src/utils/FSUtils.cpp:605
+#, c-format
+msgid "Deleting file %s"
+msgstr "Удаление файла %s"
+
+#: src/utils/FSUtils.cpp:606
+#, c-format
+msgid ""
+"From: \n"
+"%s"
+msgstr "Из %s"
+
+#: src/utils/FSUtils.cpp:739 src/utils/FSUtils.cpp:748
+#: src/utils/FSUtils.cpp:768 src/utils/FSUtils.cpp:779
+#, c-format
+msgid ""
+"Error setting permissions - Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Ошибка установки прав доступа - Восстановление ненадежно\n"
+"Ошибки на данный момент: %d\n"
+"Вы хотите продолжить?"
+
+#: src/utils/StartupUtils.cpp:14
+msgid "Disclaimer:"
+msgstr "Отказ от ответственности:"
+
+#: src/utils/StartupUtils.cpp:15
+msgid "There is always the potential for a brick."
+msgstr "Всегда есть шанс брикнуть консоль."
+
+#: src/utils/StartupUtils.cpp:16
+msgid "Everything you do with this software is your own responsibility"
+msgstr "Всё что вы делаете в программе вы делаете на свой страх и риск"
+
+#: src/utils/EscapeFAT32Utils.cpp:16 src/utils/EscapeFAT32Utils.cpp:66
+#, c-format
+msgid ""
+"Error opening FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка открытия файла преобразования символов FAT32\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:32
+#, c-format
+msgid ""
+"Error updating FAT32 chars translation file for file\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка обновления файла преобразования символов FAT32 для файла\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:39 src/utils/EscapeFAT32Utils.cpp:114
+#, c-format
+msgid ""
+"Error closing FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка закрытия файла преобразования символов FAT32 \n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:79
+#, c-format
+msgid ""
+"Unexpected format for target in FAT32 translation file:\n"
+"%s"
+msgstr ""
+"Неожиданный формат для цели в файле перевода FAT32:\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:88
+#, c-format
+msgid ""
+"Unexpected format for taget in FAT32 translation file:\n"
+"%s"
+msgstr ""
+"Неожиданный формат для цели в файле перевода FAT32:\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:92
+#, c-format
+msgid ""
+"Unexpected format for source in FAT32 translation file:\n"
+"%s"
+msgstr ""
+"Неожиданный формат для источника в файле перевода FAT32:\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:109
+#, c-format
+msgid ""
+"Error parsing FAT32 chars translation file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка анализа файла преобразования символов FAT32\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:119
+#, c-format
+msgid ""
+"FAT32 chars translation file is empty\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Файл перевода символов FAT32 пуст\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:130 src/utils/EscapeFAT32Utils.cpp:149
+#, c-format
+msgid ""
+"Cannot rename folder \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Не удается переименовать папку \n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/EscapeFAT32Utils.cpp:142
+#, c-format
+msgid ""
+"Cannot rename file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Не удается переименовать файл \n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/StatManager.cpp:60 src/utils/StatManager.cpp:84
+#, c-format
+msgid ""
+"Error setting permissions - Backup/Restore is not reliable\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Ошибка установки разрешений - Резервное копирование/восстановление ненадежно\n"
+"Ошибки на данный момент: %d\n"
+"Вы хотите продолжить?"
+
+#: src/utils/StatManager.cpp:94
+#, c-format
+msgid ""
+"Error reading stat file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка чтения файла статистики\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/StatManager.cpp:113 src/utils/StatManager.cpp:293
+#, c-format
+msgid ""
+"Error setting permissions for file: %s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка установки прав доступа к файлу: %s\n"
+"\n"
+"%s"
+
+#: src/utils/StatManager.cpp:139 src/utils/StatManager.cpp:159
+#: src/utils/StatManager.cpp:185 src/mii/MiiStadioSav.cpp:167
+#: src/mii/MiiStadioSav.cpp:250 src/mii/MiiStadioSav.cpp:447
+#: src/mii/MiiAccountRepo.cpp:87 src/mii/MiiAccountRepo.cpp:195
+#: src/mii/MiiAccountRepo.cpp:207 src/mii/MiiFolderRepo.cpp:60
+#: src/mii/MiiFolderRepo.cpp:160 src/mii/MiiFolderRepo.cpp:165
+#: src/mii/MiiFileRepo.cpp:272 src/mii/MiiFileRepo.cpp:338
+#: src/mii/MiiFileRepo.cpp:665
+#, c-format
+msgid ""
+"Error opening file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка открытия файла\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/StatManager.cpp:200 src/utils/StatManager.cpp:210
+#: src/savemng.cpp:1889 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:102
+#, c-format
+msgid ""
+"Error closing file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка закрытия файла\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/utils/StatManager.cpp:242
+#, fuzzy, c-format
+msgid "Error getting stat for %s: %s"
+msgstr ""
+"Ошибка установки квоты для \n"
+"%s"
+
+#: src/utils/StatManager.cpp:274
+#, c-format
+msgid ""
+"Error writing stat file\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка записи файла статистики\n"
+"\n"
+"%s"
+
+#: src/main.cpp:81
+msgid "Initializing WPAD and KPAD"
+msgstr "Инициализация WPAD и KPAD"
+
+#: src/main.cpp:85
+msgid "Initializing loadWiiU Titles"
+msgstr "Инициализация заголовков loadWiiU"
+
+#: src/main.cpp:89
+msgid "Initializing FS"
+msgstr "Инициализация FS"
+
+#: src/main.cpp:92
+msgid "initFS failed. Please make sure your MochaPayload is up-to-date"
+msgstr "initFS завершился с ошибкой. Пожалуйста, убедитесь, что ваш MochaPayload обновлен"
+
+#: src/main.cpp:116
+msgid "Initializing BackupSets metadata."
+msgstr "Инициализация метаданных BackupSets"
+
+#: src/main.cpp:120
+msgid "Initializing Excludes config."
+msgstr "Инициализация конфигурации исключений"
+
+#: src/main.cpp:132
+msgid "Initializing Mii repos."
+msgstr "Инициализация репозиториев Mii."
+
+#: src/main.cpp:164
+msgid "Press \\ue044 to exit."
+msgstr "\\ue044 выхода."
+
+#: src/mii/MiiStadioSav.cpp:173 src/mii/MiiFileRepo.cpp:278
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Unexpected size for a DB file: %d. Expected %d bytes or more."
+msgstr ""
+"%s\n"
+"\n"
+"Неожиданный размер файла базы данных: %d. Ожидалось %d байт или больше."
+
+#: src/mii/MiiStadioSav.cpp:181 src/mii/MiiFileRepo.cpp:286
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for reading the DB data"
+msgstr ""
+"%s\n"
+"\n"
+"Невозможно создать буфер памяти для инициализации данных базы данных"
+
+#: src/mii/MiiStadioSav.cpp:187 src/mii/MiiAccountRepo.cpp:238
+#: src/mii/MiiFolderRepo.cpp:83 src/mii/MiiFileRepo.cpp:292
+#, c-format
+msgid ""
+"Error reading file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка чтения файла \n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/mii/MiiStadioSav.cpp:193 src/mii/MiiFileRepo.cpp:298
+#, c-format
+msgid ""
+"Error reading db\n"
+"%s\n"
+"Wrong magic number."
+msgstr ""
+"Ошибка чтения базы данных\n"
+"%s\n"
+"Неверное магическое число."
+
+#: src/mii/MiiStadioSav.cpp:200 src/mii/MiiStadioSav.cpp:262
+#: src/mii/MiiStadioSav.cpp:459 src/mii/MiiAccountRepo.cpp:103
+#: src/mii/MiiAccountRepo.cpp:247 src/mii/MiiAccountRepo.cpp:254
+#: src/mii/MiiFolderRepo.cpp:89 src/mii/MiiFolderRepo.cpp:171
+#: src/mii/MiiFileRepo.cpp:305 src/mii/MiiFileRepo.cpp:350
+#: src/mii/MiiFileRepo.cpp:677
+#, c-format
+msgid ""
+"Error closing file \n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка закрытия файла \n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/mii/MiiStadioSav.cpp:255 src/mii/MiiStadioSav.cpp:452
+#: src/mii/MiiFileRepo.cpp:343 src/mii/MiiFileRepo.cpp:670
+#: src/cfg/BaseCfg.cpp:51
+#, c-format
+msgid ""
+"Error writing file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка записи файла\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/mii/MiiStadioSav.cpp:294 src/mii/MiiAccountRepo.cpp:295
+#: src/mii/MiiFileRepo.cpp:385
+#, c-format
+msgid ""
+"Error managing temporal db %s\n"
+"\n"
+"No action has been made over real mii db."
+msgstr ""
+"Ошибка управления временной базой данных %s\n"
+"\n"
+"Никаких действий с реальной базой данных Mii не производилось."
+
+#: src/mii/MiiStadioSav.cpp:339
+msgid "Cannot find an EMPTY location for the mii in the STADIO db"
+msgstr "Не удается найти ПУСТОЕ местоположение для mii в базе данных STADIO"
+
+#: src/mii/MiiStadioSav.cpp:345
+msgid "Cannot find an EMPTY frame for the mii in the STADIO db"
+msgstr "Не удается найти ПУСТОЙ фрейм для mii в базе данных STADIO"
+
+#: src/mii/MiiStadioSav.cpp:402
+msgid "Warning: unable to populate Account repo. Non-critical error, you can continue"
+msgstr "Предупреждение: не удалось заполнить репозиторий учетных записей. Некритическая ошибка, вы можете продолжить"
+
+#: src/mii/MiiStadioSav.cpp:410
+#, c-format
+msgid "Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"
+msgstr "Предупреждение: не удалось импортировать mii %s в STADIO. Некритическая ошибка, вы можете продолжить"
+
+#: src/mii/MiiStadioSav.cpp:413
+#, c-format
+msgid "Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"
+msgstr "Предупреждение: не удалось извлечь MiiData для %s (от %s). Некритическая ошибка, вы можете продолжить"
+
+#: src/mii/MiiStadioSav.cpp:430 src/mii/MiiFileRepo.cpp:646
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for initializing the DB data"
+msgstr ""
+"%s\n"
+"\n"
+"Невозможно создать буфер памяти для чтения данных mii"
+
+#: src/mii/MiiAccountRepo.cpp:111 src/mii/MiiFolderRepo.cpp:67
+#: src/mii/MiiFileRepo.cpp:425
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Unexpected size for a Mii file: %d. Only %d or %d bytes are allowed\n"
+"File will be skipped"
+msgstr ""
+"%s\n"
+"\n"
+"Неожиданный размер файла Mii: %d. Допускаются только %d или %d байт.\n"
+"Файл будет пропущен."
+
+#: src/mii/MiiAccountRepo.cpp:118 src/mii/MiiFolderRepo.cpp:76
+#: src/mii/MiiFileRepo.cpp:401
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Cannot create memory buffer for reading the mii data"
+msgstr ""
+"%s\n"
+"\n"
+"Невозможно создать буфер памяти для чтения данных базы данных"
+
+#: src/mii/MiiAccountRepo.cpp:123
+msgid "Error serializing WiiU MiiData"
+msgstr "Ошибка сериализации WiiU MiiData"
+
+#: src/mii/MiiAccountRepo.cpp:129 src/mii/MiiFolderRepo.cpp:99
+#: src/mii/MiiFolderRepo.cpp:135 src/mii/MiiFolderRepo.cpp:178
+msgid "Error switching le/be MiiData representation"
+msgstr "Ошибка переключения представления MiiData le/be"
+
+#: src/mii/MiiAccountRepo.cpp:143 src/mii/MiiFolderRepo.cpp:114
+#: src/mii/MiiFileRepo.cpp:419
+msgid "Trying to import from null mii data"
+msgstr "Попытка импорта из нулевых данных mii"
+
+#: src/mii/MiiAccountRepo.cpp:148
+msgid "Only in_place is allowed for account miidata"
+msgstr "Для miidata учетной записи разрешено только сохранение на месте"
+
+#: src/mii/MiiAccountRepo.cpp:155 src/mii/MiiFolderRepo.cpp:145
+#, c-format
+msgid ""
+"MiiData buffer is not big enough\n"
+"%s"
+msgstr ""
+"Буфер MiiData недостаточно велик\n"
+"%s"
+
+#: src/mii/MiiAccountRepo.cpp:169 src/mii/MiiAccountRepo.cpp:185
+#: src/mii/MiiAccountRepo.cpp:197 src/mii/MiiAccountRepo.cpp:210
+#: src/mii/MiiAccountRepo.cpp:269 src/mii/MiiAccountRepo.cpp:301
+msgid "Error transforming WiiU MiiData to Account MiiData"
+msgstr "Ошибка преобразования MiiData WiiU в MiiData учетной записи"
+
+#: src/mii/MiiAccountRepo.cpp:183
+msgid "Error deserializing WiiU MiiData"
+msgstr "Ошибка десериализации WiiU MiiData"
+
+#: src/mii/MiiAccountRepo.cpp:309
+msgid "Wipe Mii Operation not supported for Account Data Miis"
+msgstr "Операция очистки Mii не поддерживается для Mii из данных учетной записи"
+
+#: src/mii/MiiAccountRepo.cpp:339
+#, c-format
+msgid ""
+"Error parsing file \n"
+"%s"
+msgstr ""
+"Ошибка анализа файла\n"
+"%s"
+
+#: src/mii/MiiAccountRepo.cpp:363 src/mii/MiiFolderRepo.cpp:241
+#, c-format
+msgid "Reading Miis: %d"
+msgstr "Чтение Miis: %d"
+
+#: src/mii/MiiAccountRepo.cpp:426 src/mii/MiiRepo.cpp:131 src/savemng.cpp:973
+msgid "pre-Restore backup"
+msgstr "pre-Restore backup"
+
+#: src/mii/MiiAccountRepo.cpp:427 src/mii/MiiRepo.cpp:132 src/savemng.cpp:383
+#: src/savemng.cpp:974
+msgid "Backup Failed - Restore aborted !!"
+msgstr "Сбой резервного копирования - Восстановление прервано !!"
+
+#: src/mii/MiiAccountRepo.cpp:441 src/mii/MiiAccountRepo.cpp:490
+#: src/mii/MiiRepo.cpp:56 src/mii/MiiRepo.cpp:80 src/mii/MiiRepo.cpp:145
+#: src/mii/MiiRepo.cpp:178
+msgid "Error copying data."
+msgstr "Ошибка копирования данных."
+
+#: src/mii/MiiAccountRepo.cpp:445 src/mii/MiiRepo.cpp:150
+msgid "Error creating folder."
+msgstr "Ошибка создания папки."
+
+#: src/mii/MiiAccountRepo.cpp:450 src/mii/MiiRepo.cpp:189 src/savemng.cpp:984
+#: src/savemng.cpp:1118
+#, c-format
+msgid ""
+"%s\n"
+"Restore failed."
+msgstr ""
+"%s\n"
+"Восстановление не удалось."
+
+#: src/mii/MiiFolderRepo.cpp:124
+#, c-format
+msgid ""
+"Cannot find a name for the mii file:\n"
+"%s\n"
+"%s"
+msgstr ""
+"Не удается найти имя для файла mii:\n"
+"%s\n"
+"%s"
+
+#: src/mii/MiiFolderRepo.cpp:190 src/mii/MiiRepo.cpp:237
+#, c-format
+msgid ""
+"%s \n"
+" Failed to delete file:\n"
+"%s\n"
+"%s"
+msgstr ""
+"%s \n"
+" Не удалось удалить файл:\n"
+"%s\n"
+"%s"
+
+#: src/mii/MiiFileRepo.cpp:153
+#, c-format
+msgid "Maximum Numer of Favorite Miis (%d) reached"
+msgstr "Достигнуто максимальное количество избранных Mii (%d)"
+
+#: src/mii/MiiFileRepo.cpp:193
+#, c-format
+msgid "Mii %s not found in Favorites section"
+msgstr "Mii %s не найден в разделе Избранное"
+
+#: src/mii/MiiFileRepo.cpp:435
+msgid "Cannot find an EMPTY location for the mii in the db"
+msgstr "Не удается найти ПУСТОЕ местоположение для mii в базе данных"
+
+#: src/mii/MiiFileRepo.cpp:449
+msgid "Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"
+msgstr "Внимание:Это обычный Mii из MiiId-среза 0x1/3, и он, вероятно, будет удален при открытии Mii Channel. Хотите, чтобы я изменил его на более безопасный срез (0x4/3)?"
+
+#: src/mii/MiiFileRepo.cpp:464
+msgid "Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"
+msgstr "Внимание: это временный Mii, поэтому он не будет отображаться в MiiMkaker. Хотите, чтобы я изменил его на постоянный?"
+
+#: src/mii/MiiFileRepo.cpp:473
+#, c-format
+msgid ""
+"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n"
+"\n"
+"You can generate a new Mii ID for it, and it will become a completely new unique mii.\n"
+"\n"
+"Do you want me to change Mii Id for this mii?"
+msgstr ""
+"Обнаружен дубликат Mii ID (%s). Обратите внимание, что MiiMaker удалит дубликат MII, в то время как MiiChannel, похоже, это не волнует.\n"
+"\n"
+"Вы можете сгенерировать для него новый Mii ID, и он станет совершенно новым уникальным MII.\n"
+"\n"
+"Хотите, чтобы я изменил Mii ID для этого MII?"
+
+#: src/mii/MiiFileRepo.cpp:520
+#, c-format
+msgid "DB %s has not been initialized"
+msgstr "Базы данных %s не инициализирована"
+
+#: src/mii/MiiFileRepo.cpp:535 src/mii/MiiFileRepo.cpp:538
+#, c-format
+msgid "Looking for a Mii in location: %d/%d. Miis found: %d."
+msgstr "Поиск Mii в местоположении: %d/%d. Найдены Mii: %d."
+
+#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:782
+msgid "Backup found on this slot. Overwrite it?"
+msgstr "Слот не пустой. Перезаписать?"
+
+#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:805
+#: src/savemng.cpp:813 src/savemng.cpp:916
+#, c-format
+msgid ""
+"%s\n"
+"Backup failed. DO NOT restore from this slot."
+msgstr ""
+"%s\n"
+"Бекап не удался. НЕ восстанавливайте из этого слота."
+
+#: src/mii/MiiRepo.cpp:53
+msgid "Backup aborted."
+msgstr "Резервное копирование прервано."
+
+#: src/mii/MiiRepo.cpp:74
+msgid "Warning - Error copying stadio file"
+msgstr "Предупреждение - Ошибка копирования файла stadio"
+
+#: src/mii/MiiRepo.cpp:95
+msgid "PARTIAL BACKUP"
+msgstr "ЧАСТИЧНОЕ РЕЗЕРВНОЕ КОПИРОВАНИЕ"
+
+#: src/mii/MiiRepo.cpp:100
+msgid "NO STADIO"
+msgstr "БЕЗ СТАДИО"
+
+#: src/mii/MiiRepo.cpp:104 src/savemng.cpp:754 src/savemng.cpp:918
+msgid "UNUSABLE SLOT - BACKUP FAILED"
+msgstr "НЕИСПОЛЬЗУЕМЫЙ СЛОТ - СБОЙ РЕЗЕРВНОГО КОПИРОВАНИЯ"
+
+#: src/mii/MiiRepo.cpp:142
+msgid "Restore aborted."
+msgstr "Восстановление прервано."
+
+#: src/mii/MiiRepo.cpp:221
+msgid "Wipe aborted."
+msgstr "Очистка прервана."
+
+#: src/mii/MiiRepo.cpp:224 src/mii/MiiRepo.cpp:284
+msgid "Error wiping data."
+msgstr "Ошибка очистки данных."
+
+#: src/mii/MiiRepo.cpp:236
+msgid "Error deleting file."
+msgstr "Ошибка удаления файла."
+
+#: src/mii/MiiRepo.cpp:249 src/savemng.cpp:1249
+#, c-format
+msgid ""
+"%s\n"
+"Wipe failed."
+msgstr ""
+"%s\n"
+"Очистка не удалась."
+
+#: src/mii/MiiRepo.cpp:281
+msgid "Initialize aborted."
+msgstr "Инициализация прервана."
+
+#: src/mii/MiiRepo.cpp:297
+#, c-format
+msgid "%s\n"
+msgstr "%s\n"
+
+#: src/mii/MiiRepo.cpp:300
+#, c-format
+msgid ""
+"%s\n"
+"Initialize db failed."
+msgstr ""
+"%s\n"
+"Не удалось инициализировать базу данных."
+
+#: src/menu/TitleListState.cpp:28
+msgid "No Wii U titles found."
+msgstr "Не найдено тайтлов Wii U."
+
+#: src/menu/TitleListState.cpp:28
+msgid "No vWii titles found."
+msgstr "Нет заголовков vWii"
+
+#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:118
+msgid "Wii U Titles"
+msgstr "Wii U Titles"
+
+#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:118
+msgid "vWii Titles"
+msgstr "vWii Titles"
+
+#: src/menu/TitleListState.cpp:37 src/menu/BatchJobTitleSelectState.cpp:271
+#: src/menu/BatchJobTitleSelectState.cpp:281
+#, c-format
+msgid "%s Sort: %s \\ue084"
+msgstr "%s Сортировка: %s \\ue084"
+
+#: src/menu/TitleListState.cpp:54
+msgid " [vWiiInject]"
+msgstr " [vWiiInject]"
+
+#: src/menu/TitleListState.cpp:55 src/menu/TitleListState.cpp:64
+msgid " [Not Init]"
+msgstr " [Not Init]"
+
+#: src/menu/TitleListState.cpp:73
+msgid "\\ue000: Select Game   \\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
+msgstr "\\ue000: Выбрать игру \\ue085\\ue07e\\ue086: Перелистывание \\ue001: Назад"
+
+#: src/menu/TitleListState.cpp:97
+msgid "CBHC save. Could be dangerous to modify. Continue?"
+msgstr "Сохранение CBHC. Может быть опасным для изменения. Продолжить?"
+
+#: src/menu/TitleListState.cpp:98
+msgid "Are you REALLY sure?"
+msgstr "Ты ТОЧНО уверен?"
+
+#: src/menu/TitleListState.cpp:111
+msgid ""
+"Savedata for this title has not been initialized.\n"
+"You can try to restore it, but in case that the restore fails,\n"
+"please run the Game to create some initial savedata \n"
+"and try again.\n"
+"\n"
+"You can continue to Task Selection"
+msgstr ""
+"Сохраненные данные для этой игры не были инициализированы.\n"
+"Вы можете попробовать восстановить их, но если восстановление не удастся,\n"
+"пожалуйста, запустите игру, чтобы создать начальные сохраненные данные,\n"
+"и попробуйте снова.\n"
+"\n"
+"Вы можете перейти к выбору задач."
+
+#: src/menu/TitleListState.cpp:117
+#, c-format
+msgid ""
+"SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
+"\n"
+"Do you want to rename already created backup folders?\n"
+"\n"
+"\\ue000  Yes, but only for this title\n"
+"\\ue045  Yes, please migrate all %s\n"
+"\\ue001  Not this time\n"
+"\\ue002  Not in this session\n"
+"\n"
+"\n"
+msgstr ""
+"SaveMii теперь использует новый формат имени для папок сохраненных данных. Вместо использования шестнадцатеричных значений папки будут именоваться по названию заголовка,поэтому для этого заголовка папка '%08x%08x' станет '%s', легче найти на SD\n"
+"\n"
+"Хотите переименовать уже созданные папки резервных копий?\n"
+"\n"
+"Да, но только для этого заголовка\n"
+"\\ue045 Да, пожалуйста, перенесите все %s\n"
+"\\ue001 Не в этот раз\n"
+"\\ue002 Не в этом сеансе\n"
+"\n"
+"\n"
+
+#: src/menu/TitleListState.cpp:138
+#, c-format
+msgid ""
+"Ok, legacy folder '%08x%08x' will be used.\n"
+"\n"
+"Backups in '%s' will not be accessible\n"
+"\n"
+"Manually copy or migrate data beween folders to access them"
+msgstr ""
+"Хорошо, будет использована устаревшая папка '%08x%08x'.\n"
+"\n"
+"Резервные копии в '%s' \n"
+"не будут доступны\n"
+"\n"
+"Вручную скопируйте или перенесите данные между папками, \n"
+"чтобы получить к ним доступ"
+
+#: src/menu/TitleListState.cpp:140
+#, c-format
+msgid "Ok, legacy folder '%08x%08x' will be used."
+msgstr "Хорошо, будет использована устаревшая папка '%08x%08x'."
+
+#: src/menu/MiiDBOptionsState.cpp:69 src/menu/TitleOptionsState.cpp:108
+#, c-format
+msgid "Select %s:"
+msgstr "Выбрать %s:"
+
+#: src/menu/MiiDBOptionsState.cpp:69 src/menu/TitleOptionsState.cpp:118
+msgid "slot"
+msgstr "слот"
+
+#: src/menu/MiiDBOptionsState.cpp:72 src/menu/MiiDBOptionsState.cpp:89
+#: src/menu/TitleOptionsState.cpp:111 src/menu/TitleOptionsState.cpp:122
+#: src/menu/TitleOptionsState.cpp:126 src/menu/TitleOptionsState.cpp:160
+#: src/menu/TitleOptionsState.cpp:164 src/menu/TitleOptionsState.cpp:167
+#: src/menu/TitleOptionsState.cpp:182 src/menu/TitleOptionsState.cpp:187
+#: src/menu/TitleOptionsState.cpp:191 src/menu/TitleOptionsState.cpp:287
+#: src/menu/TitleOptionsState.cpp:295
+msgid "Empty"
+msgstr "Пусто"
+
+#: src/menu/MiiDBOptionsState.cpp:73 src/menu/TitleOptionsState.cpp:112
+#: src/menu/TitleOptionsState.cpp:123 src/menu/TitleOptionsState.cpp:127
+msgid "Used"
+msgstr "Использовано"
+
+#: src/menu/MiiDBOptionsState.cpp:77 src/menu/TitleOptionsState.cpp:133
+#, c-format
+msgid "Slot -> Date: %s"
+msgstr "Слот -> Дата: %s"
+
+#: src/menu/MiiDBOptionsState.cpp:87 src/menu/TitleOptionsState.cpp:285
+msgid "Source:"
+msgstr "Источник:"
+
+#: src/menu/MiiDBOptionsState.cpp:87 src/menu/TitleOptionsState.cpp:285
+msgid "Target:"
+msgstr "Цель:"
+
+#: src/menu/MiiDBOptionsState.cpp:88
+#, c-format
+msgid "   %s Mii DB (%s)"
+msgstr "   %s Mii DB (%s)"
+
+#: src/menu/MiiDBOptionsState.cpp:89 src/menu/TitleOptionsState.cpp:160
+#: src/menu/TitleOptionsState.cpp:164 src/menu/TitleOptionsState.cpp:167
+#: src/menu/TitleOptionsState.cpp:182 src/menu/TitleOptionsState.cpp:187
+#: src/menu/TitleOptionsState.cpp:191 src/menu/TitleOptionsState.cpp:287
+#: src/menu/TitleOptionsState.cpp:295
+msgid "Has Save"
+msgstr "Есть сохранение"
+
+#: src/menu/MiiDBOptionsState.cpp:92
+msgid "DB will be wiped"
+msgstr "Базы данных будут очищены"
+
+#: src/menu/MiiDBOptionsState.cpp:96
+msgid "DB will be wiped and initialized"
+msgstr "Базы данных будут очищены и инициализированы"
+
+#: src/menu/MiiDBOptionsState.cpp:105 src/menu/TitleOptionsState.cpp:351
+msgid "Backup"
+msgstr "Резервное копирование"
+
+#: src/menu/MiiDBOptionsState.cpp:108 src/menu/TitleOptionsState.cpp:354
+msgid "\\ue000: Backup  \\ue001: Back"
+msgstr "\\ue000: Резервное копирование \\ue001: Назад"
+
+#: src/menu/MiiDBOptionsState.cpp:110 src/menu/TitleOptionsState.cpp:356
+msgid "\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
+msgstr "\\ue000: Копировать \\ue045 Слот тега \\ue046 Удалить слот \\ue001: Назад"
+
+#: src/menu/MiiDBOptionsState.cpp:113 src/menu/TitleOptionsState.cpp:359
+msgid "Restore"
+msgstr "Восстановить"
+
+#: src/menu/MiiDBOptionsState.cpp:116
+msgid "\\ue000: Restore  \\ue001: Back"
+msgstr "\\ue000: Восстановление \\ue001: Назад"
+
+#: src/menu/MiiDBOptionsState.cpp:118
+msgid "\\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue000: Восстановление слота тега \\ue045 \\ue001: Назад"
+
+#: src/menu/MiiDBOptionsState.cpp:121
+msgid "CrossRestore"
+msgstr "CrossRestore"
+
+#: src/menu/MiiDBOptionsState.cpp:124
+msgid "\\ue000: XRestore  \\ue001: Back"
+msgstr "\\ue000: XRestore \\ue001: Назад"
+
+#: src/menu/MiiDBOptionsState.cpp:126
+msgid "\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue000: XRestore слота тега \\ue045 \\ue001: Назад"
+
+#: src/menu/MiiDBOptionsState.cpp:129 src/menu/TitleOptionsState.cpp:367
+msgid "Wipe"
+msgstr "Wipe"
+
+#: src/menu/MiiDBOptionsState.cpp:131 src/menu/TitleOptionsState.cpp:369
+msgid "\\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue000: Очистить \\ue001: Назад"
+
+#: src/menu/MiiDBOptionsState.cpp:134
+msgid "Initialize"
+msgstr "Инициализация"
+
+#: src/menu/MiiDBOptionsState.cpp:136
+msgid "\\ue000: Initialize  \\ue001: Back"
+msgstr "\\ue000: Инициализация \\ue001: Назад"
+
+#: src/menu/MiiDBOptionsState.cpp:220 src/menu/TitleOptionsState.cpp:799
+msgid "No data selected to backup"
+msgstr "Данные для резервного копирования не выбраны"
+
+#: src/menu/MiiDBOptionsState.cpp:222 src/menu/TitleOptionsState.cpp:801
+msgid "No data selected to wipe"
+msgstr "Данные для стирания не выбраны"
+
+#: src/menu/MiiDBOptionsState.cpp:224 src/menu/TitleOptionsState.cpp:809
+msgid "No data selected to restore"
+msgstr "Данные для восстановления не выбраны"
+
+#: src/menu/MiiDBOptionsState.cpp:226
+msgid "No data selected to cross-restore"
+msgstr "Данные для перекрестного восстановления не выбраны"
+
+#: src/menu/MiiDBOptionsState.cpp:235
+msgid "Data succesfully backed up!"
+msgstr "Данные успешно скопированы!"
+
+#: src/menu/MiiDBOptionsState.cpp:241
+msgid "It is not allowed to restore Account data from a different console"
+msgstr "Восстановление данных учетной записи с другой консоли запрещено"
+
+#: src/menu/MiiDBOptionsState.cpp:248 src/menu/MiiDBOptionsState.cpp:257
+#: src/menu/MiiDBOptionsState.cpp:284
+#, c-format
+msgid "Error populating repo %s"
+msgstr "Ошибка заполнения репозитория %s"
+
+#: src/menu/MiiDBOptionsState.cpp:267
+msgid ""
+"Are you sure?\n"
+"\n"
+"EXISTING MIIS WILL BE OVERWRITTEN"
+msgstr ""
+"Вы уверены?\n"
+"\n"
+"СУЩЕСТВУЮЩИЕ MIIS БУДУТ ПЕРЕЗАПИСАНЫ"
+
+#: src/menu/MiiDBOptionsState.cpp:270 src/menu/MiiSelectState.cpp:543
+#: src/menu/MiiSelectState.cpp:619
+msgid "Data succesfully restored!"
+msgstr "Данные успешно восстановлены!"
+
+#: src/menu/MiiDBOptionsState.cpp:295 src/menu/MiiDBOptionsState.cpp:303
+msgid ""
+"Are you sure?\n"
+"\n"
+"ALL MIIS WILL BE WIPED"
+msgstr ""
+"Вы уверены?\n"
+"\n"
+"ВСЕ MIIS БУДУТ УДАЛЕНЫ"
+
+#: src/menu/MiiDBOptionsState.cpp:295 src/menu/MiiDBOptionsState.cpp:303
+msgid ""
+"Hm, are you REALLY sure?\n"
+"\n"
+"ALL MIIS WILL BE WIPED"
+msgstr ""
+"Хм, вы ДЕЙСТВИТЕЛЬНО уверены?\n"
+"\n"
+"ВСЕ MIIS БУДУТ УДАЛЕНЫ"
+
+#: src/menu/MiiDBOptionsState.cpp:298
+msgid "Data succesfully wiped!"
+msgstr "Данные успешно очищены!"
+
+#: src/menu/MiiDBOptionsState.cpp:306
+msgid "Data succesfully initialized!"
+msgstr "Данные успешно инициализированы!"
+
+#: src/menu/MiiSelectState.cpp:150
+msgid "List Miis"
+msgstr "Список Mii"
+
+#: src/menu/MiiSelectState.cpp:151 src/menu/MiiSelectState.cpp:155
+msgid "\\ue002: View  \\ue001: Back"
+msgstr "\\ue002: Просмотр \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:153
+msgid "\\ue083\\ue084 View Duplicates  \\ue002: View  \\ue001: Back"
+msgstr "\\ue083\\ue084 Просмотр дубликатов \\ue002: Просмотр \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:160
+msgid "Select which Miis to Import"
+msgstr "Выберите, каких Mii импортировать"
+
+#: src/menu/MiiSelectState.cpp:163
+msgid "\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue002\\ue084: Вид \\ue000: Импортировать Mii \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:165
+msgid "\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue002: Вид \\ue000: Импортировать Mii \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:168
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Import  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue002\\ue084: Вид \\ue000: Импорт \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:170
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Import  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue002: Просмотр \\ue000: Импорт \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:172
+msgid ">> Import"
+msgstr ">> Импорт"
+
+#: src/menu/MiiSelectState.cpp:173 src/menu/MiiSelectState.cpp:225
+msgid "|Imported|"
+msgstr "|Импортировано|"
+
+#: src/menu/MiiSelectState.cpp:176
+msgid "Select which Miis to Export"
+msgstr " Выберите, каких Mii экспортировать"
+
+#: src/menu/MiiSelectState.cpp:178
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Export  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue002\\ue084: Вид \\ue000: Экспорт \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:180
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue002: Просмотр \\ue000: Экспорт \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:181
+msgid ">> Export"
+msgstr ">> Экспорт"
+
+#: src/menu/MiiSelectState.cpp:182
+msgid "|Exported|"
+msgstr "|Экспортировано|"
+
+#: src/menu/MiiSelectState.cpp:186
+msgid "Select which Mii to Restore"
+msgstr "Выберите, какого Mii восстановить"
+
+#: src/menu/MiiSelectState.cpp:187
+msgid "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue002\\ue083\\ue084: Вид \\ue000: Восстановить Mii \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:188 src/menu/BatchJobTitleSelectState.cpp:221
+msgid ">> Restore"
+msgstr ">> Восстановить"
+
+#: src/menu/MiiSelectState.cpp:189 src/menu/MiiSelectState.cpp:234
+#: src/menu/BatchJobTitleSelectState.cpp:222
+msgid "|Restored|"
+msgstr "|Восстановлено|"
+
+#: src/menu/MiiSelectState.cpp:192
+msgid "Select which Miis to Wipe"
+msgstr "Выберите, каких Mii удалить"
+
+#: src/menu/MiiSelectState.cpp:194
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue002\\ue084: Вид \\ue000: Очистка \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:196
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue002\\ue084: Просмотр \\ue000: Экспорт \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:197 src/menu/BatchJobTitleSelectState.cpp:239
+msgid ">> Wipe"
+msgstr ">> Стереть"
+
+#: src/menu/MiiSelectState.cpp:198 src/menu/BatchJobTitleSelectState.cpp:240
+msgid "|Wiped|"
+msgstr "|Стереть|"
+
+#: src/menu/MiiSelectState.cpp:201
+msgid "Select which Miis to Transform"
+msgstr "Выберите, каких Mii преобразовать"
+
+#: src/menu/MiiSelectState.cpp:203
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Tasks  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue002\\ue084: Вид \\ue000: Задачи \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:205
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  \\ue000: Tasks  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue002: Вид \\ue000: Задачи \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:206
+msgid ">> Transform"
+msgstr ">> Трансформировать"
+
+#: src/menu/MiiSelectState.cpp:207
+msgid "|Transformed|"
+msgstr "   |Трансформировано|"
+
+#: src/menu/MiiSelectState.cpp:210
+msgid "Select Mii to copy attrs from"
+msgstr "Выберите Mii для копирования атрибутов"
+
+#: src/menu/MiiSelectState.cpp:212
+msgid "\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Выбор шаблона \\ue002\\ue084: Просмотр \\ue000: Преобразование Mii \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:214
+msgid "\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Выбор шаблона \\ue002: Просмотр \\ue000: Преобразование Mii \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:215
+msgid ">> Use as template"
+msgstr ">> Использовать как шаблон"
+
+#: src/menu/MiiSelectState.cpp:219 src/menu/MiiSelectState.cpp:228
+msgid "Select Mii to be overwritten"
+msgstr "Выберите Mii для перезаписи"
+
+#: src/menu/MiiSelectState.cpp:221 src/menu/MiiSelectState.cpp:230
+msgid "\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Выбор целевого Mii \\ue002\\ue084: Просмотр \\ue000: Продолжить \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:223 src/menu/MiiSelectState.cpp:232
+msgid "\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Выбор целевого Mii \\ue002: Просмотр \\ue000: Продолжить \\ue001: Назад"
+
+#: src/menu/MiiSelectState.cpp:224
+msgid ">> Import here"
+msgstr ">> Импортировать здесь"
+
+#: src/menu/MiiSelectState.cpp:233
+msgid ">> Restore here"
+msgstr ">> Восстановить здесь"
+
+#: src/menu/MiiSelectState.cpp:247
+msgid "Basic view"
+msgstr "Базовый вид"
+
+#: src/menu/MiiSelectState.cpp:250
+msgid "Mii ID view"
+msgstr "   Просмотр ID Mii"
+
+#: src/menu/MiiSelectState.cpp:253
+msgid "Device view"
+msgstr "Вид устройства"
+
+#: src/menu/MiiSelectState.cpp:256
+msgid "Location view"
+msgstr "Просмотр местоположения"
+
+#: src/menu/MiiSelectState.cpp:259
+msgid "Creator view"
+msgstr "Вид создателя"
+
+#: src/menu/MiiSelectState.cpp:262
+msgid "Timestamp view"
+msgstr "Просмотр по временной метке"
+
+#: src/menu/MiiSelectState.cpp:278
+msgid "There are no miis matching selected filters."
+msgstr "Нет Miis, соответствующих выбранным фильтрам."
+
+#: src/menu/MiiSelectState.cpp:354 src/menu/MiiSelectState.cpp:362
+#: src/menu/BatchJobTitleSelectState.cpp:331
+#: src/menu/BatchJobTitleSelectState.cpp:342
+#: src/menu/BatchJobTitleSelectState.cpp:346
+#: src/menu/BatchJobTitleSelectState.cpp:350
+msgid ">> Skip"
+msgstr ">> Пропустить"
+
+#: src/menu/MiiSelectState.cpp:357 src/menu/BatchJobTitleSelectState.cpp:334
+msgid "[OK]"
+msgstr "[OK]"
+
+#: src/menu/MiiSelectState.cpp:361 src/menu/BatchJobTitleSelectState.cpp:349
+msgid "[KO]"
+msgstr "[KO]"
+
+#: src/menu/MiiSelectState.cpp:362 src/menu/BatchJobTitleSelectState.cpp:342
+#: src/menu/BatchJobTitleSelectState.cpp:346
+#: src/menu/BatchJobTitleSelectState.cpp:350
+msgid ">> Retry"
+msgstr ">> Повторить"
+
+#: src/menu/MiiSelectState.cpp:380
+msgid "[COPY"
+msgstr "[КОПИ"
+
+#: src/menu/MiiSelectState.cpp:382 src/menu/MiiSelectState.cpp:387
+#: src/menu/MiiSelectState.cpp:413 src/menu/MiiSelectState.cpp:416
+#: src/menu/MiiSelectState.cpp:418 src/menu/MiiSelectState.cpp:434
+#: src/menu/MiiSelectState.cpp:444 src/menu/MiiSelectState.cpp:449
+#: src/menu/MiiSelectState.cpp:456 src/menu/MiiSelectState.cpp:467
+#, c-format
+msgid "%s"
+msgstr "%s"
+
+#: src/menu/MiiSelectState.cpp:383 src/menu/MiiSelectState.cpp:388
+msgid "On"
+msgstr "на"
+
+#: src/menu/MiiSelectState.cpp:383 src/menu/MiiSelectState.cpp:388
+msgid "Off"
+msgstr "Выкл"
+
+#: src/menu/MiiSelectState.cpp:385
+msgid "| SHARE"
+msgstr "| доля"
+
+#: src/menu/MiiSelectState.cpp:390
+msgid "|"
+msgstr "|"
+
+#: src/menu/MiiSelectState.cpp:395
+msgid "NORMAL"
+msgstr "НОРМАЛЬ"
+
+#: src/menu/MiiSelectState.cpp:398
+msgid "SPECIAL"
+msgstr "СПЕЦKОP"
+
+#: src/menu/MiiSelectState.cpp:401
+msgid "FOREIGN"
+msgstr "ВНЕШНИЙ"
+
+#: src/menu/MiiSelectState.cpp:404
+msgid "TEMP"
+msgstr "TEMP"
+
+#: src/menu/MiiSelectState.cpp:407
+msgid "S_TEMP"
+msgstr "S_TEMP"
+
+#: src/menu/MiiSelectState.cpp:410
+msgid "UNKNOWN"
+msgstr "НЕИЗВЕСТНО"
+
+#: src/menu/MiiSelectState.cpp:415
+msgid "]"
+msgstr "]"
+
+#: src/menu/MiiSelectState.cpp:452
+#, c-format
+msgid ": by %s"
+msgstr ": от %s"
+
+#: src/menu/MiiSelectState.cpp:454
+#, c-format
+msgid "- %s"
+msgstr "- %s"
+
+#: src/menu/MiiSelectState.cpp:475
+#, c-format
+msgid "%s%s"
+msgstr "%s%s"
+
+#: src/menu/MiiSelectState.cpp:495
+msgid "Please select some miis to work on"
+msgstr "Пожалуйста, выберите несколько mii для работы"
+
+#: src/menu/MiiSelectState.cpp:506
+msgid "Miis extraction Ok"
+msgstr "Извлечение Mii выполнено успешно"
+
+#: src/menu/MiiSelectState.cpp:508
+msgid "Task Aborted - Partial extraction Ok"
+msgstr "Задача прервана - частичное извлечение выполнено успешно"
+
+#: src/menu/MiiSelectState.cpp:511
+msgid "Extraction has failed - Global Error"
+msgstr "Извлечение не удалось - глобальная ошибка"
+
+#: src/menu/MiiSelectState.cpp:513
+#, c-format
+msgid "Extraction has failed for %d miis"
+msgstr "Извлечение не удалось для %d miis"
+
+#: src/menu/MiiSelectState.cpp:521
+msgid "Miis import Ok"
+msgstr "Импорт Mii выполнен успешно"
+
+#: src/menu/MiiSelectState.cpp:523
+msgid "Task aborted - Partial import Ok"
+msgstr "Задача прервана - частичный импорт выполнен успешно"
+
+#: src/menu/MiiSelectState.cpp:526
+msgid "Import has failed - Global Error"
+msgstr "Импорт не удался - глобальная ошибка"
+
+#: src/menu/MiiSelectState.cpp:528
+#, c-format
+msgid "Import has failed for %d miis"
+msgstr "Импорт не удался для %d miis"
+
+#: src/menu/MiiSelectState.cpp:537 src/menu/MiiSelectState.cpp:613
+msgid ""
+"Are you sure?\n"
+"\n"
+"MIIDATA FOR THIS ACCOUNT WILL BE OVERWRITTEN"
+msgstr ""
+"Вы уверены?\n"
+"\n"
+"ДАННЫЕ MIID ДЛЯ ЭТОЙ УЧЕТНОЙ ЗАПИСИ БУДУТ ПЕРЕЗАПИСАНЫ"
+
+#: src/menu/MiiSelectState.cpp:545 src/menu/MiiSelectState.cpp:621
+msgid "Data restoration has failed!"
+msgstr "Восстановление данных не удалось!"
+
+#: src/menu/MiiSelectState.cpp:557
+msgid "Miis wipe Ok"
+msgstr "Удаление Mii выполнено успешно"
+
+#: src/menu/MiiSelectState.cpp:559
+msgid "Task Aborted - Partial wipe Ok"
+msgstr "Задача прервана - частичное удаление выполнено успешно"
+
+#: src/menu/MiiSelectState.cpp:562
+msgid "Wipe has failed - Global Error"
+msgstr "Очистка не удалась - глобальная ошибка"
+
+#: src/menu/MiiSelectState.cpp:564
+#, c-format
+msgid "Wipe has failed for %d miis"
+msgstr "Очистка не удалась для %d Mii"
+
+#: src/menu/MiiSelectState.cpp:578 src/menu/MiiTransformTasksState.cpp:161
+msgid "Miis transform ok"
+msgstr "Преобразование Mii выполнено успешно"
+
+#: src/menu/MiiSelectState.cpp:580 src/menu/MiiTransformTasksState.cpp:163
+msgid "Task aborted - Partial Miis transform ok"
+msgstr "Задача прервана - частичное преобразование Miis выполнено успешно"
+
+#: src/menu/MiiSelectState.cpp:583 src/menu/MiiTransformTasksState.cpp:166
+msgid "Transform has failed - Global Error"
+msgstr "Преобразование не удалось - глобальная ошибка"
+
+#: src/menu/MiiSelectState.cpp:585 src/menu/MiiTransformTasksState.cpp:168
+#, c-format
+msgid "Transform has failed for %d miis"
+msgstr "Преобразование не удалось для %d miis"
+
+#: src/menu/BackupSetListState.cpp:69
+msgid "BackupSets"
+msgstr "Наборы резервных копий"
+
+#: src/menu/BackupSetListState.cpp:71
+msgid "BackupSets (filter applied)"
+msgstr "Наборы резервных копий (фильтр применен)"
+
+#: src/menu/BackupSetListState.cpp:74
+#, c-format
+msgid "\\ue083 Sort: %s \\ue084"
+msgstr "\\ue083 Сортировать: %s \\ue084"
+
+#: src/menu/BackupSetListState.cpp:97
+msgid "\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"
+msgstr "\\ue000 Выберите BS \\ue045 Тег BS \\ue046 Очистка BS \\ue003 Фильтр \\ue001 Назад"
+
+#: src/menu/BackupSetListState.cpp:99
+msgid "\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"
+msgstr "\\ue000: Выберите BS \\ue003: Список фильтров \\ue001: Назад"
+
+#: src/menu/BackupSetListState.cpp:110
+msgid "Root BackupSet cannot be selected for batchRestore"
+msgstr "Невозможно выбрать Root BackupSet для пакетного восстановления"
+
+#: src/menu/BackupSetListState.cpp:118
+#, c-format
+msgid ""
+"BackupSet selected:\n"
+" - TimeStamp: %s\n"
+" - Tag: %s\n"
+" - From console: %s\n"
+"\n"
+"This console: %s"
+msgstr ""
+"Выбран набор резервных копий:\n"
+" - Временная метка: %s\n"
+" - Тег: %s\n"
+" - Из консоли: %s\n"
+"\n"
+"Эта консоль: %s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:219
+msgid "Batch Restore - Select"
+msgstr "Пакетное восстановление - выбор"
+
+#: src/menu/BatchJobTitleSelectState.cpp:220
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
+msgstr "\\ue003\\ue07eУстановить/снять \\ue045\\ue046 все \\ue000Восстановить заголовки \\ue001Назад"
+
+#: src/menu/BatchJobTitleSelectState.cpp:225
+msgid "Batch ProfileCopy - Select"
+msgstr "Пакетное копирование профиля - Выбор"
+
+#: src/menu/BatchJobTitleSelectState.cpp:226
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue000: ProfileCopy \\ue001: Назад"
+
+#: src/menu/BatchJobTitleSelectState.cpp:227
+#: src/menu/BatchJobTitleSelectState.cpp:245
+#: src/menu/BatchJobTitleSelectState.cpp:251
+msgid ">> Copy"
+msgstr ">> Копировать"
+
+#: src/menu/BatchJobTitleSelectState.cpp:228
+#: src/menu/BatchJobTitleSelectState.cpp:246
+#: src/menu/BatchJobTitleSelectState.cpp:252
+msgid "|Copied|"
+msgstr "|Скопировано|"
+
+#: src/menu/BatchJobTitleSelectState.cpp:231
+msgid "Batch ProfileMove - Select"
+msgstr "Пакетное перемещение профиля - Выбрать"
+
+#: src/menu/BatchJobTitleSelectState.cpp:232
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue000: ProfileMove \\ue001: Назад"
+
+#: src/menu/BatchJobTitleSelectState.cpp:233
+msgid ">> Move"
+msgstr ">> Переместить"
+
+#: src/menu/BatchJobTitleSelectState.cpp:234
+msgid "|Moved|"
+msgstr "|Перемещено|"
+
+#: src/menu/BatchJobTitleSelectState.cpp:237
+msgid "Batch Wipe - Select"
+msgstr "Пакетная очистка - Выбор"
+
+#: src/menu/BatchJobTitleSelectState.cpp:238
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue000: Очистить профиль \\ue001: Назад"
+
+#: src/menu/BatchJobTitleSelectState.cpp:243
+msgid "Batch Copy To USB - Select"
+msgstr "Пакетное копирование на USB - Выбор"
+
+#: src/menu/BatchJobTitleSelectState.cpp:244
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue000: Копировать на USB \\ue001: Назад"
+
+#: src/menu/BatchJobTitleSelectState.cpp:249
+msgid "Batch Copy To NAND - Select"
+msgstr "Пакетное копирование в NAND - Выбор"
+
+#: src/menu/BatchJobTitleSelectState.cpp:250
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue000: Копировать в NAND \\ue001: Назад"
+
+#: src/menu/BatchJobTitleSelectState.cpp:255
+msgid "Batch Backup - Select & Go"
+msgstr "Пакетное резервное копирование - Выбрать и перейти"
+
+#: src/menu/BatchJobTitleSelectState.cpp:256
+msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue045\\ue046: Уст/сня все \\ue000Резервное копирование \\ue001Назад"
+
+#: src/menu/BatchJobTitleSelectState.cpp:257
+msgid ">> Backup"
+msgstr ">> Резервное копирование"
+
+#: src/menu/BatchJobTitleSelectState.cpp:258
+msgid "|Saved|"
+msgstr "|Сохранено|"
+
+#: src/menu/BatchJobTitleSelectState.cpp:275
+msgid "There are no titles matching selected filters."
+msgstr "Нет названий, соответствующих выбранным фильтрам."
+
+#: src/menu/BatchJobTitleSelectState.cpp:339
+msgid "[AB-BackupFailed]"
+msgstr "[AB-BackupFailed]"
+
+#: src/menu/BatchJobTitleSelectState.cpp:341
+msgid "[AB]"
+msgstr "[AB]"
+
+#: src/menu/BatchJobTitleSelectState.cpp:345
+msgid "[WR]"
+msgstr "[WR]"
+
+#: src/menu/BatchJobTitleSelectState.cpp:407
+msgid "Please select some titles to work on"
+msgstr "Выберите несколько названий для работы"
+
+#: src/menu/BatchJobTitleSelectState.cpp:456
+msgid ""
+"\\ue000  Apply saved excludes\n"
+"\\ue045  Save current excludes\n"
+"\\ue001  Back"
+msgstr ""
+"\\ue000 Применить сохраненные исключения\n"
+"\\ue045 Сохранить текущие исключения\n"
+"\\ue001 Назад"
+
+#: src/menu/BatchJobTitleSelectState.cpp:471 src/menu/ConfigMenuState.cpp:134
+msgid "Configuration saved"
+msgstr "Конфигурация сохранена"
+
+#: src/menu/BatchJobTitleSelectState.cpp:473 src/menu/ConfigMenuState.cpp:136
+msgid "Error saving configuration"
+msgstr "Ошибка сохранения конфигурации"
+
+#: src/menu/BatchJobTitleSelectState.cpp:540
+msgid "Batch Restore - Review & Go"
+msgstr "Пакетное восстановление - просмотр и переход"
+
+#: src/menu/BatchJobTitleSelectState.cpp:541
+#: src/menu/BatchJobTitleSelectState.cpp:543
+#: src/menu/BatchJobTitleSelectState.cpp:544
+msgid "- Restore"
+msgstr "- Восстановить"
+
+#: src/menu/BatchJobTitleSelectState.cpp:541
+#, c-format
+msgid "- Restore from %s to < %s (%s) >"
+msgstr "- Восстановить из %s в < %s (%s) >"
+
+#: src/menu/BatchJobTitleSelectState.cpp:542
+#, c-format
+msgid "pre-BatchRestore Backup (vWii: %d%s"
+msgstr "pre-BatchRestore Backup (vWii: %d%s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:542
+#, c-format
+msgid "pre-BatchRestore Backup (WiiU: %d%s"
+msgstr "pre-BatchRestore Backup (WiiU: %d%s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:543
+msgid "- Restore allusers"
+msgstr "- Восстановить всех пользователей"
+
+#: src/menu/BatchJobTitleSelectState.cpp:544
+msgid "- Restore no user"
+msgstr "- Восстановить без пользователя"
+
+#: src/menu/BatchJobTitleSelectState.cpp:545
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Restore failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Восстановление не удалось.\n"
+"Ошибки на данный момент: %d\n"
+"Хотите продолжить со следующей игрой?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:546
+msgid "Batch Restore paused - Do you want to abort?"
+msgstr "Пакетное восстановление приостановлено — хотите прервать?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:549
+msgid "Batch ProfileCopy - Review & Go"
+msgstr "Пакетное копирование профиля - Обзор и переход"
+
+#: src/menu/BatchJobTitleSelectState.cpp:550
+#: src/menu/BatchJobTitleSelectState.cpp:577
+#: src/menu/BatchJobTitleSelectState.cpp:586
+#, c-format
+msgid "- Copy from < %s (%s)> to < %s (%s) >"
+msgstr "- Копировать из < %s (%s)> в < %s (%s) >"
+
+#: src/menu/BatchJobTitleSelectState.cpp:551
+#, c-format
+msgid "pre-BatchProfileCopy Backup (WiiU: %d%s"
+msgstr "pre-BatchProfileCopy Backup (WiiU: %d%s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:554
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Copy Profile failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Копирование профиля не удалось.\n"
+"Ошибки на данный момент: %d\n"
+"Хотите продолжить со следующей игрой?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:555
+msgid "Batch ProfileCopy paused - Do you want to abort?"
+msgstr "Пакетное копирование профиля приостановлено — хотите прервать?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:558
+msgid "Batch ProfileMove - Review & Go"
+msgstr "Пакетное перемещение профиля - Просмотреть и перейти"
+
+#: src/menu/BatchJobTitleSelectState.cpp:559
+#, c-format
+msgid "- Move < %s (%s)> to < %s (%s) >"
+msgstr "- Переместить < %s (%s)> в < %s (%s) >"
+
+#: src/menu/BatchJobTitleSelectState.cpp:560
+#, c-format
+msgid "pre-BatchProfileMove Backup (WiiU: %d%s"
+msgstr "pre-BatchProfileMove Backup (WiiU: %d%s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:563
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Move Profile failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Перемещение профиля не удалось.\n"
+"Ошибки на данный момент: %d\n"
+"Хотите продолжить со следующей игрой?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:564
+msgid "Batch ProfileMove paused - Do you want to abort?"
+msgstr "Пакетное перемещение профиля приостановлено — хотите прервать?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:567
+msgid "Batch Wipe - Review & Go"
+msgstr "Пакетная очистка - Обзор и переход"
+
+#: src/menu/BatchJobTitleSelectState.cpp:568
+#: src/menu/BatchJobTitleSelectState.cpp:570
+#: src/menu/BatchJobTitleSelectState.cpp:571
+msgid "- Wipe"
+msgstr "- Стереть"
+
+#: src/menu/BatchJobTitleSelectState.cpp:568
+#, c-format
+msgid "- Wipe  < %s (%s)>"
+msgstr "- Стереть < %s (%s)>"
+
+#: src/menu/BatchJobTitleSelectState.cpp:569
+#, c-format
+msgid "pre-BatchWipe Backup (vWii: %d%s"
+msgstr "pre-BatchWipe Backup (vWii: %d%s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:569
+#, c-format
+msgid "pre-BatchWipe Backup (WiiU: %d%s"
+msgstr "pre-BatchWipe Backup (WiiU: %d%s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:570
+msgid "- Wipe allusers"
+msgstr "- Стереть всех пользователей"
+
+#: src/menu/BatchJobTitleSelectState.cpp:571
+msgid "- Wipe no user"
+msgstr "- Стереть ни одного пользователя"
+
+#: src/menu/BatchJobTitleSelectState.cpp:572
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Wipe failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Ошибка очистки.\n"
+"Ошибки на данный момент: %d\n"
+"Хотите продолжить со следующей игрой?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:573
+msgid "Batch Wipe paused - Do you want to abort?"
+msgstr "Пакетное удаление приостановлено — хотите прервать?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:576
+msgid "Batch Copy To USB - Review & Go"
+msgstr "Пакетное копирование на USB - Обзор и переход"
+
+#: src/menu/BatchJobTitleSelectState.cpp:578
+#, c-format
+msgid "pre-BatchCopyToUSB Backup (WiiU: %d%s"
+msgstr "pre-BatchCopyToUSB Backup (WiiU: %d%s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:579
+#: src/menu/BatchJobTitleSelectState.cpp:588
+msgid "- Copy allusers"
+msgstr "- Копировать всех пользователей"
+
+#: src/menu/BatchJobTitleSelectState.cpp:580
+#: src/menu/BatchJobTitleSelectState.cpp:589
+msgid "- Copy no user"
+msgstr "- Копировать ни одного пользователя"
+
+#: src/menu/BatchJobTitleSelectState.cpp:581
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Copy from NAND to USB failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Копирование с NAND на USB не удалось.\n"
+"Ошибки на данный момент: %d\n"
+"Хотите продолжить со следующей игрой?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:582
+msgid "Batch Copy To USB paused - Do you want to abort?"
+msgstr "Пакетное копирование на USB приостановлено — хотите прервать?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:585
+msgid "Batch Copy To NAND - Review & Go"
+msgstr "Пакетное копирование в NAND - Обзор и переход"
+
+#: src/menu/BatchJobTitleSelectState.cpp:587
+#, c-format
+msgid "pre-BatchCopyToNAND Backup (WiiU: %d%s"
+msgstr "pre-BatchCopyToNAND Backup (WiiU: %d%s"
+
+#: src/menu/BatchJobTitleSelectState.cpp:590
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Copy from USB to NAND failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue with next title?"
+msgstr ""
+"%s\n"
+"\n"
+"Копирование с USB на NAND не удалось.\n"
+"Ошибки на данный момент: %d\n"
+"Хотите продолжить со следующей игрой?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:591
+msgid "Batch Copy To NAND paused - Do you want to abort?"
+msgstr "Пакетное копирование в NAND приостановлено — хотите прервать?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:608
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"You have selected the following options:\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"%s\n"
+"%s\n"
+"\n"
+"Continue?\n"
+"\n"
+"\n"
+msgstr ""
+"%s\n"
+"\n"
+"Вы выбрали следующие параметры:\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"%s\n"
+"%s\n"
+"\n"
+"Продолжить?\n"
+"\n"
+"\n"
+
+#: src/menu/BatchJobTitleSelectState.cpp:629
+msgid "- Include common savedata: Yes"
+msgstr "- Включить общие данные сохранения: Да"
+
+#: src/menu/BatchJobTitleSelectState.cpp:629
+msgid "- Include common savedata: No"
+msgstr "- Включить общие данные сохранения: Нет"
+
+#: src/menu/BatchJobTitleSelectState.cpp:630
+#: src/menu/BatchJobTitleSelectState.cpp:635
+msgid "- Wipe data: Yes"
+msgstr "- Стереть данные: Да"
+
+#: src/menu/BatchJobTitleSelectState.cpp:630
+#: src/menu/BatchJobTitleSelectState.cpp:635
+msgid "- Wipe data: No"
+msgstr "- Стереть данные: Нет"
+
+#: src/menu/BatchJobTitleSelectState.cpp:631
+#: src/menu/BatchJobTitleSelectState.cpp:636
+msgid "- Perform full backup: Yes"
+msgstr "- Выполнить полное резервное копирование: Да"
+
+#: src/menu/BatchJobTitleSelectState.cpp:631
+#: src/menu/BatchJobTitleSelectState.cpp:636
+msgid "- Perform full backup: No"
+msgstr "- Выполнить полное резервное копирование: Нет"
+
+#: src/menu/BatchJobTitleSelectState.cpp:633
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"You have selected the following options:\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"%s\n"
+"\n"
+"Continue?\n"
+"\n"
+msgstr ""
+"%s\n"
+"\n"
+"Вы выбрали следующие параметры:\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"%s\n"
+"\n"
+"Продолжить?\n"
+"\n"
+
+#: src/menu/BatchJobTitleSelectState.cpp:648
+msgid ""
+"You have selected some injected titles.\n"
+"If its restore fails, try them again as a vWii title.\n"
+"\n"
+"You can continue."
+msgstr ""
+"Вы выбрали несколько внедренных игр.\n"
+"Если восстановление не удастся, попробуйте снова как игру vWii.\n"
+"\n"
+"Вы можете продолжить."
+
+#: src/menu/BatchJobTitleSelectState.cpp:653
+msgid ""
+"You have selected uninitialized titles.\n"
+"If its restore fails, run the Game to create \n"
+"some initial savedata and try again.\n"
+"\n"
+"You can continue."
+msgstr ""
+"Вы выбрали неинициализированные игры.\n"
+"Если восстановление не удастся, запустите игру, чтобы создать\n"
+"начальные данные сохранения и попробуйте снова.\n"
+"\n"
+"Вы можете продолжить."
+
+#: src/menu/BatchJobTitleSelectState.cpp:688
+#: src/menu/BatchJobTitleSelectState.cpp:863 src/menu/BatchBackupState.cpp:145
+msgid "ERROR WIPING BACKUPSET"
+msgstr "ОШИБКА ОЧИСТКИ НАБОРА РЕЗЕРВНОЙ КОПИИ"
+
+#: src/menu/BatchJobTitleSelectState.cpp:714
+#: src/menu/BatchJobTitleSelectState.cpp:723 src/menu/TitleOptionsState.cpp:814
+#: src/menu/TitleOptionsState.cpp:822
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Task aborted: would have restored savedata to a non-existent profile.\n"
+"\n"
+"Try to restore using 'from/to user' options"
+msgstr ""
+"%s\n"
+"\n"
+"Задача прервана: восстановление сохраненных данных в несуществующий профиль.\n"
+"\n"
+"Попробуйте восстановить данные с помощью параметров 'из/в пользователя"
+
+#: src/menu/BatchJobTitleSelectState.cpp:859 src/menu/BatchBackupState.cpp:141
+msgid "Do you want to wipe this incomplete batch backup?"
+msgstr "Вы хотите удалить эту неполную пакетную резервную копию?"
+
+#: src/menu/BatchJobTitleSelectState.cpp:914
+#, c-format
+msgid "PARTIAL - %d %s title%s OK"
+msgstr "ЧАСТИЧНОЕ - %d %s title%s OK"
+
+#: src/menu/BatchJobTitleSelectState.cpp:919
+msgid "FAILED - No titles"
+msgstr "НЕУДАЧА - Нет заголовков"
+
+#: src/menu/BatchJobTitleSelectState.cpp:921
+#, c-format
+msgid "FAILED - OK/KO > %s: %d/%d"
+msgstr "НЕУДАЧА - OK/KO > %s: %d/%d"
+
+#: src/menu/BatchJobState.cpp:26
+msgid "Batch Restore"
+msgstr "Пакетное восстановление"
+
+#: src/menu/BatchJobState.cpp:27
+#, c-format
+msgid "   Restore Wii U (%u Title%s)"
+msgstr "   Восстановить Wii U (%u Title%s)"
+
+#: src/menu/BatchJobState.cpp:28
+#, c-format
+msgid "   Restore vWii (%u Title%s)"
+msgstr "   Восстановить vWii (%u Title%s)"
+
+#: src/menu/BatchJobState.cpp:29
+msgid ""
+"Batch Restore allows you to restore all savedata from a BatchBackup \n"
+"* to the same user profiles\n"
+"* to a different user in the same console \n"
+"* or to a different console where the games are already installed.\n"
+"In the later case, it is recommended to first run the game to initialize the savedata."
+msgstr ""
+"Пакетное восстановление позволяет восстановить все сохраненные  данные из пакетного резервного копирования \n"
+"* в те же профили пользователя\n"
+"* для другого пользователя на той же консоли\n"
+"* или на другую консоль, где игры уже установлены.\n"
+"В последнем случае рекомендуется сначала запустить игру, чтобы   инициализировать сохраненные данные."
+
+#: src/menu/BatchJobState.cpp:30
+msgid "\\ue000: Continue to BackupSet selection  \\ue001: Back"
+msgstr "\\ue000: Продолжить резервное копированиеНабор выбора \\ue001: Назад"
+
+#: src/menu/BatchJobState.cpp:33
+msgid "Batch Wipe"
+msgstr "Пакетная очистка"
+
+#: src/menu/BatchJobState.cpp:34
+#, c-format
+msgid "   Wipe Wii U Profiles (%u Title%s)"
+msgstr "   Стереть профили Wii U (%u Title%s)"
+
+#: src/menu/BatchJobState.cpp:35
+#, c-format
+msgid "   Wipe vWii Savedata (%u Title%s)"
+msgstr "   Стереть vWii Savedata (%u Title%s)"
+
+#: src/menu/BatchJobState.cpp:36
+msgid ""
+"Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n"
+"\n"
+"Just:\n"
+"- select which data to wipe\n"
+"- select titles to act on\n"
+"- and go!"
+msgstr ""
+"Пакетная очистка позволяет вам стереть сохраненные данные, принадлежащие  заданному профилю по всем выбранным заголовкам. Он также обнаруживает сохраненные данные,  принадлежащие профилям, не определенным в консоли.\n"
+"\n"
+"Просто:\n"
+"- выберите, какие данные стереть\n"
+"- выберите заголовки для действия\n"
+"- и вперед!"
+
+#: src/menu/BatchJobState.cpp:37 src/menu/BatchJobState.cpp:44
+msgid "\\ue000: Continue to savedata selection  \\ue001: Back"
+msgstr "\\ue000: Продолжить сохранение данных выбора \\ue001: Назад"
+
+#: src/menu/BatchJobState.cpp:40
+msgid "Batch Copy To Other Device"
+msgstr "Пакетное копирование на другое устройство"
+
+#: src/menu/BatchJobState.cpp:41
+msgid "   Copy Wii U Savedata from NAND to USB"
+msgstr "   Копировать данные сохранения Wii U из NAND на USB"
+
+#: src/menu/BatchJobState.cpp:42
+msgid "   Copy Wii U Savedata from USB to NAND"
+msgstr "   Копировать данные сохранения Wii U из USB на NAND"
+
+#: src/menu/BatchJobState.cpp:43
+msgid ""
+"Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n"
+"\n"
+"Just:\n"
+"- select which data to copy\n"
+"- select titles to act on\n"
+"- and go!"
+msgstr ""
+"Пакетное копирование на другое устройство позволяет вам переносить  сохраненные данные между NAND и USB для всех выбранных названий, которые уже  имеют сохраненные данные на обоих носителях.\n"
+"\n"
+"Просто:\n"
+"- выберите, какие данные копировать\n"
+"- выберите названия для работы\n"
+"- и вперед!"
+
+#: src/menu/TitleTaskState.cpp:31 src/menu/ConfigMenuState.cpp:41
+#, c-format
+msgid "WiiU Serial Id: %s"
+msgstr "WiiU Serial Id: %s"
+
+#: src/menu/TitleTaskState.cpp:33
+msgid "Tasks"
+msgstr "Задачи"
+
+#: src/menu/TitleTaskState.cpp:39
+msgid "   Backup savedata"
+msgstr "   Резервное копирование сохраненных данных"
+
+#: src/menu/TitleTaskState.cpp:41
+msgid "   Restore savedata"
+msgstr "   Восстановить сохранения"
+
+#: src/menu/TitleTaskState.cpp:43
+msgid "   Wipe savedata"
+msgstr "   Стереть сохранения"
+
+#: src/menu/TitleTaskState.cpp:46
+msgid "   Move savedata to other profile"
+msgstr "   Переместить savedata в другой профиль"
+
+#: src/menu/TitleTaskState.cpp:48
+msgid "   Copy savedata to other profile"
+msgstr "   Копировать данные сохранения в другой профиль"
+
+#: src/menu/TitleTaskState.cpp:50
+msgid "   Import from loadiine"
+msgstr "   Импортировать из loadiine"
+
+#: src/menu/TitleTaskState.cpp:52
+msgid "   Export to loadiine"
+msgstr "   Экспорт в loadiine"
+
+#: src/menu/TitleTaskState.cpp:55
+#, c-format
+msgid "   Copy Savedata to Title in %s"
+msgstr "   Скопировать сохранения в Имя в %s"
+
+#: src/menu/TitleTaskState.cpp:69
+msgid ""
+"This title is a inject (vWii or GC title packaged as a WiiU title).\n"
+"If needed, vWii saves can also be managed using\n"
+"  the vWii Save Management section."
+msgstr ""
+"Эта игра является инъектом (игра для vWii или GC, упакованная как игра для WiiU).\n"
+"При необходимости сохранениями vWii также можно управлять с помощью раздела Управление сохранениями vWii"
+
+#: src/menu/TitleTaskState.cpp:75 src/menu/MiiTasksState.cpp:165
+msgid "\\ue000: Select Task  \\ue001: Back"
+msgstr "\\ue000: Выбрать задачу \\ue001: Назад"
+
+#: src/menu/TitleTaskState.cpp:94
+msgid "No save to Backup."
+msgstr "Нет сохранений для бекапа."
+
+#: src/menu/TitleTaskState.cpp:97
+msgid "No save to Wipe."
+msgstr "Нет сохранений для стирания."
+
+#: src/menu/TitleTaskState.cpp:100
+msgid "No save to Replicate."
+msgstr "Нет сохранения для репликации."
+
+#: src/menu/TitleTaskState.cpp:103
+msgid "No save to Copy."
+msgstr "Нет сохранений для копирования."
+
+#: src/menu/TitleTaskState.cpp:106
+msgid "No save to Move."
+msgstr "Нет сохранений для Move."
+
+#: src/menu/TitleTaskState.cpp:134
+msgid "Title has no profile savedata"
+msgstr "Заголовок не имеет сохраненных данных профиля"
+
+#: src/menu/TitleTaskState.cpp:145
+msgid "At least two profiles are needed to Copy/Move To OtherProfile."
+msgstr "Для копирования/перемещения в другой профиль требуется не менее двух профилей."
+
+#: src/menu/MiiTransformTasksState.cpp:24
+msgid "Mii Transform Tasks"
+msgstr "Задачи преобразования Mii"
+
+#: src/menu/MiiTransformTasksState.cpp:28 src/menu/MiiTasksState.cpp:28
+#, c-format
+msgid "Selected Repo: %s"
+msgstr "Выбранный репозиторий: %s"
+
+#: src/menu/MiiTransformTasksState.cpp:31
+msgid "   Transfer physical appearance from another mii:"
+msgstr "   Передать внешний вид другому mii:"
+
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76
+#, c-format
+msgid "[%s]"
+msgstr "[%s]"
+
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:310
+#: src/menu/BatchJobOptions.cpp:316 src/menu/BatchJobOptions.cpp:324
+#: src/menu/ConfigMenuState.cpp:24 src/menu/ConfigMenuState.cpp:28
+#: src/menu/ConfigMenuState.cpp:33 src/menu/ConfigMenuState.cpp:38
+msgid "Yes"
+msgstr "Да"
+
+#: src/menu/MiiTransformTasksState.cpp:32
+#: src/menu/MiiTransformTasksState.cpp:37
+#: src/menu/MiiTransformTasksState.cpp:41
+#: src/menu/MiiTransformTasksState.cpp:45
+#: src/menu/MiiTransformTasksState.cpp:49
+#: src/menu/MiiTransformTasksState.cpp:53
+#: src/menu/MiiTransformTasksState.cpp:57
+#: src/menu/MiiTransformTasksState.cpp:61
+#: src/menu/MiiTransformTasksState.cpp:65
+#: src/menu/MiiTransformTasksState.cpp:72
+#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:316
+#: src/menu/BatchJobOptions.cpp:324 src/menu/ConfigMenuState.cpp:24
+#: src/menu/ConfigMenuState.cpp:28 src/menu/ConfigMenuState.cpp:33
+#: src/menu/ConfigMenuState.cpp:38
+msgid "No"
+msgstr "Нет"
+
+#: src/menu/MiiTransformTasksState.cpp:36
+msgid "   Transfer Ownership from another mii:"
+msgstr "   Передать права собственности другому mii:"
+
+#: src/menu/MiiTransformTasksState.cpp:40
+msgid "   Make them belong to this console:"
+msgstr "   Сделать их принадлежащими этой консоли:"
+
+#: src/menu/MiiTransformTasksState.cpp:44
+msgid "   Update Mii Id (Timestamp):"
+msgstr "   Обновить Mii Id (метка времени):"
+
+#: src/menu/MiiTransformTasksState.cpp:48
+msgid "   Toggle favorite flag:"
+msgstr "   Включить/выключить флаг избранного:"
+
+#: src/menu/MiiTransformTasksState.cpp:52
+msgid "   Toggle Share/Mingle flag:"
+msgstr "   Включить/выключить флаг обмена/совместного использования :"
+
+#: src/menu/MiiTransformTasksState.cpp:56
+msgid "   Toggle Normal/Special flag:"
+msgstr "   Включить/выключить обычный/специальный флаг:"
+
+#: src/menu/MiiTransformTasksState.cpp:60
+msgid "   Toggle Foreign flag:"
+msgstr "   Включить/выключить флаг иностранного языка:"
+
+#: src/menu/MiiTransformTasksState.cpp:64
+msgid "   Update CRC:"
+msgstr "   Обновить CRC:"
+
+#: src/menu/MiiTransformTasksState.cpp:71
+msgid "   Togle Copy Flag On/Off:"
+msgstr "   Включить/выключить флаг копирования :"
+
+#: src/menu/MiiTransformTasksState.cpp:75
+msgid "   Togle Temporary Flag On/Off:"
+msgstr "   Включить/выключить временный флаг:"
+
+#: src/menu/MiiTransformTasksState.cpp:83
+msgid "Selected miis will get the physical appearance of the mii you will select in the next menu."
+msgstr "Выбранные Mii будут Получить внешний вид выбранного вами Mii в следующем меню."
+
+#: src/menu/MiiTransformTasksState.cpp:86
+msgid "Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost."
+msgstr "Выбранные Mii получат атрибуты владения шаблонного Mii, поэтому после этого они будут принадлежать шаблонной консоли. Текущая ассоциация с игрой будет потеряна."
+
+#: src/menu/MiiTransformTasksState.cpp:89
+msgid "Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost."
+msgstr "Обновляет MAC-адрес и AuthID (WiiU) Mii, чтобы он отображался как созданный на этой консоли. Обновляет Mii Id, чтобы игры Связь потеряна."
+
+#: src/menu/MiiTransformTasksState.cpp:92
+msgid "So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)."
+msgstr "Чтобы у Mii появился новый уникальный идентификатор Mii (Внимание! Он больше не будет привязан ни к одной игре, которая ожидает старый идентификатор Mii)."
+
+#: src/menu/MiiTransformTasksState.cpp:95
+msgid "Mark Miis as a favorite one so they appear in games that support them."
+msgstr "Отметить Mii как избранных, чтобы они отображались в играх, которые их поддерживают."
+
+#: src/menu/MiiTransformTasksState.cpp:98
+msgid "So the mii can travel to other consoles."
+msgstr "Чтобы Mii мог перемещаться на другие консоли."
+
+#: src/menu/MiiTransformTasksState.cpp:101
+msgid "You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost."
+msgstr "Вы можете превратить обычного Mii в особого и наоборот. Это обновляет идентификатор Mii, поэтому связь с играми теряется."
+
+#: src/menu/MiiTransformTasksState.cpp:104
+msgid "Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost)."
+msgstr "Wii Miis можно принудительно установить как сторонние, независимо от того, где они были созданы. Это обновляет Mii Id (связь игр mii потеряна)."
+
+#: src/menu/MiiTransformTasksState.cpp:107
+msgid "CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo)."
+msgstr "CRC будет пересчитан для выбранного mii (если он находится в файлах ffsd, bin, cfsd или rsd) или для всей базы данных (для mii в репозитории файлов FFL или RFL)."
+
+#: src/menu/MiiTransformTasksState.cpp:110
+msgid "So people that does not own the mii can modifiy it by creating a copy of the original."
+msgstr "Чтобы люди, не являющиеся владельцами Mii, могли изменять его, создавая копию оригинала."
+
+#: src/menu/MiiTransformTasksState.cpp:113
+msgid "Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost)."
+msgstr "Временные Miis не отображаются в базе данных FFL. Это обновляет идентификатор Mii (связь с играми Mii теряется)."
+
+#: src/menu/MiiTransformTasksState.cpp:127
+msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Select Mii Template  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установка/снятие с установки \\ue000: Выбор шаблона Mii \\ue001: Назад"
+
+#: src/menu/MiiTransformTasksState.cpp:129
+msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Transform  \\ue001: Back"
+msgstr "\\ue003\\ue07e: Установ/снять \\ue000: Преобразовать \\ue001: Назад"
+
+#: src/menu/MiiTransformTasksState.cpp:172
+msgid "Please select an option"
+msgstr "Пожалуйста, выберите вариант"
+
+#: src/menu/BackupSetListFilter.cpp:18
+msgid "Show only BackupSets satisfying all these conditions:"
+msgstr "Показать только BackupSets, удовлетворяющие всем этим условиям:"
+
+#: src/menu/BackupSetListFilter.cpp:25
+msgid "\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"
+msgstr "\\ue000: Применить фильтр \\ue002: Сбросить фильтры \\ue001: Назад"
+
+#: src/menu/MiiTasksState.cpp:26
+msgid "Mii Tasks"
+msgstr "Задачи Mii"
+
+#: src/menu/MiiTasksState.cpp:33 src/menu/MiiTasksState.cpp:57
+msgid "DB management"
+msgstr "Управление базой данных"
+
+#: src/menu/MiiTasksState.cpp:35 src/menu/MiiTasksState.cpp:59
+msgid "   Backup DB"
+msgstr "   Резервное копирование БД"
+
+#: src/menu/MiiTasksState.cpp:37
+msgid "   Restore Full DB (Full restore - all account attributes - for one profile)"
+msgstr "   Восстановить полную БД (полное восстановление - всех атрибутов учетной записи - для одного профиля)"
+
+#: src/menu/MiiTasksState.cpp:39
+msgid "   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"
+msgstr "   Восстановить раздел Mii в БД (восстановление MiiData и MiiImg между учетными записями)"
+
+#: src/menu/MiiTasksState.cpp:41 src/menu/MiiTasksState.cpp:67
+msgid "Mii Management"
+msgstr "Управление Mii"
+
+#: src/menu/MiiTasksState.cpp:43 src/menu/MiiTasksState.cpp:69
+msgid "   List Miis"
+msgstr "   Список Mii"
+
+#: src/menu/MiiTasksState.cpp:46 src/menu/MiiTasksState.cpp:72
+#, c-format
+msgid "   Export Miis (to %s)"
+msgstr "   Экспорт Miis (в %s)"
+
+#: src/menu/MiiTasksState.cpp:48
+msgid "   Export Miis (account MiiData)"
+msgstr "   Экспорт Miis (MiiData учетной записи)"
+
+#: src/menu/MiiTasksState.cpp:50
+msgid "   Import Miis (account MiiData)"
+msgstr "   Импорт Miis (MiiData учетной записи)"
+
+#: src/menu/MiiTasksState.cpp:52 src/menu/MiiTasksState.cpp:83
+msgid "   Transform Miis"
+msgstr "   Преобразование Miis"
+
+#: src/menu/MiiTasksState.cpp:61
+msgid "   Restore DB"
+msgstr "   Восстановить БД"
+
+#: src/menu/MiiTasksState.cpp:63
+msgid "   Wipe DB"
+msgstr "   Очистка базы данных"
+
+#: src/menu/MiiTasksState.cpp:65
+msgid "   Initialize DB"
+msgstr "   Инициализация БД"
+
+#: src/menu/MiiTasksState.cpp:74
+msgid "   Export Miis"
+msgstr "   Экспорт Miis"
+
+#: src/menu/MiiTasksState.cpp:77
+#, c-format
+msgid "   Import Miis (from %s)"
+msgstr "   Импорт Miis (из %s)"
+
+#: src/menu/MiiTasksState.cpp:79
+msgid "   Import Miis"
+msgstr "   Импорт Miis"
+
+#: src/menu/MiiTasksState.cpp:81
+msgid "   Wipe Miis"
+msgstr "   Очистка Mii"
+
+#: src/menu/MiiTasksState.cpp:92
+msgid "Backup All Wii U Account folders and files"
+msgstr "Создать резервную копию всех папок и файлов учетной записи Wii U"
+
+#: src/menu/MiiTasksState.cpp:95
+msgid "Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect."
+msgstr "Восстановить файлы учетной записи Wii U (всю информацию, включая, помимо прочего, MiiData). Для вступления изменений в силу требуется перезагрузка консоли."
+
+#: src/menu/MiiTasksState.cpp:98
+msgid "Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect."
+msgstr "Восстановить MiiData + MiiImg из одной учетной записи Wii U в другую (ни одна из них) NNID, PNID и другие атрибуты не изменяются. Для вступления изменений в силу требуется перезагрузка консоли. "
+
+#: src/menu/MiiTasksState.cpp:101 src/menu/MiiTasksState.cpp:131
+msgid "List all Miis and some of its attributes"
+msgstr "Список всех Mii и некоторых их атрибутов"
+
+#: src/menu/MiiTasksState.cpp:104
+msgid "Export Miis to other repos"
+msgstr "Экспорт Miis в другие репозитории"
+
+#: src/menu/MiiTasksState.cpp:107
+msgid "Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+msgstr "Импортируйте MiiData из mii в другом репозитории. Для полного вступления в силу требуется перезапуск консоли и повторная регистрация пользователя (Настройки пользователя > Изменить Mii > Редактировать зарегистрированный Mi > Зарегистрировать)"
+
+#: src/menu/MiiTasksState.cpp:110
+msgid "Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+msgstr "Изменение атрибутов (общий доступ/копирование/miiid/владелец) или внешнего вида mii. Требуется перезапуск консоли и повторная регистрация пользователя (Настройки пользователя > Изменить Mii > Редактировать зарегистрированный Mi > Зарегистрировать), чтобы изменения вступили в силу"
+
+#: src/menu/MiiTasksState.cpp:119
+msgid "Backup Mii Database in their enterity"
+msgstr "Создать резервную копию базы данных Mii целиком"
+
+#: src/menu/MiiTasksState.cpp:122
+msgid "Restore Mii Database in their enterity"
+msgstr "Восстановить базу данных Mii в их целостности"
+
+#: src/menu/MiiTasksState.cpp:125
+msgid "Wipe Mii Database"
+msgstr "Очистка базы данных Mii"
+
+#: src/menu/MiiTasksState.cpp:128
+msgid "Initialize Mii Database with no Miis"
+msgstr "Инициализация базы данных Mii без Mii"
+
+#: src/menu/MiiTasksState.cpp:134
+msgid "Export some Miis from this Database to another one"
+msgstr "Экспорт некоторых Miis из этой базы данных в другую"
+
+#: src/menu/MiiTasksState.cpp:137
+msgid "Import some Miis from another Database to this one"
+msgstr "Импортируйте несколько Miis из другой базы данных в эту"
+
+#: src/menu/MiiTasksState.cpp:140
+msgid "Wipe some Miis from the Mii Database"
+msgstr "Удалить некоторые Mii из базы данных Mii"
+
+#: src/menu/MiiTasksState.cpp:143
+msgid "Change attributes (share/copy/miiid/owner) or appareance of miis"
+msgstr "Изменение атрибутов (общий доступ/копирование/miiid/владелец) или внешнего вида mii"
+
+#: src/menu/KeyboardState.cpp:17
+msgid "Keyboard"
+msgstr "Клавиатура"
+
+#: src/menu/KeyboardState.cpp:38
+msgid "\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
+msgstr "\\ue000: Нажмите клавишу \\ue003: Shift \\ue002: Del \\ue045: OK! \\ue001: Назад"
+
+#: src/menu/BatchBackupState.cpp:27
+msgid "Batch Backup"
+msgstr "Пакетное резервное копирование"
+
+#: src/menu/BatchBackupState.cpp:29
+#, c-format
+msgid "   Backup All (%u Title%s)"
+msgstr "   Сделать бекап для всех (%u Имя%s)"
+
+#: src/menu/BatchBackupState.cpp:32
+#, c-format
+msgid "   Backup Wii U (%u Title%s)"
+msgstr "   Бекап только для Wii U (%u Имя%s)"
+
+#: src/menu/BatchBackupState.cpp:35
+#, c-format
+msgid "   Backup vWii (%u Title%s)"
+msgstr "   Бекап только для vWii (%u Имя%s)"
+
+#: src/menu/BatchBackupState.cpp:38
+#, c-format
+msgid "   Backup Wii U System Titles (%u Title%s)"
+msgstr "   Резервное копирование системных игр Wii U (%u Title%s)"
+
+#: src/menu/BatchBackupState.cpp:45
+msgid ""
+"Reminder: Your Excludes will be applied to\n"
+"  'Backup Wii U' and 'Backup vWii' tasks"
+msgstr ""
+"Напоминание: ваши исключения будут применены к\n"
+" задачам 'Backup Wii U' и 'Backup vWii'"
+
+#: src/menu/BatchBackupState.cpp:51 src/menu/BatchTasksState.cpp:57
+msgid ""
+"Batch Backup allows you to backup savedata:\n"
+"* for All titles at once (WiiU+ vWii)\n"
+"* for the titles you select (individual 'Wii U' or 'vWii' tasks)"
+msgstr ""
+"Пакетное резервное копирование позволяет вам делать резервные \n"
+"копии сохраненных данных:\n"
+"* для всех названий сразу (WiiU+ vWii)\n"
+"* для названий, которые вы выбираете (отдельные задачи 'Wii U' или 'vWii')"
+
+#: src/menu/BatchBackupState.cpp:55
+msgid "\\ue002: BackupSet Management  \\ue000: Backup  \\ue001: Back"
+msgstr "\\ue002: BackupSet Управление \\ue000: Резервное копирование \\ue001: Назад"
+
+#: src/menu/BatchBackupState.cpp:156
+#, c-format
+msgid "ALL OK - WU:%d,vW:%d,S:%d titles"
+msgstr "ВСЕ В ПОРЯДКЕ - заголовки WU:%d,vW:%d,S:%d"
+
+#: src/menu/BatchBackupState.cpp:161
+#, c-format
+msgid "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
+msgstr "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
+
+#: src/menu/BatchBackupState.cpp:166
+#, c-format
+msgid "PARTIAL - WU:%d,vW:%d,S:%d OK"
+msgstr "ЧАСТИЧНОЕ - WU:%d,vW:%d,S:%d OK"
+
+#: src/menu/BatchJobOptions.cpp:112
+#, c-format
+msgid ""
+"Savedata information for\n"
+"%s\n"
+"cannot be retrieved"
+msgstr ""
+"Информация о сохраненных данных для\n"
+"%s\n"
+"не может быть получена"
+
+#: src/menu/BatchJobOptions.cpp:152
+msgid "Can't Copy/Move To OtherProfile if there is only one profile."
+msgstr "Невозможно скопировать/переместить в другой профиль, если есть только один профиль."
+
+#: src/menu/BatchJobOptions.cpp:191
+msgid ""
+"WARNING\n"
+"Some titles contain savedata for profiles that do not exist in this console\n"
+"This savedata will be ignored. You can:\n"
+"* Backup it with 'allusers' option or with Batch Backup\n"
+"* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."
+msgstr ""
+"ВНИМАНИЕ\n"
+"Некоторые заголовки содержат данные сохранения для профилей, которых нет в этой консоли Эти данные сохранения будут проигнорированы. Вы можете:\n"
+"* Сделать их резервную копию с помощью параметра 'allusers' или с помощью пакетного резервного копирования\n"
+"* стереть или переместить их с помощью задач 'Пакетное стирание/Пакетное копирование в другой профиль'."
+
+#: src/menu/BatchJobOptions.cpp:194
+msgid ""
+"The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n"
+"\n"
+"Recommended action: restore from/to individual users."
+msgstr ""
+"BackupSet содержит сохраненные данные для профилей, которые не  существуют в этой консоли. Вы можете продолжить, но процесс восстановления  'allusers' для этих названий завершится ошибкой.\n"
+"\n"
+"Рекомендуется действие: восстановление от/для отдельных пользователей."
+
+#: src/menu/BatchJobOptions.cpp:198
+msgid ""
+"\n"
+"\n"
+"Non-existent profiles:\n"
+"  "
+msgstr ""
+"\n"
+"\n"
+"Несуществующие профили:\n"
+" "
+
+#: src/menu/BatchJobOptions.cpp:200
+msgid ""
+"\n"
+"Titles affected:\n"
+msgstr ""
+"\n"
+"Затронутые заголовки:\n"
+
+#: src/menu/BatchJobOptions.cpp:224
+msgid "BatchJob - Options"
+msgstr "Пакетное задание - Параметры"
+
+#: src/menu/BatchJobOptions.cpp:225 src/menu/TitleOptionsState.cpp:152
+msgid "Select SD user to copy from:"
+msgstr "Выбрать пользователя для копирования:"
+
+#: src/menu/BatchJobOptions.cpp:226
+msgid "Only 'common' savedata will be restored"
+msgstr "Будут восстановлены только 'общие' данные сохранения"
+
+#: src/menu/BatchJobOptions.cpp:227
+msgid "'common' savedata will also be restored"
+msgstr "'общие' данные сохранения также будут восстановлены"
+
+#: src/menu/BatchJobOptions.cpp:230
+msgid "Batch ProfileCopy - Options"
+msgstr " Пакетное копирование профиля - Параметры"
+
+#: src/menu/BatchJobOptions.cpp:231 src/menu/BatchJobOptions.cpp:237
+#: src/menu/BatchJobOptions.cpp:249 src/menu/BatchJobOptions.cpp:255
+#: src/menu/TitleOptionsState.cpp:152
+msgid "Select Wii U user to copy from:"
+msgstr "Выберите пользователя Wii U для копирования:"
+
+#: src/menu/BatchJobOptions.cpp:236
+msgid "Batch ProfileMove - Options"
+msgstr "Пакетное перемещение профиля - Параметры"
+
+#: src/menu/BatchJobOptions.cpp:242
+msgid "Batch Wipe - Options"
+msgstr "Пакетная очистка - Параметры"
+
+#: src/menu/BatchJobOptions.cpp:243 src/menu/TitleOptionsState.cpp:152
+msgid "Select Wii U user to wipe:"
+msgstr "Выберите пользователя Wii U для стирания:"
+
+#: src/menu/BatchJobOptions.cpp:244
+msgid "Only 'common' savedata will be deleted"
+msgstr "Будут удалены только 'общие' данные сохранения"
+
+#: src/menu/BatchJobOptions.cpp:245
+msgid "'common' savedata will also be deleted"
+msgstr "'общие' данные сохранения также будут удалены"
+
+#: src/menu/BatchJobOptions.cpp:248
+msgid "Batch CopyToUSB - Options"
+msgstr "Пакетное копирование на USB - Параметры"
+
+#: src/menu/BatchJobOptions.cpp:250 src/menu/BatchJobOptions.cpp:256
+msgid "Only 'common' savedata will be copied"
+msgstr "Будут скопированы только 'общие' данные сохранения"
+
+#: src/menu/BatchJobOptions.cpp:251 src/menu/BatchJobOptions.cpp:257
+msgid "'common' savedata will also be copied"
+msgstr "'общие' данные сохранения также будут скопированы"
+
+#: src/menu/BatchJobOptions.cpp:254
+msgid "Batch CopyToNAND - Options"
+msgstr "Пакетное копирование в NAND - Параметры"
+
+#: src/menu/BatchJobOptions.cpp:270
+#, c-format
+msgid "BS: %s"
+msgstr "BS: %s"
+
+#: src/menu/BatchJobOptions.cpp:276 src/menu/BatchJobOptions.cpp:298
+#: src/menu/TitleOptionsState.cpp:157 src/menu/TitleOptionsState.cpp:179
+msgid "only common save"
+msgstr "только общее сохранение"
+
+#: src/menu/BatchJobOptions.cpp:279 src/menu/BatchJobOptions.cpp:284
+msgid "Ok"
+msgstr "ОК"
+
+#: src/menu/BatchJobOptions.cpp:281 src/menu/TitleOptionsState.cpp:159
+msgid "all users"
+msgstr "все пользователи"
+
+#: src/menu/BatchJobOptions.cpp:295 src/menu/TitleOptionsState.cpp:176
+msgid "Select Wii U user to copy to:"
+msgstr "Выберите пользователя Wii U для копирования:"
+
+#: src/menu/BatchJobOptions.cpp:300 src/menu/TitleOptionsState.cpp:181
+msgid "same user than in source"
+msgstr "тот же пользователь, что и в источнике"
+
+#: src/menu/BatchJobOptions.cpp:308 src/menu/TitleOptionsState.cpp:246
+msgid "Include 'common' save?"
+msgstr "Включить 'common' сохранения?"
+
+#: src/menu/BatchJobOptions.cpp:310
+msgid "No "
+msgstr "Нет "
+
+#: src/menu/BatchJobOptions.cpp:316
+#, c-format
+msgid "   Wipe target users savedata before restoring: < %s >"
+msgstr "   Очистите целевых пользователей перед восстановлением: < %s >"
+
+#: src/menu/BatchJobOptions.cpp:320
+msgid "   Target user savedata will be wiped"
+msgstr "   Сохраненные данные целевого пользователя будут стерты"
+
+#: src/menu/BatchJobOptions.cpp:324
+#, c-format
+msgid "   Backup all data before restoring (strongly recommended): < %s >"
+msgstr "   Скопируйте все данные перед восстановлением: < %s >"
+
+#: src/menu/BatchJobOptions.cpp:330
+msgid "\\ue000: Ok! Go to Title selection  \\ue001: Back"
+msgstr "\\ue000: ОК! Перейти к выбору заголовка \\ue001: Назад"
+
+#: src/menu/BatchJobOptions.cpp:332
+msgid "\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"
+msgstr "\\ue002: Неопределенные профили \\ue000: ОК! Перейти к выбору заголовка \\ue001: Назад"
+
+#: src/menu/BatchJobOptions.cpp:340
+msgid ""
+"\n"
+"Do you want to continue?\n"
+msgstr ""
+"\n"
+"Продолжить?\n"
+
+#: src/menu/MiiRepoSelectState.cpp:67
+msgid "Select Repo containing the Mii Template"
+msgstr "Выберите репозиторий, содержащий шаблон Mii"
+
+#: src/menu/MiiRepoSelectState.cpp:68
+msgid "\\ue000: To Select Template Mii Repo  \\ue001: Back"
+msgstr "\\ue000: Выбор репозитория шаблонов Mii \\ue001: Назад"
+
+#: src/menu/MiiRepoSelectState.cpp:71
+msgid "Select Repo to Import Miis from"
+msgstr "Выберите репозиторий для импорта Mii"
+
+#: src/menu/MiiRepoSelectState.cpp:72
+msgid "\\ue000: To Select Miis to Import from this repo  \\ue001: Back"
+msgstr "\\ue000: Выбор Miis для импорта из этого репозитория \\ue001: Назад"
+
+#: src/menu/MiiRepoSelectState.cpp:75
+msgid "Select Repo to Export Miis to"
+msgstr " Выберите репозиторий для экспорта Mii"
+
+#: src/menu/MiiRepoSelectState.cpp:76
+msgid "\\ue000: To Select Miis to Export to this repo  \\ue001: Back"
+msgstr "\\ue000: Выбор Miis для экспорта в этот репозиторий \\ue001: Назад"
+
+#: src/menu/MiiRepoSelectState.cpp:79
+msgid "Select Mii Repo to Manage"
+msgstr "Выберите репозиторий Mii для управления"
+
+#: src/menu/MiiRepoSelectState.cpp:80
+msgid "\\ue000: Select Repo  \\ue001: Back"
+msgstr "\\ue000: Выбор репозитория \\ue001: Назад"
+
+#: src/menu/MiiRepoSelectState.cpp:89
+msgid "There are no repos matching selected filters."
+msgstr "Нет репозиториев, соответствующих выбранным фильтрам."
+
+#: src/menu/MainMenuState.cpp:57
+#, c-format
+msgid ""
+"Error\n"
+"%s\n"
+"setting owner/group for\n"
+"%s"
+msgstr ""
+"Ошибка\n"
+"%s\n"
+"установка владельца/группы для\n"
+"%s"
+
+#: src/menu/MainMenuState.cpp:75
+msgid "Main menu"
+msgstr "Главное меню"
+
+#: src/menu/MainMenuState.cpp:77
+#, c-format
+msgid "   Wii U Save Management (%u Title%s)"
+msgstr "   Управление сохранениями Wii U (%u Имя%s)"
+
+#: src/menu/MainMenuState.cpp:80
+#, c-format
+msgid "   vWii Save Management (%u Title%s)"
+msgstr "   Управление сохранениями vWii (%u Имя%s)"
+
+#: src/menu/MainMenuState.cpp:83
+#, c-format
+msgid "   Wii U System Titles Save Management (%u Title%s)"
+msgstr "   Управление сохранениями системных названий Wii U (%u Title%s)"
+
+#: src/menu/MainMenuState.cpp:86
+msgid "   Batch Tasks Management"
+msgstr "   Управление пакетными задачами"
+
+#: src/menu/MainMenuState.cpp:88
+msgid "   BackupSet Management"
+msgstr "   Управление наборами резервных копий"
+
+#: src/menu/MainMenuState.cpp:90
+msgid "   Mii Management"
+msgstr "   Управление Mii"
+
+#: src/menu/MainMenuState.cpp:94
+msgid "\\ue002: Options \\ue000: Select Mode"
+msgstr "\\ue002: Опции \\ue000: Выбор режима"
+
+#: src/menu/MainMenuState.cpp:113
+msgid ""
+"This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n"
+"\n"
+"Proceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n"
+"\n"
+"Do you want to continue?\n"
+"\n"
+msgstr ""
+"Эта задача позволяет создавать резервные копии/восстанавливать данные сохранений для MiiMaker, интернет-браузера и других системных приложений.\n"
+"\n"
+"Будьте осторожны и помните о том, что вы изменяете! Некоторые сохранения могут влиять на поведение системы, а неправильное их использование может привести к неожиданным последствиям!\n"
+"\n"
+"Хотите продолжить?\n"
+"\n"
+
+#: src/menu/ConfigMenuState.cpp:17
+msgid "Configuration Options"
+msgstr "Параметры конфигурации"
+
+#: src/menu/ConfigMenuState.cpp:20
+#, c-format
+msgid "   Language: %s"
+msgstr "   Язык: %s"
+
+#: src/menu/ConfigMenuState.cpp:23
+#, c-format
+msgid "   Always apply Backup Excludes: %s"
+msgstr "   Всегда применять исключения резервной копии: %s"
+
+#: src/menu/ConfigMenuState.cpp:27
+#, c-format
+msgid "   Ask for backup dir conversion to titleName based format: %s"
+msgstr "   Запрос на преобразование резервного каталога в формат title: %s"
+
+#: src/menu/ConfigMenuState.cpp:32
+#, c-format
+msgid "   This session value: %s"
+msgstr "   Значение этого сеанса: %s"
+
+#: src/menu/ConfigMenuState.cpp:37
+#, c-format
+msgid "   Warn and don't allow restore of undefined profiles: %s"
+msgstr "   Не разрешать восстановление неопределенных профилей: %s"
+
+#: src/menu/ConfigMenuState.cpp:45
+msgid "\\ue045 SaveConfig  \\ue001: Back"
+msgstr "\\ue045 Сохранить конфигурацию \\ue001: Назад"
+
+#: src/menu/ConfigMenuState.cpp:138
+msgid "Error processing configuration"
+msgstr "Ошибка обработки конфигурации"
+
+#: src/menu/TitleOptionsState.cpp:89
+#, c-format
+msgid "BackupSet: %s"
+msgstr "Набор резервных копий: %s"
+
+#: src/menu/TitleOptionsState.cpp:97
+msgid "Destination:"
+msgstr "Назначение:"
+
+#: src/menu/TitleOptionsState.cpp:102
+msgid "   Copy profile savedata to a different profile."
+msgstr "   Копировать данные сохранения профиля в другой профиль."
+
+#: src/menu/TitleOptionsState.cpp:105
+msgid "   Move profile savedata to a different profile."
+msgstr "   Переместить профиль savedata в другой профиль."
+
+#: src/menu/TitleOptionsState.cpp:106
+msgid "   - Target profile will be wiped."
+msgstr "   - Целевой профиль будет стерт."
+
+#: src/menu/TitleOptionsState.cpp:108
+msgid "version"
+msgstr "версия"
+
+#: src/menu/TitleOptionsState.cpp:114
+msgid "Delete from:"
+msgstr "Удалить из:"
+
+#: src/menu/TitleOptionsState.cpp:118
+#, c-format
+msgid "Select %s [%s]:"
+msgstr "Выбрать %s [%s]:"
+
+#: src/menu/TitleOptionsState.cpp:155
+msgid "metadata + savedata"
+msgstr "метаданные + сохраненные данные"
+
+#: src/menu/TitleOptionsState.cpp:200
+msgid "Source has 'common' savedata, only it will be saved"
+msgstr "Источник содержит общие данные сохранения, будут сохранены только они"
+
+#: src/menu/TitleOptionsState.cpp:201
+msgid "Source has 'common' savedata, it will also be saved"
+msgstr "Источник содержит общие данные сохранения, они также будут сохранены"
+
+#: src/menu/TitleOptionsState.cpp:204
+msgid "Source has 'common' savedata, only it will be restored"
+msgstr "Источник содержит общие данные сохранения, будут восстановлены только они"
+
+#: src/menu/TitleOptionsState.cpp:205
+msgid "Source has 'common' savedata, it will also be restored"
+msgstr "Источник содержит общие данные сохранения, они также будут восстановлены"
+
+#: src/menu/TitleOptionsState.cpp:208
+msgid "'common' savedata found, only it will be deleted"
+msgstr "Общие данные сохранения найдены, будут удалены только они"
+
+#: src/menu/TitleOptionsState.cpp:209
+msgid "'common' savedata found, it will also be deleted"
+msgstr "Общие данные сохранения найдены, они также будут удалены"
+
+#: src/menu/TitleOptionsState.cpp:212
+msgid "Source has 'common' savedata, only it will be copied"
+msgstr "Источник содержит общие данные сохранения, будут скопированы только они"
+
+#: src/menu/TitleOptionsState.cpp:213
+msgid "Source 'common' savedata, it will also be copied"
+msgstr "Источник содержит общие данные сохранения, они также будут скопированы"
+
+#: src/menu/TitleOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:264
+#, c-format
+msgid "(Target has 'common': %s)"
+msgstr "(Цель имеет 'общие': %s)"
+
+#: src/menu/TitleOptionsState.cpp:232 src/menu/TitleOptionsState.cpp:249
+#: src/menu/TitleOptionsState.cpp:265
+msgid "yes"
+msgstr "да"
+
+#: src/menu/TitleOptionsState.cpp:232 src/menu/TitleOptionsState.cpp:249
+#: src/menu/TitleOptionsState.cpp:265
+msgid "no "
+msgstr "нет "
+
+#: src/menu/TitleOptionsState.cpp:255 src/menu/TitleOptionsState.cpp:262
+msgid "No 'common' save found."
+msgstr "Не найдено ни одного 'common' сохранения."
+
+#: src/menu/TitleOptionsState.cpp:255 src/menu/TitleOptionsState.cpp:262
+msgid "Source: No 'common' save found."
+msgstr "Источник: Общие данные сохранения не найдены."
+
+#: src/menu/TitleOptionsState.cpp:286
+msgid "Savedata in NAND"
+msgstr "Savedata в NAND"
+
+#: src/menu/TitleOptionsState.cpp:289
+msgid "Select vWii data to wipe:"
+msgstr "Выберите данные vWii для удаления:"
+
+#: src/menu/TitleOptionsState.cpp:292
+msgid "full metadata + savedata"
+msgstr "Полные метаданные + данные сохранения"
+
+#: src/menu/TitleOptionsState.cpp:294
+msgid "savedata"
+msgstr "savedata"
+
+#: src/menu/TitleOptionsState.cpp:362
+msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
+msgstr "\\ue002: Изменить BackupSet \\ue000: Восстановить \\ue001: Назад"
+
+#: src/menu/TitleOptionsState.cpp:364
+msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue002: Изменить BS \\ue000: Восстановить \\ue045 Слот тега \\ue001: Назад"
+
+#: src/menu/TitleOptionsState.cpp:372
+msgid "Copy to Other Profile"
+msgstr "Копировать в другой профиль"
+
+#: src/menu/TitleOptionsState.cpp:374 src/menu/TitleOptionsState.cpp:394
+msgid "\\ue000: Copy  \\ue001: Back"
+msgstr "\\ue000: Копировать \\ue001: Назад"
+
+#: src/menu/TitleOptionsState.cpp:377
+msgid "Move to Other Profile"
+msgstr "Переместить в другой профиль"
+
+#: src/menu/TitleOptionsState.cpp:379
+msgid "\\ue000: Move  \\ue001: Back"
+msgstr "\\ue000: Переместить \\ue001: Назад"
+
+#: src/menu/TitleOptionsState.cpp:382
+msgid "Import Loadiine"
+msgstr "Импортировать загрузку"
+
+#: src/menu/TitleOptionsState.cpp:384
+msgid "\\ue000: Import  \\ue001: Back"
+msgstr "\\ue000: Импорт \\ue001: Назад"
+
+#: src/menu/TitleOptionsState.cpp:387
+msgid "Export Loadiine"
+msgstr "Экспортировать загрузку"
+
+#: src/menu/TitleOptionsState.cpp:389
+msgid "\\ue000: Export  \\ue001: Back"
+msgstr "\\ue000: Экспорт \\ue001: Назад"
+
+#: src/menu/TitleOptionsState.cpp:392
+msgid "Copy to Other Device"
+msgstr "Копировать на другое устройство"
+
+#: src/menu/TitleOptionsState.cpp:803
+msgid "No data selected to copyToOtherProfile"
+msgstr "Данные для копирования в другой профиль не выбраны"
+
+#: src/menu/TitleOptionsState.cpp:805
+msgid "No data selected to moveProfile"
+msgstr "Данные для moveProfile не выбраны"
+
+#: src/menu/TitleOptionsState.cpp:807
+msgid "No data selected to copy"
+msgstr "Данные для копирования не выбраны"
+
+#: src/menu/TitleOptionsState.cpp:836
+msgid "Savedata succesfully backed up!"
+msgstr "Сохраненные данные успешно скопированы!"
+
+#: src/menu/TitleOptionsState.cpp:841
+msgid "Savedata succesfully restored!"
+msgstr "Сохраненные данные успешно восстановлены!"
+
+#: src/menu/TitleOptionsState.cpp:846
+msgid "Savedata succesfully wiped!"
+msgstr "Сохраненные данные успешно удалены!"
+
+#: src/menu/TitleOptionsState.cpp:852
+msgid "Savedata succesfully moved!"
+msgstr "Сохраненные данные успешно перемещены!"
+
+#: src/menu/TitleOptionsState.cpp:857 src/menu/TitleOptionsState.cpp:862
+#: src/menu/TitleOptionsState.cpp:867 src/menu/TitleOptionsState.cpp:871
+msgid "Savedata succesfully copied!"
+msgstr "Сохраненные данные успешно скопированы!"
+
+#: src/menu/BatchTasksState.cpp:36
+msgid "Batch Tasks Menu"
+msgstr "Меню пакетных задач"
+
+#: src/menu/BatchTasksState.cpp:39
+msgid "   Batch Backup"
+msgstr "   Пакетный бекап"
+
+#: src/menu/BatchTasksState.cpp:41
+msgid "   Batch Restore"
+msgstr "   Пакетное восстановление"
+
+#: src/menu/BatchTasksState.cpp:43
+msgid "   Batch Wipe"
+msgstr "   Пакетная очистка"
+
+#: src/menu/BatchTasksState.cpp:45
+msgid "   Batch Move to Other Profile"
+msgstr "   Пакетное перемещение в другой профиль"
+
+#: src/menu/BatchTasksState.cpp:47
+msgid "   Batch Copy to Other Profile"
+msgstr "   Пакетное копирование в другой профиль"
+
+#: src/menu/BatchTasksState.cpp:49
+msgid "   Batch Copy to Other Device"
+msgstr "   Пакетное копирование на другое устройство"
+
+#: src/menu/BatchTasksState.cpp:60
+msgid ""
+"Batch Restore allows you to restore all savedata from a BatchBackup \n"
+"* to the same user profiles\n"
+"* to a different user in the same console \n"
+"* or to a different console where the games are already installed.\n"
+"Now it is not needed to run the game first to initialize the savedata."
+msgstr ""
+"Пакетное восстановление позволяет восстановить все данные сохранений из пакетной резервной копии \n"
+"* в те же профили пользователей\n"
+"* другому пользователю на той же консоли \n"
+"* или на другую консоль, где игры уже установлены.\n"
+"Теперь не нужно сначала запускать игру для инициализации данных сохранений."
+
+#: src/menu/BatchTasksState.cpp:63
+msgid "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
+msgstr "Пакетное удаление позволяет удалить данные сохранений, принадлежащие заданному профилю, во всех выбранных играх. Оно также обнаруживает данные сохранений, принадлежащие профилям, не определенным в консоли."
+
+#: src/menu/BatchTasksState.cpp:66
+msgid "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
+msgstr "Функция Пакетное перемещение в другой профиль позволяет перемещать данные сохранений из одного профиля пользователя в другой. Копирование данных не происходит, только переименование папок, поэтому процесс очень быстрый."
+
+#: src/menu/BatchTasksState.cpp:69
+msgid "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
+msgstr "Пакетное копирование на другой профиль позволяет передавать данные сохранений из одного профиля пользователя в другой профиль пользователя. Данные сохранений из исходных данных остаются нетронутыми."
+
+#: src/menu/BatchTasksState.cpp:72
+msgid "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
+msgstr "Пакетное копирование на другое устройство позволяет передавать данные сохранений между NAND и USB для всех выбранных игр, которые уже имеют данные сохранений на обоих носителях."
+
+#: src/menu/BatchTasksState.cpp:83
+msgid "\\ue002: Options \\ue000: Select Batch Task"
+msgstr "\\ue002: Параметры \\ue000: Выбор пакетной задачи"
+
+#: src/savemng.cpp:136
+msgid "Failed to open Loadiine game save directory."
+msgstr "Не удалось открыть каталог сохранения Loadiine."
+
+#: src/savemng.cpp:157 src/savemng.cpp:174
+msgid "Loadiine game folder not found."
+msgstr "Папка Loadiine не найдена."
+
+#: src/savemng.cpp:376 src/savemng.cpp:488 src/savemng.cpp:549
+#: src/savemng.cpp:965 src/savemng.cpp:1156 src/savemng.cpp:1256
+#: src/savemng.cpp:1320 src/savemng.cpp:1382 src/miisavemng.cpp:14
+msgid "Are you sure?"
+msgstr "Вы уверены?"
+
+#: src/savemng.cpp:382
+msgid "pre-copyToOtherDev backup"
+msgstr "pre-copyToOtherDev backup"
+
+#: src/savemng.cpp:391
+msgid "Copy failed."
+msgstr "Копирование не удалось."
+
+#: src/savemng.cpp:401 src/savemng.cpp:837 src/savemng.cpp:995
+msgid "source_user=-3 is not allowed for this task"
+msgstr "source_user=-3 не допускается для этой задачи"
+
+#: src/savemng.cpp:433 src/savemng.cpp:869
+msgid "Error copying common savedata."
+msgstr "Ошибка копирования общих данных сохранения."
+
+#: src/savemng.cpp:446 src/savemng.cpp:878
+msgid "Error copying savedata."
+msgstr "Ошибка копирования данных сохранения."
+
+#: src/savemng.cpp:447 src/savemng.cpp:517 src/savemng.cpp:879
+msgid "Error copying profile savedata."
+msgstr "Ошибка копирования данных сохранения профиля."
+
+#: src/savemng.cpp:467
+#, c-format
+msgid ""
+"%s\n"
+"Copy failed."
+msgstr ""
+"%s\n"
+"Копирование не удалось."
+
+#: src/savemng.cpp:494
+msgid "pre-copySavedataToOtherProfile backup"
+msgstr "pre-copySavedataToOtherProfile backup"
+
+#: src/savemng.cpp:495 src/savemng.cpp:556
+msgid "Backup Failed - Replicate aborted !!"
+msgstr "Сбой резервного копирования - Репликация прервана !!"
+
+#: src/savemng.cpp:528
+#, c-format
+msgid ""
+"%s\n"
+"Copy profile failed."
+msgstr ""
+"%s\n"
+"Не удалось скопировать профиль."
+
+#: src/savemng.cpp:555
+msgid "pre-moveSavedataToOtherProfile backup"
+msgstr "pre-moveSavedataToOtherProfile backup"
+
+#: src/savemng.cpp:574
+#, c-format
+msgid ""
+"Error deleting savedata folder\n"
+"%s"
+msgstr ""
+"Ошибка удаления папки savedata\n"
+"%s"
+
+#: src/savemng.cpp:581
+#, c-format
+msgid ""
+"Unable to rename folder \n"
+"'%s'to\n"
+"'%s'\n"
+"\n"
+"%s\n"
+"\n"
+"Please restore the backup, fix errors and try again"
+msgstr ""
+"Невозможно переименовать папку \n"
+"'%s'to\n"
+"'%s'\n"
+"\n"
+"%s\n"
+"\n"
+"Пожалуйста, восстановите резервную копию, исправьте ошибки \n"
+"и повторите попытку"
+
+#: src/savemng.cpp:600
+#, c-format
+msgid ""
+"%s\n"
+"Move profile failed."
+msgstr ""
+"%s\n"
+"Не удалось переместить профиль."
+
+#: src/savemng.cpp:730
+msgid "Do you want to cancel batch backup?"
+msgstr "Хотите отменить пакетное резервное копирование?"
+
+#: src/savemng.cpp:755
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Backup failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"%s\n"
+"\n"
+"Сбой резервного копирования.\n"
+"Ошибки на данный момент: %d\n"
+"Продолжить?"
+
+#: src/savemng.cpp:809
+msgid "BACKUP IN PROGRESS"
+msgstr "ИДЕТ РЕЗЕРВНОЕ КОПИРОВАНИЕ"
+
+#: src/savemng.cpp:819 src/savemng.cpp:904
+msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
+msgstr "Резервное копирование не сохранит разрешения. Это системная игра, и резервное копирование продолжится только после решения проблемы."
+
+#: src/savemng.cpp:822 src/savemng.cpp:907
+msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
+msgstr "Резервное копирование не сохранит разрешения. Оно может работать (в режиме совместимости), но рекомендуется решить проблему и повторить попытку."
+
+#: src/savemng.cpp:887
+msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
+msgstr "Предупреждение - Ошибка копирования метаданных saveinfo.xml. Не критично."
+
+#: src/savemng.cpp:896
+msgid "Error closing FAT32 chars translation file"
+msgstr "Ошибка закрытия файла преобразования символов FAT32"
+
+#: src/savemng.cpp:908
+msgid "WARNING - NO PERMS"
+msgstr "ПРЕДУПРЕЖДЕНИЕ - НЕТ РАЗРЕШЕНИЙ"
+
+#: src/savemng.cpp:1024
+msgid "Error restoring common savedata."
+msgstr "Ошибка восстановления общих сохраненных данных."
+
+#: src/savemng.cpp:1037
+msgid "Error restoring savedata."
+msgstr "Ошибка восстановления сохраненных данных."
+
+#: src/savemng.cpp:1038
+msgid "Error restoring profile savedata."
+msgstr "Ошибка восстановления сохраненных данных профиля."
+
+#: src/savemng.cpp:1092
+msgid "Error setting permissions"
+msgstr "Ошибка установки разрешений"
+
+#: src/savemng.cpp:1153
+msgid ""
+"This option is a last resort in case something has gone wrong when\n"
+"restoring data. It will wipe metadata and savedata, and the title \n"
+"will become uninitialized. It does nothing to the installed game code.\n"
+"It's equivalent to a complete savedata wipe from \n"
+"the Wii U Data Management menu.\n"
+"\n"
+"Continue?"
+msgstr "Этот вариант — крайняя мера на случай, если что-то пошло не так при восстановлении данных. Он удалит метаданные и данные сохранений, а название игры станет неинициализированным. Он никак не повлияет на установленный код игры. Это эквивалентно полному удалению данных сохранений из меню Управление данными на Wii U. Продолжить?"
+
+#: src/savemng.cpp:1153 src/savemng.cpp:1156 src/savemng.cpp:1382
+#: src/miisavemng.cpp:14
+msgid "Hm, are you REALLY sure?"
+msgstr "Вы ТОЧНО уверены?"
+
+#: src/savemng.cpp:1161 src/savemng.cpp:1259
+msgid "Backup current savedata first?"
+msgstr "Сделать сперва бекап сохранения?"
+
+#: src/savemng.cpp:1162
+msgid "pre-Wipe backup"
+msgstr "pre-Wipe backup"
+
+#: src/savemng.cpp:1163
+msgid "Backup Failed - Wipe aborted !!"
+msgstr "Сбой резервного копирования - Стирание прервано !!"
+
+#: src/savemng.cpp:1202
+msgid "Error wiping common savedata."
+msgstr "Ошибка при очистке общих сохраненных данных."
+
+#: src/savemng.cpp:1206
+msgid "Error deleting common folder."
+msgstr "Ошибка удаления общей папки."
+
+#: src/savemng.cpp:1207
+#, c-format
+msgid ""
+"%s \n"
+" Failed to delete common folder:\n"
+"%s\n"
+"%s"
+msgstr ""
+"%s \n"
+" Не удалось удалить папку:\n"
+"%s\n"
+"%s"
+
+#: src/savemng.cpp:1214
+msgid "Error wiping savedata."
+msgstr "Ошибка при очистке сохраненных данных."
+
+#: src/savemng.cpp:1215
+msgid "Error wiping profile savedata."
+msgstr "Ошибка при очистке сохраненных данных профиля."
+
+#: src/savemng.cpp:1220
+msgid "Error deleting savedata folder."
+msgstr "Ошибка удаления папки сохранения данных."
+
+#: src/savemng.cpp:1221
+msgid "Error deleting profile savedata folder."
+msgstr "Ошибка удаления папки сохранения профиля."
+
+#: src/savemng.cpp:1222
+#, c-format
+msgid ""
+"%s \n"
+" Failed to delete user folder:\n"
+"%s\n"
+"%s"
+msgstr ""
+"%s \n"
+" Не удалось удалить пользовательскую папку:\n"
+"%s\n"
+"%s"
+
+#: src/savemng.cpp:1232
+msgid "Error wiping metadata+savedata."
+msgstr "Ошибка очистки метаданных+сохраненных данных."
+
+#: src/savemng.cpp:1237
+msgid "Error deleting title folder."
+msgstr "Ошибка удаления папки заголовка."
+
+#: src/savemng.cpp:1238
+#, c-format
+msgid ""
+"%s \n"
+" Failed to delete title folder:\n"
+"%s\n"
+"%s"
+msgstr ""
+"%s \n"
+" Не удалось удалить папку с названием:\n"
+"%s\n"
+"%s"
+
+#: src/savemng.cpp:1387 src/savemng.cpp:1408
+msgid "Error setting path. Aborting."
+msgstr "Ошибка установки пути. Отмена."
+
+#: src/savemng.cpp:1393 src/savemng.cpp:1395 src/miisavemng.cpp:21
+#: src/miisavemng.cpp:23
+#, c-format
+msgid "Failed to delete slot %u."
+msgstr "Не удалось удалить слот %u."
+
+#: src/savemng.cpp:1397 src/miisavemng.cpp:25
+msgid ""
+"Folder $s\n"
+"does not exist."
+msgstr ""
+"Папка $s\n"
+"не существует."
+
+#: src/savemng.cpp:1404
+msgid "Wipe BackupSet - Are you sure?"
+msgstr "Wipe BackupSet - Вы уверены?"
+
+#: src/savemng.cpp:1404
+msgid "Wipe BackupSet - Hm, are you REALLY sure?"
+msgstr "Wipe BackupSet - Хм, вы ДЕЙСТВИТЕЛЬНО уверены?"
+
+#: src/savemng.cpp:1414 src/savemng.cpp:1418
+#, c-format
+msgid "Failed to delete backupSet %s."
+msgstr "Не удалось удалить набор резервных копий %s."
+
+#: src/savemng.cpp:1422
+#, c-format
+msgid ""
+"Folder %s\n"
+"does not exist."
+msgstr ""
+"Папка %s\n"
+"не существует."
+
+#: src/savemng.cpp:1468
+#, c-format
+msgid ""
+"Task completed. Results:\n"
+"\n"
+"- OK: %d\n"
+"- Warning: %d\n"
+"- KO: %d\n"
+"- Aborted: %d\n"
+"- Skipped: %d\n"
+msgstr ""
+"Задача выполнена. Результаты:\n"
+"\n"
+"- ОК: %d\n"
+"- Предупреждение: %d\n"
+"- KO: %d\n"
+"- Прервано: %d\n"
+"- Пропущено: %d\n"
+
+#: src/savemng.cpp:1470
+#, c-format
+msgid ""
+"Task completed. Results:\n"
+"\n"
+"- OK: %d\n"
+"- Warning: %d\n"
+"- KO: %d\n"
+"- Aborted: %d\n"
+"- Skipped: %d (including %d notInitialized)\n"
+msgstr ""
+"Задача выполнена. Результаты:\n"
+"\n"
+"- ОК: %d\n"
+"- Предупреждение: %d\n"
+"- KO: %d\n"
+"- Прервано: %d\n"
+"- Пропущено: %d (включая %d notInitialized)\n"
+
+#: src/savemng.cpp:1479
+msgid ""
+"\n"
+"Failed Titles:"
+msgstr ""
+"\n"
+"Неудачные заголовки:"
+
+#: src/savemng.cpp:1518
+#, c-format
+msgid ""
+"Unable to merge folder '%08x%08x' with existent folder\n"
+"'%s'\n"
+"\n"
+"Some backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+msgstr ""
+"Невозможно объединить папку '%08x%08x' с существующей папкой '%s'\n"
+"\n"
+"Некоторые резервные копии могли быть перемещены в эту последнюю папка. Исправьте ошибки и повторите попытку или вручную переместите содержимое из одной папки в другую.\n"
+"\n"
+"Операции резервного копирования/восстановления по-прежнему будут использовать старую папку '%08x%08x'"
+
+#: src/savemng.cpp:1525
+#, c-format
+msgid ""
+"Error creating/removing (test) target folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Move not tried!\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+msgstr ""
+"Ошибка создания/удаления (тестовой) целевой папки\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Перемещение не выполнено!\n"
+"\n"
+"Операции резервного копирования/восстановления по-прежнему будут \n"
+"использовать старую папку '%08x%08x'"
+
+#: src/savemng.cpp:1530
+#, c-format
+msgid ""
+"Unable to rename folder '%08x%08x' to\n"
+"'%s'\n"
+"\n"
+"%s\n"
+"\n"
+"Please fix errors and try again, or manually move contents from one folder to the other.\n"
+"\n"
+"Backup/restore operations will still use old '%08x%08x' folder"
+msgstr ""
+"Невозможно переименовать папку '%08x%08x' в'%s'\n"
+"\n"
+"%s\n"
+"\n"
+"Исправьте ошибки и повторите попытку или вручную переместите содержимое из одной папки в другую.\n"
+"\n"
+"Операции резервного копирования/восстановления по-прежнему будут использовать старую папку '%08x%08x'"
+
+#: src/savemng.cpp:1549
+#, c-format
+msgid ""
+"Failed to delete (test) folder \n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Не удалось удалить (тестовую) папку \n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/savemng.cpp:1581
+#, c-format
+msgid "Migrating from folder: %08x%08x"
+msgstr "Миграция из папки: %08x%08x"
+
+#: src/savemng.cpp:1587
+#, c-format
+msgid ""
+"Error renaming/moving '%08x%08x' to \n"
+"\n"
+"'%s'\n"
+"\n"
+"Conversion errors so far: %d\n"
+"\n"
+"Do you want to continue?\n"
+msgstr ""
+"Ошибка переименования/перемещения '%08x%08x' в \n"
+"\n"
+"'%s'\n"
+"\n"
+"Ошибки преобразования на данный момент: %d\n"
+"\n"
+"Хотите продолжить?\n"
+
+#: src/savemng.cpp:1614
+#, c-format
+msgid ""
+"Errors so far in this (sub)task: %d\n"
+"Do you want to continue?"
+msgstr ""
+"Ошибки на данный момент в этой (под)задаче: %d\n"
+"Хотите продолжить?"
+
+#: src/savemng.cpp:1632
+#, c-format
+msgid ""
+"Cannot move %s from '%08x%08x' to\n"
+"\n"
+"%s\n"
+"\n"
+"file already exists in target folder."
+msgstr ""
+"Невозможно переместить %s из '%08x%08x' в\n"
+"\n"
+"%s\n"
+"\n"
+"файл уже существует в целевой папке."
+
+#: src/savemng.cpp:1640
+#, c-format
+msgid ""
+"Error creating/removing (test) target folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Move not tried!"
+msgstr ""
+"Ошибка создания/удаления (тестовой) целевой папки\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Перемещение не выполнено!"
+
+#: src/savemng.cpp:1648
+#, c-format
+msgid ""
+"Cannot rename folder '%08x%08x/%s' to\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Невозможно переименовать папку '%08x%08x/%s' в\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/savemng.cpp:1657
+#, c-format
+msgid ""
+"Error while parsing folder content\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Migration may be incomplete"
+msgstr ""
+"Ошибка при анализе содержимого папки\n"
+"\n"
+"%s\n"
+"\n"
+"%s\n"
+"\n"
+"Миграция может быть неполным"
+
+#: src/savemng.cpp:1670
+#, c-format
+msgid ""
+"Error merging folders: after moving all slots, folder\n"
+"\n"
+"%s\n"
+"\n"
+"is still not empty and cannot be deleted."
+msgstr ""
+"Ошибка слияния папок: после перемещения всех слотов папка\n"
+"\n"
+"%s\n"
+"\n"
+"все еще не пуста и не может быть удалена."
+
+#: src/savemng.cpp:1676
+#, c-format
+msgid ""
+"Failed to delete (legacy) folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Не удалось удалить (устаревшую) папку\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+
+#: src/savemng.cpp:1711
+#, c-format
+msgid ""
+"Backup contains savedata for the profile '%s',\n"
+"but the profile does not exists in this console"
+msgstr ""
+"Резервная копия содержит данные сохранения для профиля '%s',\n"
+"но профиль отсутствует в этой консоли"
+
+#: src/savemng.cpp:1750
+#, c-format
+msgid "... and %d more"
+msgstr "... и %d больше"
+
+#: src/savemng.cpp:1915
+#, c-format
+msgid ""
+"Error setting quota for \n"
+"%s"
+msgstr ""
+"Ошибка установки квоты для \n"
+"%s"
+
+#: src/savemng.cpp:1942
+msgid "Error creating init data"
+msgstr "Ошибка создания инициализационных данных"
+
+#: src/savemng.cpp:1991
+msgid "Error creating vWii init data"
+msgstr "Ошибка создания данных инициализации vWii"
+
+#: src/savemng.cpp:2025
+#, c-format
+msgid ""
+"Sourcce saveinfo\n"
+"%s\n"
+" not found."
+msgstr ""
+"Источник saveinfo\n"
+"%s\n"
+" не найден."
+
+#: src/savemng.cpp:2058
+msgid "Warning - Error copying metadata saveinfo.xml. Not critical.\n"
+msgstr "Предупреждение - Ошибка копирования метаданных saveinfo.xml. Не критично.\n"
+
+#: src/Metadata.cpp:82 src/Metadata.cpp:94
+msgid ", from "
+msgstr ", из "
+
+#: src/cfg/ExcludesCfg.cpp:34 src/cfg/ExcludesCfg.cpp:51
+#: src/cfg/GlobalCfg.cpp:23
+#, c-format
+msgid "Error creating JSON object: %s"
+msgstr "Ошибка создания объекта JSON: %s"
+
+#: src/cfg/ExcludesCfg.cpp:41
+#, c-format
+msgid "Error creating JSON array: %s"
+msgstr "Ошибка создания массива JSON: %s"
+
+#: src/cfg/ExcludesCfg.cpp:74 src/cfg/GlobalCfg.cpp:35
+#, c-format
+msgid "Error dumping JSON object: %s"
+msgstr "Ошибка дампа объекта JSON: %s"
+
+#: src/cfg/ExcludesCfg.cpp:92 src/cfg/GlobalCfg.cpp:51
+#, c-format
+msgid ""
+"Error decoding JSON file\n"
+" %s\n"
+"in line %d:\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка декодирования файла JSON\n"
+" %s\n"
+"строка %d:\n"
+"\n"
+"%s"
+
+#: src/cfg/ExcludesCfg.cpp:98
+#, c-format
+msgid "Error: unexpected format (%s not an array)"
+msgstr "Ошибка: непредвиденный формат (%s не массив)"
+
+#: src/cfg/ExcludesCfg.cpp:148
+#, c-format
+msgid ""
+"Error parsing values in elements:\n"
+"%s"
+msgstr ""
+"Ошибка анализа значений в элементах:\n"
+"%s"
+
+#: src/cfg/BaseCfg.cpp:28
+#, c-format
+msgid ""
+"Critical - Path is not a directory:\n"
+"\n"
+"%s"
+msgstr ""
+"Критический - Путь не является каталогом:\n"
+"\n"
+"%s"
+
+#: src/cfg/BaseCfg.cpp:78
+#, c-format
+msgid ""
+"cfgPath was no initialized and cannot be used:\n"
+"\n"
+"%s"
+msgstr ""
+"cfgPath не был инициализирован и не может быть использован:\n"
+"\n"
+"%s"
+
+#: src/cfg/BaseCfg.cpp:96
+#, c-format
+msgid ""
+"Error reading file\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+"Ошибка чтения файла\n"
+"\n"
+"%s\n"
+"\n"
+"%s"

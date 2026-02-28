@@ -1,0 +1,104 @@
+#pragma once
+
+#include <cstdint>
+#include <map>
+#include <mii/MiiRepo.h>
+#include <string>
+#include <vector>
+
+class MiiRepo;
+
+class Mii {
+
+public:
+    enum eMiiType {
+        WII,
+        WIIU
+    };
+
+    enum eMiiKind {
+        NORMAL,  // Black
+        SPECIAL, // Yellow Pants
+        FOREIGN, // Blue pants
+        TEMP,    // Normal Temporary
+        S_TEMP   // Special Temporary
+    };
+
+    enum eBirthPlatform {
+        REV = 1,
+        DS = 2,
+        N3DS = 3,
+        WIIU_SWITCH = 4
+    };
+
+    Mii() {};
+    Mii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, eMiiType mii_type, eBirthPlatform birth_platform, MiiRepo *mii_repo, size_t index);
+    virtual ~Mii() {};
+
+    std::string mii_name{};
+    std::string creator_name{};
+    std::string timestamp{};
+    uint32_t hex_timestamp = 0;
+    std::string device_hash{};
+    uint64_t author_id = 0x0; // only for wii u
+    bool favorite = false;
+    bool copyable = false;
+    bool shareable = false;
+    uint8_t mii_id_flags = 0;
+    eMiiType mii_type = WIIU;
+    eBirthPlatform birth_platform = WIIU_SWITCH;
+    MiiRepo *mii_repo = nullptr;
+    size_t index = 0;
+    std::string device_hash_lite{};
+    bool is_valid = false;
+    std::string location_name{};
+    eMiiKind mii_kind = NORMAL;
+    bool dup_mii_id = false;
+
+    virtual Mii *v_populate_mii(uint8_t *mii_data, MiiRepo *mii_repo) = 0;
+    
+    const char *get_birth_platform_as_string();
+};
+
+class MiiData {
+
+public:
+
+    MiiData(uint8_t *mii_data, size_t mii_data_size) : mii_data(mii_data),mii_data_size{mii_data_size} {};
+    virtual ~MiiData() {
+        if (mii_data != nullptr)
+            free(mii_data);
+    }
+
+    virtual MiiData *clone() = 0;
+    virtual std::string get_mii_name() = 0;
+    virtual uint8_t get_gender() = 0;
+    virtual void get_birthdate_as_string(std::string &birth_month, std::string &birth_day) = 0;
+    virtual std::string get_name_as_hex_string() = 0;
+    virtual bool toggle_copy_flag() = 0;                                  // for Wii U
+    virtual bool transfer_ownership_from(MiiData *mii_data_template) = 0; // wii -> device, wiiu -> device+author_id
+    virtual bool transfer_appearance_from(MiiData *mii_data_template) = 0;
+    virtual bool update_timestamp(size_t delay) = 0;
+    virtual bool toggle_normal_special_flag() = 0;
+    virtual bool toggle_share_flag() = 0;
+    virtual bool toggle_temp_flag() = 0;
+    virtual bool toggle_favorite_flag() = 0;
+    virtual bool toggle_foreign_flag() = 0;
+    virtual bool make_it_local() = 0;
+    virtual bool get_favorite_flag() = 0;
+    virtual uint32_t get_timestamp() = 0;
+    virtual std::string get_device_hash() = 0;
+    virtual uint8_t get_miid_flags() = 0;
+
+    virtual bool set_normal_special_flag(size_t fold) = 0;
+
+    static void *allocate_memory(size_t size);
+    static bool str_2_raw_mii_data(const std::string &mii_data_str, unsigned char *mii_buffer, size_t mii_data_size);
+    static bool raw_mii_data_2_str(std::string &mii_data_str, unsigned char *mii_buffer, size_t buffer_size);
+
+    uint8_t *mii_data = nullptr;
+    size_t mii_data_size;
+
+    const static inline size_t MII_NAME_SIZE = 0xA;
+    
+};

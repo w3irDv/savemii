@@ -9,7 +9,8 @@ class TitleOptionsState : public ApplicationState {
 public:
     TitleOptionsState(Title &title,
                       eJobType task,
-                      int *versionList,
+                      std::string &gameBackupBasePath,
+                      std::vector<unsigned int> &versionList,
                       int8_t source_user,
                       int8_t wiiu_user,
                       bool common,
@@ -39,7 +40,9 @@ private:
     Title &title;
     eJobType task;
 
-    int *versionList;
+    std::string gameBackupBasePath;
+    std::vector<unsigned int> versionList;
+    int version = 0;
 
     int8_t source_user;
     int8_t wiiu_user;
@@ -58,12 +61,13 @@ private:
     std::string newTag{};
 
     int wiiUAccountsTotalNumber = 0;
-    int sourceAccountsTotalNumber = 0;
+    int volAccountsTotalNumber = 0;
 
     bool emptySlot = false;
     bool backupRestoreFromSameConsole = false;
     std::string slotInfo{};
     void updateSlotMetadata();
+    void updateSlotContentFlagForLoadiine();
 
     bool sourceHasRequestedSavedata = false;
     void updateSourceHasRequestedSavedata();
@@ -85,4 +89,11 @@ private:
     void updateCopyToOtherDeviceData();
     void updateWipeProfileData();
     void updateMoveCopyProfileData();
+    void updateLoadiine();
+
+    bool loadiine_mode =  LOADIINE_SHARED_SAVEDATA;
+    void updateLoadiineMode(int8_t user);
+    void updateLoadiineVersion();
+
+
 };

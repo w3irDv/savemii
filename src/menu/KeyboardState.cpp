@@ -14,7 +14,7 @@
 
 void KeyboardState::render() {
     DrawUtils::setFontColor(COLOR_INFO);
-    Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Keyboard"));
+    Console::consolePrintPosAligned(0, 4, 1, _("Keyboard"));
     DrawUtils::setFontColor(COLOR_TEXT);
     if (this->state == STATE_KEYBOARD) {
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -35,7 +35,7 @@ void KeyboardState::render() {
         Console::kConsolePrintPos(cursorPosX + KB_X_OFFSET, cursorPosY + KB_Y_OFFSET, cursorPosY * KB_ROW_OFFSET, "%s", keyboard->getCurrentKey().c_str());
         DrawUtils::drawKey(cursorPosX + KB_X_OFFSET, cursorPosY + KB_Y_OFFSET, cursorPosY * KB_ROW_OFFSET, COLOR_KEY_C);
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Press Key  \uE003: Shift  \uE002: Del  \ue045: OK!  \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"));
     }
 }
 

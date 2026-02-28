@@ -13,8 +13,8 @@ TOPDIR ?= $(CURDIR)
 # APP_SHORTNAME sets the short name of the application
 # APP_AUTHOR sets the author of the application
 #-------------------------------------------------------------------------------
-APP_NAME	    := SaveMii /ProcessMod
-APP_SHORTNAME	:= SaveMii
+APP_NAME	    := Save My Miis /ProcessMod
+APP_SHORTNAME	:= Save My Miis
 APP_AUTHOR	    := Ryuzaki-MrL (mod by w3irDv)
 
 include $(DEVKITPRO)/wut/share/wut_rules
@@ -32,7 +32,7 @@ include $(DEVKITPRO)/wut/share/wut_rules
 #-------------------------------------------------------------------------------
 TARGET		:=	savemii
 BUILD		:=	build
-SOURCES		:=	src src/utils src/menu src/cfg
+SOURCES		:=	src src/utils src/menu src/cfg src/mii 
 DATA		:=	data
 INCLUDES	:=	include
 CONTENT		:=
@@ -44,7 +44,9 @@ ROMFS 		:= 	romfs
 #-------------------------------------------------------------------------------
 # options for code generation
 #-------------------------------------------------------------------------------
-CFLAGS	:=	-std=gnu2x -g -Wall -Wextra -Werror -Ofast -ffunction-sections \
+#CFLAGS	:=	-std=gnu2x -g -Wall -Wextra -Werror -Ofast -ffunction-sections \
+
+CFLAGS	:=	-std=gnu2x -g -Wextra -Werror -Ofast -ffunction-sections \
 			$(MACHDEP) $(INCLUDE) -D__WIIU__ -D__WUT__ -D__wiiu__
 
 CXXFLAGS	:= -std=gnu++20 -g -Wall -Wextra -Werror -Ofast -fpermissive -ffunction-sections \
@@ -53,7 +55,7 @@ CXXFLAGS	:= -std=gnu++20 -g -Wall -Wextra -Werror -Ofast -fpermissive -ffunction
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) $(RPXSPECS) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lromfs-wiiu -lwut -lmocha -ljansson
+LIBS	:= -lromfs-wiiu -lwut -lmocha -ljansson -lmbedcrypto
 
 # Use the libromfs-wiiu submodule.
 EXTERNAL_LIBROMFS_WIIU_DIR := $(TOPDIR)/external/libromfs-wiiu
@@ -62,6 +64,14 @@ OFILES += $(ROMFS_TARGET)
 
 # Use the libmocha submodule.
 EXTERNAL_LIBMOCHA_DIR := $(TOPDIR)/external/libmocha
+
+# Use libs in libs
+INCLUDES += libs
+
+SOURCES += libs/segher-s_wii
+SOURCES += libs/schrift
+SOURCES += libs/tga_reader
+
 
 #-------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level

@@ -13,7 +13,7 @@
 bool FAT32EscapeFileManager::open_for_write() {
     fat32_rename.open(fat32_rename_file_path);
     if (!fat32_rename.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
         return false;
     }
     return true;
@@ -29,14 +29,14 @@ bool FAT32EscapeFileManager::append(const std::string &s_path, const std::string
         if (!fat32_rename.fail())
             return true;
     }
-    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error updating FAT32 chars translation file for file\n%s\n\n%s"), s_path.c_str(), strerror(errno));
+    Console::showMessage(ERROR_CONFIRM, _("Error updating FAT32 chars translation file for file\n%s\n\n%s"), s_path.c_str(), strerror(errno));
     return false;
 }
 
 bool FAT32EscapeFileManager::close() {
     fat32_rename.close();
     if (fat32_rename.fail()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
 
         return false;
     }
@@ -63,7 +63,7 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
     std::vector<RenameData> rename_vector;
     std::ifstream fat32_rename_ifs(fat32_rename_file_path);
     if (!fat32_rename_ifs.is_open()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error opening FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error opening FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
         goto generic_error;
     }
 
@@ -76,7 +76,7 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                 if (tPath.starts_with("t:D ")) {
                     tPath.erase(0, 4);
                 } else {
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Unexpected format for target in FAT32 translation file:\n%s"), tPath.c_str());
+                    Console::showMessage(ERROR_SHOW, _("Unexpected format for target in FAT32 translation file:\n%s"), tPath.c_str());
                     goto close_and_error;
                 }
             } else if (sPath.starts_with("s:F ")) {
@@ -85,12 +85,20 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                 if (tPath.starts_with("t:F ")) {
                     tPath.erase(0, 4);
                 } else {
-                    Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Unexpected format for taget in FAT32 translation file:\n%s"), tPath.c_str());
+                    Console::showMessage(ERROR_SHOW, _("Unexpected format for taget in FAT32 translation file:\n%s"), tPath.c_str());
                     goto close_and_error;
                 }
             } else {
-                Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("Unexpected format for source in FAT32 translation file:\n%s"), tPath.c_str());
+                Console::showMessage(ERROR_SHOW, _("Unexpected format for source in FAT32 translation file:\n%s"), tPath.c_str());
                 goto close_and_error;
+            }
+        }
+        if (enable_filtered_escape_path) {
+            if (sPath.find(source_profile_subpath) == std::string::npos)
+                continue;
+            if (needs_profile_translation) {
+                sPath.replace(sPath.find(source_profile_subpath),source_profile_subpath.size(),target_profile_subpath);
+                tPath.replace(tPath.find(source_profile_subpath),source_profile_subpath.size(),target_profile_subpath);
             }
         }
         RenameData renameElement = {.source = sPath, .target = tPath, .fileType = file_type};
@@ -98,17 +106,17 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
     }
 
     if (!fat32_rename_ifs.eof()) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error parsing FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error parsing FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
         goto close_and_error;
     }
     fat32_rename_ifs.close();
     if (errno != 0) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing FAT32 chars translation file \n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
         goto generic_error;
     }
 
     if (rename_vector.size() == 0) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("FAT32 chars translation file is empty\n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("FAT32 chars translation file is empty\n%s\n\n%s"), fat32_rename_file_path.c_str(), strerror(errno));
         goto generic_error;
     }
 
@@ -119,7 +127,7 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
             if (rename(sPath.c_str(), tPath.c_str()) == 0)
                 continue;
             else {
-                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot rename folder \n%s\n\n%s"), sPath.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, _("Cannot rename folder \n%s\n\n%s"), sPath.c_str(), strerror(errno));
                 goto close_and_error;
             }
         } else {                                           // IS_FILE
@@ -131,14 +139,14 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                     unlink(sPath.c_str());                             // target path can be 68 chars at most, including storage_slccc01:
                     continue;
                 } else {
-                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot rename file \n%s\n\n%s"), sPath.c_str(), strerror(errno));
+                    Console::showMessage(ERROR_CONFIRM, _("Cannot rename file \n%s\n\n%s"), sPath.c_str(), strerror(errno));
                     goto close_and_error;
                 }
             } else {
                 if (rename(sPath.c_str(), tPath.c_str()) == 0) // Just for other cases, for mlc and usb devs, FSArename works for any number of entries with forbidden chars in path, rename only for one
                     continue;
                 else {
-                    Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot rename folder \n%s\n\n%s"), sPath.c_str(), strerror(errno));
+                    Console::showMessage(ERROR_CONFIRM, _("Cannot rename folder \n%s\n\n%s"), sPath.c_str(), strerror(errno));
                     goto close_and_error;
                 }
             }
@@ -270,8 +278,12 @@ void Escape::convertToFAT32ASCIICompliant(const std::string &originalName, std::
 bool Escape::genUniqueEscapedPath(const std::string &initial_spath, const std::string &initial_tpath, std::string &escaped_tpath) {
 
     uint8_t repl = 63; // first char will be @, A, B , ...
-    std::string escaped_spath{};
+    // let's assume the initial path and escape path may be alredy ok
+    std::string escaped_spath{initial_spath};
+    escaped_tpath = initial_tpath;
+    bool containsForbidden = false;
     if (escapeSpecialFAT32Chars(initial_spath, escaped_spath, ONLY_ENDNAME, "_") && escapeSpecialFAT32Chars(initial_tpath, escaped_tpath, ONLY_ENDNAME, "_")) {
+        containsForbidden = true;
         while ((FSUtils::checkEntry(escaped_spath.c_str()) != 0) || (FSUtils::checkEntry(escaped_tpath.c_str()) != 0)) { // path exists
             if (++repl > 123)
                 return false; // last character: z
@@ -282,12 +294,13 @@ bool Escape::genUniqueEscapedPath(const std::string &initial_spath, const std::s
             escapeSpecialFAT32Chars(initial_tpath, escaped_tpath, ONLY_ENDNAME, replacement);
         }
     }
-    return true;
+    return containsForbidden;
 }
 
 bool Escape::constructEscapedSourceAndTargetPaths(const std::string &initial_spath, const std::string &initial_tpath, std::string &escaped_spath, std::string &escaped_tpath, std::string &basepath_escaped_spath) {
 
-    // only end_path can need escaping;
+    // by construction, wen we call the function only the end_path can need escaping, the basepath is already FAT32 compliant
+    // if path does not contains forbidden chars or we cannot generate an escaped name, we return false
     if (!genUniqueEscapedPath(initial_spath, initial_tpath, escaped_tpath))
         return false;
 

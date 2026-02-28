@@ -11,9 +11,9 @@
 class BatchJobTitleSelectState : public ApplicationState {
 public:
     BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup, Title *titles,
-                             int titlesCount, bool isWiiUBatchJob, eJobType jobType);
+                             int titlesCount, eTitleType titleType, eJobType jobType);
 
-    BatchJobTitleSelectState(Title *titles, int titlesCount, bool isWiiUBatchJob, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType);
+    BatchJobTitleSelectState(Title *titles, int titlesCount, eTitleType titleType, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType);
 
     enum eState {
         STATE_BATCH_JOB_TITLE_SELECT,
@@ -35,13 +35,13 @@ private:
     bool fullBackup;
     Title *titles;
     int titlesCount;
-    bool isWiiUBatchJob;
+    eTitleType titleType;
 
 
-    std::vector<const char *> sortNames = {LanguageUtils::gettext("None"),
-                                           LanguageUtils::gettext("Name"),
-                                           LanguageUtils::gettext("Storage"),
-                                           LanguageUtils::gettext("Strg+Nm")};
+    std::vector<const char *> sortNames = {_("None"),
+                                           _("Name"),
+                                           _("Storage"),
+                                           _("Strg+Nm")};
 
     int titleSort = 1;
     int scroll = 0;
@@ -52,7 +52,8 @@ private:
     bool noTitles = false;
 
     std::vector<int> c2t;
-    int candidatesCount;
+    int candidatesCount = 0;
+    int excludedFromCandidates = 0;
 
     void updateC2t();
 

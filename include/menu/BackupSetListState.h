@@ -8,7 +8,7 @@
 class BackupSetListState : public ApplicationState {
 public:
     BackupSetListState();
-    BackupSetListState(Title *titles, int titlesCount, bool isWiiUBatchJob);
+    BackupSetListState(Title *titles, int titlesCount, eTitleType titleType);
 
     static void resetCursorPosition();
     static void resetCursorAndScroll();
@@ -44,7 +44,7 @@ private:
     Title *titles;
     int titlesCount;
 
-    bool isWiiUBatchJob;
+    eTitleType titleType;
 
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);

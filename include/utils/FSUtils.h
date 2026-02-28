@@ -10,6 +10,8 @@
 #define __FSAShimSend                   ((FSError (*)(FSAShimBuffer *, uint32_t))(0x101C400 + 0x042d90))
 
 #define GENERATE_FAT32_TRANSLATION_FILE true
+#define NOFAT32_TRANSLATION false
+#define ENABLE_STAT_MANAGER true
 
 struct file_buffer {
     void *buf;
@@ -24,12 +26,14 @@ namespace FSUtils {
 
     bool initFS() __attribute__((__cold__));
     void shutdownFS() __attribute__((__cold__));
+    void deinit_fs_buffers();
 
     void FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint64_t accountSize, uint64_t commonSize);
     std::string getUSB();
     std::string newlibtoFSA(std::string path);
     void flushVol(const std::string &srcPath);
     bool setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror);
+    bool setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror);
 
     int checkEntry(const char *fPath);
 
@@ -48,12 +52,17 @@ namespace FSUtils {
         return fsize;
     }
 
-    bool copyFile(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file = false);
-    bool copyDir(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file = false); // Source: ft2sd
+    bool copyFile(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file = false, bool enable_stat_manager = false);
+    bool copyDir(const std::string &sPath, const std::string &initial_tPath, bool if_generate_FAT32_translation_file = false, bool enable_stat_manager = false); // Source: ft2sd
 
     void showFileOperation(const std::string &file_name, const std::string &file_src, const std::string &file_dest);
     void showDeleteOperations(bool isFolder, const char *name, const std::string &path);
     int32_t loadFile(const char *fPath, uint8_t **buf) __attribute__((hot));
     int32_t loadFilePart(const char *fPath, uint32_t start, uint32_t size, uint8_t **buf);
+
+    bool folderEmpty(const char *fPath);
+    bool folderEmptyIgnoreSavemii(const char *fPath);
+
+    int slc_resilient_rename(std::string &src_path, std::string &dst_path);
 
 } // namespace FSUtils

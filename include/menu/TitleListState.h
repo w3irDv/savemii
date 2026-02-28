@@ -7,10 +7,16 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
+#define IS_WIIU true
+#define IS_VWII false
+
 class TitleListState : public ApplicationState {
 public:
     explicit TitleListState(Title *titles, int titlesCount, bool isWiiU) : titles(titles),
-                                                                           titlesCount(titlesCount), isWiiU(isWiiU) {}
+                                                                           titlesCount(titlesCount), isWiiU(isWiiU) {
+        BackupSetList::setBackupSetEntry(BackupSetList::getSelectedEntryForIndividualTitles());
+        BackupSetList::setBackupSetSubPath();
+    }
     enum eState {
         STATE_TITLE_LIST,
         STATE_DO_SUBSTATE,
@@ -31,10 +37,10 @@ private:
 
     bool isWiiU;
 
-    std::vector<const char *> sortNames = {LanguageUtils::gettext("None"),
-                                           LanguageUtils::gettext("Name"),
-                                           LanguageUtils::gettext("Storage"),
-                                           LanguageUtils::gettext("Storage+Name")};
+    std::vector<const char *> sortNames = {_("None"),
+                                           _("Name"),
+                                           _("Storage"),
+                                           _("Storage+Name")};
 
     int titleSort = 1;
     int scroll = 0;

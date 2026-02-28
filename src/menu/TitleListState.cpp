@@ -25,16 +25,16 @@ void TitleListState::render() {
     if (this->state == STATE_TITLE_LIST) {
         if ((this->titles == nullptr) || (this->titlesCount == 0)) {
             DrawUtils::endDraw();
-            Console::showMessage(ERROR_SHOW, isWiiU ? LanguageUtils::gettext("No Wii U titles found.") : LanguageUtils::gettext("No vWii titles found."));
+            Console::showMessage(ERROR_SHOW, isWiiU ? _("No Wii U titles found.") : _("No vWii titles found."));
             this->noTitles = true;
             DrawUtils::beginDraw();
             DrawUtils::setRedraw(true);
             return;
         }
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAligned(0, 4, 1, isWiiU ? LanguageUtils::gettext("Wii U Titles") : LanguageUtils::gettext("vWii Titles"));
+        Console::consolePrintPosAligned(0, 4, 1, isWiiU ? _("Wii U Titles") : _("vWii Titles"));
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPosAligned(0, 4, 2, LanguageUtils::gettext("%s Sort: %s \ue084"),
+        Console::consolePrintPosAligned(0, 4, 2, _("%s Sort: %s \\ue084"),
                                (this->titleSort > 0) ? (this->sortAscending ? "\ue083 \u2193" : "\ue083 \u2191") : "", this->sortNames[this->titleSort]);
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= this->titlesCount)
@@ -51,8 +51,8 @@ void TitleListState::render() {
                                          this->titles[i + this->scroll].shortName,
                                          this->titles[i + this->scroll].isTitleOnUSB ? "(USB)" : "(NAND)",
                                          this->titles[i + this->scroll].isTitleDupe ? " [D]" : "",
-                                         this->titles[i + this->scroll].noFwImg ? LanguageUtils::gettext(" [vWiiInject]") : "",
-                                         this->titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
+                                         this->titles[i + this->scroll].noFwImg ? _(" [vWiiInject]") : "",
+                                         this->titles[i + this->scroll].saveInit ? "" : _(" [Not Init]"));
                 if (this->titles[i + this->scroll].iconBuf != nullptr) {
                     DrawUtils::drawTGA((M_OFF + X_OFFSET) * 12 + 4, (i + 3) * 24 + 4, 0.18, this->titles[i + this->scroll].iconBuf);
                 }
@@ -61,7 +61,7 @@ void TitleListState::render() {
                     DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT, COLOR_LIST_INJECT_AT_CURSOR, cursorPos, i);
                 Console::consolePrintPos(M_OFF + 1, i + 2, "   %s %s%s", titles[i + this->scroll].shortName,
                                          titles[i + this->scroll].isTitleDupe ? " [D]" : "",
-                                         titles[i + this->scroll].saveInit ? "" : LanguageUtils::gettext(" [Not Init]"));
+                                         titles[i + this->scroll].saveInit ? "" : _(" [Not Init]"));
                 if (titles[i + this->scroll].iconBuf != nullptr) {
                     DrawUtils::drawRGB5A3((M_OFF + X_OFFSET - 2) * 12 + 3, (i + 3) * 24 + 3 + 6, 0.25,
                                           titles[i + this->scroll].iconBuf);
@@ -70,7 +70,7 @@ void TitleListState::render() {
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(isWiiU ? -1 : -3, 2 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\ue000: Select Game   \ue085\ue07e\ue086: Paging   \ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select Game   \\ue085\\ue07e\\ue086: Paging   \\ue001: Back"));
     }
 }
 
@@ -94,28 +94,28 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                 return SUBSTATE_RUNNING;
             if (isWiiU) {
                 if (strcmp(this->titles[this->targ].shortName, "DONT TOUCH ME") == 0) {
-                    if (!Console::promptConfirm(ST_ERROR, LanguageUtils::gettext("CBHC save. Could be dangerous to modify. Continue?")) ||
-                        !Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Are you REALLY sure?"))) {
+                    if (!Console::promptConfirm(ST_ERROR, _("CBHC save. Could be dangerous to modify. Continue?")) ||
+                        !Console::promptConfirm(ST_WARNING, _("Are you REALLY sure?"))) {
                         return SUBSTATE_RUNNING;
                     }
                 }
                 /*
                 if(this->titles[this->targ].noFwImg)
-                    if (!Console::promptConfirm(ST_ERROR, LanguageUtils::gettext("vWii saves are in the vWii section. Continue?"))) {
+                    if (!Console::promptConfirm(ST_ERROR, _("vWii saves are in the vWii section. Continue?"))) {
                         return SUBSTATE_RUNNING;
                     }
                 */
             }
 
             if (!this->titles[this->targ].saveInit)
-                if (!Console::promptConfirm(ST_WARNING, LanguageUtils::gettext("Savedata for this title has not been initialized.\nYou can try to restore it, but in case that the restore fails,\nplease run the Game to create some initial savedata \nand try again.\n\nYou can continue to Task Selection")))
+                if (!Console::promptConfirm(ST_WARNING, _("Savedata for this title has not been initialized.\nYou can try to restore it, but in case that the restore fails,\nplease run the Game to create some initial savedata \nand try again.\n\nYou can continue to Task Selection")))
                     return SUBSTATE_RUNNING;
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
 
             if (isTitleUsingIdBasedPath(&this->titles[targ]) && BackupSetList::isRootBackupSet() && checkIdVsTitleNameBasedPath) {
-                const char *choices = LanguageUtils::gettext("SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\ue000  Yes, but only for this title\n\ue045  Yes, please migrate all %s\n\ue001  Not this time\n\ue002  Not in this session\n\n\n");
-                std::string message = StringUtils::stringFormat(choices, this->titles[targ].highID, this->titles[targ].lowID, this->titles[targ].titleNameBasedDirName, isWiiU ? LanguageUtils::gettext("Wii U Titles") : LanguageUtils::gettext("vWii Titles"));
+                const char *choices = _("SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\\ue000  Yes, but only for this title\n\\ue045  Yes, please migrate all %s\n\\ue001  Not this time\n\\ue002  Not in this session\n\n\n");
+                std::string message = StringUtils::stringFormat(choices, this->titles[targ].highID, this->titles[targ].lowID, this->titles[targ].titleNameBasedDirName, isWiiU ? _("Wii U Titles") : _("vWii Titles"));
                 bool done = false;
                 while (!done) {
                     Button choice = Console::promptMultipleChoice(ST_MULTIPLE_CHOICE, message.c_str());
@@ -135,9 +135,9 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                             [[fallthrough]];
                         case Button::B:
                             if (isTitleUsingTitleNameBasedPath(&this->titles[targ]))
-                                Console::showMessage(MULTIPLE_CHOICE_CONFIRM, LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them"), this->titles[targ].highID, this->titles[targ].lowID, this->titles[targ].titleNameBasedDirName);
+                                Console::showMessage(MULTIPLE_CHOICE_CONFIRM, _("Ok, legacy folder '%08x%08x' will be used.\n\nBackups in '%s' will not be accessible\n\nManually copy or migrate data beween folders to access them"), this->titles[targ].highID, this->titles[targ].lowID, this->titles[targ].titleNameBasedDirName);
                             else
-                                Console::showMessage(MULTIPLE_CHOICE_CONFIRM, LanguageUtils::gettext("Ok, legacy folder '%08x%08x' will be used."), this->titles[targ].highID, this->titles[targ].lowID);
+                                Console::showMessage(MULTIPLE_CHOICE_CONFIRM, _("Ok, legacy folder '%08x%08x' will be used."), this->titles[targ].highID, this->titles[targ].lowID);
                             done = true;
                             break;
                         default:

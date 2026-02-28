@@ -1,22 +1,66 @@
 #include <BackupSetList.h>
 #include <coreinit/debug.h>
 #include <menu/BackupSetListState.h>
-#include <menu/BatchBackupState.h>
-#include <menu/BatchJobOptions.h>
-#include <menu/BatchJobState.h>
+#include <menu/BatchTasksState.h>
 #include <menu/ConfigMenuState.h>
 #include <menu/MainMenuState.h>
+#include <menu/MiiProcessSharedState.h>
+#include <menu/MiiRepoSelectState.h>
+#include <menu/MiiTypeDeclarations.h>
 #include <menu/TitleListState.h>
 #include <savemng.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/FSUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
+#include <utils/MiiUtils.h>
+#include <utils/StringUtils.h>
 #include <utils/statDebug.h>
 
-#include <utils/StringUtils.h>
+#include <segher-s_wii/segher.h>
 
-#define ENTRYCOUNT 9
+#include <unistd.h>
+#include <utils/AmbientConfig.h>
+
+#define ENTRYCOUNT 6
+
+#include <coreinit/filesystem_fsa.h>
+#include <malloc.h>
+bool setOwner(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
+
+    fserror = FSAChangeMode(FSUtils::handle, FSUtils::newlibtoFSA(path).c_str(), mode);
+    if (fserror != FS_ERROR_OK) {
+        Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting permissions for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        return false;
+    }
+
+    FSAFlushVolume(FSUtils::handle, "/vol/storage_slcc01");
+
+    fserror = FS_ERROR_OK;
+    FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
+    if (!shim) {
+        Console::showMessage(ERROR_SHOW, _("Error creating shim for change perms\n\n%s"), path.c_str());
+        return false;
+    }
+
+    shim->clientHandle = FSUtils::handle;
+    shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
+    strcpy(shim->request.changeOwner.path, FSUtils::newlibtoFSA(path).c_str());
+    shim->request.changeOwner.owner = owner;
+    shim->request.changeOwner.group = group;
+    shim->command = FSA_COMMAND_CHANGE_OWNER;
+    fserror = __FSAShimSend(shim, 0);
+    free(shim);
+
+    if (fserror != FS_ERROR_OK) {
+        Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting owner/group for\n%s"), FSAGetStatusStr(fserror), path.c_str());
+        return false;
+    }
+
+    return true;
+}
+
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -28,73 +72,72 @@ void MainMenuState::render() {
     }
     if (this->state == STATE_MAIN_MENU) {
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAligned(0, 4, 1, LanguageUtils::gettext("Main menu"));
+        Console::consolePrintPosAligned(0, 4, 1, _("Main menu"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 2, LanguageUtils::gettext("   Wii U Save Management (%u Title%s)"), this->wiiuTitlesCount,
+        Console::consolePrintPos(M_OFF, 2, _("   Wii U Save Management (%u Title%s)"), this->wiiuTitlesCount,
                                  (this->wiiuTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 3, LanguageUtils::gettext("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
+        Console::consolePrintPos(M_OFF, 3, _("   vWii Save Management (%u Title%s)"), this->vWiiTitlesCount,
                                  (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 5, LanguageUtils::gettext("   Batch Backup"));
+        Console::consolePrintPos(M_OFF, 4, _("   Wii U System Titles Save Management (%u Title%s)"), this->wiiuSysTitlesCount,
+                                 (this->wiiuSysTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-        Console::consolePrintPos(M_OFF, 6, LanguageUtils::gettext("   Batch Restore"));
+        Console::consolePrintPos(M_OFF, 6, _("   Batch Tasks Management"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 7, LanguageUtils::gettext("   Batch Wipe"));
+        Console::consolePrintPos(M_OFF, 8, _("   BackupSet Management"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-        Console::consolePrintPos(M_OFF, 8, LanguageUtils::gettext("   Batch Move to Other Profile"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
-        Console::consolePrintPos(M_OFF, 9, LanguageUtils::gettext("   Batch Copy to Other Profile"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
-        Console::consolePrintPos(M_OFF, 10, LanguageUtils::gettext("   Batch Copy to Other Device"));
-        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 8);
-        Console::consolePrintPos(M_OFF, 12, LanguageUtils::gettext("   BackupSet Management"));
+        Console::consolePrintPos(M_OFF, 10, _("   Mii Management"));
+
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, 2 + cursorPos + ((cursorPos > 1) ? 1 : 0) + ((cursorPos > 7) ? 1 : 0), "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, LanguageUtils::gettext("\uE002: Options \ue000: Select Mode"));
+        Console::consolePrintPos(M_OFF, 2 + cursorPos + (cursorPos > 2 ? 1 : 0) + (cursorPos > 3 ? 1 : 0) + (cursorPos > 4 ? 1 : 0), "\u2192");
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Options \\ue000: Select Mode"));
     }
 }
+
 
 ApplicationState::eSubState MainMenuState::update(Input *input) {
     if (this->state == STATE_MAIN_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
+            std::vector<bool> mii_repos_candidates;
             switch (cursorPos) {
                 case 0:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<TitleListState>(this->wiiutitles, this->wiiuTitlesCount, true);
+                    this->subState = std::make_unique<TitleListState>(this->wiiutitles, this->wiiuTitlesCount, IS_WIIU);
                     break;
                 case 1:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, false);
+                    this->subState = std::make_unique<TitleListState>(this->wiititles, this->vWiiTitlesCount, IS_VWII);
                     break;
                 case 2:
+                    if (showSystemTitlesManagementDisclaimer) {
+                        if (!Console::promptConfirm(ST_WARNING, _("This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n\nProceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n\nDo you want to continue?\n\n")))
+                            return SUBSTATE_RUNNING;
+                        else
+                            showSystemTitlesManagementDisclaimer = false;
+                    }
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchBackupState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount);
+                    this->subState = std::make_unique<TitleListState>(this->wiiusystitles, this->wiiuSysTitlesCount, IS_WIIU);
                     break;
                 case 3:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, RESTORE);
+                    this->subState = std::make_unique<BatchTasksState>(this->wiiutitles, this->wiititles, this->wiiusystitles, this->wiiuTitlesCount, this->vWiiTitlesCount, this->wiiuSysTitlesCount);
                     break;
                 case 4:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, WIPE_PROFILE);
+                    this->substateCalled = STATE_BACKUPSET_MENU;
+                    this->subState = std::make_unique<BackupSetListState>();
                     break;
                 case 5:
                     this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, MOVE_PROFILE);
-                    break;
-                case 6:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobOptions>(this->wiiutitles, this->wiiuTitlesCount, true, PROFILE_TO_PROFILE);
-                    break;
-                case 7:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, COPY_TO_OTHER_DEVICE);
-                    break;
-                case 8:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->substateCalled = STATE_BACKUPSET_MENU;
-                    this->subState = std::make_unique<BackupSetListState>();
+                    if (FSUtils::checkEntry(MiiUtils::MiiRepos["RFL"]->path_to_repo.c_str()) != 1)
+                        MiiUtils::ask_if_to_initialize_db(MiiUtils::MiiRepos["RFL"], DB_NOT_FOUND);
+                    if (FSUtils::checkEntry(MiiUtils::MiiRepos["FFL"]->path_to_repo.c_str()) != 1)
+                        MiiUtils::ask_if_to_initialize_db(MiiUtils::MiiRepos["FFL"], DB_NOT_FOUND);
+                    MiiUtils::initial_checkpoint();
+                    for (size_t i = 0; i < MiiUtils::mii_repos.size(); i++)
+                        mii_repos_candidates.push_back(true);
+                    this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_SOURCE_REPO, &MiiUtils::mii_process_shared_state);
                     break;
                 default:
                     break;
@@ -110,9 +153,13 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN))
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
-        if (input->get(ButtonState::TRIGGER, Button::Y) || input->get(ButtonState::REPEAT, Button::Y)) {
+        if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
+            unlink("storage_slcc01:/title/00010000/534d4e50/data/file:ko");
+            unlink("storage_usb01:/usr/save/00050000/10101e00/user/8000000b/file:complain");
+            unlink("storage_usb01:/usr/save/00050000/1010ed00/user/common/file<complain");
+            unlink("storage_usb01:/usr/save/00050000/10184e00/user/common/file<complain");
             return SUBSTATE_RUNNING;
-        }
+        } 
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {
@@ -121,7 +168,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
         } else if (retSubState == SUBSTATE_RETURN) {
             //     if ( this->substateCalled == STATE_BACKUPSET_MENU) {
             //         slot = 0;
-            //         getAccountsFromVol(&this->title, slot);
+            //         AccountUtils::getAccountsFromVol(&this->title, slot);
             //     }
             this->subState.reset();
             this->state = STATE_MAIN_MENU;

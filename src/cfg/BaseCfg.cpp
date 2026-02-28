@@ -8,7 +8,7 @@
 
 BaseCfg::BaseCfg(const std::string &cfg) : cfg(cfg) {
 
-    cfgFile = cfgPath + "/savemii-" + Metadata::thisConsoleSerialId + "-" + cfg + ".json";
+    cfgFile = cfgPath + "/savemii-" + AmbientConfig::thisConsoleSerialId + "-" + cfg + ".json";
 }
 
 bool BaseCfg::init() {
@@ -20,12 +20,12 @@ bool BaseCfg::init() {
             if (FSUtils::createFolder(cfgPath.c_str()))
                 goto backupPathExists;
             else {
-                Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error while creating folder:\n\n%s\n\n%s"), cfgPath.c_str(), strerror(errno));
+                Console::showMessage(ERROR_CONFIRM, _("Error while creating folder:\n\n%s\n\n%s"), cfgPath.c_str(), strerror(errno));
                 initialized = false;
                 return false;
             }
         } else {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Critical - Path is not a directory:\n\n%s"), cfgPath.c_str());
+            Console::showMessage(ERROR_CONFIRM, _("Critical - Path is not a directory:\n\n%s"), cfgPath.c_str());
             initialized = false;
             return false;
         }
@@ -43,20 +43,22 @@ backupPathExists:
 bool BaseCfg::saveFile() {
     FILE *fp = fopen(cfgFile.c_str(), "wb");
     if (fp == nullptr) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for write\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Cannot open file for write\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
         return false;
     }
     if (fwrite(configString, strlen(configString), 1, fp) == 0)
         if (ferror(fp)) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error writing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Error writing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
             fclose(fp);
+            free(configString);
             return false;
         }
     if (fclose(fp) != 0) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+        free(configString);
         return false;
     }
-
+    free(configString);
     return true;
 }
 
@@ -73,13 +75,13 @@ bool BaseCfg::save() {
 bool BaseCfg::readFile() {
 
     if (initialized == false) {
-        Console::showMessage(ERROR_SHOW, LanguageUtils::gettext("cfgPath was no initialized and cannot be used:\n\n%s"), cfgPath.c_str());
+        Console::showMessage(ERROR_SHOW, _("cfgPath was no initialized and cannot be used:\n\n%s"), cfgPath.c_str());
         return false;
     }
 
     FILE *fp = fopen(cfgFile.c_str(), "rb");
     if (fp == nullptr) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Cannot open file for read\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Cannot open file for read\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
         return false;
     }
 
@@ -91,13 +93,13 @@ bool BaseCfg::readFile() {
 
     if (fread(configString, 1, len, fp) == 0)
         if (ferror(fp)) {
-            Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error reading file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+            Console::showMessage(ERROR_CONFIRM, _("Error reading file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
             fclose(fp);
             return false;
         }
     configString[len] = '\0';
     if (fclose(fp) != 0) {
-        Console::showMessage(ERROR_CONFIRM, LanguageUtils::gettext("Error closing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+        Console::showMessage(ERROR_CONFIRM, _("Error closing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
         return false;
     }
 

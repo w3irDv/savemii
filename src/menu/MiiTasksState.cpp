@@ -1,0 +1,292 @@
+#include <coreinit/debug.h>
+#include <cstring>
+#include <menu/MiiDBOptionsState.h>
+#include <menu/MiiRepoSelectState.h>
+#include <menu/MiiTasksState.h>
+#include <menu/MiiTransformTasksState.h>
+#include <utils/Colors.h>
+#include <utils/ConsoleUtils.h>
+#include <utils/DrawUtils.h>
+#include <utils/LanguageUtils.h>
+#include <utils/MiiUtils.h>
+
+void MiiTasksState::render() {
+    if (this->state == STATE_DO_SUBSTATE) {
+        if (this->subState == nullptr) {
+            OSFatal("SubState was null");
+        }
+        this->subState->render();
+        return;
+    }
+    if (this->state == STATE_MII_TASKS) {
+
+        bool fixed_stage_repo = (mii_repo->stage_repo != nullptr);
+
+        DrawUtils::setFontColor(COLOR_INFO);
+        Console::consolePrintPos(22, 0, _("Mii Tasks"));
+        DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+        Console::consolePrintPosAligned(0, 4, 2, _("Selected Repo: %s"), mii_repo->repo_name.c_str());
+
+        switch (mii_repo->db_kind) {
+            case MiiRepo::eDBKind::ACCOUNT: {
+                DrawUtils::setFontColor(COLOR_INFO);
+                Console::consolePrintPos(M_OFF, 2, _("DB management"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
+                Console::consolePrintPos(M_OFF, 3, _("   Backup DB"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
+                Console::consolePrintPos(M_OFF, 4, _("   Restore Full DB (Full restore - all account attributes - for one profile)"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
+                Console::consolePrintPos(M_OFF, 5, _("   Restore DB Mii Section (MiiData & MiiImg cross-account restore)"));
+                DrawUtils::setFontColor(COLOR_INFO);
+                Console::consolePrintPos(M_OFF, 7, _("Mii Management"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
+                Console::consolePrintPos(M_OFF, 8, _("   List Miis"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
+                if (fixed_stage_repo)
+                    Console::consolePrintPos(M_OFF, 9, _("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
+                else
+                    Console::consolePrintPos(M_OFF, 9, _("   Export Miis (account MiiData)"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
+                Console::consolePrintPos(M_OFF, 10, _("   Import Miis (account MiiData)"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
+                Console::consolePrintPos(M_OFF, 11, _("   Transform Miis"));
+                Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 2 ? 2 : 0), "\u2192");
+            } break;
+            default: {
+                DrawUtils::setFontColor(COLOR_INFO);
+                Console::consolePrintPos(M_OFF, 2, _("DB management"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
+                Console::consolePrintPos(M_OFF, 3, _("   Backup DB"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
+                Console::consolePrintPos(M_OFF, 4, _("   Restore DB"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
+                Console::consolePrintPos(M_OFF, 5, _("   Wipe DB"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
+                Console::consolePrintPos(M_OFF, 6, _("   Initialize DB"));
+                DrawUtils::setFontColor(COLOR_INFO);
+                Console::consolePrintPos(M_OFF, 8, _("Mii Management"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
+                Console::consolePrintPos(M_OFF, 9, _("   List Miis"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
+                if (fixed_stage_repo)
+                    Console::consolePrintPos(M_OFF, 10, _("   Export Miis (to %s)"), mii_repo->stage_repo->repo_name.c_str());
+                else
+                    Console::consolePrintPos(M_OFF, 10, _("   Export Miis"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
+                if (fixed_stage_repo)
+                    Console::consolePrintPos(M_OFF, 11, _("   Import Miis (from %s)"), mii_repo->stage_repo->repo_name.c_str());
+                else
+                    Console::consolePrintPos(M_OFF, 11, _("   Import Miis"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 7);
+                Console::consolePrintPos(M_OFF, 12, _("   Wipe Miis"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 8);
+                Console::consolePrintPos(M_OFF, 13, _("   Transform Miis"));
+                Console::consolePrintPos(M_OFF, cursorPos + 3 + (cursorPos > 3 ? 2 : 0), "\u2192");
+            };
+        }
+
+        const char *info;
+        if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+            switch (cursorPos) {
+                case 0:
+                    info = _("Backup All Wii U Account folders and files");
+                    break;
+                case 1:
+                    info = _("Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect.");
+                    break;
+                case 2:
+                    info = _("Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect.");
+                    break;
+                case 3:
+                    info = _("List all Miis and some of its attributes");
+                    break;
+                case 4:
+                    info = _("Export Miis to other repos");
+                    break;
+                case 5:
+                    info = _("Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect");
+                    break;
+                case 6:
+                    info = _("Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect");
+                    break;
+                default:
+                    info = "";
+            }
+
+        } else {
+            switch (cursorPos) {
+                case 0:
+                    info = _("Backup Mii Database in their enterity");
+                    break;
+                case 1:
+                    info = _("Restore Mii Database in their enterity");
+                    break;
+                case 2:
+                    info = _("Wipe Mii Database");
+                    break;
+                case 3:
+                    info = _("Initialize Mii Database with no Miis");
+                    break;
+                case 4:
+                    info = _("List all Miis and some of its attributes");
+                    break;
+                case 5:
+                    info = _("Export some Miis from this Database to another one");
+                    break;
+                case 6:
+                    info = _("Import some Miis from another Database to this one");
+                    break;
+                case 7:
+                    info = _("Wipe some Miis from the Mii Database");
+                    break;
+                case 8:
+                    info = _("Change attributes (share/copy/miiid/owner) or appareance of miis");
+                    break;
+                default:
+                    info = "";
+                    break;
+            }
+        }
+
+        int v_info_offset = 0;
+        if (mii_repo->db_kind == MiiRepo::eDBKind::ACCOUNT) {
+            if (cursorPos == 2 || cursorPos == 5 || cursorPos == 6)
+                v_info_offset = -3;
+            else
+                v_info_offset = -2;
+        } else {
+            v_info_offset = 0;
+        }
+
+        DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
+        Console::consolePrintPosAutoFormat(M_OFF, 15 + v_info_offset, info);
+
+        DrawUtils::setFontColor(COLOR_TEXT);
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select Task  \\ue001: Back"));
+    }
+}
+
+
+ApplicationState::eSubState MiiTasksState::update(Input *input) {
+    if (this->state == STATE_MII_TASKS) {
+        if (input->get(ButtonState::TRIGGER, Button::B)) {
+            return SUBSTATE_RETURN;
+        }
+        if (input->get(ButtonState::TRIGGER, Button::A)) {
+            std::vector<bool> mii_repos_candidates;
+            switch (mii_repo->db_kind) {
+                case MiiRepo::eDBKind::ACCOUNT:
+                    switch (cursorPos) {
+                        case 0:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::BACKUP_DB, mii_process_shared_state);
+                            break;
+                        case 1:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::RESTORE_DB, mii_process_shared_state);
+                            break;
+                        case 2:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_TARGET_MII_FOR_XRESTORE, mii_process_shared_state);
+                            break;
+                        case 3:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::LIST_MIIS, mii_process_shared_state);
+                            break;
+                        case 4:
+                            this->state = STATE_DO_SUBSTATE;
+                            if (mii_repo->stage_repo != nullptr) {
+                                mii_process_shared_state->auxiliar_mii_repo = mii_repo->stage_repo;
+                                this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_FOR_EXPORT, mii_process_shared_state);
+                            } else {
+                                MiiUtils::get_compatible_repos(mii_repos_candidates, mii_process_shared_state->primary_mii_repo);
+                                this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_EXPORT, mii_process_shared_state);
+                            }
+                            break;
+                        case 5:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MII_TO_BE_OVERWRITTEN, mii_process_shared_state);
+                            break;
+                        case 6:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED, mii_process_shared_state);
+                            break;
+                        default:;
+                    }
+                    break;
+                default:
+                    switch (cursorPos) {
+                        case 0:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::BACKUP_DB, mii_process_shared_state);
+                            break;
+                        case 1:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::RESTORE_DB, mii_process_shared_state);
+                            break;
+                        case 2:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::WIPE_DB, mii_process_shared_state);
+                            break;
+                        case 3:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiDBOptionsState>(mii_repo, MiiProcess::INITIALIZE_DB, mii_process_shared_state);
+                            break;
+                        case 4:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::LIST_MIIS, mii_process_shared_state);
+                            break;
+                        case 5:
+                            this->state = STATE_DO_SUBSTATE;
+                            if (mii_repo->stage_repo != nullptr) {
+                                mii_process_shared_state->auxiliar_mii_repo = mii_repo->stage_repo;
+                                this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_FOR_EXPORT, mii_process_shared_state);
+                            } else {
+                                MiiUtils::get_compatible_repos(mii_repos_candidates, mii_process_shared_state->primary_mii_repo);
+                                this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_EXPORT, mii_process_shared_state);
+                            }
+                            break;
+                        case 6:
+                            this->state = STATE_DO_SUBSTATE;
+                            if (mii_repo->stage_repo != nullptr) {
+                                mii_process_shared_state->auxiliar_mii_repo = mii_repo->stage_repo;
+                                this->subState = std::make_unique<MiiSelectState>(mii_repo->stage_repo, MiiProcess::SELECT_MIIS_FOR_IMPORT, mii_process_shared_state);
+                            } else {
+                                MiiUtils::get_compatible_repos(mii_repos_candidates, mii_process_shared_state->primary_mii_repo);
+                                this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_IMPORT, mii_process_shared_state);
+                            }
+                            break;
+                        case 7:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_TO_WIPE, mii_process_shared_state);
+                            break;
+                        case 8:
+                            this->state = STATE_DO_SUBSTATE;
+                            this->subState = std::make_unique<MiiSelectState>(mii_repo, MiiProcess::SELECT_MIIS_TO_BE_TRANSFORMED, mii_process_shared_state);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+            }
+        }
+        if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
+            if (--cursorPos == -1)
+                ++cursorPos;
+        }
+        if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
+            if (++cursorPos == entrycount)
+                --cursorPos;
+        }
+    } else if (this->state == STATE_DO_SUBSTATE) {
+        auto retSubState = this->subState->update(input);
+        if (retSubState == SUBSTATE_RUNNING) {
+            // keep running.
+            return SUBSTATE_RUNNING;
+        } else if (retSubState == SUBSTATE_RETURN) {
+            this->subState.reset();
+            this->state = STATE_MII_TASKS;
+        }
+    }
+    return SUBSTATE_RUNNING;
+}

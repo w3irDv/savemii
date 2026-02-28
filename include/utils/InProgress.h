@@ -12,4 +12,5 @@ public:
     inline static eJobType jobType = NONE;
     inline static bool abortCopy = false;
     inline static int copyErrorsCounter = 0;
+    inline static bool immediateAbort = false;
 };

@@ -25,6 +25,7 @@ void Console::showMessage(Style St, const char *message, ...) {
     } else {
         DrawUtils::clear(COLOR_BG_OK);
     }
+    DrawUtils::setFontColor(COLOR_TEXT);
 
 
     va_list va;
@@ -46,7 +47,7 @@ void Console::showMessage(Style St, const char *message, ...) {
         if (St & ST_CONFIRM) {
             size_t press_nLines;
             size_t maxLineWidth;
-            const char *press_to_continue = LanguageUtils::gettext("Press \ue000 to continue");
+            const char *press_to_continue = _("Press \\ue000 to continue");
             splitMessage(press_to_continue, formatted_message, maxLineWidth, press_nLines);
             int x = 31 - (maxLineWidth / 24);
             x = (x < -X_OFFSET) ? -X_OFFSET : x;
@@ -68,15 +69,17 @@ void Console::showMessage(Style St, const char *message, ...) {
         }
     } else if (St & ST_SHOW)
         sleep(DEFAULT_ERROR_WAIT);
+    else if (St & ST_DEBUG)
+        sleep(0);
 }
 
 bool Console::promptConfirm(Style st, const std::string &question) {
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     DrawUtils::setFontColor(COLOR_TEXT);
-    const std::string msg1 = LanguageUtils::gettext("\ue000 Yes - \ue001 No");
-    const std::string msg2 = LanguageUtils::gettext("\ue000 Confirm - \ue001 Cancel");
-    const std::string msg3 = LanguageUtils::gettext("\ue003 Confirm - \ue001 Cancel");
+    const std::string msg1 = _("\\ue000 Yes - \\ue001 No");
+    const std::string msg2 = _("\\ue000 Confirm - \\ue001 Cancel");
+    const std::string msg3 = _("\\ue003 Confirm - \\ue001 Cancel");
     std::string msg;
     switch (st & 0x0F) {
         case ST_YES_NO:
@@ -148,7 +151,7 @@ Button Console::promptMultipleChoice(Style st, const std::string &question) {
         DrawUtils::clear(COLOR_BG_OK);
     }
 
-    const std::string msg = LanguageUtils::gettext("Choose your option");
+    const std::string msg = _("Choose your option");
 
     size_t nLines = 0;
     size_t maxLineWidth = 0;
@@ -275,10 +278,10 @@ void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
 
         y += Y_OFFSET;
 
-        uint32_t maxLineLength = (MAX_PROMPT_WIDTH/12 - x - X_OFFSET) ;
+        uint32_t maxLineLength = (MAX_PROMPT_WIDTH / 12 - x - X_OFFSET);
         if (maxLineLength < 1) {
             DrawUtils::print((x + X_OFFSET) * 12, y * 24, "overflow");
-            return;   
+            return;
         }
 
         std::string currentLine;
@@ -298,7 +301,7 @@ void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
                     else
                         cplen = 1;
                     i += cplen;
-                    subLength = DrawUtils::getTextWidth(currentLine.substr(0,i).c_str()) / 12;
+                    subLength = DrawUtils::getTextWidth(currentLine.substr(0, i).c_str()) / 12;
                     splitPoint = i;
                     if (subLength > maxLineLength) {
                         break;
@@ -348,7 +351,7 @@ void Console::splitMessage(const char *tmp, std::string &formatted_message, size
                 last_line_width -= word_width;
                 if (word_width > MAX_PROMPT_WIDTH) {
                     std::string splitted_word;
-                    size_t cp_count = 0;
+                    size_t total_cp_width = 0;
                     for (unsigned i = 0; i < word.length();) {
                         size_t cplen;
                         if ((word[i] & 0xf8) == 0xf0)
@@ -362,21 +365,21 @@ void Console::splitMessage(const char *tmp, std::string &formatted_message, size
                         std::string current_cp = word.substr(i, cplen);
                         i += cplen;
                         size_t current_cp_width = stringWidth(current_cp);
-                        cp_count += current_cp_width;
-                        if (cp_count <= MAX_PROMPT_WIDTH) {
+                        total_cp_width += current_cp_width;
+                        if (total_cp_width <= MAX_PROMPT_WIDTH) {
                             splitted_word += current_cp;
-                            maxLineWidth = cp_count > maxLineWidth ? cp_count : maxLineWidth;
+                            maxLineWidth = total_cp_width > maxLineWidth ? total_cp_width : maxLineWidth;
                         } else {
                             splitted_word += "\n" + current_cp;
-                            cp_count = current_cp_width;
+                            total_cp_width = current_cp_width;
                             maxLineWidth = MAX_PROMPT_WIDTH;
                             nLines++;
                         }
                     }
                     word = splitted_word;
-                    word_width = cp_count;
+                    word_width = total_cp_width;
                 }
-                maxLineWidth = last_line_width > maxLineWidth ? last_line_width : maxLineWidth;
+                maxLineWidth = word_width > maxLineWidth ? word_width : maxLineWidth;
                 if (!multiline.empty())
                     nLines++;
                 multiline += multiline.empty() ? word : "\n" + word;
