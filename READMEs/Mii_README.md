@@ -7,7 +7,7 @@
 # Mii Management
 
 This menu allows you to:
-- Backup / Restore internal Wii U, Account and Wii Mii databases (repos)
+- Backup / Restore internal Wii U, Account and Wii Mii databases / repos
 - Wipe / Initialize internal Wii U and Wii Mii databases
 - Export / Import / Wipe individual Miis between internal Wii U/Account/Wii repos and stage repos on the SD (including SavegameManager GX repo)
 - Transform individual Miis on any repo. You can:
@@ -15,12 +15,12 @@ This menu allows you to:
 
 ### Relation between repos and tasks.
 Savemii has the following type of repos configured:
-- Internal Wii U (FFL), Account and Wii (RFL) databases.
+- Internal Wii U (FFL), Account Wii U and Wii (RFL) databases.
 - Stage folders: folder on the SD where you can put individual Mii files (FFL_Stage, Account_Stage, RFL_Stage and SGMX).
-- Custom DB Files: FFL/RFL or Account databases on the SD , for testing puposes. They live on the SD. When ready (after importing and transforming Miis as you wish), can be copied to CEMU or Dolphin installations.
+- Custom DB Files: FFL/RFL or Account databases on the SD, for testing puposes. They live on the SD. When ready (after importing and transforming Miis as you wish), can be copied to CEMU or Dolphin installations.
 
 **Notes**
-    - You can create an account custom db, by making an Account Mii Database backup and manually copying `8000000x/` folders from `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_account/(slot_number)/`  to `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_account_c`.
+    - You can create an account custom db, by making an Account Mii Database backup and manually copying `8000000x/` folders from `SD:/wiiu/backups/mii_repos_bckp/mii_bckp_account/(slot_number)/`  to `SD:/wiiu/backups/mii_repos/mii_repo_ACCOUNT_C`.
     - If a FFL database is found on the USB (as when mounting a NAND as a USB using ISFSHax), it will appear as `FFL_USB` repo.
 
 You can backup/restore any repo to/from a slot (whole databases). Each repo has its own set of slots, named from 0 to 255 (you can optionally tag them)
@@ -65,11 +65,11 @@ style idstage fill:#f9f,stroke:#333,stroke-width:1px
 2. Press `A` to initiate the backup or the restore. After the backup is done, you can tag the slot with a meaningful name pressing `+` button while you are in the backup menu. If the slot is unneeded, you can delete it by pressing `-` button.
 
 Backup will include:
-* FFL - Internal Wii U: FFL_ODB.dat and stadio.sav files. Can be moved between consoles.
-* RFL - Internal Wii: RFL_DB.dat file. Can be moved between consoles
+* Internal Wii U (FFL): FFL_ODB.dat and stadio.sav files. Can be moved between consoles.
+* Internal vWii (RFL): RFL_DB.dat file. Can be moved between consoles
 * Wii U Account database: all files under the act  profile folder for each profile in the console ( `account.dat`, `miiimgXX.dat`).
     `account.dat` has an attribute with the Mii image data (MiiData) but also contain the pasword of the profile and a lot of other stuff. For this reason, **Savemii only allows you to restore account data if it belongs to the same console** (i.e, if the serial id of the backup is the same than the serial id of the console when you are trying to restore). This check can be spoofed, **so be sure of what you are doing** in the case that you are restoring between different consoles, or if you try to restore a backup of a reinstalled console (which will probably share the serial id). In the later case, **the safe approach is just to Import individually each account Mii or use the Restore DB Mii Section task**.
-    `miimgXX.dat` are static pictures of the Mii that the Wii U apps can use. Is updated when you register a Mii against a profile. 
+    `miiimgXX.dat` are static pictures of the Mii that the Wii U apps can use. Is updated when you register a Mii against a profile. 
 * Stage folders: copy of the individual Mii files
 * Custom DB folders: same files that in the case of internal ones.
 

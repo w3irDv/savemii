@@ -76,8 +76,8 @@ You need to copy these files from the old Wii U console to the SD:
 to
 
 # watch out: no nested db folder
-SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/stadio.sav
-SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/FFL_ODB.dat     
+SD:/wiiu/backups/mii_repos_bckp/mii_bckp_ffl/(new number)/stadio.sav
+SD:/wiiu/backups/mii_repos_bckp/mii_bckp_ffl/(new number)/FFL_ODB.dat     
 ```
 #### vWii
 ```sh
@@ -85,7 +85,7 @@ SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/FFL_ODB.dat
 
 to
 
-SD:/wiiu/backups/MiiRepoBckp/mii_bckp_rfl/(new number)/RFL_DB.dat
+SD:/wiiu/backups/mii_repos_bckp/mii_bckp_rfl/(new number)/RFL_DB.dat
 ```
 
 and then use procedure `(B)` from step 2.
@@ -124,7 +124,7 @@ wfs-extract --input mlc.full.img --output dump_dir --type mlc --otp otp.bin --du
 ```
 
 From extracted data, `FFL_ODB.dat` and `stadio.sav` should be copied to the SD:
-- For (B), Pick files and copy to `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/stadio.sav` and `SD:/wiiu/backups/MiiRepoBckp/mii_bckp_ffl/(new number)/FFL_ODB.dat`
+- For (B), Pick files and copy to `SD:/wiiu/backups/mii_repos_bckp/mii_bckp_ffl/(new number)/stadio.sav` and `SD:/wiiu/backups/mii_repos_bckp/mii_bckp_ffl/(new number)/FFL_ODB.dat`
 - For (C), to `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat`
 
 ### Make imported Miis belong to the new console
