@@ -329,6 +329,8 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
 #endif
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
 
+    if (savemng::firstSDWrite)
+        sdWriteDisclaimer(COLOR_BACKGROUND);
 
     std::string tmp_db_filepath = db_filepath + "t";
     unlink(tmp_db_filepath.c_str());
