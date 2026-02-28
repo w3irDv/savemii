@@ -5,6 +5,7 @@
 #include <mii/MiiStadioSav.h>
 #include <mii/WiiMii.h>
 #include <mii/WiiUMii.h>
+#include <savemng.h>
 #include <string>
 #include <unistd.h>
 #include <utils/ConsoleUtils.h>
@@ -323,11 +324,24 @@ bool MiiFileRepo<MII, MIIDATA>::persist_repo() {
 
     std::string db_filepath = this->path_to_repo;
 
+    if (this->db_type == FFL) { // Update version
+        memcpy(&db_version, db_buffer + 4, 4);
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+        db_version = __builtin_bswap32(db_version);
+#endif
+        db_version++;
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+        db_version = __builtin_bswap32(db_version);
+#endif
+        memcpy(db_buffer + 4, &db_version, 4);
+    }
+
     uint16_t crc = MiiUtils::getCrc(db_buffer, MIIDATA::DB::CRC_OFFSET);
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     crc = __builtin_bswap16(crc);
 #endif
     memcpy(db_buffer + MIIDATA::DB::CRC_OFFSET, &crc, 2);
+
 
     if (savemng::firstSDWrite)
         sdWriteDisclaimer(COLOR_BACKGROUND);
@@ -504,7 +518,7 @@ bool MiiFileRepo<MII, MIIDATA>::wipe_miidata(size_t index) {
             delete miidata;
         }
     }
-    
+
     size_t target_location = this->mii_location.at(index);
 
     memset(this->db_buffer + MIIDATA::DB::OFFSET + target_location * MIIDATA::MII_DATA_SIZE, 0, MIIDATA::MII_DATA_SIZE);
