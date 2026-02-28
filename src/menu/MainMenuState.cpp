@@ -154,16 +154,19 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
         if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
-            //char *arg[] = {(char *) "just to compile"};
-            //pack(1, arg);
-            //unpack(1, arg);
-            //statDebugUtils::statVol();
-            //const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/nRFL_DB.dat");
-            //FSError fserror;
-            //setOwner(0x1000400A,0x400, (FSMode) 0x666, pathrfl,fserror);
-            //statDebugUtils::statMiiEdit();
-            //statDebugUtils::statMiiMaker();
-            //statDebugUtils::statAct();
+            // INPUT POINT FOR SOME TESTING
+            /*
+            char *arg[] = {(char *) "just to compile"};
+            pack(1, arg);
+            unpack(1, arg);
+            statDebugUtils::statVol();
+            const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/nRFL_DB.dat");
+            FSError fserror;
+            setOwner(0x1000400A,0x400, (FSMode) 0x666, pathrfl,fserror);
+            statDebugUtils::statMiiEdit();
+            statDebugUtils::statMiiMaker();
+            statDebugUtils::statAct();
+            */
             /*
             Console::showMessage(ERROR_CONFIRM, "device_hash %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x",
                                  AmbientConfig::device_hash[0], AmbientConfig::device_hash[1], AmbientConfig::device_hash[2], AmbientConfig::device_hash[3], AmbientConfig::device_hash[4],
@@ -173,6 +176,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                                  AmbientConfig::mac_address.MACAddr[0], AmbientConfig::mac_address.MACAddr[1], AmbientConfig::mac_address.MACAddr[2],
                                  AmbientConfig::mac_address.MACAddr[3], AmbientConfig::mac_address.MACAddr[4], AmbientConfig::mac_address.MACAddr[5]);
             */
+            /*
             FSError fserror;
             Console::showMessage(WARNING_SHOW, "creating non-fat32 files");
             std::string path = "storage_slcc01:/title/00010000/534d4e50/data/file_ko";
@@ -218,7 +222,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             }
 
             FSUtils::flushVol(path);
-
+            */
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
