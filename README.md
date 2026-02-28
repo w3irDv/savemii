@@ -46,6 +46,12 @@ Use it at your own risk and please report any issues that may occur.
 </p>
 <p align="left">
 
+<p align="left">
+<a href="READMEs/Tips_README.md" title="Miis"><img src="READMEs/tips.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Tips_README.md" title="Miis">Tips</a>
+</p>
+<p align="left">
+
 ----
 
 ## Reasons to use /ProcessMod over previous mods:
@@ -77,4 +83,5 @@ Use it at your own risk and please report any issues that may occur.
 - V10lator for helping with a lot of stuff
 - Vague Rant for testing
 - xploit-U, for creating the WUT port
-- HEYimHeroic, WiiBrew and WUT MiiData information has been very useful in developing mii management features 
+- HEYimHeroic, WiiBrew and WUT MiiData information has been very useful in developing mii management features
+- GaryOderNichts, for UDPIH, that was a blessing after an unfortunate test 
