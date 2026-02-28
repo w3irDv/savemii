@@ -168,7 +168,7 @@ def __init__(self, ip='YOUR.IP.HE.RE', port=1337)
 python3 -i wupclient.py
 ```
 
-- Run these lines inside the interactive prompt. Substitute `"your_region_here"` by `"eur"`, "usa" or "jpn"
+- Run these lines inside the interactive prompt. Substitute `"your_region_here"` by "eur", "usa" or "jpn"
 
 
 ```python
@@ -185,8 +185,9 @@ restore_mii_maker("your_region_here")
 exit
 ```
 
-- Stop `wupserver`, go back to the `Recovery Menu` main screen, and Stop the Wii U
-- Power On the Wii U. It should start as usual.
+- Stop `wupserver`, go back to the `Recovery Menu` main screen, and Shutdown the Wii U
+- Unplug the UDPIH device
+- Power On the Wii U. It should start with no problems.
 
 
 
