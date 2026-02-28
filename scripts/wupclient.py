@@ -1,5 +1,5 @@
 # may or may not be inspired by plutoo's ctrrpc
-# qwii feb26: add (perhaps) mkquota & chown
+# qwii feb26: add mkquota & chown
 import errno    
 import socket
 import os
