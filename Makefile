@@ -13,8 +13,8 @@ TOPDIR ?= $(CURDIR)
 # APP_SHORTNAME sets the short name of the application
 # APP_AUTHOR sets the author of the application
 #-------------------------------------------------------------------------------
-APP_NAME	    := Save My Miis /ProcessMod
-APP_SHORTNAME	:= Save My Miis
+APP_NAME	    := SaveMii /ProcessMod+SaveMyMiis
+APP_SHORTNAME	:= SaveMii
 APP_AUTHOR	    := Ryuzaki-MrL (mod by w3irDv)
 
 include $(DEVKITPRO)/wut/share/wut_rules

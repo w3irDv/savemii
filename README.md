@@ -1,4 +1,4 @@
-# SaveMii WUT Port /ProcessMod /SaveMyMiis
+# SaveMii WUT Port /ProcessMod + SaveMyMiis
 
 <p align="center"><a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="savemii.png" width="350"></a></p>
 <p align="center">
@@ -7,13 +7,14 @@
 
 **WiiU/vWii Save + Mii Manager**
 
-`Original by Ryuzaki-MrL - Mod by GabyPCGeek - WUT Port by DaThinkingChair - /ProcessMod & /SaveMyMiis by w3irDv.`
+`Original by Ryuzaki-MrL - Mod by GabyPCGeek - WUT Port by DaThinkingChair`<br>
+`/ProcessMod + SaveMyMiis by w3irDv.`
 
-This homebrew allows you to back up your Wii U and vWii saved games and miis to the SD card and restore them later.
+This homebrew allows you to back up your Wii U/vWii games savedata and your Miis to the SD card, and restore them later.
 
-This mod expands SaveMii's capabilities:
+This mod expands SaveMii's original capabilities:
 - to manage titles in bulk: multiple titles can be saved, restored and wiped at once using batch functions.
-- It can also backup all Mii databases and import/export/transform any mii. 
+- to backup/restore Mii databases and import/export/transform any mii. 
 
 Savedata can also be easily moved between Wii U profiles, simplifying `Pretendo` setup.
 
