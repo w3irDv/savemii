@@ -154,7 +154,7 @@ key_type=WPA2_PSK_AES
 - Copy the backup of the Mii Maker `common` folder into `mm_bckp`
     - use the last backup you have
     - If you don't have one handy, keep in mind that the first time SaveMii ran a Mii management task, it created a backup in `sd:/wiiu/backups/mii_db_checkpoint/(WiiU serial number)`   
-- The layout should be:
+The layout should be:
 ```
 wupclient.py
 mm_bckp/stadio.sav
