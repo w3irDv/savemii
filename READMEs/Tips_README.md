@@ -1,19 +1,10 @@
 
-<head>
-<link rel="stylesheet" href="readme.css">
-</head>
-
-<div class="container">
-  <div class="left-element">Text on the left</div>
-  <div class="right-element">Text on the right</div>
-</div>
-
 <p align="right">
 <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii">Back</a>&nbsp&nbsp
 <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
 <p align="right">
 
-
+# Tips
 --- 
 - [Restoring savedata not belonging to your WiiU](#restoring-savedata-not-belonging-to-your-wiiu)
 - [Transfer Savedata to/from your Pretendo account](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)

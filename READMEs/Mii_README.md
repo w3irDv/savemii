@@ -3,7 +3,8 @@
 <a href="https://github.com/w3irdv/savemii/#savemii-wut-port-processmod" title="SaveMii"><img src="../savemii.png" width="125" align="center"></a>
 <p align="right">
 
-## Mii Management
+
+# Mii Management
 
 This menu allows you to:
 - Backup / Restore internal Wii U, Account and Wii Mii databases (repos)
