@@ -79,9 +79,9 @@ Use it at your own risk and please report any issues that may occur.
 
 - Bruno Vinicius, for the icon
 - Maschell, for libmocha and countless help
-- Crementif for helping with freetype
-- V10lator for helping with a lot of stuff
-- Vague Rant for testing
+- Crementif, for helping with freetype
+- V10lator, for helping with a lot of stuff
+- Vague Rant, for testing
 - xploit-U, for creating the WUT port
-- HEYimHeroic, WiiBrew and WUT MiiData information has been very useful in developing mii management features
+- HEYimHeroic, WiiBrew and WUT MiiData, for the unvaluable information on mii stuff
 - GaryOderNichts, for UDPIH, that was a blessing after an unfortunate test 
