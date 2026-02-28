@@ -6,9 +6,9 @@
 
 --- 
 - [Restoring savedata not belonging to your WiiU](#restoring-savedata-not-belonging-to-your-wiiu)
-- [Transfer Savedata to/from your Pretendo account]()
-- [Restore miis from your previous console]()
-- [Recover your Wii U in case of a brick after a faulty System title restore]()
+- [Transfer Savedata to/from your Pretendo account](../tutorials/Pretendo%20Network%20savedata%20Transfer.md)
+- [Restore miis from your previous console](d#restore-miis-from-your-previous-console)
+- [Recover your Wii U in case of a brick after a faulty System title restore](#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore)
 ---
 
 
@@ -130,6 +130,8 @@ Imported miis from a different console will appear as foreign miis in Mii Maker 
 ## Recover your Wii U in case of a brick after a faulty System title restore
 
 In extreme cases, a faulty restore of a system title can lead to a brick of your console. For example, you decide to wipe de Mii Make savedata expecting that the next time you open it the mii database will be initialized from scratch with the right permissions. But Mii Maker savedata contains also some FaceLib lib files that the Wii U Menu uses to render miis in the initial selection screen. It does not find them, and the startup process hangs on the Wii U logo forever ...
+
+We will cover the case that an error manipulating Mii Maker savedata leads to a brick. For orher cases, a straighforward adaption of functions `wipe_mii_maker/check_mii_maker_is_wiped/restore_mii_maker` in `wupclient.py` will be needed. 
 
 You will need a backup of the Mii Maker savedata. Always perform an `All Users` backup before trying any restore!
 
