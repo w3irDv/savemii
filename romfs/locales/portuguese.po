@@ -185,7 +185,7 @@ msgstr "Banco de dados de Miis do Wii U montado no USB"
 #: src/utils/MiiUtils.cpp:216
 #, c-format
 msgid ""
-"In case you need this files in the future, you will find them here:\n"
+"In case you need these files in the future, you will find them here:\n"
 "%s"
 msgstr ""
 "Caso precise desses arquivos no futuro, você os encontrará aqui:\n"

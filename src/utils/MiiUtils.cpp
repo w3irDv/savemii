@@ -237,7 +237,7 @@ bool MiiUtils::initial_checkpoint() {
         }
     }
 
-    Console::showMessage(OK_CONFIRM, _("In case you need this files in the future, you will find them here:\n%s"), checkpointDirSD.c_str());
+    Console::showMessage(OK_CONFIRM, _("In case you need these files in the future, you will find them here:\n%s"), checkpointDirSD.c_str());
     return true;
 }
 

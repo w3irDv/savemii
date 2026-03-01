@@ -185,7 +185,7 @@ msgstr "Wii U Mii 数据库已挂载到 USB"
 #: src/utils/MiiUtils.cpp:216
 #, c-format
 msgid ""
-"In case you need this files in the future, you will find them here:\n"
+"In case you need these files in the future, you will find them here:\n"
 "%s"
 msgstr ""
 "如果您将来需要这些文件，可以在这里找到它们：\n"
