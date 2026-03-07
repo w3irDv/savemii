@@ -112,6 +112,8 @@ bool MiiStadioSav::delete_mii_id_from_stadio(MiiData *miidata) {
         return true;
 
     memset(location, 0, WiiUMiiData::STADIO::STADIO_MII_SIZE);
+    if(stadio_alive_miis_counter > 0)
+        stadio_alive_miis_counter--;
 
     return true;
 }
@@ -212,6 +214,7 @@ bool MiiStadioSav::open_and_load_stadio() {
 
     for (size_t i = 0; i < WiiUMiiData::DB::MAX_MIIS; i++)
         stadio_empty_frames.push_back(true);
+    stadio_alive_miis_counter = 0;
 
     {
         uint8_t zero[10] = {0};
@@ -226,8 +229,10 @@ bool MiiStadioSav::open_and_load_stadio() {
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
             frame = __builtin_bswap16(frame);
 #endif
-            if (frame < WiiUMiiData::DB::MAX_MIIS)
+            if (frame < WiiUMiiData::DB::MAX_MIIS) {
                 stadio_empty_frames.at(frame) = false;
+                stadio_alive_miis_counter++;
+            }
         }
     }
 
@@ -354,10 +359,13 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata, eDBKind source_mii
     memcpy(empty_slot_offset + 0x10, miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
 
     memset(empty_slot_offset + 0x1C, pose++ % 14, 1);
+    if (source_mii_repo_kind == FFL )
+        stadio_alive_miis_counter++;
 
     stadio_last_mii_index++;
     stadio_last_mii_update++;
-    stadio_max_alive_miis++;
+    if (stadio_alive_miis_counter > stadio_max_alive_miis )
+        stadio_max_alive_miis = stadio_alive_miis_counter;
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     stadio_last_mii_index = __builtin_bswap64(stadio_last_mii_index);
     stadio_last_mii_update = __builtin_bswap64(stadio_last_mii_update);

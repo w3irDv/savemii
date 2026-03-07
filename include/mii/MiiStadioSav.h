@@ -49,6 +49,7 @@ public:
     uint64_t stadio_last_mii_update = 0;
     uint32_t stadio_max_alive_miis = 0;
     uint8_t pose = 0;
+    uint32_t stadio_alive_miis_counter = 0;
 
     size_t stadio_last_empty_location = 0;
     size_t stadio_last_empty_frame_index = 0;
