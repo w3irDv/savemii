@@ -51,7 +51,8 @@ public:
     uint8_t pose = 0;
     uint32_t stadio_alive_miis_counter = 0;
 
-    size_t stadio_last_empty_location = 0;
+    size_t FFL_stadio_last_empty_location = 0;
+    size_t ACCOUNT_stadio_last_empty_location = 0;
     size_t stadio_last_empty_frame_index = 0;
     std::vector<bool> stadio_empty_frames;
     uint8_t pseudo_random_initial_pose();
