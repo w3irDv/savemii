@@ -112,8 +112,9 @@ bool MiiStadioSav::delete_mii_id_from_stadio(MiiData *miidata) {
         return true;
 
     memset(location, 0, WiiUMiiData::STADIO::STADIO_MII_SIZE);
-    if(stadio_alive_miis_counter > 0)
+    if (stadio_alive_miis_counter > 0)
         stadio_alive_miis_counter--;
+    stadio_last_update_counter++;
 
     return true;
 }
@@ -203,10 +204,12 @@ bool MiiStadioSav::open_and_load_stadio() {
         goto free_after_fail;
     }
 
+    memcpy(&stadio_last_update_counter, stadio_buffer + 0x18, 4);
     memcpy(&stadio_last_mii_index, stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET, 8);
     memcpy(&stadio_last_mii_update, stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 8, 8);
     memcpy(&stadio_max_alive_miis, stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 0x10, 4);
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
+    stadio_last_update_counter = __builtin_bswap32(stadio_last_update_counter);
     stadio_last_mii_index = __builtin_bswap64(stadio_last_mii_index);
     stadio_last_mii_update = __builtin_bswap64(stadio_last_mii_update);
     stadio_max_alive_miis = __builtin_bswap32(stadio_max_alive_miis);
@@ -245,7 +248,34 @@ free_after_fail:
     return false;
 }
 
+
+void MiiStadioSav::update_global_counters() {
+
+    uint64_t timestamp = OSGetTime();
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    timestamp = __builtin_bswap64(timestamp);
+    stadio_last_update_counter = __builtin_bswap32(stadio_last_update_counter);
+    stadio_last_mii_index = __builtin_bswap64(stadio_last_mii_index);
+    stadio_last_mii_update = __builtin_bswap64(stadio_last_mii_update);
+    stadio_max_alive_miis = __builtin_bswap32(stadio_max_alive_miis);
+#endif
+    memcpy(stadio_buffer + 0x10, &timestamp, 8);
+    memcpy(stadio_buffer + 0x18, &stadio_last_update_counter, 4);
+    memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET, &stadio_last_mii_index, 8);
+    memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 8, &stadio_last_mii_update, 8);
+    memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 0x10, &stadio_max_alive_miis, 4);
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    timestamp = __builtin_bswap64(timestamp);
+    stadio_last_update_counter = __builtin_bswap32(stadio_last_update_counter);
+    stadio_last_mii_index = __builtin_bswap64(stadio_last_mii_index);
+    stadio_last_mii_update = __builtin_bswap64(stadio_last_mii_update);
+    stadio_max_alive_miis = __builtin_bswap32(stadio_max_alive_miis);
+#endif
+}
+
 bool MiiStadioSav::persist_stadio() {
+
+    this->update_global_counters();
 
     std::string db_filepath = this->path_to_stadio;
 
@@ -317,12 +347,12 @@ uint8_t *MiiStadioSav::find_stadio_empty_location(eDBKind source_mii_repo_kind) 
         case ACCOUNT:
             max_miis = WiiUMiiData::STADIO::STADIO_MAX_ACCOUNT_MIIS;
             stadio_mii_offset = WiiUMiiData::STADIO::STADIO_ACCOUNT_MIIS_OFFSET;
-            current_kind_stadio_last_empty_location = ACCOUNT_stadio_last_empty_location; 
+            current_kind_stadio_last_empty_location = ACCOUNT_stadio_last_empty_location;
             break;
         case FFL:
             max_miis = WiiUMiiData::DB::MAX_MIIS;
             stadio_mii_offset = WiiUMiiData::STADIO::STADIO_MIIS_OFFSET;
-            current_kind_stadio_last_empty_location = FFL_stadio_last_empty_location; 
+            current_kind_stadio_last_empty_location = FFL_stadio_last_empty_location;
             break;
         default:
             return nullptr;
@@ -365,35 +395,27 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata, eDBKind source_mii
     memcpy(empty_slot_offset + 0x10, miidata->mii_data + WiiUMiiData::MII_ID_OFFSET, WiiUMiiData::MII_ID_SIZE);
 
     memset(empty_slot_offset + 0x1C, pose++ % 14, 1);
-    if (source_mii_repo_kind == FFL )
+    if (source_mii_repo_kind == FFL)
         stadio_alive_miis_counter++;
 
+    stadio_last_update_counter++;
     stadio_last_mii_index++;
     stadio_last_mii_update++;
-    if (stadio_alive_miis_counter > stadio_max_alive_miis )
+    if (stadio_alive_miis_counter > stadio_max_alive_miis)
         stadio_max_alive_miis = stadio_alive_miis_counter;
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     stadio_last_mii_index = __builtin_bswap64(stadio_last_mii_index);
     stadio_last_mii_update = __builtin_bswap64(stadio_last_mii_update);
-    stadio_max_alive_miis = __builtin_bswap32(stadio_max_alive_miis);
     frame = __builtin_bswap16(frame);
 #endif
-
 
     memcpy(empty_slot_offset, &stadio_last_mii_index, 8);
     memcpy(empty_slot_offset + 8, &stadio_last_mii_update, 8);
     memcpy(empty_slot_offset + 0x1A, &frame, 2);
 
-    // probably can be safely moved to persist function
-    memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET, &stadio_last_mii_index, 8);
-    memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 8, &stadio_last_mii_update, 8);
-    memcpy(stadio_buffer + WiiUMiiData::STADIO::STADIO_GLOBALS_OFFSET + 0x10, &stadio_max_alive_miis, 4);
-
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
     stadio_last_mii_index = __builtin_bswap64(stadio_last_mii_index);
     stadio_last_mii_update = __builtin_bswap64(stadio_last_mii_update);
-    stadio_max_alive_miis = __builtin_bswap32(stadio_max_alive_miis);
-    frame = __builtin_bswap16(frame);
 #endif
 
 
@@ -403,13 +425,20 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata, eDBKind source_mii
 bool MiiStadioSav::fill_empty_stadio_file() {
 
     mempcpy(stadio_buffer, WiiUMiiData::STADIO::STADIO_MAGIC, 3);
-    memset(stadio_buffer + 5, 1, 1);    // doesn't seems to change
-    memset(stadio_buffer + 7, 5, 1);    // doesn't seems to change
-    memset(stadio_buffer + 0x1b, 1, 1); // this is updated every time the db is modified
+    memset(stadio_buffer + 5, 1, 1); // doesn't seems to change
+    memset(stadio_buffer + 7, 5, 1); // doesn't seems to change
 
     uint64_t timestamp = OSGetTime();
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    timestamp = __builtin_bswap64(timestamp);
+#endif
     memcpy(stadio_buffer + 0x10, &timestamp, 8);
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+    timestamp = __builtin_bswap64(timestamp);
+#endif
 
+    stadio_last_update_counter = 1;
+    memset(stadio_buffer + 0x1b, 1, 1); // this is updated every time the db is modified
 
     // Add Acoount MiiRepos
     if (this->account_repo != nullptr) {
@@ -447,6 +476,7 @@ bool MiiStadioSav::init_stadio_file() {
         return false;
     }
 
+    stadio_last_update_counter = 0;
     stadio_last_mii_index = 0;
     stadio_last_mii_update = 0;
     stadio_max_alive_miis = 0;
@@ -456,6 +486,8 @@ bool MiiStadioSav::init_stadio_file() {
     stadio_last_empty_frame_index = 0;
 
     this->fill_empty_stadio_file();
+
+    this->update_global_counters();
 
     unlink(db_filepath.c_str());
     std::ofstream db_file;
@@ -493,5 +525,5 @@ cleanup_after_io_error:
 }
 
 uint8_t MiiStadioSav::pseudo_random_initial_pose() {
-    return (uint8_t) (OSGetTick() % 14); 	
+    return (uint8_t) (OSGetTick() % 14);
 }

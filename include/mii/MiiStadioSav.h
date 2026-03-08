@@ -25,6 +25,7 @@ public:
     bool empty_stadio();
     bool init_stadio_file();
     bool fill_empty_stadio_file();
+    void update_global_counters();
     bool set_stadio_fsa_metadata();
     void set_stadio_owner(uint32_t stadio_owner) { this->stadio_owner = stadio_owner; }; // dynamically set for FFL
 
@@ -45,6 +46,7 @@ public:
     const std::string &stadio_description;
 
     uint8_t *stadio_buffer = nullptr;
+    uint32_t stadio_last_update_counter = 0;
     uint64_t stadio_last_mii_index = 0;
     uint64_t stadio_last_mii_update = 0;
     uint32_t stadio_max_alive_miis = 0;
