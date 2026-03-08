@@ -438,7 +438,15 @@ bool MiiStadioSav::fill_empty_stadio_file() {
 #endif
 
     stadio_last_update_counter = 1;
-    memset(stadio_buffer + 0x1b, 1, 1); // this is updated every time the db is modified
+    memset(stadio_buffer + 0x1B, 1, 1); // this is incremented every time the db is modified
+
+    // Disable some one-time messages 
+    memset(stadio_buffer + 0x1C, 1, 1); // if 0, welcome MiiMaker screens are shown, if 1 , they are skipped
+    memset(stadio_buffer + 0x40, 1, 1); // if 0, "You can save up to 3000 miis ..." message, if 1 , skipped
+    memset(stadio_buffer + 0x43, 1, 1); // if 0, "Choose features to create ..." message, if 1 , skipped
+    memset(stadio_buffer + 0x44, 1, 1); // if 0, "Mii characters with inappropriate names ...", if 1 , skipped
+
+    memset(stadio_buffer + 0x33117,0x3B,1); // Set to this value every time the db is modified
 
     // Add Acoount MiiRepos
     if (this->account_repo != nullptr) {
