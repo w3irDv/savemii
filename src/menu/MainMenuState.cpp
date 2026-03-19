@@ -18,7 +18,7 @@
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
 
-#include <segher-s_wii/segher.h>
+//#include <utils/DataBin.h>
 
 #include <unistd.h>
 #include <utils/AmbientConfig.h>
@@ -27,40 +27,6 @@
 
 #include <coreinit/filesystem_fsa.h>
 #include <malloc.h>
-bool setOwner(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
-
-    fserror = FSAChangeMode(FSUtils::handle, FSUtils::newlibtoFSA(path).c_str(), mode);
-    if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting permissions for\n%s"), FSAGetStatusStr(fserror), path.c_str());
-        return false;
-    }
-
-    FSAFlushVolume(FSUtils::handle, "/vol/storage_slcc01");
-
-    fserror = FS_ERROR_OK;
-    FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
-    if (!shim) {
-        Console::showMessage(ERROR_SHOW, _("Error creating shim for change perms\n\n%s"), path.c_str());
-        return false;
-    }
-
-    shim->clientHandle = FSUtils::handle;
-    shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-    strcpy(shim->request.changeOwner.path, FSUtils::newlibtoFSA(path).c_str());
-    shim->request.changeOwner.owner = owner;
-    shim->request.changeOwner.group = group;
-    shim->command = FSA_COMMAND_CHANGE_OWNER;
-    fserror = __FSAShimSend(shim, 0);
-    free(shim);
-
-    if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting owner/group for\n%s"), FSAGetStatusStr(fserror), path.c_str());
-        return false;
-    }
-
-    return true;
-}
-
 
 void MainMenuState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -154,10 +120,6 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
-            unlink("storage_slcc01:/title/00010000/534d4e50/data/file:ko");
-            unlink("storage_usb01:/usr/save/00050000/10101e00/user/8000000b/file:complain");
-            unlink("storage_usb01:/usr/save/00050000/1010ed00/user/common/file<complain");
-            unlink("storage_usb01:/usr/save/00050000/10184e00/user/common/file<complain");
             return SUBSTATE_RUNNING;
         } 
     } else if (this->state == STATE_DO_SUBSTATE) {
