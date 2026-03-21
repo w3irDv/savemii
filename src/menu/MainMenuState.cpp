@@ -18,7 +18,7 @@
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
 
-//#include <utils/DataBin.h>
+#include <utils/DataBin.h>
 
 #include <unistd.h>
 #include <utils/AmbientConfig.h>
@@ -119,9 +119,42 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN))
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
-        if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
+        if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
+            const char *savedata_folder = "fs:/vol/external01/pack_databin/test";
+            const char *databin = "fs:/vol/external01/pack_databin/data.bin";
+            u64 title_id = 0x00010000534d4e50;
+
+            char error_message[2048] = {0};
+
+            DataBin::get_keys_from_otp("fs:/vol/external01/wiiu/backups/FEH101753089");
+            DataBin::get_shared_keys("fs:/vol/external01");
+            DataBin::get_mac();
+
+            DataBin::pack(savedata_folder, databin, title_id, NULL, error_message);
+            Console::showMessage(OK_CONFIRM, "%s\n", error_message);
+
             return SUBSTATE_RUNNING;
-        } 
+        }
+        if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
+            //const char *databin = "fs:/vol/external01/unpack_databin/brawl.bin";
+            const char *databin = "fs:/vol/external01/pack_databin/data.bin";
+            u64 title_id = 0;
+
+            const char *extract_folder = "fs:/vol/external01/unpack_databin";
+
+            char error_message[2048]  = {0};
+
+            DataBin::get_shared_keys("fs:/vol/external01");
+            if (DataBin::get_title_id(databin, &title_id, error_message) != DBIN_OK)
+                Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);
+
+            if (DataBin::unpack(databin, extract_folder, USE_PERMS_FROM_DATA_BIN, error_message) != 0) {
+                Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);
+            }
+            Console::showMessage(OK_CONFIRM, "%s\n", error_message);
+
+            return SUBSTATE_RUNNING;
+        }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
         if (retSubState == SUBSTATE_RUNNING) {

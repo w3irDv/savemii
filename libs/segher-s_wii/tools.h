@@ -1,9 +1,8 @@
+#pragma once
+
 // Copyright 2007,2008  Segher Boessenkool  <segher@kernel.crashing.org>
 // Licensed under the terms of the GNU GPL, version 2
 // http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
-
-#ifndef _TOOLS_H
-#define _TOOLS_H
 
 // basic data types
 typedef unsigned char u8;
@@ -11,6 +10,16 @@ typedef unsigned short u16;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 
+enum ERROR_STATE {
+    DBIN_OK = 0,
+    DBIN_ERR = 1,
+};
+
+typedef enum ERROR_STATE error_state;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 u16 be16(const u8 *p);
 u32 be32(const u8 *p);
 u64 be64(const u8 *p);
@@ -34,13 +43,13 @@ void bn_exp(u8 *d, u8 *a, u8 *N, u32 n, u8 *e, u32 en);
 // crypto
 void md5(u8 *data, u32 len, u8 *hash);
 void sha(u8 *data, u32 len, u8 *hash);
-void get_key(const char *name, u8 *key, u32 len);
+error_state get_key(const char *name, u8 *key, u32 len);
 void aes_cbc_dec(u8 *key, u8 *iv, u8 *in, u32 len, u8 *out);
 void aes_cbc_enc(u8 *key, u8 *iv, u8 *in, u32 len, u8 *out);
-void decrypt_title_key(u8 *tik, u8 *title_key);
+error_state decrypt_title_key(u8 *tik, u8 *title_key);
 int check_cert_chain(u8 *data, u32 data_len, u8 *cert, u32 cert_len);
 int check_ec(u8 *ng, u8 *ap, u8 *sig, u8 *sig_hash);
-void generate_ecdsa(u8 *R, u8 *S, u8 *k, u8 *hash);
+int generate_ecdsa(u8 *R, u8 *S, u8 *k, u8 *hash);
 int check_ecdsa(u8 *Q, u8 *R, u8 *S, u8 *hash);
 void ec_priv_to_pub(u8 *k, u8 *Q);
 
@@ -51,8 +60,14 @@ void do_yaz0(u8 *in, u32 in_size, u8 *out, u32 out_size);
 void fatal(const char *s, ...);
 
 // output formatting
+void LOG(const char *s, ...);
 void print_bytes(u8 *x, u32 n);
 void hexdump(u8 *x, u32 n);
 void dump_tmd(u8 *tmd);
 
+// pseudo-random for wii u
+void fill_with_random(u8 *arr, int size);
+
+#ifdef __cplusplus
+}
 #endif

@@ -19,8 +19,6 @@
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
 
-#include <segher-s_wii/segher.h>
-
 #define ENTRYCOUNT 6
 
 void BatchTasksState::render() {

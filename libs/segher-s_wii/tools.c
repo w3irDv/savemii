@@ -2,6 +2,9 @@
 // Licensed under the terms of the GNU GPL, version 2
 // http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 
+// w3irdv - 2026 - migrated to mbedtls
+//                 - wiiu has no /dev/random
+
 #include "tools.h"
 
 #include <stddef.h> // to accommodate certain broken versions of openssl
@@ -16,10 +19,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+char *global_error_message;
 //
 // basic data types
 //
+//#define BYTE_ORDER__LITTLE_ENDIAN
 
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
 u16 be16(const u8 *p) {
     return (p[0] << 8) | p[1];
 }
@@ -50,6 +56,48 @@ void wbe64(u8 *p, u64 x) {
     wbe32(p, x >> 32);
     wbe32(p + 4, x);
 }
+#else
+u16 be16(const u8 *p) {
+    return (p[1] << 8) | p[0];
+}
+
+u32 be32(const u8 *p) {
+    return (p[3] << 24) | (p[2] << 16) | (p[1] << 8) | p[0];
+}
+
+u64 be64(const u8 *p) {
+    return ((u64) be32(p+4) << 32) | be32(p);
+}
+
+u64 be34(const u8 *p) {
+    return 4 * (u64) be32(p);
+}
+
+void wbe16(u8 *p, u16 x) {
+    p[1] = x >> 8;
+    p[0] = x;
+}
+
+void wbe32(u8 *p, u32 x) {
+    wbe16(p+2, x >> 16);
+    wbe16(p, x);
+}
+
+void wbe64(u8 *p, u64 x) {
+    wbe32(p+4, x >> 32);
+    wbe32(p, x);
+}
+#endif
+
+// 
+// pseudo-random, enough for our purpose
+//
+void fill_with_random(u8 *arr, int size) {
+    for (int i = 0; i < size; i++) {
+        arr[i] = (u8)(rand() % 256);
+    }
+}
+
 
 //
 // crypto
@@ -67,22 +115,29 @@ void sha(u8 *data, u32 len, u8 *hash) {
     mbedtls_sha1_ret((unsigned char *) data, len, hash);
 }
 
-void get_key(const char *name, u8 *key, u32 len) {
+error_state get_key(const char *name, u8 *key, u32 len) {
     char path[256];
     char *home;
     FILE *fp;
 
     home = getenv("HOME");
-    if (home == 0)
+    if (home == 0) {
         fatal("cannot find HOME");
+        return DBIN_ERR;
+    }
     snprintf(path, sizeof path, "%s/.wii/%s", home, name);
 
     fp = fopen(path, "rb");
-    if (fp == 0)
+    if (fp == 0) {
         fatal("cannot open %s", name);
-    if (fread(key, len, 1, fp) != 1)
+        return DBIN_ERR;
+    }
+    if (fread(key, len, 1, fp) != 1) {
         fatal("error reading %s", name);
+        return DBIN_ERR;
+    }
     fclose(fp);
+    return 0;
 }
 
 void aes_cbc_dec(u8 *key, u8 *iv, u8 *in, u32 len, u8 *out) {
@@ -109,20 +164,25 @@ void aes_cbc_enc(u8 *key, u8 *iv, u8 *in, u32 len, u8 *out) {
     mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, len, iv, in, out);
 }
 
-void decrypt_title_key(u8 *tik, u8 *title_key) {
+error_state decrypt_title_key(u8 *tik, u8 *title_key) {
     u8 common_key[16];
     u8 iv[16];
 
-    get_key("common-key", common_key, 16);
+    if (get_key("common-key", common_key, 16) == DBIN_ERR)
+        return DBIN_ERR;
 
     memset(iv, 0, sizeof iv);
     memcpy(iv, tik + 0x01dc, 8);
     aes_cbc_dec(common_key, iv, tik + 0x01bf, 16, title_key);
+
+    return DBIN_OK;
 }
 
 static u8 root_key[0x204];
-static u8 *get_root_key(void) {
-    get_key("root-key", root_key, sizeof root_key);
+static u8 *get_root_key() {
+    if (get_key("root-key", root_key, sizeof root_key) == DBIN_ERR)
+        return NULL;
+        
     return root_key;
 }
 
@@ -141,7 +201,7 @@ static u32 get_sig_len(u8 *sig) {
             return 0x80;
     }
 
-    fprintf(stderr, "get_sig_len(): unhandled sig type %08x\n", type);
+    fatal("get_sig_len(): unhandled sig type %08x\n", type);
     return 0;
 }
 
@@ -160,7 +220,7 @@ static u32 get_sub_len(u8 *sub) {
             return 0x100;
     }
 
-    fprintf(stderr, "get_sub_len(): unhandled sub type %08x\n", type);
+    fatal("get_sub_len(): unhandled sub type %08x\n", type);
     return 0;
 }
 
@@ -280,9 +340,11 @@ int check_cert_chain(u8 *data, u32 data_len, u8 *cert, u32 cert_len) {
         return -2;
 
     for (;;) {
-        fprintf(stderr, ">>>>>> checking sig by %s...\n", sub);
+        LOG(">>>>>> checking sig by %s...\n", sub);
         if (strcmp((char *) sub, "Root") == 0) {
             key = get_root_key();
+            if(key == NULL)
+                return -0xffff; // irrelevant, this function is not called
             sha(sub, sub_len, h);
             if (be32(sig) != 0x10000)
                 return -8;
@@ -360,39 +422,57 @@ void do_yaz0(u8 *in, [[maybe_unused]] u32 in_size, u8 *out, u32 out_size) {
 //
 
 void fatal(const char *s, ...) {
-    char message[256];
+    char message[2048];
     va_list ap;
 
     va_start(ap, s);
     vsnprintf(message, sizeof message, s, ap);
 
-    perror(message);
+    strncpy(global_error_message,message,2048);
 
-    exit(1);
 }
 
 //
 // output formatting
 //
 
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+void LOG(const char *s, ...) {
+    char message[2048];
+    va_list ap;
+
+    va_start(ap, s);
+    vsnprintf(message, sizeof message, s, ap);
+
+    printf("%s",message);
+
+}
+#else
+void LOG([[maybe_unused]]const char *s, ...) {
+    return;
+}
+#endif
+
+
+
 void print_bytes(u8 *x, u32 n) {
     u32 i;
 
     for (i = 0; i < n; i++)
-        fprintf(stderr, "%02x", x[i]);
+        LOG("%02x", x[i]);
 }
 
 void hexdump(u8 *x, u32 n) {
     u32 i, j;
 
     for (i = 0; i < n; i += 16) {
-        fprintf(stderr, "%04x:", i);
+        LOG("%04x:", i);
         for (j = 0; j < 16 && i + j < n; j++) {
             if ((j & 3) == 0)
-                fprintf(stderr, " ");
-            fprintf(stderr, "%02x", *x++);
+                LOG(" ");
+            LOG("%02x", *x++);
         }
-        fprintf(stderr, "\n");
+        LOG("\n");
     }
 }
 
@@ -400,19 +480,19 @@ void dump_tmd(u8 *tmd) {
     u32 i, n;
     u8 *p;
 
-    printf("       issuer: %s\n", tmd + 0x140);
-    printf("  sys_version: %016llx\n", be64(tmd + 0x0184));
-    printf("     title_id: %016llx\n", be64(tmd + 0x018c));
-    printf("   title_type: %08x\n", be32(tmd + 0x0194));
-    printf("     group_id: %04x\n", be16(tmd + 0x0198));
-    printf("title_version: %04x\n", be16(tmd + 0x01dc));
-    printf(" num_contents: %04x\n", be16(tmd + 0x01de));
-    printf("   boot_index: %04x\n", be16(tmd + 0x01e0));
+   LOG("       issuer: %s\n", tmd + 0x140);
+   LOG("  sys_version: %016llx\n", be64(tmd + 0x0184));
+   LOG("     title_id: %016llx\n", be64(tmd + 0x018c));
+   LOG("   title_type: %08x\n", be32(tmd + 0x0194));
+   LOG("     group_id: %04x\n", be16(tmd + 0x0198));
+   LOG("title_version: %04x\n", be16(tmd + 0x01dc));
+   LOG(" num_contents: %04x\n", be16(tmd + 0x01de));
+   LOG("   boot_index: %04x\n", be16(tmd + 0x01e0));
 
     n = be16(tmd + 0x01de);
     p = tmd + 0x01e4;
     for (i = 0; i < n; i++) {
-        printf("cid %08x  index %04x  type %04x  size %08llx\n",
+       LOG("cid %08x  index %04x  type %04x  size %08llx\n",
                be32(p), be16(p + 4), be16(p + 6), be64(p + 8));
         p += 0x24;
     }

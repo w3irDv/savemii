@@ -7,16 +7,16 @@
 
 #include "tools.h"
 
-static void bn_print(char *name, u8 *a, u32 n)
+[[maybe_unused]] static void bn_print(char *name, u8 *a, u32 n)
 {
 	u32 i;
 
-	printf("%s = ", name);
+LOG("%s = ", name);
 
 	for (i = 0; i < n; i++)
-		printf("%02x", a[i]);
+	LOG("%02x", a[i]);
 
-	printf("\n");
+LOG("\n");
 }
 
 static void bn_zero(u8 *d, u32 n)

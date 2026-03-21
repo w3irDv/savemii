@@ -98,6 +98,9 @@ int main() {
         return 0;
     }
 
+    StartupUtils::addInitMessage(_("Initializing Radndom seed"));
+    srand(time(NULL));
+
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     DrawUtils::endDraw();
