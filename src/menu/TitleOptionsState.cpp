@@ -9,6 +9,7 @@
 #include <utils/AccountUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/DataBin.h>
 #include <utils/FSUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -29,15 +30,17 @@ TitleOptionsState::TitleOptionsState(Title &title,
                                      int8_t wiiu_user,
                                      bool common,
                                      Title *titles,
-                                     int titleCount) : title(title),
-                                                       task(task),
-                                                       gameBackupBasePath(gameBackupBasePath),
-                                                       versionList(versionList),
-                                                       source_user(source_user),
-                                                       wiiu_user(wiiu_user),
-                                                       common(common),
-                                                       titles(titles),
-                                                       titleCount(titleCount) {
+                                     int titleCount,
+                                     bool data_bin_found) : title(title),
+                                                            task(task),
+                                                            gameBackupBasePath(gameBackupBasePath),
+                                                            versionList(versionList),
+                                                            source_user(source_user),
+                                                            wiiu_user(wiiu_user),
+                                                            common(common),
+                                                            titles(titles),
+                                                            titleCount(titleCount),
+                                                            data_bin_found(data_bin_found) {
 
     wiiUAccountsTotalNumber = AccountUtils::getWiiUAccn();
     volAccountsTotalNumber = AccountUtils::getVolAccn();
@@ -275,15 +278,16 @@ void TitleOptionsState::render() {
         }
 
         if (!this->isWiiUTitle) {
-            if (task == WIPE_PROFILE)
+
+            if ((task == WIPE_PROFILE || task == BACKUP) || data_bin_found)
                 entrycount = 2;
             else
                 entrycount = 1;
 
             common = false;
             DrawUtils::setFontColor(COLOR_TEXT);
-            Console::consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 10 : 7, "%s", (task == BACKUP) ? _("Source:") : _("Target:"));
-            Console::consolePrintPos(M_OFF, (task == WIPE_PROFILE) ? 11 : 8, "   %s (%s)", _("Savedata in NAND"),
+            Console::consolePrintPos(M_OFF, ((task == WIPE_PROFILE || task == BACKUP) || data_bin_found) ? 10 : 7, "%s", (task == BACKUP) ? _("Source:") : _("Target:"));
+            Console::consolePrintPos(M_OFF, ((task == WIPE_PROFILE || task == BACKUP) || data_bin_found) ? 11 : 8, "   %s (%s)", _("Savedata in NAND"),
                                      hasUserDataInNAND ? _("Has Save") : _("Empty"));
             if (task == WIPE_PROFILE) {
                 Console::consolePrintPos(M_OFF, 7, _("Select vWii data to wipe:"));
@@ -295,6 +299,26 @@ void TitleOptionsState::render() {
                                              sourceHasRequestedSavedata ? _("Has Save") : _("Empty"));
                 }
             }
+
+            if (data_bin_found) {
+                if (task == RESTORE) {
+                    Console::consolePrintPos(M_OFF, 7, _("'data.bin' savedata found. Uncompress and restore:"));
+                    DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
+                    Console::consolePrintPos(M_OFF, 8, "   < %s >", restore_uncompressed ? _("yes, I know this is a true data.bin file") : _("no, just copy back the data.bin file as is"));
+
+                    if (data_bin_vs_title_id_mismatch) {
+                        DrawUtils::setFontColor(COLOR_CURRENT_BS);
+                        Console::consolePrintPos(M_OFF, 13, _("WARNING: Game TitleId does not match the one in savedata."));
+                        Console::consolePrintPos(M_OFF, 14, _("It's ok if this is a custom inject.If not, this is for a different game"));
+                    }
+                }
+            }
+            if (task == BACKUP) {
+                Console::consolePrintPos(M_OFF, 7, _("Compress backup:"));
+                DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
+                Console::consolePrintPos(M_OFF, 8, "   < %s >", compress_backup ? _("yes, I neeed a data.bin file") : _("no, plain files are ok (classic savemii format)"));
+            }
+
 
             if (this->title.iconBuf != nullptr) {
                 if (this->title.is_Wii)
@@ -441,7 +465,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             } else if (this->task == RESTORE) {
                 switch (cursorPos) {
                     case 0:
-                        AccountUtils::getAccountsFromVol(&this->title, --slot, RESTORE, gameBackupBasePath);
+                        AccountUtils::getAccountsFromVol(&this->title, --slot, RESTORE, gameBackupBasePath, &data_bin_found);
                         volAccountsTotalNumber = AccountUtils::getVolAccn();
                         if (source_user > volAccountsTotalNumber - 1) {
                             source_user = -1;
@@ -451,14 +475,20 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSlotMetadata();
                         updateHasCommonSaveInSource();
                         updateSourceHasRequestedSavedata();
+                        if (data_bin_found)
+                            updateDataBinInfo();
                         break;
                     case 1:
-                        source_user = ((source_user == -2) ? -2 : (source_user - 1));
-                        if (source_user < 0) {
-                            wiiu_user = source_user;
-                            updateHasTargetUserData();
+                        if (this->isWiiUTitle) {
+                            source_user = ((source_user == -2) ? -2 : (source_user - 1));
+                            if (source_user < 0) {
+                                wiiu_user = source_user;
+                                updateHasTargetUserData();
+                            }
+                            updateSourceHasRequestedSavedata();
+                        } else {
+                            restore_uncompressed = !restore_uncompressed;
                         }
-                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         wiiu_user = ((wiiu_user == 0) ? 0 : (wiiu_user - 1));
@@ -518,7 +548,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateLoadiineVersion();
-                        AccountUtils::getAccountsFromVol(&this->title, version, importLoadiine, gameBackupBasePath);
+                        AccountUtils::getAccountsFromVol(&this->title, version, importLoadiine, gameBackupBasePath, &data_bin_found);
                         volAccountsTotalNumber = AccountUtils::getVolAccn();
                         if (source_user > volAccountsTotalNumber - 1)
                             source_user = 0;
@@ -548,7 +578,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateLoadiineVersion();
-                        AccountUtils::getAccountsFromVol(&this->title, version, exportLoadiine, gameBackupBasePath);
+                        AccountUtils::getAccountsFromVol(&this->title, version, exportLoadiine, gameBackupBasePath, &data_bin_found);
                         volAccountsTotalNumber = AccountUtils::getVolAccn();
                         if (wiiu_user > volAccountsTotalNumber - 1)
                             wiiu_user = 0;
@@ -580,8 +610,12 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSlotMetadata();
                         break;
                     case 1:
-                        source_user = ((source_user == -2) ? -2 : (source_user - 1));
-                        updateSourceHasRequestedSavedata();
+                        if (this->isWiiUTitle) {
+                            source_user = ((source_user == -2) ? -2 : (source_user - 1));
+                            updateSourceHasRequestedSavedata();
+                        } else {
+                            compress_backup = !compress_backup;
+                        }
                         break;
                     case 2:
                         common = common ? false : true;
@@ -618,7 +652,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             } else if (this->task == RESTORE) {
                 switch (cursorPos) {
                     case 0:
-                        AccountUtils::getAccountsFromVol(&this->title, ++slot, RESTORE, gameBackupBasePath);
+                        AccountUtils::getAccountsFromVol(&this->title, ++slot, RESTORE, gameBackupBasePath, &data_bin_found);
                         volAccountsTotalNumber = AccountUtils::getVolAccn();
                         if (source_user > volAccountsTotalNumber - 1) {
                             source_user = -1;
@@ -628,18 +662,25 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSlotMetadata();
                         updateHasCommonSaveInSource();
                         updateSourceHasRequestedSavedata();
+                        if (data_bin_found)
+                            updateDataBinInfo();
                         break;
                     case 1:
-                        source_user = ((source_user == (volAccountsTotalNumber - 1)) ? (volAccountsTotalNumber - 1) : (source_user + 1));
-                        if (source_user < 0) {
-                            wiiu_user = source_user;
-                            updateHasTargetUserData();
+
+                        if (this->isWiiUTitle) {
+                            source_user = ((source_user == (volAccountsTotalNumber - 1)) ? (volAccountsTotalNumber - 1) : (source_user + 1));
+                            if (source_user < 0) {
+                                wiiu_user = source_user;
+                                updateHasTargetUserData();
+                            }
+                            if ((source_user > -1) && (wiiu_user < 0)) {
+                                wiiu_user = 0;
+                                updateHasTargetUserData();
+                            }
+                            updateSourceHasRequestedSavedata();
+                        } else {
+                            restore_uncompressed = !restore_uncompressed;
                         }
-                        if ((source_user > -1) && (wiiu_user < 0)) {
-                            wiiu_user = 0;
-                            updateHasTargetUserData();
-                        }
-                        updateSourceHasRequestedSavedata();
                         break;
                     case 2:
                         if (source_user > -1) {
@@ -695,7 +736,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateLoadiineVersion();
-                        AccountUtils::getAccountsFromVol(&this->title, version, importLoadiine, gameBackupBasePath);
+                        AccountUtils::getAccountsFromVol(&this->title, version, importLoadiine, gameBackupBasePath, &data_bin_found);
                         volAccountsTotalNumber = AccountUtils::getVolAccn();
                         if (source_user > volAccountsTotalNumber - 1)
                             source_user = 0;
@@ -725,7 +766,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateLoadiineVersion();
-                        AccountUtils::getAccountsFromVol(&this->title, version, exportLoadiine, gameBackupBasePath);
+                        AccountUtils::getAccountsFromVol(&this->title, version, exportLoadiine, gameBackupBasePath, &data_bin_found);
                         volAccountsTotalNumber = AccountUtils::getVolAccn();
                         if (wiiu_user > volAccountsTotalNumber - 1) // Vol users contain shared loaddine"/u" + users in NAND/USB
                             wiiu_user = 0;
@@ -757,8 +798,12 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSlotMetadata();
                         break;
                     case 1:
-                        source_user = ((source_user == (volAccountsTotalNumber - 1)) ? (volAccountsTotalNumber - 1) : (source_user + 1));
-                        updateSourceHasRequestedSavedata();
+                        if (this->isWiiUTitle) {
+                            source_user = ((source_user == (volAccountsTotalNumber - 1)) ? (volAccountsTotalNumber - 1) : (source_user + 1));
+                            updateSourceHasRequestedSavedata();
+                        } else {
+                            compress_backup = !compress_backup;
+                        }
                         break;
                     case 2:
                         common = common ? false : true;
@@ -906,7 +951,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 slot = 0;
                 if (this->task == RESTORE) {
                     gameBackupBasePath = getDynamicBackupBasePath(&this->title);
-                    AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath);
+                    AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath, &data_bin_found);
                 }
                 cursorPos = 0;
                 updateRestoreData();
@@ -1037,6 +1082,8 @@ void TitleOptionsState::updateRestoreData() {
         updateSourceHasRequestedSavedata();
         updateHasTargetUserData();
     }
+    if (data_bin_found)
+        updateDataBinInfo();
 }
 
 void TitleOptionsState::updateCopyToOtherDeviceData() {
@@ -1097,4 +1144,14 @@ void TitleOptionsState::updateSlotContentFlagForLoadiine() {
             srcPath.append(StringUtils::stringFormat("/v%u", version));
         emptySlot = FSUtils::folderEmpty(srcPath.c_str());
     }
+}
+
+void TitleOptionsState::updateDataBinInfo() {
+    if (!DataBin::keys_for_restore_initialized) {
+        char error_message[2048] = {0};
+        if (DataBin::get_shared_keys("fs:/vol/external01", error_message) != DBIN_OK)
+            Console::showMessage(OK_CONFIRM, "%s\n", error_message);
+        DataBin::keys_for_restore_initialized = true; // we don't try again even if initialization has failed
+    }
+    data_bin_vs_title_id_mismatch = check_data_bin_vs_title_id(&this->title, slot, gameBackupBasePath.c_str());
 }

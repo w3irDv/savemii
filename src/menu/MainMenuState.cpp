@@ -126,8 +126,8 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
 
             char error_message[2048] = {0};
 
-            DataBin::get_keys_from_otp("fs:/vol/external01/wiiu/backups/FEH101753089");
-            DataBin::get_shared_keys("fs:/vol/external01");
+            DataBin::get_keys_from_otp("fs:/vol/external01/wiiu/backups/FEH101753089",error_message);
+            DataBin::get_shared_keys("fs:/vol/external01",error_message);
             DataBin::get_mac();
 
             DataBin::pack(savedata_folder, databin, title_id, NULL, error_message);
@@ -144,7 +144,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
 
             char error_message[2048]  = {0};
 
-            DataBin::get_shared_keys("fs:/vol/external01");
+            DataBin::get_shared_keys("fs:/vol/external01",error_message);
             if (DataBin::get_title_id(databin, &title_id, error_message) != DBIN_OK)
                 Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);
 

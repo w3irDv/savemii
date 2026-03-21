@@ -19,7 +19,7 @@ namespace AccountUtils {
 
 
     void getAccountsWiiU();
-    void getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupBasePath);
+    void getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupBasePath, bool *data_bin_found);
     uint8_t getVolAccn();
     uint8_t getWiiUAccn();
     Account *getWiiUAcc();

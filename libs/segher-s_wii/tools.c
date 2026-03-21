@@ -3,14 +3,11 @@
 // http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 
 // w3irdv - 2026 - migrated to mbedtls
-//                 - wiiu has no /dev/random
+//               - wiiu has no /dev/random
 
 #include "tools.h"
 
-#include <stddef.h> // to accommodate certain broken versions of openssl
-//#include <openssl/md5.h>
-//#include <openssl/aes.h>
-//#include <openssl/sha.h>
+#include <stddef.h>
 #include "mbedtls/aes.h"
 #include "mbedtls/md5.h"
 #include "mbedtls/sha1.h"
@@ -23,9 +20,8 @@ char *global_error_message;
 //
 // basic data types
 //
-//#define BYTE_ORDER__LITTLE_ENDIAN
+//#define LOG_PRINTS
 
-#ifdef BYTE_ORDER__LITTLE_ENDIAN
 u16 be16(const u8 *p) {
     return (p[0] << 8) | p[1];
 }
@@ -56,38 +52,6 @@ void wbe64(u8 *p, u64 x) {
     wbe32(p, x >> 32);
     wbe32(p + 4, x);
 }
-#else
-u16 be16(const u8 *p) {
-    return (p[1] << 8) | p[0];
-}
-
-u32 be32(const u8 *p) {
-    return (p[3] << 24) | (p[2] << 16) | (p[1] << 8) | p[0];
-}
-
-u64 be64(const u8 *p) {
-    return ((u64) be32(p+4) << 32) | be32(p);
-}
-
-u64 be34(const u8 *p) {
-    return 4 * (u64) be32(p);
-}
-
-void wbe16(u8 *p, u16 x) {
-    p[1] = x >> 8;
-    p[0] = x;
-}
-
-void wbe32(u8 *p, u32 x) {
-    wbe16(p+2, x >> 16);
-    wbe16(p, x);
-}
-
-void wbe64(u8 *p, u64 x) {
-    wbe32(p+4, x >> 32);
-    wbe32(p, x);
-}
-#endif
 
 // 
 // pseudo-random, enough for our purpose
@@ -436,7 +400,7 @@ void fatal(const char *s, ...) {
 // output formatting
 //
 
-#ifdef BYTE_ORDER__LITTLE_ENDIAN
+#ifdef LOG_PRINTS
 void LOG(const char *s, ...) {
     char message[2048];
     va_list ap;

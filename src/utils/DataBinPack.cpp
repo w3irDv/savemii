@@ -89,6 +89,7 @@ static error_state read_image(u8 *data, u32 w, u32 h, const char *name) {
     return DBIN_OK;
 }
 
+// XXX - change return type ??
 static error_state perm_from_path(const char *path, u8 *perm) {
     struct stat sb;
     mode_t mode;
@@ -223,7 +224,7 @@ static error_state do_main_header(u64 title_id, FILE *toc) {
     header[0x0c] = (toc ? 0x35 : perm);
     memcpy(header + 0x0e, DataBin::md5_blanker, 16);
     memcpy(header + 0x20, "WIBN", 4);
-    // TODo: what about the stuff at 0x24?
+    // XXX: what about the stuff at 0x24?
 
     char name[256];
     FILE *in;
@@ -312,6 +313,7 @@ static error_state do_main_header(u64 title_id, FILE *toc) {
     return DBIN_OK;
 }
 
+// XXX - revisar si l'error tallq de cuajo
 static error_state find_files_recursive(const char *path) {
     DIR *dir;
     struct dirent *de;
@@ -410,14 +412,14 @@ static error_state find_files(void) {
         return DBIN_ERR;
 
     qsort(files, n_files, 0x80, compar_files);
-    // w3irdv: qsort src is also needed
+    // XXX: qsort src is also needed
     qsort(src, n_files, 0x100, compar_src);
 
     return DBIN_OK;
 }
 
 static u32 wiggle_name(char *name) {
-    // TODO: encode embedded zeroes, etc.
+    // XXX: encode embedded zeroes, etc.
     return strlen(name);
 }
 

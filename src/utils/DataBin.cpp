@@ -13,7 +13,14 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
-error_state DataBin::get_keys_from_otp(const char *path) {
+extern char *global_error_message;
+
+error_state DataBin::get_keys_from_otp(const char *path, char *error_message) {
+
+    global_error_message = error_message;
+    snprintf(global_error_message, 1024, "DBIN_OK");
+
+
     char otp_bin_file[256];
     FILE *fp;
 
@@ -99,8 +106,11 @@ error_state get_value(char *key_val, u8 *byte) {
     return DBIN_OK;
 }
 
-error_state DataBin::get_shared_keys(const char *path) {
+error_state DataBin::get_shared_keys(const char *path, char *error_message) {
 
+    global_error_message = error_message;
+    snprintf(global_error_message, 1024, "DBIN_OK");
+    
     char keys_file[256];
     FILE *fp;
 

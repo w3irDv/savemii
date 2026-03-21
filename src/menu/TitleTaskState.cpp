@@ -8,6 +8,7 @@
 #include <utils/AccountUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/DataBin.h>
 #include <utils/EscapeFAT32Utils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -87,6 +88,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             source_user = -1;
             wiiu_user = -1;
             common = false;
+            bool data_bin_found = false;
 
             const char *noData;
             switch (this->task) {
@@ -120,13 +122,13 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
                 BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 gameBackupBasePath = getDynamicBackupBasePath(&this->title);
-                AccountUtils::getAccountsFromVol(&this->title, slot, this->task, gameBackupBasePath);
+                AccountUtils::getAccountsFromVol(&this->title, slot, this->task, gameBackupBasePath, &data_bin_found);
             }
 
             if (this->task == RESTORE) {
                 BackupSetList::setBackupSetSubPath();
                 gameBackupBasePath = getDynamicBackupBasePath(&this->title);
-                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath);
+                AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath, &data_bin_found);
             }
 
             if ((this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE)) {
@@ -159,12 +161,12 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 // Loadiine gameBackupBasePath
                 gameBackupBasePath.assign(gamePath);
                 getLoadiineSaveVersionList(versionList, gamePath);
-                AccountUtils::getAccountsFromVol(&this->title, slot, this->task, gameBackupBasePath);
+                AccountUtils::getAccountsFromVol(&this->title, slot, this->task, gameBackupBasePath, &data_bin_found);
             }
 
             // All checks OK
             this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->gameBackupBasePath, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount);
+            this->subState = std::make_unique<TitleOptionsState>(this->title, this->task, this->gameBackupBasePath, this->versionList, source_user, wiiu_user, common, this->titles, this->titlesCount, data_bin_found);
         }
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
             cursorPos = (cursorPos + 1) % entrycount;
@@ -183,7 +185,8 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::R)) {
             Console::showMessage(WARNING_CONFIRM, "Setting 'savemii legacy' savedata permissions");
             setLegacyOwnerAndModeForTitle(&title);
-        }if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::R)) {
+        }
+        if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::R)) {
             Console::showMessage(WARNING_CONFIRM, "Setting WiiU default savedata permissions");
             setOwnerAndModeForTitle(&title);
         }

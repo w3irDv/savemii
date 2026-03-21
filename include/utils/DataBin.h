@@ -7,12 +7,6 @@
 #include <ApplicationState.h>
 #include <utils/InProgress.h>
 
-// basic data types
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef unsigned long long u64;
-
 enum perm_mode {
     USE_PERMS_FROM_DATA_BIN,
     SET_PERMS_TO_666
@@ -35,9 +29,11 @@ namespace DataBin {
     inline char output_path[256]  = {0}; // ISFS path maxlen in 64
     inline char input_path[256]  = {0};
 
+    inline bool keys_for_backup_initialized = false;
+    inline bool keys_for_restore_initialized = false;
 
-    error_state get_keys_from_otp(const char *path);
-    error_state get_shared_keys(const char *path);
+    error_state get_keys_from_otp(const char *path, char *error_message);
+    error_state get_shared_keys(const char *path, char *error_message);
     error_state get_mac();
 
     error_state pack(const char *srcdir, const char *data_bin, u64 title_id, const char *toc_file_path, char *error_message);

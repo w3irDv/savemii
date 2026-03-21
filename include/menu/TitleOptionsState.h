@@ -15,7 +15,8 @@ public:
                       int8_t wiiu_user,
                       bool common,
                       Title *titles,
-                      int titleCount);
+                      int titleCount,
+                      bool data_bin_found);
 
     enum eState {
         STATE_TITLE_OPTIONS,
@@ -31,69 +32,75 @@ public:
     void render() override;
     ApplicationState::eSubState update(Input *input) override;
 
-private:
-    std::unique_ptr<ApplicationState> subState{};
-    eState state = STATE_TITLE_OPTIONS;
+private : std::unique_ptr<ApplicationState>
+                  subState{};
+eState state = STATE_TITLE_OPTIONS;
 
-    eSubstateCalled substateCalled = NONE;
+eSubstateCalled substateCalled = NONE;
 
-    Title &title;
-    eJobType task;
+Title &title;
+eJobType task;
 
-    std::string gameBackupBasePath;
-    std::vector<unsigned int> versionList;
-    int version = 0;
+std::string gameBackupBasePath;
+std::vector<unsigned int> versionList;
+int version = 0;
 
-    int8_t source_user;
-    int8_t wiiu_user;
-    bool common;
+int8_t source_user;
+int8_t wiiu_user;
+bool common;
 
-    Title *titles;
-    int titleCount;
+Title *titles;
+int titleCount;
 
-    bool isWiiUTitle = false;
+bool isWiiUTitle = false;
 
-    uint8_t slot = 0;
-    int cursorPos = 0;
-    int entrycount = 2;
+uint8_t slot = 0;
+int cursorPos = 0;
+int entrycount = 2;
 
-    std::string tag{};
-    std::string newTag{};
+std::string tag{};
+std::string newTag{};
 
-    int wiiUAccountsTotalNumber = 0;
-    int volAccountsTotalNumber = 0;
+int wiiUAccountsTotalNumber = 0;
+int volAccountsTotalNumber = 0;
 
-    bool emptySlot = false;
-    bool backupRestoreFromSameConsole = false;
-    std::string slotInfo{};
-    void updateSlotMetadata();
-    void updateSlotContentFlagForLoadiine();
+bool emptySlot = false;
+bool backupRestoreFromSameConsole = false;
+std::string slotInfo{};
+void updateSlotMetadata();
+void updateSlotContentFlagForLoadiine();
 
-    bool sourceHasRequestedSavedata = false;
-    void updateSourceHasRequestedSavedata();
+bool sourceHasRequestedSavedata = false;
+void updateSourceHasRequestedSavedata();
 
-    bool hasTargetUserData = false;
-    void updateHasTargetUserData();
+bool hasTargetUserData = false;
+void updateHasTargetUserData();
 
-    bool hasCommonSaveInTarget = false;
-    void updateHasCommonSaveInTarget();
+bool hasCommonSaveInTarget = false;
+void updateHasCommonSaveInTarget();
 
-    bool hasCommonSaveInSource = false;
-    void updateHasCommonSaveInSource();
+bool hasCommonSaveInSource = false;
+void updateHasCommonSaveInSource();
 
-    bool hasUserDataInNAND = false;
-    void updateHasVWiiSavedata();
+bool hasUserDataInNAND = false;
+void updateHasVWiiSavedata();
 
-    void updateBackupData();
-    void updateRestoreData();
-    void updateCopyToOtherDeviceData();
-    void updateWipeProfileData();
-    void updateMoveCopyProfileData();
-    void updateLoadiine();
+void updateBackupData();
+void updateRestoreData();
+void updateCopyToOtherDeviceData();
+void updateWipeProfileData();
+void updateMoveCopyProfileData();
+void updateLoadiine();
 
-    bool loadiine_mode =  LOADIINE_SHARED_SAVEDATA;
-    void updateLoadiineMode(int8_t user);
-    void updateLoadiineVersion();
+bool loadiine_mode = LOADIINE_SHARED_SAVEDATA;
+void updateLoadiineMode(int8_t user);
+void updateLoadiineVersion();
 
+bool data_bin_found = false;
+bool data_bin_vs_title_id_mismatch = false;
+bool restore_uncompressed = true;
+bool compress_backup = false;
+void updateDataBinInfo();
 
-};
+}
+;

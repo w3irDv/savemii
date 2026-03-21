@@ -97,3 +97,4 @@ bool initializeWiiUTitle(Title *title, std::string &errorMessage, int &errorCode
 bool initializeVWiiInjectTitle(Title *title, std::string &errorMessage, int &errorCode);
 bool setOwnerAndModeForTitle(Title *title);
 bool setLegacyOwnerAndModeForTitle(Title *title);
+bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::string &gameBackupBasePath);

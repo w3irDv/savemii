@@ -13,6 +13,7 @@
 #include <utils/AccountUtils.h>
 #include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/DataBin.h>
 #include <utils/EscapeFAT32Utils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StatManager.h>
@@ -189,7 +190,7 @@ bool getLoadiineSaveVersionList(std::vector<unsigned int> &versionList, const ch
             i++;
         }
     // sort & fill up to 256 values ...
-    std::sort(versionList.begin(),versionList.end());
+    std::sort(versionList.begin(), versionList.end());
     unsigned int max_version = versionList.back();
     unsigned int offset = 1;
     for (; i < 256; i++) {
@@ -2122,4 +2123,29 @@ bool setLegacyOwnerAndModeForTitle(Title *title) {
     FSUtils::flushVol(srcPath);
 
     return true;
+}
+
+/// @brief If a data.bin is found on the slot, check if it corresponds to the current title. For user created injects, title they can be different even if the savedata (with a wii titleid) belongs to the title (with a cooked title id).
+/// @param title
+/// @param slot_or_version
+/// @param gameBackupBasePath
+/// @return
+bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::string &gameBackupBasePath) {
+    bool data_bin_vs_title_id_mismatch = true;
+    std::string srcPath;
+    srcPath = StringUtils::stringFormat("%s/%u", gameBackupBasePath.c_str(), slot_or_version);
+    uint64_t title_id;
+    char error_message[2048] = {0};
+    std::string data_bin_path = srcPath + "/data.bin";
+    if (DataBin::get_title_id(data_bin_path.c_str(), &title_id, error_message) != DBIN_OK)
+        Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);
+    uint32_t data_bin_high_id = (uint32_t) (title_id >> 32);
+    uint32_t data_bin_low_id = (uint32_t) (title_id & 0xffffffff);
+    if ((data_bin_high_id == title->vWiiHighID) && (data_bin_low_id == title->vWiiLowID))
+        data_bin_vs_title_id_mismatch = false;
+
+    Console::showMessage(OK_CONFIRM, "path: %s\n%08x\n%08x\n%08x\n%08x\n%16llx", data_bin_path.c_str(),
+                         data_bin_high_id, title->vWiiHighID, data_bin_low_id, title->vWiiLowID,title_id);
+
+    return data_bin_vs_title_id_mismatch;
 }

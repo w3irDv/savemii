@@ -4,6 +4,7 @@
 #include <string>
 #include <utils/AccountUtils.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/DataBin.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
@@ -63,12 +64,12 @@ void AccountUtils::getAccountsWiiU() {
     nn::act::Finalize();
 }
 
-/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loaddine shared savedata accounts if found in a normal slot
+/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loaddine shared savedata accounts if found in a normal slot. Detects vWii data.bin compressed saves belonging to the title
 /// @param title
 /// @param slot_or_version
 /// @param jobType
 /// @param gameBackupBasePath
-void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupBasePath) {
+void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupBasePath, bool *data_bin_found) {
     vol_accn = 0;
     if (vol_acc != nullptr)
         free(vol_acc);
@@ -105,6 +106,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
     // rename_shared_ wil be set to true only in RESTORE tasks. Can only happen if the user has manually copied loadiine save data in an standard slot
     bool rename_shared_loadiine_account = false;
     bool rename_shared_loadiine_common = false;
+    *data_bin_found = false;
     std::vector<uint32_t> profiles;
     DIR *dir = opendir(srcPath.c_str());
     if (dir != nullptr) {
@@ -122,6 +124,10 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
                     if (strcmp(data->d_name, "c") == 0)
                         rename_shared_loadiine_common = true;
                 }
+            } else {
+                if (jobType == RESTORE)
+                    if (strcmp(data->d_name, "data.bin") == 0)
+                        *data_bin_found = true;
             }
         }
         closedir(dir);

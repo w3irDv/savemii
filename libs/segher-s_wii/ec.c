@@ -10,7 +10,7 @@
 #include "tools.h"
 
 
-//#define BYTE_ORDER__LITTLE_ENDIAN
+//#define RANDOM_FROM_DEV
 
 
 // y**2 + x*y = x**3 + x**2 + b
@@ -345,7 +345,7 @@ int generate_ecdsa(u8 *R, u8 *S, u8 *k, u8 *hash)
     elt_zero(e);
     memcpy(e + 10, hash, 20);
 
-#ifdef BYTE_ORDER__LITTLE_ENDIAN
+#ifdef RANDOM_FROM_DEV
     fp = fopen("/dev/random", "rb");
     if (fread(m, sizeof m, 1, fp) != 1)
     {
