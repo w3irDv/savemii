@@ -2162,7 +2162,7 @@ bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::st
 }
 
 
-int backupSavedataToDataBin(Title *title, uint8_t slot, [[maybe_unused]] int8_t source_user, [[maybe_unused]] bool common, [[maybe_unused]]  eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
+int backupSavedataToDataBin(Title *title, uint8_t slot, [[maybe_unused]] int8_t source_user, [[maybe_unused]] bool common, [[maybe_unused]] eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
@@ -2216,5 +2216,80 @@ int backupSavedataToDataBin(Title *title, uint8_t slot, [[maybe_unused]] int8_t 
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
         writeMetadataWithTag(title, slot, isUSB, _("UNUSABLE SLOT - BACKUP FAILED"));
     }
+    return errorCode;
+}
+
+
+int restoreSavedataFromDataBin(Title *title, uint8_t slot, [[maybe_unused]] int8_t source_user, [[maybe_unused]]  int8_t wiiu_user, [[maybe_unused]] bool common, bool interactive /*= true*/) {
+    // we assume that the caller has verified that source data (common / user / all ) already exists
+    int errorCode = 0;
+    InProgress::copyErrorsCounter = 0;
+    InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
+    // THIS NOW CANNOT HAPPEN CHECK IF THIS IS STILL NEEEDED!!!!
+    /*
+    if (isSlotEmpty(title->highID, title->lowID, slot)) {
+        Console::showMessage(ERROR_SHOW, _("%s\nNo backup found on selected slot."),title->shortName);
+        return -2;
+    }
+    */
+
+    InProgress::titleName.assign(title->shortName);
+    InProgress::jobType = RESTORE;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
+    const std::string baseSrcPath = getDynamicBackupPath(title, slot);
+    std::string srcPath(baseSrcPath);
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+    std::string srcCommonPath = srcPath + "/common";
+    std::string dstCommonPath = dstPath + "/common";
+    const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+
+    if (interactive) {
+        if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")))
+            return -1;
+        if (!FSUtils::folderEmpty(dstPath.c_str())) {
+            // individual backups always to ROOT backupSet and always allusers
+            BackupSetList::saveBackupSetSubPath();
+            BackupSetList::setBackupSetSubPathToRoot();
+            int slotb = getEmptySlot(title);
+            if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
+                if (!(backupSavedata(title, slotb, -1, true, USE_SD_OR_STORAGE_PROFILES, _("pre-Restore backup")) == 0)) {
+                    Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
+                    BackupSetList::restoreBackupSetSubPath();
+                    return -1;
+                }
+
+            BackupSetList::restoreBackupSetSubPath();
+        }
+    }
+
+    if (!FSUtils::createFolderUnlocked(dstPath)) {
+        Console::showMessage(ERROR_SHOW, _("%s\nRestore failed."), title->shortName);
+        errorCode = 16;
+        return errorCode;
+    }
+
+    std::string errorMessage{};
+
+    char error_message[2048];
+
+    srcPath = srcPath+"/data.bin";
+
+    //Console::showMessage(OK_CONFIRM,"unpack src: %s\nsdst: %s\n",srcPath.c_str(), dstPath.c_str());
+    if (DataBin::unpack(srcPath.c_str(), dstPath.c_str(), SET_PERMS_TO_666, error_message) != DBIN_OK) {
+        errorCode = 1;
+    }
+    
+    FSUtils::flushVol(dstPath);
+
+    if (errorCode != 0) {
+        errorMessage = (std::string) _("%s\nRestore failed.") + "\n" + error_message;
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
+    }
+
     return errorCode;
 }

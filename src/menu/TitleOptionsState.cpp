@@ -897,8 +897,13 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateBackupData();
                     break;
                 case RESTORE:
-                    if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common) == 0)
-                        Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
+                    if (data_bin_found && restore_uncompressed) {
+                        if (restoreSavedataFromDataBin(&this->title, slot, source_user_, wiiu_user, common) == 0)
+                            Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
+                    } else {
+                        if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common) == 0)
+                            Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
+                    }
                     updateRestoreData();
                     break;
                 case WIPE_PROFILE:

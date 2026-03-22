@@ -273,7 +273,6 @@ static error_state do_main_header(void) {
     DataBin::writeLog("file: size=%08x perm=%02x attr=%02x type=%02x name=%s", bnrSize, bnrPerm, attr, type, "banner.bin");
     DataBin::showDataBinOperations(RESTORE);
 
-
     out = fopen(DataBin::output_path, "wb");
     if (!out) {
         fatal("open %s", DataBin::output_path);
@@ -281,6 +280,7 @@ static error_state do_main_header(void) {
     }
     if (fwrite(header + 0x20, bnrSize, 1, out) != 1) {
         fatal("write %s", DataBin::output_path);
+        fclose(out);
         return DBIN_ERR;
     }
     fclose(out);
@@ -443,6 +443,7 @@ static error_state do_file(void) {
             }
             if (fwrite(data, size, 1, out) != 1) {
                 fatal("write %s", DataBin::output_path);
+                fclose(out);
                 free(data);
                 return DBIN_ERR;
             }
@@ -571,27 +572,36 @@ error_state DataBin::unpack(const char *src_data_bin, const char *target_path, p
     }
 
     //do_file_header();
-    if (do_main_header() == DBIN_ERR)
+    if (do_main_header() == DBIN_ERR) {
+        fclose(fp);
         return DBIN_ERR;
-    if (do_backup_header() == DBIN_ERR)
+    }
+    if (do_backup_header() == DBIN_ERR) {
+        fclose(fp);
         return DBIN_ERR;
+    }
 
     InProgress::totalSteps = n_files + 1;
     for (i = 0; i < n_files; i++) {
         printf("difie %d\n", i);
         InProgress::currentStep = i + 2;
-        if (do_file() == DBIN_ERR)
+        if (do_file() == DBIN_ERR) {
+            fclose(fp);
             return DBIN_ERR;
+        }
     }
 
     mode = perm_to_mode(header[0x0c]);
     if (chmod(target_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : mode)) {
         fatal("chmod %s", target_path);
+        fclose(fp);
         return DBIN_ERR;
     }
 
-    if (do_sig() == DBIN_ERR)
+    if (do_sig() == DBIN_ERR) {
+        fclose(fp);
         return DBIN_ERR;
+    }
 
     fclose(fp);
 
