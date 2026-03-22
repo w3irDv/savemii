@@ -2160,3 +2160,61 @@ bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::st
 
     return data_bin_vs_title_id_mismatch;
 }
+
+
+int backupSavedataToDataBin(Title *title, uint8_t slot, [[maybe_unused]] int8_t source_user, [[maybe_unused]] bool common, [[maybe_unused]]  eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
+    // we assume that the caller has verified that source data (common / user / all ) already exists
+    int errorCode = 0;
+    InProgress::copyErrorsCounter = 0;
+    InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
+    if (!isSlotEmpty(title, slot) &&
+        !Console::promptConfirm(ST_WARNING, _("Backup found on this slot. Overwrite it?"))) {
+        return -1;
+    }
+    InProgress::titleName.assign(title->shortName);
+    InProgress::jobType = BACKUP;
+    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
+    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
+    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
+    bool isWii = title->is_Wii || title->noFwImg;
+    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
+    std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+    const std::string baseDstPath = getDynamicBackupPath(title, slot);
+    std::string dstPath(baseDstPath);
+    std::string srcCommonPath = srcPath + "/common";
+    std::string dstCommonPath = dstPath + "/common";
+    const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+
+    if (savemng::firstSDWrite)
+        sdWriteDisclaimer();
+
+    // code to check if data exist must be done before this point.
+
+    if (!FSUtils::createFolder(dstPath.c_str())) {
+        Console::showMessage(ERROR_SHOW, _("%s\nBackup failed. DO NOT restore from this slot."), title->shortName);
+        return 8;
+    }
+
+    writeMetadataWithTag(title, slot, isUSB, _("BACKUP IN PROGRESS"));
+    dstPath = dstPath + "/data.bin";
+
+    std::string errorMessage{};
+
+    uint64_t title_id = ((uint64_t) title->highID << 32) | title->lowID;
+
+    char error_message[2048];
+
+    //Console::showMessage(OK_CONFIRM,"src: %s\ndst: %s\ntitleid: %16llx",srcPath.c_str(), dstPath.c_str(),title_id);
+    if (DataBin::pack(srcPath.c_str(), dstPath.c_str(), title_id, NULL, error_message) != DBIN_OK)
+        errorCode = 1;
+
+    if (errorCode == 0)
+        writeMetadataWithTag(title, slot, isUSB, tag);
+    else {
+        errorMessage = (std::string) _("%s\nBackup failed. DO NOT restore from this slot.") + "\n\n" + error_message;
+        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
+        writeMetadataWithTag(title, slot, isUSB, _("UNUSABLE SLOT - BACKUP FAILED"));
+    }
+    return errorCode;
+}

@@ -21,7 +21,7 @@
 #define ERROR(s)                                       \
     do {                                               \
         snprintf(global_error_message, 2048, "%s", s); \
-        return (DBIN_ERR);                                  \
+        return (DBIN_ERR);                             \
     } while (0)
 
 extern char *global_error_message;
@@ -136,7 +136,7 @@ static error_state do_main_header(u64 title_id, FILE *toc) {
         name[strlen(name) - 1] = 0; // get rid of linefeed
     } else {
         //strcpy(name, "banner.bin");
-        snprintf(name,267,"%s/banner.bin",DataBin::input_path);
+        snprintf(name, 267, "%s/banner.bin", DataBin::input_path);
     }
 
     // u8 tmp8 = AttrFromSave("/banner.bin");
@@ -172,7 +172,7 @@ static error_state do_main_header(u64 title_id, FILE *toc) {
     fclose(in);
 
     DataBin::writeLog("file: sz=%08x perm=%02x attr=%02x type=%02x name=%s",
-                      banner_size, perm, 0, 1, name+input_path_len+1);
+                      banner_size, perm, 0, 1, name + input_path_len + 1);
     DataBin::showDataBinOperations(BACKUP);
 
     // u8 md5blanker[16] = MD5_BLANKER;
@@ -317,7 +317,7 @@ static error_state do_main_header(u64 title_id, FILE *toc) {
 static error_state find_files_recursive(const char *path) {
     DIR *dir;
     struct dirent *de;
-    char name[53];
+    char name[256]; // was 53 when using relative paths
     u32 len;
     int is_dir;
     u8 *p;
@@ -346,11 +346,23 @@ static error_state find_files_recursive(const char *path) {
             len = snprintf(name, sizeof name, "%s/%s", path,
                            de->d_name);
 
-        if (len >= sizeof name)
-            ERROR("path too long");
+        if (len >= sizeof name) {
+            fatal("path too long: %s", name);
+            closedir(dir);
+            return DBIN_ERR;
+        }
 
-        if (de->d_type != DT_REG && de->d_type != DT_DIR)
-            ERROR("not a regular file or a directory");
+        if (strlen(name + input_path_len + 1) >= 0x44) { // https://wiibrew.org/wiki/Savegame_Files
+            fatal("file name too long for arxiving: %s", name + input_path_len + 1);
+            closedir(dir);
+            return DBIN_ERR;
+        }
+
+        if (de->d_type != DT_REG && de->d_type != DT_DIR) {
+            fatal("not a regular file or a directory: %s", de->d_name);
+            closedir(dir);
+            return DBIN_ERR;
+        }
 
         is_dir = (de->d_type == DT_DIR);
 
@@ -359,6 +371,7 @@ static error_state find_files_recursive(const char *path) {
         else {
             if (stat(name, &sb)) {
                 fatal("stat %s", name);
+                closedir(dir);
                 return DBIN_ERR;
             }
             size = sb.st_size;
@@ -374,15 +387,17 @@ static error_state find_files_recursive(const char *path) {
             return DBIN_ERR;
         p[8] = perm;
         p[0x0a] = is_dir ? 2 : 1;
-        strcpy((char *) p + 0x0b, name + input_path_len + 1);
+        strcpy((char *) p + 0x0b, name + input_path_len + 1); // can overrun the buffer !!!
         // maybe fill up with dirt
 
         size = round_up(size, 0x40);
         files_size += 0x80 + size;
 
         if (de->d_type == DT_DIR)
-            if (find_files_recursive(name) == DBIN_ERR)
+            if (find_files_recursive(name) == DBIN_ERR) {
+                closedir(dir);
                 return DBIN_ERR;
+            }
     }
 
     if (closedir(dir)) {
@@ -407,7 +422,7 @@ static error_state find_files(void) {
 
     memset(files, 0, sizeof files);
 
-    memset(DataBin::input_path+input_path_len,0,1);
+    memset(DataBin::input_path + input_path_len, 0, 1);
     if (find_files_recursive(DataBin::input_path) == DBIN_ERR)
         return DBIN_ERR;
 
@@ -450,8 +465,10 @@ static error_state find_files_toc(FILE *toc) {
         name++;
 
         len = wiggle_name(name);
-        if (len >= 53)
-            ERROR("path too long");
+        if (len >= 53) {
+            fatal("wiggle - path too long: %s", name);
+            return DBIN_ERR;
+        }
 
         if (stat(line, &sb)) {
             fatal("stat %s", line);
@@ -557,6 +574,7 @@ static error_state do_file(u32 file_no) {
         if (fread(data, size, 1, in) != 1) {
             fatal("read %s", from);
             free(data);
+            fclose(in);
             return DBIN_ERR;
         }
         fclose(in);
@@ -686,31 +704,52 @@ error_state DataBin::pack(const char *srcdir, const char *data_bin, u64 title_id
         return DBIN_ERR;
     }
 
-    if (do_main_header(title_id, toc) == DBIN_ERR)
+    if (do_main_header(title_id, toc) == DBIN_ERR) {
+        fclose(fp);
         return DBIN_ERR;
-
-    if (toc) {
-        if (find_files_toc(toc) == DBIN_ERR)
-            return DBIN_ERR;
-    } else {
-        if (find_files() == DBIN_ERR)
-            return DBIN_ERR;
     }
 
-    if (do_backup_header(title_id) == DBIN_ERR)
+    if (toc) {
+        if (find_files_toc(toc) == DBIN_ERR) {
+            fclose(fp);
+            fclose(toc);
+            return DBIN_ERR;
+        }
+    } else {
+        if (find_files() == DBIN_ERR) {
+            fclose(fp);
+            return DBIN_ERR;
+        }
+    }
+
+    if (do_backup_header(title_id) == DBIN_ERR) {
+        fclose(fp);
+        if (toc)
+            fclose(toc);
         return DBIN_ERR;
+    }
 
     InProgress::totalSteps = n_files + 1;
     for (i = 0; i < n_files; i++) {
         InProgress::currentStep = i + 2;
-        if (do_file(i) == DBIN_ERR)
+        if (do_file(i) == DBIN_ERR) {
+            fclose(fp);
+            if (toc)
+                fclose(toc);
             return DBIN_ERR;
+        }
     }
 
-    if (do_sig() == DBIN_ERR)
+    if (do_sig() == DBIN_ERR) {
+        fclose(fp);
+        if (toc)
+            fclose(toc);
         return DBIN_ERR;
+    }
 
     fclose(fp);
+    if (toc)
+        fclose(toc);
 
     DataBin::writeLog(_("\n >>>> Arxiving OK"));
     DataBin::showDataBinOperations(BACKUP);

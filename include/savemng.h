@@ -58,6 +58,7 @@ void writeBackupAllMetadata(const std::string &Date, const std::string &tag);
 int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles = false) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
 int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource = USE_WIIU_PROFILES, const std::string &tag = "") __attribute__((hot));
+int backupSavedataToDataBin(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource = USE_WIIU_PROFILES, const std::string &tag = "") __attribute__((hot));
 int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true) __attribute__((hot));
 int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_user, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));

@@ -887,8 +887,13 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             }
             switch (this->task) {
                 case BACKUP:
-                    if (backupSavedata(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES) == 0)
-                        Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
+                    if (compress_backup) {
+                        if (backupSavedataToDataBin(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES) == 0)
+                            Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
+                    } else {
+                        if (backupSavedata(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES) == 0)
+                            Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
+                    }
                     updateBackupData();
                     break;
                 case RESTORE:
