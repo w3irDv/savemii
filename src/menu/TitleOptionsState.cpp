@@ -877,6 +877,14 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 default:;
             }
+            if (this->task == RESTORE && restore_uncompressed && !DataBin::shared_keys_initialized) {
+                Console::showMessage(ERROR_CONFIRM, _("'data.bin' uncompress aborted: no shared keys found.\nProvide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
+                return SUBSTATE_RUNNING;
+            }
+            if (this->task == BACKUP && compress_backup && !(DataBin::shared_keys_initialized && DataBin::private_keys_initialized && DataBin::mac_in_databin_initialized)) {
+                Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no private keys or shared keys found.\n Please provide the Wii U 'otp.bin' file in SD:/wiiu/backups/<SerialId> (different for each console), and a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
+                return SUBSTATE_RUNNING;
+            }
             switch (this->task) {
                 case BACKUP:
                     if (backupSavedata(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES) == 0)
@@ -1147,11 +1155,6 @@ void TitleOptionsState::updateSlotContentFlagForLoadiine() {
 }
 
 void TitleOptionsState::updateDataBinInfo() {
-    if (!DataBin::keys_for_restore_initialized) {
-        char error_message[2048] = {0};
-        if (DataBin::get_shared_keys("fs:/vol/external01", error_message) != DBIN_OK)
-            Console::showMessage(OK_CONFIRM, "%s\n", error_message);
-        DataBin::keys_for_restore_initialized = true; // we don't try again even if initialization has failed
-    }
-    data_bin_vs_title_id_mismatch = check_data_bin_vs_title_id(&this->title, slot, gameBackupBasePath.c_str());
+    if (DataBin::shared_keys_initialized)
+        data_bin_vs_title_id_mismatch = check_data_bin_vs_title_id(&this->title, slot, gameBackupBasePath.c_str());
 }

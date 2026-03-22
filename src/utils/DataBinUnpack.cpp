@@ -564,21 +564,6 @@ error_state DataBin::unpack(const char *src_data_bin, const char *target_path, p
     snprintf(DataBin::output_path, sizeof DataBin::output_path, "%s", target_path);
     snprintf(DataBin::input_path, sizeof DataBin::input_path, "%s", src_data_bin);
 
-    /*
-    if (get_key("sd-key", sd_key, 16) == DBIN_ERR)
-        return DBIN_ERR;
-    for (i = 0; i < 15; i++) {
-        LOG("%02x", sd_key[i]);
-    }
-    LOG("\n");
-    if (get_key("sd-iv", sd_iv, 16) == DBIN_ERR)
-        return DBIN_ERR;
-    if (get_key("md5-blanker", md5_blanker, 16) == DBIN_ERR)
-        return DBIN_ERR;
-
-    */
-
-
     fp = fopen(src_data_bin, "rb");
     if (!fp) {
         fatal("open %s", src_data_bin);

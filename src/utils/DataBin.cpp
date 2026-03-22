@@ -110,7 +110,7 @@ error_state DataBin::get_shared_keys(const char *path, char *error_message) {
 
     global_error_message = error_message;
     snprintf(global_error_message, 1024, "DBIN_OK");
-    
+
     char keys_file[256];
     FILE *fp;
 
@@ -152,6 +152,34 @@ error_state DataBin::get_shared_keys(const char *path, char *error_message) {
 error_state DataBin::get_mac() {
     memcpy(ng_mac, AmbientConfig::mac_address.MACAddr, 6);
     return DBIN_OK;
+}
+
+/// @brief read vWii encryption keys from default locations (sd:/keys.txt and sd:/wiiu/backups/<Serial>/otp.bin)
+/// @param path
+/// @param error_message
+/// @return
+void DataBin::initialize_default_keys() {
+
+    char error_message[2048] = {0};
+
+    if (DataBin::get_shared_keys("fs:/vol/external01", error_message) == DBIN_OK) {
+        shared_keys_initialized = true;
+    } else {
+        errors_initializing_keys.assign(error_message);
+    }
+
+    std::string otp_path = "fs:/vol/external01/wiiu/backups/" + AmbientConfig::thisConsoleSerialId;
+    if (DataBin::get_keys_from_otp(otp_path.c_str(), error_message) == DBIN_OK) {
+        private_keys_initialized = true;
+    } else {
+        errors_initializing_keys += "\n" + std::string(error_message);
+    }
+
+    if (DataBin::get_mac() == DBIN_OK) {
+        mac_in_databin_initialized = true;
+    } else {
+        errors_initializing_keys += "\n" + std::string(error_message);
+    }
 }
 
 /// @brief coneole-log-like output of data.bin pack/unpack

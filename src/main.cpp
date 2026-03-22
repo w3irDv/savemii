@@ -8,6 +8,7 @@
 #include <utils/AccountUtils.h>
 #include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/DataBin.h>
 #include <utils/DrawUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/InputUtils.h>
@@ -98,13 +99,20 @@ int main() {
         return 0;
     }
 
+    StartupUtils::addInitMessage("Getting DeviceID , MACAddress and AuthorId");
+    AmbientConfig::get_device_hash();
+    AmbientConfig::get_mac_address();
+    AmbientConfig::get_author_id();
+
     StartupUtils::addInitMessage(_("Initializing Radndom seed"));
     srand(time(NULL));
+
+    StartupUtils::addInitMessage(_("Readng Encyption Keys"));
+    DataBin::initialize_default_keys();
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
     DrawUtils::endDraw();
-
 
     TitleUtils::wiiutitles = TitleUtils::loadWiiUTitles(1);
     TitleUtils::wiititles = TitleUtils::loadWiiTitles();
@@ -126,11 +134,6 @@ int main() {
     ExcludesCfg::wiiExcludes = std::make_unique<ExcludesCfg>("wiiExcludes", TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
     ExcludesCfg::wiiuExcludes->init();
     ExcludesCfg::wiiExcludes->init();
-
-    StartupUtils::addInitMessageWithIcon("Getting DeviceID , MACAddress and AuthorId");
-    AmbientConfig::get_device_hash();
-    AmbientConfig::get_mac_address();
-    AmbientConfig::get_author_id();
 
     StartupUtils::addInitMessageWithIcon(_("Initializing Mii repos."));
 

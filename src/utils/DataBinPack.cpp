@@ -680,67 +680,11 @@ error_state DataBin::pack(const char *srcdir, const char *data_bin, u64 title_id
         }
     }
 
-    /*
-    LOG("sd_key ");
-    hexdump(sd_key,16);
-        LOG("sd_iv ");
-    hexdump(sd_iv,16);
-        LOG("md5_blanker ");
-    hexdump(md5_blanker,16);
-*/
-
-    /*
-    if (get_key("sd-key", sd_key, 16) == DBIN_ERR)
-        return DBIN_ERR;
-    if (get_key("sd-iv", sd_iv, 16) == DBIN_ERR)
-        return DBIN_ERR;
-    if (get_key("md5-blanker", md5_blanker, 16) == DBIN_ERR)
-        return DBIN_ERR;
-
-    u8 tmp[4];
-    if (get_key("default/NG-id", tmp, 4) == DBIN_ERR)
-        return DBIN_ERR;
-    ng_id = be32(tmp);
-
-    hexdump ((u8 *)&ng_id,4);
-
-    if (get_key("default/NG-key-id", tmp, 4) == DBIN_ERR)
-        return DBIN_ERR;
-    ng_key_id = be32(tmp);
-    hexdump ((u8 *)&ng_key_id,4);
-
-    if (get_key("default/NG-priv", ng_priv, 30) == DBIN_ERR) // ecc_priv
-        return DBIN_ERR;
-    if (get_key("default/NG-sig", ng_sig, 60) == DBIN_ERR)
-        return DBIN_ERR;
-
-    if (get_key("default/NG-mac", ng_mac, 6) == DBIN_ERR)
-        return DBIN_ERR;
-    */
-
-
-
-    LOG("dev_id ");
-    hexdump((u8 *) &ng_id, 0x04);
-
-    LOG("priv_key ");
-    hexdump(ng_priv, 0x1E);
-
-    LOG("ng-key-id ");
-    hexdump((u8 *) &ng_key_id, 0x04);
-
-    LOG("ng-sig ");
-    hexdump(ng_sig, 0x3c);
-
-    LOG("mac ");
-    hexdump(ng_mac, 0x06);
-
     fp = fopen(data_bin, "wb+");
     if (!fp) {
         fatal("open %s", data_bin);
         return DBIN_ERR;
     }
-
 
     if (do_main_header(title_id, toc) == DBIN_ERR)
         return DBIN_ERR;

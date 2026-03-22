@@ -2144,8 +2144,19 @@ bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::st
     if ((data_bin_high_id == title->vWiiHighID) && (data_bin_low_id == title->vWiiLowID))
         data_bin_vs_title_id_mismatch = false;
 
-    Console::showMessage(OK_CONFIRM, "path: %s\n%08x\n%08x\n%08x\n%08x\n%16llx", data_bin_path.c_str(),
-                         data_bin_high_id, title->vWiiHighID, data_bin_low_id, title->vWiiLowID,title_id);
+    /*
+    Console::showMessage(OK_CONFIRM, "path: %s\n%08x\n%08x\n%08x\n%08x\n%16llx\nMac: %02x:%02x:%02x:%02x:%02x:%02x\nid:%08x  key_id:%08x\nshared:%s  private:%s   mac:%s\npriv: %02x%02x%02x   sig: %02x%02x%02x\nmess:", data_bin_path.c_str(),
+                         data_bin_high_id, title->vWiiHighID, data_bin_low_id, title->vWiiLowID, title_id,
+                         DataBin::ng_mac[0], DataBin::ng_mac[1], DataBin::ng_mac[2], DataBin::ng_mac[3], DataBin::ng_mac[4], DataBin::ng_mac[5],
+                         DataBin::ng_id, DataBin::ng_key_id,
+                         DataBin::shared_keys_initialized ? "yes" : "no",
+                         DataBin::private_keys_initialized ? "yes" : "no",
+                         DataBin::mac_in_databin_initialized ? "yes" : "no",
+                         DataBin::ng_priv[0],DataBin::ng_priv[1],DataBin::ng_priv[2],
+                         DataBin::ng_sig[0],DataBin::ng_sig[1],DataBin::ng_sig[2],
+                        DataBin::errors_initializing_keys.c_str());
+    */
+
 
     return data_bin_vs_title_id_mismatch;
 }

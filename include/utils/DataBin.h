@@ -29,12 +29,15 @@ namespace DataBin {
     inline char output_path[256]  = {0}; // ISFS path maxlen in 64
     inline char input_path[256]  = {0};
 
-    inline bool keys_for_backup_initialized = false;
-    inline bool keys_for_restore_initialized = false;
+    inline bool shared_keys_initialized = false;
+    inline bool private_keys_initialized = false;
+    inline bool mac_in_databin_initialized = false;
+    inline std::string errors_initializing_keys{};
 
     error_state get_keys_from_otp(const char *path, char *error_message);
     error_state get_shared_keys(const char *path, char *error_message);
     error_state get_mac();
+    void initialize_default_keys();
 
     error_state pack(const char *srcdir, const char *data_bin, u64 title_id, const char *toc_file_path, char *error_message);
 
