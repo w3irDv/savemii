@@ -2201,7 +2201,7 @@ int backupSavedataToDataBin(Title *title, uint8_t slot, [[maybe_unused]] int8_t 
 
     std::string errorMessage{};
 
-    uint64_t title_id = ((uint64_t) title->highID << 32) | title->lowID;
+    uint64_t title_id = ((uint64_t) highID << 32) | lowID;
 
     char error_message[2048];
 

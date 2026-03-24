@@ -315,12 +315,12 @@ void StatManager::set_default_stat_cfg_for_wiiu_savedata(Title *title) {
     default_file_stat->fsmode = 0x660;
 }
 
-/// @brief Beware: Despite being called and configured, permissions for vWii will not be used because chmod does not always work in SLCCMPT
+/// @brief Beware: Despite being called and configured, permissions for vWii will not be used because chmod does not always work in SLCCMPT. 
 /// @param title 
 void StatManager::set_default_stat_cfg_for_vwii_savedata([[maybe_unused]]Title *title) {
 // revert to savemii "legacy" defaults. Permissions stored in savemii stat file will be ok till the first time the user restore some data 
-    default_file_stat->uid = 0x1004e200;  
-    default_file_stat->gid = 0x400;
+    default_file_stat->uid = 0x1004e200;  // if chemod works at some point on SLCCMPT, this should be changed by the uid appearing for the title in /sys/uid.sys
+    default_file_stat->gid = 0x400;   // not clear what the true value should be if chmod worked ok. Seems that 0x3031 is the good one but vWii, but more investigation is needed
     default_file_stat->fsmode = 0x666;
 }
 

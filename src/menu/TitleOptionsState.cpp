@@ -309,7 +309,7 @@ void TitleOptionsState::render() {
                     if (data_bin_vs_title_id_mismatch) {
                         DrawUtils::setFontColor(COLOR_CURRENT_BS);
                         Console::consolePrintPos(M_OFF, 13, _("WARNING: Game TitleId does not match the one in savedata."));
-                        Console::consolePrintPos(M_OFF, 14, _("It's ok if this is a custom inject.If not, this is for a different game"));
+                        Console::consolePrintPos(M_OFF, 14, _("This savedata is for a different game/region"));
                     }
                 }
             }
