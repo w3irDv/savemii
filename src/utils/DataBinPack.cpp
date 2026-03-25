@@ -752,6 +752,7 @@ error_state DataBin::pack(const char *srcdir, const char *data_bin, u64 title_id
         fclose(toc);
 
     DataBin::writeLog(_("\n >>>> Arxiving OK"));
+    DataBin::writeLog(_("\n Press any button to continue"));
     DataBin::showDataBinOperations(BACKUP);
 
     return DBIN_OK;

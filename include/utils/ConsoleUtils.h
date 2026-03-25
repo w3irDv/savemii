@@ -40,6 +40,8 @@ namespace Console {
     Button promptMultipleChoice(Style st, const std::string &question);
     void showMessage(Style St, const char *message, ...);
 
+    void waitForAnyButton();
+
     void consolePrintPosAligned(int y, uint16_t offset, uint8_t align, const char *format, ...);
     void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...);
     void consolePrintPosMultiline(int x, int y, const char *format, ...);

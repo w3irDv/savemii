@@ -1,3 +1,5 @@
+#include <coreinit/time.h>
+#include <coreinit/thread.h>
 #include <cstdarg>
 #include <sstream>
 #include <unistd.h>
@@ -66,11 +68,22 @@ void Console::showMessage(Style St, const char *message, ...) {
             input.read();
             if (input.get(ButtonState::TRIGGER, Button::A))
                 break;
+            OSSleepTicks(OSMillisecondsToTicks(1));
         }
     } else if (St & ST_SHOW)
         sleep(DEFAULT_ERROR_WAIT);
     else if (St & ST_DEBUG)
         sleep(0);
+}
+
+void Console::waitForAnyButton() {
+    Input input{};
+    while (true) {
+        input.read();
+        if (input.get(ButtonState::TRIGGER, Button::ANY))
+            break;
+        OSSleepTicks(OSMillisecondsToTicks(1));
+    }
 }
 
 bool Console::promptConfirm(Style st, const std::string &question) {
@@ -134,6 +147,7 @@ bool Console::promptConfirm(Style st, const std::string &question) {
             ret = 0;
             break;
         }
+        OSSleepTicks(OSMillisecondsToTicks(1));
     }
     return ret != 0;
 }

@@ -378,7 +378,7 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             int slotb = getEmptySlot(titleb);
             // backup is always of allusers
             if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
-                if (!(backupSavedata(titleb, slotb, -1, true, accountSource, _("pre-copyToOtherDev backup")) == 0)) {
+                if (!(backupSavedata(titleb, slotb, -1, true, FILES, accountSource, _("pre-copyToOtherDev backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
                     return -1;
                 }
@@ -490,7 +490,7 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
             int slot = getEmptySlot(title);
             // backup is always of allusers
             if ((slot >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
-                if (!(backupSavedata(title, slot, -1, true, accountSource, _("pre-copySavedataToOtherProfile backup")) == 0)) {
+                if (!(backupSavedata(title, slot, -1, true, FILES, accountSource, _("pre-copySavedataToOtherProfile backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Replicate aborted !!"));
                     return -1;
                 }
@@ -551,7 +551,7 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
             int slot = getEmptySlot(title);
             // backup is always of allusers
             if ((slot >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
-                if (!(backupSavedata(title, slot, -1, true, accountSource, _("pre-moveSavedataToOtherProfile backup")) == 0)) {
+                if (!(backupSavedata(title, slot, -1, true, FILES, accountSource, _("pre-moveSavedataToOtherProfile backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Replicate aborted !!"));
                     return -1;
                 }
@@ -778,7 +778,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
     return titlesKO;
 }
 
-int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
+int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eBackupFormat backup_format, eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
@@ -801,6 +801,9 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+    bool doBase = false;
+    bool doCommon = false;
+    std::string errorMessage{};
 
     if (savemng::firstSDWrite)
         sdWriteDisclaimer();
@@ -813,6 +816,17 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     }
 
     writeMetadataWithTag(title, slot, isUSB, _("BACKUP IN PROGRESS"));
+
+    if (backup_format == DATA_BIN) {
+        dstPath = dstPath + "/data.bin";
+        uint64_t title_id = ((uint64_t) highID << 32) | lowID;
+        char error_message[2048];
+        if (DataBin::pack(srcPath.c_str(), dstPath.c_str(), title_id, NULL, error_message) != DBIN_OK) {
+            errorMessage.assign(error_message);
+            errorCode = 1024;
+        }
+        goto update_metadata_and_return;
+    }
 
     FAT32EscapeFileManager::active_fat32_escape_file_manager = std::make_unique<FAT32EscapeFileManager>(baseDstPath);
     if (!FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
@@ -834,9 +848,6 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         StatManager::set_default_stat_cfg_for_vwii_savedata(title);
     else
         StatManager::set_default_stat_cfg_for_wiiu_savedata(title);
-
-    bool doBase = false;
-    bool doCommon = false;
 
     switch (source_user) {
         case -3: // not possible
@@ -868,7 +879,6 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
 
     StatManager::enable_flags_for_backup();
 
-    std::string errorMessage{};
     if (doCommon) {
         Escape::setPrefix(srcCommonPath, dstCommonPath);
         if (!FSUtils::copyDir(srcCommonPath, dstCommonPath, GENERATE_FAT32_TRANSLATION_FILE, ENABLE_STAT_MANAGER)) {
@@ -916,6 +926,7 @@ backup_cleanup_and_return:
         } // we have set enable_get_stat to false
     }
 
+update_metadata_and_return:
     if (errorCode == 0)
         writeMetadataWithTag(title, slot, isUSB, tag);
     else {
@@ -926,7 +937,7 @@ backup_cleanup_and_return:
     return errorCode;
 }
 
-int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_user, bool common, bool interactive /*= true*/) {
+int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_user, bool common, eBackupFormat backup_format, bool interactive /*= true*/) {
     // we assume that the caller has verified that source data (common / user / all ) already exists
     int errorCode = 0;
     InProgress::copyErrorsCounter = 0;
@@ -953,6 +964,13 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     std::string srcCommonPath = srcPath + "/common";
     std::string dstCommonPath = dstPath + "/common";
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
+    std::string storage_vol{};
+    
+    bool doBase = false;
+    bool doCommon = false;
+    bool singleUser = false;
+
+    std::string errorMessage{};
 
     if (!StatManager::stat_file_exists(title, slot)) {
         StatManager::use_legacy_stat_cfg = true;
@@ -976,7 +994,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             BackupSetList::setBackupSetSubPathToRoot();
             int slotb = getEmptySlot(title);
             if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
-                if (!(backupSavedata(title, slotb, -1, true, USE_SD_OR_STORAGE_PROFILES, _("pre-Restore backup")) == 0)) {
+                if (!(backupSavedata(title, slotb, -1, true, FILES, USE_SD_OR_STORAGE_PROFILES, _("pre-Restore backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
                     BackupSetList::restoreBackupSetSubPath();
                     return -1;
@@ -992,9 +1010,18 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
         return errorCode;
     }
 
-    bool doBase = false;
-    bool doCommon = false;
-    bool singleUser = false;
+    if (backup_format == DATA_BIN) {
+        char error_message[2048];
+
+        srcPath = srcPath + "/data.bin";
+
+        //Console::showMessage(OK_CONFIRM,"unpack src: %s\nsdst: %s\n",srcPath.c_str(), dstPath.c_str());
+        if (DataBin::unpack(srcPath.c_str(), dstPath.c_str(), SET_PERMS_TO_666, error_message) != DBIN_OK) {
+            errorMessage.assign(error_message);
+            errorCode = 1024;
+        }
+        goto flush_volume;
+    }
 
     switch (source_user) {
         case -3: // not posible
@@ -1022,8 +1049,6 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
 
     StatManager::enable_flags_for_restore();
 
-    std::string storage_vol{};
-    std::string errorMessage{};
     if (doCommon) {
         FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstCommonPath).c_str(), 0x666, title->commonSaveSize);
         if (!FSUtils::copyDir(srcCommonPath, dstCommonPath, NOFAT32_TRANSLATION, ENABLE_STAT_MANAGER)) {
@@ -1165,7 +1190,7 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         int slotb = getEmptySlot(title);
         // backup is always of full type
         if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first?")))
-            if (!(backupSavedata(title, slotb, -1, true, accountSource, _("pre-Wipe backup")) == 0)) {
+            if (!(backupSavedata(title, slotb, -1, true, FILES, accountSource, _("pre-Wipe backup")) == 0)) {
                 Console::showMessage(ERROR_SHOW, _("Backup Failed - Wipe aborted !!"));
                 return -1;
             };
@@ -1263,7 +1288,7 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
         return true;
     int slotb = getEmptySlot(title);
     if (slotb >= 0 && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first?")))
-        backupSavedata(title, slotb, 0, common);
+        backupSavedata(title, slotb, 0, common, FILES);
     InProgress::titleName.assign(title->shortName);
     InProgress::jobType = importLoadiine;
     uint32_t highID = title->highID;
@@ -2161,135 +2186,3 @@ bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::st
     return data_bin_vs_title_id_mismatch;
 }
 
-
-int backupSavedataToDataBin(Title *title, uint8_t slot, [[maybe_unused]] int8_t source_user, [[maybe_unused]] bool common, [[maybe_unused]] eAccountSource accountSource /*= USE_WIIU_PROFILES*/, const std::string &tag /* = "" */) {
-    // we assume that the caller has verified that source data (common / user / all ) already exists
-    int errorCode = 0;
-    InProgress::copyErrorsCounter = 0;
-    InProgress::abortCopy = false;
-    InProgress::immediateAbort = false;
-    if (!isSlotEmpty(title, slot) &&
-        !Console::promptConfirm(ST_WARNING, _("Backup found on this slot. Overwrite it?"))) {
-        return -1;
-    }
-    InProgress::titleName.assign(title->shortName);
-    InProgress::jobType = BACKUP;
-    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
-    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
-    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
-    bool isWii = title->is_Wii || title->noFwImg;
-    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
-    std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    const std::string baseDstPath = getDynamicBackupPath(title, slot);
-    std::string dstPath(baseDstPath);
-    std::string srcCommonPath = srcPath + "/common";
-    std::string dstCommonPath = dstPath + "/common";
-    const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
-
-    if (savemng::firstSDWrite)
-        sdWriteDisclaimer();
-
-    // code to check if data exist must be done before this point.
-
-    if (!FSUtils::createFolder(dstPath.c_str())) {
-        Console::showMessage(ERROR_SHOW, _("%s\nBackup failed. DO NOT restore from this slot."), title->shortName);
-        return 8;
-    }
-
-    writeMetadataWithTag(title, slot, isUSB, _("BACKUP IN PROGRESS"));
-    dstPath = dstPath + "/data.bin";
-
-    std::string errorMessage{};
-
-    uint64_t title_id = ((uint64_t) highID << 32) | lowID;
-
-    char error_message[2048];
-
-    //Console::showMessage(OK_CONFIRM,"src: %s\ndst: %s\ntitleid: %16llx",srcPath.c_str(), dstPath.c_str(),title_id);
-    if (DataBin::pack(srcPath.c_str(), dstPath.c_str(), title_id, NULL, error_message) != DBIN_OK)
-        errorCode = 1;
-
-    if (errorCode == 0)
-        writeMetadataWithTag(title, slot, isUSB, tag);
-    else {
-        errorMessage = (std::string) _("%s\nBackup failed. DO NOT restore from this slot.") + "\n\n" + error_message;
-        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
-        writeMetadataWithTag(title, slot, isUSB, _("UNUSABLE SLOT - BACKUP FAILED"));
-    }
-    return errorCode;
-}
-
-
-int restoreSavedataFromDataBin(Title *title, uint8_t slot, [[maybe_unused]] int8_t source_user, [[maybe_unused]]  int8_t wiiu_user, [[maybe_unused]] bool common, bool interactive /*= true*/) {
-    // we assume that the caller has verified that source data (common / user / all ) already exists
-    int errorCode = 0;
-    InProgress::copyErrorsCounter = 0;
-    InProgress::abortCopy = false;
-    InProgress::immediateAbort = false;
-    // THIS NOW CANNOT HAPPEN CHECK IF THIS IS STILL NEEEDED!!!!
-    /*
-    if (isSlotEmpty(title->highID, title->lowID, slot)) {
-        Console::showMessage(ERROR_SHOW, _("%s\nNo backup found on selected slot."),title->shortName);
-        return -2;
-    }
-    */
-
-    InProgress::titleName.assign(title->shortName);
-    InProgress::jobType = RESTORE;
-    uint32_t highID = title->noFwImg ? title->vWiiHighID : title->highID;
-    uint32_t lowID = title->noFwImg ? title->vWiiLowID : title->lowID;
-    bool isUSB = title->noFwImg ? false : title->isTitleOnUSB;
-    bool isWii = title->is_Wii || title->noFwImg;
-    const std::string baseSrcPath = getDynamicBackupPath(title, slot);
-    std::string srcPath(baseSrcPath);
-    const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
-    std::string dstPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-    std::string srcCommonPath = srcPath + "/common";
-    std::string dstCommonPath = dstPath + "/common";
-    const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
-
-    if (interactive) {
-        if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")))
-            return -1;
-        if (!FSUtils::folderEmpty(dstPath.c_str())) {
-            // individual backups always to ROOT backupSet and always allusers
-            BackupSetList::saveBackupSetSubPath();
-            BackupSetList::setBackupSetSubPathToRoot();
-            int slotb = getEmptySlot(title);
-            if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
-                if (!(backupSavedata(title, slotb, -1, true, USE_SD_OR_STORAGE_PROFILES, _("pre-Restore backup")) == 0)) {
-                    Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
-                    BackupSetList::restoreBackupSetSubPath();
-                    return -1;
-                }
-
-            BackupSetList::restoreBackupSetSubPath();
-        }
-    }
-
-    if (!FSUtils::createFolderUnlocked(dstPath)) {
-        Console::showMessage(ERROR_SHOW, _("%s\nRestore failed."), title->shortName);
-        errorCode = 16;
-        return errorCode;
-    }
-
-    std::string errorMessage{};
-
-    char error_message[2048];
-
-    srcPath = srcPath+"/data.bin";
-
-    //Console::showMessage(OK_CONFIRM,"unpack src: %s\nsdst: %s\n",srcPath.c_str(), dstPath.c_str());
-    if (DataBin::unpack(srcPath.c_str(), dstPath.c_str(), SET_PERMS_TO_666, error_message) != DBIN_OK) {
-        errorCode = 1;
-    }
-    
-    FSUtils::flushVol(dstPath);
-
-    if (errorCode != 0) {
-        errorMessage = (std::string) _("%s\nRestore failed.") + "\n" + error_message;
-        Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
-    }
-
-    return errorCode;
-}

@@ -606,6 +606,7 @@ error_state DataBin::unpack(const char *src_data_bin, const char *target_path, p
     fclose(fp);
 
     DataBin::writeLog(_("\n >>>> Extraction OK"));
+    DataBin::writeLog(_("\n Press any button to continue"));
     DataBin::showDataBinOperations(RESTORE);
 
     return DBIN_OK;

@@ -2,6 +2,8 @@
 #include <cfg/ExcludesCfg.h>
 #include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
+#include <coreinit/time.h>
+#include <coreinit/thread.h>
 #include <memory>
 #include <menu/MainMenuState.h>
 #include <romfs-wiiu.h>
@@ -175,6 +177,7 @@ int main() {
 
             DrawUtils::endDraw();
         }
+        OSSleepTicks(OSMillisecondsToTicks(1));
     }
 
     MiiUtils::deinitMiiRepos();

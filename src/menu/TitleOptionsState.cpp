@@ -888,20 +888,24 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             switch (this->task) {
                 case BACKUP:
                     if (compress_backup) {
-                        if (backupSavedataToDataBin(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES) == 0)
+                        if (backupSavedata(&this->title, slot, source_user_, common, DATA_BIN, USE_SD_OR_STORAGE_PROFILES) == 0) {
+                            Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
+                        }
                     } else {
-                        if (backupSavedata(&this->title, slot, source_user_, common, USE_SD_OR_STORAGE_PROFILES) == 0)
+                        if (backupSavedata(&this->title, slot, source_user_, common, FILES, USE_SD_OR_STORAGE_PROFILES) == 0)
                             Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
                     }
                     updateBackupData();
                     break;
                 case RESTORE:
                     if (data_bin_found && restore_uncompressed) {
-                        if (restoreSavedataFromDataBin(&this->title, slot, source_user_, wiiu_user, common) == 0)
+                        if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, DATA_BIN) == 0) {
+                            Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
+                        }
                     } else {
-                        if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common) == 0)
+                        if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, FILES) == 0)
                             Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
                     }
                     updateRestoreData();

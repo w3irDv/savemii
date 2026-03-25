@@ -770,7 +770,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         int globalRetCode = retCode << 8;
         switch (jobType) {
             case RESTORE:
-                retCode = restoreSavedata(&this->titles[i], 0, source_user, wiiu_user, effectiveCommon, NON_INTERACTIVE); //always from slot 0
+                retCode = restoreSavedata(&this->titles[i], 0, source_user, wiiu_user, effectiveCommon, FILES, NON_INTERACTIVE); //always from slot 0
                 break;
             case PROFILE_TO_PROFILE:
                 retCode = copySavedataToOtherProfile(&this->titles[i], source_user, wiiu_user, NON_INTERACTIVE, USE_SD_OR_STORAGE_PROFILES);
