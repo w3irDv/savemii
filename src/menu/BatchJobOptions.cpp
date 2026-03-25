@@ -6,9 +6,11 @@
 #include <menu/BatchJobOptions.h>
 #include <menu/BatchJobTitleSelectState.h>
 #include <savemng.h>
+#include <unistd.h>
 #include <utils/AccountUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/DataBin.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
@@ -102,6 +104,23 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                 }
             } else {
                 this->titles[i].currentDataSource.hasSavedata = !FSUtils::folderEmpty(srcPath.c_str());
+                // Only for Restores: check if the slot contains a data.bin compressed file belonging to the title
+                if (jobType == RESTORE && this->titles[i].currentDataSource.hasSavedata) {
+                    std::string data_bin_path = srcPath + "/data.bin";
+                    if (FSUtils::checkEntry(data_bin_path.c_str()) == 1) {
+                        uint64_t title_id;
+                        char error_message[2048];
+                        if (DataBin::get_title_id(data_bin_path.c_str(), &title_id, error_message) == DBIN_OK) {
+                            uint32_t data_bin_high_id = (uint32_t) (title_id >> 32);
+                            uint32_t data_bin_low_id = (uint32_t) (title_id & 0xffffffff);
+                            if (data_bin_high_id == highID && data_bin_low_id == lowID) {
+                                this->titles[i].currentDataSource.backupFormat = DATA_BIN;
+                            } else {
+                                this->titles[i].currentDataSource.hasSavedata = false;
+                            }
+                        }
+                    }
+                }
             }
         } else {
             if (errno == ENOENT) {

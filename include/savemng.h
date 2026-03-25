@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string>
 #include <utils/Colors.h>
+#include <utils/CustomTypes.h>
 #include <utils/DrawUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/InProgress.h>
@@ -27,7 +28,6 @@ namespace savemng {
     inline bool firstSDWrite = true;
 };
 
-
 struct titlesNEProfiles {
     int index;
     std::string nEProfiles;
@@ -36,11 +36,6 @@ struct titlesNEProfiles {
 enum eAccountSource {
     USE_WIIU_PROFILES,
     USE_SD_OR_STORAGE_PROFILES
-};
-
-enum eBackupFormat {
-    FILES,
-    DATA_BIN
 };
 
 bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path);
@@ -77,7 +72,7 @@ void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int 
 void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> &failedTitles);
 std::string getDynamicBackupPath(Title *title, uint8_t slot);
 std::string getDynamicBackupBasePath(Title *title);
-std::string getDynamicBackupBasePathSGMGX(Title *title); 
+std::string getDynamicBackupBasePathSGMGX(Title *title);
 std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string &datetime);
 std::string getBatchBackupPathRoot(const std::string &datetime);
 bool isTitleUsingIdBasedPath(Title *title);

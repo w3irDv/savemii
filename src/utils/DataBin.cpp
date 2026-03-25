@@ -213,7 +213,7 @@ void DataBin::showDataBinOperations(eJobType jobType) {
 
 
     size_t log_lines = logBuffer.size();
-    const size_t max_lines = 12;
+    const size_t max_lines = 10;
     size_t initial_buffer_line = (log_lines > max_lines) ? log_lines - max_lines : 0;
     for (size_t line = 0; line < max_lines && line < log_lines; line++) {
         Console::consolePrintPos(-2, 6 + line, " %s", logBuffer.at(initial_buffer_line + line).c_str());

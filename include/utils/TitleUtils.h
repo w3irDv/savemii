@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string_view>
 #include <tuple>
+#include <utils/CustomTypes.h>
 
 enum eBatchJobState {
     NOT_TRIED = 0,
@@ -28,6 +29,7 @@ struct DataSourceInfo {
     bool selectedForBackup = false;
     bool hasProfileSavedata = false;
     bool hasCommonSavedata = false;
+    eBackupFormat backupFormat = FILES;
     eBatchJobState batchJobState = NOT_TRIED;
     eBatchJobState batchBackupState = NOT_TRIED;
     int lastErrCode = 0;
