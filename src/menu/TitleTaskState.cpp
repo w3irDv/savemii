@@ -33,8 +33,14 @@ void TitleTaskState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPos(22, 0, _("Tasks"));
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
-                                 this->title.productCode);
+
+        if (this->title.is_Inject) {
+            Console::consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s] [vWii: %s]", this->title.highID, this->title.lowID,
+                                     this->title.productCode, this->title.vWiiInjectProductCode);
+        } else {
+            Console::consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
+                                     this->title.productCode);
+        }
         Console::consolePrintPos(M_OFF, 3, "   %s (%s)", this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
         Console::consolePrintPos(M_OFF, 5, _("   Backup savedata"));

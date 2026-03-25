@@ -258,6 +258,11 @@ Title *TitleUtils::loadWiiUTitles(int run) {
                     break;
                 }
             }
+            memcpy(titles[wiiuTitlesCount].vWiiInjectProductCode, &titles[wiiuTitlesCount].vWiiLowID, 4);
+            for (int ii = 0; ii < 4; ii++)
+                if (titles[wiiuTitlesCount].vWiiInjectProductCode[ii] < 32)
+                    titles[wiiuTitlesCount].vWiiInjectProductCode[ii] = '.';
+            titles[wiiuTitlesCount].vWiiInjectProductCode[4] = 0;
         } else {
             titles[wiiuTitlesCount].noFwImg = false;
             titles[wiiuTitlesCount].is_Inject = false;

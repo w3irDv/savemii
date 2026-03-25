@@ -45,6 +45,7 @@ struct Title {
     char shortName[256];
     char longName[512];
     char productCode[5];
+    char vWiiInjectProductCode[5];
     bool saveInit;
     bool isTitleOnUSB;
     bool isTitleDupe;
