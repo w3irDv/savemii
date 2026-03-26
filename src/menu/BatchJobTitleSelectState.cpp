@@ -707,7 +707,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         InProgress::currentStep++;
 
         if (fullBackup)
-            if (targetTitle.currentDataSource.batchBackupState != OK) {
+            if (!(targetTitle.currentDataSource.batchBackupState == OK || targetTitle.currentDataSource.batchBackupState == OK_NO_DATA)) {
                 sourceTitle.currentDataSource.batchJobState = ABORTED; // job task will only be executed if the title backup has been OK
                 continue;
             }

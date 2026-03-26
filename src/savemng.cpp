@@ -690,10 +690,8 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             if (onlySelectedTitles)
                 if (!titles[i].currentDataSource.selectedForBackup)
                     continue;
-            if (titles[i].is_GameCube)
-                continue;
-            if (!titles[i].saveInit) {
-                titles[i].currentDataSource.batchBackupState = OK; // .. so the restore process will be tried, in case we have been called from batchRestore
+            if (!titles[i].saveInit || titles[i].is_GameCube) {
+                titles[i].currentDataSource.batchBackupState = OK_NO_DATA; // .. so the restore process will be tried, in case we have been called from batchRestore
                 titles[i].currentDataSource.selectedForBackup = false;
                 continue;
             }
@@ -1479,6 +1477,10 @@ void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int 
                 break;
             case ABORTED:
                 titlesAborted++;
+                break;
+            case OK_NO_DATA:
+                titlesNotInitialized++;
+                titlesSkipped++;
                 break;
             default:
                 titlesSkipped++;

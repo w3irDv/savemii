@@ -12,7 +12,8 @@ enum eBatchJobState {
     ABORTED = 1,
     OK = 2,
     WR = 3,
-    KO = 4
+    KO = 4,
+    OK_NO_DATA = 5
 };
 
 enum eFileNameStyle {
