@@ -58,6 +58,8 @@ bool testForceSaveInitFalse = true
             continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
+        if (this->titles[i].is_GameCube)
+            continue;
 
         bool isWii = titles[i].is_Wii || titles[i].noFwImg;
 

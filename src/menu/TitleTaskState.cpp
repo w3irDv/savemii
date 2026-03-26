@@ -72,8 +72,13 @@ void TitleTaskState::render() {
 
 
         if (this->title.is_Inject) {
-            DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPos(2, 11, _("This title is a inject (vWii or GC title packaged as a WiiU title).\nIf needed, vWii saves can also be managed using\n  the vWii Save Management section."));
+            if (this->title.is_GameCube) {
+                DrawUtils::setFontColor(COLOR_LIST_DANGER_AT_CURSOR);
+                Console::consolePrintPosAutoFormat(2, 11, _("This title is a GameCube inject.\nSaves cannot be managed using SaveMii. Check Nintendont for more details on how to proceed."));
+            } else {
+                DrawUtils::setFontColor(COLOR_INFO);
+                Console::consolePrintPos(2, 11, _("This title is a inject (vWii or GC title packaged as a WiiU title).\nIf needed, vWii saves can also be managed using\n  the vWii Save Management section."));
+            }
         }
 
 
@@ -132,6 +137,12 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             }
 
             if (this->task == RESTORE) {
+                // GameCube injects cannot be restored
+                if (this->title.is_GameCube) {
+                    Console::showMessage(ERROR_CONFIRM, _("GameCube injects savedata cannot be restored with SaveMii. Check Nintendont documentation to manually copy savedata"));
+                    return SUBSTATE_RUNNING;
+                }
+
                 BackupSetList::setBackupSetSubPath();
                 gameBackupBasePath = getDynamicBackupBasePath(&this->title);
                 AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath, &data_bin_found);

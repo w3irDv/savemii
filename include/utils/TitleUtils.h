@@ -36,31 +36,32 @@ struct DataSourceInfo {
 };
 
 struct Title {
-    uint32_t highID;
-    uint32_t lowID;
-    uint32_t vWiiLowID;
-    uint32_t vWiiHighID;
-    uint16_t listID;
-    uint16_t indexID;
-    char shortName[256];
-    char longName[512];
-    char productCode[5];
-    char vWiiInjectProductCode[5];
-    bool saveInit;
-    bool isTitleOnUSB;
-    bool isTitleDupe;
-    bool is_Wii;
-    bool is_Inject;
-    bool noFwImg;
-    bool is_WiiUSysTitle;
-    uint16_t dupeID;
-    uint8_t *iconBuf;
-    uint64_t accountSaveSize;
-    uint64_t commonSaveSize;
-    uint32_t groupID;
+    uint32_t highID = 0;
+    uint32_t lowID = 0;
+    uint32_t vWiiLowID = 0;
+    uint32_t vWiiHighID = 0;
+    uint16_t listID = 0;
+    uint16_t indexID = 0;
+    char shortName[256] = {0};
+    char longName[512] = {0};
+    char productCode[5] = {0};
+    char vWiiInjectProductCode[5] = {0};
+    bool saveInit = false;
+    bool isTitleOnUSB = false;
+    bool isTitleDupe = false;
+    bool is_Wii = false;
+    bool is_Inject = false;
+    bool noFwImg = false;
+    bool is_WiiUSysTitle = false;
+    bool is_GameCube = false;
+    uint16_t dupeID = 0;
+    uint8_t *iconBuf = 0;
+    uint64_t accountSaveSize = 0;
+    uint64_t commonSaveSize = 0;
+    uint32_t groupID = 0;
     DataSourceInfo currentDataSource;
-    char titleNameBasedDirName[256];
-    eFileNameStyle fileNameStyle;
+    char titleNameBasedDirName[256] = {0};
+    eFileNameStyle fileNameStyle = titleName;
 };
 
 struct Saves {

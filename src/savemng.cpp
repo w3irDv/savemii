@@ -690,6 +690,8 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             if (onlySelectedTitles)
                 if (!titles[i].currentDataSource.selectedForBackup)
                     continue;
+            if (titles[i].is_GameCube)
+                continue;
             if (!titles[i].saveInit) {
                 titles[i].currentDataSource.batchBackupState = OK; // .. so the restore process will be tried, in case we have been called from batchRestore
                 titles[i].currentDataSource.selectedForBackup = false;
@@ -711,6 +713,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             const std::string dstPath = getBatchBackupPath(&titles[i], slot, batchDatetime);
             const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
+//#define MOCKALLBACKUP
 #ifndef MOCKALLBACKUP
             if (FSUtils::createFolder(dstPath.c_str())) {
                 StatManager::enable_flags_for_backup();
@@ -764,14 +767,22 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                 return titlesKO;
             }
 #else
+            // ALL OK
+            titles[i].currentDataSource.batchBackupState = OK;
+            titles[i].currentDataSource.selectedForBackup = false;
+            titlesOK++;
+/*
+            // SOME ERRORS
             if (i % 2 == 0) {
                 titles[i].currentDataSource.batchBackupState = OK;
                 titles[i].currentDataSource.selectedForBackup = false;
+                titlesOK++;
             } else {
                 titles[i].currentDataSource.batchBackupState = KO;
             }
             if (i > 10)
                 break;
+*/
 #endif
         }
     }
@@ -965,7 +976,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     std::string dstCommonPath = dstPath + "/common";
     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
     std::string storage_vol{};
-    
+
     bool doBase = false;
     bool doCommon = false;
     bool singleUser = false;
@@ -2185,4 +2196,3 @@ bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::st
 
     return data_bin_vs_title_id_mismatch;
 }
-

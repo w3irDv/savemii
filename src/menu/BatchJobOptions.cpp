@@ -46,6 +46,8 @@ BatchJobOptions::BatchJobOptions(Title *titles,
         uint32_t lowID = titles[i].noFwImg ? titles[i].vWiiLowID : titles[i].lowID;
         if (highID == 0 || lowID == 0)
             continue;
+        if (this->titles[i].is_GameCube)
+            continue;
         bool isUSB = titles[i].noFwImg ? false : titles[i].isTitleOnUSB;
         bool isWii = titles[i].is_Wii || titles[i].noFwImg;
         if (jobType != RESTORE) // we allow restore for uninitializedTitles  ...

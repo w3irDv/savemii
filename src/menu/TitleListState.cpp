@@ -47,12 +47,14 @@ void TitleListState::render() {
                     DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT, COLOR_LIST_INJECT_AT_CURSOR, cursorPos, i);
                 if (strcmp(this->titles[i + this->scroll].shortName, "DONT TOUCH ME") == 0)
                     DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER, COLOR_LIST_DANGER_AT_CURSOR, cursorPos, i);
+                if ( this->titles[i + this->scroll].is_GameCube)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
                 Console::consolePrintPos(M_OFF + 1, i + 2, "   %s %s%s%s%s",
                                          this->titles[i + this->scroll].shortName,
                                          this->titles[i + this->scroll].isTitleOnUSB ? "(USB)" : "(NAND)",
                                          this->titles[i + this->scroll].isTitleDupe ? " [D]" : "",
-                                         this->titles[i + this->scroll].noFwImg ? _(" [vWiiInject]") : "",
-                                         this->titles[i + this->scroll].saveInit ? "" : _(" [Not Init]"));
+                                         this->titles[i + this->scroll].noFwImg ? ( this->titles[i + this->scroll].is_GameCube ? " [gameCubeInject]" :_(" [vWiiInject]")) : "",
+                                         this->titles[i + this->scroll].saveInit ? "" : ( this->titles[i + this->scroll].is_GameCube ? " [-]" : _(" [Not Init]")));
                 if (this->titles[i + this->scroll].iconBuf != nullptr) {
                     DrawUtils::drawTGA((M_OFF + X_OFFSET) * 12 + 4, (i + 3) * 24 + 4, 0.18, this->titles[i + this->scroll].iconBuf);
                 }
@@ -107,7 +109,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
                 */
             }
 
-            if (!this->titles[this->targ].saveInit)
+            if (!this->titles[this->targ].saveInit && !this->titles[this->targ].is_GameCube)
                 if (!Console::promptConfirm(ST_WARNING, _("Savedata for this title has not been initialized.\nYou can try to restore it, but in case that the restore fails,\nplease run the Game to create some initial savedata \nand try again.\n\nYou can continue to Task Selection")))
                     return SUBSTATE_RUNNING;
             this->state = STATE_DO_SUBSTATE;

@@ -263,9 +263,20 @@ Title *TitleUtils::loadWiiUTitles(int run) {
                 if (titles[wiiuTitlesCount].vWiiInjectProductCode[ii] < 32)
                     titles[wiiuTitlesCount].vWiiInjectProductCode[ii] = '.';
             titles[wiiuTitlesCount].vWiiInjectProductCode[4] = 0;
+            switch(titles[wiiuTitlesCount].vWiiInjectProductCode[0]) {
+                case 'G':
+                case 'D':
+                case 'P':   // It could also be a TurboGrafx-16, but if that were the case, I don't think it would appear as an injection.
+                    titles[wiiuTitlesCount].is_GameCube = true;
+                    break;
+                default:
+                    titles[wiiuTitlesCount].is_GameCube = false;
+                    break;
+            }
         } else {
             titles[wiiuTitlesCount].noFwImg = false;
             titles[wiiuTitlesCount].is_Inject = false;
+            titles[wiiuTitlesCount].is_GameCube = false;
         }
 
         setTitleNameBasedDirName(&titles[wiiuTitlesCount]);
@@ -453,6 +464,7 @@ Title *TitleUtils::loadWiiTitles() {
                 titles[i].noFwImg = true;
                 titles[i].is_Inject = false;
                 titles[i].is_WiiUSysTitle = false;
+                titles[i].is_GameCube = false;
 
                 titles[i].listID = i;
                 titles[i].indexID = i;
@@ -724,6 +736,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
             titles[wiiuSysTitlesCount].noFwImg = false;
             titles[wiiuSysTitlesCount].is_Inject = false;
         }
+        titles[wiiuSysTitlesCount].is_GameCube = false;
 
         setTitleNameBasedDirName(&titles[wiiuSysTitlesCount]);
 
