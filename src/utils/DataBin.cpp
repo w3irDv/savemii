@@ -204,19 +204,19 @@ void DataBin::showDataBinOperations(eJobType jobType) {
     DrawUtils::setFontColor(COLOR_TEXT);
 
     if (jobType == RESTORE) {
-        Console::consolePrintPos(-2, 3, _("Extracting from: %s"), input_path);
-        Console::consolePrintPos(-2, 4, _("To: %s"), DataBin::output_path);
+        Console::consolePrintPosAutoFormat(-2, 3, _("Extracting from: %s"), input_path);
+        Console::consolePrintPos(-2, 5, _("To: %s"), DataBin::output_path);
     } else {
-        Console::consolePrintPos(-2, 3, _("Arxiving from: %s"), input_path);
-        Console::consolePrintPos(-2, 4, _("To: %s"), DataBin::output_path);
+        Console::consolePrintPos(-2, 3, _("Archiving from: %s"), input_path);
+        Console::consolePrintPosAutoFormat(-2, 4, _("To: %s"), DataBin::output_path);
     }
 
 
     size_t log_lines = logBuffer.size();
-    const size_t max_lines = 10;
+    const size_t max_lines = 9;
     size_t initial_buffer_line = (log_lines > max_lines) ? log_lines - max_lines : 0;
     for (size_t line = 0; line < max_lines && line < log_lines; line++) {
-        Console::consolePrintPos(-2, 6 + line, " %s", logBuffer.at(initial_buffer_line + line).c_str());
+        Console::consolePrintPos(-2, 7 + line, " %s", logBuffer.at(initial_buffer_line + line).c_str());
     }
 
 

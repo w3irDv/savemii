@@ -66,6 +66,10 @@ bool Metadata::read() {
             if (sName != nullptr) {
                 strlcpy(this->shortName, sName, 256);
             }
+            const char *backup_format_char = json_string_value(json_object_get(root, "backupFormat"));
+            if (backup_format_char != nullptr) {
+                this->backupFormat.assign(backup_format_char);
+            }
             json_decref(root);
             free(data);
             return true;
@@ -136,6 +140,7 @@ bool Metadata::write() {
     json_object_set_new(config, "vWiiHighID", json_string(hID));
     json_object_set_new(config, "vWiiLowID", json_string(lID));
     json_object_set_new(config, "shortName", json_string(this->shortName));
+    json_object_set_new(config, "backupFormat", json_string(this->backupFormat.c_str()));
 
     char *configString = json_dumps(config, JSON_INDENT(2));
     if (configString == nullptr)

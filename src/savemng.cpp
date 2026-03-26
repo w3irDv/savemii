@@ -618,35 +618,26 @@ std::string getNowDateForFolder() {
                                      now.tm_hour, now.tm_min, now.tm_sec);
 }
 
-void writeMetadata(Title *title, uint8_t slot, bool isUSB) {
-    Metadata *metadataObj = new Metadata(title, slot);
-    metadataObj->set(getNowDate(), isUSB);
-    delete metadataObj;
-}
-
-void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &batchDatetime) {
-    Metadata *metadataObj = new Metadata(title, slot, batchDatetime);
-    metadataObj->set(getNowDate(), isUSB);
-    delete metadataObj;
-}
-
-void writeMetadataWithTag(Title *title, uint8_t slot, bool isUSB, const std::string &tag) {
+void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &tag, eBackupFormat backup_format) {
     Metadata *metadataObj = new Metadata(title, slot);
     metadataObj->setTag(tag);
+    metadataObj->setBackupFormat(backup_format);
     metadataObj->set(getNowDate(), isUSB);
     delete metadataObj;
 }
 
-void writeMetadataWithTag(Title *title, uint8_t slot, const std::string &source, const std::string &tag) {
+void writeMetadata(Title *title, uint8_t slot, const std::string &source, const std::string &tag, eBackupFormat backup_format) {
     Metadata *metadataObj = new Metadata(title, slot);
     metadataObj->setTag(tag);
+    metadataObj->setBackupFormat(backup_format);
     metadataObj->set(getNowDate(), source);
     delete metadataObj;
 }
 
-void writeMetadataWithTag(Title *title, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag) {
+void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag, eBackupFormat backup_format) {
     Metadata *metadataObj = new Metadata(title, slot, batchDatetime);
     metadataObj->setTag(tag);
+    metadataObj->setBackupFormat(backup_format);
     metadataObj->set(getNowDate(), isUSB);
     delete metadataObj;
 }
@@ -729,7 +720,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                             if (FAT32EscapeFileManager::active_fat32_escape_file_manager->close()) {
                                 FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
                                 if (StatManager::close_stat_file_for_write()) {
-                                    writeMetadata(&titles[i], slot, isUSB, batchDatetime);
+                                    writeMetadata(&titles[i], slot, isUSB, batchDatetime, "", FILES);
                                     titles[i].currentDataSource.batchBackupState = OK;
                                     titles[i].currentDataSource.selectedForBackup = false;
                                     titlesOK++;
@@ -758,7 +749,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             // backup for this tile has failed
             titlesKO++;
             titles[i].currentDataSource.batchBackupState = KO;
-            writeMetadataWithTag(&titles[i], slot, isUSB, batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"));
+            writeMetadata(&titles[i], slot, isUSB, batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
             std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), titles[i].shortName, titlesKO);
             if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                 InProgress::abortTask = true;
@@ -824,7 +815,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         return 8;
     }
 
-    writeMetadataWithTag(title, slot, isUSB, _("BACKUP IN PROGRESS"));
+    writeMetadata(title, slot, isUSB, _("BACKUP IN PROGRESS"), backup_format);
 
     if (backup_format == DATA_BIN) {
         dstPath = dstPath + "/data.bin";
@@ -930,18 +921,18 @@ backup_cleanup_and_return:
                 errorCode += 64;
             } else {
                 Console::showMessage(WARNING_CONFIRM, _("Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."));
-                writeMetadataWithTag(title, slot, isUSB, _("WARNING - NO PERMS"));
+                writeMetadata(title, slot, isUSB, _("WARNING - NO PERMS"), backup_format);
             }
         } // we have set enable_get_stat to false
     }
 
 update_metadata_and_return:
     if (errorCode == 0)
-        writeMetadataWithTag(title, slot, isUSB, tag);
+        writeMetadata(title, slot, isUSB, tag, backup_format);
     else {
         errorMessage = (std::string) _("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
-        writeMetadataWithTag(title, slot, isUSB, _("UNUSABLE SLOT - BACKUP FAILED"));
+        writeMetadata(title, slot, isUSB, _("UNUSABLE SLOT - BACKUP FAILED"), backup_format);
     }
     return errorCode;
 }

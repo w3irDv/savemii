@@ -45,7 +45,7 @@ uint8_t MiiSaveMng::getEmptySlot(MiiRepo *mii_repo) {
 }
 
 
-void MiiSaveMng::writeMiiMetadataWithTag(MiiRepo *mii_repo, uint8_t slot, const std::string &tag) {
+void MiiSaveMng::writeMiiMetadata(MiiRepo *mii_repo, uint8_t slot, const std::string &tag) {
     Metadata *metadataObj = new Metadata(mii_repo, slot);
     metadataObj->setTag(tag);
     metadataObj->setDate(getNowDate());

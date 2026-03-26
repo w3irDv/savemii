@@ -87,21 +87,21 @@ int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
     }
 
     if (errorCode == 0)
-        MiiSaveMng::writeMiiMetadataWithTag(this, slot, tag);
+        MiiSaveMng::writeMiiMetadata(this, slot, tag);
     else {
         if (errorCode == -1) {
             errorMessage = std::string("%s\n") + errorMessage;
             Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
-            MiiSaveMng::writeMiiMetadataWithTag(this, slot, _("PARTIAL BACKUP"));
+            MiiSaveMng::writeMiiMetadata(this, slot, _("PARTIAL BACKUP"));
         }
         if (errorCode == 2) {
             errorMessage = std::string("%s\n") + errorMessage;
             Console::showMessage(WARNING_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
-            MiiSaveMng::writeMiiMetadataWithTag(this, slot, _("NO STADIO"));
+            MiiSaveMng::writeMiiMetadata(this, slot, _("NO STADIO"));
         } else {
             errorMessage = (std::string) _("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
             Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), this->repo_name.c_str());
-            MiiSaveMng::writeMiiMetadataWithTag(this, slot, _("UNUSABLE SLOT - BACKUP FAILED"));
+            MiiSaveMng::writeMiiMetadata(this, slot, _("UNUSABLE SLOT - BACKUP FAILED"));
         }
     }
     return errorCode;

@@ -19,7 +19,8 @@ public:
                                         Date({}),
                                         storage({}),
                                         serialId(AmbientConfig::unknownSerialId),
-                                        tag({}) { strlcpy(this->shortName, title->shortName, 256); }
+                                        tag({}),
+                                        backupFormat({}) { strlcpy(this->shortName, title->shortName, 256); }
 
     Metadata(Title *title, uint8_t s, const std::string &datetime) : highID(title->highID),
                                                                      lowID(title->lowID),
@@ -61,6 +62,7 @@ public:
     std::string getDate() { return Date; };
     std::string getTag() { return tag; };
     void setTag(const std::string &tag_) { this->tag = tag_; };
+    void setBackupFormat(eBackupFormat backup_format) { backupFormat.assign(backup_format == FILES ? "FILES" : "DATA_BIN");};
     std::string getSerialId() { return serialId; };
     uint32_t getVWiiHighID() { return this->vWiiHighID; };
 
@@ -70,18 +72,20 @@ public:
     void setStorage(const std::string &storage) { this->storage = storage; };
 
 private:
-    uint32_t highID;
-    uint32_t lowID;
-    uint32_t vWiiHighID;
-    uint32_t vWiiLowID;
-    char shortName[256];
-    uint8_t slot;
-    std::string path;
+    uint32_t highID = 0;
+    uint32_t lowID = 0;
+    uint32_t vWiiHighID = 0;
+    uint32_t vWiiLowID = 0;
+    char shortName[256] = {0};
+    uint8_t slot = 0;
+    std::string path{};
 
-    std::string Date;
-    std::string storage;
-    std::string serialId;
-    std::string tag;
+    std::string Date{};
+    std::string storage{};
+    std::string serialId{};
+    std::string tag{};
 
-    std::string repo_name;
+    std::string backupFormat{};
+    
+    std::string repo_name{};
 };
