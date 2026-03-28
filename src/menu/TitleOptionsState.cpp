@@ -105,8 +105,16 @@ void TitleOptionsState::render() {
         }
         entrycount = 2;
         DrawUtils::setFontColor(COLOR_TEXT);
+        if (this->title.is_Inject) {
+            DrawUtils::setFontColor(COLOR_LIST_INJECT);
+            if (this->title.is_GameCube)
+                DrawUtils::setFontColor(COLOR_LIST_WARNING);
+        } else {
+            DrawUtils::setFontColor(COLOR_LIST);
+        }
         Console::consolePrintPos(M_OFF, 2, "[%08X-%08X] %s (%s)", this->title.highID, this->title.lowID,
                                  this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
+        DrawUtils::setFontColor(COLOR_TEXT);
         if (this->task == COPY_TO_OTHER_DEVICE) {
             Console::consolePrintPos(M_OFF, 4, _("Destination:"));
             DrawUtils::setFontColor(COLOR_TEXT);
@@ -129,7 +137,7 @@ void TitleOptionsState::render() {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             Console::consolePrintPos(M_OFF, 5, "    (%s)", this->title.isTitleOnUSB ? "USB" : "NAND");
         } else if ((task == BACKUP) || (task == RESTORE)) {
-            Console::consolePrintPos(M_OFF, 4, _("Select %s [%s]:"), _("slot"), slotFormat.c_str());
+            Console::consolePrintPos(M_OFF, 4, _("Select %s [%s]%s:"), _("slot"), slotFormat.c_str(), emptySlot ? "" : (data_bin_found ? "[data.bin]" : "[F]"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
             if (((this->title.highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
                 Console::consolePrintPos(M_OFF, 5, "   < SaveGame Manager GX > (%s)",
@@ -646,6 +654,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateSlotMetadata();
+                        updateData_bin_found(slot,SAVEMII_SLOT);
                         break;
                     case 1:
                         if (this->isWiiUTitle) {
@@ -834,6 +843,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateSlotMetadata();
+                        updateData_bin_found(slot,SAVEMII_SLOT);
                         break;
                     case 1:
                         if (this->isWiiUTitle) {
@@ -1232,13 +1242,23 @@ void TitleOptionsState::updateDataBinInfo() {
         data_bin_vs_title_id_mismatch = check_data_bin_vs_title_id(&this->title, slot, gameBackupBasePath.c_str());
 }
 
-
 void TitleOptionsState::updateImportAsWii() {
     hasUserDataInNAND = hasSavedata(&this->title, false, slot, gameBackupBasePath.c_str());
 }
 
 void TitleOptionsState::updateExportAsWii() {
-    std::string data_bin = gameBackupBasePath + "/data.bin";
-    data_bin_found = (FSUtils::checkEntry(data_bin.c_str()) == 1);
+    updateData_bin_found(0,PRIVATE_SLOT);
     emptySlot = !data_bin_found;
+}
+
+void TitleOptionsState::updateData_bin_found(uint8_t slot, eSlotType slot_type) {
+    std::string data_bin{};
+    switch (slot_type) {
+        case SAVEMII_SLOT:
+            data_bin = StringUtils::stringFormat("%s/%u/data.bin", gameBackupBasePath.c_str(), slot);
+            break;
+        case PRIVATE_SLOT:
+            data_bin = gameBackupBasePath + "/data.bin";
+    }
+    data_bin_found = (FSUtils::checkEntry(data_bin.c_str()) == 1);
 }

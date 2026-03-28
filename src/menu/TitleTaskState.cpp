@@ -34,11 +34,14 @@ void TitleTaskState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPos(22, 0, _("Tasks"));
         DrawUtils::setFontColor(COLOR_TEXT);
-
         if (this->title.is_Inject) {
+            DrawUtils::setFontColor(COLOR_LIST_INJECT);
+            if (this->title.is_GameCube)
+                DrawUtils::setFontColor(COLOR_LIST_WARNING);
             Console::consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s] [vWii: %s]", this->title.highID, this->title.lowID,
                                      this->title.productCode, this->title.vWiiInjectProductCode);
         } else {
+            DrawUtils::setFontColor(COLOR_LIST);
             Console::consolePrintPos(M_OFF, 2, "   [%08X-%08X] [%s]", this->title.highID, this->title.lowID,
                                      this->title.productCode);
         }
@@ -65,9 +68,9 @@ void TitleTaskState::render() {
             }
         } else {
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-            Console::consolePrintPos(M_OFF, 8, _("   Import from 'private' SD Wii Data slots"));
+            Console::consolePrintPos(M_OFF, 8, _("   Export to 'private' SD Wii Data slots"));
             DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-            Console::consolePrintPos(M_OFF, 9, _("   Export to 'private' SD Wii Data slots "));
+            Console::consolePrintPos(M_OFF, 9, _("   Import from 'private' SD Wii Data slots "));
         }
 
 
@@ -106,10 +109,10 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             if (!this->isWiiUTitle) {
                 switch (cursorPos) {
                     case 3:
-                        this->task = IMPORT_FROM_SD_WII_DATA_MGMT;
+                        this->task = EXPORT_TO_SD_WII_DATA_MGMT;
                         break;
                     case 4:
-                        this->task = EXPORT_TO_SD_WII_DATA_MGMT;
+                        this->task = IMPORT_FROM_SD_WII_DATA_MGMT;
                         break;
                     default:
                         break;
