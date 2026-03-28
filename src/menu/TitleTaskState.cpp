@@ -157,7 +157,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             }
 
             if (this->task == IMPORT_FROM_SD_WII_DATA_MGMT || this->task == EXPORT_TO_SD_WII_DATA_MGMT) {
-                gameBackupBasePath = std::string("fs:/vol/external01/private/wii/title/") + (this->title.is_Inject ? this->title.vWiiInjectProductCode : this->title.productCode);
+                gameBackupBasePath = getPrivateSavedataSlot(&this->title);
                 AccountUtils::resetAccountsFromVol(); // Wii task, there are no profiles to look for
                 data_bin_found = !FSUtils::folderEmpty(gameBackupBasePath.c_str());
                 if (this->task == IMPORT_FROM_SD_WII_DATA_MGMT && !data_bin_found) {

@@ -76,6 +76,7 @@ TitleOptionsState::TitleOptionsState(Title &title,
         case IMPORT_FROM_SD_WII_DATA_MGMT:
             sourceHasRequestedSavedata = data_bin_found;
             emptySlot = !data_bin_found;
+            data_bin_vs_title_id_mismatch = check_data_bin_vs_title_id(&this->title, slot, gameBackupBasePath.c_str());
             updateImportAsWii();
             break;
         default:;
@@ -319,7 +320,8 @@ void TitleOptionsState::render() {
                     Console::consolePrintPos(M_OFF, 7, _("'data.bin' savedata found. Uncompress and restore:"));
                     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                     Console::consolePrintPos(M_OFF, 8, "   < %s >", restore_uncompressed ? _("yes, I know this is a true data.bin file") : _("no, just copy back the data.bin file as is"));
-
+                }
+                if (task == RESTORE || task == IMPORT_FROM_SD_WII_DATA_MGMT) {
                     if (data_bin_vs_title_id_mismatch) {
                         DrawUtils::setFontColor(COLOR_CURRENT_BS);
                         Console::consolePrintPos(M_OFF, 13, _("WARNING: Game TitleId does not match the one in savedata."));
@@ -448,7 +450,10 @@ void TitleOptionsState::render() {
             case EXPORT_TO_SD_WII_DATA_MGMT:
                 Console::consolePrintPosAligned(0, 4, 1, _("Export to SD Wii Save"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Keys  \\ue000: Export  \\ue001: Back"));
+                if (emptySlot)
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue002: Keys  \\ue001: Back"));
+                    else
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue002: Keys  \\ue046 Delete Slot  \\ue001: Back"));
                 break;
             default:;
         }
@@ -857,8 +862,15 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             if (this->task == BACKUP) {
                 if (!isSlotEmpty(&this->title, slot)) {
                     InProgress::totalSteps = InProgress::currentStep = 1;
-                    deleteSlot(&this->title, slot);
+                    deleteSlot(&this->title, slot, SAVEMII_SLOT);
                     updateBackupData();
+                }
+            }
+            if (this->task == EXPORT_TO_SD_WII_DATA_MGMT) {
+                if (!FSUtils::folderEmpty(gameBackupBasePath.c_str())) {
+                    InProgress::totalSteps = InProgress::currentStep = 1;
+                    deleteSlot(&this->title, slot, PRIVATE_SLOT);
+                    updateExportAsWii();
                 }
             }
         }
@@ -1220,7 +1232,7 @@ void TitleOptionsState::updateImportAsWii() {
 }
 
 void TitleOptionsState::updateExportAsWii() {
-    std::string data_bin = gameBackupBasePath+"/data.bin";
+    std::string data_bin = gameBackupBasePath + "/data.bin";
     data_bin_found = (FSUtils::checkEntry(data_bin.c_str()) == 1);
     emptySlot = !data_bin_found;
 }

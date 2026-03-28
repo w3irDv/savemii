@@ -113,6 +113,25 @@ std::string getBatchBackupPathRoot(const std::string &datetime) {
     return StringUtils::stringFormat("%s/%s", batchBackupPath, datetime.c_str());
 }
 
+// SD wii SaveData manager backup path in /private/wii/title
+std::string getPrivateSavedataSlot(Title *title) {
+    return StringUtils::stringFormat("fs:/vol/external01/private/wii/title/%s", title->is_Inject ? title->vWiiInjectProductCode : title->productCode);
+}
+
+// get backupPath for savemiis wether in savemii slot or in wii private sd slot
+std::string getBackupPath(Title *title, uint8_t slot, eSlotType slot_type) {
+
+    switch (slot_type) {
+        case SAVEMII_SLOT:
+            return getDynamicBackupPath(title, slot);
+            break;
+        case PRIVATE_SLOT:
+            return getPrivateSavedataSlot(title);
+            break;
+    }
+    return std::string("UNKNOWN"); // CANNOT_HAPPEN 
+}
+
 
 bool checkIfProfileExistsInWiiUAccounts(const char *name) {
     bool exists = false;
@@ -1394,21 +1413,29 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
     return true;
 }
 
-void deleteSlot(Title *title, uint8_t slot) {
+void deleteSlot(Title *title, uint8_t slot, eSlotType slot_type) {
     if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
         return;
     InProgress::titleName.assign(title->shortName);
-    const std::string path = getDynamicBackupPath(title, slot);
-    if (path.find(backupPath) == std::string::npos) {
-        Console::showMessage(ERROR_SHOW, _("Error setting path. Aborting."));
-        return;
+    std::string path = getBackupPath(title, slot, slot_type);
+    if (slot_type == SAVEMII_SLOT) { // being paranoic
+        if (path.find(backupPath) == std::string::npos) {
+            Console::showMessage(ERROR_SHOW, _("Error setting path. Aborting."));
+            return;
+        }
+    } else if (slot_type == PRIVATE_SLOT) {
+        if (path.find("external01/private") == std::string::npos) {
+            Console::showMessage(ERROR_SHOW, _("Error setting path. Aborting."));
+            return;
+        }
     }
+
     if (FSUtils::checkEntry(path.c_str()) == 2) {
         if (FSUtils::removeDir(path)) {
             if (unlink(path.c_str()) == -1)
-                Console::showMessage(ERROR_SHOW, _("Failed to delete slot %u."), slot);
+                Console::showMessage(ERROR_SHOW, _("Failed to delete slot %u."), slot_type == SAVEMII_SLOT ? slot : 0);
         } else
-            Console::showMessage(ERROR_SHOW, _("Failed to delete slot %u."), slot);
+            Console::showMessage(ERROR_SHOW, _("Failed to delete slot %u."), slot_type == SAVEMII_SLOT ? slot : 0);
     } else {
         Console::showMessage(ERROR_CONFIRM, _("Folder $s\ndoes not exist."), path.c_str());
     }
@@ -2162,7 +2189,10 @@ bool setLegacyOwnerAndModeForTitle(Title *title) {
 bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::string &gameBackupBasePath) {
     bool data_bin_vs_title_id_mismatch = true;
     std::string srcPath;
-    srcPath = StringUtils::stringFormat("%s/%u", gameBackupBasePath.c_str(), slot_or_version);
+    if (gameBackupBasePath.find("external01/private") == std::string::npos)
+        srcPath = StringUtils::stringFormat("%s/%u", gameBackupBasePath.c_str(), slot_or_version);
+    else
+        srcPath = gameBackupBasePath;
     uint64_t title_id;
     char error_message[2048] = {0};
     std::string data_bin_path = srcPath + "/data.bin";

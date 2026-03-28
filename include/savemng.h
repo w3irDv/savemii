@@ -38,6 +38,11 @@ enum eAccountSource {
     USE_SD_OR_STORAGE_PROFILES
 };
 
+enum eSlotType {
+    SAVEMII_SLOT,
+    PRIVATE_SLOT
+};
+
 bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path);
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path);
 bool hasSavedata(Title *title, bool inSD, uint8_t slot, const char *game_backup_base_path);
@@ -61,7 +66,7 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, int8_t wiiu_user, bool common, bool interactive = true, eAccountSource accountSource = USE_WIIU_PROFILES) __attribute__((hot));
 bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode);
 bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode, eAccountSource accountSource = USE_SD_OR_STORAGE_PROFILES);
-void deleteSlot(Title *title, uint8_t slot);
+void deleteSlot(Title *title, uint8_t slot, eSlotType slot_stype);
 bool wipeBackupSet(const std::string &subPath, bool force = false);
 void sdWriteDisclaimer(Color = COLOR_BLACK);
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles);
@@ -71,6 +76,7 @@ std::string getDynamicBackupBasePath(Title *title);
 std::string getDynamicBackupBasePathSGMGX(Title *title);
 std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string &datetime);
 std::string getBatchBackupPathRoot(const std::string &datetime);
+std::string getPrivateSavedataSlot(Title *title);
 bool isTitleUsingIdBasedPath(Title *title);
 bool isTitleUsingTitleNameBasedPath(Title *title);
 bool renameTitleFolder(Title *title);
