@@ -14,7 +14,7 @@ public:
         this->isWiiUTitle = (!this->title.is_Wii) && (!this->title.noFwImg);
         // DBG - REVIEW CONDITIOn
         //this->isWiiUTitle = ((this->title.highID == 0x00050000) || (this->title.highID == 0x00050002)) && !this->title.noFwImg;
-        entrycount = 3 + 4 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe));
+        entrycount = 3 + 4 * static_cast<int>(this->isWiiUTitle) + 1 * static_cast<int>(this->isWiiUTitle && (this->title.isTitleDupe)) + 2 * static_cast<int>(!this->isWiiUTitle);
         if (cursorPos > entrycount - 1)
             cursorPos = 0;
     }

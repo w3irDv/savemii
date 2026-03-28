@@ -91,6 +91,8 @@ void updateCopyToOtherDeviceData();
 void updateWipeProfileData();
 void updateMoveCopyProfileData();
 void updateLoadiine();
+void updateImportAsWii();
+void updateExportAsWii();
 
 bool loadiine_mode = LOADIINE_SHARED_SAVEDATA;
 void updateLoadiineMode(int8_t user);

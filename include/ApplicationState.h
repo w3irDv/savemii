@@ -23,7 +23,9 @@ enum eJobType {
     TRANSFORM_MIIS = 14,
     TRANSFORM_MIIS_APPERANCE = 15,
     TRANSFOMR_MIIS_OWNERSHIP = 16,    
-    NONE = 17
+    NONE = 17,
+    EXPORT_TO_SD_WII_DATA_MGMT = 18,
+    IMPORT_FROM_SD_WII_DATA_MGMT = 19
 };
 
 enum eTitleType {

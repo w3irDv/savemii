@@ -64,15 +64,17 @@ void AccountUtils::getAccountsWiiU() {
     nn::act::Finalize();
 }
 
-/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loaddine shared savedata accounts if found in a normal slot. Checks if there is  vWii data.bin compressed saves in the current slot
+/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loadiine shared savedata accounts if found in a normal slot. Checks if there is  vWii data.bin compressed saves in the current slot
 /// @param title
 /// @param slot_or_version
 /// @param jobType
 /// @param gameBackupBasePath
 void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupBasePath, bool *data_bin_found) {
     vol_accn = 0;
-    if (vol_acc != nullptr)
+    if (vol_acc != nullptr){
         free(vol_acc);
+        vol_acc = nullptr;
+    }
 
     int initial_index = 0;
     std::string srcPath;
@@ -181,7 +183,7 @@ loadiine_savedata_renamed:
                 writeMetadata(title, (uint8_t) slot_or_version, source, tagMessage, FILES);
             } else {
                 const std::string tagMessage{_("CONVERTED FROM LOADIINE")};
-                writeMetadata(title, (uint8_t) slot_or_version, source, tagMessage,FILES);
+                writeMetadata(title, (uint8_t) slot_or_version, source, tagMessage, FILES);
             }
         }
     }
@@ -238,6 +240,13 @@ loadiine_savedata_renamed:
     }
 }
 
+void AccountUtils::resetAccountsFromVol() {
+    vol_accn = 0;
+    if (vol_acc != nullptr) {
+        free(vol_acc);
+        vol_acc = nullptr;
+    }
+}
 
 std::string AccountUtils::getUserID() { // Source: loadiine_gx2
     // get persistent ID - thanks to Maschell

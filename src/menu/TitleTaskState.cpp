@@ -5,6 +5,7 @@
 #include <menu/TitleOptionsState.h>
 #include <menu/TitleTaskState.h>
 #include <savemng.h>
+#include <string.h>
 #include <utils/AccountUtils.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
@@ -62,7 +63,13 @@ void TitleTaskState::render() {
                 Console::consolePrintPos(M_OFF, 12, _("   Copy Savedata to Title in %s"),
                                          this->title.isTitleOnUSB ? "NAND" : "USB");
             }
+        } else {
+            DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
+            Console::consolePrintPos(M_OFF, 8, _("   Import from 'private' SD Wii Data slots"));
+            DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
+            Console::consolePrintPos(M_OFF, 9, _("   Export to 'private' SD Wii Data slots "));
         }
+
 
         if (!this->title.is_Wii) {
             if (this->title.iconBuf != nullptr)
@@ -96,6 +103,19 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             this->task = (eJobType) cursorPos;
 
+            if (!this->isWiiUTitle) {
+                switch (cursorPos) {
+                    case 3:
+                        this->task = IMPORT_FROM_SD_WII_DATA_MGMT;
+                        break;
+                    case 4:
+                        this->task = EXPORT_TO_SD_WII_DATA_MGMT;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             source_user = -1;
             wiiu_user = -1;
             common = false;
@@ -118,13 +138,29 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                 case MOVE_PROFILE:
                     noData = _("No save to Move.");
                     break;
+                case IMPORT_FROM_SD_WII_DATA_MGMT:
+                    noData = _("No save in SD Wii Data slot.");
+                    break;
+                case EXPORT_TO_SD_WII_DATA_MGMT:
+                    noData = _("No save to export to SD Wii Data slot.");
+                    break;
                 default:
                     noData = "";
                     break;
             }
 
-            if (this->task == BACKUP || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
+            if (this->task == BACKUP || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE || this->task == EXPORT_TO_SD_WII_DATA_MGMT) {
                 if (!this->title.saveInit) {
+                    Console::showMessage(ERROR_SHOW, noData);
+                    return SUBSTATE_RUNNING;
+                }
+            }
+
+            if (this->task == IMPORT_FROM_SD_WII_DATA_MGMT || this->task == EXPORT_TO_SD_WII_DATA_MGMT) {
+                gameBackupBasePath = std::string("fs:/vol/external01/private/wii/title/") + (this->title.is_Inject ? this->title.vWiiInjectProductCode : this->title.productCode);
+                AccountUtils::resetAccountsFromVol(); // Wii task, there are no profiles to look for
+                data_bin_found = !FSUtils::folderEmpty(gameBackupBasePath.c_str());
+                if (this->task == IMPORT_FROM_SD_WII_DATA_MGMT && !data_bin_found) {
                     Console::showMessage(ERROR_SHOW, noData);
                     return SUBSTATE_RUNNING;
                 }

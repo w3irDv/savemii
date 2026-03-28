@@ -68,6 +68,16 @@ TitleOptionsState::TitleOptionsState(Title &title,
         case exportLoadiine:
             updateLoadiine();
             break;
+        case EXPORT_TO_SD_WII_DATA_MGMT: // data_bin_found has been already updated.
+            hasUserDataInNAND = hasSavedata(&this->title, false, slot, gameBackupBasePath.c_str());
+            sourceHasRequestedSavedata = hasUserDataInNAND;
+            updateExportAsWii();
+            break;
+        case IMPORT_FROM_SD_WII_DATA_MGMT:
+            sourceHasRequestedSavedata = data_bin_found;
+            emptySlot = !data_bin_found;
+            updateImportAsWii();
+            break;
         default:;
     }
 }
@@ -128,6 +138,10 @@ void TitleOptionsState::render() {
                 Console::consolePrintPos(M_OFF, 5, "   < %03u > (%s)", slot,
                                          emptySlot ? _("Empty")
                                                    : _("Used"));
+        } else if ((task == IMPORT_FROM_SD_WII_DATA_MGMT) || (task == EXPORT_TO_SD_WII_DATA_MGMT)) {
+            Console::consolePrintPos(M_OFF, 5, _("   Go! (slot in SD: %s)"),
+                                     emptySlot ? _("Empty")
+                                               : _("Used"));
         }
 
         if ((task == BACKUP) || (task == RESTORE)) {
@@ -279,15 +293,15 @@ void TitleOptionsState::render() {
 
         if (!this->isWiiUTitle) {
 
-            if ((task == WIPE_PROFILE || task == BACKUP) || data_bin_found)
+            if ((task == WIPE_PROFILE || task == BACKUP) || (task == RESTORE && data_bin_found))
                 entrycount = 2;
             else
                 entrycount = 1;
 
             common = false;
             DrawUtils::setFontColor(COLOR_TEXT);
-            Console::consolePrintPos(M_OFF, ((task == WIPE_PROFILE || task == BACKUP) || data_bin_found) ? 10 : 7, "%s", (task == BACKUP) ? _("Source:") : _("Target:"));
-            Console::consolePrintPos(M_OFF, ((task == WIPE_PROFILE || task == BACKUP) || data_bin_found) ? 11 : 8, "   %s (%s)", _("Savedata in NAND"),
+            Console::consolePrintPos(M_OFF, ((task == WIPE_PROFILE || task == BACKUP) || (task == RESTORE && data_bin_found)) ? 10 : 7, "%s", (task == BACKUP || task == EXPORT_TO_SD_WII_DATA_MGMT) ? _("Source:") : _("Target:"));
+            Console::consolePrintPos(M_OFF, ((task == WIPE_PROFILE || task == BACKUP) || (task == RESTORE && data_bin_found)) ? 11 : 8, "   %s (%s)", _("Savedata in NAND"),
                                      hasUserDataInNAND ? _("Has Save") : _("Empty"));
             if (task == WIPE_PROFILE) {
                 Console::consolePrintPos(M_OFF, 7, _("Select vWii data to wipe:"));
@@ -318,7 +332,16 @@ void TitleOptionsState::render() {
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 Console::consolePrintPos(M_OFF, 8, "   < %s >", compress_backup ? _("yes, I neeed a data.bin file") : _("no, plain files are ok (classic savemii format)"));
             }
-
+            if (task == EXPORT_TO_SD_WII_DATA_MGMT) {
+                DrawUtils::setFontColor(COLOR_INFO);
+                Console::consolePrintPos(M_OFF, 10, _("Compress backup to sd:/private/wii/title"));
+                Console::consolePrintPos(M_OFF, 11, _("using keys of the target wii,"));
+                Console::consolePrintPos(M_OFF, 12, _("so it can be read by standard Wii Data Management"));
+            }
+            if (task == IMPORT_FROM_SD_WII_DATA_MGMT) {
+                DrawUtils::setFontColor(COLOR_INFO);
+                Console::consolePrintPos(M_OFF, 10, _("Restore backup from sd:/private/wii/title"));
+            }
 
             if (this->title.iconBuf != nullptr) {
                 if (this->title.is_Wii)
@@ -416,6 +439,16 @@ void TitleOptionsState::render() {
                 Console::consolePrintPosAligned(0, 4, 1, _("Copy to Other Device"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Copy  \\ue001: Back"));
+                break;
+            case IMPORT_FROM_SD_WII_DATA_MGMT:
+                Console::consolePrintPosAligned(0, 4, 1, _("Import from SD Wii Save"));
+                DrawUtils::setFontColor(COLOR_TEXT);
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Import  \\ue001: Back"));
+                break;
+            case EXPORT_TO_SD_WII_DATA_MGMT:
+                Console::consolePrintPosAligned(0, 4, 1, _("Export to SD Wii Save"));
+                DrawUtils::setFontColor(COLOR_TEXT);
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Keys  \\ue000: Export  \\ue001: Back"));
                 break;
             default:;
         }
@@ -831,7 +864,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         }
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             InProgress::totalSteps = InProgress::currentStep = 1;
-            int source_user_ = 0;
+            int source_user_ = source_user;
             switch (this->task) {
                 case BACKUP:
                 case WIPE_PROFILE:
@@ -841,8 +874,10 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 case RESTORE:
                 case exportLoadiine:
                 case importLoadiine:
+                case EXPORT_TO_SD_WII_DATA_MGMT:
+                case IMPORT_FROM_SD_WII_DATA_MGMT:
                     if (!(common || sourceHasRequestedSavedata)) {
-                        if (this->task == BACKUP || this->task == exportLoadiine)
+                        if (this->task == BACKUP || this->task == exportLoadiine || this->task == EXPORT_TO_SD_WII_DATA_MGMT)
                             Console::showMessage(ERROR_SHOW, _("No data selected to backup"));
                         else if (this->task == WIPE_PROFILE)
                             Console::showMessage(ERROR_SHOW, _("No data selected to wipe"));
@@ -852,11 +887,11 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                             Console::showMessage(ERROR_SHOW, _("No data selected to moveProfile"));
                         else if (this->task == COPY_TO_OTHER_DEVICE)
                             Console::showMessage(ERROR_SHOW, _("No data selected to copy"));
-                        else if (this->task == RESTORE || this->task == importLoadiine)
+                        else if (this->task == RESTORE || this->task == importLoadiine || this->task == IMPORT_FROM_SD_WII_DATA_MGMT)
                             Console::showMessage(ERROR_SHOW, _("No data selected to restore"));
                         return SUBSTATE_RUNNING;
                     }
-                    if (this->task == RESTORE && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
+                    if (this->isWiiUTitle && this->task == RESTORE && source_user == -1 && GlobalCfg::global->getDontAllowUndefinedProfiles()) {
                         if (!checkIfProfilesInTitleBackupExist(&this->title, slot)) {
                             Console::showMessage(ERROR_CONFIRM, _("%s\n\nTask aborted: would have restored savedata to a non-existent profile.\n\nTry to restore using 'from/to user' options"), this->title.shortName);
                             return SUBSTATE_RUNNING;
@@ -871,17 +906,15 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         }
                     }
                     if ((source_user > -1 && !sourceHasRequestedSavedata))
-                        source_user_ = -2;
-                    else
-                        source_user_ = source_user;
+                        source_user_ = -2; // only common
                     break;
                 default:;
             }
-            if (this->task == RESTORE && restore_uncompressed && !DataBin::shared_keys_initialized) {
+            if (((this->task == RESTORE && restore_uncompressed) || (this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) && !DataBin::shared_keys_initialized) {
                 Console::showMessage(ERROR_CONFIRM, _("'data.bin' uncompress aborted: no shared keys found.\nProvide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
                 return SUBSTATE_RUNNING;
             }
-            if (this->task == BACKUP && compress_backup && !(DataBin::shared_keys_initialized && DataBin::private_keys_initialized && DataBin::mac_in_databin_initialized)) {
+            if (((this->task == BACKUP && compress_backup) || (this->task == EXPORT_TO_SD_WII_DATA_MGMT)) && !(DataBin::shared_keys_initialized && DataBin::private_keys_initialized && DataBin::mac_in_databin_initialized)) {
                 Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no private keys or shared keys found.\n Please provide the Wii U 'otp.bin' file in SD:/wiiu/backups/<SerialId> (different for each console), and a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
                 return SUBSTATE_RUNNING;
             }
@@ -940,6 +973,14 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     if (exportToLoadiine(&this->title, source_user_, wiiu_user, common, version, loadiine_mode, USE_SD_OR_STORAGE_PROFILES))
                         Console::showMessage(OK_SHOW, _("Savedata succesfully copied!"));
                     updateLoadiine();
+                    break;
+                case IMPORT_FROM_SD_WII_DATA_MGMT:
+                    Console::showMessage(OK_CONFIRM, "import done");
+                    updateImportAsWii();
+                    break;
+                case EXPORT_TO_SD_WII_DATA_MGMT:
+                    Console::showMessage(OK_CONFIRM, "export done");
+                    updateImportAsWii();
                     break;
                 default:;
             }
@@ -1010,7 +1051,7 @@ void TitleOptionsState::updateSlotMetadata() {
 
 /*
 
-This is the Account that each task uses (all of them are called with USE_SD_OR_AccountUtils::vol_accOUNTS) 
+This is the Account that each task uses (all of them are called with USE_SD_OR_STORAGE_PROFILES) 
 | TASK         | SRC        | DST         |
 | ------------ | ---------- | ----------- |
 | backup       | vol  NAND  | vol   SD    |
@@ -1171,4 +1212,15 @@ void TitleOptionsState::updateSlotContentFlagForLoadiine() {
 void TitleOptionsState::updateDataBinInfo() {
     if (DataBin::shared_keys_initialized)
         data_bin_vs_title_id_mismatch = check_data_bin_vs_title_id(&this->title, slot, gameBackupBasePath.c_str());
+}
+
+
+void TitleOptionsState::updateImportAsWii() {
+    hasUserDataInNAND = hasSavedata(&this->title, false, slot, gameBackupBasePath.c_str());
+}
+
+void TitleOptionsState::updateExportAsWii() {
+    std::string data_bin = gameBackupBasePath+"/data.bin";
+    data_bin_found = (FSUtils::checkEntry(data_bin.c_str()) == 1);
+    emptySlot = !data_bin_found;
 }
