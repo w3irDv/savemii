@@ -452,7 +452,7 @@ void TitleOptionsState::render() {
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
                     Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue002: Keys  \\ue001: Back"));
-                    else
+                else
                     Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue002: Keys  \\ue046 Delete Slot  \\ue001: Back"));
                 break;
             default:;
@@ -933,24 +933,24 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             switch (this->task) {
                 case BACKUP:
                     if (compress_backup) {
-                        if (backupSavedata(&this->title, slot, source_user_, common, DATA_BIN, USE_SD_OR_STORAGE_PROFILES) == 0) {
+                        if (backupSavedata(&this->title, slot, source_user_, common, DATA_BIN, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0) {
                             Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
                         }
                     } else {
-                        if (backupSavedata(&this->title, slot, source_user_, common, FILES, USE_SD_OR_STORAGE_PROFILES) == 0)
+                        if (backupSavedata(&this->title, slot, source_user_, common, FILES, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0)
                             Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
                     }
                     updateBackupData();
                     break;
                 case RESTORE:
                     if (data_bin_found && restore_uncompressed) {
-                        if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, DATA_BIN) == 0) {
+                        if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, DATA_BIN, SAVEMII_SLOT) == 0) {
                             Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
                         }
                     } else {
-                        if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, FILES) == 0)
+                        if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, FILES, SAVEMII_SLOT) == 0)
                             Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
                     }
                     updateRestoreData();
@@ -987,12 +987,18 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateLoadiine();
                     break;
                 case IMPORT_FROM_SD_WII_DATA_MGMT:
-                    Console::showMessage(OK_CONFIRM, "import done");
+                    if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, DATA_BIN, PRIVATE_SLOT) == 0) {
+                        Console::waitForAnyButton();
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
+                    }
                     updateImportAsWii();
                     break;
                 case EXPORT_TO_SD_WII_DATA_MGMT:
-                    Console::showMessage(OK_CONFIRM, "export done");
-                    updateImportAsWii();
+                    if (backupSavedata(&this->title, slot, source_user_, common, DATA_BIN, PRIVATE_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0) {
+                        Console::waitForAnyButton();
+                        Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
+                    }
+                    updateExportAsWii();
                     break;
                 default:;
             }
