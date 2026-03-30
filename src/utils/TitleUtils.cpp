@@ -240,7 +240,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
         if (TitleUtils::loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr;
 
-        titles[wiiuSysTitlesCount].is_WiiUSysTitle = false;
+        titles[wiiuTitlesCount].is_WiiUSysTitle = false;
 
         titles[wiiuTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",

@@ -618,7 +618,7 @@ void FSUtils::showDeleteOperations(bool isFolder, const char *name, const std::s
 }
 
 int32_t FSUtils::loadFile(const char *fPath, uint8_t **buf) {
-    int ret = 0;
+    int ret = -23;
     FILE *file = fopen(fPath, "rb");
     if (file != nullptr) {
         struct stat st{};
@@ -638,7 +638,7 @@ int32_t FSUtils::loadFile(const char *fPath, uint8_t **buf) {
 }
 
 int32_t FSUtils::loadFilePart(const char *fPath, uint32_t start, uint32_t size, uint8_t **buf) {
-    int ret = 0;
+    int ret = -23;
     FILE *file = fopen(fPath, "rb");
     if (file != nullptr) {
         struct stat st{};
