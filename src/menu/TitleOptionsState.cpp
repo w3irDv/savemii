@@ -3,6 +3,7 @@
 #include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
 #include <menu/BackupSetListState.h>
+#include <menu/KeyListState.h>
 #include <menu/KeyboardState.h>
 #include <menu/TitleOptionsState.h>
 #include <savemng.h>
@@ -407,10 +408,17 @@ void TitleOptionsState::render() {
             case BACKUP:
                 Console::consolePrintPosAligned(0, 4, 1, _("Backup"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue001: Back"));
-                else
-                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"));
+                if (isWiiUTitle) {
+                    if (emptySlot)
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue001: Back"));
+                    else
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"));
+                } else {
+                    if (emptySlot)
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue002: Keys  \\ue001: Back"));
+                    else
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue002: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"));
+                }
                 break;
             case RESTORE:
                 Console::consolePrintPos(20, 0, _("Restore"));
@@ -473,12 +481,17 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::B)) {
             return SUBSTATE_RETURN;
         }
-        if (input->get(ButtonState::TRIGGER, Button::X))
+        if (input->get(ButtonState::TRIGGER, Button::X)) {
             if (this->task == RESTORE) {
                 this->state = STATE_DO_SUBSTATE;
                 this->substateCalled = STATE_BACKUPSET_MENU;
                 this->subState = std::make_unique<BackupSetListState>();
             }
+            if (this->task == EXPORT_TO_SD_WII_DATA_MGMT || this->task == BACKUP) {
+                this->state = STATE_DO_SUBSTATE;
+                this->subState = std::make_unique<KeyListState>();
+            }
+        }
         if (input->get(ButtonState::TRIGGER, Button::Y)) {
             showFolderInfo = showFolderInfo ? false : true;
         }
@@ -654,7 +667,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateSlotMetadata();
-                        updateData_bin_found(slot,SAVEMII_SLOT);
+                        updateData_bin_found(slot, SAVEMII_SLOT);
                         break;
                     case 1:
                         if (this->isWiiUTitle) {
@@ -843,7 +856,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateSlotMetadata();
-                        updateData_bin_found(slot,SAVEMII_SLOT);
+                        updateData_bin_found(slot, SAVEMII_SLOT);
                         break;
                     case 1:
                         if (this->isWiiUTitle) {
@@ -1247,7 +1260,7 @@ void TitleOptionsState::updateImportAsWii() {
 }
 
 void TitleOptionsState::updateExportAsWii() {
-    updateData_bin_found(0,PRIVATE_SLOT);
+    updateData_bin_found(0, PRIVATE_SLOT);
     emptySlot = !data_bin_found;
 }
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 01:11+0200\n"
+"POT-Creation-Date: 2026-04-01 23:44+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -39,26 +39,27 @@ msgstr "Storage+Name"
 
 #: src/utils/DataBinUnpack.cpp:522 src/utils/DataBinPack.cpp:671
 msgid "Signature OK"
-msgstr ""
+msgstr "Signature OK"
 
 #: src/utils/DataBinUnpack.cpp:524
-#, fuzzy
 msgid "Error computing signature"
-msgstr "Error copying data."
+msgstr "Error computing signature"
 
 #: src/utils/DataBinUnpack.cpp:608
-#, fuzzy
 msgid ""
 "\n"
 " >>>> Extraction OK"
-msgstr "Miis extraction Ok"
+msgstr ""
+"\n"
+" >>>> Extraction OK"
 
 #: src/utils/DataBinUnpack.cpp:609 src/utils/DataBinPack.cpp:755
-#, fuzzy
 msgid ""
 "\n"
 " Press any button to continue"
-msgstr "Press \\ue000 to continue"
+msgstr ""
+"\n"
+" Press any button to continue"
 
 #: src/utils/TitleUtils.cpp:59 src/utils/TitleUtils.cpp:118
 #: src/utils/TitleUtils.cpp:163 src/utils/TitleUtils.cpp:370
@@ -317,7 +318,7 @@ msgstr ""
 "Errors detected during wipe.\n"
 "Do you want to save the database?"
 
-#: src/utils/MiiUtils.cpp:651 src/utils/DataBin.cpp:196 src/savemng.cpp:1473
+#: src/utils/MiiUtils.cpp:651 src/utils/DataBin.cpp:265 src/savemng.cpp:1473
 msgid "Please wait. First write to (some) SDs can take several seconds."
 msgstr "Please wait. First write to (some) SDs can take several seconds."
 
@@ -334,18 +335,18 @@ msgstr "Wiping mii"
 msgid "Copying from: %s"
 msgstr "Copying from: %s"
 
-#: src/utils/MiiUtils.cpp:671 src/utils/DataBin.cpp:208
-#: src/utils/DataBin.cpp:211 src/utils/FSUtils.cpp:588 src/savemng.cpp:1629
+#: src/utils/MiiUtils.cpp:671 src/utils/DataBin.cpp:277
+#: src/utils/DataBin.cpp:280 src/utils/FSUtils.cpp:588 src/savemng.cpp:1629
 #, c-format
 msgid "To: %s"
 msgstr "To: %s"
 
-#: src/utils/MiiUtils.cpp:677 src/utils/DataBin.cpp:226
+#: src/utils/MiiUtils.cpp:677 src/utils/DataBin.cpp:295
 #: src/utils/FSUtils.cpp:592 src/utils/FSUtils.cpp:611
 msgid "Will abort..."
 msgstr "Will abort..."
 
-#: src/utils/MiiUtils.cpp:680 src/utils/DataBin.cpp:229
+#: src/utils/MiiUtils.cpp:680 src/utils/DataBin.cpp:298
 #: src/utils/FSUtils.cpp:595 src/utils/FSUtils.cpp:614
 msgid "Abort:\\ue083+\\ue046"
 msgstr "Abort:\\ue083+\\ue046"
@@ -484,26 +485,61 @@ msgid ""
 "\n"
 " >>>> Archiving OK"
 msgstr ""
+"\n"
+" >>>> Archiving OK"
 
-#: src/utils/DataBin.cpp:202 src/menu/MiiDBOptionsState.cpp:112
-#: src/menu/TitleOptionsState.cpp:408
+#: src/utils/DataBin.cpp:29 src/utils/DataBin.cpp:116 src/utils/DataBin.cpp:181
+#, c-format
+msgid "cannot open %s"
+msgstr ""
+
+#: src/utils/DataBin.cpp:36
+#, c-format
+msgid "error reading %s"
+msgstr ""
+
+#: src/utils/DataBin.cpp:82
+msgid "wrong shared key length"
+msgstr ""
+
+#: src/utils/DataBin.cpp:93
+msgid "No digits were found.\n"
+msgstr ""
+
+#: src/utils/DataBin.cpp:96
+#, c-format
+msgid "Invalid character: %c\n"
+msgstr ""
+
+#: src/utils/DataBin.cpp:157
+#, c-format
+msgid "Cannot find keys%s in %s"
+msgstr ""
+
+#: src/utils/DataBin.cpp:203
+#, c-format
+msgid "MAC not found in %s"
+msgstr ""
+
+#: src/utils/DataBin.cpp:271 src/menu/MiiDBOptionsState.cpp:112
+#: src/menu/TitleOptionsState.cpp:409
 msgid "Backup"
 msgstr "Backup"
 
-#: src/utils/DataBin.cpp:202 src/menu/MiiDBOptionsState.cpp:120
-#: src/menu/TitleOptionsState.cpp:416
+#: src/utils/DataBin.cpp:271 src/menu/MiiDBOptionsState.cpp:120
+#: src/menu/TitleOptionsState.cpp:424
 msgid "Restore"
 msgstr "Restore"
 
-#: src/utils/DataBin.cpp:207
-#, fuzzy, c-format
+#: src/utils/DataBin.cpp:276
+#, c-format
 msgid "Extracting from: %s"
-msgstr "Copying from: %s"
+msgstr "Extracting from: %s"
 
-#: src/utils/DataBin.cpp:210
-#, fuzzy, c-format
+#: src/utils/DataBin.cpp:279
+#, c-format
 msgid "Archiving from: %s"
-msgstr "Copying from: %s"
+msgstr "Archiving from: %s"
 
 #: src/utils/ConsoleUtils.cpp:52
 msgid "Press \\ue000 to continue"
@@ -1098,11 +1134,9 @@ msgstr ""
 "%s"
 
 #: src/utils/StatManager.cpp:242
-#, fuzzy, c-format
+#, c-format
 msgid "Error getting stat for %s: %s"
-msgstr ""
-"Error setting quota for \n"
-"%s"
+msgstr "Error getting stat for %s: %s"
 
 #: src/utils/StatManager.cpp:274
 #, c-format
@@ -1132,13 +1166,12 @@ msgid "initFS failed. Please make sure your MochaPayload is up-to-date"
 msgstr "initFS failed. Please make sure your MochaPayload is up-to-date"
 
 #: src/main.cpp:109
-#, fuzzy
 msgid "Initializing Radndom seed"
-msgstr "Initializing WPAD and KPAD"
+msgstr "Initializing Radndom seed"
 
 #: src/main.cpp:112
 msgid "Readng Encyption Keys"
-msgstr ""
+msgstr "Readng Encyption Keys"
 
 #: src/main.cpp:129
 msgid "Initializing BackupSets metadata."
@@ -1667,41 +1700,41 @@ msgstr "Ok, legacy folder '%08x%08x' will be used."
 msgid "Selected Repo: %s"
 msgstr "Selected Repo: %s"
 
-#: src/menu/MiiDBOptionsState.cpp:76 src/menu/TitleOptionsState.cpp:130
+#: src/menu/MiiDBOptionsState.cpp:76 src/menu/TitleOptionsState.cpp:131
 #, c-format
 msgid "Select %s:"
 msgstr "Select %s:"
 
-#: src/menu/MiiDBOptionsState.cpp:76 src/menu/TitleOptionsState.cpp:140
+#: src/menu/MiiDBOptionsState.cpp:76 src/menu/TitleOptionsState.cpp:141
 msgid "slot"
 msgstr "slot"
 
 #: src/menu/MiiDBOptionsState.cpp:79 src/menu/MiiDBOptionsState.cpp:96
-#: src/menu/TitleOptionsState.cpp:133 src/menu/TitleOptionsState.cpp:144
-#: src/menu/TitleOptionsState.cpp:148 src/menu/TitleOptionsState.cpp:152
-#: src/menu/TitleOptionsState.cpp:186 src/menu/TitleOptionsState.cpp:190
-#: src/menu/TitleOptionsState.cpp:193 src/menu/TitleOptionsState.cpp:208
-#: src/menu/TitleOptionsState.cpp:213 src/menu/TitleOptionsState.cpp:217
-#: src/menu/TitleOptionsState.cpp:314 src/menu/TitleOptionsState.cpp:322
+#: src/menu/TitleOptionsState.cpp:134 src/menu/TitleOptionsState.cpp:145
+#: src/menu/TitleOptionsState.cpp:149 src/menu/TitleOptionsState.cpp:153
+#: src/menu/TitleOptionsState.cpp:187 src/menu/TitleOptionsState.cpp:191
+#: src/menu/TitleOptionsState.cpp:194 src/menu/TitleOptionsState.cpp:209
+#: src/menu/TitleOptionsState.cpp:214 src/menu/TitleOptionsState.cpp:218
+#: src/menu/TitleOptionsState.cpp:315 src/menu/TitleOptionsState.cpp:323
 msgid "Empty"
 msgstr "Empty"
 
-#: src/menu/MiiDBOptionsState.cpp:80 src/menu/TitleOptionsState.cpp:134
-#: src/menu/TitleOptionsState.cpp:145 src/menu/TitleOptionsState.cpp:149
-#: src/menu/TitleOptionsState.cpp:153
+#: src/menu/MiiDBOptionsState.cpp:80 src/menu/TitleOptionsState.cpp:135
+#: src/menu/TitleOptionsState.cpp:146 src/menu/TitleOptionsState.cpp:150
+#: src/menu/TitleOptionsState.cpp:154
 msgid "Used"
 msgstr "Used"
 
-#: src/menu/MiiDBOptionsState.cpp:84 src/menu/TitleOptionsState.cpp:159
+#: src/menu/MiiDBOptionsState.cpp:84 src/menu/TitleOptionsState.cpp:160
 #, c-format
 msgid "Slot -> Date: %s"
 msgstr "Slot -> Date: %s"
 
-#: src/menu/MiiDBOptionsState.cpp:94 src/menu/TitleOptionsState.cpp:312
+#: src/menu/MiiDBOptionsState.cpp:94 src/menu/TitleOptionsState.cpp:313
 msgid "Source:"
 msgstr "Source:"
 
-#: src/menu/MiiDBOptionsState.cpp:94 src/menu/TitleOptionsState.cpp:312
+#: src/menu/MiiDBOptionsState.cpp:94 src/menu/TitleOptionsState.cpp:313
 msgid "Target:"
 msgstr "Target:"
 
@@ -1710,11 +1743,11 @@ msgstr "Target:"
 msgid "   %s Mii DB (%s)"
 msgstr "   %s Mii DB (%s)"
 
-#: src/menu/MiiDBOptionsState.cpp:96 src/menu/TitleOptionsState.cpp:186
-#: src/menu/TitleOptionsState.cpp:190 src/menu/TitleOptionsState.cpp:193
-#: src/menu/TitleOptionsState.cpp:208 src/menu/TitleOptionsState.cpp:213
-#: src/menu/TitleOptionsState.cpp:217 src/menu/TitleOptionsState.cpp:314
-#: src/menu/TitleOptionsState.cpp:322
+#: src/menu/MiiDBOptionsState.cpp:96 src/menu/TitleOptionsState.cpp:187
+#: src/menu/TitleOptionsState.cpp:191 src/menu/TitleOptionsState.cpp:194
+#: src/menu/TitleOptionsState.cpp:209 src/menu/TitleOptionsState.cpp:214
+#: src/menu/TitleOptionsState.cpp:218 src/menu/TitleOptionsState.cpp:315
+#: src/menu/TitleOptionsState.cpp:323
 msgid "Has Save"
 msgstr "Has Save"
 
@@ -1726,11 +1759,11 @@ msgstr "DB will be wiped"
 msgid "DB will be wiped and initialized"
 msgstr "DB will be wiped and initialized"
 
-#: src/menu/MiiDBOptionsState.cpp:115 src/menu/TitleOptionsState.cpp:411
+#: src/menu/MiiDBOptionsState.cpp:115 src/menu/TitleOptionsState.cpp:413
 msgid "\\ue000: Backup  \\ue001: Back"
 msgstr "\\ue000: Backup  \\ue001: Back"
 
-#: src/menu/MiiDBOptionsState.cpp:117 src/menu/TitleOptionsState.cpp:413
+#: src/menu/MiiDBOptionsState.cpp:117 src/menu/TitleOptionsState.cpp:415
 msgid "\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
 msgstr "\\ue000: Backup  \\ue045: Tag Slot  \\ue046: Delete Slot  \\ue001: Back"
 
@@ -1754,11 +1787,11 @@ msgstr "\\ue000: XRestore  \\ue001: Back"
 msgid "\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"
 
-#: src/menu/MiiDBOptionsState.cpp:136 src/menu/TitleOptionsState.cpp:424
+#: src/menu/MiiDBOptionsState.cpp:136 src/menu/TitleOptionsState.cpp:432
 msgid "Wipe"
 msgstr "Wipe"
 
-#: src/menu/MiiDBOptionsState.cpp:138 src/menu/TitleOptionsState.cpp:426
+#: src/menu/MiiDBOptionsState.cpp:138 src/menu/TitleOptionsState.cpp:434
 msgid "\\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue000: Wipe  \\ue001: Back"
 
@@ -1770,15 +1803,15 @@ msgstr "Initialize"
 msgid "\\ue000: Initialize  \\ue001: Back"
 msgstr "\\ue000: Initialize  \\ue001: Back"
 
-#: src/menu/MiiDBOptionsState.cpp:227 src/menu/TitleOptionsState.cpp:903
+#: src/menu/MiiDBOptionsState.cpp:227 src/menu/TitleOptionsState.cpp:916
 msgid "No data selected to backup"
 msgstr "No data selected to backup"
 
-#: src/menu/MiiDBOptionsState.cpp:229 src/menu/TitleOptionsState.cpp:905
+#: src/menu/MiiDBOptionsState.cpp:229 src/menu/TitleOptionsState.cpp:918
 msgid "No data selected to wipe"
 msgstr "No data selected to wipe"
 
-#: src/menu/MiiDBOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:913
+#: src/menu/MiiDBOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:926
 msgid "No data selected to restore"
 msgstr "No data selected to restore"
 
@@ -2723,8 +2756,8 @@ msgid "ERROR WIPING BACKUPSET"
 msgstr "ERROR WIPING BACKUPSET"
 
 #: src/menu/BatchJobTitleSelectState.cpp:718
-#: src/menu/BatchJobTitleSelectState.cpp:727 src/menu/TitleOptionsState.cpp:918
-#: src/menu/TitleOptionsState.cpp:926
+#: src/menu/BatchJobTitleSelectState.cpp:727 src/menu/TitleOptionsState.cpp:931
+#: src/menu/TitleOptionsState.cpp:939
 #, c-format
 msgid ""
 "%s\n"
@@ -2756,6 +2789,53 @@ msgstr "FAILED - No titles"
 #, c-format
 msgid "FAILED - OK/KO > %s: %d/%d"
 msgstr "FAILED - OK/KO > %s: %d/%d"
+
+#: src/menu/KeyListState.cpp:29
+msgid ""
+"'SD:/wiiu/backups/keys' folder has no key files.\n"
+"\n"
+"Please add the files with keys from other consoles"
+msgstr ""
+"'SD:/wiiu/backups/keys' folder has no key files.\n"
+"\n"
+"Please add the files with keys from other consoles"
+
+#: src/menu/KeyListState.cpp:37
+msgid "Encryption Keys files"
+msgstr ""
+
+#: src/menu/KeyListState.cpp:39
+#, c-format
+msgid "KEYS: P:%s|S:%s|M:%s"
+msgstr "KEYS: P:%s|S:%s|M:%s"
+
+#: src/menu/KeyListState.cpp:57
+msgid "Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."
+msgstr ""
+
+#: src/menu/KeyListState.cpp:62
+msgid "\\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: Default  \\ue001: Back"
+msgstr ""
+
+#: src/menu/KeyListState.cpp:78
+#, c-format
+msgid "Error setting custom private keys: %s"
+msgstr "Error setting custom private keys: %s"
+
+#: src/menu/KeyListState.cpp:89
+#, c-format
+msgid "Error setting custom shared keys: %s"
+msgstr "Error setting custom shared keys: %s"
+
+#: src/menu/KeyListState.cpp:100
+#, c-format
+msgid "Error setting custom mac: %s"
+msgstr "Error setting custom mac: %s"
+
+#: src/menu/KeyListState.cpp:106
+#, c-format
+msgid "Error setting default keys and mac: %s"
+msgstr ""
 
 #: src/menu/BatchJobState.cpp:26
 msgid "Batch Restore"
@@ -2895,17 +2975,19 @@ msgstr "   Copy Savedata to Title in %s"
 
 #: src/menu/TitleTaskState.cpp:71
 msgid "   Export to 'private' SD Wii Data slots"
-msgstr ""
+msgstr "   Export to 'private' SD Wii Data slots"
 
 #: src/menu/TitleTaskState.cpp:73
 msgid "   Import from 'private' SD Wii Data slots "
-msgstr ""
+msgstr "   Import from 'private' SD Wii Data slots "
 
 #: src/menu/TitleTaskState.cpp:87
 msgid ""
 "This title is a GameCube inject.\n"
 "Saves cannot be managed using SaveMii. Check Nintendont for more details on how to proceed."
 msgstr ""
+"This title is a GameCube inject.\n"
+"Saves cannot be managed using SaveMii. Check Nintendont for more details on how to proceed."
 
 #: src/menu/TitleTaskState.cpp:90
 msgid ""
@@ -2943,15 +3025,15 @@ msgstr "No save to Move."
 
 #: src/menu/TitleTaskState.cpp:145
 msgid "No save in SD Wii Data slot."
-msgstr ""
+msgstr "No save in SD Wii Data slot."
 
 #: src/menu/TitleTaskState.cpp:148
 msgid "No save to export to SD Wii Data slot."
-msgstr ""
+msgstr "No save to export to SD Wii Data slot."
 
 #: src/menu/TitleTaskState.cpp:181
 msgid "GameCube injects savedata cannot be restored with SaveMii. Check Nintendont documentation to manually copy savedata"
-msgstr ""
+msgstr "GameCube injects savedata cannot be restored with SaveMii. Check Nintendont documentation to manually copy savedata"
 
 #: src/menu/TitleTaskState.cpp:192
 msgid "Title has no profile savedata"
@@ -3388,7 +3470,7 @@ msgstr ""
 msgid "BatchJob - Options"
 msgstr "BatchJob - Options"
 
-#: src/menu/BatchJobOptions.cpp:246 src/menu/TitleOptionsState.cpp:178
+#: src/menu/BatchJobOptions.cpp:246 src/menu/TitleOptionsState.cpp:179
 msgid "Select SD user to copy from:"
 msgstr "Select SD user to copy from:"
 
@@ -3406,7 +3488,7 @@ msgstr "Batch ProfileCopy - Options"
 
 #: src/menu/BatchJobOptions.cpp:252 src/menu/BatchJobOptions.cpp:258
 #: src/menu/BatchJobOptions.cpp:270 src/menu/BatchJobOptions.cpp:276
-#: src/menu/TitleOptionsState.cpp:178
+#: src/menu/TitleOptionsState.cpp:179
 msgid "Select Wii U user to copy from:"
 msgstr "Select Wii U user to copy from:"
 
@@ -3418,7 +3500,7 @@ msgstr "Batch ProfileMove - Options"
 msgid "Batch Wipe - Options"
 msgstr "Batch Wipe - Options"
 
-#: src/menu/BatchJobOptions.cpp:264 src/menu/TitleOptionsState.cpp:178
+#: src/menu/BatchJobOptions.cpp:264 src/menu/TitleOptionsState.cpp:179
 msgid "Select Wii U user to wipe:"
 msgstr "Select Wii U user to wipe:"
 
@@ -3452,7 +3534,7 @@ msgid "BS: %s"
 msgstr "BS: %s"
 
 #: src/menu/BatchJobOptions.cpp:297 src/menu/BatchJobOptions.cpp:319
-#: src/menu/TitleOptionsState.cpp:183 src/menu/TitleOptionsState.cpp:205
+#: src/menu/TitleOptionsState.cpp:184 src/menu/TitleOptionsState.cpp:206
 msgid "only common save"
 msgstr "only common save"
 
@@ -3460,19 +3542,19 @@ msgstr "only common save"
 msgid "Ok"
 msgstr "Ok"
 
-#: src/menu/BatchJobOptions.cpp:302 src/menu/TitleOptionsState.cpp:185
+#: src/menu/BatchJobOptions.cpp:302 src/menu/TitleOptionsState.cpp:186
 msgid "all users"
 msgstr "all users"
 
-#: src/menu/BatchJobOptions.cpp:316 src/menu/TitleOptionsState.cpp:202
+#: src/menu/BatchJobOptions.cpp:316 src/menu/TitleOptionsState.cpp:203
 msgid "Select Wii U user to copy to:"
 msgstr "Select Wii U user to copy to:"
 
-#: src/menu/BatchJobOptions.cpp:321 src/menu/TitleOptionsState.cpp:207
+#: src/menu/BatchJobOptions.cpp:321 src/menu/TitleOptionsState.cpp:208
 msgid "same user than in source"
 msgstr "same user than in source"
 
-#: src/menu/BatchJobOptions.cpp:329 src/menu/TitleOptionsState.cpp:272
+#: src/menu/BatchJobOptions.cpp:329 src/menu/TitleOptionsState.cpp:273
 msgid "Include 'common' save?"
 msgstr "Include 'common' save?"
 
@@ -3634,246 +3716,249 @@ msgstr "\\ue045 Save Configuration  \\ue001: Back"
 msgid "Error processing configuration"
 msgstr "Error processing configuration"
 
-#: src/menu/TitleOptionsState.cpp:103
+#: src/menu/TitleOptionsState.cpp:104
 #, c-format
 msgid "BackupSet: %s"
 msgstr "BackupSet: %s"
 
-#: src/menu/TitleOptionsState.cpp:119
+#: src/menu/TitleOptionsState.cpp:120
 msgid "Destination:"
 msgstr "Destination:"
 
-#: src/menu/TitleOptionsState.cpp:124
+#: src/menu/TitleOptionsState.cpp:125
 msgid "   Copy profile savedata to a different profile."
 msgstr "   Copy profile savedata to a different profile."
 
-#: src/menu/TitleOptionsState.cpp:127
+#: src/menu/TitleOptionsState.cpp:128
 msgid "   Move profile savedata to a different profile."
 msgstr "   Move profile savedata to a different profile."
 
-#: src/menu/TitleOptionsState.cpp:128
+#: src/menu/TitleOptionsState.cpp:129
 msgid "   - Target profile will be wiped."
 msgstr "   - Target profile will be wiped."
 
-#: src/menu/TitleOptionsState.cpp:130
+#: src/menu/TitleOptionsState.cpp:131
 msgid "version"
 msgstr "version"
 
-#: src/menu/TitleOptionsState.cpp:136
+#: src/menu/TitleOptionsState.cpp:137
 msgid "Delete from:"
 msgstr "Delete from:"
 
-#: src/menu/TitleOptionsState.cpp:140
-#, fuzzy, c-format
+#: src/menu/TitleOptionsState.cpp:141
+#, c-format
 msgid "Select %s [%s]%s:"
-msgstr "Select %s [%s]:"
+msgstr "Select %s [%s]%s:"
 
-#: src/menu/TitleOptionsState.cpp:151
+#: src/menu/TitleOptionsState.cpp:152
 #, c-format
 msgid "   Go! (slot in SD: %s)"
-msgstr ""
+msgstr "   Go! (slot in SD: %s)"
 
-#: src/menu/TitleOptionsState.cpp:181
+#: src/menu/TitleOptionsState.cpp:182
 msgid "metadata + savedata"
 msgstr "metadata + savedata"
 
-#: src/menu/TitleOptionsState.cpp:226
+#: src/menu/TitleOptionsState.cpp:227
 msgid "Source has 'common' savedata, only it will be saved"
 msgstr "Source has 'common' savedata, only it will be saved"
 
-#: src/menu/TitleOptionsState.cpp:227
+#: src/menu/TitleOptionsState.cpp:228
 msgid "Source has 'common' savedata, it will also be saved"
 msgstr "Source has 'common' savedata, it will also be saved"
 
-#: src/menu/TitleOptionsState.cpp:230
+#: src/menu/TitleOptionsState.cpp:231
 msgid "Source has 'common' savedata, only it will be restored"
 msgstr "Source has 'common' savedata, only it will be restored"
 
-#: src/menu/TitleOptionsState.cpp:231
+#: src/menu/TitleOptionsState.cpp:232
 msgid "Source has 'common' savedata, it will also be restored"
 msgstr "Source has 'common' savedata, it will also be restored"
 
-#: src/menu/TitleOptionsState.cpp:234
+#: src/menu/TitleOptionsState.cpp:235
 msgid "'common' savedata found, only it will be deleted"
 msgstr "'common' savedata found, only it will be deleted"
 
-#: src/menu/TitleOptionsState.cpp:235
+#: src/menu/TitleOptionsState.cpp:236
 msgid "'common' savedata found, it will also be deleted"
 msgstr "'common' savedata found, it will also be deleted"
 
-#: src/menu/TitleOptionsState.cpp:238
+#: src/menu/TitleOptionsState.cpp:239
 msgid "Source has 'common' savedata, only it will be copied"
 msgstr "Source has 'common' savedata, only it will be copied"
 
-#: src/menu/TitleOptionsState.cpp:239
+#: src/menu/TitleOptionsState.cpp:240
 msgid "Source 'common' savedata, it will also be copied"
 msgstr "Source 'common' savedata, it will also be copied"
 
-#: src/menu/TitleOptionsState.cpp:257 src/menu/TitleOptionsState.cpp:290
+#: src/menu/TitleOptionsState.cpp:258 src/menu/TitleOptionsState.cpp:291
 #, c-format
 msgid "(Target has 'common': %s)"
 msgstr "(Target has 'common': %s)"
 
-#: src/menu/TitleOptionsState.cpp:258 src/menu/TitleOptionsState.cpp:275
-#: src/menu/TitleOptionsState.cpp:291
+#: src/menu/TitleOptionsState.cpp:259 src/menu/TitleOptionsState.cpp:276
+#: src/menu/TitleOptionsState.cpp:292
 msgid "yes"
 msgstr "yes"
 
-#: src/menu/TitleOptionsState.cpp:258 src/menu/TitleOptionsState.cpp:275
-#: src/menu/TitleOptionsState.cpp:291
+#: src/menu/TitleOptionsState.cpp:259 src/menu/TitleOptionsState.cpp:276
+#: src/menu/TitleOptionsState.cpp:292
 msgid "no "
 msgstr "no "
 
-#: src/menu/TitleOptionsState.cpp:281 src/menu/TitleOptionsState.cpp:288
+#: src/menu/TitleOptionsState.cpp:282 src/menu/TitleOptionsState.cpp:289
 msgid "No 'common' save found."
 msgstr "No 'common' save found."
 
-#: src/menu/TitleOptionsState.cpp:281 src/menu/TitleOptionsState.cpp:288
+#: src/menu/TitleOptionsState.cpp:282 src/menu/TitleOptionsState.cpp:289
 msgid "Source: No 'common' save found."
 msgstr "Source: No 'common' save found."
 
-#: src/menu/TitleOptionsState.cpp:313
+#: src/menu/TitleOptionsState.cpp:314
 msgid "Savedata in NAND"
 msgstr "Savedata in NAND"
 
-#: src/menu/TitleOptionsState.cpp:316
+#: src/menu/TitleOptionsState.cpp:317
 msgid "Select vWii data to wipe:"
 msgstr "Select vWii data to wipe:"
 
-#: src/menu/TitleOptionsState.cpp:319
+#: src/menu/TitleOptionsState.cpp:320
 msgid "full metadata + savedata"
 msgstr "full metadata + savedata"
 
-#: src/menu/TitleOptionsState.cpp:321
+#: src/menu/TitleOptionsState.cpp:322
 msgid "savedata"
 msgstr "savedata"
 
-#: src/menu/TitleOptionsState.cpp:328
+#: src/menu/TitleOptionsState.cpp:329
 msgid "'data.bin' savedata found. Uncompress and restore:"
-msgstr ""
+msgstr "'data.bin' savedata found. Uncompress and restore:"
 
-#: src/menu/TitleOptionsState.cpp:330
+#: src/menu/TitleOptionsState.cpp:331
 msgid "yes, I know this is a true data.bin file"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:330
+#: src/menu/TitleOptionsState.cpp:331
 msgid "no, just copy back the data.bin file as is"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:335
-msgid "WARNING: Game TitleId does not match the one in savedata."
-msgstr ""
-
 #: src/menu/TitleOptionsState.cpp:336
+msgid "WARNING: Game TitleId does not match the one in savedata."
+msgstr "WARNING: Game TitleId does not match the one in savedata."
+
+#: src/menu/TitleOptionsState.cpp:337
 msgid "This savedata is for a different game/region"
-msgstr ""
+msgstr "This savedata is for a different game/region"
 
-#: src/menu/TitleOptionsState.cpp:341
-#, fuzzy
+#: src/menu/TitleOptionsState.cpp:342
 msgid "Compress backup:"
-msgstr "pre-Restore backup"
+msgstr "Compress backup:"
 
-#: src/menu/TitleOptionsState.cpp:343
+#: src/menu/TitleOptionsState.cpp:344
 msgid "yes, I neeed a data.bin file"
-msgstr ""
+msgstr "yes, I neeed a data.bin file"
 
-#: src/menu/TitleOptionsState.cpp:343
+#: src/menu/TitleOptionsState.cpp:344
 msgid "no, plain files are ok (classic savemii format)"
-msgstr ""
-
-#: src/menu/TitleOptionsState.cpp:347
-msgid "Compress backup to sd:/private/wii/title"
-msgstr ""
+msgstr "no, plain files are ok (classic savemii format)"
 
 #: src/menu/TitleOptionsState.cpp:348
-msgid "using keys of the target wii,"
-msgstr ""
+msgid "Compress backup to sd:/private/wii/title"
+msgstr "Compress backup to sd:/private/wii/title"
 
 #: src/menu/TitleOptionsState.cpp:349
+msgid "using keys of the target wii,"
+msgstr "using keys of the target wii,"
+
+#: src/menu/TitleOptionsState.cpp:350
 msgid "so it can be read by standard Wii Data Management"
-msgstr ""
+msgstr "so it can be read by standard Wii Data Management"
 
-#: src/menu/TitleOptionsState.cpp:353
+#: src/menu/TitleOptionsState.cpp:354
 msgid "Restore backup from sd:/private/wii/title"
+msgstr "Restore backup from sd:/private/wii/title"
+
+#: src/menu/TitleOptionsState.cpp:418
+msgid "\\ue000: Backup  \\ue002: Keys  \\ue001: Back"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:419
+#: src/menu/TitleOptionsState.cpp:420
+msgid "\\ue000: Backup  \\ue002: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
+msgstr ""
+
+#: src/menu/TitleOptionsState.cpp:427
 msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
 msgstr "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
 
-#: src/menu/TitleOptionsState.cpp:421
+#: src/menu/TitleOptionsState.cpp:429
 msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue002: Change BackupSet  \\ue000: Restore  \\ue045: Tag Slot  \\ue001: Back"
 
-#: src/menu/TitleOptionsState.cpp:429
+#: src/menu/TitleOptionsState.cpp:437
 msgid "Copy to Other Profile"
 msgstr "Copy to Other Profile"
 
-#: src/menu/TitleOptionsState.cpp:431 src/menu/TitleOptionsState.cpp:451
+#: src/menu/TitleOptionsState.cpp:439 src/menu/TitleOptionsState.cpp:459
 msgid "\\ue000: Copy  \\ue001: Back"
 msgstr "\\ue000: Copy  \\ue001: Back"
 
-#: src/menu/TitleOptionsState.cpp:434
+#: src/menu/TitleOptionsState.cpp:442
 msgid "Move to Other Profile"
 msgstr "Move to Other Profile"
 
-#: src/menu/TitleOptionsState.cpp:436
+#: src/menu/TitleOptionsState.cpp:444
 msgid "\\ue000: Move  \\ue001: Back"
 msgstr "\\ue000: Move  \\ue001: Back"
 
-#: src/menu/TitleOptionsState.cpp:439
+#: src/menu/TitleOptionsState.cpp:447
 msgid "Import Loadiine"
 msgstr "Import Loadiine"
 
-#: src/menu/TitleOptionsState.cpp:441 src/menu/TitleOptionsState.cpp:456
+#: src/menu/TitleOptionsState.cpp:449 src/menu/TitleOptionsState.cpp:464
 msgid "\\ue000: Import  \\ue001: Back"
 msgstr "\\ue000: Import  \\ue001: Back"
 
-#: src/menu/TitleOptionsState.cpp:444
+#: src/menu/TitleOptionsState.cpp:452
 msgid "Export Loadiine"
 msgstr "Export Loadiine"
 
-#: src/menu/TitleOptionsState.cpp:446
+#: src/menu/TitleOptionsState.cpp:454
 msgid "\\ue000: Export  \\ue001: Back"
 msgstr "\\ue000: Export  \\ue001: Back"
 
-#: src/menu/TitleOptionsState.cpp:449
+#: src/menu/TitleOptionsState.cpp:457
 msgid "Copy to Other Device"
 msgstr "Copy to Other Device"
 
-#: src/menu/TitleOptionsState.cpp:454
-#, fuzzy
-msgid "Import from SD Wii Save"
-msgstr "   Import from loadiine"
-
-#: src/menu/TitleOptionsState.cpp:459
-#, fuzzy
-msgid "Export to SD Wii Save"
-msgstr "   Export to loadiine"
-
 #: src/menu/TitleOptionsState.cpp:462
-#, fuzzy
+msgid "Import from SD Wii Save"
+msgstr "Import from SD Wii Save"
+
+#: src/menu/TitleOptionsState.cpp:467
+msgid "Export to SD Wii Save"
+msgstr "Export to SD Wii Save"
+
+#: src/menu/TitleOptionsState.cpp:470
 msgid "\\ue000: Export  \\ue002: Keys  \\ue001: Back"
-msgstr "\\ue000: Export  \\ue001: Back"
+msgstr "\\ue000: Export  \\ue002: Keys  \\ue001: Back"
 
-#: src/menu/TitleOptionsState.cpp:464
-#, fuzzy
+#: src/menu/TitleOptionsState.cpp:472
 msgid "\\ue000: Export  \\ue002: Keys  \\ue046 Delete Slot  \\ue001: Back"
-msgstr "\\ue000: Backup  \\ue045: Tag Slot  \\ue046: Delete Slot  \\ue001: Back"
+msgstr "\\ue000: Export  \\ue002: Keys  \\ue046 Delete Slot  \\ue001: Back"
 
-#: src/menu/TitleOptionsState.cpp:907
+#: src/menu/TitleOptionsState.cpp:920
 msgid "No data selected to copyToOtherProfile"
 msgstr "No data selected to copyToOtherProfile"
 
-#: src/menu/TitleOptionsState.cpp:909
+#: src/menu/TitleOptionsState.cpp:922
 msgid "No data selected to moveProfile"
 msgstr "No data selected to moveProfile"
 
-#: src/menu/TitleOptionsState.cpp:911
+#: src/menu/TitleOptionsState.cpp:924
 msgid "No data selected to copy"
 msgstr "No data selected to copy"
 
-#: src/menu/TitleOptionsState.cpp:936
+#: src/menu/TitleOptionsState.cpp:949
 #, c-format
 msgid ""
 "'data.bin' uncompress aborted: no shared keys found.\n"
@@ -3882,8 +3967,13 @@ msgid ""
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
+"'data.bin' uncompress aborted: no shared keys found.\n"
+"Provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n"
+"\n"
+"Keys initialization error:\n"
+"%s\n"
 
-#: src/menu/TitleOptionsState.cpp:940
+#: src/menu/TitleOptionsState.cpp:953
 #, c-format
 msgid ""
 "'data.bin' compress aborted: no private keys or shared keys found.\n"
@@ -3892,27 +3982,32 @@ msgid ""
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
+"'data.bin' compress aborted: no private keys or shared keys found.\n"
+" Please provide the Wii U 'otp.bin' file in SD:/wiiu/backups/<SerialId> (different for each console), and a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (console independent). Check github.com/w3irDv/savemii for more info.\n"
+"\n"
+"Keys initialization error:\n"
+"%s\n"
 
-#: src/menu/TitleOptionsState.cpp:948 src/menu/TitleOptionsState.cpp:952
-#: src/menu/TitleOptionsState.cpp:1009
+#: src/menu/TitleOptionsState.cpp:961 src/menu/TitleOptionsState.cpp:965
+#: src/menu/TitleOptionsState.cpp:1022
 msgid "Savedata succesfully backed up!"
 msgstr "Savedata succesfully backed up!"
 
-#: src/menu/TitleOptionsState.cpp:960 src/menu/TitleOptionsState.cpp:964
-#: src/menu/TitleOptionsState.cpp:1002
+#: src/menu/TitleOptionsState.cpp:973 src/menu/TitleOptionsState.cpp:977
+#: src/menu/TitleOptionsState.cpp:1015
 msgid "Savedata succesfully restored!"
 msgstr "Savedata succesfully restored!"
 
-#: src/menu/TitleOptionsState.cpp:970
+#: src/menu/TitleOptionsState.cpp:983
 msgid "Savedata succesfully wiped!"
 msgstr "Savedata succesfully wiped!"
 
-#: src/menu/TitleOptionsState.cpp:976
+#: src/menu/TitleOptionsState.cpp:989
 msgid "Savedata succesfully moved!"
 msgstr "Savedata succesfully moved!"
 
-#: src/menu/TitleOptionsState.cpp:981 src/menu/TitleOptionsState.cpp:986
-#: src/menu/TitleOptionsState.cpp:991 src/menu/TitleOptionsState.cpp:996
+#: src/menu/TitleOptionsState.cpp:994 src/menu/TitleOptionsState.cpp:999
+#: src/menu/TitleOptionsState.cpp:1004 src/menu/TitleOptionsState.cpp:1009
 msgid "Savedata succesfully copied!"
 msgstr "Savedata succesfully copied!"
 
@@ -4241,14 +4336,12 @@ msgstr ""
 "%s"
 
 #: src/savemng.cpp:1326 src/savemng.cpp:1339 src/savemng.cpp:1379
-#, fuzzy
 msgid "Failed to import savedata from loadiine."
-msgstr "   Import from loadiine"
+msgstr "Failed to import savedata from loadiine."
 
 #: src/savemng.cpp:1397
-#, fuzzy
 msgid "Failed to export savedata to loadiine."
-msgstr "   Export to loadiine"
+msgstr "Failed to export savedata to loadiine."
 
 #: src/savemng.cpp:1423 src/savemng.cpp:1428 src/savemng.cpp:1451
 msgid "Error setting path. Aborting."
@@ -4674,6 +4767,9 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#~ msgid "Key files"
+#~ msgstr "Key files"
 
 #, c-format
 #~ msgid ""

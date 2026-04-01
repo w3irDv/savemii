@@ -32,12 +32,17 @@ namespace DataBin {
     inline bool shared_keys_initialized = false;
     inline bool private_keys_initialized = false;
     inline bool mac_in_databin_initialized = false;
+    inline bool shared_keys_custom = false;
+    inline bool private_keys_custom = false;
+    inline bool mac_in_databin_custom = false;
     inline std::string errors_initializing_keys{};
 
-    error_state get_keys_from_otp(const char *path, char *error_message);
-    error_state get_shared_keys(const char *path, char *error_message);
-    error_state get_mac();
-    void initialize_default_keys();
+    error_state get_keys_from_otp(const char *otp_bin_file, char *error_message);
+    error_state get_shared_keys(const char *keys_file, char *error_message);
+    error_state get_mac(const char *keys_file, char *error_message);
+    error_state get_private_keys(const char *keys_file, char *error_message);
+    error_state get_this_console_mac();
+    error_state initialize_default_keys();
 
     error_state pack(const char *srcdir, const char *data_bin, u64 title_id, const char *toc_file_path, char *error_message);
 
@@ -46,5 +51,22 @@ namespace DataBin {
 
     void showDataBinOperations(eJobType jobType);
     void writeLog(const char *s, ...);
+
+    enum e_key_file_content {
+        NONE = 0,
+        PRIVATE = 2, 
+        SHARED = 4,
+        MAC = 8,
+        UNSPECIFIED = 16
+    };
+
+    struct s_key_format {
+        std::string key_path;
+        e_key_file_content key_file_content;
+    };
+
+    inline std::string key_list_folder{"fs:/vol/external01/wiiu/backups/keys"};
+    inline std::vector<s_key_format> key_list;
+    bool populate_key_list();
 
 }; // namespace DataBin

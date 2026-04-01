@@ -1,5 +1,6 @@
 #include <cstdarg>
 #include <ctype.h>
+#include <dirent.h>
 #include <savemng.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,27 +16,25 @@
 
 extern char *global_error_message;
 
-error_state DataBin::get_keys_from_otp(const char *path, char *error_message) {
+//#define BYTE_ORDER__LITTLE_ENDIAN
+
+error_state DataBin::get_keys_from_otp(const char *otp_bin_file, char *error_message) {
 
     global_error_message = error_message;
     snprintf(global_error_message, 1024, "DBIN_OK");
 
-
-    char otp_bin_file[256];
     FILE *fp;
-
-    snprintf(otp_bin_file, sizeof otp_bin_file, "%s/otp.bin", path);
 
     fp = fopen(otp_bin_file, "rb");
     if (fp == 0) {
-        fatal("cannot open %s", otp_bin_file);
+        fatal(_("cannot open %s"), otp_bin_file);
         return DBIN_ERR;
     }
 
     u8 otp[0x400];
 
     if (fread(otp, 0x400, 1, fp) != 1) {
-        fatal("error reading %s", otp_bin_file);
+        fatal(_("error reading %s"), otp_bin_file);
         return DBIN_ERR;
     }
     fclose(fp);
@@ -60,8 +59,8 @@ error_state DataBin::get_keys_from_otp(const char *path, char *error_message) {
 
 	LOG("unk ");
 	hexdump(wii_keys->unknown,0x08);
-
 */
+
     ng_id = ((wii_keys->device_id[0]) << 24) + ((wii_keys->device_id[1]) << 16) + ((wii_keys->device_id[2]) << 8) + ((wii_keys->device_id[3]));
     ng_key_id = ((wii_keys->common_cert_manufacturing_date[0]) << 24) + ((wii_keys->common_cert_manufacturing_date[1]) << 16) + ((wii_keys->common_cert_manufacturing_date[2]) << 8) + ((wii_keys->common_cert_manufacturing_date[3]));
 
@@ -71,7 +70,7 @@ error_state DataBin::get_keys_from_otp(const char *path, char *error_message) {
     return DBIN_OK;
 }
 
-error_state get_value(char *key_val, u8 *byte) {
+error_state get_value(char *key_val, u8 *byte, size_t number_of_bytes) {
 
     char *eq_value = strchr(key_val, '=');
     int i = 1;
@@ -80,22 +79,22 @@ error_state get_value(char *key_val, u8 *byte) {
     }
 
     const char *value = &eq_value[i];
-    if (strlen(value) != 32) {
-        fatal("wrong shared key length");
+    if (strlen(value) != number_of_bytes * 2) {
+        fatal(_("wrong  key length: expected %d - found %d\n%s"),strlen(value),number_of_bytes*2,key_val);
         return DBIN_ERR;
     }
     char cbyte[3];
     long num;
-    for (int j = 0; j < 32; j = j + 2) {
+    for (size_t j = 0; j < number_of_bytes * 2; j = j + 2) {
         strncpy(cbyte, &value[j], 2);
         cbyte[2] = '\0';
         char *endptr;
         num = strtol(cbyte, &endptr, 16);
         if (endptr == cbyte) {
-            fatal("No digits were found.\n");
+            fatal(_("No digits were found.\n"));
             return DBIN_ERR;
         } else if (*endptr != '\0') {
-            fatal("Invalid character: %c\n", *endptr);
+            fatal(_("Invalid character: %c\n"), *endptr);
             return DBIN_ERR;
         } else {
             *byte = (u8) num;
@@ -106,80 +105,235 @@ error_state get_value(char *key_val, u8 *byte) {
     return DBIN_OK;
 }
 
-error_state DataBin::get_shared_keys(const char *path, char *error_message) {
+error_state DataBin::get_shared_keys(const char *keys_file, char *error_message) {
 
     global_error_message = error_message;
     snprintf(global_error_message, 1024, "DBIN_OK");
 
-    char keys_file[256];
     FILE *fp;
-
-    snprintf(keys_file, sizeof keys_file, "%s/keys.txt", path);
 
     fp = fopen(keys_file, "r");
     if (fp == 0) {
-        fatal("cannot open %s", keys_file);
+        fatal(_("cannot open %s"), keys_file);
+        return DBIN_ERR;
+    }
+
+    char line[256];
+    error_state ret = DBIN_OK;
+
+    bool read_sd_key = false;
+    bool read_sd_iv = false;
+    bool read_md5_blanker = false;
+    std::string keys_not_found{};
+
+    while (fgets(line, sizeof(line), fp)) {
+        line[strcspn(line, "\r\n")] = '\0';
+        if (strncmp("sd_key", line, 6) == 0) {
+            ret = get_value(line, sd_key, 16);
+            if (ret != DBIN_OK)
+                goto close_and_return;
+            read_sd_key = true;
+        }
+        if (strncmp("sd_iv", line, 5) == 0) {
+            ret = get_value(line, sd_iv, 16);
+            if (ret != DBIN_OK)
+                goto close_and_return;
+            read_sd_iv = true;
+        }
+        if (strncmp("md5_blanker", line, 11) == 0) {
+            ret = get_value(line, md5_blanker, 16);
+            if (ret != DBIN_OK)
+                goto close_and_return;
+            read_md5_blanker = true;
+        }
+    }
+
+    if (!read_sd_key || !read_sd_iv || !read_md5_blanker) {
+        if (!read_sd_key)
+            keys_not_found += " sd_key";
+        if (!read_sd_iv)
+            keys_not_found += " sd_iv";
+        if (!read_md5_blanker)
+            keys_not_found += " md5_blanker";
+        fatal(_("Cannot find keys%s in %s"),keys_not_found.c_str(),keys_file);
+        ret = DBIN_ERR;
+        goto close_and_return;
+    }
+
+close_and_return:
+    fclose(fp);
+    return ret;
+}
+
+error_state DataBin::get_this_console_mac() {
+    memcpy(ng_mac, AmbientConfig::mac_address.MACAddr, 6);
+    return DBIN_OK;
+}
+
+error_state DataBin::get_mac(const char *keys_file, char *error_message) {
+
+    global_error_message = error_message;
+    snprintf(global_error_message, 1024, "DBIN_OK");
+
+    FILE *fp;
+
+    fp = fopen(keys_file, "r");
+    if (fp == 0) {
+        fatal(_("cannot open %s"), keys_file);
         return DBIN_ERR;
     }
 
     char line[256];
     error_state ret;
 
+    bool read_mac = false;
+
     while (fgets(line, sizeof(line), fp)) {
         line[strcspn(line, "\r\n")] = '\0';
-        if (strncmp("sd_key", line, 6) == 0) {
-            ret = get_value(line, sd_key);
+        if (strncmp("mac_address", line, 11) == 0) {
+            ret = get_value(line, ng_mac, 6);
             if (ret != DBIN_OK)
                 return ret;
-        }
-        if (strncmp("sd_iv", line, 5) == 0) {
-            ret = get_value(line, sd_iv);
-            if (ret != DBIN_OK)
-                return ret;
-        }
-        if (strncmp("md5_blanker", line, 11) == 0) {
-            ret = get_value(line, md5_blanker);
-            if (ret != DBIN_OK)
-                return ret;
+            read_mac = true;
         }
     }
 
     fclose(fp);
 
+    if (!read_mac) {
+        fatal(_("MAC not found in %s"),keys_file);
+        return DBIN_ERR;
+    }
+
     return DBIN_OK;
 }
 
-error_state DataBin::get_mac() {
-    memcpy(ng_mac, AmbientConfig::mac_address.MACAddr, 6);
-    return DBIN_OK;
+/// @brief Load private keys from keys.txt
+/// @param keys_file 
+/// @param error_message 
+/// @return 
+error_state DataBin::get_private_keys(const char *keys_file, char *error_message) {
+
+    global_error_message = error_message;
+    snprintf(global_error_message, 1024, "DBIN_OK");
+
+    FILE *fp;
+
+    fp = fopen(keys_file, "r");
+    if (fp == 0) {
+        fatal(_("cannot open %s"), keys_file);
+        return DBIN_ERR;
+    }
+
+    char line[256];
+    error_state ret = DBIN_OK;
+
+    bool read_ng_id = false;
+    bool read_ng_key_id = false;
+    bool read_ng_priv = false;
+    bool read_ng_sig = false;
+    std::string keys_not_found{};
+
+    u8 tmp_ng_id[8];
+    u8 tmp_ng_key_id[8];
+
+    while (fgets(line, sizeof(line), fp)) {
+        line[strcspn(line, "\r\n")] = '\0';
+        if (strncmp("console_id", line, 10) == 0) {
+            ret = get_value(line, tmp_ng_id, 4);
+            if (ret != DBIN_OK)
+                goto close_and_return;
+            memcpy(&ng_id,tmp_ng_id,4);
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+            ng_id = __builtin_bswap32(ng_id);
+#endif
+            read_ng_id = true;
+        }
+        if (strncmp("ng_key_id", line, 5) == 0) {
+            ret = get_value(line, tmp_ng_key_id, 4);
+            if (ret != DBIN_OK)
+                goto close_and_return;
+            memcpy(&ng_key_id,tmp_ng_key_id,4);
+#ifdef BYTE_ORDER__LITTLE_ENDIAN
+            ng_key_id = __builtin_bswap32(ng_key_id);
+#endif
+            read_ng_key_id = true;
+        }
+        if (strncmp("ecc_private_key", line, 15) == 0) {
+            ret = get_value(line, ng_priv, 30);
+            if (ret != DBIN_OK)
+                goto close_and_return;
+            read_ng_priv = true;
+        }
+        if (strncmp("ng_signature", line, 12) == 0) {
+            ret = get_value(line, ng_sig, 60);
+            if (ret != DBIN_OK)
+                goto close_and_return;
+            read_ng_sig = true;
+        }
+    }
+
+    if (!read_ng_id || !read_ng_key_id || !read_ng_priv || !read_ng_sig) {
+        if (!read_ng_id)
+            keys_not_found += " console_id";
+        if (!read_ng_key_id)
+            keys_not_found += " ng_key_id";
+        if (!read_ng_priv)
+            keys_not_found += " ecc_private_key";
+        if (!read_ng_sig)
+            keys_not_found += " ng_signature";
+        fatal(_("Cannot find keys%s in %s"),keys_not_found.c_str(),keys_file);
+        ret = DBIN_ERR;
+        goto close_and_return;
+    }
+
+close_and_return:
+    fclose(fp);
+    return ret;
 }
 
 /// @brief read vWii encryption keys from default locations (sd:/keys.txt and sd:/wiiu/backups/<Serial>/otp.bin)
 /// @param path
 /// @param error_message
 /// @return
-void DataBin::initialize_default_keys() {
+error_state DataBin::initialize_default_keys() {
 
     char error_message[2048] = {0};
 
-    if (DataBin::get_shared_keys("fs:/vol/external01", error_message) == DBIN_OK) {
+    error_state ret = DBIN_OK, ret_global = DBIN_OK;
+
+    ret = DataBin::get_shared_keys("fs:/vol/external01/keys.txt", error_message);
+    if (ret == DBIN_OK) {
         shared_keys_initialized = true;
+        shared_keys_custom = false;
     } else {
+        shared_keys_initialized = false;
         errors_initializing_keys.assign(error_message);
+        ret_global = ret;
     }
 
-    std::string otp_path = "fs:/vol/external01/wiiu/backups/" + AmbientConfig::thisConsoleSerialId;
-    if (DataBin::get_keys_from_otp(otp_path.c_str(), error_message) == DBIN_OK) {
+    std::string otp_path = "fs:/vol/external01/wiiu/backups/" + AmbientConfig::thisConsoleSerialId + "/otp.bin";
+    ret = DataBin::get_keys_from_otp(otp_path.c_str(), error_message);
+    if (ret == DBIN_OK) {
         private_keys_initialized = true;
+        private_keys_custom = false;
     } else {
+        private_keys_initialized = false;
         errors_initializing_keys += "\n" + std::string(error_message);
+        ret_global = ret;
     }
 
-    if (DataBin::get_mac() == DBIN_OK) {
+    ret = DataBin::get_this_console_mac();
+    if (ret == DBIN_OK) {
         mac_in_databin_initialized = true;
+        mac_in_databin_custom = false;
     } else {
+        mac_in_databin_initialized = false;
         errors_initializing_keys += "\n" + std::string(error_message);
+        ret_global = ret;
     }
+
+    return ret_global;
 }
 
 /// @brief coneole-log-like output of data.bin pack/unpack
@@ -240,4 +394,31 @@ void DataBin::writeLog(const char *s, ...) {
     vsnprintf(message, sizeof message, s, ap);
 
     logBuffer.push_back(std::string(message));
+}
+
+
+bool DataBin::populate_key_list() {
+
+    key_list.clear();
+
+    DIR *dir = opendir(key_list_folder.c_str());
+    if (dir != nullptr) {
+        struct dirent *data;
+        while ((data = readdir(dir)) != nullptr) {
+            if (strcmp(data->d_name, ".") == 0 || strcmp(data->d_name, "..") == 0 || (data->d_type & DT_DIR))
+                continue;
+
+            std::string keyPath = data->d_name;
+
+            //TODO - ADD CODE TO CHECK THE CONENT OF THE KEY FILE
+
+            s_key_format key = {.key_path = keyPath, .key_file_content = UNSPECIFIED};
+            key_list.push_back(key);
+        }
+    } else {
+        return false;
+    }
+    closedir(dir);
+
+    return true;
 }

@@ -583,7 +583,6 @@ error_state DataBin::unpack(const char *src_data_bin, const char *target_path, p
 
     InProgress::totalSteps = n_files + 1;
     for (i = 0; i < n_files; i++) {
-        printf("difie %d\n", i);
         InProgress::currentStep = i + 2;
         if (do_file() == DBIN_ERR) {
             fclose(fp);
