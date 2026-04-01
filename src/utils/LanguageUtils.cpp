@@ -268,6 +268,9 @@ bool LanguageUtils::parseMsgId(FILE *fp, std::string lineString) {
         }
     }
 
+    if (sValue == "") {
+        sValue = sKey;    
+    }
     unicode_to_str(sValue);
     setMSG(sKey.c_str(), sValue.c_str());
 
