@@ -32,9 +32,9 @@ namespace DataBin {
     inline bool shared_keys_initialized = false;
     inline bool private_keys_initialized = false;
     inline bool mac_in_databin_initialized = false;
-    inline bool shared_keys_custom = false;
-    inline bool private_keys_custom = false;
-    inline bool mac_in_databin_custom = false;
+    inline int shared_keys_index = -1; // -1 means using default keys (otp.bin in /wiiu/backups/<serialid>, keys.txt in /)
+    inline int private_keys_index = -1;
+    inline int mac_in_databin_index = -1;
     inline std::string errors_initializing_keys{};
 
     error_state get_keys_from_otp(const char *otp_bin_file, char *error_message);
@@ -52,7 +52,7 @@ namespace DataBin {
     void showDataBinOperations(eJobType jobType);
     void writeLog(const char *s, ...);
 
-    enum e_key_file_content {
+    enum e_key_file_content { // Not used. TODO: check thw content of each file when initializing key_list
         NONE = 0,
         PRIVATE = 2, 
         SHARED = 4,

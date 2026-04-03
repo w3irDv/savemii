@@ -305,7 +305,7 @@ error_state DataBin::initialize_default_keys() {
     ret = DataBin::get_shared_keys("fs:/vol/external01/keys.txt", error_message);
     if (ret == DBIN_OK) {
         shared_keys_initialized = true;
-        shared_keys_custom = false;
+        shared_keys_index = -1;
     } else {
         shared_keys_initialized = false;
         errors_initializing_keys.assign(error_message);
@@ -316,7 +316,7 @@ error_state DataBin::initialize_default_keys() {
     ret = DataBin::get_keys_from_otp(otp_path.c_str(), error_message);
     if (ret == DBIN_OK) {
         private_keys_initialized = true;
-        private_keys_custom = false;
+        private_keys_index = -1;
     } else {
         private_keys_initialized = false;
         errors_initializing_keys += "\n" + std::string(error_message);
@@ -326,7 +326,7 @@ error_state DataBin::initialize_default_keys() {
     ret = DataBin::get_this_console_mac();
     if (ret == DBIN_OK) {
         mac_in_databin_initialized = true;
-        mac_in_databin_custom = false;
+        mac_in_databin_index = -1;
     } else {
         mac_in_databin_initialized = false;
         errors_initializing_keys += "\n" + std::string(error_message);

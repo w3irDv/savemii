@@ -8,9 +8,6 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
-#define IS_WIIU true
-#define IS_VWII false
-
 class KeyListState : public ApplicationState {
 public:
     explicit KeyListState() {

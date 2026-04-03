@@ -36,10 +36,10 @@ void KeyListState::render() {
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPosAligned(0, 4, 1, _("Encryption Keys files"));
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAligned(0, 4, 2, _("KEYS: P:%s|S:%s|M:%s"),
-                                        DataBin::private_keys_initialized ? (DataBin::private_keys_custom ? "C" : "D") : "-",
-                                        DataBin::shared_keys_initialized ? (DataBin::shared_keys_custom ? "C" : "D") : "-",
-                                        DataBin::mac_in_databin_initialized ? (DataBin::mac_in_databin_custom ? "C" : "D") : "-");
+        Console::consolePrintPosAligned(0, 4, 2, _("Source[P:%s|S:%s|M:%s]"),
+                                        DataBin::private_keys_initialized ? (DataBin::private_keys_index < 0 ? "D" : "C") : "-",
+                                        DataBin::shared_keys_initialized ? (DataBin::shared_keys_index < 0 ? "D" : "C") : "-",
+                                        DataBin::mac_in_databin_initialized ? (DataBin::mac_in_databin_index < 0 ? "D" : "C") : "-");
         DrawUtils::setFontColor(COLOR_TEXT);
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
             if (i + this->scroll < 0 || i + this->scroll >= this->keyFilesCount)
@@ -47,14 +47,20 @@ void KeyListState::render() {
 
             DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
 
-            Console::consolePrintPos(M_OFF + 1, i + 2, "   %s [%s:%s:%s]",
+            Console::consolePrintPos(M_OFF, i + 2, "%s [%s:%s:%s]",
                                      DataBin::key_list[i + this->scroll].key_path.c_str(),
+                                     DataBin::private_keys_initialized ? ((i + this->scroll) == DataBin::private_keys_index ? "P" : " "):" ",
+                                     DataBin::shared_keys_initialized ?((i + this->scroll) == DataBin::shared_keys_index ? "S" : " "):" ",
+                                     DataBin::mac_in_databin_initialized ?((i + this->scroll) == DataBin::mac_in_databin_index ? "M" : " "):" "
+                                     /*
                                      (DataBin::key_list[i + this->scroll].key_file_content & DataBin::PRIVATE) == DataBin::PRIVATE ? "P" : " ",
                                      (DataBin::key_list[i + this->scroll].key_file_content & DataBin::SHARED) == DataBin::SHARED ? "S" : " ",
-                                     (DataBin::key_list[i + this->scroll].key_file_content & DataBin::MAC) == DataBin::MAC ? "M" : " ");
+                                     (DataBin::key_list[i + this->scroll].key_file_content & DataBin::MAC) == DataBin::MAC ? "M" : " "
+                                     */
+            );
         }
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF + 1,  MAX_TITLE_SHOW + 3,_("Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."));
+        Console::consolePrintPosAutoFormat(M_OFF + 1, MAX_TITLE_SHOW + 3, _("Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."));
 
 
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -77,7 +83,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
                 ret = DataBin::get_private_keys(key_file_path.c_str(), error_message);
             if (ret == DBIN_OK) {
                 DataBin::private_keys_initialized = true;
-                DataBin::private_keys_custom = true;
+                DataBin::private_keys_index = scroll + cursorPos;
             } else {
                 DataBin::private_keys_initialized = false;
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom private keys: %s"), error_message);
@@ -88,7 +94,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
             std::string key_file_path = DataBin::key_list_folder + "/" + DataBin::key_list[scroll + cursorPos].key_path;
             if (DataBin::get_shared_keys(key_file_path.c_str(), error_message) == DBIN_OK) {
                 DataBin::shared_keys_initialized = true;
-                DataBin::shared_keys_custom = true;
+                DataBin::shared_keys_index = scroll + cursorPos;
             } else {
                 DataBin::shared_keys_initialized = false;
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom shared keys: %s"), error_message);
@@ -99,7 +105,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
             std::string key_file_path = DataBin::key_list_folder + "/" + DataBin::key_list[scroll + cursorPos].key_path;
             if (DataBin::get_mac(key_file_path.c_str(), error_message) == DBIN_OK) {
                 DataBin::mac_in_databin_initialized = true;
-                DataBin::mac_in_databin_custom = true;
+                DataBin::mac_in_databin_index = scroll + cursorPos;
             } else {
                 DataBin::mac_in_databin_initialized = false;
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom mac: %s"), error_message);
@@ -166,4 +172,8 @@ void KeyListState::moveUp(unsigned amount, bool wrap) {
                 cursorPos = keyFilesCount - 1;
         }
     }
+}
+
+
+void keyListStateSet_private() {
 }
