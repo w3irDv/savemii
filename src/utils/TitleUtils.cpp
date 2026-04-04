@@ -239,9 +239,10 @@ Title *TitleUtils::loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].indexID = wiiuTitlesCount;
         if (TitleUtils::loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr;
-
-        if (!TitleUtils::verifyWiiUIconFormat(&titles[wiiuTitlesCount]))
+        else if (!TitleUtils::verifyWiiUIconFormat(&titles[wiiuTitlesCount])) {
+            free(titles[wiiuTitlesCount].iconBuf);
             titles[wiiuTitlesCount].iconBuf = nullptr;
+        }
 
         titles[wiiuTitlesCount].is_WiiUSysTitle = false;
 
@@ -715,9 +716,10 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
         titles[wiiuSysTitlesCount].indexID = wiiuSysTitlesCount;
         if (TitleUtils::loadTitleIcon(&titles[wiiuSysTitlesCount]) < 0)
             titles[wiiuSysTitlesCount].iconBuf = nullptr;
-
-        if (!TitleUtils::verifyWiiUIconFormat(&titles[wiiuSysTitlesCount]))
+        else if (!TitleUtils::verifyWiiUIconFormat(&titles[wiiuSysTitlesCount])) {
+            free(titles[wiiuSysTitlesCount].iconBuf);
             titles[wiiuSysTitlesCount].iconBuf = nullptr;
+        }
 
         titles[wiiuSysTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
