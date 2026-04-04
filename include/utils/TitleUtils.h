@@ -93,6 +93,7 @@ namespace TitleUtils {
     void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true);
 
     int32_t loadTitleIcon(Title *title) __attribute__((hot));
+    bool verifyWiiUIconFormat(Title *title);
 
     void setTitleNameBasedDirName(Title *title);
 

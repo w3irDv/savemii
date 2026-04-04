@@ -240,6 +240,9 @@ Title *TitleUtils::loadWiiUTitles(int run) {
         if (TitleUtils::loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr;
 
+        if (!TitleUtils::verifyWiiUIconFormat(&titles[wiiuTitlesCount]))
+            titles[wiiuTitlesCount].iconBuf = nullptr;
+
         titles[wiiuTitlesCount].is_WiiUSysTitle = false;
 
         titles[wiiuTitlesCount].vWiiHighID = 0;
@@ -263,10 +266,10 @@ Title *TitleUtils::loadWiiUTitles(int run) {
                 if (titles[wiiuTitlesCount].vWiiInjectProductCode[ii] < 32)
                     titles[wiiuTitlesCount].vWiiInjectProductCode[ii] = '.';
             titles[wiiuTitlesCount].vWiiInjectProductCode[4] = 0;
-            switch(titles[wiiuTitlesCount].vWiiInjectProductCode[0]) {
+            switch (titles[wiiuTitlesCount].vWiiInjectProductCode[0]) {
                 case 'G':
                 case 'D':
-                case 'P':   // It could also be a TurboGrafx-16, but if that were the case, I don't think it would appear as an injection.
+                case 'P': // It could also be a TurboGrafx-16, but if that were the case, I don't think it would appear as an injection.
                     titles[wiiuTitlesCount].is_GameCube = true;
                     break;
                 default:
@@ -713,6 +716,9 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
         if (TitleUtils::loadTitleIcon(&titles[wiiuSysTitlesCount]) < 0)
             titles[wiiuSysTitlesCount].iconBuf = nullptr;
 
+        if (!TitleUtils::verifyWiiUIconFormat(&titles[wiiuSysTitlesCount]))
+            titles[wiiuSysTitlesCount].iconBuf = nullptr;
+
         titles[wiiuSysTitlesCount].vWiiHighID = 0;
         std::string fwpath = StringUtils::stringFormat("%s/usr/title/000%x/%x/code/fw.img",
                                                        titles[wiiuSysTitlesCount].isTitleOnUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:",
@@ -867,4 +873,19 @@ bool TitleUtils::getMiiMakerisTitleOnUSB() {
         }
     }
     return 0;
+}
+
+/// @brief Minimal checks to verify that iconBuf contains a compliant TGA file.
+/// @param title
+/// @return
+bool TitleUtils::verifyWiiUIconFormat(Title *title) {
+
+    // Header checks: uncompressed rgbm width & height = 128, depth = 32
+    if (title->iconBuf[0x02] == 2 &&
+        title->iconBuf[0x0c] == 0x80 && title->iconBuf[0x0d] == 0 &&
+        title->iconBuf[0x0e] == 0x80 && title->iconBuf[0x0f] == 0 &&
+        title->iconBuf[0x10] == 0x20)
+        return true;
+    else
+        return false;
 }
