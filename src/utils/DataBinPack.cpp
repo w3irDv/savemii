@@ -40,56 +40,6 @@ static u8 sd_iv_[16];
 
 static size_t input_path_len = 0;
 
-
-static error_state read_image(u8 *data, u32 w, u32 h, const char *name) {
-    FILE *fp;
-    u32 x, y;
-    u32 ww, hh;
-
-    fp = fopen(name, "rb");
-    if (!fp) {
-        fatal("open %s", name);
-        return DBIN_ERR;
-    }
-
-    if (fscanf(fp, "P6 %d %d 255", &ww, &hh) != 2)
-        ERROR("bad ppm");
-    if (getc(fp) != '\n')
-        ERROR("bad ppm");
-    if (ww != w || hh != h)
-        ERROR("wrong size ppm");
-
-    for (y = 0; y < h; y++)
-        for (x = 0; x < w; x++) {
-            u8 pix[3];
-            u16 raw;
-            u32 x0, x1, y0, y1, off;
-
-            x0 = x & 3;
-            x1 = x >> 2;
-            y0 = y & 3;
-            y1 = y >> 2;
-            off = x0 + 4 * y0 + 16 * x1 + 4 * w * y1;
-
-            if (fread(pix, 3, 1, fp) != 1) {
-                fatal("read %s", name);
-                return DBIN_ERR;
-            }
-
-            raw = (pix[0] & 0xf8) << 7;
-            raw |= (pix[1] & 0xf8) << 2;
-            raw |= (pix[2] & 0xf8) >> 3;
-            raw |= 0x8000;
-
-            wbe16(data + 2 * off, raw);
-        }
-
-    fclose(fp);
-
-    return DBIN_OK;
-}
-
-// XXX - change return type ??
 static error_state perm_from_path(const char *path, u8 *perm) {
     struct stat sb;
     mode_t mode;
@@ -114,14 +64,9 @@ static error_state perm_from_path(const char *path, u8 *perm) {
     return DBIN_OK;
 }
 
-static error_state do_main_header(u64 title_id, FILE *toc) {
+static error_state do_main(u64 title_id, FILE *toc) {
 
-    // u8 mainHeader[0xf0c0];
-    // memset(mainHeader, '\0', sizeof(mainHeader));
     memset(header, '\0', sizeof(header));
-
-    // wbe64(mainHeader, sg.tid);
-    // wbe32(mainHeader+8, bnr.second);
 
     wbe64(header, title_id);
 
@@ -135,14 +80,10 @@ static error_state do_main_header(u64 title_id, FILE *toc) {
         }
         name[strlen(name) - 1] = 0; // get rid of linefeed
     } else {
-        //strcpy(name, "banner.bin");
         snprintf(name, 267, "%s/banner.bin", DataBin::input_path);
     }
 
-    // u8 tmp8 = AttrFromSave("/banner.bin");
-    // header[0xc] = (tmp8 >> 2);
     u8 perm;
-    //snprintf(DataBin::input_path + input_path_len, sizeof DataBin::input_path - input_path_len,"/%s", name);
     if (perm_from_path(name, &perm) == DBIN_ERR)
         return DBIN_ERR;
     header[0x0c] = (toc ? 0x35 : perm);
@@ -172,34 +113,12 @@ static error_state do_main_header(u64 title_id, FILE *toc) {
     fclose(in);
 
     DataBin::writeLog("file: sz=%08x perm=%02x attr=%02x type=%02x name=%s",
-                      banner_size, perm, 0, 1, name + input_path_len + 1);
+                      banner_size, perm, 0, 1, toc ? "banner.bin" : name + input_path_len + 1);
     DataBin::showDataBinOperations(BACKUP);
 
-    // u8 md5blanker[16] = MD5_BLANKER;
-    // memcpy(header+0xe, md5blanker, 16);
     memcpy(header + 0xe, DataBin::md5_blanker, 16);
 
-    // memcpy(header+0x20, bnr.first, bnr.second);
-    //  Already read
-
-    /*
-	u8 tmpHeader[0xf0c0];
-	memset(tmpHeader, '\0', sizeof(tmpHeader));
-	memcpy(tmpHeader, header, sizeof(tmpHeader));
-
-	MD5 hash;
-	hash.update(header, sizeof(header));
-	hash.finalize();
-	memcpy(tmpHeader+0x0e, hash.hexdigestChar(), 16);
-
 	//!encrypt the header
-	memset(header, '\0', sizeof(header));
-	u8 iv[16] = SD_IV;
-	u8 sdkey[16] = SD_KEY;
-	aes_set_key(sdkey);
-	aes_encrypt(iv, tmpHeader, header, 0xf0c0);
-*/
-
     u8 md5_calc[16];
     md5(header, sizeof header, md5_calc);
     memcpy(header + 0x0e, md5_calc, 16);
@@ -214,106 +133,6 @@ static error_state do_main_header(u64 title_id, FILE *toc) {
     return DBIN_OK;
 }
 
-[[maybe_unused]] static error_state do_file_header(u64 title_id, FILE *toc) {
-    memset(header, 0, sizeof header);
-
-    wbe64(header, title_id);
-    u8 perm;
-    if (perm_from_path(".", &perm) == DBIN_ERR)
-        return DBIN_ERR;
-    header[0x0c] = (toc ? 0x35 : perm);
-    memcpy(header + 0x0e, DataBin::md5_blanker, 16);
-    memcpy(header + 0x20, "WIBN", 4);
-    // XXX: what about the stuff at 0x24?
-
-    char name[256];
-    FILE *in;
-
-    if (toc) {
-        if (!fgets(name, sizeof name, toc)) {
-            fatal("reading title file name");
-            return DBIN_ERR;
-        }
-        name[strlen(name) - 1] = 0; // get rid of linefeed
-    } else
-        strcpy(name, "###title###");
-
-    in = fopen(name, "rb");
-    if (!in) {
-        fatal("open %s", name);
-        return DBIN_ERR;
-    }
-    if (fread(header + 0x40, 0x80, 1, in) != 1) {
-        fatal("read %s", name);
-        return DBIN_ERR;
-    }
-    fclose(in);
-
-    if (toc) {
-        if (!fgets(name, sizeof name, toc)) {
-            fatal("reading banner file name");
-            return DBIN_ERR;
-        }
-        name[strlen(name) - 1] = 0; // get rid of linefeed
-    } else
-        strcpy(name, "###banner###.ppm");
-
-    if (read_image(header + 0xc0, 192, 64, name) == DBIN_ERR)
-        return DBIN_ERR;
-
-    if (toc) {
-        if (!fgets(name, sizeof name, toc)) {
-            fatal("reading icon file name");
-            return DBIN_ERR;
-        }
-        name[strlen(name) - 1] = 0; // get rid of linefeed
-    } else
-        strcpy(name, "###icon###.ppm");
-
-    int have_anim_icon = 0;
-
-    if (toc == 0) {
-        in = fopen(name, "rb");
-        if (in)
-            fclose(in);
-        else
-            have_anim_icon = 1;
-    }
-
-    if (!have_anim_icon) {
-        wbe32(header + 8, 0x72a0);
-        if (read_image(header + 0x60c0, 48, 48, name) == DBIN_ERR)
-            return DBIN_ERR;
-    } else {
-        u32 i;
-        for (i = 0; i < 8; i++) {
-            snprintf(name, sizeof name, "###icon%d###.ppm", i);
-            FILE *fp = fopen(name, "rb");
-            if (fp) {
-                fclose(fp);
-                if (read_image(header + 0x60c0 + 0x1200 * i, 48, 48, name) == DBIN_ERR)
-                    return DBIN_ERR;
-            } else
-                break;
-        }
-
-        wbe32(header + 8, 0x60a0 + 0x1200 * i);
-    }
-
-    u8 md5_calc[16];
-    md5(header, sizeof header, md5_calc);
-    memcpy(header + 0x0e, md5_calc, 16);
-    memcpy(sd_iv_, DataBin::sd_iv, 16);
-    aes_cbc_enc(DataBin::sd_key, sd_iv_, header, sizeof header, header);
-
-    if (fwrite(header, 0xf0c0, 1, fp) != 1) {
-        fatal("write header");
-        return DBIN_ERR;
-    }
-    return DBIN_OK;
-}
-
-// XXX - revisar si l'error tallq de cuajo
 static error_state find_files_recursive(const char *path) {
     DIR *dir;
     struct dirent *de;
@@ -427,7 +246,7 @@ static error_state find_files(void) {
         return DBIN_ERR;
 
     qsort(files, n_files, 0x80, compar_files);
-    // XXX: qsort src is also needed
+    // w3irdv: qsort src is also needed
     qsort(src, n_files, 0x100, compar_src);
 
     return DBIN_OK;
@@ -491,9 +310,6 @@ static error_state find_files_toc(FILE *toc) {
 
         size = round_up(size, 0x40);
         files_size += 0x80 + size;
-
-        // if (is_dir)
-        //	find_files_recursive(name);
     }
 
     if (ferror(toc)) {
@@ -677,6 +493,14 @@ static error_state do_sig(void) {
 
 error_state DataBin::pack(const char *srcdir, const char *data_bin, u64 title_id, const char *toc_file_path, char *error_message) {
 
+/// TOC FILE FORMAT
+/*
+path_to_banner.bin
+path_to_file path_in_data.bin
+path_to_dir path_in_data.bin
+path_to_dir/file path_in_data.bin    
+*/
+
     logBuffer.clear();
 
     global_error_message = error_message;
@@ -704,7 +528,7 @@ error_state DataBin::pack(const char *srcdir, const char *data_bin, u64 title_id
         return DBIN_ERR;
     }
 
-    if (do_main_header(title_id, toc) == DBIN_ERR) {
+    if (do_main(title_id, toc) == DBIN_ERR) {
         fclose(fp);
         return DBIN_ERR;
     }

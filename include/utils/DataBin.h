@@ -52,7 +52,7 @@ namespace DataBin {
     void showDataBinOperations(eJobType jobType);
     void writeLog(const char *s, ...);
 
-    enum e_key_file_content { // Not used. TODO: check thw content of each file when initializing key_list
+    enum e_key_file_content { // Not used. TODO: check the content of each file when initializing key_list
         NONE = 0,
         PRIVATE = 2, 
         SHARED = 4,
