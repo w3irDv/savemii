@@ -27,14 +27,14 @@ error_state DataBin::get_keys_from_otp(const char *otp_bin_file, char *error_mes
 
     fp = fopen(otp_bin_file, "rb");
     if (fp == 0) {
-        fatal(_("cannot open %s"), otp_bin_file);
+        fatal(_("Error opening file %s: %s"), otp_bin_file, strerror(errno));
         return DBIN_ERR;
     }
 
     u8 otp[0x400];
 
     if (fread(otp, 0x400, 1, fp) != 1) {
-        fatal(_("error reading %s"), otp_bin_file);
+        fatal(_("Error reading file %s: %s"), otp_bin_file, strerror(errno));
         return DBIN_ERR;
     }
     fclose(fp);
@@ -80,7 +80,7 @@ error_state get_value(char *key_val, u8 *byte, size_t number_of_bytes) {
 
     const char *value = &eq_value[i];
     if (strlen(value) != number_of_bytes * 2) {
-        fatal(_("wrong  key length: expected %d - found %d\n%s"),strlen(value),number_of_bytes*2,key_val);
+        fatal(_("Error: wrong  key length: expected %d - found %d\n%s"), strlen(value), number_of_bytes * 2, key_val);
         return DBIN_ERR;
     }
     char cbyte[3];
@@ -91,10 +91,10 @@ error_state get_value(char *key_val, u8 *byte, size_t number_of_bytes) {
         char *endptr;
         num = strtol(cbyte, &endptr, 16);
         if (endptr == cbyte) {
-            fatal(_("No digits were found.\n"));
+            fatal(_("Error: No digits were found.\n"));
             return DBIN_ERR;
         } else if (*endptr != '\0') {
-            fatal(_("Invalid character: %c\n"), *endptr);
+            fatal(_("Error: Invalid character: %c\n"), *endptr);
             return DBIN_ERR;
         } else {
             *byte = (u8) num;
@@ -114,7 +114,7 @@ error_state DataBin::get_shared_keys(const char *keys_file, char *error_message)
 
     fp = fopen(keys_file, "r");
     if (fp == 0) {
-        fatal(_("cannot open %s"), keys_file);
+        fatal(_("Error opening file %s: %s"), keys_file, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -155,7 +155,7 @@ error_state DataBin::get_shared_keys(const char *keys_file, char *error_message)
             keys_not_found += " sd_iv";
         if (!read_md5_blanker)
             keys_not_found += " md5_blanker";
-        fatal(_("Cannot find keys%s in %s"),keys_not_found.c_str(),keys_file);
+        fatal(_("Cannot find keys%s in %s"), keys_not_found.c_str(), keys_file);
         ret = DBIN_ERR;
         goto close_and_return;
     }
@@ -179,7 +179,7 @@ error_state DataBin::get_mac(const char *keys_file, char *error_message) {
 
     fp = fopen(keys_file, "r");
     if (fp == 0) {
-        fatal(_("cannot open %s"), keys_file);
+        fatal(_("Error opening file %s: %s"), keys_file, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -201,7 +201,7 @@ error_state DataBin::get_mac(const char *keys_file, char *error_message) {
     fclose(fp);
 
     if (!read_mac) {
-        fatal(_("MAC not found in %s"),keys_file);
+        fatal(_("MAC not found in %s"), keys_file);
         return DBIN_ERR;
     }
 
@@ -209,9 +209,9 @@ error_state DataBin::get_mac(const char *keys_file, char *error_message) {
 }
 
 /// @brief Load private keys from keys.txt
-/// @param keys_file 
-/// @param error_message 
-/// @return 
+/// @param keys_file
+/// @param error_message
+/// @return
 error_state DataBin::get_private_keys(const char *keys_file, char *error_message) {
 
     global_error_message = error_message;
@@ -221,7 +221,7 @@ error_state DataBin::get_private_keys(const char *keys_file, char *error_message
 
     fp = fopen(keys_file, "r");
     if (fp == 0) {
-        fatal(_("cannot open %s"), keys_file);
+        fatal(_("Error opening file %s: %s"), keys_file, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -243,7 +243,7 @@ error_state DataBin::get_private_keys(const char *keys_file, char *error_message
             ret = get_value(line, tmp_ng_id, 4);
             if (ret != DBIN_OK)
                 goto close_and_return;
-            memcpy(&ng_id,tmp_ng_id,4);
+            memcpy(&ng_id, tmp_ng_id, 4);
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
             ng_id = __builtin_bswap32(ng_id);
 #endif
@@ -253,7 +253,7 @@ error_state DataBin::get_private_keys(const char *keys_file, char *error_message
             ret = get_value(line, tmp_ng_key_id, 4);
             if (ret != DBIN_OK)
                 goto close_and_return;
-            memcpy(&ng_key_id,tmp_ng_key_id,4);
+            memcpy(&ng_key_id, tmp_ng_key_id, 4);
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
             ng_key_id = __builtin_bswap32(ng_key_id);
 #endif
@@ -282,7 +282,7 @@ error_state DataBin::get_private_keys(const char *keys_file, char *error_message
             keys_not_found += " ecc_private_key";
         if (!read_ng_sig)
             keys_not_found += " ng_signature";
-        fatal(_("Cannot find keys%s in %s"),keys_not_found.c_str(),keys_file);
+        fatal(_("Cannot find keys%s in %s"), keys_not_found.c_str(), keys_file);
         ret = DBIN_ERR;
         goto close_and_return;
     }
@@ -336,7 +336,7 @@ error_state DataBin::initialize_default_keys() {
     return ret_global;
 }
 
-/// @brief coneole-log-like output of data.bin pack/unpack
+/// @brief console-log-like output of data.bin pack/unpack
 /// @param jobType
 void DataBin::showDataBinOperations(eJobType jobType) {
 
@@ -410,7 +410,7 @@ bool DataBin::populate_key_list() {
 
             std::string keyPath = data->d_name;
 
-            //TODO - ADD CODE TO CHECK THE CONENT OF THE KEY FILE
+            //TODO - ADD CODE TO CHECK THE CONTENT OF THE KEY FILE AND SET key_file_content
 
             s_key_format key = {.key_path = keyPath, .key_file_content = UNSPECIFIED};
             key_list.push_back(key);

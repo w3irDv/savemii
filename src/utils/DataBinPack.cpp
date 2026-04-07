@@ -46,7 +46,7 @@ static error_state perm_from_path(const char *path, u8 *perm) {
     u32 i;
 
     if (stat(path, &sb)) {
-        fatal("stat %s", path);
+        fatal(_("Error getting stat for %s: %s"), path, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -75,7 +75,7 @@ static error_state do_main(u64 title_id, FILE *toc) {
 
     if (toc) {
         if (!fgets(name, sizeof name, toc)) {
-            fatal("reading banner.bin");
+            fatal(_("Error reading toc: %s"),strerror(errno));
             return DBIN_ERR;
         }
         name[strlen(name) - 1] = 0; // get rid of linefeed
@@ -94,7 +94,7 @@ static error_state do_main(u64 title_id, FILE *toc) {
     struct stat sb;
     u32 banner_size = 0;
     if (stat(name, &sb)) {
-        fatal("stat %s", name);
+        fatal(_("Error getting stat for %s: %s"), name, strerror(errno));
         return DBIN_ERR;
     }
     banner_size = sb.st_size;
@@ -103,11 +103,11 @@ static error_state do_main(u64 title_id, FILE *toc) {
 
     in = fopen(name, "rb");
     if (!in) {
-        fatal("open %s", name);
+        fatal(_("Error opening file %s: %s"), name, strerror(errno));
         return DBIN_ERR;
     }
     if (fread(header + 0x20, banner_size, 1, in) != 1) {
-        fatal("read %s", name);
+        fatal(_("Error reading file %s: %s"), name, strerror(errno));
         return DBIN_ERR;
     }
     fclose(in);
@@ -126,7 +126,7 @@ static error_state do_main(u64 title_id, FILE *toc) {
     aes_cbc_enc(DataBin::sd_key, sd_iv_, header, sizeof header, header);
 
     if (fwrite(header, 0xf0c0, 1, fp) != 1) {
-        fatal("write main header");
+        fatal(_("Error writing main header: %s"),strerror(errno));
         return DBIN_ERR;
     }
 
@@ -145,7 +145,7 @@ static error_state find_files_recursive(const char *path) {
 
     dir = opendir(path ? path : ".");
     if (!dir) {
-        fatal("opendir %s %s", path ? path : ".", strerror(errno));
+        fatal(_("Error opening dir %s %s"), path ? path : ".", strerror(errno));
         return DBIN_ERR;
     }
 
@@ -166,19 +166,19 @@ static error_state find_files_recursive(const char *path) {
                            de->d_name);
 
         if (len >= sizeof name) {
-            fatal("path too long: %s", name);
+            fatal(_("Error: path too long: %s"), name);
             closedir(dir);
             return DBIN_ERR;
         }
 
         if (strlen(name + input_path_len + 1) >= 0x44) { // https://wiibrew.org/wiki/Savegame_Files
-            fatal("file name too long for arxiving: %s", name + input_path_len + 1);
+            fatal(_("Error: file name too long for arxiving: %s"), name + input_path_len + 1);
             closedir(dir);
             return DBIN_ERR;
         }
 
         if (de->d_type != DT_REG && de->d_type != DT_DIR) {
-            fatal("not a regular file or a directory: %s", de->d_name);
+            fatal(_("Error: not a regular file or a directory: %s"), de->d_name);
             closedir(dir);
             return DBIN_ERR;
         }
@@ -189,7 +189,7 @@ static error_state find_files_recursive(const char *path) {
             size = 0;
         else {
             if (stat(name, &sb)) {
-                fatal("stat %s", name);
+                fatal(_("Error getting stat for %s: %s"), name, strerror(errno));
                 closedir(dir);
                 return DBIN_ERR;
             }
@@ -220,7 +220,7 @@ static error_state find_files_recursive(const char *path) {
     }
 
     if (closedir(dir)) {
-        fatal("closedir");
+        fatal(_("Error closing dir %s: %s"),path,strerror(errno));
         return DBIN_ERR;
     }
 
@@ -279,18 +279,18 @@ static error_state find_files_toc(FILE *toc) {
             if (*name == ' ')
                 break;
         if (!*name)
-            ERROR("no space in TOC line");
+            ERROR(_("Error: no space in TOC line"));
         *name = 0;
         name++;
 
         len = wiggle_name(name);
         if (len >= 53) {
-            fatal("wiggle - path too long: %s", name);
+            fatal(_("Error: wiggle - path too long: %s"), name);
             return DBIN_ERR;
         }
 
         if (stat(line, &sb)) {
-            fatal("stat %s", line);
+            fatal(_("Error getting stat for %s: %s"), line, strerror(errno));
             return DBIN_ERR;
         }
 
@@ -313,7 +313,7 @@ static error_state find_files_toc(FILE *toc) {
     }
 
     if (ferror(toc)) {
-        fatal("reading toc");
+        fatal(_("Error reading toc: %s"),strerror(errno));
         return DBIN_ERR;
     }
 
@@ -336,7 +336,7 @@ static error_state do_backup_header(u64 title_id) {
     memcpy(header + 0x68, DataBin::ng_mac, 6);
 
     if (fwrite(header, sizeof header, 1, fp) != 1) {
-        fatal("write Bk header");
+        fatal(_("Error writing Bk header: %s"),strerror(errno));
         return DBIN_ERR;
     }
 
@@ -366,7 +366,7 @@ static error_state do_file(u32 file_no) {
     DataBin::showDataBinOperations(BACKUP);
 
     if (fwrite(header, 0x80, 1, fp) != 1) {
-        fatal("write file header %d", file_no);
+        fatal(_("Error writing file header %d: %s"),file_no,strerror(errno));
         return DBIN_ERR;
     }
 
@@ -377,18 +377,18 @@ static error_state do_file(u32 file_no) {
 
         data = (u8 *) malloc(rounded_size);
         if (!data) {
-            fatal("malloc data");
+            fatal(_("Error: cannot malloc"));
             return DBIN_ERR;
         }
 
         in = fopen(from, "rb");
         if (!in) {
-            fatal("open %s", from);
+            fatal(_("Error opening file %s: %s"), from, strerror(errno));
             free(data);
             return DBIN_ERR;
         }
         if (fread(data, size, 1, in) != 1) {
-            fatal("read %s", from);
+            fatal(_("Error reading file %s: %s"), from, strerror(errno));
             free(data);
             fclose(in);
             return DBIN_ERR;
@@ -400,7 +400,7 @@ static error_state do_file(u32 file_no) {
         aes_cbc_enc(DataBin::sd_key, header + 0x50, data, rounded_size, data);
 
         if (fwrite(data, rounded_size, 1, fp) != 1) {
-            fatal("write file %d", file_no);
+            fatal(_("Error writing file data %d: %s"),file_no,strerror(errno));
             free(data);
             return DBIN_ERR;
         }
@@ -455,12 +455,12 @@ static error_state do_sig(void) {
 
     data = (u8 *) malloc(data_size);
     if (!data) {
-        fatal("malloc");
+        fatal(_("Error: cannot malloc"));
         return DBIN_ERR;
     }
     fseek(fp, 0xf0c0, SEEK_SET);
     if (fread(data, data_size, 1, fp) != 1) {
-        fatal("read data for sig check");
+        fatal(_("Error reading data for sig check"));
         free(data);
         return DBIN_ERR;
     }
@@ -472,15 +472,15 @@ static error_state do_sig(void) {
     wbe32(sig + 60, 0x2f536969);
 
     if (fwrite(sig, sizeof sig, 1, fp) != 1) {
-        fatal("write sig");
+        fatal(_("Error writting sig: %s"),strerror(errno));
         return DBIN_ERR;
     }
     if (fwrite(ng_cert, sizeof ng_cert, 1, fp) != 1) {
-        fatal("write NG cert");
+        fatal(_("Error writting NG cert: %s"),strerror(errno));
         return DBIN_ERR;
     }
     if (fwrite(ap_cert, sizeof ap_cert, 1, fp) != 1) {
-        fatal("write AP cert");
+        fatal(_("Error writting AP cert: %s"),strerror(errno));
         return DBIN_ERR;
     }
 
@@ -517,14 +517,14 @@ path_to_dir/file path_in_data.bin
     if (toc_file_path != NULL) {
         toc = fopen(toc_file_path, "r");
         if (!toc) {
-            fatal("open %s", toc_file_path);
+            fatal(_("Error opening file %s: %s"), toc_file_path, strerror(errno));
             return DBIN_ERR;
         }
     }
 
     fp = fopen(data_bin, "wb+");
     if (!fp) {
-        fatal("open %s", data_bin);
+        fatal(_("Error opening file %s: %s"), data_bin, strerror(errno));
         return DBIN_ERR;
     }
 

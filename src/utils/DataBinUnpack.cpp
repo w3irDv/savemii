@@ -64,7 +64,7 @@ static error_state extract_title_id(u64 *titleid) {
 
     memset(header, 0, 0xf0c0);
     if (fread(header, sizeof header, 1, fp) != 1) {
-        fatal("read file header");
+        fatal(_("Error reading file header: %s"),strerror(errno));
         return DBIN_ERR;
     }
 
@@ -75,11 +75,11 @@ static error_state extract_title_id(u64 *titleid) {
     md5(header, sizeof header, md5_calc);
 
     if (memcmp(md5_file, md5_calc, 0x10))
-        ERROR("MD5 mismatch");
+        ERROR(_("Error: MD5 mismatch"));
 
     bnrSize = be32(header + 8); //bnrSize
     if (bnrSize < 0x72a0 || bnrSize > 0xf0a0 || (bnrSize - 0x60a0) % 0x1200 != 0)
-        ERROR("bad file header size");
+        ERROR(_("Error: bad file header size"));
 
     *titleid = be64(header);
 
@@ -99,7 +99,7 @@ static error_state do_main(void) {
 
     //! decrypt the header
     if (fread(header, sizeof header, 1, fp) != 1) {
-        fatal("read file header");
+        fatal(_("Error reading file header: %s"),strerror(errno));
         return DBIN_ERR;
     }
     memcpy(sd_iv_, DataBin::sd_iv, 16);
@@ -111,12 +111,12 @@ static error_state do_main(void) {
     md5(header, sizeof header, md5_calc);
 
     if (memcmp(md5_file, md5_calc, 0x10))
-        ERROR("MD5 mismatch");
+        ERROR(_("Error: MD5 mismatch"));
 
     //! read the tid & banner.bin size
     bnrSize = be32(header + 8); //bnrSize
     if (bnrSize < 0x72a0 || bnrSize > 0xf0a0 || (bnrSize - 0x60a0) % 0x1200 != 0)
-        ERROR("bad file header size");
+        ERROR(_("Error: bad file header size"));
 
     u64 tid = be64(header);
 
@@ -124,7 +124,7 @@ static error_state do_main(void) {
 
     if (mkdir(DataBin::output_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : 0777)) {
         if (errno != EEXIST) {
-            fatal("mkdir %s", DataBin::output_path);
+            fatal(_("Error creating folder %s: %s"), DataBin::output_path,strerror(errno));
             return DBIN_ERR;
         }
     }
@@ -141,11 +141,11 @@ static error_state do_main(void) {
 
     out = fopen(DataBin::output_path, "wb");
     if (!out) {
-        fatal("open %s", DataBin::output_path);
+        fatal(_("Error opening file %s: %s"), DataBin::output_path, strerror(errno));
         return DBIN_ERR;
     }
     if (fwrite(header + 0x20, bnrSize, 1, out) != 1) {
-        fatal("write %s", DataBin::output_path);
+        fatal(_("Error writting file %s: %s"), DataBin::output_path, strerror(errno));
         fclose(out);
         return DBIN_ERR;
     }
@@ -154,7 +154,7 @@ static error_state do_main(void) {
     mode &= ~0111;
 
     if (chmod(DataBin::output_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : mode)) {
-        fatal("chmod %s", DataBin::output_path);
+        fatal(_("Error setting permissions for file %s: %s"), DataBin::output_path,strerror(errno));
         return DBIN_ERR;
     }
 
@@ -166,22 +166,22 @@ static error_state do_backup_header(void) {
     u8 header[0x80];
 
     if (fread(header, sizeof header, 1, fp) != 1) {
-        fatal("read backup header");
+        fatal(_("Error reading Bk header: %s"), strerror(errno));
         return DBIN_ERR;
     }
 
     if (be32(header + 4) != 0x426b0001)
-        ERROR("no Bk header");
+        ERROR(_("Error: no Bk header"));
     if (be32(header) != 0x70)
-        ERROR("wrong Bk header size");
+        ERROR(_("Error: wrong Bk header size"));
 
-    LOG("NG id: %08x\n", be32(header + 8));
+    //LOG("NG id: %08x\n", be32(header + 8));
 
     n_files = be32(header + 0x0c);
     files_size = be32(header + 0x10);
     total_size = be32(header + 0x1c);
 
-    LOG("%d files\n", n_files);
+    //LOG("%d files\n", n_files);
 
     return DBIN_OK;
 }
@@ -197,12 +197,12 @@ static error_state do_file(void) {
     mode_t mode;
 
     if (fread(header, sizeof header, 1, fp) != 1) {
-        fatal("read file header");
+        fatal(_("Error reading file header: %s"),strerror(errno));
         return DBIN_ERR;
     }
 
     if (be32(header) != 0x03adf17e)
-        ERROR("bad file header");
+        ERROR(_("Error: bad file header magic number"));
 
     size = be32(header + 4);
     perm = header[8];
@@ -221,11 +221,11 @@ static error_state do_file(void) {
             rounded_size = (size + 63) & ~63;
             data = (u8 *) malloc(rounded_size);
             if (!data) {
-                fatal("malloc");
+                fatal(_("Error: cannot malloc"));
                 return DBIN_ERR;
             }
             if (fread(data, rounded_size, 1, fp) != 1) {
-                fatal("read file data for %s", name);
+                fatal(_("Error reading file %s: %s"), name, strerror(errno));
                 free(data);
                 return DBIN_ERR;
             }
@@ -235,7 +235,7 @@ static error_state do_file(void) {
             snprintf(DataBin::output_path + ouput_base_path_len, sizeof DataBin::output_path - ouput_base_path_len, "/%s", name);
             out = fopen(DataBin::output_path, "wb");
             if (!out) {
-                fatal("open %s", DataBin::output_path);
+                fatal(_("Error opening file %s: %s"), DataBin::output_path, strerror(errno));
                 free(data);
                 return DBIN_ERR;
             }
@@ -257,18 +257,18 @@ static error_state do_file(void) {
 
             if (mkdir(DataBin::output_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : 0777)) {
                 if (errno != EEXIST) {
-                    fatal("mkdir %s", DataBin::output_path);
+                    fatal(_("Error creating folder %s: %s"), DataBin::output_path,strerror(errno));
                     return DBIN_ERR;
                 }
             }
             break;
 
         default:
-            ERROR("unhandled file type");
+            ERROR(_("Error: unhandled file type"));
     }
 
     if (chmod(DataBin::output_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : mode)) {
-        fatal("chmod %s", DataBin::output_path);
+        fatal(_("Error setting permissions for file %s: %s"), DataBin::output_path,strerror(errno));
         return DBIN_ERR;
     }
 
@@ -286,15 +286,15 @@ static error_state do_sig(void) {
     int ok;
 
     if (fread(sig, sizeof sig, 1, fp) != 1) {
-        fatal("read signature");
+        fatal(_("Error reading signature: %s"),strerror(errno));
         return DBIN_ERR;
     }
     if (fread(ng_cert, sizeof ng_cert, 1, fp) != 1) {
-        fatal("read NG cert");
+        fatal(_("Error reading NG cert: %s"),strerror(errno));
         return DBIN_ERR;
     }
     if (fread(ap_cert, sizeof ap_cert, 1, fp) != 1) {
-        fatal("read AP cert");
+        fatal(_("Error reading AP cert: %s"),strerror(errno));
         return DBIN_ERR;
     }
 
@@ -302,12 +302,12 @@ static error_state do_sig(void) {
 
     data = (u8 *) malloc(data_size);
     if (!data) {
-        fatal("malloc");
+        fatal(_("Error: cannot malloc"));
         return DBIN_ERR;
     }
     fseek(fp, 0xf0c0, SEEK_SET);
     if (fread(data, data_size, 1, fp) != 1) {
-        fatal("read data for sig check");
+        fatal(_("Error reading data for sig check: %s"), strerror(errno));
         free(data);
         return DBIN_ERR;
     }
@@ -332,7 +332,7 @@ error_state DataBin::get_title_id(const char *src_data_bin, u64 *title_id, char 
 
     fp = fopen(src_data_bin, "rb");
     if (!fp) {
-        fatal("open %s", src_data_bin);
+        fatal(_("Error opening file %s: %s"), src_data_bin, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -365,7 +365,7 @@ error_state DataBin::unpack(const char *src_data_bin, const char *target_path, p
 
     fp = fopen(src_data_bin, "rb");
     if (!fp) {
-        fatal("open %s", src_data_bin);
+        fatal(_("Error opening file %s: %s"), src_data_bin, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -389,7 +389,7 @@ error_state DataBin::unpack(const char *src_data_bin, const char *target_path, p
 
     mode = perm_to_mode(header[0x0c]);
     if (chmod(target_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : mode)) {
-        fatal("chmod %s", target_path);
+        fatal(_("Error setting permissions for file %s: %s"), target_path,strerror(errno));
         fclose(fp);
         return DBIN_ERR;
     }

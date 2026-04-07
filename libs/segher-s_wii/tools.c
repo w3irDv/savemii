@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 char *global_error_message;
 //
@@ -93,11 +94,11 @@ error_state get_key(const char *name, u8 *key, u32 len) {
 
     fp = fopen(path, "rb");
     if (fp == 0) {
-        fatal("cannot open %s", name);
+        fatal("Error opening file %s: %s", name, strerror(errno));
         return DBIN_ERR;
     }
     if (fread(key, len, 1, fp) != 1) {
-        fatal("error reading %s", name);
+        fatal("Error reading file %s: %s", name, strerror(errno));
         return DBIN_ERR;
     }
     fclose(fp);
@@ -105,10 +106,6 @@ error_state get_key(const char *name, u8 *key, u32 len) {
 }
 
 void aes_cbc_dec(u8 *key, u8 *iv, u8 *in, u32 len, u8 *out) {
-    //AES_KEY aes_key;
-
-    //AES_set_decrypt_key(key, 128, &aes_key);
-    //AES_cbc_encrypt(in, out, len, &aes_key, iv, AES_DECRYPT);
 
     mbedtls_aes_context aes;
 
@@ -117,10 +114,6 @@ void aes_cbc_dec(u8 *key, u8 *iv, u8 *in, u32 len, u8 *out) {
 }
 
 void aes_cbc_enc(u8 *key, u8 *iv, u8 *in, u32 len, u8 *out) {
-    //AES_KEY aes_key;
-
-    //AES_set_encrypt_key(key, 128, &aes_key);
-    //AES_cbc_encrypt(in, out, len, &aes_key, iv, AES_ENCRYPT);
 
     mbedtls_aes_context aes;
 
@@ -211,24 +204,13 @@ static int check_rsa(u8 *h, u8 *sig, u8 *key, u32 n) {
     u8 x[0x200];
     static const u8 ber[16] __attribute__((nonstring)) = "\x00\x30\x21\x30\x09\x06\x05\x2b"
                                                          "\x0e\x03\x02\x1a\x05\x00\x04\x14";
-
-    //fprintf(stderr, "n = %x\n", n);
-    //fprintf(stderr, "key:\n");
-    //hexdump(key, n);
-    //fprintf(stderr, "sig:\n");
-    //hexdump(sig, n);
-
     correct[0] = 0;
     correct[1] = 1;
     memset(correct + 2, 0xff, n - 38);
     memcpy(correct + n - 36, ber, 16);
     memcpy(correct + n - 20, h, 20);
-    //fprintf(stderr, "correct is:\n");
-    //hexdump(correct, n);
 
     bn_exp(x, sig, key, n, key + n, 4);
-    //fprintf(stderr, "x is:\n");
-    //hexdump(x, n);
 
     if (memcmp(correct, x, n) == 0)
         return 0;
