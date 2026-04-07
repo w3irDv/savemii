@@ -149,7 +149,10 @@ static error_state do_main(void) {
         fclose(out);
         return DBIN_ERR;
     }
-    fclose(out);
+    if (fclose(out) != 0) {
+        fatal(_("Error closing file %s: %s"), DataBin::output_path, strerror(errno));
+        return DBIN_ERR;
+    }
 
     mode &= ~0111;
 
