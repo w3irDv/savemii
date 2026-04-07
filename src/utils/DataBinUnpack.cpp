@@ -5,7 +5,6 @@
 // w3irdv 2026 - hybrid beast evolved from segher's tachtig + some inputs from Dk_Skual's SaveGameManager GX
 
 
-#include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -64,7 +63,7 @@ static error_state extract_title_id(u64 *titleid) {
 
     memset(header, 0, 0xf0c0);
     if (fread(header, sizeof header, 1, fp) != 1) {
-        fatal(_("Error reading file header: %s"),strerror(errno));
+        fatal(_("Error reading file header: %s"), strerror(errno));
         return DBIN_ERR;
     }
 
@@ -74,7 +73,7 @@ static error_state extract_title_id(u64 *titleid) {
     memcpy(header + 0x0e, DataBin::md5_blanker, 16);
     md5(header, sizeof header, md5_calc);
 
-    if (memcmp(md5_file, md5_calc, 0x10))
+    if (memcmp(md5_file, md5_calc, 0x10) != 0)
         ERROR(_("Error: MD5 mismatch"));
 
     bnrSize = be32(header + 8); //bnrSize
@@ -99,7 +98,7 @@ static error_state do_main(void) {
 
     //! decrypt the header
     if (fread(header, sizeof header, 1, fp) != 1) {
-        fatal(_("Error reading file header: %s"),strerror(errno));
+        fatal(_("Error reading file header: %s"), strerror(errno));
         return DBIN_ERR;
     }
     memcpy(sd_iv_, DataBin::sd_iv, 16);
@@ -110,7 +109,7 @@ static error_state do_main(void) {
     memcpy(header + 0x0e, DataBin::md5_blanker, 16);
     md5(header, sizeof header, md5_calc);
 
-    if (memcmp(md5_file, md5_calc, 0x10))
+    if (memcmp(md5_file, md5_calc, 0x10) != 0)
         ERROR(_("Error: MD5 mismatch"));
 
     //! read the tid & banner.bin size
@@ -124,7 +123,7 @@ static error_state do_main(void) {
 
     if (mkdir(DataBin::output_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : 0777)) {
         if (errno != EEXIST) {
-            fatal(_("Error creating folder %s: %s"), DataBin::output_path,strerror(errno));
+            fatal(_("Error creating folder %s: %s"), DataBin::output_path, strerror(errno));
             return DBIN_ERR;
         }
     }
@@ -157,7 +156,7 @@ static error_state do_main(void) {
     mode &= ~0111;
 
     if (chmod(DataBin::output_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : mode)) {
-        fatal(_("Error setting permissions for file %s: %s"), DataBin::output_path,strerror(errno));
+        fatal(_("Error setting permissions for file %s: %s"), DataBin::output_path, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -200,7 +199,7 @@ static error_state do_file(void) {
     mode_t mode;
 
     if (fread(header, sizeof header, 1, fp) != 1) {
-        fatal(_("Error reading file header: %s"),strerror(errno));
+        fatal(_("Error reading file header: %s"), strerror(errno));
         return DBIN_ERR;
     }
 
@@ -248,7 +247,10 @@ static error_state do_file(void) {
                 free(data);
                 return DBIN_ERR;
             }
-            fclose(out);
+            if (fclose(out) != 0) {
+                fatal(_("Error closing file %s: %s"), DataBin::output_path, strerror(errno));
+                return DBIN_ERR;
+            }
 
             mode &= ~0111;
 
@@ -260,7 +262,7 @@ static error_state do_file(void) {
 
             if (mkdir(DataBin::output_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : 0777)) {
                 if (errno != EEXIST) {
-                    fatal(_("Error creating folder %s: %s"), DataBin::output_path,strerror(errno));
+                    fatal(_("Error creating folder %s: %s"), DataBin::output_path, strerror(errno));
                     return DBIN_ERR;
                 }
             }
@@ -271,7 +273,7 @@ static error_state do_file(void) {
     }
 
     if (chmod(DataBin::output_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : mode)) {
-        fatal(_("Error setting permissions for file %s: %s"), DataBin::output_path,strerror(errno));
+        fatal(_("Error setting permissions for file %s: %s"), DataBin::output_path, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -289,15 +291,15 @@ static error_state do_sig(void) {
     int ok;
 
     if (fread(sig, sizeof sig, 1, fp) != 1) {
-        fatal(_("Error reading signature: %s"),strerror(errno));
+        fatal(_("Error reading signature: %s"), strerror(errno));
         return DBIN_ERR;
     }
     if (fread(ng_cert, sizeof ng_cert, 1, fp) != 1) {
-        fatal(_("Error reading NG cert: %s"),strerror(errno));
+        fatal(_("Error reading NG cert: %s"), strerror(errno));
         return DBIN_ERR;
     }
     if (fread(ap_cert, sizeof ap_cert, 1, fp) != 1) {
-        fatal(_("Error reading AP cert: %s"),strerror(errno));
+        fatal(_("Error reading AP cert: %s"), strerror(errno));
         return DBIN_ERR;
     }
 
@@ -381,9 +383,9 @@ error_state DataBin::unpack(const char *src_data_bin, const char *target_path, p
         return DBIN_ERR;
     }
 
-    InProgress::totalSteps = n_files + 1;
+    InProgress::totalSteps = (int) n_files + 1;
     for (i = 0; i < n_files; i++) {
-        InProgress::currentStep = i + 2;
+        InProgress::currentStep = (int) i + 2;
         if (do_file() == DBIN_ERR) {
             fclose(fp);
             return DBIN_ERR;
@@ -392,7 +394,7 @@ error_state DataBin::unpack(const char *src_data_bin, const char *target_path, p
 
     mode = perm_to_mode(header[0x0c]);
     if (chmod(target_path, use_perm_mode == SET_PERMS_TO_666 ? 0666 : mode)) {
-        fatal(_("Error setting permissions for file %s: %s"), target_path,strerror(errno));
+        fatal(_("Error setting permissions for file %s: %s"), target_path, strerror(errno));
         fclose(fp);
         return DBIN_ERR;
     }

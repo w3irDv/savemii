@@ -5,7 +5,6 @@
 // w3irdv 2026 - hybrid beast evolved from segher's twintig + some inputs from Dk_Skual's SaveGameManager GX
 
 #define _DEFAULT_SOURCE
-#include <ctype.h>
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -553,9 +552,9 @@ path_to_dir/file path_in_data.bin
         return DBIN_ERR;
     }
 
-    InProgress::totalSteps = n_files + 1;
+    InProgress::totalSteps = (int) n_files + 1;
     for (i = 0; i < n_files; i++) {
-        InProgress::currentStep = i + 2;
+        InProgress::currentStep = (int) i + 2;
         if (do_file(i) == DBIN_ERR) {
             fclose(fp);
             if (toc)

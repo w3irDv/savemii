@@ -12,3 +12,4 @@ TODO.txt
 *.wuhb
 .idea
 savemii.lst
+compile_commands.json

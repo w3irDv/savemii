@@ -293,8 +293,6 @@ close_and_return:
 }
 
 /// @brief read vWii encryption keys from default locations (sd:/keys.txt and sd:/wiiu/backups/<Serial>/otp.bin)
-/// @param path
-/// @param error_message
 /// @return
 error_state DataBin::initialize_default_keys() {
 
@@ -340,8 +338,6 @@ error_state DataBin::initialize_default_keys() {
 /// @param jobType
 void DataBin::showDataBinOperations(eJobType jobType) {
 
-    std::string target_path{}, src_path{};
-
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
 
@@ -370,7 +366,7 @@ void DataBin::showDataBinOperations(eJobType jobType) {
     const size_t max_lines = 9;
     size_t initial_buffer_line = (log_lines > max_lines) ? log_lines - max_lines : 0;
     for (size_t line = 0; line < max_lines && line < log_lines; line++) {
-        Console::consolePrintPos(-2, 7 + line, " %s", logBuffer.at(initial_buffer_line + line).c_str());
+        Console::consolePrintPos(-2, 7 + (int) line, " %s", logBuffer.at(initial_buffer_line + line).c_str());
     }
 
 

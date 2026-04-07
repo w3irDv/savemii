@@ -7,15 +7,15 @@
 
 #include "tools.h"
 
-#include <stddef.h>
 #include "mbedtls/aes.h"
 #include "mbedtls/md5.h"
 #include "mbedtls/sha1.h"
+#include <errno.h>
 #include <stdarg.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 char *global_error_message;
 //
@@ -54,12 +54,12 @@ void wbe64(u8 *p, u64 x) {
     wbe32(p + 4, x);
 }
 
-// 
+//
 // pseudo-random, enough for our purpose
 //
 void fill_with_random(u8 *arr, int size) {
     for (int i = 0; i < size; i++) {
-        arr[i] = (u8)(rand() % 256);
+        arr[i] = (u8) (rand() % 256);
     }
 }
 
@@ -139,7 +139,7 @@ static u8 root_key[0x204];
 static u8 *get_root_key() {
     if (get_key("root-key", root_key, sizeof root_key) == DBIN_ERR)
         return NULL;
-        
+
     return root_key;
 }
 
@@ -289,7 +289,7 @@ int check_cert_chain(u8 *data, u32 data_len, u8 *cert, u32 cert_len) {
         LOG(">>>>>> checking sig by %s...\n", sub);
         if (strcmp((char *) sub, "Root") == 0) {
             key = get_root_key();
-            if(key == NULL)
+            if (key == NULL)
                 return -0xffff; // irrelevant, this function is not called
             sha(sub, sub_len, h);
             if (be32(sig) != 0x10000)
@@ -374,8 +374,7 @@ void fatal(const char *s, ...) {
     va_start(ap, s);
     vsnprintf(message, sizeof message, s, ap);
 
-    strncpy(global_error_message,message,2048);
-
+    strncpy(global_error_message, message, 2048);
 }
 
 //
@@ -390,15 +389,13 @@ void LOG(const char *s, ...) {
     va_start(ap, s);
     vsnprintf(message, sizeof message, s, ap);
 
-    printf("%s",message);
-
+    printf("%s", message);
 }
 #else
-void LOG([[maybe_unused]]const char *s, ...) {
+void LOG([[maybe_unused]] const char *s, ...) {
     return;
 }
 #endif
-
 
 
 void print_bytes(u8 *x, u32 n) {
@@ -426,20 +423,20 @@ void dump_tmd(u8 *tmd) {
     u32 i, n;
     u8 *p;
 
-   LOG("       issuer: %s\n", tmd + 0x140);
-   LOG("  sys_version: %016llx\n", be64(tmd + 0x0184));
-   LOG("     title_id: %016llx\n", be64(tmd + 0x018c));
-   LOG("   title_type: %08x\n", be32(tmd + 0x0194));
-   LOG("     group_id: %04x\n", be16(tmd + 0x0198));
-   LOG("title_version: %04x\n", be16(tmd + 0x01dc));
-   LOG(" num_contents: %04x\n", be16(tmd + 0x01de));
-   LOG("   boot_index: %04x\n", be16(tmd + 0x01e0));
+    LOG("       issuer: %s\n", tmd + 0x140);
+    LOG("  sys_version: %016llx\n", be64(tmd + 0x0184));
+    LOG("     title_id: %016llx\n", be64(tmd + 0x018c));
+    LOG("   title_type: %08x\n", be32(tmd + 0x0194));
+    LOG("     group_id: %04x\n", be16(tmd + 0x0198));
+    LOG("title_version: %04x\n", be16(tmd + 0x01dc));
+    LOG(" num_contents: %04x\n", be16(tmd + 0x01de));
+    LOG("   boot_index: %04x\n", be16(tmd + 0x01e0));
 
     n = be16(tmd + 0x01de);
     p = tmd + 0x01e4;
     for (i = 0; i < n; i++) {
-       LOG("cid %08x  index %04x  type %04x  size %08llx\n",
-               be32(p), be16(p + 4), be16(p + 6), be64(p + 8));
+        LOG("cid %08x  index %04x  type %04x  size %08llx\n",
+            be32(p), be16(p + 4), be16(p + 6), be64(p + 8));
         p += 0x24;
     }
 }
