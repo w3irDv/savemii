@@ -111,7 +111,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                     std::string data_bin_path = srcPath + "/data.bin";
                     if (FSUtils::checkEntry(data_bin_path.c_str()) == 1) {
                         uint64_t title_id;
-                        char error_message[2048];
+                        char *error_message = nullptr;
                         if (DataBin::get_title_id(data_bin_path.c_str(), &title_id, error_message) == DBIN_OK) {
                             uint32_t data_bin_high_id = (uint32_t) (title_id >> 32);
                             uint32_t data_bin_low_id = (uint32_t) (title_id & 0xffffffff);

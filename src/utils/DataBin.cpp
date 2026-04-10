@@ -14,14 +14,15 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
-extern char *global_error_message;
+extern char global_error_message[ERROR_BUFFER_LENGTH];
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
-error_state DataBin::get_keys_from_otp(const char *otp_bin_file, char *error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+error_state DataBin::get_keys_from_otp(const char *otp_bin_file, char *&error_message) {
+
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     FILE *fp;
 
@@ -105,10 +106,10 @@ error_state get_value(char *key_val, u8 *byte, size_t number_of_bytes) {
     return DBIN_OK;
 }
 
-error_state DataBin::get_shared_keys(const char *keys_file, char *error_message) {
+error_state DataBin::get_shared_keys(const char *keys_file, char *&error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     FILE *fp;
 
@@ -170,10 +171,10 @@ error_state DataBin::get_this_console_mac() {
     return DBIN_OK;
 }
 
-error_state DataBin::get_mac(const char *keys_file, char *error_message) {
+error_state DataBin::get_mac(const char *keys_file, char *&error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     FILE *fp;
 
@@ -212,10 +213,10 @@ error_state DataBin::get_mac(const char *keys_file, char *error_message) {
 /// @param keys_file
 /// @param error_message
 /// @return
-error_state DataBin::get_private_keys(const char *keys_file, char *error_message) {
+error_state DataBin::get_private_keys(const char *keys_file, char *&error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     FILE *fp;
 
@@ -293,10 +294,12 @@ close_and_return:
 }
 
 /// @brief read vWii encryption keys from default locations (sd:/keys.txt and sd:/wiiu/backups/<Serial>/otp.bin)
+/// @param path
+/// @param error_message
 /// @return
 error_state DataBin::initialize_default_keys() {
 
-    char error_message[2048] = {0};
+    char *error_message = nullptr;
 
     error_state ret = DBIN_OK, ret_global = DBIN_OK;
 
@@ -392,7 +395,7 @@ void DataBin::writeLog(const char *s, ...) {
     logBuffer.push_back(std::string(message));
 }
 
-
+/// @brief silently get files in keys folder directory, no error is shown
 bool DataBin::populate_key_list() {
 
     key_list.clear();

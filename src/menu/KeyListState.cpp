@@ -71,7 +71,7 @@ void KeyListState::render() {
 
 ApplicationState::eSubState KeyListState::update(Input *input) {
     if (this->state == STATE_KEY_LIST) {
-        char error_message[2048];
+        char *error_message = nullptr;
         if (input->get(ButtonState::TRIGGER, Button::B) || keyFilesCount == 0)
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::Y)) {

@@ -19,11 +19,11 @@
 
 #define ERROR(s)                                       \
     do {                                               \
-        snprintf(global_error_message, 2048, "%s", s); \
+        snprintf(global_error_message, ERROR_BUFFER_LENGTH, "%s", s); \
         return (DBIN_ERR);                             \
     } while (0)
 
-extern char *global_error_message;
+extern char global_error_message[ERROR_BUFFER_LENGTH];
 
 static FILE *fp;
 static u32 n_files;
@@ -330,10 +330,10 @@ static error_state do_sig(void) {
     return DBIN_OK;
 }
 
-error_state DataBin::get_title_id(const char *src_data_bin, u64 *title_id, char *error_message) {
+error_state DataBin::get_title_id(const char *src_data_bin, u64 *title_id, char *&error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     fp = fopen(src_data_bin, "rb");
     if (!fp) {
@@ -351,15 +351,15 @@ error_state DataBin::get_title_id(const char *src_data_bin, u64 *title_id, char 
 }
 
 
-error_state DataBin::unpack(const char *src_data_bin, const char *target_path, perm_mode perm_mode, char *error_message) {
+error_state DataBin::unpack(const char *src_data_bin, const char *target_path, perm_mode perm_mode, char *&error_message) {
 
     u32 i;
     u32 mode;
 
     use_perm_mode = perm_mode;
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     logBuffer.clear();
 

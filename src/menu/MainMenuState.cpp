@@ -124,7 +124,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             const char *databin = "fs:/vol/external01/pack_databin/data.bin";
             u64 title_id = 0x00010000534d4e50;
 
-            char error_message[2048] = {0};
+            char *error_message = nullptr;
 
             DataBin::get_keys_from_otp("fs:/vol/external01/wiiu/backups/FEH101753089/otp.bin",error_message);
             DataBin::get_shared_keys("fs:/vol/external01/keys.txt",error_message);
@@ -142,7 +142,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
 
             const char *extract_folder = "fs:/vol/external01/unpack_databin";
 
-            char error_message[2048]  = {0};
+            char *error_message = nullptr;
 
             DataBin::get_shared_keys("fs:/vol/external01/keys.txt",error_message);
             if (DataBin::get_title_id(databin, &title_id, error_message) != DBIN_OK)

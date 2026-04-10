@@ -37,17 +37,17 @@ namespace DataBin {
     inline int mac_in_databin_index = -1;
     inline std::string errors_initializing_keys{};
 
-    error_state get_keys_from_otp(const char *otp_bin_file, char *error_message);
-    error_state get_shared_keys(const char *keys_file, char *error_message);
-    error_state get_mac(const char *keys_file, char *error_message);
-    error_state get_private_keys(const char *keys_file, char *error_message);
+    error_state get_keys_from_otp(const char *otp_bin_file, char *&error_message);
+    error_state get_shared_keys(const char *keys_file, char *&error_message);
+    error_state get_mac(const char *keys_file, char *&error_message);
+    error_state get_private_keys(const char *keys_file, char *&error_message);
     error_state get_this_console_mac();
     error_state initialize_default_keys();
 
-    error_state pack(const char *srcdir, const char *data_bin, u64 title_id, const char *toc_file_path, char *error_message);
+    error_state pack(const char *srcdir, const char *data_bin, u64 title_id, const char *toc_file_path, char *&error_message);
 
-    error_state unpack(const char *src_data_bin, const char *target_path, perm_mode perm_mode, char *error_message);
-    error_state get_title_id(const char *data_bin, u64 *title_id, char *error_message);
+    error_state unpack(const char *src_data_bin, const char *target_path, perm_mode perm_mode, char *&error_message);
+    error_state get_title_id(const char *data_bin, u64 *title_id, char *&error_message);
 
     void showDataBinOperations(eJobType jobType);
     void writeLog(const char *s, ...);

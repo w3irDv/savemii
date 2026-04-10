@@ -5,6 +5,7 @@
 // w3irdv 2026 - hybrid beast evolved from segher's twintig + some inputs from Dk_Skual's SaveGameManager GX
 
 #define _DEFAULT_SOURCE
+
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,13 +18,13 @@
 
 #define MAXFILES 1000
 
-#define ERROR(s)                                       \
-    do {                                               \
-        snprintf(global_error_message, 2048, "%s", s); \
-        return (DBIN_ERR);                             \
+#define ERROR(s)                                                      \
+    do {                                                              \
+        snprintf(global_error_message, ERROR_BUFFER_LENGTH, "%s", s); \
+        return (DBIN_ERR);                                            \
     } while (0)
 
-extern char *global_error_message;
+extern char global_error_message[ERROR_BUFFER_LENGTH];
 
 static FILE *fp;
 
@@ -489,8 +490,7 @@ static error_state do_sig(void) {
     return DBIN_OK;
 }
 
-
-error_state DataBin::pack(const char *srcdir, const char *data_bin, u64 title_id, const char *toc_file_path, char *error_message) {
+error_state DataBin::pack(const char *srcdir, const char *data_bin, u64 title_id, const char *toc_file_path, char *&error_message) {
 
     /// TOC FILE FORMAT
     /*
@@ -502,9 +502,8 @@ path_to_dir/file path_in_data.bin
 
     logBuffer.clear();
 
-    global_error_message = error_message;
-
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     snprintf(DataBin::output_path, sizeof DataBin::output_path, "%s", data_bin);
     snprintf(DataBin::input_path, sizeof DataBin::input_path, "%s", srcdir);

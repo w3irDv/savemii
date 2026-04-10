@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *global_error_message;
+char global_error_message[ERROR_BUFFER_LENGTH];
 //
 // basic data types
 //
@@ -102,7 +102,7 @@ error_state get_key(const char *name, u8 *key, u32 len) {
         return DBIN_ERR;
     }
     fclose(fp);
-    return 0;
+    return DBIN_OK;
 }
 
 void aes_cbc_dec(u8 *key, u8 *iv, u8 *in, u32 len, u8 *out) {

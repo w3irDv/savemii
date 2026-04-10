@@ -839,7 +839,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     if (backup_format == DATA_BIN) {
         dstPath = dstPath + "/data.bin";
         uint64_t title_id = ((uint64_t) highID << 32) | lowID;
-        char error_message[2048];
+        char *error_message = nullptr;
         if (DataBin::pack(srcPath.c_str(), dstPath.c_str(), title_id, NULL, error_message) != DBIN_OK) {
             errorMessage.assign(error_message);
             errorCode = 1024;
@@ -1030,7 +1030,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     }
 
     if (backup_format == DATA_BIN) {
-        char error_message[2048];
+        char *error_message = nullptr;
 
         srcPath = srcPath + "/data.bin";
 
@@ -2194,7 +2194,7 @@ bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::st
     else
         srcPath = gameBackupBasePath;
     uint64_t title_id;
-    char error_message[2048] = {0};
+    char *error_message = nullptr;
     std::string data_bin_path = srcPath + "/data.bin";
     if (DataBin::get_title_id(data_bin_path.c_str(), &title_id, error_message) != DBIN_OK)
         Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);
