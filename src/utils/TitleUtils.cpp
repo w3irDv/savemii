@@ -74,7 +74,15 @@ Title *TitleUtils::loadWiiUTitles(int run) {
         savesl[j].found = false;
         j++;
     }
-    savesl = (Saves *) realloc(savesl, usable * sizeof(Saves));
+
+    auto *savesl_tmp = (Saves *) realloc(savesl, usable * sizeof(Saves));
+    if (savesl_tmp) {
+        savesl = savesl_tmp;
+    } else {
+        free(savesl);
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
+        return nullptr;
+    }
 
     int foundCount = 0;
     int pos = 0;
@@ -254,24 +262,39 @@ Title *TitleUtils::loadWiiUTitles(int run) {
         if (FSUtils::checkEntry(fwpath.c_str()) != 0) {
             titles[wiiuTitlesCount].noFwImg = true;
             titles[wiiuTitlesCount].is_Inject = true;
-            for (uint32_t vWiiHighID : vWiiHighIDs) {
-                std::string path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
-                if (FSUtils::checkEntry(path.c_str()) == 1) {
-                    titles[wiiuTitlesCount].saveInit = true;
-                    titles[wiiuTitlesCount].vWiiHighID = vWiiHighID;
-                    break;
-                }
-            }
             memcpy(titles[wiiuTitlesCount].vWiiInjectProductCode, &titles[wiiuTitlesCount].vWiiLowID, 4);
             for (int ii = 0; ii < 4; ii++)
                 if (titles[wiiuTitlesCount].vWiiInjectProductCode[ii] < 32)
                     titles[wiiuTitlesCount].vWiiInjectProductCode[ii] = '.';
             titles[wiiuTitlesCount].vWiiInjectProductCode[4] = 0;
+            for (uint32_t vWiiHighID : vWiiHighIDs) {
+                // Look for installed or Savedata content
+                std::string path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
+                if (FSUtils::checkEntry(path.c_str()) == 2) {
+                    titles[wiiuTitlesCount].vWiiHighID = vWiiHighID;
+                    // Look for Savedata
+                    path = StringUtils::stringFormat("storage_slcc01:/title/%08x/%08x/content/title.tmd", vWiiHighID, titles[wiiuTitlesCount].vWiiLowID);
+                    if (FSUtils::checkEntry(path.c_str()) == 1) {
+                        titles[wiiuTitlesCount].saveInit = true;
+                        break;
+                    }
+                }
+            }
+            if (titles[wiiuTitlesCount].vWiiHighID == 0) {
+                // Donwloadable channels (VC & WiiWare) have been already identified, lets decide if this can be disc based (wii or gc). Unidentfied content is set as a Downloadeble channel.
+                guess_vWiiHighId_for_injects(&titles[wiiuTitlesCount]);
+            }
+            // Finally, identify Gamecube
             switch (titles[wiiuTitlesCount].vWiiInjectProductCode[0]) {
                 case 'G':
                 case 'D':
-                case 'P': // It could also be a TurboGrafx-16, but if that were the case, I don't think it would appear as an injection.
                     titles[wiiuTitlesCount].is_GameCube = true;
+                    break;
+                case 'P':                                                 // It could also be a TurboGrafx-16, but if the title is installed, it has benn already marked with TGX vWiiHighID
+                    if (titles[wiiuTitlesCount].vWiiHighID == 0x00010001) // promotional GC disc
+                        titles[wiiuTitlesCount].is_GameCube = true;
+                    else
+                        titles[wiiuTitlesCount].is_GameCube = false; // (alrady istalled, may be initialized) TurboGrafx-16 downloadable channel
                     break;
                 default:
                     titles[wiiuTitlesCount].is_GameCube = false;
@@ -348,7 +371,7 @@ Title *TitleUtils::loadWiiTitles() {
         if (dir != nullptr) {
             struct dirent *data;
             while ((data = readdir(dir)) != nullptr) {
-                for (auto blacklistedID : blacklist) {
+                for (auto *blacklistedID : blacklist) {
                     if (blacklistedID[0] == strtoul(highID, nullptr, 16)) {
                         if (blacklistedID[1] == strtoul(data->d_name, nullptr, 16)) {
                             found = true;
@@ -545,7 +568,15 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
         savesl[j].found = false;
         j++;
     }
-    savesl = (Saves *) realloc(savesl, usable * sizeof(Saves));
+
+    auto *savesl_tmp = (Saves *) realloc(savesl, usable * sizeof(Saves));
+    if (savesl_tmp) {
+        savesl = savesl_tmp;
+    } else {
+        free(savesl);
+        Console::showMessage(ERROR_SHOW, _("Out of memory."));
+        return nullptr;
+    }
 
     int foundCount = 0;
     int pos = 0;
@@ -890,4 +921,39 @@ bool TitleUtils::verifyWiiUIconFormat(Title *title) {
         return true;
     else
         return false;
+}
+
+/**
+ * @brief for uninstalled or uninstalled+uninitialized titles, guess vWii highId from lowId, using info from https://wiibrew.org/wiki/Title_database. Assumes the inject is neither System title nor DLC.
+ * 
+ * @return true if match specific case
+ * @return false if the title is other than channel/disc/download , but marked as download channel.
+ */
+bool TitleUtils::guess_vWiiHighId_for_injects(Title *title) {
+
+    const uint32_t games_with_game_channels[4] = {0x52464e, 0x524650, 0x524d43, 0x524757};
+
+    uint32_t lowID_noregion = title->vWiiLowID >> 16;
+    // check if is one of Wii Fit, Wii Fit+, Mario Kart or Rabbids
+    for (uint32_t lowID_test : games_with_game_channels) {
+        if (lowID_noregion == lowID_test) {
+            title->vWiiHighID = 0x00010004;
+            return true;
+        }
+    }
+
+    switch (title->vWiiInjectProductCode[0]) {
+        case 'R':                           // old-wii disc-based
+        case 'S':                           // new-wii disc-based
+        case 'G':                           // gamecube
+        case 'D':                           // gamecube: ocarina of time master quest and some promotional multigame demo disks
+        case 'P':                           // It could also be a TurboGrafx-16, but if we are here, no content has been found in 0x00010001, so it should be a GC disc
+            title->vWiiHighID = 0x00010000; //  Disc-based Game
+            return true;
+            break;
+        default:
+            title->vWiiHighID = 0x00010001; // We won't check for highIds belonging to system, DLCs ... Assume a downloadable channel by default. So at wort we are wasting space in NAND, but we cannot do no harm by trying to modify system titles ... 
+            return false;
+            break;
+    }
 }

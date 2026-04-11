@@ -1,0 +1,4 @@
+Checks: 'clang-diagnostic-*,clang-analyzer-*,clang-analyzer-cplusplus*,bugprone-*,-bugprone-easily-swappable-parameters,modernize-*,-modernize-use-trailing-return-type,llvm-*'
+WarningsAsErrors: true
+HeaderFilterRegex: ''
+FormatStyle: google

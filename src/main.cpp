@@ -2,8 +2,8 @@
 #include <cfg/ExcludesCfg.h>
 #include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
-#include <coreinit/time.h>
 #include <coreinit/thread.h>
+#include <coreinit/time.h>
 #include <memory>
 #include <menu/MainMenuState.h>
 #include <romfs-wiiu.h>
@@ -20,6 +20,7 @@
 #include <utils/StateUtils.h>
 #include <utils/TitleUtils.h>
 #include <version.h>
+
 
 #include <unistd.h>
 

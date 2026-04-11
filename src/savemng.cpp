@@ -137,7 +137,7 @@ bool checkIfProfileExistsInWiiUAccounts(const char *name) {
     bool exists = false;
     uint32_t probablePersistentID = 0;
     probablePersistentID = strtoul(name, nullptr, 16);
-    if (probablePersistentID != 0 && probablePersistentID != ULONG_LONG_MAX) {
+    if (probablePersistentID != 0 && probablePersistentID != ULONG_MAX) {
         for (int i = 0; i < AccountUtils::getWiiUAccn(); i++) {
             if ((uint32_t) probablePersistentID == AccountUtils::getWiiUAcc()[i].pID) {
                 exists = true;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cstddef>
 #include <cstdint>
 #include <string_view>
 #include <tuple>
@@ -84,6 +83,8 @@ namespace TitleUtils {
     Title *loadWiiUTitles(int run);
     Title *loadWiiUSysTitles(int run);
 
+    bool guess_vWiiHighId_for_injects(Title *title);
+    
     void unloadTitles(Title *titles, int count);
 
     uint32_t getMiiMakerOwner();
