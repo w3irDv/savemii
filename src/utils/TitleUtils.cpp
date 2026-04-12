@@ -281,7 +281,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
                 }
             }
             if (titles[wiiuTitlesCount].vWiiHighID == 0) {
-                // Donwloadable channels (VC & WiiWare) have been already identified, lets decide if this can be disc based (wii or gc). Unidentfied content is set as a Downloadeble channel.
+                // Donwloadable channels (VC & WiiWare) have been already identified, lets decide if this can be disc based (wii or gc). Unidentfied content is lest as vWiiHighId = 0.
                 guess_vWiiHighId_for_injects(&titles[wiiuTitlesCount]);
             }
             // Finally, identify Gamecube
@@ -927,7 +927,7 @@ bool TitleUtils::verifyWiiUIconFormat(Title *title) {
  * @brief for uninstalled or uninstalled+uninitialized titles, guess vWii highId from lowId, using info from https://wiibrew.org/wiki/Title_database. Assumes the inject is neither System title nor DLC.
  * 
  * @return true if match specific case
- * @return false if the title is other than channel/disc/download , but marked as download channel.
+ * @return false if the title is other than channel/disc/download, but marked as download channel.
  */
 bool TitleUtils::guess_vWiiHighId_for_injects(Title *title) {
 
@@ -952,7 +952,7 @@ bool TitleUtils::guess_vWiiHighId_for_injects(Title *title) {
             return true;
             break;
         default:
-            title->vWiiHighID = 0x00010001; // We won't check for highIds belonging to system, DLCs ... Assume a downloadable channel by default. So at wort we are wasting space in NAND, but we cannot do no harm by trying to modify system titles ... 
+            // We won't check for highIds belonging to system, DLCs ... if we have not already identified, we let it with vWiiHighId 0, Savemii will not manage it 
             return false;
             break;
     }

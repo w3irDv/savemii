@@ -823,7 +823,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     int titlesNotInitialized = 0;
     std::vector<std::string> failedTitles;
     for (int i = 0; i < this->candidatesCount; i++) {
-        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0) // we will count them as "not initialized"
+        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 ||  (this->titles[c2t[i]].is_Inject && this->titles[c2t[i]].vWiiHighID == 0)) // we will count them as "not initialized" TODO: Verify if this titles have already been skipped
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchJobState) {

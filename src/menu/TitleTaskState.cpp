@@ -104,6 +104,12 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             return SUBSTATE_RETURN;
 
         if (input->get(ButtonState::TRIGGER, Button::A)) {
+            
+            if (this->title.is_Inject && this->title.vWiiHighID == 0) {
+                Console::showMessage(ERROR_CONFIRM, _("This inject does not seem neither a disc based Wii/GC game nor a VC/WiiWare. Cannot be managed by SaveMii."));
+                return SUBSTATE_RUNNING;
+            }
+
             this->task = (eJobType) cursorPos;
 
             if (!this->isWiiUTitle) {

@@ -33,11 +33,15 @@ BatchJobOptions::BatchJobOptions(Title *titles,
     for (int i = 0; i < this->titlesCount; i++) {
         this->titles[i].currentDataSource = {};
 
-        if (jobType == RESTORE && titles[i].noFwImg && titles[i].vWiiHighID == 0) { // uninitialized injected title, let's use vWiiHighid from savemii metadata
-            Metadata *metadataObj = new Metadata(&titles[i], 0);                    //   or a default guess ...
+        if (jobType == RESTORE && titles[i].noFwImg && titles[i].vWiiHighID == 0) { // uninstalled/uninitialized injected title, let's use vWiiHighid from savemii metadata
+            Metadata *metadataObj = new Metadata(&titles[i], 0);                    //   or reject the title
             if (metadataObj->read()) {
                 uint32_t savedVWiiHighID = metadataObj->getVWiiHighID();
-                titles[i].vWiiHighID = (savedVWiiHighID != 0) ? savedVWiiHighID : 0x00010000; //  --> /00010000 - Disc-based games (holds save files)
+                if (savedVWiiHighID != 0) {
+                    titles[i].vWiiHighID = savedVWiiHighID;
+                } else {
+                    continue;
+                }
             }
             delete metadataObj;
         }

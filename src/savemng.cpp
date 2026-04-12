@@ -671,7 +671,7 @@ void writeBackupAllMetadata(const std::string &batchDatetime, const std::string 
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= false*/) {
     int titlesToSave = 0;
     for (int i = 0; i < count; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit) {
+        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit || (titles[i].is_Inject  && titles[i].vWiiHighID == 0)) {
             continue;
         }
         if (onlySelectedTitles)
@@ -1477,7 +1477,7 @@ void sdWriteDisclaimer(Color bg_color /*= COLOR_BLACK*/) {
 
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles) {
     for (int i = 0; i < titlesCount; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0) // || !titles[i].saveInit)
+        if (titles[i].highID == 0 || titles[i].lowID == 0 || (titles[i].is_Inject  && titles[i].vWiiHighID == 0)) // || !titles[i].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
 
