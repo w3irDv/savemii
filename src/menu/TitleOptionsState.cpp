@@ -51,6 +51,7 @@ TitleOptionsState::TitleOptionsState(Title &title,
     switch (task) {
         case BACKUP:
             updateBackupData();
+            updateData_bin_found(slot, SAVEMII_SLOT);
             break;
         case RESTORE:
             updateRestoreData();
@@ -959,6 +960,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         if (backupSavedata(&this->title, slot, source_user_, common, DATA_BIN, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0) {
                             Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
+                            data_bin_found = true;
                         }
                     } else {
                         if (backupSavedata(&this->title, slot, source_user_, common, FILES, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0)
@@ -1186,6 +1188,7 @@ void TitleOptionsState::updateRestoreData() {
         updateSourceHasRequestedSavedata();
         updateHasTargetUserData();
     }
+    updateData_bin_found(slot,SAVEMII_SLOT);
     if (data_bin_found)
         updateDataBinInfo();
 }

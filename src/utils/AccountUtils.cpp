@@ -64,7 +64,7 @@ void AccountUtils::getAccountsWiiU() {
     nn::act::Finalize();
 }
 
-/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loadiine shared savedata accounts if found in a normal slot. Checks if there is  vWii data.bin compressed saves in the current slot
+/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loadiine shared savedata accounts if found in a normal slot. For restore task, checks if there is  vWii data.bin compressed saves in the current slot
 /// @param title
 /// @param slot_or_version
 /// @param jobType
