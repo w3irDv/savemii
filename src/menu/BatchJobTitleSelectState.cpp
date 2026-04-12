@@ -152,7 +152,8 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCoun
         //skipped cases
         if ((strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) ||
             (!this->titles[i].saveInit) ||
-            (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0))) {
+            (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0)) || (this->titles[i].is_Inject && this->titles[i].vWiiHighID == 0) ||
+            (this->titles[i].highID == 0) || (this->titles[i].lowID == 0)) {
             this->titles[i].currentDataSource.selectedForBackup = false;
             this->titles[i].currentDataSource.candidateForBackup = false;
             excludedFromCandidates++;
@@ -729,7 +730,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             }
         }
 
-        std::string getDynamicBackupBasePath_str = getDynamicBackupBasePath(&targetTitle); 
+        std::string getDynamicBackupBasePath_str = getDynamicBackupBasePath(&targetTitle);
         const char *game_backup_base_path = getDynamicBackupBasePath_str.c_str();
         bool targetHasCommonSave = hasCommonSave(&targetTitle, false, false, 0, 0, false, game_backup_base_path);
         bool effectiveCommon = common && sourceTitle.currentDataSource.hasCommonSavedata && targetHasCommonSave;
@@ -824,7 +825,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     int titlesNotInitialized = 0;
     std::vector<std::string> failedTitles;
     for (int i = 0; i < this->candidatesCount; i++) {
-        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 ||  (this->titles[c2t[i]].is_Inject && this->titles[c2t[i]].vWiiHighID == 0)) // we will count them as "not initialized" TODO: Verify if this titles have already been skipped
+        if (this->titles[c2t[i]].highID == 0 || this->titles[c2t[i]].lowID == 0 || (this->titles[c2t[i]].is_Inject && this->titles[c2t[i]].vWiiHighID == 0)) // we will count them as "not initialized" TODO: Verify if this titles have already been skipped
             titlesNotInitialized++;
         std::string failedTitle;
         switch (this->titles[c2t[i]].currentDataSource.batchJobState) {
