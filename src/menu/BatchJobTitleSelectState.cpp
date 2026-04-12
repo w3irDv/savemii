@@ -729,7 +729,8 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             }
         }
 
-        const char *game_backup_base_path = getDynamicBackupBasePath(&targetTitle).c_str();
+        std::string getDynamicBackupBasePath_str = getDynamicBackupBasePath(&targetTitle); 
+        const char *game_backup_base_path = getDynamicBackupBasePath_str.c_str();
         bool targetHasCommonSave = hasCommonSave(&targetTitle, false, false, 0, 0, false, game_backup_base_path);
         bool effectiveCommon = common && sourceTitle.currentDataSource.hasCommonSavedata && targetHasCommonSave;
         if (wipeBeforeRestore || jobType == WIPE_PROFILE) {

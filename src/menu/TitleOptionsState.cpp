@@ -379,7 +379,7 @@ void TitleOptionsState::render() {
                 srcPath = basePath + StringUtils::stringFormat("/common", AccountUtils::getVolAcc()[source_user].persistentID);
                 savesize = title.commonSaveSize;
             } else if (source_user == -1) {
-                srcPath = basePath + StringUtils::stringFormat("/");
+                srcPath = basePath + "/";
                 savesize = 0;
             } else if (source_user > -1) {
                 srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getVolAcc()[source_user].persistentID);
@@ -602,7 +602,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == importLoadiine)) {
+            } else if (this->task == importLoadiine) {
                 switch (cursorPos) {
                     case 0:
                         slot--;
@@ -632,7 +632,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == exportLoadiine)) {
+            } else if (this->task == exportLoadiine) {
                 switch (cursorPos) {
                     case 0:
                         slot--;
@@ -791,7 +791,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == importLoadiine)) {
+            } else if (this->task == importLoadiine) {
                 switch (cursorPos) {
                     case 0:
                         slot++;
@@ -821,7 +821,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == exportLoadiine)) {
+            } else if (this->task == exportLoadiine) {
                 switch (cursorPos) {
                     case 0:
                         slot++;
