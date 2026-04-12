@@ -32,7 +32,7 @@ Allows you to backup/restore/wipe individual titles.
 	2. `All users`: Recommended option. Will backup all game data.
 	3. `From user: xxxxxxxx`. Will only backup the data for the specified user/profile. In this case, you must also specify if you want to save the "common" data or not. "Common" savedata is data shared by all profiles. Titles can have common save data, profile savedata or both.
 
-	<img src="new.png" width="40" align="center"> For vWii titles, you can choose the savedata format: "plain files", where  all individual files are copied to the selected slot in the SD card, or "compressed", where all files will be archived in a `data.bin` file. For the compressed format to work you need to provide some vWii encryption keys. See the [Encyption keys](#encryption-keys) section.
+	<img src="new.png" width="40" align="center"> For vWii titles, you can choose the savedata format: "plain files", where  all individual files are copied to the selected slot in the SD card, or "compressed", where all files will be archived in a `data.bin` file. For the compressed format to work you need to provide some Wii encryption keys. See the [Encyption keys](#encryption-keys) section.
 3. Press `A` to initiate the backup. After the backup is done, you can tag the slot with a meaningful name pressing `+` button while you are in the backup menu. If the slot is unneeded, you can delete it by pressing `-` button.
 
 *Wii U titles savedata layout:*
@@ -67,9 +67,9 @@ For vWii titles, savedata is directly under the slot folder.
    3. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console. You can specify if copy common savedata or not.
 	   If you are just copying the savedata from one profile id to a different one in the same console, choose `copy common savedata: no`. If you  are restoring to a new console with different profile ids, just choose `copy common savedata: yes` once for any of the profile ids, and copy the rest of profiles with `copy common savedata: no`
 
-	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` file. If so, the restore tasks will by default decrypt and explode the files contained in the `data.bin` (you will need to provide the needed shared decryption keys from any Wii for this to work, see the [Encyption keys](#encryption-keys) section.). This 'data.bin' will be a "true" savedata if you have:
-	- backup the data in compressed format
-	- downloaded the a `.bin` savedata file from internet
+	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` file. If so, the restore tasks will by default decrypt and explode the files contained in the `data.bin` (you will need to provide the needed Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section.). This 'data.bin' will be a "true" savedata if you have:
+	- backup previously the data in compressed format
+	- downloaded the a `.bin` savedata file from internet. Change its name to `data.bin` so SaveMii can detect it.
 	- copied it from the `/private/wii/title/<Product Code>` folder in the SD, where savedata exported by the Wii Data Management menu is stored.
 
 	 If you haven't done nothing of the above, then this `data.bin` file is not a standard compressed savedata file but just part of the savedata files for the game, so just select "compress = no" and the file will be copied "as is" to the vWiii internal storage.    
@@ -102,7 +102,7 @@ Select witch data to copy:
 If a title has savedata in  NAND and in USB, you can transfer it between both storages. Options are the same than in the *Restore* task.
 
 ### Import from Loadiine
-This task will only appear if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to import this savedata in to the console game savedata folders in NAND or USB. `SaveMii` will search for folders containing the the four letters game's product code, its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
+You can enter into this task only if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to import this savedata in to the console game savedata folders in NAND or USB. `SaveMii` will search for folders containing the the four letters game's product code, its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
 
 All these variants will be found:
 
@@ -121,7 +121,7 @@ SD:/wiiu/saves/Smash Bross [AXFE]/
 5. Press `A` to initiate the import. 
 
 ### Export to Loadiine
-This task will only appear if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to export game savedata in NAND or USB to the SD loaddine save folder. `SaveMii` will search for folders containing the four letters game's product code (`AXFP`, for example), its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
+You can enter into this task only if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to export game savedata in NAND or USB to the SD loadiine save folder. `SaveMii` will search for folders containing the four letters game's product code (`AXFP`, for example), its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
 
 1. Select the `version` number where you want to save the game savedata. 
 2. Select the Wii U User to copy savedata from. User `u` will appear always as Empty. Select  the real non-empty profile with savetada  (`8000000x`) that you want to export (soem games have only savedata in the `common` folder, an all profiles will appear as empty).
@@ -130,20 +130,28 @@ This task will only appear if the game has savedata in the Loadiine folder `SD:/
 5. Press `A` to initiate the export.
 
 
+### Import/Export to private SD Wii Data Management slots (Wii titles only)
+<img src="new.png" width="40" align="center"> These tasks will copy Wii title savedata in `data.bin` format between the standard folder in `SD:/private/wii/title/<ProductCode>` and the vWii NAND, just like the Wii Data Management does. The only difference is that you can import/export savedata even if it is copy-protected. 
+
+1. Enter into the task and just press `A` to initiate the import or the export task. Fo impor tasks, it will be checked if the savedata in the SD belongs to the title and region you are trying to import to.
+
+If neded, you can select which keys to use to encrypt by pressing `X` in the Export task menu. This will open the KeyList menu. All files in the `SD:/wiiu/backups/keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private, shared keys or the mac address. For more details, please see the [Encyption keys](#encryption-keys) section.
+
+
 ## Encryption Keys
 
 <img src="new.png" width="40" align="center"> To Backup or Restore a `data.bin` savedata file you will need the Wii encryption keys.
 
-These are the needed keys For restoring a `data.bin` file  (they are the same for all Wiis):
+These are the needed keys for restoring a `data.bin` file  (they are the same for all Wiis):
 - sd_key
 - sd_iv
 - md5_blanker
 
 If you have access to a homebrewed Wii you can generate them with [xyzzy](https://oscwii.org/library/app/xyzzy-mod) hb app. Simply ensure that the `keys.txt` file that xyyzz generates is placed on the root of the SD you use for loading Aroma. If you cannot run `xyzzy` , you can google the value for them (*wii decryption keys*, not the Wii U ones!) and create a `keys.txt` file in the root of your sd with this content:
 ```
-- sd_key      = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-- sd_iv       = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-- md5_blanker = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+sd_key      = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+sd_iv       = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+md5_blanker = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 where xxxx...xxxx are a sequence of 32 hexadecimal digits   (no `0x`  in fron of them, just the digits).
 
@@ -162,12 +170,20 @@ You can use the private keys from any Wii to generate savedata in `data.bin` for
 
 ### Where SaveMii looks for keys
 
-By default, savemii will:
+By default, SaveMii will:
 - look for a `keys.txt` file in the root of the sd card to load shared keys. This is the only file needed to restore a `data.bin`. This keys are the same for all wiis
 - look for `sd:/wiiu/backups/<console serial id >/otp.bin` to load the private keys (which differ from wii to wii ). Both these and the the shared keys are needed to backup savedata files in `data.bin` format
-- MAC Address from the Wii U, also needed for backup in `data.bin` format. 
+- get the MAC Address from the Wii U, also needed for backup in `data.bin` format. 
 
-You can also copy `keys.txt`, `otp.bin` or just txt files containing  the shared keys, the private keys or the MAC Address to `sd:/wiiu/backups/keys`. Then, from the backup or restore tasks, you can press `X` to open the KeyList menu. All files in the `keys` folder will be shown. Select with `A`, `X`, and `Y` which files has to be used to get the private, shared keys or the mac address.  
+You can also copy `keys.txt`, `otp.bin` or just txt files containing  the shared keys, the private keys or the MAC Address to `sd:/wiiu/backups/keys`.
+```
+console_id      = xxxxxxxx        (8 hex digits)
+ecc_private_key = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx     (60 hex digits)
+ng_key_id       = xxxxxxxx        (8 hex digits)
+ng_signature    = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..................xxxxxxxxxxxxxxxxxxxxxxxxxx     (120 hex digits)
+mac_address     = xxxxxxxxxxxx     (12 hex digits)
+```
+Then, from the `Backup` or `Export` tasks, you can press `X` to open the KeyList menu. All files in the `keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private keys, the shared keys or the mac address.  
 
 ## Configuration Options
 
