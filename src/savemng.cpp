@@ -1200,10 +1200,10 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
 
     if (interactive) {
         if (source_user == -3) {
-            if (!Console::promptConfirm(ST_WARNING, _("This option is a last resort in case something has gone wrong when\nrestoring data. It will wipe metadata and savedata, and the title \nwill become uninitialized. It does nothing to the installed game code.\nIt's equivalent to a complete savedata wipe from \nthe Wii U Data Management menu.\n\nContinue?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
+            if (!Console::promptConfirm(ST_WARNING, _("This option is a last resort in case something has gone wrong when\nrestoring data. It will wipe metadata and savedata, and the title \nwill become uninitialized. It does nothing to the installed game code.\nIt's equivalent to a complete savedata wipe from \nthe Wii U Data Management menu.\n\nContinue?")) || !Console::promptConfirm(ST_WIPE, _("Hm, are you REALLY sure?")))
                 return -1;
         } else {
-            if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
+            if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WIPE, _("Hm, are you REALLY sure?")))
                 return -1;
         }
         int slotb = getEmptySlot(title);
@@ -1414,7 +1414,7 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
 }
 
 void deleteSlot(Title *title, uint8_t slot, eSlotType slot_type) {
-    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
+    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WIPE, _("Hm, are you REALLY sure?")))
         return;
     InProgress::titleName.assign(title->shortName);
     std::string path = getBackupPath(title, slot, slot_type);

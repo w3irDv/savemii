@@ -11,7 +11,7 @@
 
 
 void MiiSaveMng::deleteSlot(MiiRepo *mii_repo, uint8_t slot) {
-    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
+    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WIPE, _("Hm, are you REALLY sure?")))
         return;
     InProgress::titleName.assign(mii_repo->repo_name);
     const std::string path = getMiiRepoBackupPath(mii_repo, slot);
