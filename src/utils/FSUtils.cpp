@@ -214,7 +214,7 @@ void FSUtils::flushVol(const std::string &dstPath) {
     }
 }
 
-bool FSUtils::setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
+bool FSUtils::setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, const std::string &path, FSError &fserror) {
 
     fserror = FSAChangeMode(handle, FSUtils::newlibtoFSA(path).c_str(), mode);
     if (fserror != FS_ERROR_OK) {
@@ -711,7 +711,7 @@ bool FSUtils::folderEmptyIgnoreSavemii(const char *fPath) {
 /// @param path
 /// @param fserror
 /// @return
-bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, std::string path, FSError &fserror) {
+bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, const std::string &path, FSError &fserror) {
 
     setOwnerAndMode(owner, group, mode, path, fserror);
 

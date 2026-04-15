@@ -1743,7 +1743,7 @@ STR2UINT_ERROR str2uint(uint32_t &i, char const *s, int base /*= 0*/) // from ht
     return SUCCESS;
 }
 
-bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
+bool checkIfAllProfilesInFolderExists(const std::string &srcPath) {
     DIR *dir = opendir(srcPath.c_str());
     if (dir != nullptr) {
         struct dirent *data;
