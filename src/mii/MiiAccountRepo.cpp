@@ -394,7 +394,7 @@ bool MiiAccountRepo<MII, MIIDATA>::empty_repo() {
 /// @param dstPath
 /// @return /
 template<>
-int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(std::string srcPath, std::string dstPath) {
+int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(const std::string &srcPath, const std::string &dstPath) {
 
     StatManager::disable_all_flags();
 

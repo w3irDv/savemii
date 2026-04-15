@@ -11,8 +11,8 @@
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
-WiiUMii::WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp,
-                 std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable,
+WiiUMii::WiiUMii(std::string &mii_name, std::string &creator_name, std::string &timestamp, uint32_t hex_timestamp,
+                 std::string &device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable,
                  uint8_t mii_id_flags, eBirthPlatform birth_platform, MiiRepo *mii_repo, size_t index)
     : Mii(mii_name, creator_name, timestamp, hex_timestamp, device_hash, author_id, favorite, copyable, shareable, mii_id_flags, WIIU, birth_platform, mii_repo, index) {
     if ((mii_id_flags & FFL_CREATE_ID_FLAG_NORMAL) == FFL_CREATE_ID_FLAG_NORMAL)
