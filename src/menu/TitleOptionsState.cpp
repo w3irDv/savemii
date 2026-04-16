@@ -951,7 +951,12 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 return SUBSTATE_RUNNING;
             }
             if (((this->task == BACKUP && compress_backup) || (this->task == EXPORT_TO_SD_WII_DATA_MGMT)) && !(DataBin::shared_keys_initialized && DataBin::private_keys_initialized && DataBin::mac_in_databin_initialized)) {
-                Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no private keys or shared keys found.\n Please provide the Wii U 'otp.bin' file in SD:/wiiu/backups/<SerialId> (different for each console), and a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
+                if (!DataBin::shared_keys_initialized) // This is probably the only key that can fail.The MAC Addess and the otp.bin can be found with no user intervention.
+                    Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no shared keys found.\n Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
+                if (!DataBin::private_keys_initialized) // The error cause will be the same already shown ... 
+                    Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no private keys found.\n Please check that the Wii U 'otp.bin' file is in SD:/wiiu/backups/<SerialId>. Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
+                if (!DataBin::mac_in_databin_initialized)
+                    Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: mac_address not found.\n Please provide a 'keys.txt' file in the root of the SD with a mac_address (from any Wii). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
                 return SUBSTATE_RUNNING;
             }
             switch (this->task) {
@@ -1188,7 +1193,7 @@ void TitleOptionsState::updateRestoreData() {
         updateSourceHasRequestedSavedata();
         updateHasTargetUserData();
     }
-    updateData_bin_found(slot,SAVEMII_SLOT);
+    updateData_bin_found(slot, SAVEMII_SLOT);
     if (data_bin_found)
         updateDataBinInfo();
 }

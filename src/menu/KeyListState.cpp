@@ -1,3 +1,4 @@
+#include "utils/DataBin.h"
 #include <BackupSetList.h>
 #include <algorithm>
 #include <coreinit/debug.h>
@@ -86,6 +87,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
                 DataBin::private_keys_index = scroll + cursorPos;
             } else {
                 DataBin::private_keys_initialized = false;
+                DataBin::errors_initializing_keys.assign(error_message);
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom private keys: %s"), error_message);
             }
             return SUBSTATE_RUNNING;
@@ -97,6 +99,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
                 DataBin::shared_keys_index = scroll + cursorPos;
             } else {
                 DataBin::shared_keys_initialized = false;
+                DataBin::errors_initializing_keys.assign(error_message);
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom shared keys: %s"), error_message);
             }
             return SUBSTATE_RUNNING;
@@ -108,6 +111,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
                 DataBin::mac_in_databin_index = scroll + cursorPos;
             } else {
                 DataBin::mac_in_databin_initialized = false;
+                DataBin::errors_initializing_keys.assign(error_message);
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom mac: %s"), error_message);
             }
             return SUBSTATE_RUNNING;

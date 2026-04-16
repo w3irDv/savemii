@@ -67,7 +67,7 @@ For vWii titles, savedata is directly under the slot folder.
    3. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console. You can specify if copy common savedata or not.
 	   If you are just copying the savedata from one profile id to a different one in the same console, choose `copy common savedata: no`. If you  are restoring to a new console with different profile ids, just choose `copy common savedata: yes` once for any of the profile ids, and copy the rest of profiles with `copy common savedata: no`
 
-	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` file. If so, the restore tasks will by default decrypt and explode the files contained in the `data.bin` (you will need to provide the needed Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section.). Usually, this 'data.bin' will be a "true" savedata if you have:
+	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` file. If so, the restore tasks will by default decrypt and explode the files contained in the `data.bin` (you will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section.). Usually, this 'data.bin' will be a "true" savedata if you have:
 	- backup previously the data in compressed format
 	- downloaded the a `.bin` savedata file from internet. Change its name to `data.bin` so SaveMii can detect it.
 	- copied it from the SD folder `/private/wii/title/<Product Code>` (where savedata exported by the Wii Data Management menu is stored) to the SaveMii slot. 
@@ -131,7 +131,7 @@ You can enter into this task only if the game has savedata in the Loadiine folde
 
 
 ### Import/Export to private SD Wii Data Management slots (Wii titles only)
-<img src="new.png" width="40" align="center"> These tasks will copy Wii title savedata in `data.bin` format between the folder in `SD:/private/wii/title/<ProductCode>` and the vWii NAND, just like the standard Wii Data Management does. The only difference is that you can import/export savedata even if it is copy-protected (alternatively, you can install Priiloader in the vWii and disable copy protection for savedata). 
+<img src="new.png" width="40" align="center"> These tasks will copy Wii title savedata in `data.bin` format between the SD folder `SD:/private/wii/title/<ProductCode>` and the vWii NAND, just like the standard Wii Data Management does. The only difference is that you can import/export savedata even if it is copy-protected (alternatively, you can install Priiloader in the vWii and disable copy protection for savedata). 
 
 1. Enter into the task and just press `A` to initiate the import or the export task. For import tasks, SaveMii will check if the savedata in the SD belongs to the title and region you are trying to import to.
 
@@ -142,12 +142,12 @@ If neded, you can select which keys to use to encrypt by pressing `X` in the Exp
 
 <img src="new.png" width="40" align="center"> To Backup or Restore a `data.bin` savedata file you will need the Wii encryption keys.
 
-These are the needed keys for restoring a `data.bin` file  (they are the same for all Wiis):
+These are the keys needed for restoring a `data.bin` file  (they are the same for all Wiis):
 - sd_key
 - sd_iv
 - md5_blanker
 
-If you have access to a homebrewed Wii you can generate them with [xyzzy](https://oscwii.org/library/app/xyzzy-mod) hb app. Simply ensure that the `keys.txt` file that xyyzz generates is placed on the root of the SD you use for loading Aroma. If you cannot run `xyzzy`, you can google the value for them (beware: *wii decryption keys*, not the Wii U ones!) and create a `keys.txt` file in the root of your sd with this content:
+If you have access to a homebrewed Wii you can generate them with [xyzzy](https://oscwii.org/library/app/xyzzy-mod) hb app. Simply ensure that the `keys.txt` file that `xyyzz` generates is placed on the root of the SD you use for loading Aroma. If you cannot run `xyzzy`, you can google the value for them (beware: *wii decryption keys*, not the Wii U ones!) and create a `keys.txt` file in the root of your sd with this content:
 ```
 sd_key      = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits)
 sd_iv       = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits)
@@ -155,24 +155,24 @@ md5_blanker = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digit
 ```
 where xxxx...xxxx are a sequence of 32 hexadecimal digits   (no `0x`  in front of them, just the digits).
 
-To create a `data.bin` file, you need these keys:
+To create a `data.bin` file, in addition to the above shared keys, you will need these keys:
 
 - console_id
 - ecc_private_key
 - ng_key_id
 - ng_signature
 
-and a mac address. 
+and a mac address (SaveMii will use the one ftom the Wii U by default).
 
-These keys differ from Wii to Wii. Are found in the `otp.bin` file that Aroma generates, or in the `keys.txt` file generated by `zyxxy` in a real Wii (important: if you run `zyxxy`in a vWii, the `keys.txt` file will miss ng_key_id and ng_signature). 
+These keys are already found in the `otp.bin` file that Aroma generates by default, so you don't need to worry about them. They can be found also in the `keys.txt` file generated by `zyxxy` in a real Wii (important: if you run `zyxxy`in a vWii, the `keys.txt` file will miss ng_key_id and ng_signature). 
 
-Despite being different, you can use the private keys belonging to any Wii to generate savedata in `data.bin` format that can be read by any other Wii. 
+Despite being different from Wii to Wii, you can use the private keys belonging to any Wii to generate a savedata file in `data.bin` format that can be read in any other Wii. 
 
 ### Where SaveMii looks for keys
 
 By default, SaveMii will:
-- look for a `keys.txt` file in the root of your SD card to load the shared keys. This is the only file needed to restore a `data.bin` file. These keys are the same for all Wii consoles.
-- look for `sd:/wiiu/backups/<console serial id >/otp.bin` to load the private keys (which differ from Wii to Wii ). Both these and the the shared keys are needed to backup savedata files in `data.bin` format
+- look for a `keys.txt` file in the root of your SD card to load the shared keys. This is the only file needed to restore a `data.bin` file. These keys are the same for all Wii consoles, and are **the only one that you need to provide by yourself**.
+- look for `sd:/wiiu/backups/<console serial id >/otp.bin` to load the private keys (Aroma generates this  file). Both these and the the shared keys are needed to backup savedata files in `data.bin` format
 - get the MAC Address from the Wii U, also needed for create backups in `data.bin` format. 
 
 You can also copy `keys.txt`, `otp.bin` or just txt files containing  the shared keys, the private keys or the MAC Address to the `sd:/wiiu/backups/keys` folder.
