@@ -1,3 +1,4 @@
+#include "segher-s_wii/tools.h"
 #include <dirent.h>
 #include <nn/act/client_cpp.h>
 #include <savemng.h>
@@ -64,14 +65,14 @@ void AccountUtils::getAccountsWiiU() {
     nn::act::Finalize();
 }
 
-/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loadiine shared savedata accounts if found in a normal slot. For restore task, checks if there is  vWii data.bin compressed saves in the current slot
+/// @brief Find profiles defined in SD or in NAND/USB, depending on the calling task. Rename loadiine shared savedata accounts if found in a normal slot. For restore task: (1) checks if there is data.binin the current slot, (2) check if a *.bin file has savedata format, and offers to rename it to data.bin
 /// @param title
 /// @param slot_or_version
 /// @param jobType
 /// @param gameBackupBasePath
 void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobType jobType, const std::string &gameBackupBasePath, bool *data_bin_found) {
     vol_accn = 0;
-    if (vol_acc != nullptr){
+    if (vol_acc != nullptr) {
         free(vol_acc);
         vol_acc = nullptr;
     }
@@ -108,6 +109,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
     // rename_shared_ wil be set to true only in RESTORE tasks. Can only happen if the user has manually copied loadiine save data in an standard slot
     bool rename_shared_loadiine_account = false;
     bool rename_shared_loadiine_common = false;
+    bool keep_looking_for_data_bin = (jobType == RESTORE && (title->is_Wii || title->is_Inject)); // initial condition to decide if look for a data.bin file
     *data_bin_found = false;
     std::vector<uint32_t> profiles;
     DIR *dir = opendir(srcPath.c_str());
@@ -115,6 +117,7 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         struct dirent *data;
         while ((data = readdir(dir)) != nullptr) {
             if (data->d_type & DT_DIR) {
+                keep_looking_for_data_bin = false; // if the folder as subfolders, it does not contain a "true" data.bin
                 if (strlen(data->d_name) == 8) {
                     uint32_t pID;
                     if (str2uint(pID, data->d_name, 16) != SUCCESS)
@@ -127,9 +130,40 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
                         rename_shared_loadiine_common = true;
                 }
             } else {
-                if (jobType == RESTORE)
-                    if (strcmp(data->d_name, "data.bin") == 0)
-                        *data_bin_found = true;
+                if (keep_looking_for_data_bin) {
+                    char *dot = strrchr(data->d_name, '.');
+                    if (dot && strcmp(dot, ".bin") == 0) {
+                        keep_looking_for_data_bin = false; // we will test only the first bin file we found. If it is not a data.bin formatted savedata, we wil assume that the slot contains normal savedata
+                        if (strcmp(data->d_name, "banner.bin") == 0) {
+                            *data_bin_found = false;
+                            continue;
+                        }
+                        if (strcmp(data->d_name, "data.bin") == 0) {
+                            *data_bin_found = true; // we have found a data.bin. Later we will check if it belongs to this title
+                            continue;
+                        }
+                        char *error_message = nullptr;
+                        bool is_savedata = false;
+                        std::string custom_data_bin_path = srcPath + "/" + data->d_name;
+                        if (DataBin::check_if_bin_file_is_savedata(custom_data_bin_path.c_str(), &is_savedata, error_message) == DBIN_OK) {
+                            if (is_savedata) {
+                                std::string message = StringUtils::stringFormat(_("The file %s contains save data in data.bin format. If you have copied it to this slot in order to restore it, it must be renamed to 'data.bin'. It's that the case? If so, confirm it and I will rename the file."), data->d_name);
+                                if (Console::promptConfirm(ST_WARNING, message.c_str())) {
+                                    std::string data_bin_path = srcPath + "/data.bin";
+                                    if (FSUtils::checkEntry(data_bin_path.c_str()) == 0) {
+                                        rename(custom_data_bin_path.c_str(), data_bin_path.c_str());
+                                        *data_bin_found = true;
+                                    } else {
+                                        Console::showMessage(ERROR_CONFIRM,_("data.bin file already exists in slot %d. Please remove it and try again"), slot_or_version);
+                                    }
+                                }
+                            }
+                        } else {
+                            Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);
+                            continue;
+                        }
+                    }
+                }
             }
         }
         closedir(dir);

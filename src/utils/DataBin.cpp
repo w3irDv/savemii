@@ -302,7 +302,7 @@ error_state DataBin::initialize_default_keys() {
     char *error_message = nullptr;
 
     errors_initializing_keys.assign("");
-    
+     
     error_state ret = DBIN_OK, ret_global = DBIN_OK;
 
     ret = DataBin::get_shared_keys("fs:/vol/external01/keys.txt", error_message);

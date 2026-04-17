@@ -1,5 +1,5 @@
-#include <coreinit/time.h>
 #include <coreinit/thread.h>
+#include <coreinit/time.h>
 #include <cstdarg>
 #include <sstream>
 #include <unistd.h>

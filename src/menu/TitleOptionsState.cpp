@@ -1258,6 +1258,10 @@ void TitleOptionsState::updateSlotContentFlagForLoadiine() {
     }
 }
 
+/**
+ * @brief Checks to perform if a data.bin file has been found in the slot
+ * 
+ */
 void TitleOptionsState::updateDataBinInfo() {
     if (DataBin::shared_keys_initialized)
         data_bin_vs_title_id_mismatch = check_data_bin_vs_title_id(&this->title, slot, gameBackupBasePath.c_str());

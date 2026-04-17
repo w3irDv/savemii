@@ -61,9 +61,10 @@ static error_state extract_title_id(u64 *titleid) {
     u8 md5_calc[16];
     u32 bnrSize;
 
+    errno = 0;
     memset(header, 0, 0xf0c0);
     if (fread(header, sizeof header, 1, fp) != 1) {
-        fatal(_("Error reading file header: %s"), strerror(errno));
+        fatal(_("Error reading file header: %s"), errno == 0 ? _("Probably trying to read beyond file size") : strerror(errno));
         return DBIN_ERR;
     }
 
@@ -310,9 +311,10 @@ static error_state do_sig(void) {
         fatal(_("Error: cannot malloc"));
         return DBIN_ERR;
     }
+    errno = 0;
     fseek(fp, 0xf0c0, SEEK_SET);
     if (fread(data, data_size, 1, fp) != 1) {
-        fatal(_("Error reading data for sig check: %s"), strerror(errno));
+        fatal(_("Error reading data for sig check: %s"), errno == 0 ? _("Probably trying to read beyond file size") : strerror(errno));
         free(data);
         return DBIN_ERR;
     }
@@ -350,6 +352,68 @@ error_state DataBin::get_title_id(const char *src_data_bin, u64 *title_id, char 
     return DBIN_OK;
 }
 
+/**
+ * @brief Perform some magic & size tests on the .bin file to check if it is a valid savedata. Always return DBIN_OK unless the file is not found. fatal updates error_message in case the calling function wants to know the check that has failed
+ * 
+ * @param data_bin 
+ * @param is_savedata 
+ * @param error_message 
+ * @return error_state 
+ */
+error_state DataBin::check_if_bin_file_is_savedata(const char *src_data_bin, bool *is_savedata, char *&error_message) {
+
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
+
+    *is_savedata = false;
+
+    fp = fopen(src_data_bin, "rb");
+    if (!fp) {
+        fatal(_("Error opening file %s: %s"), src_data_bin, strerror(errno));
+        return DBIN_ERR;
+    }
+
+    if (fseek(fp, 0xf0c0, SEEK_SET) != 0) {
+        fatal(_("Error seeking Bk header: %s"), strerror(errno));
+        goto return_ok;
+    }
+
+    u8 header[0x80];
+    errno = 0;
+    if (fread(header, sizeof header, 1, fp) != 1) {
+        fatal(_("Error reading Bk header: %s"), errno == 0 ? _("Probably trying to read beyond file size") : strerror(errno));
+        goto return_ok;
+    }
+
+    if (be32(header + 4) != 0x426b0001) {
+        fatal(_("Error: no Bk header"));
+        goto return_ok;
+    }
+
+    if (be32(header) != 0x70) {
+        fatal(_("Error: wrong Bk header size"));
+        goto return_ok;
+    }
+
+    u8 file_magic_id[4];
+    errno = 0;
+    if (fread(file_magic_id, sizeof file_magic_id, 1, fp) != 1) {
+        fatal(_("Error reading file magic id: %s"), errno == 0 ? _("Probably trying to read beyond file size") : strerror(errno));
+        goto return_ok;
+    }
+
+    if (be32(file_magic_id) != 0x03adf17e) {
+        fatal(_("Error: no file magic id"));
+        goto return_ok;
+    }
+
+    // all checks ok
+    *is_savedata = true;
+
+return_ok:
+    fclose(fp);
+    return DBIN_OK;
+}
 
 error_state DataBin::unpack(const char *src_data_bin, const char *target_path, perm_mode perm_mode, char *&error_message) {
 
