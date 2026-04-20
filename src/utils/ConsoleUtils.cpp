@@ -1,3 +1,4 @@
+#include "utils/DrawUtils.h"
 #include <coreinit/thread.h>
 #include <coreinit/time.h>
 #include <cstdarg>
@@ -263,7 +264,7 @@ void Console::consolePrintPosAutoFormat(int x, int y, const char *format, ...) {
         size_t maxLineWidth = 0;
         std::string formatted_message{};
         splitMessage(tmp, formatted_message, maxLineWidth, nLines);
-        DrawUtils::print((x + X_OFFSET) * 12, (y + 1) * 24, formatted_message.c_str());
+        DrawUtils::print((x + X_OFFSET) * 12, (y + 1) * 24, formatted_message.c_str(), false, LINE_SPACE_NARROW);
     }
     va_end(va);
     if (tmp != nullptr)

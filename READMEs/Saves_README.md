@@ -66,8 +66,16 @@ For vWii titles, savedata is directly under the slot folder.
 	    This will restore all save data (profiles+common) from the selected slot keeping the same userid that was used to backup the data. This option can only be used to restore previous savedata from the same console, or if the profile ids in the new console are identical to the ones in the source console. If profile ids from source and target differ, you must use the next option.
    3. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console. You can specify if copy common savedata or not.
 	   If you are just copying the savedata from one profile id to a different one in the same console, choose `copy common savedata: no`. If you  are restoring to a new console with different profile ids, just choose `copy common savedata: yes` once for any of the profile ids, and copy the rest of profiles with `copy common savedata: no`
+<<<<<<< Updated upstream
 
 	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` file. If so, the restore tasks will by default decrypt and explode the files contained in the `data.bin` (you will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section.). Usually, this 'data.bin' will be a "true" savedata if you have:
+=======
+<<<<<<< Updated upstream
+	 4. Press `A` to initiate the restore. 
+=======
+
+	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` file. If so, the restore tasks will by default decrypt and explode the files contained in the `data.bin` (you will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section). Usually, this 'data.bin' will be a "true" savedata if you have:
+>>>>>>> Stashed changes
 	- backup previously the data in compressed format
 	- downloaded the a `.bin` savedata file from internet. Change its name to `data.bin` so SaveMii can detect it.
 	- copied it from the SD folder `/private/wii/title/<Product Code>` (where savedata exported by the Wii Data Management menu is stored) to the SaveMii slot. 
@@ -75,6 +83,10 @@ For vWii titles, savedata is directly under the slot folder.
 	 If you haven't done nothing of the above, then this `data.bin` file should be not a standard compressed savedata file but just part of the savedata files for the game, so just select "compress = no" and the file will be copied "as is" to the vWiii internal storage.    
 
 3. Press `A` to initiate the restore. 
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 	    **Note**: Starting with version 1.7.0, the `From: All Users` restore will detect and not allow restoring savedata to non-existent user profiles. In this case, perform specific `From: Select Source User / To: Select Destination User` restores, selecting the correct users.
 
 **Note**: If you have manually copied  to a nomal backup slot a Loadiine savedata in shared mode format (`/u` and `/c` folders), SaveMii will detect it and will rename the folders to the current user (`/8000000x` and `/common`), so you can afterwards restore it from this menu task.
