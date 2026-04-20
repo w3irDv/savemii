@@ -1,3 +1,4 @@
+#include "savemng.h"
 #include <algorithm>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
@@ -362,7 +363,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
 Title *TitleUtils::loadWiiTitles() {
     const char *highIDs[3] = {"00010000", "00010001", "00010004"};
     bool found = false;
-    uint32_t blacklist[7][2] = {{0x00010000, 0x00555044}, {0x00010000, 0x00555045}, {0x00010000, 0x0055504A}, {0x00010000, 0x524F4E45}, {0x00010000, 0x52543445}, {0x00010001, 0x48424344}, {0x00010001, 0x554E454F}};
+    uint32_t blacklist[5][2] = {{0x00010000, 0x00555044}, {0x00010000, 0x00555045}, {0x00010000, 0x0055504A}, {0x00010001, 0x48424344}, {0x00010001, 0x554E454F}};
 
     std::string pathW;
     for (auto &highID : highIDs) {
@@ -418,6 +419,16 @@ Title *TitleUtils::loadWiiTitles() {
                     continue;
                 }
 
+                errno = SUCCESS;
+                titles[i].lowID = strtoul(data->d_name, nullptr, 16);
+                if (errno == EINVAL || errno == ERANGE)
+                    continue;
+                memcpy(titles[i].productCode, &titles[i].lowID, 4);
+                for (int ii = 0; ii < 4; ii++)
+                    if (titles[i].productCode[ii] == 0)
+                        titles[i].productCode[ii] = '.';
+                titles[i].productCode[4] = 0;
+
                 const std::string path = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/data/banner.bin",
                                                                    highID, data->d_name);
                 bool hasBanner = false;
@@ -470,7 +481,7 @@ Title *TitleUtils::loadWiiTitles() {
                     }
                     fclose(file);
                 } else {
-                    sprintf(titles[i].shortName, _("%s%s (No banner.bin)"), highID,
+                    sprintf(titles[i].shortName, _("%s [%s%s] (No banner.bin)"), titles[i].productCode, highID,
                             data->d_name);
                     memset(titles[i].longName, 0, sizeof(titles[i].longName));
                     hasBanner = false;
@@ -484,7 +495,6 @@ Title *TitleUtils::loadWiiTitles() {
                     titles[i].saveInit = false;
 
                 titles[i].highID = strtoul(highID, nullptr, 16);
-                titles[i].lowID = strtoul(data->d_name, nullptr, 16);
                 titles[i].vWiiHighID = titles[i].highID;
                 titles[i].vWiiLowID = titles[i].lowID;
                 titles[i].is_Wii = true;
@@ -495,11 +505,6 @@ Title *TitleUtils::loadWiiTitles() {
 
                 titles[i].listID = i;
                 titles[i].indexID = i;
-                memcpy(titles[i].productCode, &titles[i].lowID, 4);
-                for (int ii = 0; ii < 4; ii++)
-                    if (titles[i].productCode[ii] == 0)
-                        titles[i].productCode[ii] = '.';
-                titles[i].productCode[4] = 0;
                 titles[i].isTitleOnUSB = false;
                 titles[i].isTitleDupe = false;
                 titles[i].dupeID = 0;
@@ -952,7 +957,7 @@ bool TitleUtils::guess_vWiiHighId_for_injects(Title *title) {
             return true;
             break;
         default:
-            // We won't check for highIds belonging to system, DLCs ... if we have not already identified, we let it with vWiiHighId 0, Savemii will not manage it 
+            // We won't check for highIds belonging to system, DLCs ... if we have not already identified, we let it with vWiiHighId 0, Savemii will not manage it
             return false;
             break;
     }
