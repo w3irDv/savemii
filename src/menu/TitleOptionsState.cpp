@@ -1,3 +1,4 @@
+#include "utils/DrawUtils.h"
 #include <Metadata.h>
 #include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
@@ -333,7 +334,7 @@ void TitleOptionsState::render() {
                 if (task == RESTORE || task == IMPORT_FROM_SD_WII_DATA_MGMT) {
                     if (!DataBin::shared_keys_initialized) { // check only for shared keys, private keys and mac will be ok most of the times
                         DrawUtils::setFontColor(COLOR_CURRENT_BS);
-                        Console::consolePrintPosAutoFormat(M_OFF, 12, _("WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
+                        Console::consolePrintPosAutoFormat(M_OFF, 12, MAX_PROMPT_WIDTH, WIDE_LINE_SPACE, _("WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
                     } else if (data_bin_vs_title_id_mismatch) {
                         DrawUtils::setFontColor(COLOR_CURRENT_BS);
                         Console::consolePrintPos(M_OFF, 13, _("WARNING: Game TitleId does not match the one in savedata."));
@@ -348,16 +349,16 @@ void TitleOptionsState::render() {
                 if (compress_backup) {
                     if (!DataBin::shared_keys_initialized) { // check only for shared keys, private keys and mac will be ok most of the times
                         DrawUtils::setFontColor(COLOR_CURRENT_BS);
-                        Console::consolePrintPosAutoFormat(M_OFF, 12, _("No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
+                        Console::consolePrintPosAutoFormat(M_OFF, 12, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, _("No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
                     }
                 }
             }
             if (task == EXPORT_TO_SD_WII_DATA_MGMT) {
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPosAutoFormat(M_OFF, 10, _("Compress savedatap to sd:/private/wii/title where it can be read by standard Wii Data Management"));
+                Console::consolePrintPosAutoFormat(M_OFF, 10, MAX_PROMPT_WIDTH, WIDE_LINE_SPACE, _("Compress savedatap to sd:/private/wii/title where it can be read by standard Wii Data Management"));
                 if (!DataBin::shared_keys_initialized) { // check only for shared keys, private keys and mac will be ok most of the times
                     DrawUtils::setFontColor(COLOR_CURRENT_BS);
-                    Console::consolePrintPosAutoFormat(M_OFF, 12, _("No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
+                    Console::consolePrintPosAutoFormat(M_OFF, 12, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, _("No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
                 }
             }
             if (task == IMPORT_FROM_SD_WII_DATA_MGMT) {
@@ -365,7 +366,7 @@ void TitleOptionsState::render() {
                 Console::consolePrintPos(M_OFF, 10, _("Restore backup from sd:/private/wii/title"));
                 if (!DataBin::shared_keys_initialized) { // check only for shared keys, private keys and mac will be ok most of the times
                     DrawUtils::setFontColor(COLOR_CURRENT_BS);
-                    Console::consolePrintPosAutoFormat(M_OFF, 12, _("WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
+                    Console::consolePrintPosAutoFormat(M_OFF, 12, MAX_PROMPT_WIDTH, WIDE_LINE_SPACE, _("WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
                 } else if (data_bin_vs_title_id_mismatch) {
                     DrawUtils::setFontColor(COLOR_CURRENT_BS);
                     Console::consolePrintPos(M_OFF, 13, _("WARNING: Game TitleId does not match the one in savedata."));

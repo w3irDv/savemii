@@ -1,3 +1,4 @@
+#include "utils/DrawUtils.h"
 #include <BackupSetList.h>
 #include <coreinit/debug.h>
 #include <menu/BackupSetListState.h>
@@ -75,7 +76,7 @@ void BatchTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAutoFormat(M_OFF, 10, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 10, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);        
         Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Options \\ue000: Select Batch Task"));

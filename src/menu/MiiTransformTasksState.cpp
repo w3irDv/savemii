@@ -118,7 +118,7 @@ void MiiTransformTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF, 13 + ((cursorPos == 4 || cursorPos == 5) ? 1 : 0), info);
+        Console::consolePrintPosAutoFormat(M_OFF, 13 + ((cursorPos == 4 || cursorPos == 5) ? 1 : 0), MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, cursorPos + 2, "\u2192");

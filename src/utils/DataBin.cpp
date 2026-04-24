@@ -359,11 +359,11 @@ void DataBin::showDataBinOperations(eJobType jobType) {
     DrawUtils::setFontColor(COLOR_TEXT);
 
     if (jobType == RESTORE) {
-        Console::consolePrintPosAutoFormat(-2, 3, _("Extracting from: %s"), input_path);
+        Console::consolePrintPosAutoFormat(-2, 3, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, _("Extracting from: %s"), input_path);
         Console::consolePrintPos(-2, 5, _("To: %s"), DataBin::output_path);
     } else {
         Console::consolePrintPos(-2, 3, _("Archiving from: %s"), input_path);
-        Console::consolePrintPosAutoFormat(-2, 4, _("To: %s"), DataBin::output_path);
+        Console::consolePrintPosAutoFormat(-2, 4, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE,  _("To: %s"), DataBin::output_path);
     }
 
 

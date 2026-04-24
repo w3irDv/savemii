@@ -1,4 +1,5 @@
 #include "utils/DataBin.h"
+#include "utils/DrawUtils.h"
 #include <BackupSetList.h>
 #include <algorithm>
 #include <coreinit/debug.h>
@@ -61,7 +62,7 @@ void KeyListState::render() {
             );
         }
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF + 1, MAX_TITLE_SHOW + 3, _("Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."));
+        Console::consolePrintPosAutoFormat(M_OFF + 1, MAX_TITLE_SHOW + 3, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE,_("Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."));
 
 
         DrawUtils::setFontColor(COLOR_TEXT);

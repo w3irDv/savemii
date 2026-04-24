@@ -159,7 +159,7 @@ void MiiTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAutoFormat(M_OFF, 15 + v_info_offset, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 15 + v_info_offset, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select Task  \\ue001: Back"));

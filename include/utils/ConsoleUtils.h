@@ -7,7 +7,9 @@
 #include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
 
-#define M_OFF     1
+#define M_OFF            1
+
+#define MAX_PROMPT_WIDTH 64 * 12
 
 enum Style {
     ST_YES_NO = 1,
@@ -35,7 +37,7 @@ enum Style {
 namespace Console {
 
     void consolePrintPos(int x, int y, const char *format, ...) __attribute__((hot));
-    void consolePrintPosAutoFormat(int x, int y, const char *format, ...);
+    void consolePrintPosAutoFormat(int x, int y, size_t max_prompt_width, size_t vertical_line_space, const char *format, ...);
     bool promptConfirm(Style st, const std::string &question);
     Button promptMultipleChoice(Style st, const std::string &question);
     void showMessage(Style St, const char *message, ...);
@@ -46,6 +48,6 @@ namespace Console {
     void kConsolePrintPos(int x, int y, int x_offset, const char *format, ...);
     void consolePrintPosMultiline(int x, int y, const char *format, ...);
 
-    void splitMessage(const char *tmp, std::string &formatted_message, size_t &maxLineWidth, size_t &nLines);
+    void splitMessage(const char *tmp, std::string &formatted_message, size_t &maxLineWidth, size_t &nLines, size_t max_prompt_width = MAX_PROMPT_WIDTH);
 
 } // namespace Console

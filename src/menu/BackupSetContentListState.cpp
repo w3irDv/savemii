@@ -1,3 +1,4 @@
+#include "utils/DrawUtils.h"
 #include "utils/TitleUtils.h"
 #include <Metadata.h>
 #include <algorithm>
@@ -67,27 +68,27 @@ void BackupSetContentListState::render() {
 
         if (backupset_content.at(cursorPos + this->scroll).installed) {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAutoFormat(M_OFF + 1, MAX_TITLE_SHOW + 3, "%s  [%d]", backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str(), cursorPos + this->scroll + 1);
-            Console::consolePrintPosAutoFormat(M_OFF + 3, MAX_TITLE_SHOW + 5, "%s  [%s]",
-                                               backupset_content.at(cursorPos + this->scroll).title->productCode,
-                                               backupset_content.at(cursorPos + this->scroll).title->is_Wii ? "vWii" : (backupset_content.at(cursorPos + this->scroll).title->is_WiiUSysTitle ? "wiiUSys" : (backupset_content.at(cursorPos + this->scroll).title->is_GameCube ? "GC inject" : (backupset_content.at(cursorPos + this->scroll).title->is_Inject ? "Inject" : "Wii U"))));
+            Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, "%s  [%d]", backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str(), cursorPos + this->scroll + 1);
+            Console::consolePrintPos(M_OFF + 2, MAX_TITLE_SHOW + 5, "%s  [%s]",
+                                     backupset_content.at(cursorPos + this->scroll).title->productCode,
+                                     backupset_content.at(cursorPos + this->scroll).title->is_Wii ? "vWii" : (backupset_content.at(cursorPos + this->scroll).title->is_WiiUSysTitle ? "wiiUSys" : (backupset_content.at(cursorPos + this->scroll).title->is_GameCube ? "GC inject" : (backupset_content.at(cursorPos + this->scroll).title->is_Inject ? "Inject" : "Wii U"))));
 
             if (backupset_content.at(cursorPos + this->scroll).title->iconBuf != nullptr) {
                 if (backupset_content.at(cursorPos + this->scroll).title->is_Wii) {
-                    DrawUtils::drawRGB5A3(550, 350, 1, backupset_content.at(cursorPos + this->scroll).title->iconBuf);
+                    DrawUtils::drawRGB5A3(615, 348, 1, backupset_content.at(cursorPos + this->scroll).title->iconBuf);
                 } else {
-                    DrawUtils::drawTGA(660, 350, 1, backupset_content.at(cursorPos + this->scroll).title->iconBuf);
+                    DrawUtils::drawTGA(678, 284, 1, backupset_content.at(cursorPos + this->scroll).title->iconBuf);
                 }
             }
         } else {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAutoFormat(M_OFF + 1, MAX_TITLE_SHOW + 3, _("%s  [%d]"),
+            Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, _("%s  [%d]"),
                                                backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str(), cursorPos + this->scroll + 1);
         }
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-3, 2 + cursorPos, "\u2192");
-        Console::consolePrintPos(20, 17, _("\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"));
     }
 }
 

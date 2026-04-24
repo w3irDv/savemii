@@ -1,3 +1,4 @@
+#include "utils/DrawUtils.h"
 #include <BackupSetList.h>
 #include <Metadata.h>
 #include <coreinit/debug.h>
@@ -84,7 +85,7 @@ void TitleTaskState::render() {
         if (this->title.is_Inject) {
             if (this->title.is_GameCube) {
                 DrawUtils::setFontColor(COLOR_LIST_DANGER_AT_CURSOR);
-                Console::consolePrintPosAutoFormat(2, 11, _("This title is a GameCube inject.\nSaves cannot be managed using SaveMii. Check Nintendont for more details on how to proceed."));
+                Console::consolePrintPosAutoFormat(2, 11, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE,_("This title is a GameCube inject.\nSaves cannot be managed using SaveMii. Check Nintendont for more details on how to proceed."));
             } else {
                 DrawUtils::setFontColor(COLOR_INFO);
                 Console::consolePrintPos(2, 11, _("This title is a inject (vWii or GC title packaged as a WiiU title).\nIf needed, vWii saves can also be managed using\n  the vWii Save Management section."));
