@@ -65,6 +65,9 @@ public:
     void setBackupFormat(eBackupFormat backup_format) { backupFormat.assign(backup_format == FILES ? "FILES" : "DATA_BIN");};
     std::string getSerialId() { return serialId; };
     uint32_t getVWiiHighID() { return this->vWiiHighID; };
+    uint32_t getHighID() { return this->highID; };
+    uint32_t getLowID() { return this->lowID; };
+    char *getShortName() { return shortName;};
 
     bool read_mii();
     bool write_mii();

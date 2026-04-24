@@ -1,3 +1,4 @@
+#include "menu/BackupSetContentListState.h"
 #include <BackupSetList.h>
 #include <Metadata.h>
 #include <coreinit/debug.h>
@@ -29,8 +30,8 @@ BackupSetListState::BackupSetListState() {
 }
 
 BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleType titleType) : titles(titles),
-                                                                                              titlesCount(titlesCount),
-                                                                                              titleType(titleType) {
+                                                                                               titlesCount(titlesCount),
+                                                                                               titleType(titleType) {
     finalScreen = false;
     if (BackupSetList::getIsInitializationRequired()) {
         BackupSetList::initBackupSetList();
@@ -94,9 +95,9 @@ void BackupSetListState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         if (cursorPos + scroll > 0)
-            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"));
         else
-            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"));
+            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"));
     }
 }
 
@@ -114,7 +115,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
             if (finalScreen) {
-                BackupSetList::setSelectedEntryForIndividualTitles(cursorPos + scroll); 
+                BackupSetList::setSelectedEntryForIndividualTitles(cursorPos + scroll);
                 char message[256];
                 const char *messageTemplate = _("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
                 snprintf(message, 256, messageTemplate,
@@ -192,6 +193,14 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 this->substateCalled = STATE_KEYBOARD;
                 this->subState = std::make_unique<KeyboardState>(newTag);
             }
+        }
+        if (input->get(ButtonState::TRIGGER, Button::X)) {
+            std::string bs_path = BackupSetList::getBackupSetPath(cursorPos + scroll);
+            if (bs_path.size() > 0 )
+                bs_path.pop_back(); // by construction, it contains a trailing /
+            this->state = STATE_DO_SUBSTATE;
+            this->subState = std::make_unique<BackupSetContentListState>(bs_path);
+        
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);

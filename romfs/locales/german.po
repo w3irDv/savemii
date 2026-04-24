@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-20 19:14+0200\n"
+"POT-Creation-Date: 2026-04-24 21:09+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -178,31 +178,31 @@ msgid ""
 " Press any button to continue"
 msgstr "Drücken Sie \\ue000, um fortzufahren"
 
-#: src/utils/TitleUtils.cpp:59 src/utils/TitleUtils.cpp:83
-#: src/utils/TitleUtils.cpp:126 src/utils/TitleUtils.cpp:171
-#: src/utils/TitleUtils.cpp:397 src/utils/TitleUtils.cpp:553
-#: src/utils/TitleUtils.cpp:577 src/utils/TitleUtils.cpp:620
-#: src/utils/TitleUtils.cpp:665
+#: src/utils/TitleUtils.cpp:60 src/utils/TitleUtils.cpp:84
+#: src/utils/TitleUtils.cpp:127 src/utils/TitleUtils.cpp:172
+#: src/utils/TitleUtils.cpp:398 src/utils/TitleUtils.cpp:558
+#: src/utils/TitleUtils.cpp:582 src/utils/TitleUtils.cpp:625
+#: src/utils/TitleUtils.cpp:670
 msgid "Out of memory."
 msgstr "Nicht genug Speicher."
 
-#: src/utils/TitleUtils.cpp:319 src/utils/TitleUtils.cpp:518
-#: src/utils/TitleUtils.cpp:790
+#: src/utils/TitleUtils.cpp:320 src/utils/TitleUtils.cpp:523
+#: src/utils/TitleUtils.cpp:795
 #, c-format
 msgid "Loaded %i Wii U titles."
 msgstr "%i Wii U Titel geladen."
 
-#: src/utils/TitleUtils.cpp:473
+#: src/utils/TitleUtils.cpp:484
 #, c-format
-msgid "%s%s (No banner.bin)"
-msgstr "%s%s (Keine banner.bin)"
+msgid "%s [%s%s] (No banner.bin)"
+msgstr ""
 
-#: src/utils/TitleUtils.cpp:519 src/utils/TitleUtils.cpp:791
+#: src/utils/TitleUtils.cpp:524 src/utils/TitleUtils.cpp:796
 #, c-format
 msgid "Loaded %i Wii titles."
 msgstr "%i Wii Titel geladen."
 
-#: src/utils/TitleUtils.cpp:792
+#: src/utils/TitleUtils.cpp:797
 #, c-format
 msgid "Loaded %i Wii U Sys titles."
 msgstr "%i Wii U-Systemtitel geladen."
@@ -613,9 +613,9 @@ msgstr ""
 msgid "Error writing main header: %s"
 msgstr ""
 
-#: src/utils/DataBinPack.cpp:148
+#: src/utils/DataBinPack.cpp:148 src/menu/BackupSetContentListState.cpp:178
 #, c-format
-msgid "Error opening dir %s %s"
+msgid "Error opening dir %s: %s"
 msgstr ""
 
 #: src/utils/DataBinPack.cpp:169
@@ -2291,6 +2291,7 @@ msgstr "[KOPI"
 #: src/menu/MiiSelectState.cpp:417 src/menu/MiiSelectState.cpp:433
 #: src/menu/MiiSelectState.cpp:443 src/menu/MiiSelectState.cpp:448
 #: src/menu/MiiSelectState.cpp:455 src/menu/MiiSelectState.cpp:466
+#: src/menu/BackupSetContentListState.cpp:42
 #, c-format
 msgid "%s"
 msgstr "%s"
@@ -2440,32 +2441,32 @@ msgstr "Transformation fehlgeschlagen - Globaler Fehler"
 msgid "Transform has failed for %d miis"
 msgstr "Transformation für %d Miis fehlgeschlagen"
 
-#: src/menu/BackupSetListState.cpp:69
+#: src/menu/BackupSetListState.cpp:70
 msgid "BackupSets"
 msgstr "Backup-Sets"
 
-#: src/menu/BackupSetListState.cpp:71
+#: src/menu/BackupSetListState.cpp:72
 msgid "BackupSets (filter applied)"
 msgstr "Backup-Sets (Filter angewendet)"
 
-#: src/menu/BackupSetListState.cpp:74
+#: src/menu/BackupSetListState.cpp:75
 #, c-format
 msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 Sortieren: %s \\ue084"
 
-#: src/menu/BackupSetListState.cpp:97
-msgid "\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"
-msgstr "\\ue000: BS auswählen \\ue045: Tag \\ue046: Löschen \\ue003: Filter \\ue001: Zurück"
+#: src/menu/BackupSetListState.cpp:98
+msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
+msgstr ""
 
-#: src/menu/BackupSetListState.cpp:99
-msgid "\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"
-msgstr "\\ue000: Backup-Set auswählen \\ue003: Filterliste \\ue001: Zurück"
+#: src/menu/BackupSetListState.cpp:100
+msgid "\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
+msgstr ""
 
-#: src/menu/BackupSetListState.cpp:110
+#: src/menu/BackupSetListState.cpp:111
 msgid "Root BackupSet cannot be selected for batchRestore"
 msgstr "Root-Backup-Set kann nicht für Batch-Wiederherstellung ausgewählt werden"
 
-#: src/menu/BackupSetListState.cpp:119
+#: src/menu/BackupSetListState.cpp:120
 #, c-format
 msgid ""
 "BackupSet selected:\n"
@@ -3608,6 +3609,28 @@ msgstr "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
 #, c-format
 msgid "PARTIAL - WU:%d,vW:%d,S:%d OK"
 msgstr "TEILSBACKUP - WU:%d,vW:%d,S:%d OK"
+
+#: src/menu/BackupSetContentListState.cpp:40
+msgid "BackupSet Content"
+msgstr ""
+
+#: src/menu/BackupSetContentListState.cpp:53
+#, c-format
+msgid "    %s [Installed]"
+msgstr ""
+
+#: src/menu/BackupSetContentListState.cpp:84
+#, c-format
+msgid "%s  [%d]"
+msgstr ""
+
+#: src/menu/BackupSetContentListState.cpp:90
+msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
+msgstr ""
+
+#: src/menu/BackupSetContentListState.cpp:174
+msgid "< no savedata >"
+msgstr ""
 
 #: src/menu/BatchJobOptions.cpp:137
 #, c-format
@@ -4978,6 +5001,16 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#, c-format
+#~ msgid "%s%s (No banner.bin)"
+#~ msgstr "%s%s (Keine banner.bin)"
+
+#~ msgid "\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"
+#~ msgstr "\\ue000: BS auswählen \\ue045: Tag \\ue046: Löschen \\ue003: Filter \\ue001: Zurück"
+
+#~ msgid "\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"
+#~ msgstr "\\ue000: Backup-Set auswählen \\ue003: Filterliste \\ue001: Zurück"
 
 #~ msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
 #~ msgstr "\\ue002: BackupSet ändern  \\ue000: Wiederherstellen  \\ue001: Zurück"

@@ -17,6 +17,7 @@ std::string BackupSetList::savedBackupSetSubPath {};
 
 std::unique_ptr<BackupSetList> BackupSetList::currentBackupSetList  = std::make_unique<BackupSetList>();
 
+extern const char *backupPath;
 extern const char *batchBackupPath;
 
 BackupSetList::BackupSetList(const char *backupSetListRoot)
@@ -140,6 +141,12 @@ std::string BackupSetList::getBackupSetSubPath(int i) {
     else
         return  "/batch/"+currentBackupSetList->at(i)+"/";
 }
+
+std::string BackupSetList::getBackupSetPath(int i) {
+    
+    return backupPath + getBackupSetSubPath(i);
+
+};
 
 void BackupSetList::filter(BSMetadata filterDef) {
 

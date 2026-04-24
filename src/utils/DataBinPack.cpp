@@ -145,7 +145,7 @@ static error_state find_files_recursive(const char *path) {
 
     dir = opendir(path ? path : ".");
     if (!dir) {
-        fatal(_("Error opening dir %s %s"), path ? path : ".", strerror(errno));
+        fatal(_("Error opening dir %s: %s"), path ? path : ".", strerror(errno));
         return DBIN_ERR;
     }
 
