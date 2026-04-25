@@ -657,7 +657,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
             if (!selectOnlyOneMii) {
                 if (action != MiiProcess::LIST_MIIS) {
                     for (size_t i = 0; i < this->candidate_miis_count; i++) {
-                        if (this->mii_view[c2a[i]].candidate && this->mii_view[c2a[i]].state != MiiStatus::OK)
+                        if (this->mii_view[c2a[i]].candidate)
                             this->mii_view[c2a[i]].selected = true;
                     }
                 }
@@ -668,7 +668,7 @@ ApplicationState::eSubState MiiSelectState::update(Input *input) {
             if (!selectOnlyOneMii) {
                 if (action != MiiProcess::LIST_MIIS) {
                     for (size_t i = 0; i < this->candidate_miis_count; i++) {
-                        if (this->mii_view[c2a[i]].candidate && this->mii_view[c2a[i]].state != MiiStatus::OK)
+                        if (this->mii_view[c2a[i]].candidate)
                             this->mii_view[c2a[i]].selected = false;
                     }
                 }
