@@ -1,5 +1,3 @@
-#include "utils/DrawUtils.h"
-#include "utils/TitleUtils.h"
 #include <Metadata.h>
 #include <algorithm>
 #include <coreinit/debug.h>
@@ -11,9 +9,11 @@
 #include <sys/dirent.h>
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
+#include <utils/DrawUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
 #include <utils/StringUtils.h>
+#include <utils/TitleUtils.h>
 
 #define MAX_TITLE_SHOW    9
 #define MAX_WINDOW_SCROLL 6
@@ -153,7 +153,7 @@ void BackupSetContentListState::moveUp(unsigned amount, bool wrap) {
 }
 
 /**
- * @brief read backupSet dir content and check if the titles are installed or not. Use name from savemiiMeta.json if found. For installed titles, add a pointer to the tittle struct   
+ * @brief read backupSet dir content and check if the titles are installed or not. For installed titles, add a pointer to the tittle struct and use from there. For uninstalled titles, use name from savemiiMeta.json if found, or infer from the folder is possible. 
  * 
  * @return true 
  * @return false 
@@ -167,12 +167,12 @@ bool BackupSetContentListState::populate_backupset_content() {
             if (strcmp(data->d_name, ".") == 0 ||
                 strcmp(data->d_name, "..") == 0 ||
                 !(data->d_type & DT_DIR) ||
-                strlen(data->d_name) < 16) // at least, a valid title name should contain highid & lowid
+                strlen(data->d_name) < 16) // at least, a valid savedata backup folder should contain highid & lowid
                 continue;
 
             std::string folder_name{data->d_name};
             bs_item bs = {.title_folder_name = folder_name};
-            bs.uninstalled_title_name.assign(_("< no savedata >"));
+            bs.uninstalled_title_name.assign(_("< no savedata >")); // default: title is not installed.
             backupset_content.push_back(bs);
         }
     } else {
@@ -181,58 +181,49 @@ bool BackupSetContentListState::populate_backupset_content() {
     }
     closedir(dir);
 
-
     for (bs_item &item : backupset_content) {
         uint32_t highID = 0;
         uint32_t lowID = 0;
         std::string shortName{};
-        std::string savemii_json = bs_path + "/" + item.title_folder_name + "/0";
-        Metadata *metadataObj = new Metadata(savemii_json);
-        if (metadataObj->read()) {
-            lowID = metadataObj->getLowID();
-            highID = metadataObj->getHighID();
-            shortName.assign(metadataObj->getShortName());
-        }
-        delete metadataObj;
 
-        if (lowID == 0) { // we have nor found IDs in savemiiMeta.json. Let's try to infer them from the folder name
-            char high_id[9] = {0};
-            char low_id[9] = {0};
-            if (strlen(item.title_folder_name.c_str()) == 16) { // pre 1.7.0 version ?
-                strncpy(high_id, item.title_folder_name.c_str(), 8);
+        // Infer high/lowid from folder name. If not, savedata cannot be read by savemii, so the will appear as "no savedata"
+        char high_id[9] = {0};
+        char low_id[9] = {0};
+        if ((strlen(item.title_folder_name.c_str()) > 16)) { // maybe >= 1.7.0 version
+            size_t open_bracket = item.title_folder_name.find_last_of('[');
+
+            if (open_bracket != std::string::npos) {
+                item.uninstalled_title_name = item.title_folder_name.substr(0, open_bracket);
+                std::string high_id_str = item.title_folder_name.substr(open_bracket + 1, 8);
+                if (high_id_str.size() != 8)
+                    continue;
+                strncpy(high_id, high_id_str.c_str(), 8);
                 high_id[8] = 0;
-                strncpy(low_id, item.title_folder_name.c_str() + 8, 8);
+            }
+            size_t last_hyphen = item.title_folder_name.find_last_of('-');
+            if (last_hyphen != std::string::npos) {
+                std::string low_id_str = item.title_folder_name.substr(last_hyphen + 1, 8);
+                if (low_id_str.size() != 8)
+                    continue;
+                strncpy(low_id, low_id_str.c_str(), 8);
                 low_id[8] = 0;
             }
-            if ((strlen(item.title_folder_name.c_str()) > 16)) { // maybe > 1.7.0 version
-                size_t open_bracket = item.title_folder_name.find_last_of('[');
-
-                if (open_bracket != std::string::npos) {
-                    item.uninstalled_title_name = item.title_folder_name.substr(0, open_bracket);
-                    std::string high_id_str = item.title_folder_name.substr(open_bracket + 1, 8);
-                    if (high_id_str.size() != 8)
-                        continue;
-                    strncpy(high_id, high_id_str.c_str(), 8);
-                    high_id[8] = 0;
-                }
-                size_t last_hyphen = item.title_folder_name.find_last_of('-');
-                if (last_hyphen != std::string::npos) {
-                    std::string low_id_str = item.title_folder_name.substr(last_hyphen + 1, 8);
-                    if (low_id_str.size() != 8)
-                        continue;
-                    strncpy(low_id, low_id_str.c_str(), 8);
-                    low_id[8] = 0;
-                }
-            }
-            if (str2uint(highID, high_id, 16) != SUCCESS)
-                continue;
-            if (str2uint(lowID, low_id, 16) != SUCCESS)
-                continue;
+        } else if (strlen(item.title_folder_name.c_str()) == 16) { // < 1.7.0 version ?
+            strncpy(high_id, item.title_folder_name.c_str(), 8);
+            high_id[8] = 0;
+            strncpy(low_id, item.title_folder_name.c_str() + 8, 8);
+            low_id[8] = 0;
         }
 
-        if (lowID == 0)
+        if (str2uint(highID, high_id, 16) != SUCCESS)
+            continue;
+        if (str2uint(lowID, low_id, 16) != SUCCESS)
             continue;
 
+        if (lowID == 0 || highID == 0) // just in case
+            continue;
+
+        // check if the title is installed.
         Title *titles = 0;
         int titles_count = 0;
         switch (highID) {
@@ -268,10 +259,18 @@ bool BackupSetContentListState::populate_backupset_content() {
         }
 
         if (item.installed == false) {
+            // maybe it has a savemiMeta.json we can use to get the title name
+            std::string savemii_json = bs_path + "/" + item.title_folder_name + "/0";
+            Metadata *metadataObj = new Metadata(savemii_json);
+            if (metadataObj->read()) {
+                shortName.assign(metadataObj->getShortName());
+            }
+            delete metadataObj;
+
             if (shortName.size() > 0) { // if the name was found in savemiiMeta.json , its better to use it because it contains original utf8 chars that were trasnlated to _ in the folder name
                 item.uninstalled_title_name = shortName;
             } else {
-                size_t open_bracket = item.title_folder_name.find_last_of('[');
+                size_t open_bracket = item.title_folder_name.find_last_of('['); // >=1.7.0 can contain name in folder
                 if (open_bracket != std::string::npos)
                     item.uninstalled_title_name = item.title_folder_name.substr(0, open_bracket);
                 else
