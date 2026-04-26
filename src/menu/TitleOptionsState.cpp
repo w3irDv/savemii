@@ -976,11 +976,11 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 default:;
             }
-            if (((!this->isWiiUTitle && this->task == RESTORE && restore_uncompressed) || (this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) && !DataBin::shared_keys_initialized) {
+            if (((!this->isWiiUTitle && this->task == RESTORE && this->restore_uncompressed) || (this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) && !DataBin::shared_keys_initialized) {
                 Console::showMessage(ERROR_CONFIRM, _("'data.bin' uncompress aborted: no shared keys found.\nProvide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
                 return SUBSTATE_RUNNING;
             }
-            if (((this->task == BACKUP && compress_backup) || (this->task == EXPORT_TO_SD_WII_DATA_MGMT)) && !(DataBin::shared_keys_initialized && DataBin::private_keys_initialized && DataBin::mac_in_databin_initialized)) {
+            if (((this->task == BACKUP && this->compress_backup) || (this->task == EXPORT_TO_SD_WII_DATA_MGMT)) && !(DataBin::shared_keys_initialized && DataBin::private_keys_initialized && DataBin::mac_in_databin_initialized)) {
                 if (!DataBin::shared_keys_initialized) // This is probably the only key that can fail.The MAC Addess and the otp.bin can be found with no user intervention.
                     Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no shared keys found.\n Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
                 if (!DataBin::private_keys_initialized) // The error cause will be the same already shown ...
@@ -991,7 +991,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             }
             switch (this->task) {
                 case BACKUP:
-                    if (compress_backup) {
+                    if (!this->isWiiUTitle && this->compress_backup) {
                         if (backupSavedata(&this->title, slot, source_user_, common, DATA_BIN, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0) {
                             Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
@@ -1004,7 +1004,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateBackupData();
                     break;
                 case RESTORE:
-                    if (data_bin_found && restore_uncompressed) {
+                    if (!this->isWiiUTitle && this->data_bin_found && this->restore_uncompressed) {
                         if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, DATA_BIN, SAVEMII_SLOT) == 0) {
                             Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
