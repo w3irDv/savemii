@@ -1,4 +1,3 @@
-#include "utils/DrawUtils.h"
 #include <Metadata.h>
 #include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
@@ -11,6 +10,7 @@
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DataBin.h>
+#include <utils/DrawUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -51,7 +51,7 @@ TitleOptionsState::TitleOptionsState(Title &title,
     switch (task) {
         case BACKUP:
             updateBackupData();
-            updateData_bin_found(slot, SAVEMII_SLOT);
+            update_data_bin_found(slot, SAVEMII_SLOT);
             break;
         case RESTORE:
             updateRestoreData();
@@ -563,6 +563,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSlotMetadata();
                         updateHasCommonSaveInSource();
                         updateSourceHasRequestedSavedata();
+                        update_data_bin_found(slot, SAVEMII_SLOT);
                         if (data_bin_found)
                             updateDataBinInfo();
                         break;
@@ -696,7 +697,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateSlotMetadata();
-                        updateData_bin_found(slot, SAVEMII_SLOT);
+                        update_data_bin_found(slot, SAVEMII_SLOT);
                         break;
                     case 1:
                         if (this->isWiiUTitle) {
@@ -751,6 +752,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSlotMetadata();
                         updateHasCommonSaveInSource();
                         updateSourceHasRequestedSavedata();
+                        update_data_bin_found(slot, SAVEMII_SLOT);
                         if (data_bin_found)
                             updateDataBinInfo();
                         break;
@@ -885,7 +887,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateSlotMetadata();
-                        updateData_bin_found(slot, SAVEMII_SLOT);
+                        update_data_bin_found(slot, SAVEMII_SLOT);
                         break;
                     case 1:
                         if (this->isWiiUTitle) {
@@ -974,7 +976,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 default:;
             }
-            if (((this->task == RESTORE && restore_uncompressed) || (this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) && !DataBin::shared_keys_initialized) {
+            if (((!this->isWiiUTitle && this->task == RESTORE && restore_uncompressed) || (this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) && !DataBin::shared_keys_initialized) {
                 Console::showMessage(ERROR_CONFIRM, _("'data.bin' uncompress aborted: no shared keys found.\nProvide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
                 return SUBSTATE_RUNNING;
             }
@@ -1221,7 +1223,7 @@ void TitleOptionsState::updateRestoreData() {
         updateSourceHasRequestedSavedata();
         updateHasTargetUserData();
     }
-    updateData_bin_found(slot, SAVEMII_SLOT);
+    update_data_bin_found(slot, SAVEMII_SLOT);
     if (data_bin_found)
         updateDataBinInfo();
 }
@@ -1300,11 +1302,11 @@ void TitleOptionsState::updateImportAsWii() {
 }
 
 void TitleOptionsState::updateExportAsWii() {
-    updateData_bin_found(0, PRIVATE_SLOT);
+    update_data_bin_found(0, PRIVATE_SLOT);
     emptySlot = !data_bin_found;
 }
 
-void TitleOptionsState::updateData_bin_found(uint8_t slot, eSlotType slot_type) {
+void TitleOptionsState::update_data_bin_found(uint8_t slot, eSlotType slot_type) {
     std::string data_bin{};
     switch (slot_type) {
         case SAVEMII_SLOT:
@@ -1314,4 +1316,8 @@ void TitleOptionsState::updateData_bin_found(uint8_t slot, eSlotType slot_type) 
             data_bin = gameBackupBasePath + "/data.bin";
     }
     data_bin_found = (FSUtils::checkEntry(data_bin.c_str()) == 1);
+    if (data_bin_found)
+        restore_uncompressed = true;
+    else
+        restore_uncompressed = false;
 }

@@ -100,10 +100,10 @@ void updateLoadiineVersion();
 
 bool data_bin_found = false;
 bool data_bin_vs_title_id_mismatch = false;
-bool restore_uncompressed = true;
+bool restore_uncompressed = false;
 bool compress_backup = false;
 void updateDataBinInfo();
-void updateData_bin_found(uint8_t slot, eSlotType slot_type);
+void update_data_bin_found(uint8_t slot, eSlotType slot_type);
 
 }
 ;
