@@ -62,6 +62,7 @@ struct Title {
     DataSourceInfo currentDataSource;
     char titleNameBasedDirName[256] = {0};
     eFileNameStyle fileNameStyle = titleName;
+    bool shortName_from_title_data = false;
 };
 
 struct Saves {
@@ -84,7 +85,8 @@ namespace TitleUtils {
     Title *loadWiiUSysTitles(int run);
 
     bool guess_vWiiHighId_for_injects(Title *title);
-    
+    bool guess_uninitialized_vwii_title_name_from_backup(Title *titles, int titles_count);
+
     void unloadTitles(Title *titles, int count);
 
     uint32_t getMiiMakerOwner();

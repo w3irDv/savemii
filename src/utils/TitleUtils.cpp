@@ -1,4 +1,4 @@
-#include "savemng.h"
+#include <Metadata.h>
 #include <algorithm>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <icon.h>
 #include <malloc.h>
+#include <savemng.h>
 #include <stdlib.h>
 #include <string>
 #include <sys/stat.h>
@@ -17,6 +18,8 @@
 #include <utils/StartupUtils.h>
 #include <utils/StringUtils.h>
 #include <utils/TitleUtils.h>
+
+extern const char *backupPath;
 
 //#define STRESS
 #ifdef STRESS
@@ -182,6 +185,8 @@ Title *TitleUtils::loadWiiUTitles(int run) {
                                                            saves[i].found ? "title" : "save", highID, lowID);
         titles[wiiuTitlesCount].saveInit = !saves[i].found;
 
+        titles[wiiuTitlesCount].shortName_from_title_data = false;
+
         char *xmlBuf = nullptr;
         if (FSUtils::loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
             char *cptr = strchr(strstr(xmlBuf, "product_code"), '>') + 7;
@@ -215,6 +220,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
 
             StringUtils::decodeXMLEscapeLine(std::string(cptr));
             strlcpy(titles[wiiuTitlesCount].shortName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
+            titles[wiiuTitlesCount].shortName_from_title_data = true;
 
             cptr = strchr(strstr(xmlBuf, "longname_en"), '>') + 1;
             memset(titles[i].longName, 0, sizeof(titles[i].longName));
@@ -225,10 +231,12 @@ Title *TitleUtils::loadWiiUTitles(int run) {
 
             free(xmlBuf);
         }
-        if (strlen(titles[wiiuTitlesCount].shortName) == 0u)
+        if (strlen(titles[wiiuTitlesCount].shortName) == 0u) {
             sprintf(titles[wiiuTitlesCount].shortName, "%08x%08x",
                     titles[wiiuTitlesCount].highID,
                     titles[wiiuTitlesCount].lowID);
+            titles[wiiuTitlesCount].shortName_from_title_data = false;
+        }
 
         titles[wiiuTitlesCount].isTitleDupe = false;
         for (int i = 0; i < wiiuTitlesCount; i++) {
@@ -432,8 +440,10 @@ Title *TitleUtils::loadWiiTitles() {
                 const std::string path = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/data/banner.bin",
                                                                    highID, data->d_name);
                 bool hasBanner = false;
+                bool shortName_from_title_data = false;
                 FILE *file = fopen(path.c_str(), "rb");
                 if (file != nullptr) {
+                    titles[i].saveInit = true;
                     fseek(file, 0x20, SEEK_SET);
                     auto *bnrBuf = (uint16_t *) malloc(0x80);
                     if (bnrBuf != nullptr) {
@@ -453,11 +463,14 @@ Title *TitleUtils::loadWiiTitles() {
                                 titles[i].shortName[k++] = 0xD0 | ((bnrBuf[j] & 0x3C0) >> 6);
                                 titles[i].shortName[k++] = 0x80 | (bnrBuf[j] & 0x3F);
                             }
+                            shortName_from_title_data = true;
                         }
-                        if (strlen(titles[i].shortName) == 0u)
+                        if (strlen(titles[i].shortName) == 0u) {
                             sprintf(titles[i].shortName, "%08x%08x",
                                     titles[i].highID,
                                     titles[i].lowID);
+                            shortName_from_title_data = false;
+                        }
 
                         memset(titles[i].longName, 0, sizeof(titles[i].longName));
                         for (int j = 0x20, k = 0; j < 0x40; j++) {
@@ -487,12 +500,14 @@ Title *TitleUtils::loadWiiTitles() {
                     hasBanner = false;
                 }
 
+
                 const std::string tmdPath = StringUtils::stringFormat("storage_slcc01:/title/%s/%s/content/title.tmd",
                                                                       highID, data->d_name);
                 if (FSUtils::checkEntry(tmdPath.c_str()) == 1)
                     titles[i].saveInit = true;
                 else
                     titles[i].saveInit = false;
+
 
                 titles[i].highID = strtoul(highID, nullptr, 16);
                 titles[i].vWiiHighID = titles[i].highID;
@@ -511,6 +526,7 @@ Title *TitleUtils::loadWiiTitles() {
                 if (!hasBanner || (TitleUtils::loadTitleIcon(&titles[i]) < 0))
                     titles[i].iconBuf = nullptr;
 
+                titles[i].shortName_from_title_data = shortName_from_title_data;
                 setTitleNameBasedDirName(&titles[i]);
                 i++;
 
@@ -682,6 +698,8 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
 
         titles[wiiuSysTitlesCount].saveInit = !saves[i].found;
 
+        titles[wiiuSysTitlesCount].shortName_from_title_data = false;
+
         char *xmlBuf = nullptr;
         if (FSUtils::loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
             char *cptr = strchr(strstr(xmlBuf, "product_code"), '>') + 7;
@@ -718,6 +736,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
 
             StringUtils::decodeXMLEscapeLine(std::string(cptr));
             strlcpy(titles[wiiuSysTitlesCount].shortName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
+            titles[wiiuSysTitlesCount].shortName_from_title_data = true;
 
             cptr = strchr(strstr(xmlBuf, "longname_en"), '>') + 1;
             memset(titles[i].longName, 0, sizeof(titles[i].longName));
@@ -728,10 +747,12 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
 
             free(xmlBuf);
         }
-        if (strlen(titles[wiiuSysTitlesCount].shortName) == 0u)
+        if (strlen(titles[wiiuSysTitlesCount].shortName) == 0u) {
             sprintf(titles[wiiuSysTitlesCount].shortName, "%08x%08x",
                     titles[wiiuSysTitlesCount].highID,
                     titles[wiiuSysTitlesCount].lowID);
+            titles[wiiuSysTitlesCount].shortName_from_title_data = false;
+        }
 
         titles[wiiuSysTitlesCount].isTitleDupe = false;
         for (int i = 0; i < wiiuSysTitlesCount; i++) {
@@ -961,4 +982,75 @@ bool TitleUtils::guess_vWiiHighId_for_injects(Title *title) {
             return false;
             break;
     }
+}
+
+/**
+ * @brief For vWii titles: if banner.bin is not found in NAND, savemii does not knows the title name and cannot find any previous backup for the tite. Here we infere the title name from savemiiMeta.json info or from the folder name 
+ * 
+ * @param titles 
+ * @return true 
+ * @return false 
+ */
+bool TitleUtils::guess_uninitialized_vwii_title_name_from_backup(Title *titles, int titles_count) {
+
+    for (int i = 0; i < titles_count; i++) {
+        if (!titles[i].shortName_from_title_data) {
+            DIR *dir = opendir(backupPath);
+            if (dir != nullptr) {
+                struct dirent *data;
+                while ((data = readdir(dir)) != nullptr) {
+                    if (strcmp(data->d_name, ".") == 0 ||
+                        strcmp(data->d_name, "..") == 0 ||
+                        !(data->d_type & DT_DIR) ||
+                        strlen(data->d_name) < 16) // at least, a valid savedata backup folder should contain highid & lowid
+                        continue;
+
+                    char high_id[9];
+                    char low_id[9];
+
+                    sprintf(high_id, "%08x", titles[i].highID);
+                    sprintf(low_id, "%08x", titles[i].lowID);
+
+                    if (strstr(data->d_name, low_id) != nullptr)
+                        if (strstr(data->d_name, high_id) != nullptr) {
+                            // maybe it has a savemiMeta.json we can use to get the title name
+                            std::string shortName{};
+                            std::string savemii_json = std::string(backupPath) + "/" + data->d_name + "/0";
+                            Metadata *metadataObj = new Metadata(savemii_json);
+                            if (metadataObj->read()) {
+                                shortName.assign(metadataObj->getShortName());
+                            }
+                            delete metadataObj;
+
+                            if (shortName.size() > 0) { // if the name was found in savemiiMeta.json, we are done
+                                strncpy(titles[i].shortName, shortName.c_str(), sizeof(titles[i].shortName));
+                                setTitleNameBasedDirName(&titles[i]);
+                                break;
+                            } else {                            // not so bad: use folder as titlename. non-ascci chars has been escaped, but it's ok to identify in this session its backup folder.
+                                if (strlen(data->d_name) == 16) // ignore < 1.7.0 saves ... we don't need the title name for identifying them
+                                    continue;
+                                std::string title_folder_name{data->d_name};
+                                size_t open_bracket = title_folder_name.find_last_of('['); // >=1.7.0 can contain name in folder
+                                if (open_bracket != std::string::npos && open_bracket > 0) {
+                                    shortName = title_folder_name.substr(0, --open_bracket);
+                                    if (shortName.size() > 0) { // if the name was found in savemiiMeta.json, we are done
+                                        strncpy(titles[i].shortName, shortName.c_str(), sizeof(titles[i].shortName));
+                                        setTitleNameBasedDirName(&titles[i]);
+                                        break;
+                                    }
+                                } else {
+                                    break; // we have failed ...
+                                }
+                            }
+                        }
+                }
+            } else {
+                Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), strerror(errno));
+                return false;
+            }
+            closedir(dir);
+        }
+    }
+
+    return true;
 }

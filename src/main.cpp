@@ -119,6 +119,7 @@ int main() {
 
     TitleUtils::wiiutitles = TitleUtils::loadWiiUTitles(1);
     TitleUtils::wiititles = TitleUtils::loadWiiTitles();
+    TitleUtils::guess_uninitialized_vwii_title_name_from_backup(TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
     TitleUtils::wiiusystitles = TitleUtils::loadWiiUSysTitles(1);
     AccountUtils::getAccountsWiiU();
 

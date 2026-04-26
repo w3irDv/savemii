@@ -186,7 +186,7 @@ bool BackupSetContentListState::populate_backupset_content() {
         uint32_t lowID = 0;
         std::string shortName{};
 
-        // Infer high/lowid from folder name. If not, savedata cannot be read by savemii, so the will appear as "no savedata"
+        // Infer high/lowid from folder name. If not possible, savedata cannot be read by savemii, so they will appear as "no savedata"
         char high_id[9] = {0};
         char low_id[9] = {0};
         if ((strlen(item.title_folder_name.c_str()) > 16)) { // maybe >= 1.7.0 version
