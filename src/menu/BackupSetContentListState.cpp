@@ -71,7 +71,7 @@ void BackupSetContentListState::render() {
             Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, "%s  [%d]", backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str(), cursorPos + this->scroll + 1);
             Console::consolePrintPos(M_OFF + 2, MAX_TITLE_SHOW + 5, "%s  [%s]",
                                      backupset_content.at(cursorPos + this->scroll).title->productCode,
-                                     backupset_content.at(cursorPos + this->scroll).title->is_Wii ? "vWii" : (backupset_content.at(cursorPos + this->scroll).title->is_WiiUSysTitle ? "wiiUSys" : (backupset_content.at(cursorPos + this->scroll).title->is_GameCube ? "GC inject" : (backupset_content.at(cursorPos + this->scroll).title->is_Inject ? "Inject" : "Wii U"))));
+                                     backupset_content.at(cursorPos + this->scroll).title->is_Wii ? "vWii" : (backupset_content.at(cursorPos + this->scroll).title->is_WiiUSysTitle ? "Wii U System Title" : (backupset_content.at(cursorPos + this->scroll).title->is_GameCube ? "GC inject" : (backupset_content.at(cursorPos + this->scroll).title->is_Inject ? "Inject" : "Wii U"))));
 
             if (backupset_content.at(cursorPos + this->scroll).title->iconBuf != nullptr) {
                 if (backupset_content.at(cursorPos + this->scroll).title->is_Wii) {

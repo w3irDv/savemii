@@ -67,7 +67,7 @@ void KeyListState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, _("\\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: Default  \\ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: Default  \\ue001: Back"));
     }
 }
 

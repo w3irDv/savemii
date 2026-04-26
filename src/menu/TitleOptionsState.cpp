@@ -114,7 +114,7 @@ void TitleOptionsState::render() {
         } else {
             DrawUtils::setFontColor(COLOR_LIST);
         }
-        Console::consolePrintPos(M_OFF, 2, "[$s] %s (%s)", this->title.productCode,
+        Console::consolePrintPos(M_OFF, 2, "[%s] %s (%s)", this->title.productCode,
                                  this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
         DrawUtils::setFontColor(COLOR_TEXT);
         if (this->task == COPY_TO_OTHER_DEVICE) {
