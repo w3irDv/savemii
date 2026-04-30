@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 11:07+0200\n"
+"POT-Creation-Date: 2026-04-29 23:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgstr ""
 
 #: src/utils/DataBinUnpack.cpp:148
 #, c-format
-msgid "Error writting file %s: %s"
+msgid "Error writing file %s: %s"
 msgstr ""
 
 #: src/utils/DataBinUnpack.cpp:153 src/utils/DataBinUnpack.cpp:252
@@ -175,33 +175,39 @@ msgid ""
 " Press any button to continue"
 msgstr ""
 
-#: src/utils/TitleUtils.cpp:60 src/utils/TitleUtils.cpp:84
-#: src/utils/TitleUtils.cpp:127 src/utils/TitleUtils.cpp:172
-#: src/utils/TitleUtils.cpp:398 src/utils/TitleUtils.cpp:558
-#: src/utils/TitleUtils.cpp:582 src/utils/TitleUtils.cpp:625
-#: src/utils/TitleUtils.cpp:670
+#: src/utils/TitleUtils.cpp:63 src/utils/TitleUtils.cpp:87
+#: src/utils/TitleUtils.cpp:130 src/utils/TitleUtils.cpp:175
+#: src/utils/TitleUtils.cpp:406 src/utils/TitleUtils.cpp:574
+#: src/utils/TitleUtils.cpp:598 src/utils/TitleUtils.cpp:641
+#: src/utils/TitleUtils.cpp:686
 msgid "Out of memory."
 msgstr ""
 
-#: src/utils/TitleUtils.cpp:320 src/utils/TitleUtils.cpp:523
-#: src/utils/TitleUtils.cpp:795
+#: src/utils/TitleUtils.cpp:328 src/utils/TitleUtils.cpp:539
+#: src/utils/TitleUtils.cpp:816
 #, c-format
 msgid "Loaded %i Wii U titles."
 msgstr ""
 
-#: src/utils/TitleUtils.cpp:484
+#: src/utils/TitleUtils.cpp:497
 #, c-format
 msgid "%s [%s%s] (No banner.bin)"
 msgstr ""
 
-#: src/utils/TitleUtils.cpp:524 src/utils/TitleUtils.cpp:796
+#: src/utils/TitleUtils.cpp:540 src/utils/TitleUtils.cpp:817
 #, c-format
 msgid "Loaded %i Wii titles."
 msgstr ""
 
-#: src/utils/TitleUtils.cpp:797
+#: src/utils/TitleUtils.cpp:818
 #, c-format
 msgid "Loaded %i Wii U Sys titles."
+msgstr ""
+
+#: src/utils/TitleUtils.cpp:1048 src/utils/DataBinPack.cpp:148
+#: src/menu/BackupSetContentListState.cpp:179
+#, c-format
+msgid "Error opening dir %s: %s"
 msgstr ""
 
 #: src/utils/LanguageUtils.cpp:82 src/menu/ConfigMenuState.cpp:60
@@ -572,11 +578,6 @@ msgstr ""
 msgid "Error writing main header: %s"
 msgstr ""
 
-#: src/utils/DataBinPack.cpp:148 src/menu/BackupSetContentListState.cpp:179
-#, c-format
-msgid "Error opening dir %s: %s"
-msgstr ""
-
 #: src/utils/DataBinPack.cpp:169
 #, c-format
 msgid "Error: path too long: %s"
@@ -627,17 +628,17 @@ msgstr ""
 
 #: src/utils/DataBinPack.cpp:475
 #, c-format
-msgid "Error writting sig: %s"
+msgid "Error writing sig: %s"
 msgstr ""
 
 #: src/utils/DataBinPack.cpp:479
 #, c-format
-msgid "Error writting NG cert: %s"
+msgid "Error writing NG cert: %s"
 msgstr ""
 
 #: src/utils/DataBinPack.cpp:483
 #, c-format
-msgid "Error writting AP cert: %s"
+msgid "Error writing AP cert: %s"
 msgstr ""
 
 #: src/utils/DataBinPack.cpp:588
@@ -1177,19 +1178,19 @@ msgstr ""
 msgid "Readng Encyption Keys"
 msgstr ""
 
-#: src/main.cpp:130
+#: src/main.cpp:131
 msgid "Initializing BackupSets metadata."
 msgstr ""
 
-#: src/main.cpp:134
+#: src/main.cpp:135
 msgid "Initializing Excludes config."
 msgstr ""
 
-#: src/main.cpp:141
+#: src/main.cpp:142
 msgid "Initializing Mii repos."
 msgstr ""
 
-#: src/main.cpp:174
+#: src/main.cpp:175
 msgid "Press \\ue044 to exit."
 msgstr ""
 
@@ -1734,15 +1735,15 @@ msgstr ""
 msgid "\\ue000: Initialize  \\ue001: Back"
 msgstr ""
 
-#: src/menu/MiiDBOptionsState.cpp:227 src/menu/TitleOptionsState.cpp:945
+#: src/menu/MiiDBOptionsState.cpp:227 src/menu/TitleOptionsState.cpp:947
 msgid "No data selected to backup"
 msgstr ""
 
-#: src/menu/MiiDBOptionsState.cpp:229 src/menu/TitleOptionsState.cpp:947
+#: src/menu/MiiDBOptionsState.cpp:229 src/menu/TitleOptionsState.cpp:949
 msgid "No data selected to wipe"
 msgstr ""
 
-#: src/menu/MiiDBOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:955
+#: src/menu/MiiDBOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:957
 msgid "No data selected to restore"
 msgstr ""
 
@@ -2605,8 +2606,8 @@ msgid "ERROR WIPING BACKUPSET"
 msgstr ""
 
 #: src/menu/BatchJobTitleSelectState.cpp:719
-#: src/menu/BatchJobTitleSelectState.cpp:728 src/menu/TitleOptionsState.cpp:960
-#: src/menu/TitleOptionsState.cpp:968
+#: src/menu/BatchJobTitleSelectState.cpp:728 src/menu/TitleOptionsState.cpp:962
+#: src/menu/TitleOptionsState.cpp:970
 #, c-format
 msgid ""
 "%s\n"
@@ -3773,19 +3774,19 @@ msgstr ""
 msgid "\\ue000: Export  \\ue003: Keys  \\ue046 Delete Slot  \\ue001: Back"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:949
+#: src/menu/TitleOptionsState.cpp:951
 msgid "No data selected to copyToOtherProfile"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:951
+#: src/menu/TitleOptionsState.cpp:953
 msgid "No data selected to moveProfile"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:953
+#: src/menu/TitleOptionsState.cpp:955
 msgid "No data selected to copy"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:978
+#: src/menu/TitleOptionsState.cpp:980
 #, c-format
 msgid ""
 "'data.bin' uncompress aborted: no shared keys found.\n"
@@ -3795,7 +3796,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:983
+#: src/menu/TitleOptionsState.cpp:985
 #, c-format
 msgid ""
 "'data.bin' compress aborted: no shared keys found.\n"
@@ -3805,7 +3806,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:985
+#: src/menu/TitleOptionsState.cpp:987
 #, c-format
 msgid ""
 "'data.bin' compress aborted: no private keys found.\n"
@@ -3815,7 +3816,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:987
+#: src/menu/TitleOptionsState.cpp:989
 #, c-format
 msgid ""
 "'data.bin' compress aborted: mac_address not found.\n"
@@ -3825,26 +3826,26 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:995 src/menu/TitleOptionsState.cpp:1000
-#: src/menu/TitleOptionsState.cpp:1057
+#: src/menu/TitleOptionsState.cpp:997 src/menu/TitleOptionsState.cpp:1002
+#: src/menu/TitleOptionsState.cpp:1059
 msgid "Savedata succesfully backed up!"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:1008 src/menu/TitleOptionsState.cpp:1012
-#: src/menu/TitleOptionsState.cpp:1050
+#: src/menu/TitleOptionsState.cpp:1010 src/menu/TitleOptionsState.cpp:1014
+#: src/menu/TitleOptionsState.cpp:1052
 msgid "Savedata succesfully restored!"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:1018
+#: src/menu/TitleOptionsState.cpp:1020
 msgid "Savedata succesfully wiped!"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:1024
+#: src/menu/TitleOptionsState.cpp:1026
 msgid "Savedata succesfully moved!"
 msgstr ""
 
-#: src/menu/TitleOptionsState.cpp:1029 src/menu/TitleOptionsState.cpp:1034
-#: src/menu/TitleOptionsState.cpp:1039 src/menu/TitleOptionsState.cpp:1044
+#: src/menu/TitleOptionsState.cpp:1031 src/menu/TitleOptionsState.cpp:1036
+#: src/menu/TitleOptionsState.cpp:1041 src/menu/TitleOptionsState.cpp:1046
 msgid "Savedata succesfully copied!"
 msgstr ""
 

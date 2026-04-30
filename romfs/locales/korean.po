@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 11:04+0200\n"
+"POT-Creation-Date: 2026-04-27 00:04+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -41,25 +41,25 @@ msgstr "저장 공간+이름"
 #: src/utils/DataBinUnpack.cpp:203
 #, c-format
 msgid "Error reading file header: %s"
-msgstr ""
+msgstr "파일 헤더 읽기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:67 src/utils/DataBinUnpack.cpp:317
 #: src/utils/DataBinUnpack.cpp:384 src/utils/DataBinUnpack.cpp:401
 msgid "Probably trying to read beyond file size"
-msgstr ""
+msgstr "파일 크기를 초과하여 읽으려고 시도한 것 같습니다"
 
 #: src/utils/DataBinUnpack.cpp:78 src/utils/DataBinUnpack.cpp:114
 msgid "Error: MD5 mismatch"
-msgstr ""
+msgstr "오류: MD5 불일치"
 
 #: src/utils/DataBinUnpack.cpp:82 src/utils/DataBinUnpack.cpp:119
 msgid "Error: bad file header size"
-msgstr ""
+msgstr "오류: 잘못된 파일 헤더 크기"
 
 #: src/utils/DataBinUnpack.cpp:127 src/utils/DataBinUnpack.cpp:266
 #, c-format
 msgid "Error creating folder %s: %s"
-msgstr ""
+msgstr "폴더 %s 생성 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:144 src/utils/DataBinUnpack.cpp:241
 #: src/utils/DataBinUnpack.cpp:342 src/utils/DataBinUnpack.cpp:372
@@ -70,142 +70,149 @@ msgstr ""
 #: src/utils/DataBin.cpp:225
 #, c-format
 msgid "Error opening file %s: %s"
-msgstr ""
+msgstr "파일 %s 열기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:148
 #, c-format
-msgid "Error writting file %s: %s"
-msgstr ""
+msgid "Error writing file %s: %s"
+msgstr "파일 %s 쓰기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:153 src/utils/DataBinUnpack.cpp:252
 #: src/utils/DataBinPack.cpp:573 src/utils/DataBinPack.cpp:582
 #, c-format
 msgid "Error closing file %s: %s"
-msgstr ""
+msgstr "파일 %s 닫기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:160 src/utils/DataBinUnpack.cpp:277
 #: src/utils/DataBinUnpack.cpp:461
 #, c-format
 msgid "Error setting permissions for file %s: %s"
-msgstr ""
+msgstr "파일 %s 권한 설정 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:172 src/utils/DataBinUnpack.cpp:384
 #, c-format
 msgid "Error reading Bk header: %s"
-msgstr ""
+msgstr "Bk 헤더 읽기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:177 src/utils/DataBinUnpack.cpp:389
 msgid "Error: no Bk header"
-msgstr ""
+msgstr "오류: Bk 헤더가 없습니다"
 
 #: src/utils/DataBinUnpack.cpp:179 src/utils/DataBinUnpack.cpp:394
 msgid "Error: wrong Bk header size"
-msgstr ""
+msgstr "오류: Bk 헤더 크기가 잘못되었습니다"
 
 #: src/utils/DataBinUnpack.cpp:208
 msgid "Error: bad file header magic number"
-msgstr ""
+msgstr "오류: 잘못된 파일 헤더 매직 넘버"
 
 #: src/utils/DataBinUnpack.cpp:227 src/utils/DataBinUnpack.cpp:311
 #: src/utils/DataBinPack.cpp:380 src/utils/DataBinPack.cpp:458
 msgid "Error: cannot malloc"
-msgstr ""
+msgstr "오류: 메모리 할당(malloc)을 할 수 없습니다"
 
 #: src/utils/DataBinUnpack.cpp:231 src/utils/DataBinPack.cpp:110
 #: src/utils/DataBinPack.cpp:391 src/utils/DataBin.cpp:38
 #, c-format
 msgid "Error reading file %s: %s"
-msgstr ""
+msgstr "파일 %s 읽기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:273
 msgid "Error: unhandled file type"
-msgstr ""
+msgstr "오류: 처리되지 않은 파일 형식"
 
 #: src/utils/DataBinUnpack.cpp:295
 #, c-format
 msgid "Error reading signature: %s"
-msgstr ""
+msgstr "서명 읽기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:299
 #, c-format
 msgid "Error reading NG cert: %s"
-msgstr ""
+msgstr "NG 인증서 읽기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:303
 #, c-format
 msgid "Error reading AP cert: %s"
-msgstr ""
+msgstr "AP 인증서 읽기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:317
 #, c-format
 msgid "Error reading data for sig check: %s"
-msgstr ""
+msgstr "서명 확인 데이터 읽기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:327 src/utils/DataBinPack.cpp:487
 msgid "Signature OK"
-msgstr ""
+msgstr "서명 확인됨"
 
 #: src/utils/DataBinUnpack.cpp:329
-#, fuzzy
 msgid "Error computing signature"
-msgstr "데이터 복사 중 오류 발생."
+msgstr "서명 계산 오류"
 
 #: src/utils/DataBinUnpack.cpp:377
 #, c-format
 msgid "Error seeking Bk header: %s"
-msgstr ""
+msgstr "Bk 헤더 탐색 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:401
 #, c-format
 msgid "Error reading file magic id: %s"
-msgstr ""
+msgstr "파일 매직 ID 읽기 오류: %s"
 
 #: src/utils/DataBinUnpack.cpp:406
 msgid "Error: no file magic id"
-msgstr ""
+msgstr "오류: 파일 매직 ID가 없습니다"
 
 #: src/utils/DataBinUnpack.cpp:473
-#, fuzzy
 msgid ""
 "\n"
 " >>>> Extraction OK"
-msgstr "Mii 추출 완료"
+msgstr ""
+"\n"
+" >>>> 추출 완료"
 
 #: src/utils/DataBinUnpack.cpp:474 src/utils/DataBinPack.cpp:589
-#, fuzzy
 msgid ""
 "\n"
 " Press any button to continue"
-msgstr "계속하려면 \\ue000을 누르세요."
+msgstr ""
+"\n"
+" 계속하려면 아무 버튼이나 누르십시오"
 
-#: src/utils/TitleUtils.cpp:60 src/utils/TitleUtils.cpp:84
-#: src/utils/TitleUtils.cpp:127 src/utils/TitleUtils.cpp:172
-#: src/utils/TitleUtils.cpp:398 src/utils/TitleUtils.cpp:558
-#: src/utils/TitleUtils.cpp:582 src/utils/TitleUtils.cpp:625
-#: src/utils/TitleUtils.cpp:670
+#: src/utils/TitleUtils.cpp:63 src/utils/TitleUtils.cpp:87
+#: src/utils/TitleUtils.cpp:130 src/utils/TitleUtils.cpp:175
+#: src/utils/TitleUtils.cpp:406 src/utils/TitleUtils.cpp:574
+#: src/utils/TitleUtils.cpp:598 src/utils/TitleUtils.cpp:641
+#: src/utils/TitleUtils.cpp:686
 msgid "Out of memory."
 msgstr "메모리가 부족합니다."
 
-#: src/utils/TitleUtils.cpp:320 src/utils/TitleUtils.cpp:523
-#: src/utils/TitleUtils.cpp:795
+#: src/utils/TitleUtils.cpp:328 src/utils/TitleUtils.cpp:539
+#: src/utils/TitleUtils.cpp:816
 #, c-format
 msgid "Loaded %i Wii U titles."
 msgstr "%i Wii U 타이틀을 불러왔습니다."
 
-#: src/utils/TitleUtils.cpp:484
+#: src/utils/TitleUtils.cpp:497
 #, c-format
 msgid "%s [%s%s] (No banner.bin)"
-msgstr ""
+msgstr "%s [%s%s] (banner.bin 없음)"
 
-#: src/utils/TitleUtils.cpp:524 src/utils/TitleUtils.cpp:796
+#: src/utils/TitleUtils.cpp:540 src/utils/TitleUtils.cpp:817
 #, c-format
 msgid "Loaded %i Wii titles."
 msgstr "%i Wii 타이틀을 불러왔습니다."
 
-#: src/utils/TitleUtils.cpp:797
+#: src/utils/TitleUtils.cpp:818
 #, c-format
 msgid "Loaded %i Wii U Sys titles."
 msgstr "로드된 Wii U 시스템 타이틀 %i개"
+
+#: src/utils/TitleUtils.cpp:1048 src/utils/DataBinPack.cpp:148
+#: src/menu/BackupSetContentListState.cpp:179
+#, c-format
+msgid "Error opening dir %s: %s"
+msgstr "디렉토리 %s 열기 오류: %s"
 
 #: src/utils/LanguageUtils.cpp:82 src/menu/ConfigMenuState.cpp:60
 #: src/menu/ConfigMenuState.cpp:96
@@ -323,7 +330,7 @@ msgstr "내부 Stadio 저장 DB"
 
 #: src/utils/MiiUtils.cpp:119
 msgid "Custom Stadio save DB"
-msgstr ""
+msgstr "커스텀 Stadio 저장 DB"
 
 #: src/utils/MiiUtils.cpp:185
 msgid "Wii U Mii Database mounted on USB"
@@ -360,17 +367,22 @@ msgstr "작업 중단 - 저장소 %s를 열고 채울 수 없습니다."
 
 #: src/utils/MiiUtils.cpp:359
 msgid ""
-"You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n"
+"You are exporting duplicated Miis. They are marked with DUP or D in the "
+"listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
+"MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its miiid or normal/special/temp or device info for one of them"
+"Please fix it updating its miiid or normal/special/temp or device info for "
+"one of them"
 msgstr ""
 "중복된 Mii를 내보내고 있습니다. 목록에서 DUP 또는 D로 표시됩니다.\n"
 "\n"
-"MiiMaker는 중복된 Mii를 하나만 남기고 모두 삭제하지만, MiiChannel은 신경 쓰지 않는 것 같습니다.\n"
+"MiiMaker는 중복된 Mii를 하나만 남기고 모두 삭제하지만, MiiChannel은 신경 쓰"
+"지 않는 것 같습니다.\n"
 "\n"
-"중복된 Mii 중 하나의 Mii ID, 일반/특수/임시 또는 장치 정보를 업데이트하여 문제를 해결해 주세요."
+"중복된 Mii 중 하나의 Mii ID, 일반/특수/임시 또는 장치 정보를 업데이트하여 문"
+"제를 해결해 주세요."
 
 #: src/utils/MiiUtils.cpp:382 src/utils/MiiUtils.cpp:503
 #: src/utils/MiiUtils.cpp:782 src/menu/MiiSelectState.cpp:587
@@ -386,17 +398,22 @@ msgstr "내보내기 중 오류가 발생했습니다. 데이터베이스를 저
 
 #: src/utils/MiiUtils.cpp:465
 msgid ""
-"You are importing duplicated Miis. They are marked with DUP or D in the listings.\n"
+"You are importing duplicated Miis. They are marked with DUP or D in the "
+"listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
+"MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its miiid or normal/special/temp or device info for one of them"
+"Please fix it updating its miiid or normal/special/temp or device info for "
+"one of them"
 msgstr ""
 "중복된 Mii를 가져오고 있습니다. 목록에서 DUP 또는 D로 표시됩니다.\n"
 "\n"
-"MiiMaker는 중복된 Mii를 하나만 남기고 모두 삭제하지만, MiiChannel은 신경 쓰지 않는 것 같습니다.\n"
+"MiiMaker는 중복된 Mii를 하나만 남기고 모두 삭제하지만, MiiChannel은 신경 쓰"
+"지 않는 것 같습니다.\n"
 "\n"
-"중복된 Mii 중 하나의 Mii ID, 일반/특수/임시 또는 장치 정보를 업데이트하여 문제를 해결해 주세요."
+"중복된 Mii 중 하나의 Mii ID, 일반/특수/임시 또는 장치 정보를 업데이트하여 문"
+"제를 해결해 주세요."
 
 #: src/utils/MiiUtils.cpp:519
 msgid ""
@@ -406,22 +423,29 @@ msgstr "가져오기 중 오류가 발생했습니다. 데이터베이스를 저
 
 #: src/utils/MiiUtils.cpp:528 src/utils/MiiUtils.cpp:804
 msgid ""
-"Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n"
+"Duplicated Miis found in the repo. They are marked with DUP or D in the "
+"listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
+"MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"
+"Please fix it updating its MiiId, or toggling normal/special/temp flag or "
+"updating device info for one of them"
 msgstr ""
 "저장소에서 중복된 Mii가 발견되었습니다. 목록에서 DUP 또는 D로 표시됩니다.\n"
 "\n"
-"MiiMaker는 중복된 Mii를 하나만 남기고 모두 삭제하지만, MiiChannel은 신경 쓰지 않는 것 같습니다.\n"
+"MiiMaker는 중복된 Mii를 하나만 남기고 모두 삭제하지만, MiiChannel은 신경 쓰"
+"지 않는 것 같습니다.\n"
 "\n"
-"MiiID를 업데이트하거나, 일반/특수/임시 플래그를 전환하거나, 기기 정보를 업데이트하여 문제를 해결해 주세요."
+"MiiID를 업데이트하거나, 일반/특수/임시 플래그를 전환하거나, 기기 정보를 업데"
+"이트하여 문제를 해결해 주세요."
 
 #: src/utils/MiiUtils.cpp:584
 #, c-format
-msgid "Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
-msgstr "즐겨찾기 섹션에서 %s(%s에 의해)를 제거할 수 없습니다. MiiData 추출 오류"
+msgid ""
+"Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
+msgstr ""
+"즐겨찾기 섹션에서 %s(%s에 의해)를 제거할 수 없습니다. MiiData 추출 오류"
 
 #: src/utils/MiiUtils.cpp:588
 #, c-format
@@ -436,7 +460,8 @@ msgstr "삭제 중 오류가 발생했습니다. 데이터베이스를 저장하
 
 #: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:351 src/savemng.cpp:1473
 msgid "Please wait. First write to (some) SDs can take several seconds."
-msgstr "잠시만 기다려 주십시오. (일부) SD에 처음 쓰는 데 몇 초 정도 걸릴 수 있습니다."
+msgstr ""
+"잠시만 기다려 주십시오. (일부) SD에 처음 쓰는 데 몇 초 정도 걸릴 수 있습니다."
 
 #: src/utils/MiiUtils.cpp:673
 msgid "Transforming mii"
@@ -469,12 +494,18 @@ msgstr "중단:\\ue083+\\ue046"
 
 #: src/utils/MiiUtils.cpp:729
 #, c-format
-msgid "Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."
-msgstr "Mii %s는 특수 Mii이며 공유 플래그가 켜져 있으면 Mii 편집기에서 삭제됩니다. 먼저 일반 Mii로 변환하십시오."
+msgid ""
+"Mii %s is Special and will be deleted by the Mii editor if it has the the "
+"Share flag on. Please first convert it to a Normal one."
+msgstr ""
+"Mii %s는 특수 Mii이며 공유 플래그가 켜져 있으면 Mii 편집기에서 삭제됩니다. 먼"
+"저 일반 Mii로 변환하십시오."
 
 #: src/utils/MiiUtils.cpp:756
 #, c-format
-msgid "Share attribute will be disabled for Mii %s as it will be transformed to a Special one."
+msgid ""
+"Share attribute will be disabled for Mii %s as it will be transformed to a "
+"Special one."
 msgstr "Mii %s는 특수 Mii로 변환되므로 공유 속성이 비활성화됩니다."
 
 #: src/utils/MiiUtils.cpp:796
@@ -597,95 +628,90 @@ msgstr "기본 계정 DB %s에 계정 %s가 없습니다."
 #: src/utils/DataBinPack.cpp:49 src/utils/DataBinPack.cpp:97
 #: src/utils/DataBinPack.cpp:192 src/utils/DataBinPack.cpp:293
 #: src/utils/StatManager.cpp:242
-#, fuzzy, c-format
+#, c-format
 msgid "Error getting stat for %s: %s"
-msgstr ""
-"\n"
-"%s에 대한 할당량 설정 오류"
+msgstr "%s의 상태 정보(stat) 가져오기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:78 src/utils/DataBinPack.cpp:316
 #, c-format
 msgid "Error reading toc: %s"
-msgstr ""
+msgstr "목차(TOC) 읽기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:129
 #, c-format
 msgid "Error writing main header: %s"
-msgstr ""
-
-#: src/utils/DataBinPack.cpp:148 src/menu/BackupSetContentListState.cpp:179
-#, c-format
-msgid "Error opening dir %s: %s"
-msgstr ""
+msgstr "메인 헤더 쓰기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:169
 #, c-format
 msgid "Error: path too long: %s"
-msgstr ""
+msgstr "오류: 경로가 너무 깁니다: %s"
 
 #: src/utils/DataBinPack.cpp:175
 #, c-format
 msgid "Error: file name too long for arxiving: %s"
-msgstr ""
+msgstr "오류: 아카이브하기에 파일 이름이 너무 깁니다: %s"
 
 #: src/utils/DataBinPack.cpp:181
 #, c-format
 msgid "Error: not a regular file or a directory: %s"
-msgstr ""
+msgstr "오류: 일반 파일이나 디렉토리가 아닙니다: %s"
 
 #: src/utils/DataBinPack.cpp:223
 #, c-format
 msgid "Error closing dir %s: %s"
-msgstr ""
+msgstr "디렉토리 %s 닫기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:282
 msgid "Error: no space in TOC line"
-msgstr ""
+msgstr "오류: TOC 라인에 공간이 없습니다"
 
 #: src/utils/DataBinPack.cpp:288
 #, c-format
 msgid "Error: wiggle - path too long: %s"
-msgstr ""
+msgstr "오류: wiggle - 경로가 너무 깁니다: %s"
 
 #: src/utils/DataBinPack.cpp:339
 #, c-format
 msgid "Error writing Bk header: %s"
-msgstr ""
+msgstr "Bk 헤더 쓰기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:369
 #, c-format
 msgid "Error writing file header %d: %s"
-msgstr ""
+msgstr "파일 헤더 %d 쓰기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:403
 #, c-format
 msgid "Error writing file data %d: %s"
-msgstr ""
+msgstr "파일 데이터 %d 쓰기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:463
 msgid "Error reading data for sig check"
-msgstr ""
+msgstr "서명 확인 데이터 읽기 오류"
 
 #: src/utils/DataBinPack.cpp:475
 #, c-format
-msgid "Error writting sig: %s"
-msgstr ""
+msgid "Error writing sig: %s"
+msgstr "서명 쓰기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:479
 #, c-format
-msgid "Error writting NG cert: %s"
-msgstr ""
+msgid "Error writing NG cert: %s"
+msgstr "NG 인증서 쓰기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:483
 #, c-format
-msgid "Error writting AP cert: %s"
-msgstr ""
+msgid "Error writing AP cert: %s"
+msgstr "AP 인증서 쓰기 오류: %s"
 
 #: src/utils/DataBinPack.cpp:588
 msgid ""
 "\n"
 " >>>> Archiving OK"
 msgstr ""
+"\n"
+" >>>> 아카이브 완료"
 
 #: src/utils/DataBin.cpp:84
 #, c-format
@@ -693,25 +719,27 @@ msgid ""
 "Error: wrong  key length: expected %d - found %d\n"
 "%s"
 msgstr ""
+"오류: 잘못된 키 길이: 예상 %d - 실제 %d\n"
+"%s"
 
 #: src/utils/DataBin.cpp:95
 msgid "Error: No digits were found.\n"
-msgstr ""
+msgstr "오류: 숫자를 찾을 수 없습니다.\n"
 
 #: src/utils/DataBin.cpp:98
 #, c-format
 msgid "Error: Invalid character: %c\n"
-msgstr ""
+msgstr "오류: 잘못된 문자: %c\n"
 
 #: src/utils/DataBin.cpp:159 src/utils/DataBin.cpp:286
 #, c-format
 msgid "Cannot find keys%s in %s"
-msgstr ""
+msgstr "%2$s에서 키 %1$s을(를) 찾을 수 없습니다"
 
 #: src/utils/DataBin.cpp:205
 #, c-format
 msgid "MAC not found in %s"
-msgstr ""
+msgstr "%s에서 MAC 주소를 찾을 수 없습니다"
 
 #: src/utils/DataBin.cpp:357 src/menu/MiiDBOptionsState.cpp:112
 #: src/menu/TitleOptionsState.cpp:429
@@ -724,14 +752,14 @@ msgid "Restore"
 msgstr "복원"
 
 #: src/utils/DataBin.cpp:362
-#, fuzzy, c-format
+#, c-format
 msgid "Extracting from: %s"
-msgstr "복사 위치: %s"
+msgstr "추출 중: %s"
 
 #: src/utils/DataBin.cpp:365
-#, fuzzy, c-format
+#, c-format
 msgid "Archiving from: %s"
-msgstr "복사 위치: %s"
+msgstr "아카이브 중: %s"
 
 #: src/utils/ConsoleUtils.cpp:51
 msgid "Press \\ue000 to continue"
@@ -1009,7 +1037,9 @@ msgid ""
 "Error creating permission file - Backup/Restore is not reliable\n"
 "Errors so far: %d\n"
 "Do you want to continue?"
-msgstr "권한 파일 생성 오류 - 백업/복원이 불안정합니다. 지금까지 발생한 오류: %d개. 계속하시겠습니까?"
+msgstr ""
+"권한 파일 생성 오류 - 백업/복원이 불안정합니다. 지금까지 발생한 오류: %d개. "
+"계속하시겠습니까?"
 
 #: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:551
 #: src/utils/FSUtils.cpp:562
@@ -1104,7 +1134,9 @@ msgid ""
 "Error setting permissions - Restore is not reliable\n"
 "Errors so far: %d\n"
 "Do you want to continue?"
-msgstr "권한 설정 오류 - 복원이 안정적이지 않습니다. 지금까지 발생한 오류 수: %d. 계속하시겠습니까?"
+msgstr ""
+"권한 설정 오류 - 복원이 안정적이지 않습니다. 지금까지 발생한 오류 수: %d. 계"
+"속하시겠습니까?"
 
 #: src/utils/StartupUtils.cpp:16
 msgid "Disclaimer:"
@@ -1238,13 +1270,19 @@ msgstr ""
 
 #: src/utils/AccountUtils.cpp:150
 #, c-format
-msgid "The file %s contains save data in data.bin format. If you have copied it to this slot in order to restore it, it must be renamed to 'data.bin'. It's that the case? If so, confirm it and I will rename the file."
+msgid ""
+"The file %s contains save data in data.bin format. If you have copied it to "
+"this slot in order to restore it, it must be renamed to 'data.bin'. It's "
+"that the case? If so, confirm it and I will rename the file."
 msgstr ""
+"%s 파일은 data.bin 형식의 저장 데이터를 포함하고 있습니다. 복원을 위해 이 슬"
+"롯에 복사한 것이라면 파일 이름을 'data.bin'으로 변경해야 합니다. 변경하시겠습"
+"니까? 확인 시 파일 이름을 변경합니다."
 
 #: src/utils/AccountUtils.cpp:157
 #, c-format
 msgid "data.bin file already exists in slot %d. Please remove it and try again"
-msgstr ""
+msgstr "슬롯 %d에 data.bin 파일이 이미 존재합니다. 삭제 후 다시 시도해 주세요"
 
 #: src/utils/AccountUtils.cpp:216
 msgid "UNABLE TO CONVERT FROM LOADIINE"
@@ -1260,7 +1298,9 @@ msgid ""
 "Error setting permissions - Backup/Restore is not reliable\n"
 "Errors so far: %d\n"
 "Do you want to continue?"
-msgstr "권한 설정 오류 - 백업/복원이 안정적이지 않습니다. 지금까지 발생한 오류 수: %d. 계속하시겠습니까?"
+msgstr ""
+"권한 설정 오류 - 백업/복원이 안정적이지 않습니다. 지금까지 발생한 오류 수: "
+"%d. 계속하시겠습니까?"
 
 #: src/utils/StatManager.cpp:94
 #, c-format
@@ -1352,33 +1392,36 @@ msgid "initFS failed. Please make sure your MochaPayload is up-to-date"
 msgstr "initFS에 실패했습니다. MochaPayload가 최신 버전인지 확인하십시오."
 
 #: src/main.cpp:110
-#, fuzzy
 msgid "Initializing Radndom seed"
-msgstr "WPAD 및 KPAD 초기화 중"
+msgstr "난수 시드 초기화 중"
 
 #: src/main.cpp:113
 msgid "Readng Encyption Keys"
-msgstr ""
+msgstr "암호화 키 읽는 중"
 
-#: src/main.cpp:130
+#: src/main.cpp:131
 msgid "Initializing BackupSets metadata."
 msgstr "백업 세트 메타데이터를 초기화하는 중입니다."
 
-#: src/main.cpp:134
+#: src/main.cpp:135
 msgid "Initializing Excludes config."
 msgstr "제외 구성을 초기화하는 중입니다."
 
-#: src/main.cpp:141
+#: src/main.cpp:142
 msgid "Initializing Mii repos."
 msgstr "Mii 저장소 초기화 중"
 
-#: src/main.cpp:174
+#: src/main.cpp:175
 msgid "Press \\ue044 to exit."
 msgstr "\\ue044: 출구"
 
 #: src/mii/MiiStadioSav.cpp:169
-msgid "stadio.sav DB not found. Do you want to create one from existing associated FFL and ACCOUNT repos?"
+msgid ""
+"stadio.sav DB not found. Do you want to create one from existing associated "
+"FFL and ACCOUNT repos?"
 msgstr ""
+"stadio.sav DB를 찾을 수 없습니다. 기존 관련 FFL 및 ACCOUNT 저장소에서 생성하"
+"시겠습니까?"
 
 #: src/mii/MiiStadioSav.cpp:185 src/mii/MiiFileRepo.cpp:279
 #, c-format
@@ -1482,18 +1525,30 @@ msgid "Cannot find an EMPTY frame for the mii in the STADIO db"
 msgstr "STADIO 데이터베이스에서 해당 Mii에 대한 빈 프레임을 찾을 수 없습니다"
 
 #: src/mii/MiiStadioSav.cpp:479
-msgid "Warning: unable to populate Account repo. Non-critical error, you can continue"
-msgstr "경고: 계정 저장소를 채울 수 없습니다. 심각하지 않은 오류이므로 계속 진행할 수 있습니다."
+msgid ""
+"Warning: unable to populate Account repo. Non-critical error, you can "
+"continue"
+msgstr ""
+"경고: 계정 저장소를 채울 수 없습니다. 심각하지 않은 오류이므로 계속 진행할 "
+"수 있습니다."
 
 #: src/mii/MiiStadioSav.cpp:490 src/mii/MiiStadioSav.cpp:587
 #, c-format
-msgid "Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"
-msgstr "경고: STADIO에 mii %s를 가져올 수 없습니다. 심각하지 않은 오류이므로 계속 진행할 수 있습니다."
+msgid ""
+"Warning: unable to import mii %s in STADIO. Non-critical error, you can "
+"continue"
+msgstr ""
+"경고: STADIO에 mii %s를 가져올 수 없습니다. 심각하지 않은 오류이므로 계속 진"
+"행할 수 있습니다."
 
 #: src/mii/MiiStadioSav.cpp:493 src/mii/MiiStadioSav.cpp:590
 #, c-format
-msgid "Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"
-msgstr "경고: %s(사용자: %s)의 MiiData를 추출할 수 없습니다. 심각하지 않은 오류이므로 계속 진행할 수 있습니다."
+msgid ""
+"Warning: unable to extract MiiData for %s (by %s). Non-critical error, you "
+"can continue"
+msgstr ""
+"경고: %s(사용자: %s)의 MiiData를 추출할 수 없습니다. 심각하지 않은 오류이므"
+"로 계속 진행할 수 있습니다."
 
 #: src/mii/MiiStadioSav.cpp:508 src/mii/MiiFileRepo.cpp:648
 #, c-format
@@ -1507,8 +1562,11 @@ msgstr ""
 "DB 데이터 초기화를 위한 메모리 버퍼를 생성할 수 없습니다."
 
 #: src/mii/MiiStadioSav.cpp:576
-msgid "Warning: unable to populate FFL repo. Non-critical error, you can continue"
+msgid ""
+"Warning: unable to populate FFL repo. Non-critical error, you can continue"
 msgstr ""
+"경고: FFL 저장소를 채울 수 없습니다. 치명적이지 않은 오류이므로 계속할 수 있"
+"습니다"
 
 #: src/mii/MiiAccountRepo.cpp:111 src/mii/MiiFolderRepo.cpp:67
 #: src/mii/MiiFileRepo.cpp:441
@@ -1521,7 +1579,8 @@ msgid ""
 msgstr ""
 "%s\n"
 "\n"
-"Mii 파일의 크기가 예상치 못한 크기입니다: %d. %d 또는 %d 바이트만 허용됩니다.\n"
+"Mii 파일의 크기가 예상치 못한 크기입니다: %d. %d 또는 %d 바이트만 허용됩니"
+"다.\n"
 "파일을 건너뜁니다."
 
 #: src/mii/MiiAccountRepo.cpp:118 src/mii/MiiFolderRepo.cpp:76
@@ -1659,23 +1718,35 @@ msgid "Cannot find an EMPTY location for the mii in the db"
 msgstr "데이터베이스에서 해당 Mii에 대한 빈 위치를 찾을 수 없습니다"
 
 #: src/mii/MiiFileRepo.cpp:465
-msgid "Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"
-msgstr "주의:이것은 MiiId 슬라이스 0x1/3의 일반 Mii이며, Mii 채널을 열면 삭제될 가능성이 높습니다. 더 안전한 슬라이스(0x4/3)로 변경하시겠습니까?"
+msgid ""
+"Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be "
+"deleted when you open the Mii Channel. Do you want me to change it to a "
+"safer slice (0x4/3)?"
+msgstr ""
+"주의:이것은 MiiId 슬라이스 0x1/3의 일반 Mii이며, Mii 채널을 열면 삭제될 가능"
+"성이 높습니다. 더 안전한 슬라이스(0x4/3)로 변경하시겠습니까?"
 
 #: src/mii/MiiFileRepo.cpp:480
-msgid "Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"
-msgstr "주의: 이것은 임시 Mii이므로 MiiMaker에 나타나지 않습니다. 영구 Mii로 변경하시겠습니까?"
+msgid ""
+"Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want "
+"me to change it to a Permanent one?"
+msgstr ""
+"주의: 이것은 임시 Mii이므로 MiiMaker에 나타나지 않습니다. 영구 Mii로 변경하시"
+"겠습니까?"
 
 #: src/mii/MiiFileRepo.cpp:489
 #, c-format
 msgid ""
-"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n"
+"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated "
+"mii, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"You can generate a new Mii ID for it, and it will become a completely new unique mii.\n"
+"You can generate a new Mii ID for it, and it will become a completely new "
+"unique mii.\n"
 "\n"
 "Do you want me to change Mii Id for this mii?"
 msgstr ""
-"중복된 Mii ID가 발견되었습니다(%s). MiiMaker는 중복된 Mii를 삭제하지만, MiiChannel은 신경 쓰지 않는 것 같습니다.\n"
+"중복된 Mii ID가 발견되었습니다(%s). MiiMaker는 중복된 Mii를 삭제하지만, "
+"MiiChannel은 신경 쓰지 않는 것 같습니다.\n"
 "\n"
 "새로운 Mii ID를 생성하면 완전히 새로운 고유한 Mii가 됩니다.\n"
 "\n"
@@ -1834,12 +1905,17 @@ msgid ""
 "and try again.\n"
 "\n"
 "You can continue to Task Selection"
-msgstr "이 타이틀의 저장 데이터가 초기화되지 않았습니다. 복원을 시도할 수 있지만, 복원이 실패할 경우 게임을 실행하여 초기 저장 데이터를 생성한 후 다시 시도하십시오. 작업 선택으로 계속할 수 있습니다."
+msgstr ""
+"이 타이틀의 저장 데이터가 초기화되지 않았습니다. 복원을 시도할 수 있지만, 복"
+"원이 실패할 경우 게임을 실행하여 초기 저장 데이터를 생성한 후 다시 시도하십시"
+"오. 작업 선택으로 계속할 수 있습니다."
 
 #: src/menu/TitleListState.cpp:119
 #, c-format
 msgid ""
-"SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
+"SaveMii is now using a new name format for savedata folders. Instead of "
+"using hex values, folders will be named after the title name, so for this "
+"title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
 "\n"
 "Do you want to rename already created backup folders?\n"
 "\n"
@@ -1850,7 +1926,9 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
-"SaveMii는 이제 저장 데이터 폴더에 새로운 이름 형식을 사용합니다. 16진수 값을 사용하는 대신 폴더 이름은 타이틀 이름을 따릅니다. 따라서 이 타이틀의 경우 '%08x%08x' 폴더는 '%s'가 되어 SD에서 찾기가 더 쉽습니다.\n"
+"SaveMii는 이제 저장 데이터 폴더에 새로운 이름 형식을 사용합니다. 16진수 값을 "
+"사용하는 대신 폴더 이름은 타이틀 이름을 따릅니다. 따라서 이 타이틀의 경우 "
+"'%08x%08x' 폴더는 '%s'가 되어 SD에서 찾기가 더 쉽습니다.\n"
 "\n"
 "이미 생성된 백업 폴더의 이름을 바꾸시겠습니까?\n"
 "\n"
@@ -1990,15 +2068,15 @@ msgstr "초기화"
 msgid "\\ue000: Initialize  \\ue001: Back"
 msgstr "\\ue000: 초기화 \\ue001: 뒤로"
 
-#: src/menu/MiiDBOptionsState.cpp:227 src/menu/TitleOptionsState.cpp:945
+#: src/menu/MiiDBOptionsState.cpp:227 src/menu/TitleOptionsState.cpp:947
 msgid "No data selected to backup"
 msgstr "백업할 데이터가 선택되지 않았습니다."
 
-#: src/menu/MiiDBOptionsState.cpp:229 src/menu/TitleOptionsState.cpp:947
+#: src/menu/MiiDBOptionsState.cpp:229 src/menu/TitleOptionsState.cpp:949
 msgid "No data selected to wipe"
 msgstr "삭제할 데이터가 선택되지 않았습니다."
 
-#: src/menu/MiiDBOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:955
+#: src/menu/MiiDBOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:957
 msgid "No data selected to restore"
 msgstr "복원할 데이터가 선택되지 않았습니다."
 
@@ -2080,20 +2158,34 @@ msgid "Select which Miis to Import"
 msgstr "가져올 Mii를 선택하세요"
 
 #: src/menu/MiiSelectState.cpp:162
-msgid "\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue002\\ue084: 보기 \\ue000: Mii 가져오기 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  "
+"\\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue002\\ue084: 보기 \\ue000: Mii 가져오기 "
+"\\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:164
-msgid "\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue002: 보기 \\ue000: Mii 가져오기 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue002: 보기 \\ue000: Mii 가져오기 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:167
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Import  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보기 \\ue000: 가져오기 \\ue001:뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
+"\\ue000: Import  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보"
+"기 \\ue000: 가져오기 \\ue001:뒤로"
 
 #: src/menu/MiiSelectState.cpp:169
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Import  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046:모두 설정/설정 해제 \\ue002: 보기 \\ue000: 가져오기 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
+"\\ue000: Import  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue045\\ue046:모두 설정/설정 해제 \\ue002: 보기 "
+"\\ue000: 가져오기 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:171
 msgid ">> Import"
@@ -2108,12 +2200,20 @@ msgid "Select which Miis to Export"
 msgstr "내보낼 Mii를 선택하세요"
 
 #: src/menu/MiiSelectState.cpp:177
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Export  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보기 \\ue000: 내보내기 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
+"\\ue000: Export  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보"
+"기 \\ue000: 내보내기 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:179
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue0045\\ue046: 모두 설정/해제 \\ue002: 보기 \\ue000: 내보내기 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
+"\\ue000: Export  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue0045\\ue046: 모두 설정/해제 \\ue002: 보기 "
+"\\ue000: 내보내기 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:180
 msgid ">> Export"
@@ -2128,8 +2228,12 @@ msgid "Select which Mii to Restore"
 msgstr "복원할 Mii를 선택하세요"
 
 #: src/menu/MiiSelectState.cpp:186
-msgid "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue002\\ue083\\ue084: 보기 \\ue000: Mii 복원 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  "
+"\\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue002\\ue083\\ue084: 보기 \\ue000: Mii 복원 "
+"\\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:187 src/menu/BatchJobTitleSelectState.cpp:226
 msgid ">> Restore"
@@ -2145,12 +2249,20 @@ msgid "Select which Miis to Wipe"
 msgstr " 삭제할 Mii를 선택하세요"
 
 #: src/menu/MiiSelectState.cpp:193
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Wipe  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보기 \\ue000: 삭제 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
+"\\ue000: Wipe  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보"
+"기 \\ue000: 삭제 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:195
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 설정/설정 해제 \\ue002: 보기 \\ue000: 지우기 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
+"\\ue000: Wipe  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 설정/설정 해제 \\ue002: "
+"보기 \\ue000: 지우기 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:196 src/menu/BatchJobTitleSelectState.cpp:244
 msgid ">> Wipe"
@@ -2165,12 +2277,20 @@ msgid "Select which Miis to Transform"
 msgstr "변환할 Mii를 선택하세요"
 
 #: src/menu/MiiSelectState.cpp:202
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Tasks  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보기 \\ue000: 작업 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
+"\\ue000: Tasks  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002\\ue084: 보"
+"기 \\ue000: 작업 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:204
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  \\ue000: Tasks  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002: 보기 \\ue000: 작업 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  "
+"\\ue000: Tasks  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 토글 \\ue002: 보기 "
+"\\ue000: 작업 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:205
 msgid ">> Transform"
@@ -2185,12 +2305,19 @@ msgid "Select Mii to copy attrs from"
 msgstr "속성을 복사할 Mii 선택"
 
 #: src/menu/MiiSelectState.cpp:211
-msgid "\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform Miis  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 템플릿 선택 \\ue002\\ue084: 보기 \\ue000: Mii 변환 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform "
+"Miis  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 템플릿 선택 \\ue002\\ue084: 보기 \\ue000: Mii 변환 \\ue001: "
+"뒤로"
 
 #: src/menu/MiiSelectState.cpp:213
-msgid "\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 템플릿 선택 \\ue002: 보기 \\ue000: Mii 변환 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  "
+"\\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 템플릿 선택 \\ue002: 보기 \\ue000: Mii 변환 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:214
 msgid ">> Use as template"
@@ -2201,12 +2328,19 @@ msgid "Select Mii to be overwritten"
 msgstr "덮어쓸 Mii 선택"
 
 #: src/menu/MiiSelectState.cpp:220 src/menu/MiiSelectState.cpp:229
-msgid "\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 대상 Mii 선택 \\ue002\\ue084: 보기 \\ue000: 계속 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  "
+"\\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 대상 Mii 선택 \\ue002\\ue084: 보기 \\ue000: 계속 \\ue001: 뒤"
+"로"
 
 #: src/menu/MiiSelectState.cpp:222 src/menu/MiiSelectState.cpp:231
-msgid "\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 대상 Mii 선택 \\ue002: 보기 \\ue000: 계속 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  "
+"\\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 대상 Mii 선택 \\ue002: 보기 \\ue000: 계속 \\ue001: 뒤로"
 
 #: src/menu/MiiSelectState.cpp:223
 msgid ">> Import here"
@@ -2439,12 +2573,20 @@ msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 정렬: %s \\ue084"
 
 #: src/menu/BackupSetListState.cpp:98
-msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
+msgid ""
+"\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  "
+"\\ue003: Filter  \\ue001: Back"
 msgstr ""
+"\\ue000: 선택  \\ue002: 내용 보기  \\ue045: 태그  \\ue046: 삭제  \\ue003: 필"
+"터  \\ue001: 뒤로"
 
 #: src/menu/BackupSetListState.cpp:100
-msgid "\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
+msgid ""
+"\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  "
+"\\ue001: Back"
 msgstr ""
+"\\ue000: 백업 세트 선택  \\ue002: 내용 보기  \\ue003: 목록 필터  \\ue001: 뒤"
+"로"
 
 #: src/menu/BackupSetListState.cpp:111
 msgid "Root BackupSet cannot be selected for batchRestore"
@@ -2472,16 +2614,24 @@ msgid "Batch Restore - Select"
 msgstr "일괄 복원 - 선택"
 
 #: src/menu/BatchJobTitleSelectState.cpp:225
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 설정/설정 해제 \\ue000: 제목 복원 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore "
+"titles  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/설정 해제 \\ue045\\ue046: 모두 설정/설정 해제 \\ue000: "
+"제목 복원 \\ue001: 뒤로"
 
 #: src/menu/BatchJobTitleSelectState.cpp:230
 msgid "Batch ProfileCopy - Select"
 msgstr "일괄 프로필 복사 - 선택"
 
 #: src/menu/BatchJobTitleSelectState.cpp:231
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: 프로필 복사 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
+"ProfileCopy  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: 프로필 복"
+"사 \\ue001: 뒤로"
 
 #: src/menu/BatchJobTitleSelectState.cpp:232
 #: src/menu/BatchJobTitleSelectState.cpp:250
@@ -2500,8 +2650,12 @@ msgid "Batch ProfileMove - Select"
 msgstr "일괄 프로필 이동 - 선택"
 
 #: src/menu/BatchJobTitleSelectState.cpp:237
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: 프로필 이동 \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
+"ProfileMove  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: 프로필 이"
+"동 \\ue001: 뒤로"
 
 #: src/menu/BatchJobTitleSelectState.cpp:238
 msgid ">> Move"
@@ -2516,32 +2670,48 @@ msgid "Batch Wipe - Select"
 msgstr "일괄 삭제 - 선택"
 
 #: src/menu/BatchJobTitleSelectState.cpp:243
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: WipeProfile \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
+"WipeProfile  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: "
+"WipeProfile \\ue001: 뒤로"
 
 #: src/menu/BatchJobTitleSelectState.cpp:248
 msgid "Batch Copy To USB - Select"
 msgstr "USB로 일괄 복사 - 선택"
 
 #: src/menu/BatchJobTitleSelectState.cpp:249
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: CopyToUSB \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
+"CopyToUSB  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: CopyToUSB "
+"\\ue001: 뒤로"
 
 #: src/menu/BatchJobTitleSelectState.cpp:254
 msgid "Batch Copy To NAND - Select"
 msgstr "NAND에 일괄 복사 - 선택"
 
 #: src/menu/BatchJobTitleSelectState.cpp:255
-msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
-msgstr "\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: CopyToNAND \\ue001: 뒤로"
+msgid ""
+"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
+"CopyToNAND  \\ue001: Back"
+msgstr ""
+"\\ue003\\ue07e: 설정/해제 \\ue045\\ue046: 모두 설정/해제 \\ue000: CopyToNAND "
+"\\ue001: 뒤로"
 
 #: src/menu/BatchJobTitleSelectState.cpp:260
 msgid "Batch Backup - Select & Go"
 msgstr "일괄 백업 - 선택 및 이동"
 
 #: src/menu/BatchJobTitleSelectState.cpp:261
-msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
-msgstr "\\ue003\\ue07e설정/설정 해제 \\ue045\\ue046모두 설정/설정 해제 \\ue002제외 \\ue000백업 \\ue001뒤로"
+msgid ""
+"\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  "
+"\\ue000Backup  \\ue001Back"
+msgstr ""
+"\\ue003\\ue07e설정/설정 해제 \\ue045\\ue046모두 설정/설정 해제 \\ue002제외 "
+"\\ue000백업 \\ue001뒤로"
 
 #: src/menu/BatchJobTitleSelectState.cpp:262
 msgid ">> Backup"
@@ -2934,7 +3104,8 @@ msgid ""
 "You can continue."
 msgstr ""
 "초기화되지 않은 타이틀을 선택하셨습니다.\n"
-"복원이 실패하면 게임을 실행하여 초기 저장 데이터를 생성한 후 다시 시도하십시오.\n"
+"복원이 실패하면 게임을 실행하여 초기 저장 데이터를 생성한 후 다시 시도하십시"
+"오.\n"
 "\n"
 "계속 진행할 수 있습니다."
 
@@ -2944,8 +3115,8 @@ msgid "ERROR WIPING BACKUPSET"
 msgstr "백업 세트 삭제 오류"
 
 #: src/menu/BatchJobTitleSelectState.cpp:719
-#: src/menu/BatchJobTitleSelectState.cpp:728 src/menu/TitleOptionsState.cpp:960
-#: src/menu/TitleOptionsState.cpp:968
+#: src/menu/BatchJobTitleSelectState.cpp:728 src/menu/TitleOptionsState.cpp:962
+#: src/menu/TitleOptionsState.cpp:970
 #, c-format
 msgid ""
 "%s\n"
@@ -2956,7 +3127,8 @@ msgid ""
 msgstr ""
 "%s\n"
 "\n"
-"작업이 중단되었습니다. 존재하지 않는 프로필에 저장 데이터를 복원하려고 했습니다.\n"
+"작업이 중단되었습니다. 존재하지 않는 프로필에 저장 데이터를 복원하려고 했습니"
+"다.\n"
 "\n"
 "'사용자 이름/암호화 대상' 옵션을 사용하여 복원해 보세요."
 
@@ -2984,49 +3156,54 @@ msgid ""
 "\n"
 "Please add the files with keys from other consoles"
 msgstr ""
+"'SD:/wiiu/backups/keys' 폴더에 키 파일이 없습니다.\n"
+"\n"
+"다른 콘솔의 키가 포함된 파일을 추가해 주세요"
 
 #: src/menu/KeyListState.cpp:39
 msgid "Encryption Keys files"
-msgstr ""
+msgstr "암호화 키 파일"
 
 #: src/menu/KeyListState.cpp:41
 #, c-format
 msgid "Source[P:%s|S:%s|M:%s]"
-msgstr ""
+msgstr "소스[P:%s|S:%s|M:%s]"
 
 #: src/menu/KeyListState.cpp:65
-msgid "Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."
+msgid ""
+"Highlight a file, and using the buttons indicated below load a key from it. "
+"Default keys (belonging to this console) can be loaded at once with \\ue045."
 msgstr ""
+"파일을 강조 표시하고 아래에 표시된 버튼을 사용하여 키를 로드하세요. 이 콘솔"
+"의 기본 키는 \\ue045를 사용하여 한 번에 로드할 수 있습니다."
 
 #: src/menu/KeyListState.cpp:70
-msgid "Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: Default  \\ue001: Back"
+msgid ""
+"Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: "
+"Default  \\ue001: Back"
 msgstr ""
+"키 설정:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: 기본값  "
+"\\ue001: 뒤로"
 
 #: src/menu/KeyListState.cpp:92
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting custom private keys: %s"
-msgstr ""
-"\n"
-"%s에 대한 할당량 설정 오류"
+msgstr "사용자 지정 프라이빗 키 설정 오류: %s"
 
 #: src/menu/KeyListState.cpp:104
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting custom shared keys: %s"
-msgstr ""
-"\n"
-"%s에 대한 할당량 설정 오류"
+msgstr "사용자 지정 공유 키 설정 오류: %s"
 
 #: src/menu/KeyListState.cpp:116
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting custom mac: %s"
-msgstr ""
-"\n"
-"%s에 대한 할당량 설정 오류"
+msgstr "사용자 지정 MAC 설정 오류: %s"
 
 #: src/menu/KeyListState.cpp:122
 #, c-format
 msgid "Error setting default keys and mac: %s"
-msgstr ""
+msgstr "기본 키 및 MAC 설정 오류: %s"
 
 #: src/menu/BatchJobState.cpp:27
 msgid "Batch Restore"
@@ -3048,7 +3225,8 @@ msgid ""
 "* to the same user profiles\n"
 "* to a different user in the same console \n"
 "* or to a different console where the games are already installed.\n"
-"In the later case, it is recommended to first run the game to initialize the savedata."
+"In the later case, it is recommended to first run the game to initialize the "
+"savedata."
 msgstr ""
 "일괄 복원을 사용하면 일괄 백업의 모든 저장 데이터를 \n"
 "* 동일한 사용자 프로필로\n"
@@ -3076,14 +3254,18 @@ msgstr "   vWii 저장 데이터 삭제(%u 제목%s)"
 
 #: src/menu/BatchJobState.cpp:37
 msgid ""
-"Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n"
+"Batch Wipe allows you to wipe savedata belonging to a given profile across "
+"all selected titles. It detects also savedata belonging to profiles not "
+"defined in the console.\n"
 "\n"
 "Just:\n"
 "- select which data to wipe\n"
 "- select titles to act on\n"
 "- and go!"
 msgstr ""
-"일괄 삭제를 사용하면 선택한 모든 타이틀에서 특정 프로필에 속한 저장 데이터를 삭제할 수 있습니다. 콘솔에 정의되지 않은 프로필에 속한 저장 데이터도 감지합니다.\n"
+"일괄 삭제를 사용하면 선택한 모든 타이틀에서 특정 프로필에 속한 저장 데이터를 "
+"삭제할 수 있습니다. 콘솔에 정의되지 않은 프로필에 속한 저장 데이터도 감지합니"
+"다.\n"
 "\n"
 "다음 단계를 따르세요.\n"
 "- 삭제할 데이터 선택\n"
@@ -3108,14 +3290,16 @@ msgstr "   USB에서 NAND로 Wii U 저장 데이터 복사"
 
 #: src/menu/BatchJobState.cpp:44
 msgid ""
-"Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n"
+"Batch Copy To Other Device allows you to transfer savedata between NAND and "
+"USB for all selected titles that already have savedata on both media.\n"
 "\n"
 "Just:\n"
 "- select which data to copy\n"
 "- select titles to act on\n"
 "- and go!"
 msgstr ""
-"다른 기기에 일괄 복사'를 사용하면 선택한 모든  타이틀의 저장 데이터를 NAND와 USB 간에 전송할 수 있습니다. 두 미디어 모두에 이미 저장 데이터가 있습니다.\n"
+"다른 기기에 일괄 복사'를 사용하면 선택한 모든  타이틀의 저장 데이터를 NAND와 "
+"USB 간에 전송할 수 있습니다. 두 미디어 모두에 이미 저장 데이터가 있습니다.\n"
 "\n"
 "다음 순서대로 수행하세요.\n"
 "- 복사할 데이터를 선택하고\n"
@@ -3166,17 +3350,21 @@ msgstr "   저장데이터를 %s의 제목으로 복사"
 
 #: src/menu/TitleTaskState.cpp:72
 msgid "   Export to 'private' SD Wii Data slots"
-msgstr ""
+msgstr "   SD Wii 데이터 'private' 슬롯으로 내보내기"
 
 #: src/menu/TitleTaskState.cpp:74
 msgid "   Import from 'private' SD Wii Data slots "
-msgstr ""
+msgstr "   SD Wii 데이터 'private' 슬롯에서 가져오기"
 
 #: src/menu/TitleTaskState.cpp:88
 msgid ""
 "This title is a GameCube inject.\n"
-"Saves cannot be managed using SaveMii. Check Nintendont for more details on how to proceed."
+"Saves cannot be managed using SaveMii. Check Nintendont for more details on "
+"how to proceed."
 msgstr ""
+"이 타이틀은 게임큐브 인젝트입니다.\n"
+"SaveMii를 사용하여 저장 데이터를 관리할 수 없습니다. 진행 방법에 대한 자세한 "
+"내용은 Nintendont를 확인하세요."
 
 #: src/menu/TitleTaskState.cpp:91
 msgid ""
@@ -3185,15 +3373,20 @@ msgid ""
 "  the vWii Save Management section."
 msgstr ""
 "이 게임은 인젝션(vWii 또는 GC 게임을 WiiU 게임으로 패키징한 것)입니다.\n"
-"필요한 경우, vWii 저장 파일 관리 섹션을 사용하여 vWii 저장 파일을 관리할 수도 있습니다."
+"필요한 경우, vWii 저장 파일 관리 섹션을 사용하여 vWii 저장 파일을 관리할 수"
+"도 있습니다."
 
 #: src/menu/TitleTaskState.cpp:98 src/menu/MiiTasksState.cpp:165
 msgid "\\ue000: Select Task  \\ue001: Back"
 msgstr "\\ue000: 작업 선택  \\ue001: 취로"
 
 #: src/menu/TitleTaskState.cpp:110
-msgid "This inject does not seem neither a disc based Wii/GC game nor a VC/WiiWare. Cannot be managed by SaveMii."
+msgid ""
+"This inject does not seem neither a disc based Wii/GC game nor a VC/WiiWare. "
+"Cannot be managed by SaveMii."
 msgstr ""
+"이 인젝트는 디스크 기반 Wii/GC 게임이나 VC/WiiWare가 아닌 것 같습니다. "
+"SaveMii로 관리할 수 없습니다."
 
 #: src/menu/TitleTaskState.cpp:137
 msgid "No save to Backup."
@@ -3217,15 +3410,19 @@ msgstr "이동할 저장 데이터가 없습니다."
 
 #: src/menu/TitleTaskState.cpp:152
 msgid "No save in SD Wii Data slot."
-msgstr ""
+msgstr "SD Wii 데이터 슬롯에 저장 데이터가 없습니다."
 
 #: src/menu/TitleTaskState.cpp:155
 msgid "No save to export to SD Wii Data slot."
-msgstr ""
+msgstr "SD Wii 데이터 슬롯으로 내보낼 저장 데이터가 없습니다."
 
 #: src/menu/TitleTaskState.cpp:188
-msgid "GameCube injects savedata cannot be restored with SaveMii. Check Nintendont documentation to manually copy savedata"
+msgid ""
+"GameCube injects savedata cannot be restored with SaveMii. Check Nintendont "
+"documentation to manually copy savedata"
 msgstr ""
+"게임큐브 인젝트 저장 데이터는 SaveMii로 복구할 수 없습니다. Nintendont 문서"
+"를 확인하여 저장 데이터를 수동으로 복사하세요"
 
 #: src/menu/TitleTaskState.cpp:199
 msgid "Title has no profile savedata"
@@ -3333,48 +3530,82 @@ msgid "   Togle Temporary Flag On/Off:"
 msgstr "   임시 표시 켜기 / 끄기:"
 
 #: src/menu/MiiTransformTasksState.cpp:83
-msgid "Selected miis will get the physical appearance of the mii you will select in the next menu."
+msgid ""
+"Selected miis will get the physical appearance of the mii you will select in "
+"the next menu."
 msgstr "선택한 Mii는 사용자가 선택한 Mii의 외형을 가지게 됩니다 다음 메뉴에서."
 
 #: src/menu/MiiTransformTasksState.cpp:86
-msgid "Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost."
-msgstr "선택한 Mii는 템플릿 Mii의 소유권 속성을 가지게 되므로 이후 템플릿 콘솔에 속하게 됩니다. 현재 게임 연결은 해제됩니다."
+msgid ""
+"Selected miis will get the ownership attributes of the template mii, so "
+"after they will belong to template console. Current games association is "
+"lost."
+msgstr ""
+"선택한 Mii는 템플릿 Mii의 소유권 속성을 가지게 되므로 이후 템플릿 콘솔에 속하"
+"게 됩니다. 현재 게임 연결은 해제됩니다."
 
 #: src/menu/MiiTransformTasksState.cpp:89
-msgid "Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost."
-msgstr "Mii의 MAC 주소와 AuthID(WiiU)를 업데이트하여 이 콘솔에서 생성된 것처럼 표시되도록 합니다. Mii ID가 업데이트되므로 게임 연결이 손실됩니다."
+msgid ""
+"Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as "
+"created on this console. Updates Mii Id, so games association is lost."
+msgstr ""
+"Mii의 MAC 주소와 AuthID(WiiU)를 업데이트하여 이 콘솔에서 생성된 것처럼 표시되"
+"도록 합니다. Mii ID가 업데이트되므로 게임 연결이 손실됩니다."
 
 #: src/menu/MiiTransformTasksState.cpp:92
-msgid "So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)."
-msgstr "Mii에 새로운 고유 Mii ID가 부여됩니다(주의! 이전 Mii ID를 사용하는 게임에는 더 이상 연결되지 않습니다)."
+msgid ""
+"So the mii has a new unique Mii Id (Beware! It will no longer be tied to any "
+"game that expects the older Mii Id)."
+msgstr ""
+"Mii에 새로운 고유 Mii ID가 부여됩니다(주의! 이전 Mii ID를 사용하는 게임에는 "
+"더 이상 연결되지 않습니다)."
 
 #: src/menu/MiiTransformTasksState.cpp:95
 msgid "Mark Miis as a favorite one so they appear in games that support them."
-msgstr "Mii를 즐겨찾기로 표시하여 해당 Mii를 지원하는 게임에 표시되도록 합니다."
+msgstr ""
+"Mii를 즐겨찾기로 표시하여 해당 Mii를 지원하는 게임에 표시되도록 합니다."
 
 #: src/menu/MiiTransformTasksState.cpp:98
 msgid "So the mii can travel to other consoles."
 msgstr "Mii를 다른 콘솔로 옮길 수 있도록 합니다."
 
 #: src/menu/MiiTransformTasksState.cpp:101
-msgid "You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost."
-msgstr "일반 Mii를 특수 Mii로, 또는 그 반대로 변환할 수 있습니다. 이렇게 하면 Mii ID가 업데이트되므로 게임 연결이 손실됩니다."
+msgid ""
+"You can transform a normal Mii into an special one, and viceversa. This "
+"updates the Mii Id, so games association is lost."
+msgstr ""
+"일반 Mii를 특수 Mii로, 또는 그 반대로 변환할 수 있습니다. 이렇게 하면 Mii ID"
+"가 업데이트되므로 게임 연결이 손실됩니다."
 
 #: src/menu/MiiTransformTasksState.cpp:104
-msgid "Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost)."
-msgstr "Wii Mii는 생성 위치에 관계없이 외부 Mii로 강제로 설정할 수 있습니다. 이렇게 하면 Mii ID가 업데이트됩니다(Mii 게임 연결이 손실됨)."
+msgid ""
+"Wii Miis can be forced as foreign irrespective of where they were created. "
+"This updates the Mii Id (mii games association is lost)."
+msgstr ""
+"Wii Mii는 생성 위치에 관계없이 외부 Mii로 강제로 설정할 수 있습니다. 이렇게 "
+"하면 Mii ID가 업데이트됩니다(Mii 게임 연결이 손실됨)."
 
 #: src/menu/MiiTransformTasksState.cpp:107
-msgid "CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo)."
-msgstr "선택한 항목에 대한 CRC가 다시 계산됩니다 mii (ffsd, bin, cfsd 또는 rsd 파일에 있는 경우) 또는 전체 DB (FFL 또는 RFL 파일 저장소에 있는 mii의 경우)"
+msgid ""
+"CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd "
+"files) or for the entire DB (for miis in a FFL or RFL file repo)."
+msgstr ""
+"선택한 항목에 대한 CRC가 다시 계산됩니다 mii (ffsd, bin, cfsd 또는 rsd 파일"
+"에 있는 경우) 또는 전체 DB (FFL 또는 RFL 파일 저장소에 있는 mii의 경우)"
 
 #: src/menu/MiiTransformTasksState.cpp:110
-msgid "So people that does not own the mii can modifiy it by creating a copy of the original."
+msgid ""
+"So people that does not own the mii can modifiy it by creating a copy of the "
+"original."
 msgstr "Mii를 소유하지 않은 사람이 원본을 복사하여 수정할 수 있도록 합니다."
 
 #: src/menu/MiiTransformTasksState.cpp:113
-msgid "Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost)."
-msgstr "임시 Miis는 FFL DB에서 볼 수 없습니다. 이 작업은 Mii ID를 업데이트합니다(Mii 게임 연결이 손실됨)."
+msgid ""
+"Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games "
+"association is lost)."
+msgstr ""
+"임시 Miis는 FFL DB에서 볼 수 없습니다. 이 작업은 Mii ID를 업데이트합니다(Mii "
+"게임 연결이 손실됨)."
 
 #: src/menu/MiiTransformTasksState.cpp:127
 msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Select Mii Template  \\ue001: Back"
@@ -3409,7 +3640,8 @@ msgid "   Backup DB"
 msgstr "   DB 백업"
 
 #: src/menu/MiiTasksState.cpp:37
-msgid "   Restore Full DB (Full restore - all account attributes - for one profile)"
+msgid ""
+"   Restore Full DB (Full restore - all account attributes - for one profile)"
 msgstr "   전체 DB 복원 (전체 복원 - 모든 계정 속성 - 하나의 프로필)"
 
 #: src/menu/MiiTasksState.cpp:39
@@ -3475,12 +3707,22 @@ msgid "Backup All Wii U Account folders and files"
 msgstr "모든 Wii U 계정 폴더 및 파일 백업"
 
 #: src/menu/MiiTasksState.cpp:95
-msgid "Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect."
-msgstr "Wii U 계정 파일 복원(MiiData를 포함한 모든 정보). 변경 사항을 적용하려면 콘솔을 다시 시작해야 합니다."
+msgid ""
+"Restore One Wii U Account files (all info, including but not only MiiData). "
+"Needs a console restart to take effect."
+msgstr ""
+"Wii U 계정 파일 복원(MiiData를 포함한 모든 정보). 변경 사항을 적용하려면 콘솔"
+"을 다시 시작해야 합니다."
 
 #: src/menu/MiiTasksState.cpp:98
-msgid "Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect."
-msgstr "한 Wii U 계정에서 다른 계정으로 MiiData + MiiImg 복원 (둘 다 아님) NNID, PNID 또는 기타 속성은 수정되지 않습니다. 변경 사항을 적용하려면 콘솔을 다시 시작해야 합니다."
+msgid ""
+"Restore MiiData + MiiImg from One Wii U Account to a different one (neither "
+"NNID nor PNID nor other attributes are modified). Needs a console restart to "
+"take effect."
+msgstr ""
+"한 Wii U 계정에서 다른 계정으로 MiiData + MiiImg 복원 (둘 다 아님) NNID, "
+"PNID 또는 기타 속성은 수정되지 않습니다. 변경 사항을 적용하려면 콘솔을 다시 "
+"시작해야 합니다."
 
 #: src/menu/MiiTasksState.cpp:101 src/menu/MiiTasksState.cpp:131
 msgid "List all Miis and some of its attributes"
@@ -3491,12 +3733,24 @@ msgid "Export Miis to other repos"
 msgstr "다른 저장소로 Mii 내보내기"
 
 #: src/menu/MiiTasksState.cpp:107
-msgid "Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
-msgstr "다른 저장소의 MIIS에서 MiiData를 가져옵니다. 모든 변경 사항을 적용하려면 콘솔을 다시 시작하고 사용자를 다시 등록해야 합니다(사용자 설정 > MIIS 변경 > 등록된 MIIS 편집 > 등록)."
+msgid ""
+"Import MiiData from a mii in another repo. Needs console restart and re-"
+"register the user (User Settings > Change Mii > Edit Registered Mi > "
+"Register) to take full effect"
+msgstr ""
+"다른 저장소의 MIIS에서 MiiData를 가져옵니다. 모든 변경 사항을 적용하려면 콘솔"
+"을 다시 시작하고 사용자를 다시 등록해야 합니다(사용자 설정 > MIIS 변경 > 등록"
+"된 MIIS 편집 > 등록)."
 
 #: src/menu/MiiTasksState.cpp:110
-msgid "Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
-msgstr "Mii의 속성(공유/복사/MiiID/소유자) 또는 외형을 변경합니다. 변경 사항을 완전히 적용하려면 콘솔을 다시 시작하고 사용자를 다시 등록해야 합니다(사용자 설정 > Mii 변경 > 등록된 Mi 편집 > 등록)."
+msgid ""
+"Change attributes (share/copy/miiid/owner) or appareance of miis. Needs "
+"console restart and re-register the user (User Settings > Change Mii > Edit "
+"Registered Mi > Register) to take full effect"
+msgstr ""
+"Mii의 속성(공유/복사/MiiID/소유자) 또는 외형을 변경합니다. 변경 사항을 완전"
+"히 적용하려면 콘솔을 다시 시작하고 사용자를 다시 등록해야 합니다(사용자 설정 "
+"> Mii 변경 > 등록된 Mi 편집 > 등록)."
 
 #: src/menu/MiiTasksState.cpp:119
 msgid "Backup Mii Database in their enterity"
@@ -3535,8 +3789,10 @@ msgid "Keyboard"
 msgstr "키보드"
 
 #: src/menu/KeyboardState.cpp:38
-msgid "\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
-msgstr "\\ue000: 키 누르기 \\ue003: Shift \\ue002: Del \\ue045: 확인! \\ue001: 뒤로"
+msgid ""
+"\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
+msgstr ""
+"\\ue000: 키 누르기 \\ue003: Shift \\ue002: Del \\ue045: 확인! \\ue001: 뒤로"
 
 #: src/menu/BatchBackupState.cpp:27
 msgid "Batch Backup"
@@ -3599,25 +3855,25 @@ msgstr "부분 - WU:%d,vW:%d,S:%d 완료"
 
 #: src/menu/BackupSetContentListState.cpp:41
 msgid "BackupSet Content"
-msgstr ""
+msgstr "백업 세트 내용"
 
 #: src/menu/BackupSetContentListState.cpp:54
 #, c-format
 msgid "    %s [Installed]"
-msgstr ""
+msgstr "    %s [설치됨]"
 
 #: src/menu/BackupSetContentListState.cpp:85
 #, c-format
 msgid "%s  [%d]"
-msgstr ""
+msgstr "%s  [%d]"
 
 #: src/menu/BackupSetContentListState.cpp:91
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
-msgstr ""
+msgstr "\\ue085\\ue07e\\ue086: 페이지 이동   \\ue001: 뒤로"
 
 #: src/menu/BackupSetContentListState.cpp:175
 msgid "< no savedata >"
-msgstr ""
+msgstr "< 저장 데이터 없음 >"
 
 #: src/menu/BatchJobOptions.cpp:137
 #, c-format
@@ -3639,17 +3895,22 @@ msgid ""
 "* Backup it with 'allusers' option or with Batch Backup\n"
 "* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."
 msgstr ""
-"경고 일부 타이틀에는 이 콘솔에 없는 프로필에 대한 저장 데이터가 포함되어 있습니다. 이 저장 데이터는 무시됩니다. 다음 작업을 수행할 수 있습니다.\n"
+"경고 일부 타이틀에는 이 콘솔에 없는 프로필에 대한 저장 데이터가 포함되어 있습"
+"니다. 이 저장 데이터는 무시됩니다. 다음 작업을 수행할 수 있습니다.\n"
 "* 'allusers' 옵션 또는 일괄 백업을 사용하여 백업합니다.\n"
-"* '일괄 삭제/다른 프로필로 일괄 복사' 작업을 사용하여 데이터를 삭제하거나 이동합니다."
+"* '일괄 삭제/다른 프로필로 일괄 복사' 작업을 사용하여 데이터를 삭제하거나 이"
+"동합니다."
 
 #: src/menu/BatchJobOptions.cpp:219
 msgid ""
-"The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n"
+"The BackupSet contains savedata for profiles that don't exist in this "
+"console. You can continue, but 'allusers' restore process will fail for "
+"those titles.\n"
 "\n"
 "Recommended action: restore from/to individual users."
 msgstr ""
-"백업 세트에 이 콘솔에 없는 프로필의 저장 데이터가 포함되어 있습니다. 계속 진행할 수 있지만, 해당 타이틀의 '모든 사용자' 복원 프로세스는 실패합니다.\n"
+"백업 세트에 이 콘솔에 없는 프로필의 저장 데이터가 포함되어 있습니다. 계속 진"
+"행할 수 있지만, 해당 타이틀의 '모든 사용자' 복원 프로세스는 실패합니다.\n"
 "\n"
 "권장 작업: 복원 개별 사용자와의 통신입니다."
 
@@ -3787,8 +4048,12 @@ msgid "\\ue000: Ok! Go to Title selection  \\ue001: Back"
 msgstr "\\ue000: 확인! 제목 선택으로 이동 \\ue001: 뒤로"
 
 #: src/menu/BatchJobOptions.cpp:357
-msgid "\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"
-msgstr "\\ue002: 정의되지 않은 프로필 \\ue000: 확인! 제목 선택 항목으로 이동 \\ue001: 뒤로"
+msgid ""
+"\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: "
+"Back"
+msgstr ""
+"\\ue002: 정의되지 않은 프로필 \\ue000: 확인! 제목 선택 항목으로 이동 "
+"\\ue001: 뒤로"
 
 #: src/menu/BatchJobOptions.cpp:365
 msgid ""
@@ -3871,16 +4136,22 @@ msgstr "\\ue002: 옵션 \\ue000: 모드 선택"
 
 #: src/menu/MainMenuState.cpp:80
 msgid ""
-"This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n"
+"This task allows you to backup/restore savedata for MiiMaker, Internet "
+"Browser and other system titles.\n"
 "\n"
-"Proceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n"
+"Proceed with caution and be aware of what you are modifying! Some saves can "
+"affect system behavior, and misuse on them can have unexpected "
+"consequences!\n"
 "\n"
 "Do you want to continue?\n"
 "\n"
 msgstr ""
-"이 작업을 통해 MiiMaker, 인터넷 브라우저 및 기타 시스템 프로그램의 저장 데이터를 백업/복원할 수 있습니다.\n"
+"이 작업을 통해 MiiMaker, 인터넷 브라우저 및 기타 시스템 프로그램의 저장 데이"
+"터를 백업/복원할 수 있습니다.\n"
 "\n"
-"주의해서 진행하시고 수정하는 내용을 정확히 숙지하십시오! 일부 저장 데이터는 시스템 동작에 영향을 미칠 수 있으며, 잘못 사용하면 예상치 못한 결과가 발생할 수 있습니다!\n"
+"주의해서 진행하시고 수정하는 내용을 정확히 숙지하십시오! 일부 저장 데이터는 "
+"시스템 동작에 영향을 미칠 수 있으며, 잘못 사용하면 예상치 못한 결과가 발생할 "
+"수 있습니다!\n"
 "\n"
 "계속하시겠습니까?\n"
 "\n"
@@ -3952,14 +4223,14 @@ msgid "Delete from:"
 msgstr "삭제"
 
 #: src/menu/TitleOptionsState.cpp:142
-#, fuzzy, c-format
+#, c-format
 msgid "Select %s [%s]%s:"
-msgstr "%s 선택 [%s]:"
+msgstr "%s [%s]%s 선택:"
 
 #: src/menu/TitleOptionsState.cpp:153
 #, c-format
 msgid "   Go! (slot in SD: %s)"
-msgstr ""
+msgstr "   시작! (SD 슬롯: %s)"
 
 #: src/menu/TitleOptionsState.cpp:183
 msgid "metadata + savedata"
@@ -4038,76 +4309,102 @@ msgstr "저장 데이터"
 
 #: src/menu/TitleOptionsState.cpp:330
 msgid "'data.bin' savedata found. Uncompress and restore:"
-msgstr ""
+msgstr "'data.bin' 저장 데이터를 찾았습니다. 압축 해제 후 복구:"
 
 #: src/menu/TitleOptionsState.cpp:332
 msgid "yes, I know this is a true data.bin file"
-msgstr ""
+msgstr "네, 이것이 실제 data.bin 파일임을 알고 있습니다"
 
 #: src/menu/TitleOptionsState.cpp:332
 msgid "no, just copy back the data.bin file as is"
-msgstr ""
+msgstr "아니요, data.bin 파일을 있는 그대로 다시 복사합니다"
 
 #: src/menu/TitleOptionsState.cpp:337 src/menu/TitleOptionsState.cpp:369
-msgid "WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."
+msgid ""
+"WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv "
+"md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see "
+"github.com/w3irDv/savemii)."
 msgstr ""
+"경고: data.bin을 찾았으나 해독할 공유 키가 없습니다. sd:/keys.txt에 sd_key "
+"sd_iv md5_blanker를 추가하거나 \\ue003를 눌러 키 파일을 선택하세요 "
+"(github.com/w3irDv/savemii 참조)."
 
 #: src/menu/TitleOptionsState.cpp:340 src/menu/TitleOptionsState.cpp:372
 msgid "WARNING: Game TitleId does not match the one in savedata."
-msgstr ""
+msgstr "경고: 게임 TitleId가 저장 데이터의 ID와 일치하지 않습니다."
 
 #: src/menu/TitleOptionsState.cpp:341 src/menu/TitleOptionsState.cpp:373
 msgid "This savedata is for a different game/region."
-msgstr ""
+msgstr "이 저장 데이터는 다른 게임/지역용입니다."
 
 #: src/menu/TitleOptionsState.cpp:346
-#, fuzzy
 msgid "Compress backup:"
-msgstr "사전 복사 복원 백업"
+msgstr "백업 압축:"
 
 #: src/menu/TitleOptionsState.cpp:348
 msgid "yes, I neeed a data.bin file"
-msgstr ""
+msgstr "네, data.bin 파일이 필요합니다"
 
 #: src/menu/TitleOptionsState.cpp:348
 msgid "no, plain files are ok (classic savemii format)"
-msgstr ""
+msgstr "아니요, 일반 파일로 충분합니다 (기존 SaveMii 형식)"
 
 #: src/menu/TitleOptionsState.cpp:352 src/menu/TitleOptionsState.cpp:361
-msgid "No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."
+msgid ""
+"No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/"
+"keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/"
+"savemii)."
 msgstr ""
+"저장 데이터를 암호화할 공유 키가 없습니다. sd:/keys.txt에 sd_key sd_iv "
+"md5_blanker를 추가하거나 \\ue003를 눌러 키 파일을 선택하세요 (github.com/"
+"w3irDv/savemii 참조)."
 
 #: src/menu/TitleOptionsState.cpp:358
-msgid "Compress savedatap to sd:/private/wii/title where it can be read by standard Wii Data Management"
+msgid ""
+"Compress savedatap to sd:/private/wii/title where it can be read by standard "
+"Wii Data Management"
 msgstr ""
+"표준 Wii 데이터 관리에서 읽을 수 있도록 sd:/private/wii/title에 저장 데이터"
+"를 압축합니다"
 
 #: src/menu/TitleOptionsState.cpp:366
 msgid "Restore backup from sd:/private/wii/title"
-msgstr ""
+msgstr "sd:/private/wii/title에서 백업 복구"
 
 #: src/menu/TitleOptionsState.cpp:438
 msgid "\\ue000: Backup  \\ue003: Keys  \\ue001: Back"
-msgstr ""
+msgstr "\\ue000: 백업  \\ue003: 키  \\ue001: 뒤로"
 
 #: src/menu/TitleOptionsState.cpp:440
-msgid "\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
+msgid ""
+"\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  "
+"\\ue001: Back"
 msgstr ""
+"\\ue000: 백업  \\ue003: 키  \\ue045 슬롯 태그  \\ue046 슬롯 삭제  \\ue001: 뒤"
+"로"
 
 #: src/menu/TitleOptionsState.cpp:448
 msgid "\\ue000: Restore  \\ue002: Change BackupSet  \\ue001: Back"
-msgstr ""
+msgstr "\\ue000: 복구  \\ue002: 백업 세트 변경  \\ue001: 뒤로"
 
 #: src/menu/TitleOptionsState.cpp:450
-msgid "\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
+msgid ""
+"\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
 msgstr ""
+"\\ue000: 복구  \\ue002: 백업 세트 변경  \\ue045 슬롯 태그  \\ue001: 뒤로"
 
 #: src/menu/TitleOptionsState.cpp:453
-msgid "\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"
-msgstr ""
+msgid ""
+"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"
+msgstr "\\ue000: 복구  \\ue003: 키  \\ue002: 백업 세트 변경  \\ue001: 뒤로"
 
 #: src/menu/TitleOptionsState.cpp:455
-msgid "\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
+msgid ""
+"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag "
+"Slot  \\ue001: Back"
 msgstr ""
+"\\ue000: 복구  \\ue003: 키  \\ue002: 백업 세트 변경  \\ue045 슬롯 태그  "
+"\\ue001: 뒤로"
 
 #: src/menu/TitleOptionsState.cpp:464
 msgid "Copy to Other Profile"
@@ -4146,99 +4443,129 @@ msgid "Copy to Other Device"
 msgstr "다른 장치에 복사합니다."
 
 #: src/menu/TitleOptionsState.cpp:489
-#, fuzzy
 msgid "Import from SD Wii Save"
-msgstr "   loadiine에서 가져오기"
+msgstr "SD Wii 저장 데이터에서 가져오기"
 
 #: src/menu/TitleOptionsState.cpp:491
 msgid "\\ue000: Import  \\ue003: Keys  \\ue001: Back"
-msgstr ""
+msgstr "\\ue000: 가져오기  \\ue003: 키  \\ue001: 뒤로"
 
 #: src/menu/TitleOptionsState.cpp:494
-#, fuzzy
 msgid "Export to SD Wii Save"
-msgstr "   loadiine으로 내보내기"
+msgstr "SD Wii 저장 데이터로 내보내기"
 
 #: src/menu/TitleOptionsState.cpp:497
 msgid "\\ue000: Export  \\ue003: Keys  \\ue001: Back"
-msgstr ""
+msgstr "\\ue000: 내보내기  \\ue003: 키  \\ue001: 뒤로"
 
 #: src/menu/TitleOptionsState.cpp:499
 msgid "\\ue000: Export  \\ue003: Keys  \\ue046 Delete Slot  \\ue001: Back"
-msgstr ""
+msgstr "\\ue000: 내보내기  \\ue003: 키  \\ue046 슬롯 삭제  \\ue001: 뒤로"
 
-#: src/menu/TitleOptionsState.cpp:949
+#: src/menu/TitleOptionsState.cpp:951
 msgid "No data selected to copyToOtherProfile"
 msgstr "다른 프로필로 복사할 데이터가 선택되지 않았습니다."
 
-#: src/menu/TitleOptionsState.cpp:951
+#: src/menu/TitleOptionsState.cpp:953
 msgid "No data selected to moveProfile"
 msgstr "이동할 프로필 데이터가 선택되지 않았습니다."
 
-#: src/menu/TitleOptionsState.cpp:953
+#: src/menu/TitleOptionsState.cpp:955
 msgid "No data selected to copy"
 msgstr "복사할 데이터가 선택되지 않았습니다."
 
-#: src/menu/TitleOptionsState.cpp:978
+#: src/menu/TitleOptionsState.cpp:980
 #, c-format
 msgid ""
 "'data.bin' uncompress aborted: no shared keys found.\n"
-"Provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n"
+"Provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key "
+"and md5_blanker values (they are console independent). Check github.com/"
+"w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
-
-#: src/menu/TitleOptionsState.cpp:983
-#, c-format
-msgid ""
-"'data.bin' compress aborted: no shared keys found.\n"
-" Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/savemii for more info.\n"
+"'data.bin' 압축 해제 중단: 공유 키를 찾을 수 없습니다.\n"
+"Wii sd_iv, sd_key, md5_blanker 값이 포함된 'keys.txt' 파일을 SD 카드 루트에 "
+"제공하세요 (이 값들은 콘솔에 무관합니다). 자세한 내용은 ://github.com 확인하"
+"세요.\n"
 "\n"
-"Keys initialization error:\n"
+"키 초기화 오류:\n"
 "%s\n"
-msgstr ""
 
 #: src/menu/TitleOptionsState.cpp:985
 #, c-format
 msgid ""
-"'data.bin' compress aborted: no private keys found.\n"
-" Please check that the Wii U 'otp.bin' file is in SD:/wiiu/backups/<SerialId>. Check github.com/w3irDv/savemii for more info.\n"
+"'data.bin' compress aborted: no shared keys found.\n"
+" Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, "
+"sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/"
+"savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
+"'data.bin' 압축 중단: 공유 키를 찾을 수 없습니다.\n"
+"Wii sd_iv, sd_key, md5_blanker 값이 포함된 'keys.txt' 파일을 SD 카드 루트에 "
+"제공하세요 (모든 Wii에서 사용 가능). 자세한 내용은 ://github.com 확인하세"
+"요.\n"
+"\n"
+"키 초기화 오류:\n"
+"%s\n"
 
 #: src/menu/TitleOptionsState.cpp:987
 #, c-format
 msgid ""
-"'data.bin' compress aborted: mac_address not found.\n"
-" Please provide a 'keys.txt' file in the root of the SD with a mac_address (from any Wii). Check github.com/w3irDv/savemii for more info.\n"
+"'data.bin' compress aborted: no private keys found.\n"
+" Please check that the Wii U 'otp.bin' file is in SD:/wiiu/backups/"
+"<SerialId>. Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
+"'data.bin' 압축 중단: 프라이빗 키를 찾을 수 없습니다.\n"
+"Wii U 'otp.bin' 파일이 SD:/wiiu/backups/<SerialId>에 있는지 확인하세요. 자세"
+"한 내용은 ://github.com 확인하세요.\n"
+"\n"
+"키 초기화 오류:\n"
+"%s\n"
 
-#: src/menu/TitleOptionsState.cpp:995 src/menu/TitleOptionsState.cpp:1000
-#: src/menu/TitleOptionsState.cpp:1057
+#: src/menu/TitleOptionsState.cpp:989
+#, c-format
+msgid ""
+"'data.bin' compress aborted: mac_address not found.\n"
+" Please provide a 'keys.txt' file in the root of the SD with a mac_address "
+"(from any Wii). Check github.com/w3irDv/savemii for more info.\n"
+"\n"
+"Keys initialization error:\n"
+"%s\n"
+msgstr ""
+"'data.bin' 압축 중단: mac_address를 찾을 수 없습니다.\n"
+"mac_address가 포함된 'keys.txt' 파일을 SD 카드 루트에 제공하세요 (모든 Wii에"
+"서 사용 가능). 자세한 내용은 ://github.com 확인하세요.\n"
+"\n"
+"키 초기화 오류:\n"
+"%s\n"
+
+#: src/menu/TitleOptionsState.cpp:997 src/menu/TitleOptionsState.cpp:1002
+#: src/menu/TitleOptionsState.cpp:1059
 msgid "Savedata succesfully backed up!"
 msgstr "저장 데이터 백업 성공!"
 
-#: src/menu/TitleOptionsState.cpp:1008 src/menu/TitleOptionsState.cpp:1012
-#: src/menu/TitleOptionsState.cpp:1050
+#: src/menu/TitleOptionsState.cpp:1010 src/menu/TitleOptionsState.cpp:1014
+#: src/menu/TitleOptionsState.cpp:1052
 msgid "Savedata succesfully restored!"
 msgstr "저장 데이터 복원 성공!"
 
-#: src/menu/TitleOptionsState.cpp:1018
+#: src/menu/TitleOptionsState.cpp:1020
 msgid "Savedata succesfully wiped!"
 msgstr "저장 데이터 삭제 성공!"
 
-#: src/menu/TitleOptionsState.cpp:1024
+#: src/menu/TitleOptionsState.cpp:1026
 msgid "Savedata succesfully moved!"
 msgstr "저장 데이터 이동 성공!"
 
-#: src/menu/TitleOptionsState.cpp:1029 src/menu/TitleOptionsState.cpp:1034
-#: src/menu/TitleOptionsState.cpp:1039 src/menu/TitleOptionsState.cpp:1044
+#: src/menu/TitleOptionsState.cpp:1031 src/menu/TitleOptionsState.cpp:1036
+#: src/menu/TitleOptionsState.cpp:1041 src/menu/TitleOptionsState.cpp:1046
 msgid "Savedata succesfully copied!"
 msgstr "저장 데이터 복사 성공!"
 
@@ -4285,20 +4612,42 @@ msgstr ""
 "이제 저장 데이터를 초기화하기 위해 게임을 먼저 실행할 필요가 없습니다."
 
 #: src/menu/BatchTasksState.cpp:62
-msgid "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
-msgstr "일괄 삭제를 사용하면 선택한 모든 타이틀에서 지정된 프로필에 속하는 저장 데이터를 삭제할 수 있습니다. 콘솔에 정의되지 않은 프로필에 속하는 저장 데이터도 감지합니다."
+msgid ""
+"Batch Wipe allows you to wipe savedata belonging to a given profile across "
+"all selected titles. It detects also savedata belonging to profiles not "
+"defined in the console."
+msgstr ""
+"일괄 삭제를 사용하면 선택한 모든 타이틀에서 지정된 프로필에 속하는 저장 데이"
+"터를 삭제할 수 있습니다. 콘솔에 정의되지 않은 프로필에 속하는 저장 데이터도 "
+"감지합니다."
 
 #: src/menu/BatchTasksState.cpp:65
-msgid "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
-msgstr "다른 프로필로 일괄 이동을 사용하면 한 사용자 프로필에서 다른 사용자 프로필로 저장 데이터를 이동할 수 있습니다. 데이터 복사는 없고 폴더 이름만 변경되므로 매우 빠릅니다."
+msgid ""
+"Batch Move To Other Profile allows you to move savedata from one user "
+"profile to a different user profile. There is no data copy, just a renaming "
+"of folders, so it is very quick.."
+msgstr ""
+"다른 프로필로 일괄 이동을 사용하면 한 사용자 프로필에서 다른 사용자 프로필로 "
+"저장 데이터를 이동할 수 있습니다. 데이터 복사는 없고 폴더 이름만 변경되므로 "
+"매우 빠릅니다."
 
 #: src/menu/BatchTasksState.cpp:68
-msgid "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
-msgstr "다른 프로필로 일괄 복사를 사용하면 한 사용자 프로필에서 다른 사용자 프로필로 저장 데이터를 전송할 수 있습니다. 원본 데이터의 저장 데이터는 그대로 유지됩니다."
+msgid ""
+"Batch Copy To Other Profile allows you to transfer savedata from one user "
+"profile to a different user profile. Savedata from the source data remains "
+"untouched."
+msgstr ""
+"다른 프로필로 일괄 복사를 사용하면 한 사용자 프로필에서 다른 사용자 프로필로 "
+"저장 데이터를 전송할 수 있습니다. 원본 데이터의 저장 데이터는 그대로 유지됩니"
+"다."
 
 #: src/menu/BatchTasksState.cpp:71
-msgid "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
-msgstr "다른 장치로 일괄 복사를 사용하면 NAND와 USB 모두에 저장 데이터가 있는 선택한 모든 타이틀의 저장 데이터를 전송할 수 있습니다."
+msgid ""
+"Batch Copy To Other Device allows you to transfer savedata between NAND and "
+"USB for all selected titles that already have savedata on both media."
+msgstr ""
+"다른 장치로 일괄 복사를 사용하면 NAND와 USB 모두에 저장 데이터가 있는 선택한 "
+"모든 타이틀의 저장 데이터를 전송할 수 있습니다."
 
 #: src/menu/BatchTasksState.cpp:82
 msgid "\\ue002: Options \\ue000: Select Batch Task"
@@ -4432,12 +4781,20 @@ msgid "BACKUP IN PROGRESS"
 msgstr "백업 진행 중"
 
 #: src/savemng.cpp:858 src/savemng.cpp:939
-msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
-msgstr "백업 시 권한이 유지되지 않습니다. 시스템 타이틀이므로 문제를 해결해야만 백업이 진행됩니다."
+msgid ""
+"Backup will not preserve permissions. This is a system title and backup will "
+"only proceed when you resolve the issue."
+msgstr ""
+"백업 시 권한이 유지되지 않습니다. 시스템 타이틀이므로 문제를 해결해야만 백업"
+"이 진행됩니다."
 
 #: src/savemng.cpp:861 src/savemng.cpp:942
-msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
-msgstr "백업 시 권한이 유지되지 않습니다. 레거시 모드로 작동할 수는 있지만 문제를 해결한 후 다시 시도하는 것이 좋습니다."
+msgid ""
+"Backup will not preserve permissions. It can work (legacy mode) but it is "
+"advised to solve the issue and retry."
+msgstr ""
+"백업 시 권한이 유지되지 않습니다. 레거시 모드로 작동할 수는 있지만 문제를 해"
+"결한 후 다시 시도하는 것이 좋습니다."
 
 #: src/savemng.cpp:922
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
@@ -4476,7 +4833,11 @@ msgid ""
 "the Wii U Data Management menu.\n"
 "\n"
 "Continue?"
-msgstr "이 옵션은 데이터 복원 중 문제가 발생했을 경우 최후의 수단입니다. 메타데이터와 저장 데이터가 모두 삭제되고, 게임 타이틀은 초기화되지 않은 상태가 됩니다. 설치된 게임 코드에는 아무런 영향을 미치지 않습니다. Wii U 데이터 관리 메뉴에서 저장 데이터를 완전히 삭제하는 것과 동일한 기능입니다. 계속하시겠습니까?"
+msgstr ""
+"이 옵션은 데이터 복원 중 문제가 발생했을 경우 최후의 수단입니다. 메타데이터"
+"와 저장 데이터가 모두 삭제되고, 게임 타이틀은 초기화되지 않은 상태가 됩니다. "
+"설치된 게임 코드에는 아무런 영향을 미치지 않습니다. Wii U 데이터 관리 메뉴에"
+"서 저장 데이터를 완전히 삭제하는 것과 동일한 기능입니다. 계속하시겠습니까?"
 
 #: src/savemng.cpp:1203 src/savemng.cpp:1206 src/savemng.cpp:1417
 #: src/miisavemng.cpp:14
@@ -4559,14 +4920,12 @@ msgstr ""
 "%s"
 
 #: src/savemng.cpp:1326 src/savemng.cpp:1339 src/savemng.cpp:1379
-#, fuzzy
 msgid "Failed to import savedata from loadiine."
-msgstr "   loadiine에서 가져오기"
+msgstr "Loadiine에서 저장 데이터를 가져오지 못했습니다."
 
 #: src/savemng.cpp:1397
-#, fuzzy
 msgid "Failed to export savedata to loadiine."
-msgstr "   loadiine으로 내보내기"
+msgstr "Loadiine으로 저장 데이터를 내보내지 못했습니다."
 
 #: src/savemng.cpp:1423 src/savemng.cpp:1428 src/savemng.cpp:1451
 msgid "Error setting path. Aborting."
@@ -4660,13 +5019,15 @@ msgid ""
 "Unable to merge folder '%08x%08x' with existent folder\n"
 "'%s'\n"
 "\n"
-"Some backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n"
+"Some backups may have been moved to this last folder. Please fix errors and "
+"try again, or manually move contents from one folder to the other.\n"
 "\n"
 "Backup/restore operations will still use old '%08x%08x' folder"
 msgstr ""
 "'%08x%08x' 폴더를 기존 폴더 '%s'와 병합할 수 없습니다.\n"
 "\n"
-"일부 백업이 이 마지막 폴더로 이동되었을 수 있습니다. 오류를 수정하고 다시 시도하거나, 한 폴더의 콘텐츠를\n"
+"일부 백업이 이 마지막 폴더로 이동되었을 수 있습니다. 오류를 수정하고 다시 시"
+"도하거나, 한 폴더의 콘텐츠를\n"
 "수동으로 다른 폴더로 이동하십시오. 기타.\n"
 "\n"
 "백업/복원 작업은 이전 '%08x%08x' 폴더를 계속 사용합니다."
@@ -4702,7 +5063,8 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-"Please fix errors and try again, or manually move contents from one folder to the other.\n"
+"Please fix errors and try again, or manually move contents from one folder "
+"to the other.\n"
 "\n"
 "Backup/restore operations will still use old '%08x%08x' folder"
 msgstr ""
@@ -4989,43 +5351,3 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
-
-#, c-format
-#~ msgid "%s%s (No banner.bin)"
-#~ msgstr "%s%s (banner.bin 없음)"
-
-#~ msgid "\\ue000: Select BS  \\ue045: Tag BS  \\ue046: Wipe BS  \\ue003: Filter List  \\ue001: Back"
-#~ msgstr "\\ue000백업 세트 선택  \\ue045태그 백업 세트  \\ue046BS 삭제  \\ue003필터 목록  \\ue001뒤로"
-
-#~ msgid "\\ue000: Select BackupSet  \\ue003: Filter List  \\ue001: Back"
-#~ msgstr "\\ue000: 백업 세트 선택 \\ue003: 필터 목록 \\ue001: 뒤로"
-
-#~ msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"
-#~ msgstr "\\ue002: 백업 세트 변경 \\ue000: 복원 \\ue001: 뒤로"
-
-#~ msgid "\\ue002: Change BackupSet  \\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"
-#~ msgstr "\\ue002: 백업 세트 변경  \\ue000: 복원  \\ue045: 태그 슬롯  \\ue001: 뒤로"
-
-#, fuzzy
-#~ msgid "\\ue000: Export  \\ue002: Keys  \\ue001: Back"
-#~ msgstr "\\ue000: 내보내기  \\ue001: 뒤로"
-
-#, fuzzy
-#~ msgid "\\ue000: Export  \\ue002: Keys  \\ue046 Delete Slot  \\ue001: Back"
-#~ msgstr "\\ue000: 백업  \\ue045: 태그 슬롯  \\ue046: 슬롯 삭제  \\ue001: 뒤로"
-
-#, fuzzy
-#~ msgid "\\ue000: PrivateKeys  \\ue002: SharedKeys  \\ue003: MAC  \\ue045 DefaultKeys  \\ue085\\ue07e\\ue086: Paging  \\ue001: Back"
-#~ msgstr "\\ue000: 키 누르기 \\ue003: Shift \\ue002: Del \\ue045: 확인! \\ue001: 뒤로"
-
-#, c-format
-#~ msgid ""
-#~ "Error\n"
-#~ "%s\n"
-#~ "setting owner/group for\n"
-#~ "%s"
-#~ msgstr ""
-#~ "오류\n"
-#~ "%s\n"
-#~ "소유자/그룹 설정 중\n"
-#~ "%s"

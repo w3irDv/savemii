@@ -145,7 +145,7 @@ static error_state do_main(void) {
         return DBIN_ERR;
     }
     if (fwrite(header + 0x20, bnrSize, 1, out) != 1) {
-        fatal(_("Error writting file %s: %s"), DataBin::output_path, strerror(errno));
+        fatal(_("Error writing file %s: %s"), DataBin::output_path, strerror(errno));
         fclose(out);
         return DBIN_ERR;
     }

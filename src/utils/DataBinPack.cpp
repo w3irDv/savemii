@@ -472,15 +472,15 @@ static error_state do_sig(void) {
     wbe32(sig + 60, 0x2f536969);
 
     if (fwrite(sig, sizeof sig, 1, fp) != 1) {
-        fatal(_("Error writting sig: %s"), strerror(errno));
+        fatal(_("Error writing sig: %s"), strerror(errno));
         return DBIN_ERR;
     }
     if (fwrite(ng_cert, sizeof ng_cert, 1, fp) != 1) {
-        fatal(_("Error writting NG cert: %s"), strerror(errno));
+        fatal(_("Error writing NG cert: %s"), strerror(errno));
         return DBIN_ERR;
     }
     if (fwrite(ap_cert, sizeof ap_cert, 1, fp) != 1) {
-        fatal(_("Error writting AP cert: %s"), strerror(errno));
+        fatal(_("Error writing AP cert: %s"), strerror(errno));
         return DBIN_ERR;
     }
 

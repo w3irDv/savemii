@@ -12,7 +12,7 @@ public:
     virtual ~MiiAccountRepo();
 
     bool open_and_load_repo(); // not needed for account, but indirectly needed for loading stadio.sav
-    bool persist_repo();       // not needed for account, but indirectly needed for writting stadio.sav
+    bool persist_repo();       // not needed for account, but indirectly needed for writing stadio.sav
     bool import_miidata(MiiData *mii_data, bool in_place, size_t index); // from (temp)mem to the repo
     MiiData *extract_mii_data(size_t index);                             // from the repo to (tmp)mem
     MiiData *extract_mii_data(const std::string &mii_filepath);          // from file to (tmp)mem
