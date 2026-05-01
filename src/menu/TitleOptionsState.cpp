@@ -352,7 +352,7 @@ void TitleOptionsState::render() {
             }
             if (task == EXPORT_TO_SD_WII_DATA_MGMT) {
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPosAutoFormat(M_OFF, 10, MAX_PROMPT_WIDTH, WIDE_LINE_SPACE, _("Compress savedatap to sd:/private/wii/title where it can be read by standard Wii Data Management"));
+                Console::consolePrintPosAutoFormat(M_OFF, 10, MAX_PROMPT_WIDTH, WIDE_LINE_SPACE, _("Compress savedata to sd:/private/wii/title where it can be read by standard Wii Data Management"));
             }
             if ((task == BACKUP && compress_backup) || task == EXPORT_TO_SD_WII_DATA_MGMT) {
                 if (!DataBin::shared_keys_initialized) { // check only for shared keys, private keys and mac will be ok most of the times

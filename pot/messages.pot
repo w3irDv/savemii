@@ -3687,7 +3687,7 @@ msgid "No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/k
 msgstr ""
 
 #: src/menu/TitleOptionsState.cpp:358
-msgid "Compress savedatap to sd:/private/wii/title where it can be read by standard Wii Data Management"
+msgid "Compress savedata to sd:/private/wii/title where it can be read by standard Wii Data Management"
 msgstr ""
 
 #: src/menu/TitleOptionsState.cpp:366

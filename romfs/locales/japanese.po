@@ -4397,7 +4397,7 @@ msgstr ""
 
 #: src/menu/TitleOptionsState.cpp:358
 msgid ""
-"Compress savedatap to sd:/private/wii/title where it can be read by standard "
+"Compress savedata to sd:/private/wii/title where it can be read by standard "
 "Wii Data Management"
 msgstr ""
 "標準のWiiデータ管理で読み取れるよう、sd:/private/wii/title にセーブデータを圧"
