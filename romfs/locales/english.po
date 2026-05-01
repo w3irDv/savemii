@@ -1197,7 +1197,7 @@ msgid "Initializing Mii repos."
 msgstr ""
 
 #: src/main.cpp:175
-msgid "Press \\ue044 to exit."
+msgid "\\ue044: Exit"
 msgstr ""
 
 #: src/mii/MiiStadioSav.cpp:169

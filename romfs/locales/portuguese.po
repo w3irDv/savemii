@@ -1442,8 +1442,8 @@ msgid "Initializing Mii repos."
 msgstr "Inicializando repositórios Mii."
 
 #: src/main.cpp:175
-msgid "Press \\ue044 to exit."
-msgstr "\\ue044: sair."
+msgid "\\ue044: Exit"
+msgstr "\\ue044: Sair"
 
 #: src/mii/MiiStadioSav.cpp:169
 msgid ""
@@ -2074,7 +2074,7 @@ msgstr "\\ue000: Copiar  \\ue001: Voltar"
 #: src/menu/MiiDBOptionsState.cpp:117 src/menu/TitleOptionsState.cpp:435
 msgid "\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
 msgstr ""
-"\\ue000: Fazer Backup \\ue045 Slot de Tag \\ue046 Excluir Slot \\ue001: "
+"\\ue000 Backup  \\ue045 Tag Slot  \\ue046 Apagar Slot  \\ue001 "
 "Voltar"
 
 #: src/menu/MiiDBOptionsState.cpp:123
@@ -3227,7 +3227,7 @@ msgid ""
 "Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: "
 "Default  \\ue001: Back"
 msgstr ""
-"Definir Chaves:  \\ue003: Privada  \\ue002: Compartilhada  \\ue000: MAC  "
+"Set Chaves:  \\ue003 Privada  \\ue002 Misto  \\ue000 MAC  "
 "\\ue045: Padrão  \\ue001: Voltar"
 
 #: src/menu/KeyListState.cpp:92
@@ -4458,34 +4458,30 @@ msgid ""
 "\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  "
 "\\ue001: Back"
 msgstr ""
-"\\ue000: Backup  \\ue003: Chaves  \\ue045 Tag Slot  \\ue046 Excluir Slot  "
+"\\ue000: Bckp  \\ue003: Chaves  \\ue045 Tag Slot  \\ue046 Apagar Slot  "
 "\\ue001: Voltar"
 
 #: src/menu/TitleOptionsState.cpp:448
 msgid "\\ue000: Restore  \\ue002: Change BackupSet  \\ue001: Back"
-msgstr "\\ue000: Restaurar  \\ue002: Alterar BackupSet  \\ue001: Voltar"
+msgstr "\\ue000: Restaurar  \\ue002: Alterar BckpSet  \\ue001: Voltar"
 
 #: src/menu/TitleOptionsState.cpp:450
 msgid ""
 "\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
 msgstr ""
-"\\ue000: Restaurar  \\ue002: Alterar BackupSet  \\ue045 Tag Slot  \\ue001: "
-"Voltar"
+"\\ue000 Restaurar  \\ue002 Alterar BckpSet  \\ue045 Tag Slot  \\ue001 Voltar"
 
 #: src/menu/TitleOptionsState.cpp:453
 msgid ""
 "\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"
 msgstr ""
-"\\ue000: Restaurar  \\ue003: Chaves  \\ue002: Alterar BackupSet  \\ue001: "
-"Voltar"
+"\\ue000 Restaurar  \\ue003 Chaves  \\ue002 Alterar BckpSet  \\ue001 Voltar"
 
 #: src/menu/TitleOptionsState.cpp:455
 msgid ""
-"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag "
-"Slot  \\ue001: Back"
+"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
 msgstr ""
-"\\ue000: Restaurar  \\ue003: Chaves  \\ue002: Alterar BackupSet  \\ue045 Tag "
-"Slot  \\ue001: Voltar"
+"\\ue000 Restaurar  \\ue003 Chaves  \\ue002 Alterar BckpSet  \\ue045 Tag Slot  \\ue001 Voltar"
 
 #: src/menu/TitleOptionsState.cpp:464
 msgid "Copy to Other Profile"

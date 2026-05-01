@@ -1412,7 +1412,7 @@ msgid "Initializing Mii repos."
 msgstr "Mii 저장소 초기화 중"
 
 #: src/main.cpp:175
-msgid "Press \\ue044 to exit."
+msgid "\\ue044: Exit"
 msgstr "\\ue044: 출구"
 
 #: src/mii/MiiStadioSav.cpp:169

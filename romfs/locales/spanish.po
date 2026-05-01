@@ -1448,7 +1448,7 @@ msgid "Initializing Mii repos."
 msgstr "Inicializando repositorios de Mii."
 
 #: src/main.cpp:175
-msgid "Press \\ue044 to exit."
+msgid "\\ue044: Exit"
 msgstr "\\ue044: Salir"
 
 #: src/mii/MiiStadioSav.cpp:169
@@ -4448,37 +4448,31 @@ msgstr "\\ue000: Copia seg.  \\ue003: Claves  \\ue001: Atrás"
 
 #: src/menu/TitleOptionsState.cpp:440
 msgid ""
-"\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  "
-"\\ue001: Back"
+"\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
 msgstr ""
-"\\ue000: Copia seg.  \\ue003: Claves  \\ue045 Etiquetar  \\ue046 Eliminar  "
-"\\ue001: Atrás"
+"\\ue000 Copia seg.  \\ue003 Claves  \\ue045 Etiquetar  \\ue046 Eliminar  \\ue001: Atrás"
 
 #: src/menu/TitleOptionsState.cpp:448
 msgid "\\ue000: Restore  \\ue002: Change BackupSet  \\ue001: Back"
-msgstr "\\ue000: Restaurar  \\ue002: Cambiar BackupSet  \\ue001: Atrás"
+msgstr "\\ue000 Restaurar  \\ue002 Camb. BackupSet  \\ue001 Atrás"
 
 #: src/menu/TitleOptionsState.cpp:450
 msgid ""
 "\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
 msgstr ""
-"\\ue000: Restaurar  \\ue002: Cambiar BackupSet  \\ue045 Etiquetar  \\ue001: "
-"Atrás"
+"\\ue000 Restaurar  \\ue002 Camb. BackupSet  \\ue045 Etiquetar  \\ue001 Atrás"
 
 #: src/menu/TitleOptionsState.cpp:453
 msgid ""
 "\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"
 msgstr ""
-"\\ue000: Restaurar  \\ue003: Claves  \\ue002: Cambiar BackupSet  \\ue001: "
-"Atrás"
+"\\ue000 Restaurar  \\ue003 Claves  \\ue002 Camb. BackupSet  \\ue001 Atrás"
 
 #: src/menu/TitleOptionsState.cpp:455
 msgid ""
-"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag "
-"Slot  \\ue001: Back"
+"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
 msgstr ""
-"\\ue000: Restaurar  \\ue003: Claves  \\ue002: Cambiar BackupSet  \\ue045 "
-"Etiquetar  \\ue001: Atrás"
+"\\ue000 Restaurar  \\ue003 Claves  \\ue002 Camb. BckpSet  \\ue045 Etiquetar  \\ue001 Atrás"
 
 #: src/menu/TitleOptionsState.cpp:464
 msgid "Copy to Other Profile"
