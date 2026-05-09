@@ -26,7 +26,8 @@ public:
     enum eSubstateCalled {
         NONE,
         STATE_BACKUPSET_MENU,
-        STATE_KEYBOARD
+        STATE_KEYBOARD,
+        STATE_KEYLIST
     };
 
     void render() override;

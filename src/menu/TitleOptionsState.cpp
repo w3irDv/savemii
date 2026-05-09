@@ -509,6 +509,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::Y)) {
             if (!isWiiUTitle && (this->task == EXPORT_TO_SD_WII_DATA_MGMT || this->task == BACKUP || this->task == RESTORE || this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) {
                 this->state = STATE_DO_SUBSTATE;
+                this->substateCalled = STATE_KEYLIST;
                 this->subState = std::make_unique<KeyListState>();
             }
         }
@@ -1087,6 +1088,9 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 }
                 cursorPos = 0;
                 updateRestoreData();
+            }
+            if (this->substateCalled == STATE_KEYLIST) {
+                updateDataBinInfo();
             }
             this->subState.reset();
             this->state = STATE_TITLE_OPTIONS;
