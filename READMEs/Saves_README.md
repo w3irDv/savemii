@@ -26,13 +26,13 @@ Allows you to backup/restore/wipe individual titles.
 **Always** perform an `All Users` backup before trying any restore/copy/move/wipe operation !!!
 
 ### Backup
-1. Select a slot to store the savedata. You can select any number from 0 to 255, each one representing a different folder in the SD card. Individual backups will always be stored in the `Root backupSet`. Next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. 
+1. Select a slot to store the savedata. You can select any number from 0 to 255, each one representing a different folder in the SD card. Individual backups will always be stored in the `Root backupSet`. Next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. A `[data.bin]` means that the savedata is in compressed format, in any other case a `[F]` will be shown.
 2. For Wii U titles, select which data to save:
 	1. `Only common save`. This option will copy only common savedata.
 	2. `All users`: Recommended option. Will backup all game data.
 	3. `From user: xxxxxxxx`. Will only backup the data for the specified user/profile. In this case, you must also specify if you want to save the "common" data or not. "Common" savedata is data shared by all profiles. Titles can have common save data, profile savedata or both.
 
-	<img src="new.png" width="40" align="center"> For vWii titles, you can choose the savedata format: "plain files", where  all individual files are copied to the selected slot in the SD card, or "compressed", where all files will be archived in a `data.bin` file. For the compressed format to work you need to provide some Wii encryption keys. See the [Encyption keys](#encryption-keys) section.
+	<img src="new.png" width="40" align="center"> For vWii titles, you can choose the savedata format: "plain files", where  all individual files are copied to the selected slot in the SD card, or "compressed", where all files will be archived in a `data.bin` file. This "compressed" format is the standard format used by a Wii when backing up saves from the Data Managament menu. For the compressed format to work you need to provide some Wii encryption keys. See the [Encyption keys](#encryption-keys) section.
 3. Press `A` to initiate the backup. After the backup is done, you can tag the slot with a meaningful name pressing `+` button while you are in the backup menu. If the slot is unneeded, you can delete it by pressing `-` button.
 
 *Wii U titles savedata layout:*
@@ -58,7 +58,7 @@ For vWii titles, savedata is directly under the slot folder.
 **Note**: Starting with version 1.7.0, backup folders for new titles will _always_ be named after the title name. For older titles that use hexadecimal format, SaveMii will prompt you to convert them to the new format when it detects one. You can disable this prompt in the Options menu screen. If for the same title there is a backup folder using hexadecimal format and a also a backup folder using titleName format, data will always be stored inside the hexadecimal folder. If you decide to convert the hexadecimal folder to titleName format, its content will be merged with the one in the titleName folder (in a new slot), and from then on only the titleName folder will be used.
 ### Restore
 1. Select a slot to get the data from.  If you haven't selected any backupSet, the data from the `Root backupSet`  (the one where the manual backups are always stored) is used. But you can also use data from any batch backupSet, by pressing the `X` button and selecting the backupSet you want to use. Notice that the last backupSet you previously selected in any task (Batch Restore or BackupSet Management) will be the one used here by default. BackupSets can be tagged by pressing `+` button in the BackupSet List Menu, or from the BackupSet Management in Main menu.
-   To identify which data the slot contains: If the slot has been tagged, you will see its tag next to the slot number. On the top screen line, you will see which backupSet is being used. And at the last screen line, you can see when the savedata were taken, and from which console. Finally, next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. In case that hexadecimal and titleName folder exists for the same title, save data from the hexadecimal folder will always be used. Conversion will merge slots from both savedata, and then only the new titleName folder will be used.
+   To identify which data the slot contains: If the slot has been tagged, you will see its tag next to the slot number. On the top screen line, you will see which backupSet is being used. And at the last screen line, you can see when the savedata were taken, and from which console. Then, next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. In case that hexadecimal and titleName folder exists for the same title, save data from the hexadecimal folder will always be used. Conversion will merge slots from both savedata, and then only the new titleName folder will be used. Finally, the format of the savedata will be shown: `[data.bin]` means  compressed format, in any other case a `[F]` will be shown.
 2. For Wii U titles, select witch data to restore:
 	1. `Only common save`
        This will restore only common savedata.
@@ -66,28 +66,17 @@ For vWii titles, savedata is directly under the slot folder.
 	    This will restore all save data (profiles+common) from the selected slot keeping the same userid that was used to backup the data. This option can only be used to restore previous savedata from the same console, or if the profile ids in the new console are identical to the ones in the source console. If profile ids from source and target differ, you must use the next option.
    3. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console. You can specify if copy common savedata or not.
 	   If you are just copying the savedata from one profile id to a different one in the same console, choose `copy common savedata: no`. If you  are restoring to a new console with different profile ids, just choose `copy common savedata: yes` once for any of the profile ids, and copy the rest of profiles with `copy common savedata: no`
-<<<<<<< Updated upstream
 
-	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` file. If so, the restore tasks will by default decrypt and explode the files contained in the `data.bin` (you will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section.). Usually, this 'data.bin' will be a "true" savedata if you have:
-=======
-<<<<<<< Updated upstream
-	 4. Press `A` to initiate the restore. 
-=======
-
-	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` file. If so, the restore tasks will by default decrypt and explode the files contained in the `data.bin` (you will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section). Usually, this 'data.bin' will be a "true" savedata if you have:
->>>>>>> Stashed changes
-	- backup previously the data in compressed format
+	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` archive. If so, the restore task will by default decrypt and explode the files contained in it. You will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section. Usually, this`data.bin` will be a "true" savedata if you have:
+	- backup previously the savedata in compressed format
 	- downloaded the a `.bin` savedata file from internet. Change its name to `data.bin` so SaveMii can detect it.
 	- copied it from the SD folder `/private/wii/title/<Product Code>` (where savedata exported by the Wii Data Management menu is stored) to the SaveMii slot. 
 
 	 If you haven't done nothing of the above, then this `data.bin` file should be not a standard compressed savedata file but just part of the savedata files for the game, so just select "compress = no" and the file will be copied "as is" to the vWiii internal storage.    
 
 3. Press `A` to initiate the restore. 
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-	    **Note**: Starting with version 1.7.0, the `From: All Users` restore will detect and not allow restoring savedata to non-existent user profiles. In this case, perform specific `From: Select Source User / To: Select Destination User` restores, selecting the correct users.
+
+**Note**: Starting with version 1.7.0, the `From: All Users` restore will detect and not allow restoring savedata to non-existent user profiles. In this case, perform specific `From: Select Source User / To: Select Destination User` restores, selecting the correct users.
 
 **Note**: If you have manually copied  to a nomal backup slot a Loadiine savedata in shared mode format (`/u` and `/c` folders), SaveMii will detect it and will rename the folders to the current user (`/8000000x` and `/common`), so you can afterwards restore it from this menu task.
 
@@ -147,7 +136,7 @@ You can enter into this task only if the game has savedata in the Loadiine folde
 
 1. Enter into the task and just press `A` to initiate the import or the export task. For import tasks, SaveMii will check if the savedata in the SD belongs to the title and region you are trying to import to.
 
-If neded, you can select which keys to use to encrypt by pressing `X` in the Export task menu. This will open the KeyList menu. All files in the `SD:/wiiu/backups/keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private, shared keys or the mac address. For more details, please see the [Encyption keys](#encryption-keys) section.
+If neded, you can select which keys to use to encrypt by pressing `Y` in the Export task menu. This will open the KeyList menu. All files in the `SD:/wiiu/backups/keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private, shared keys or the mac address. For more details, please see the [Encyption keys](#encryption-keys) section.
 
 
 ## Encryption Keys
@@ -195,7 +184,7 @@ ng_key_id       = xxxxxxxx        (8 hex digits)
 ng_signature    = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..................xxxxxxxxxxxxxxxxxxxxxxxxxx     (120 hex digits)
 mac_address     = xxxxxxxxxxxx     (12 hex digits)
 ```
-Then, from the `Backup` or `Export` tasks, you can press `X` to open the KeyList menu. All files in the `keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private keys, the shared keys or the Mac Address.  
+Then, from the `Backup` or `Export` tasks, you can press `Y` to open the KeyList menu. All files in the `keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private keys, the shared keys or the Mac Address. On the top-right of the Keys menu you can see the source for each key: `[P:.|S:.|M:.]`, for `P`rivate, `S`hared, `M`AC, where values can be `D`efault or `C`ustom. Files used as custom sources are marked with `P` `S` or `M`.   
 
 ## Configuration Options
 
