@@ -148,9 +148,9 @@ These are the keys needed for restoring a `data.bin` file  (they are the same fo
 - sd_iv
 - md5_blanker
 
-If you have access to a homebrewed Wii you can generate them with [xyzzy](https://oscwii.org/library/app/xyzzy-mod) hb app. Simply ensure that the `keys.txt` file that `xyyzz` generates is placed on the root of the SD you use for loading Aroma. If you cannot run `xyzzy`, you can google the value for them (beware: *wii decryption keys*, not the Wii U ones!) and create a `keys.txt` file in the root of your sd with this content:
+If you have access to a homebrewed Wii you can generate them with [xyzzy](https://oscwii.org/library/app/xyzzy-mod) hb app. Simply ensure that the `keys.txt` file that `xyyzz` generates is placed on the root of the SD you use for loading Aroma. If you cannot run `xyzzy`, you can ask google explicitly for their values (you need the *[values for sd_key sd_iv and md5_blanker wii decryption keys](https://hackmii.com/2008/04/keys-keys-keys/)*, not the Wii U ones) and then create a `keys.txt` file in the root of your sd with this content:
 ```
-sd_key      = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits)
+sd_key      = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits, no whitespaces between them)
 sd_iv       = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits)
 md5_blanker = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits)
 ```

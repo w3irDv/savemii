@@ -120,39 +120,9 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
         if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
-            const char *savedata_folder = "fs:/vol/external01/pack_databin/test";
-            const char *databin = "fs:/vol/external01/pack_databin/data.bin";
-            u64 title_id = 0x00010000534d4e50;
-
-            char *error_message = nullptr;
-
-            DataBin::get_keys_from_otp("fs:/vol/external01/wiiu/backups/FEH101753089/otp.bin",error_message);
-            DataBin::get_shared_keys("fs:/vol/external01/keys.txt",error_message);
-            DataBin::get_this_console_mac();
-
-            DataBin::pack(savedata_folder, databin, title_id, NULL, error_message);
-            Console::showMessage(OK_CONFIRM, "%s\n", error_message);
-
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
-            //const char *databin = "fs:/vol/external01/unpack_databin/brawl.bin";
-            const char *databin = "fs:/vol/external01/pack_databin/data.bin";
-            u64 title_id = 0;
-
-            const char *extract_folder = "fs:/vol/external01/unpack_databin";
-
-            char *error_message = nullptr;
-
-            DataBin::get_shared_keys("fs:/vol/external01/keys.txt",error_message);
-            if (DataBin::get_title_id(databin, &title_id, error_message) != DBIN_OK)
-                Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);
-
-            if (DataBin::unpack(databin, extract_folder, USE_PERMS_FROM_DATA_BIN, error_message) != 0) {
-                Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);
-            }
-            Console::showMessage(OK_CONFIRM, "%s\n", error_message);
-
             return SUBSTATE_RUNNING;
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
