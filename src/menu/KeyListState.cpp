@@ -1,3 +1,5 @@
+#include "utils/DataBin.h"
+#include "utils/DrawUtils.h"
 #include <BackupSetList.h>
 #include <algorithm>
 #include <coreinit/debug.h>
@@ -60,18 +62,18 @@ void KeyListState::render() {
             );
         }
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF + 1, MAX_TITLE_SHOW + 3, _("Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."));
+        Console::consolePrintPosAutoFormat(M_OFF + 1, MAX_TITLE_SHOW + 3, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE,_("Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."));
 
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, _("\\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: Default  \\ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: Default  \\ue001: Back"));
     }
 }
 
 ApplicationState::eSubState KeyListState::update(Input *input) {
     if (this->state == STATE_KEY_LIST) {
-        char error_message[2048];
+        char *error_message = nullptr;
         if (input->get(ButtonState::TRIGGER, Button::B) || keyFilesCount == 0)
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::Y)) {
@@ -86,6 +88,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
                 DataBin::private_keys_index = scroll + cursorPos;
             } else {
                 DataBin::private_keys_initialized = false;
+                DataBin::errors_initializing_keys.assign(error_message);
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom private keys: %s"), error_message);
             }
             return SUBSTATE_RUNNING;
@@ -97,6 +100,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
                 DataBin::shared_keys_index = scroll + cursorPos;
             } else {
                 DataBin::shared_keys_initialized = false;
+                DataBin::errors_initializing_keys.assign(error_message);
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom shared keys: %s"), error_message);
             }
             return SUBSTATE_RUNNING;
@@ -108,6 +112,7 @@ ApplicationState::eSubState KeyListState::update(Input *input) {
                 DataBin::mac_in_databin_index = scroll + cursorPos;
             } else {
                 DataBin::mac_in_databin_initialized = false;
+                DataBin::errors_initializing_keys.assign(error_message);
                 Console::showMessage(ERROR_CONFIRM, _("Error setting custom mac: %s"), error_message);
             }
             return SUBSTATE_RUNNING;

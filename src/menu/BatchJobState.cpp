@@ -1,3 +1,4 @@
+#include "utils/DrawUtils.h"
 #include <coreinit/debug.h>
 #include <menu/BackupSetListState.h>
 #include <menu/BatchJobOptions.h>
@@ -65,7 +66,7 @@ void BatchJobState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPosAutoFormat(M_OFF, 6, readme);
+        Console::consolePrintPosAutoFormat(M_OFF, 6, MAX_PROMPT_WIDTH, WIDE_LINE_SPACE, readme);
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(17, 4, 2, nextTask);
     }

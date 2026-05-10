@@ -2,8 +2,8 @@
 #include <cfg/ExcludesCfg.h>
 #include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
-#include <coreinit/time.h>
 #include <coreinit/thread.h>
+#include <coreinit/time.h>
 #include <memory>
 #include <menu/MainMenuState.h>
 #include <romfs-wiiu.h>
@@ -20,6 +20,7 @@
 #include <utils/StateUtils.h>
 #include <utils/TitleUtils.h>
 #include <version.h>
+
 
 #include <unistd.h>
 
@@ -118,6 +119,7 @@ int main() {
 
     TitleUtils::wiiutitles = TitleUtils::loadWiiUTitles(1);
     TitleUtils::wiititles = TitleUtils::loadWiiTitles();
+    TitleUtils::guess_uninitialized_vwii_title_name_from_backup(TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
     TitleUtils::wiiusystitles = TitleUtils::loadWiiUSysTitles(1);
     AccountUtils::getAccountsWiiU();
 
@@ -170,7 +172,7 @@ int main() {
 
             //Console::consolePrintPos(0, 16, "----------------------------------------------------------------------------");
             DrawUtils::drawLine(16, 420, 812, 420, COLOR_TEXT_AT_CURSOR.r, COLOR_TEXT_AT_CURSOR.g, COLOR_TEXT_AT_CURSOR.b, COLOR_TEXT_AT_CURSOR.a);
-            Console::consolePrintPos(0, 17, _("Press \\ue044 to exit."));
+            Console::consolePrintPos(0, 17, _("\\ue044: Exit"));
 
             DrawUtils::setRedraw(false);
             state->render();

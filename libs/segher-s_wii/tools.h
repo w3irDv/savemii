@@ -10,6 +10,8 @@ typedef unsigned short u16;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 
+#define ERROR_BUFFER_LENGTH 2048
+
 enum ERROR_STATE {
     DBIN_OK = 0,
     DBIN_ERR = 1,

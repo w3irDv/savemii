@@ -97,7 +97,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
             if (isWiiU) {
                 if (strcmp(this->titles[this->targ].shortName, "DONT TOUCH ME") == 0) {
                     if (!Console::promptConfirm(ST_ERROR, _("CBHC save. Could be dangerous to modify. Continue?")) ||
-                        !Console::promptConfirm(ST_WARNING, _("Are you REALLY sure?"))) {
+                        !Console::promptConfirm(ST_WIPE, _("Are you REALLY sure?"))) {
                         return SUBSTATE_RUNNING;
                     }
                 }

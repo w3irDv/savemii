@@ -162,7 +162,16 @@ bool MiiStadioSav::find_stadio_empty_frame(uint16_t &frame, eDBKind source_mii_r
 
 bool MiiStadioSav::open_and_load_stadio() {
 
+    bool populate_with_ffl_miis = false;
     std::string db_filepath = this->path_to_stadio;
+
+    if (FSUtils::checkEntry(db_filepath.c_str()) == 0) {
+        if (Console::promptConfirm(ST_WARNING, _("stadio.sav DB not found. Do you want to create one from existing associated FFL and ACCOUNT repos?"))) {
+            if (this->init_stadio_file())
+                populate_with_ffl_miis = true;
+        } else
+            return false;
+    }
 
     std::ifstream db_file;
     db_file.open(db_filepath.c_str(), std::ios_base::binary);
@@ -240,6 +249,11 @@ bool MiiStadioSav::open_and_load_stadio() {
     }
 
     pose = pseudo_random_initial_pose();
+
+    if (populate_with_ffl_miis) {
+        populate_stadio_sav_with_ffl_miis();
+        persist_stadio();
+    }
     return true;
 
 free_after_fail:
@@ -274,6 +288,9 @@ void MiiStadioSav::update_global_counters() {
 }
 
 bool MiiStadioSav::persist_stadio() {
+
+    if (this->stadio_buffer == nullptr)
+        return false;
 
     this->update_global_counters();
 
@@ -422,6 +439,12 @@ bool MiiStadioSav::import_miidata_in_stadio(MiiData *miidata, eDBKind source_mii
     return true;
 }
 
+/**
+ * @brief Add minimal fields in stadio.sav and all Account miis
+ * 
+ * @return true 
+ * @return false 
+ */
 bool MiiStadioSav::fill_empty_stadio_file() {
 
     mempcpy(stadio_buffer, WiiUMiiData::STADIO::STADIO_MAGIC, 3);
@@ -440,21 +463,25 @@ bool MiiStadioSav::fill_empty_stadio_file() {
     stadio_last_update_counter = 1;
     memset(stadio_buffer + 0x1B, 1, 1); // this is incremented every time the db is modified
 
-    // Disable some one-time messages 
+    // Disable some one-time messages
     memset(stadio_buffer + 0x1C, 1, 1); // if 0, welcome MiiMaker screens are shown, if 1 , they are skipped
     memset(stadio_buffer + 0x40, 1, 1); // if 0, "You can save up to 3000 miis ..." message, if 1 , skipped
     memset(stadio_buffer + 0x43, 1, 1); // if 0, "Choose features to create ..." message, if 1 , skipped
     memset(stadio_buffer + 0x44, 1, 1); // if 0, "Mii characters with inappropriate names ...", if 1 , skipped
 
-    memset(stadio_buffer + 0x33117,0x3B,1); // Set to this value every time the db is modified
+    memset(stadio_buffer + 0x33117, 0x3B, 1); // Set to this value every time the db is modified
 
     // Add Acoount MiiRepos
     if (this->account_repo != nullptr) {
-        if (account_repo->needs_populate == true) {
-            if (!account_repo->populate_repo()) {
-                Console::showMessage(WARNING_CONFIRM, _("Warning: unable to populate Account repo. Non-critical error, you can continue"));
-                return false;
+        if (FSUtils::checkEntry(account_repo->path_to_repo.c_str()) == 2) {
+            if (account_repo->needs_populate == true) {
+                if (!account_repo->populate_repo()) {
+                    Console::showMessage(WARNING_CONFIRM, _("Warning: unable to populate Account repo. Non-critical error, you can continue"));
+                    return false;
+                }
             }
+        } else {
+            return true; // We silently continue if the Account repo does not exist (probably FFL_C case)
         }
         for (size_t mii_index = 0; mii_index < account_repo->miis.size(); mii_index++) {
             MiiData *mii_data = account_repo->extract_mii_data(mii_index);
@@ -467,8 +494,6 @@ bool MiiStadioSav::fill_empty_stadio_file() {
             }
         }
     }
-
-
     return true;
 }
 
@@ -534,4 +559,38 @@ cleanup_after_io_error:
 
 uint8_t MiiStadioSav::pseudo_random_initial_pose() {
     return (uint8_t) (OSGetTick() % 14);
+}
+
+/**
+ * @brief add FFL miis to stadio.sav
+ * 
+ * @return true 
+ * @return false 
+ */
+bool MiiStadioSav::populate_stadio_sav_with_ffl_miis() {
+    // Add FFL miis
+    if (this->file_repo != nullptr) {
+        if (FSUtils::checkEntry(file_repo->path_to_repo.c_str()) == 1) {
+            if (file_repo->needs_populate == true) {
+                if (!file_repo->populate_repo()) {
+                    Console::showMessage(WARNING_CONFIRM, _("Warning: unable to populate FFL repo. Non-critical error, you can continue"));
+                    return false;
+                }
+            }
+        } else {
+            return true; // We silently return if the File repo does not exist
+        }
+        for (size_t mii_index = 0; mii_index < file_repo->miis.size(); mii_index++) {
+            MiiData *mii_data = file_repo->extract_mii_data(mii_index);
+            if (mii_data != nullptr) {
+                if (!this->import_miidata_in_stadio(mii_data, FFL))
+                    Console::showMessage(WARNING_SHOW, _("Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"), file_repo->miis.at(mii_index)->mii_name.c_str());
+                delete mii_data;
+            } else {
+                Console::showMessage(WARNING_SHOW, _("Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"), file_repo->miis[mii_index]->mii_name.c_str(), file_repo->miis[mii_index]->creator_name.c_str());
+            }
+        }
+    }
+
+    return true;
 }

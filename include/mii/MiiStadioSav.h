@@ -25,6 +25,7 @@ public:
     bool empty_stadio();
     bool init_stadio_file();
     bool fill_empty_stadio_file();
+    bool populate_stadio_sav_with_ffl_miis();
     void update_global_counters();
     bool set_stadio_fsa_metadata();
     void set_stadio_owner(uint32_t stadio_owner) { this->stadio_owner = stadio_owner; }; // dynamically set for FFL
@@ -39,6 +40,7 @@ public:
     bool delete_mii_id_from_stadio(MiiData *miidata);
 
     void setAccountRepo(MiiRepo *account_repo) { this->account_repo = account_repo; };
+    void setFileRepo(MiiRepo *file_repo) { this->file_repo = file_repo; };
 
     const std::string stadio_name;
     const std::string path_to_stadio;
@@ -64,4 +66,5 @@ public:
     uint32_t stadio_group = 0;
 
     MiiRepo *account_repo = nullptr;
+    MiiRepo *file_repo = nullptr;
 };

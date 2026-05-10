@@ -33,11 +33,15 @@ BatchJobOptions::BatchJobOptions(Title *titles,
     for (int i = 0; i < this->titlesCount; i++) {
         this->titles[i].currentDataSource = {};
 
-        if (jobType == RESTORE && titles[i].noFwImg && titles[i].vWiiHighID == 0) { // uninitialized injected title, let's use vWiiHighid from savemii metadata
-            Metadata *metadataObj = new Metadata(&titles[i], 0);                    //   or a default guess ...
+        if (jobType == RESTORE && titles[i].noFwImg && titles[i].vWiiHighID == 0) { // uninstalled/uninitialized injected title, let's use vWiiHighid from savemii metadata
+            Metadata *metadataObj = new Metadata(&titles[i], 0);                    //   or reject the title
             if (metadataObj->read()) {
                 uint32_t savedVWiiHighID = metadataObj->getVWiiHighID();
-                titles[i].vWiiHighID = (savedVWiiHighID != 0) ? savedVWiiHighID : 0x00010000; //  --> /00010000 - Disc-based games (holds save files)
+                if (savedVWiiHighID != 0) {
+                    titles[i].vWiiHighID = savedVWiiHighID;
+                } else {
+                    continue;
+                }
             }
             delete metadataObj;
         }
@@ -111,7 +115,7 @@ BatchJobOptions::BatchJobOptions(Title *titles,
                     std::string data_bin_path = srcPath + "/data.bin";
                     if (FSUtils::checkEntry(data_bin_path.c_str()) == 1) {
                         uint64_t title_id;
-                        char error_message[2048];
+                        char *error_message = nullptr;
                         if (DataBin::get_title_id(data_bin_path.c_str(), &title_id, error_message) == DBIN_OK) {
                             uint32_t data_bin_high_id = (uint32_t) (title_id >> 32);
                             uint32_t data_bin_low_id = (uint32_t) (title_id & 0xffffffff);

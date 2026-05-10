@@ -88,7 +88,7 @@ enum STR2UINT_ERROR { SUCCESS,
 STR2UINT_ERROR str2uint(uint32_t &i, char const *s, int base = 0);
 std::string getSlotFormatType(Title *title, uint8_t slot);
 bool checkIfProfileExistsInWiiUAccounts(char const *name);
-bool checkIfAllProfilesInFolderExists(const std::string srcPath);
+bool checkIfAllProfilesInFolderExists(const std::string &srcPath);
 bool checkIfProfilesInTitleBackupExist(Title *title, uint8_t slot);
 void titleListInColumns(std::string &summaryWithTitles, const std::vector<std::string> &failedTitles);
 bool updateSaveinfoFile(const std::string &source_saveinfo_file, const std::string &target_saveinfo_file, std::vector<std::string> &source_persistentIDs, std::string &target_persistentID, bool is_all_users);

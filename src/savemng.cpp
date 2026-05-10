@@ -137,7 +137,7 @@ bool checkIfProfileExistsInWiiUAccounts(const char *name) {
     bool exists = false;
     uint32_t probablePersistentID = 0;
     probablePersistentID = strtoul(name, nullptr, 16);
-    if (probablePersistentID != 0 && probablePersistentID != ULONG_LONG_MAX) {
+    if (probablePersistentID != 0 && probablePersistentID != ULONG_MAX) {
         for (int i = 0; i < AccountUtils::getWiiUAccn(); i++) {
             if ((uint32_t) probablePersistentID == AccountUtils::getWiiUAcc()[i].pID) {
                 exists = true;
@@ -671,7 +671,7 @@ void writeBackupAllMetadata(const std::string &batchDatetime, const std::string 
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= false*/) {
     int titlesToSave = 0;
     for (int i = 0; i < count; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit) {
+        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit || (titles[i].is_Inject  && titles[i].vWiiHighID == 0)) {
             continue;
         }
         if (onlySelectedTitles)
@@ -839,7 +839,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
     if (backup_format == DATA_BIN) {
         dstPath = dstPath + "/data.bin";
         uint64_t title_id = ((uint64_t) highID << 32) | lowID;
-        char error_message[2048];
+        char *error_message = nullptr;
         if (DataBin::pack(srcPath.c_str(), dstPath.c_str(), title_id, NULL, error_message) != DBIN_OK) {
             errorMessage.assign(error_message);
             errorCode = 1024;
@@ -1030,7 +1030,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
     }
 
     if (backup_format == DATA_BIN) {
-        char error_message[2048];
+        char *error_message = nullptr;
 
         srcPath = srcPath + "/data.bin";
 
@@ -1200,10 +1200,10 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
 
     if (interactive) {
         if (source_user == -3) {
-            if (!Console::promptConfirm(ST_WARNING, _("This option is a last resort in case something has gone wrong when\nrestoring data. It will wipe metadata and savedata, and the title \nwill become uninitialized. It does nothing to the installed game code.\nIt's equivalent to a complete savedata wipe from \nthe Wii U Data Management menu.\n\nContinue?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
+            if (!Console::promptConfirm(ST_WARNING, _("This option is a last resort in case something has gone wrong when\nrestoring data. It will wipe metadata and savedata, and the title \nwill become uninitialized. It does nothing to the installed game code.\nIt's equivalent to a complete savedata wipe from \nthe Wii U Data Management menu.\n\nContinue?")) || !Console::promptConfirm(ST_WIPE, _("Hm, are you REALLY sure?")))
                 return -1;
         } else {
-            if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
+            if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WIPE, _("Hm, are you REALLY sure?")))
                 return -1;
         }
         int slotb = getEmptySlot(title);
@@ -1414,7 +1414,7 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
 }
 
 void deleteSlot(Title *title, uint8_t slot, eSlotType slot_type) {
-    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WARNING, _("Hm, are you REALLY sure?")))
+    if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")) || !Console::promptConfirm(ST_WIPE, _("Hm, are you REALLY sure?")))
         return;
     InProgress::titleName.assign(title->shortName);
     std::string path = getBackupPath(title, slot, slot_type);
@@ -1477,7 +1477,7 @@ void sdWriteDisclaimer(Color bg_color /*= COLOR_BLACK*/) {
 
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles) {
     for (int i = 0; i < titlesCount; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0) // || !titles[i].saveInit)
+        if (titles[i].highID == 0 || titles[i].lowID == 0 || (titles[i].is_Inject  && titles[i].vWiiHighID == 0)) // || !titles[i].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
 
@@ -1743,7 +1743,7 @@ STR2UINT_ERROR str2uint(uint32_t &i, char const *s, int base /*= 0*/) // from ht
     return SUCCESS;
 }
 
-bool checkIfAllProfilesInFolderExists(const std::string srcPath) {
+bool checkIfAllProfilesInFolderExists(const std::string &srcPath) {
     DIR *dir = opendir(srcPath.c_str());
     if (dir != nullptr) {
         struct dirent *data;
@@ -2194,7 +2194,7 @@ bool check_data_bin_vs_title_id(Title *title, int slot_or_version, const std::st
     else
         srcPath = gameBackupBasePath;
     uint64_t title_id;
-    char error_message[2048] = {0};
+    char *error_message = nullptr;
     std::string data_bin_path = srcPath + "/data.bin";
     if (DataBin::get_title_id(data_bin_path.c_str(), &title_id, error_message) != DBIN_OK)
         Console::showMessage(ERROR_CONFIRM, "DBIN_ERR - %s\n", error_message);

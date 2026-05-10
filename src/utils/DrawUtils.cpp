@@ -293,7 +293,7 @@ static void draw_freetype_bitmap(SFT_Image *bmp, int32_t x, int32_t y) {
     }
 }
 
-void DrawUtils::print(uint32_t x, uint32_t y, const char *string, bool alignRight) {
+void DrawUtils::print(uint32_t x, uint32_t y, const char *string, bool alignRight, size_t line_space) {
     auto *buffer = new wchar_t[strlen(string) + 1];
 
     size_t num = mbstowcs(buffer, string, strlen(string));
@@ -304,11 +304,11 @@ void DrawUtils::print(uint32_t x, uint32_t y, const char *string, bool alignRigh
         while ((*tmp++ = *string++));
     }
 
-    print(x, y, buffer, alignRight);
+    print(x, y, buffer, alignRight, line_space);
     delete[] buffer;
 }
 
-void DrawUtils::print(uint32_t x, uint32_t y, const wchar_t *string, bool alignRight) {
+void DrawUtils::print(uint32_t x, uint32_t y, const wchar_t *string, bool alignRight, size_t line_space) {
     auto penX = (int32_t) x;
     auto penY = (int32_t) y;
 
@@ -328,7 +328,7 @@ void DrawUtils::print(uint32_t x, uint32_t y, const wchar_t *string, bool alignR
 
             if (*string == '\n') {
                 //penY += mtx.minHeight;
-                penY += 30; // temporal fix for multiline output
+                penY += line_space; // temporal fix for multiline output
                 penX = x;
                 continue;
             }

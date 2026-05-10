@@ -2,8 +2,8 @@
 #include <malloc.h>
 #include <mii/Mii.h>
 
-Mii::Mii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp,
-         std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable,
+Mii::Mii(std::string &mii_name, std::string &creator_name, std::string &timestamp, uint32_t hex_timestamp,
+         std::string &device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable,
          uint8_t mii_id_flags, eMiiType mii_type, eBirthPlatform birth_platform, MiiRepo *mii_repo, size_t index) : mii_name(mii_name),
                                                                                                                     creator_name(creator_name),
                                                                                                                     timestamp(timestamp),

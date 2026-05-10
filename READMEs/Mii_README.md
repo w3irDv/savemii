@@ -139,6 +139,6 @@ The first time SaveMii runs Mii management tasks on a console, it creates a copy
 - Wii U Account: `8000000x` folders to `SD:/wiiu/backups/mii_repos_bckp/mii_bckp_account/(new number)`
 
 or to a custom Mii database:
-- Wii U: `FFL_ODB.dat` to `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C`
+- Wii U: `FFL_ODB.dat` to `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/db`, (optional) `stadio.sav` to `SD:/wiiu/backups/mii_repos/mii_repo_FFL_C/`
 - vWii: `RFL_DB.dat` to `SD:/wiiu/backups/mii_repos/mii_repo_RFL_C`,
 - Wii U Account: `8000000x` folders to `SD:/wiiu/backups/mii_repos/mii_repo_ACCOUNT_C`.

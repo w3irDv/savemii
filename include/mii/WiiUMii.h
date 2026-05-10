@@ -10,7 +10,7 @@
 class WiiUMii : public Mii {
 public:
     WiiUMii() {};
-    WiiUMii(std::string mii_name, std::string creator_name, std::string timestamp, uint32_t hex_timestamp, std::string device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, eBirthPlatform birth_platform, MiiRepo *mii_repo, size_t index);
+    WiiUMii(std::string &mii_name, std::string &creator_name, std::string &timestamp, uint32_t hex_timestamp, std::string &device_hash, uint64_t author_id, bool favorite, bool copyable, bool shareable, uint8_t mii_id_flags, eBirthPlatform birth_platform, MiiRepo *mii_repo, size_t index);
 
     static WiiUMii *populate_mii(size_t index, uint8_t *raw_mii_data, MiiRepo *mii_repo);
     WiiUMii *v_populate_mii(uint8_t *mii_data, MiiRepo *mii_repo);

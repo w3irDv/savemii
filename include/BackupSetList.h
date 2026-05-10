@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+
 class BSMetadataValues {
     friend class BSMetadata;
     friend class BackupSetList;
@@ -94,6 +95,7 @@ public:
     static std::string getBackupSetPath() { return currentBackupSetList->backupSetListRoot + backupSetSubPath; };
     static std::string getBackupSetEntry() { return backupSetEntry; };
     static std::string getBackupSetSubPath(int i);
+    static std::string getBackupSetPath(int i);
     static int getSelectedEntryForIndividualTitles() { return selectedEntryForIndividualTitles; }
     static void setBackupSetEntry(int i);
     static void setBackupSetSubPath();

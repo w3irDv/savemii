@@ -14,27 +14,28 @@
 #include <utils/LanguageUtils.h>
 #include <vector>
 
-extern char *global_error_message;
+extern char global_error_message[ERROR_BUFFER_LENGTH];
 
 //#define BYTE_ORDER__LITTLE_ENDIAN
 
-error_state DataBin::get_keys_from_otp(const char *otp_bin_file, char *error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+error_state DataBin::get_keys_from_otp(const char *otp_bin_file, char *&error_message) {
+
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     FILE *fp;
 
     fp = fopen(otp_bin_file, "rb");
     if (fp == 0) {
-        fatal(_("cannot open %s"), otp_bin_file);
+        fatal(_("Error opening file %s: %s"), otp_bin_file, strerror(errno));
         return DBIN_ERR;
     }
 
     u8 otp[0x400];
 
     if (fread(otp, 0x400, 1, fp) != 1) {
-        fatal(_("error reading %s"), otp_bin_file);
+        fatal(_("Error reading file %s: %s"), otp_bin_file, strerror(errno));
         return DBIN_ERR;
     }
     fclose(fp);
@@ -80,7 +81,7 @@ error_state get_value(char *key_val, u8 *byte, size_t number_of_bytes) {
 
     const char *value = &eq_value[i];
     if (strlen(value) != number_of_bytes * 2) {
-        fatal(_("wrong  key length: expected %d - found %d\n%s"),strlen(value),number_of_bytes*2,key_val);
+        fatal(_("Error: wrong  key length: expected %d - found %d\n%s"), strlen(value), number_of_bytes * 2, key_val);
         return DBIN_ERR;
     }
     char cbyte[3];
@@ -91,10 +92,10 @@ error_state get_value(char *key_val, u8 *byte, size_t number_of_bytes) {
         char *endptr;
         num = strtol(cbyte, &endptr, 16);
         if (endptr == cbyte) {
-            fatal(_("No digits were found.\n"));
+            fatal(_("Error: No digits were found.\n"));
             return DBIN_ERR;
         } else if (*endptr != '\0') {
-            fatal(_("Invalid character: %c\n"), *endptr);
+            fatal(_("Error: Invalid character: %c\n"), *endptr);
             return DBIN_ERR;
         } else {
             *byte = (u8) num;
@@ -105,16 +106,16 @@ error_state get_value(char *key_val, u8 *byte, size_t number_of_bytes) {
     return DBIN_OK;
 }
 
-error_state DataBin::get_shared_keys(const char *keys_file, char *error_message) {
+error_state DataBin::get_shared_keys(const char *keys_file, char *&error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     FILE *fp;
 
     fp = fopen(keys_file, "r");
     if (fp == 0) {
-        fatal(_("cannot open %s"), keys_file);
+        fatal(_("Error opening file %s: %s"), keys_file, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -155,7 +156,7 @@ error_state DataBin::get_shared_keys(const char *keys_file, char *error_message)
             keys_not_found += " sd_iv";
         if (!read_md5_blanker)
             keys_not_found += " md5_blanker";
-        fatal(_("Cannot find keys%s in %s"),keys_not_found.c_str(),keys_file);
+        fatal(_("Cannot find keys%s in %s"), keys_not_found.c_str(), keys_file);
         ret = DBIN_ERR;
         goto close_and_return;
     }
@@ -170,16 +171,16 @@ error_state DataBin::get_this_console_mac() {
     return DBIN_OK;
 }
 
-error_state DataBin::get_mac(const char *keys_file, char *error_message) {
+error_state DataBin::get_mac(const char *keys_file, char *&error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     FILE *fp;
 
     fp = fopen(keys_file, "r");
     if (fp == 0) {
-        fatal(_("cannot open %s"), keys_file);
+        fatal(_("Error opening file %s: %s"), keys_file, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -201,7 +202,7 @@ error_state DataBin::get_mac(const char *keys_file, char *error_message) {
     fclose(fp);
 
     if (!read_mac) {
-        fatal(_("MAC not found in %s"),keys_file);
+        fatal(_("MAC not found in %s"), keys_file);
         return DBIN_ERR;
     }
 
@@ -209,19 +210,19 @@ error_state DataBin::get_mac(const char *keys_file, char *error_message) {
 }
 
 /// @brief Load private keys from keys.txt
-/// @param keys_file 
-/// @param error_message 
-/// @return 
-error_state DataBin::get_private_keys(const char *keys_file, char *error_message) {
+/// @param keys_file
+/// @param error_message
+/// @return
+error_state DataBin::get_private_keys(const char *keys_file, char *&error_message) {
 
-    global_error_message = error_message;
-    snprintf(global_error_message, 1024, "DBIN_OK");
+    error_message = global_error_message;
+    snprintf(global_error_message, ERROR_BUFFER_LENGTH, "DBIN_OK");
 
     FILE *fp;
 
     fp = fopen(keys_file, "r");
     if (fp == 0) {
-        fatal(_("cannot open %s"), keys_file);
+        fatal(_("Error opening file %s: %s"), keys_file, strerror(errno));
         return DBIN_ERR;
     }
 
@@ -243,7 +244,7 @@ error_state DataBin::get_private_keys(const char *keys_file, char *error_message
             ret = get_value(line, tmp_ng_id, 4);
             if (ret != DBIN_OK)
                 goto close_and_return;
-            memcpy(&ng_id,tmp_ng_id,4);
+            memcpy(&ng_id, tmp_ng_id, 4);
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
             ng_id = __builtin_bswap32(ng_id);
 #endif
@@ -253,7 +254,7 @@ error_state DataBin::get_private_keys(const char *keys_file, char *error_message
             ret = get_value(line, tmp_ng_key_id, 4);
             if (ret != DBIN_OK)
                 goto close_and_return;
-            memcpy(&ng_key_id,tmp_ng_key_id,4);
+            memcpy(&ng_key_id, tmp_ng_key_id, 4);
 #ifdef BYTE_ORDER__LITTLE_ENDIAN
             ng_key_id = __builtin_bswap32(ng_key_id);
 #endif
@@ -282,7 +283,7 @@ error_state DataBin::get_private_keys(const char *keys_file, char *error_message
             keys_not_found += " ecc_private_key";
         if (!read_ng_sig)
             keys_not_found += " ng_signature";
-        fatal(_("Cannot find keys%s in %s"),keys_not_found.c_str(),keys_file);
+        fatal(_("Cannot find keys%s in %s"), keys_not_found.c_str(), keys_file);
         ret = DBIN_ERR;
         goto close_and_return;
     }
@@ -298,8 +299,10 @@ close_and_return:
 /// @return
 error_state DataBin::initialize_default_keys() {
 
-    char error_message[2048] = {0};
+    char *error_message = nullptr;
 
+    errors_initializing_keys.assign("");
+     
     error_state ret = DBIN_OK, ret_global = DBIN_OK;
 
     ret = DataBin::get_shared_keys("fs:/vol/external01/keys.txt", error_message);
@@ -336,11 +339,9 @@ error_state DataBin::initialize_default_keys() {
     return ret_global;
 }
 
-/// @brief coneole-log-like output of data.bin pack/unpack
+/// @brief console-log-like output of data.bin pack/unpack
 /// @param jobType
 void DataBin::showDataBinOperations(eJobType jobType) {
-
-    std::string target_path{}, src_path{};
 
     DrawUtils::beginDraw();
     DrawUtils::clear(COLOR_BLACK);
@@ -358,11 +359,11 @@ void DataBin::showDataBinOperations(eJobType jobType) {
     DrawUtils::setFontColor(COLOR_TEXT);
 
     if (jobType == RESTORE) {
-        Console::consolePrintPosAutoFormat(-2, 3, _("Extracting from: %s"), input_path);
+        Console::consolePrintPosAutoFormat(-2, 3, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, _("Extracting from: %s"), input_path);
         Console::consolePrintPos(-2, 5, _("To: %s"), DataBin::output_path);
     } else {
         Console::consolePrintPos(-2, 3, _("Archiving from: %s"), input_path);
-        Console::consolePrintPosAutoFormat(-2, 4, _("To: %s"), DataBin::output_path);
+        Console::consolePrintPosAutoFormat(-2, 4, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE,  _("To: %s"), DataBin::output_path);
     }
 
 
@@ -370,7 +371,7 @@ void DataBin::showDataBinOperations(eJobType jobType) {
     const size_t max_lines = 9;
     size_t initial_buffer_line = (log_lines > max_lines) ? log_lines - max_lines : 0;
     for (size_t line = 0; line < max_lines && line < log_lines; line++) {
-        Console::consolePrintPos(-2, 7 + line, " %s", logBuffer.at(initial_buffer_line + line).c_str());
+        Console::consolePrintPos(-2, 7 + (int) line, " %s", logBuffer.at(initial_buffer_line + line).c_str());
     }
 
 
@@ -396,7 +397,7 @@ void DataBin::writeLog(const char *s, ...) {
     logBuffer.push_back(std::string(message));
 }
 
-
+/// @brief silently get files in keys folder directory, no error is shown
 bool DataBin::populate_key_list() {
 
     key_list.clear();
@@ -410,7 +411,7 @@ bool DataBin::populate_key_list() {
 
             std::string keyPath = data->d_name;
 
-            //TODO - ADD CODE TO CHECK THE CONENT OF THE KEY FILE
+            //TODO - ADD CODE TO CHECK THE CONTENT OF THE KEY FILE AND SET key_file_content
 
             s_key_format key = {.key_path = keyPath, .key_file_content = UNSPECIFIED};
             key_list.push_back(key);

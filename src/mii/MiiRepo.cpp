@@ -17,7 +17,7 @@ MiiRepo::MiiRepo(const std::string &repo_name, eDBType db_type, eDBKind db_kind,
                                                                                  repo_description(repo_description), db_category(db_category) {};
 MiiRepo::~MiiRepo() {};
 
-int MiiRepo::backup(int slot, std::string tag /*= ""*/) {
+int MiiRepo::backup(int slot, const std::string &tag /*= ""*/) {
 
     StatManager::disable_all_flags();
 

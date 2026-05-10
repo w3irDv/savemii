@@ -1,5 +1,6 @@
-#include <coreinit/time.h>
+#include "utils/DrawUtils.h"
 #include <coreinit/thread.h>
+#include <coreinit/time.h>
 #include <cstdarg>
 #include <sstream>
 #include <unistd.h>
@@ -9,8 +10,6 @@
 #include <vector>
 
 #include <utils/StringUtils.h>
-
-#define MAX_PROMPT_WIDTH 64 * 12
 
 void Console::showMessage(Style St, const char *message, ...) {
 
@@ -104,7 +103,7 @@ bool Console::promptConfirm(Style st, const std::string &question) {
         default:
             msg = msg2;
     }
-    if (st & ST_WIPE) // for wipe bakupSet operation, we will ask that the user press X
+    if (st & ST_WIPE) // for wipe bakupSet operation, we will ask that the user press Y
         msg = msg3;
     if (st & ST_WARNING || st & ST_WIPE) {
         DrawUtils::clear(COLOR_BG_WR);
@@ -252,7 +251,7 @@ void Console::consolePrintPos(int x, int y, const char *format, ...) { // Source
         free(tmp);
 }
 
-void Console::consolePrintPosAutoFormat(int x, int y, const char *format, ...) {
+void Console::consolePrintPosAutoFormat(int x, int y, size_t max_prompt_width, size_t vertical_line_space, const char *format, ...) {
     char *tmp = nullptr;
     y += Y_OFFSET;
 
@@ -262,8 +261,8 @@ void Console::consolePrintPosAutoFormat(int x, int y, const char *format, ...) {
         size_t nLines = 0;
         size_t maxLineWidth = 0;
         std::string formatted_message{};
-        splitMessage(tmp, formatted_message, maxLineWidth, nLines);
-        DrawUtils::print((x + X_OFFSET) * 12, (y + 1) * 24, formatted_message.c_str());
+        splitMessage(tmp, formatted_message, maxLineWidth, nLines, max_prompt_width);
+        DrawUtils::print((x + X_OFFSET) * 12, (y + 1) * 24, formatted_message.c_str(), false, vertical_line_space);
     }
     va_end(va);
     if (tmp != nullptr)
@@ -338,7 +337,7 @@ size_t stringWidth(const std::string &word) {
 }
 
 //! split string in multiple lines, trying not to split words
-void Console::splitMessage(const char *tmp, std::string &formatted_message, size_t &maxLineWidth, size_t &nLines) {
+void Console::splitMessage(const char *tmp, std::string &formatted_message, size_t &maxLineWidth, size_t &nLines, size_t max_prompt_width /* = MAX_PROMPT_WIDTH */) {
 
     std::string splitted;
     std::stringstream message_ss(tmp);
@@ -356,14 +355,14 @@ void Console::splitMessage(const char *tmp, std::string &formatted_message, size
         while (getline(splitted_ss, word, ' ')) {
             size_t word_width = stringWidth(word);
             last_line_width += word_width;
-            if (last_line_width + whitespace_width <= MAX_PROMPT_WIDTH) {
+            if (last_line_width + whitespace_width <= max_prompt_width) {
                 if (!multiline.empty())
                     last_line_width += whitespace_width;
                 multiline += multiline.empty() ? word : " " + word;
                 maxLineWidth = last_line_width > maxLineWidth ? last_line_width : maxLineWidth;
             } else {
                 last_line_width -= word_width;
-                if (word_width > MAX_PROMPT_WIDTH) {
+                if (word_width > max_prompt_width) {
                     std::string splitted_word;
                     size_t total_cp_width = 0;
                     for (unsigned i = 0; i < word.length();) {
@@ -380,13 +379,13 @@ void Console::splitMessage(const char *tmp, std::string &formatted_message, size
                         i += cplen;
                         size_t current_cp_width = stringWidth(current_cp);
                         total_cp_width += current_cp_width;
-                        if (total_cp_width <= MAX_PROMPT_WIDTH) {
+                        if (total_cp_width <= max_prompt_width) {
                             splitted_word += current_cp;
                             maxLineWidth = total_cp_width > maxLineWidth ? total_cp_width : maxLineWidth;
                         } else {
                             splitted_word += "\n" + current_cp;
                             total_cp_width = current_cp_width;
-                            maxLineWidth = MAX_PROMPT_WIDTH;
+                            maxLineWidth = max_prompt_width;
                             nLines++;
                         }
                     }

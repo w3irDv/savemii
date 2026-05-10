@@ -1,4 +1,4 @@
-#include <BackupSetList.h>
+#include "ApplicationState.h"
 #include <Metadata.h>
 #include <cfg/GlobalCfg.h>
 #include <coreinit/debug.h>
@@ -11,6 +11,7 @@
 #include <utils/Colors.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/DataBin.h>
+#include <utils/DrawUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -51,6 +52,7 @@ TitleOptionsState::TitleOptionsState(Title &title,
     switch (task) {
         case BACKUP:
             updateBackupData();
+            update_data_bin_found(slot, SAVEMII_SLOT);
             break;
         case RESTORE:
             updateRestoreData();
@@ -113,7 +115,7 @@ void TitleOptionsState::render() {
         } else {
             DrawUtils::setFontColor(COLOR_LIST);
         }
-        Console::consolePrintPos(M_OFF, 2, "[%08X-%08X] %s (%s)", this->title.highID, this->title.lowID,
+        Console::consolePrintPos(M_OFF, 2, "[%s] %s (%s)", this->title.productCode,
                                  this->title.shortName, this->title.isTitleOnUSB ? "USB" : "NAND");
         DrawUtils::setFontColor(COLOR_TEXT);
         if (this->task == COPY_TO_OTHER_DEVICE) {
@@ -326,28 +328,37 @@ void TitleOptionsState::render() {
 
             if (data_bin_found) {
                 if (task == RESTORE) {
+                    DrawUtils::setFontColor(COLOR_TEXT);
                     Console::consolePrintPos(M_OFF, 7, _("'data.bin' savedata found. Uncompress and restore:"));
                     DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                     Console::consolePrintPos(M_OFF, 8, "   < %s >", restore_uncompressed ? _("yes, I know this is a true data.bin file") : _("no, just copy back the data.bin file as is"));
                 }
                 if (task == RESTORE || task == IMPORT_FROM_SD_WII_DATA_MGMT) {
-                    if (data_bin_vs_title_id_mismatch) {
+                    if (!DataBin::shared_keys_initialized) { // check only for shared keys, private keys and mac will be ok most of the times
+                        DrawUtils::setFontColor(COLOR_CURRENT_BS);
+                        Console::consolePrintPosAutoFormat(M_OFF, 12, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, _("WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
+                    } else if (data_bin_vs_title_id_mismatch) {
                         DrawUtils::setFontColor(COLOR_CURRENT_BS);
                         Console::consolePrintPos(M_OFF, 13, _("WARNING: Game TitleId does not match the one in savedata."));
-                        Console::consolePrintPos(M_OFF, 14, _("This savedata is for a different game/region"));
+                        Console::consolePrintPos(M_OFF, 14, _("This savedata is for a different game/region."));
                     }
                 }
             }
             if (task == BACKUP) {
+                DrawUtils::setFontColor(COLOR_TEXT);
                 Console::consolePrintPos(M_OFF, 7, _("Compress backup:"));
                 DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
                 Console::consolePrintPos(M_OFF, 8, "   < %s >", compress_backup ? _("yes, I neeed a data.bin file") : _("no, plain files are ok (classic savemii format)"));
             }
             if (task == EXPORT_TO_SD_WII_DATA_MGMT) {
                 DrawUtils::setFontColor(COLOR_INFO);
-                Console::consolePrintPos(M_OFF, 10, _("Compress backup to sd:/private/wii/title"));
-                Console::consolePrintPos(M_OFF, 11, _("using keys of the target wii,"));
-                Console::consolePrintPos(M_OFF, 12, _("so it can be read by standard Wii Data Management"));
+                Console::consolePrintPosAutoFormat(M_OFF, 10, MAX_PROMPT_WIDTH, WIDE_LINE_SPACE, _("Compress savedata to sd:/private/wii/title where it can be read by standard Wii Data Management"));
+            }
+            if ((task == BACKUP && compress_backup) || task == EXPORT_TO_SD_WII_DATA_MGMT) {
+                if (!DataBin::shared_keys_initialized) { // check only for shared keys, private keys and mac will be ok most of the times
+                    DrawUtils::setFontColor(COLOR_CURRENT_BS);
+                    Console::consolePrintPosAutoFormat(M_OFF, 12, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, _("No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."));
+                }
             }
             if (task == IMPORT_FROM_SD_WII_DATA_MGMT) {
                 DrawUtils::setFontColor(COLOR_INFO);
@@ -379,7 +390,7 @@ void TitleOptionsState::render() {
                 srcPath = basePath + StringUtils::stringFormat("/common", AccountUtils::getVolAcc()[source_user].persistentID);
                 savesize = title.commonSaveSize;
             } else if (source_user == -1) {
-                srcPath = basePath + StringUtils::stringFormat("/");
+                srcPath = basePath + "/";
                 savesize = 0;
             } else if (source_user > -1) {
                 srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getVolAcc()[source_user].persistentID);
@@ -415,18 +426,25 @@ void TitleOptionsState::render() {
                         Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"));
                 } else {
                     if (emptySlot)
-                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue002: Keys  \\ue001: Back"));
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue003: Keys  \\ue001: Back"));
                     else
-                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue002: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"));
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"));
                 }
                 break;
             case RESTORE:
                 Console::consolePrintPos(20, 0, _("Restore"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Change BackupSet  \\ue000: Restore  \\ue001: Back"));
-                else
-                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Change BackupSet  \\ue000: Restore  \\ue045 Tag Slot  \\ue001: Back"));
+                if (isWiiUTitle) {
+                    if (emptySlot)
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Restore  \\ue002: Change BackupSet  \\ue001: Back"));
+                    else
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"));
+                } else {
+                    if (emptySlot)
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"));
+                    else
+                        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"));
+                }
                 break;
             case WIPE_PROFILE:
                 Console::consolePrintPosAligned(0, 4, 1, _("Wipe"));
@@ -461,15 +479,15 @@ void TitleOptionsState::render() {
             case IMPORT_FROM_SD_WII_DATA_MGMT:
                 Console::consolePrintPosAligned(0, 4, 1, _("Import from SD Wii Save"));
                 DrawUtils::setFontColor(COLOR_TEXT);
-                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Import  \\ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Import  \\ue003: Keys  \\ue001: Back"));
                 break;
             case EXPORT_TO_SD_WII_DATA_MGMT:
                 Console::consolePrintPosAligned(0, 4, 1, _("Export to SD Wii Save"));
                 DrawUtils::setFontColor(COLOR_TEXT);
                 if (emptySlot)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue002: Keys  \\ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue003: Keys  \\ue001: Back"));
                 else
-                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue002: Keys  \\ue046 Delete Slot  \\ue001: Back"));
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue003: Keys  \\ue046 Delete Slot  \\ue001: Back"));
                 break;
             default:;
         }
@@ -487,12 +505,15 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 this->substateCalled = STATE_BACKUPSET_MENU;
                 this->subState = std::make_unique<BackupSetListState>();
             }
-            if (this->task == EXPORT_TO_SD_WII_DATA_MGMT || this->task == BACKUP) {
+        }
+        if (input->get(ButtonState::TRIGGER, Button::Y)) {
+            if (!isWiiUTitle && (this->task == EXPORT_TO_SD_WII_DATA_MGMT || this->task == BACKUP || this->task == RESTORE || this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) {
                 this->state = STATE_DO_SUBSTATE;
+                this->substateCalled = STATE_KEYLIST;
                 this->subState = std::make_unique<KeyListState>();
             }
         }
-        if (input->get(ButtonState::TRIGGER, Button::Y)) {
+        if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
             showFolderInfo = showFolderInfo ? false : true;
         }
         if (input->get(ButtonState::TRIGGER, Button::LEFT)) {
@@ -534,6 +555,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSlotMetadata();
                         updateHasCommonSaveInSource();
                         updateSourceHasRequestedSavedata();
+                        update_data_bin_found(slot, SAVEMII_SLOT);
                         if (data_bin_found)
                             updateDataBinInfo();
                         break;
@@ -602,7 +624,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == importLoadiine)) {
+            } else if (this->task == importLoadiine) {
                 switch (cursorPos) {
                     case 0:
                         slot--;
@@ -632,7 +654,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == exportLoadiine)) {
+            } else if (this->task == exportLoadiine) {
                 switch (cursorPos) {
                     case 0:
                         slot--;
@@ -667,7 +689,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot--;
                         updateSlotMetadata();
-                        updateData_bin_found(slot, SAVEMII_SLOT);
+                        update_data_bin_found(slot, SAVEMII_SLOT);
                         break;
                     case 1:
                         if (this->isWiiUTitle) {
@@ -722,6 +744,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         updateSlotMetadata();
                         updateHasCommonSaveInSource();
                         updateSourceHasRequestedSavedata();
+                        update_data_bin_found(slot, SAVEMII_SLOT);
                         if (data_bin_found)
                             updateDataBinInfo();
                         break;
@@ -791,7 +814,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == importLoadiine)) {
+            } else if (this->task == importLoadiine) {
                 switch (cursorPos) {
                     case 0:
                         slot++;
@@ -821,7 +844,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     default:
                         break;
                 }
-            } else if ((this->task == exportLoadiine)) {
+            } else if (this->task == exportLoadiine) {
                 switch (cursorPos) {
                     case 0:
                         slot++;
@@ -856,7 +879,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     case 0:
                         slot++;
                         updateSlotMetadata();
-                        updateData_bin_found(slot, SAVEMII_SLOT);
+                        update_data_bin_found(slot, SAVEMII_SLOT);
                         break;
                     case 1:
                         if (this->isWiiUTitle) {
@@ -945,20 +968,26 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 default:;
             }
-            if (((this->task == RESTORE && restore_uncompressed) || (this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) && !DataBin::shared_keys_initialized) {
+            if (((!this->isWiiUTitle && this->task == RESTORE && this->restore_uncompressed) || (this->task == IMPORT_FROM_SD_WII_DATA_MGMT)) && !DataBin::shared_keys_initialized) {
                 Console::showMessage(ERROR_CONFIRM, _("'data.bin' uncompress aborted: no shared keys found.\nProvide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
                 return SUBSTATE_RUNNING;
             }
-            if (((this->task == BACKUP && compress_backup) || (this->task == EXPORT_TO_SD_WII_DATA_MGMT)) && !(DataBin::shared_keys_initialized && DataBin::private_keys_initialized && DataBin::mac_in_databin_initialized)) {
-                Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no private keys or shared keys found.\n Please provide the Wii U 'otp.bin' file in SD:/wiiu/backups/<SerialId> (different for each console), and a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (console independent). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
+            if (((this->task == BACKUP && this->compress_backup) || (this->task == EXPORT_TO_SD_WII_DATA_MGMT)) && !(DataBin::shared_keys_initialized && DataBin::private_keys_initialized && DataBin::mac_in_databin_initialized)) {
+                if (!DataBin::shared_keys_initialized) // This is probably the only key that can fail.The MAC Addess and the otp.bin can be found with no user intervention.
+                    Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no shared keys found.\n Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
+                if (!DataBin::private_keys_initialized) // The error cause will be the same already shown ...
+                    Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: no private keys found.\n Please check that the Wii U 'otp.bin' file is in SD:/wiiu/backups/<SerialId>. Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
+                if (!DataBin::mac_in_databin_initialized)
+                    Console::showMessage(ERROR_CONFIRM, _("'data.bin' compress aborted: mac_address not found.\n Please provide a 'keys.txt' file in the root of the SD with a mac_address (from any Wii). Check github.com/w3irDv/savemii for more info.\n\nKeys initialization error:\n%s\n"), DataBin::errors_initializing_keys.c_str());
                 return SUBSTATE_RUNNING;
             }
             switch (this->task) {
                 case BACKUP:
-                    if (compress_backup) {
+                    if (!this->isWiiUTitle && this->compress_backup) {
                         if (backupSavedata(&this->title, slot, source_user_, common, DATA_BIN, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0) {
                             Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully backed up!"));
+                            data_bin_found = true;
                         }
                     } else {
                         if (backupSavedata(&this->title, slot, source_user_, common, FILES, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0)
@@ -967,7 +996,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     updateBackupData();
                     break;
                 case RESTORE:
-                    if (data_bin_found && restore_uncompressed) {
+                    if (!this->isWiiUTitle && this->data_bin_found && this->restore_uncompressed) {
                         if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, DATA_BIN, SAVEMII_SLOT) == 0) {
                             Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
@@ -1059,6 +1088,9 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                 }
                 cursorPos = 0;
                 updateRestoreData();
+            }
+            if (this->substateCalled == STATE_KEYLIST) {
+                updateDataBinInfo();
             }
             this->subState.reset();
             this->state = STATE_TITLE_OPTIONS;
@@ -1186,6 +1218,7 @@ void TitleOptionsState::updateRestoreData() {
         updateSourceHasRequestedSavedata();
         updateHasTargetUserData();
     }
+    update_data_bin_found(slot, SAVEMII_SLOT);
     if (data_bin_found)
         updateDataBinInfo();
 }
@@ -1250,6 +1283,10 @@ void TitleOptionsState::updateSlotContentFlagForLoadiine() {
     }
 }
 
+/**
+ * @brief Checks to perform if a data.bin file has been found in the slot
+ * 
+ */
 void TitleOptionsState::updateDataBinInfo() {
     if (DataBin::shared_keys_initialized)
         data_bin_vs_title_id_mismatch = check_data_bin_vs_title_id(&this->title, slot, gameBackupBasePath.c_str());
@@ -1260,11 +1297,11 @@ void TitleOptionsState::updateImportAsWii() {
 }
 
 void TitleOptionsState::updateExportAsWii() {
-    updateData_bin_found(0, PRIVATE_SLOT);
+    update_data_bin_found(0, PRIVATE_SLOT);
     emptySlot = !data_bin_found;
 }
 
-void TitleOptionsState::updateData_bin_found(uint8_t slot, eSlotType slot_type) {
+void TitleOptionsState::update_data_bin_found(uint8_t slot, eSlotType slot_type) {
     std::string data_bin{};
     switch (slot_type) {
         case SAVEMII_SLOT:
@@ -1274,4 +1311,8 @@ void TitleOptionsState::updateData_bin_found(uint8_t slot, eSlotType slot_type) 
             data_bin = gameBackupBasePath + "/data.bin";
     }
     data_bin_found = (FSUtils::checkEntry(data_bin.c_str()) == 1);
+    if (data_bin_found)
+        restore_uncompressed = true;
+    else
+        restore_uncompressed = false;
 }

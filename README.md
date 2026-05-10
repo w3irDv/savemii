@@ -14,6 +14,7 @@ This homebrew allows you to back up your Wii U/vWii games savedata and your Miis
 
 This mod expands SaveMii's original capabilities:
 - to manage titles in bulk: multiple titles can be saved, restored and wiped at once using batch functions.
+- export/import vWii savedata in data.bin format
 - to backup/restore Mii databases and import/export/transform any mii. 
 
 Savedata can also be easily moved between Wii U profiles, simplifying `Pretendo` setup.
@@ -61,6 +62,7 @@ Use it at your own risk and please report any issues that may occur.
 - You can manage Miis
 - You can manage Wii U System Titles
 - You can restore uninitialized titles (WiiU and injects), without needing to run the game before restoring
+- It supports savedata in `data.bin` format
 - Addresses critical issues present in previous versions of the mod
 - Includes options to move/copy profiles, very useful for finalizing `Pretendo` setups
 - Performs error checks on all backup and restore operations to ensure they complete successfully.
@@ -84,3 +86,4 @@ Use it at your own risk and please report any issues that may occur.
 - xploit-U, for creating the WUT port
 - HEYimHeroic, WiiBrew and WUT MiiData, for the unvaluable information on mii stuff
 - GaryOderNichts, for UDPIH, that was a blessing after an unfortunate test 
+- Segher and DJ_Skual, for their data.bin format implementations  

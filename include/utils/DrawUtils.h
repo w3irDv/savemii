@@ -11,6 +11,9 @@
 #define X_OFFSET      2
 #define Y_OFFSET      1
 
+#define WIDE_LINE_SPACE 30
+#define NARROW_LINE_SPACE 24
+
 union Color {
     explicit Color(uint32_t color) {
         this->color = color;
@@ -65,9 +68,8 @@ public:
     static void setFontColorByCursorForToggles(Color col, Color colAtCursor, int cursorPos, int line, bool toggle);
     static void setFontColorForToggles(Color col,  bool toggle);
 
-    static void print(uint32_t x, uint32_t y, const char *string, bool alignRight = false);
-
-    static void print(uint32_t x, uint32_t y, const wchar_t *string, bool alignRight = false);
+    static void print(uint32_t x, uint32_t y, const char *string, bool alignRight = false, size_t line_space = WIDE_LINE_SPACE);
+    static void print(uint32_t x, uint32_t y, const wchar_t *string, bool alignRight = false, size_t line_space = WIDE_LINE_SPACE);
 
     static uint32_t getTextWidth(const char *string);
 

@@ -106,5 +106,9 @@ This task allows you to move  savedata between NAND and USB  for titles that hav
 
 ## Backupset management
 
-In this menu you can tag backupsets (`+`) or delete the ones you don't need (`-`). You can also set the one you want to use to restore savedata (`A`).
+In this menu you can:
+- tag backupsets (`+`)
+- delete the ones you don't need (`-`)
+- set the backupSet you want to use to restore savedata (`A`)
+- show the content of the backupSet (`X`)
 

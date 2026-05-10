@@ -54,7 +54,7 @@ public:
     virtual bool update_mii_id_in_stadio(MiiData *old_miidata, MiiData *new_miidata) = 0;
 
     virtual std::string getBackupBasePath() { return backup_base_path; };
-    int backup(int slot, std::string tag = "");
+    int backup(int slot, const std::string &tag = "");
     int restore(int slot);
     int wipe();
     int initialize();

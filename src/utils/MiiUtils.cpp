@@ -78,7 +78,8 @@ bool MiiUtils::initMiiRepos() {
 set_repos:
 
     const std::string pathffl = mii_maker_path + "/user/common/db/FFL_ODB.dat";
-    const std::string pathfflc("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_C/FFL_ODB.dat");
+    const std::string pathfflc_folder("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_C");
+    const std::string pathfflc = pathfflc_folder + "/db/FFL_ODB.dat";
     const std::string pathffl_Stage("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_FFL_Stage");
     const std::string pathrfl("storage_slcc01:/shared2/menu/FaceLib/RFL_DB.dat");
     const std::string pathrflc("fs:/vol/external01/wiiu/backups/mii_repos/mii_repo_RFL_C/RFL_DB.dat");
@@ -90,6 +91,7 @@ set_repos:
     const std::string path_sgmgx("fs:/vol/external01/savemiis");
 
     const std::string pathstadio = mii_maker_path + "/user/common/stadio.sav";
+    const std::string pathstadioc = pathfflc_folder +"/stadio.sav";
 
     FSUtils::createFolder(pathfflc.substr(0, pathfflc.find_last_of("/")).c_str());
     FSUtils::createFolder(pathrflc.substr(0, pathrflc.find_last_of("/")).c_str());
@@ -114,6 +116,7 @@ set_repos:
 
     // STADIO
     MiiStadios["FFL_ACCOUNT"] = new MiiStadioSav("FFL_ACCOUNT", pathstadio, "mii_bckp_ffl", _("Internal Stadio save DB"));
+    MiiStadios["FFL_C_ACCOUNT_C"] = new MiiStadioSav("FFL_C_ACCOUNT_C", pathstadioc, "mii_bckp_fflc", _("Custom Stadio save DB"));
 
     MiiRepos["FFL"]->setStageRepo(MiiRepos["FFL_STAGE"]);
     //MiiRepos["FFL_STAGE"]->setStageRepo(MiiRepos["FFL"]);
@@ -127,7 +130,13 @@ set_repos:
     // STADIO
     MiiRepos["FFL"]->setStadioSav(MiiStadios["FFL_ACCOUNT"]);
     MiiRepos["ACCOUNT"]->setStadioSav(MiiStadios["FFL_ACCOUNT"]);
+    MiiStadios["FFL_ACCOUNT"]->setFileRepo(MiiRepos["FFL"]);
     MiiStadios["FFL_ACCOUNT"]->setAccountRepo(MiiRepos["ACCOUNT"]);
+
+    MiiRepos["FFL_C"]->setStadioSav(MiiStadios["FFL_C_ACCOUNT_C"]);
+    MiiRepos["ACCOUNT_C"]->setStadioSav(MiiStadios["FFL_C_ACCOUNT_C"]);
+    MiiStadios["FFL_C_ACCOUNT_C"]->setFileRepo(MiiRepos["FFL_C"]);
+    MiiStadios["FFL_C_ACCOUNT_C"]->setAccountRepo(MiiRepos["ACCOUNT_C"]);
 
     // Owners
     ((MiiFileRepo<WiiUMii, WiiUMiiData> *) MiiRepos["FFL"])->set_db_owner(mii_maker_owner);
