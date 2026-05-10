@@ -68,7 +68,7 @@ void BackupSetContentListState::render() {
 
         if (backupset_content.at(cursorPos + this->scroll).installed) {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, "%s  [%d]", backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str(), cursorPos + this->scroll + 1);
+            Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, "[%d] %s", cursorPos + this->scroll + 1, backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
             Console::consolePrintPos(M_OFF + 2, MAX_TITLE_SHOW + 5, "%s  [%s]",
                                      backupset_content.at(cursorPos + this->scroll).title->productCode,
                                      backupset_content.at(cursorPos + this->scroll).title->is_Wii ? "vWii" : (backupset_content.at(cursorPos + this->scroll).title->is_WiiUSysTitle ? "Wii U System Title" : (backupset_content.at(cursorPos + this->scroll).title->is_GameCube ? "GC inject" : (backupset_content.at(cursorPos + this->scroll).title->is_Inject ? "Inject" : "Wii U"))));
@@ -82,8 +82,8 @@ void BackupSetContentListState::render() {
             }
         } else {
             DrawUtils::setFontColor(COLOR_INFO);
-            Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, _("%s  [%d]"),
-                                               backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str(), cursorPos + this->scroll + 1);
+            Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, _("[%d] %s"),
+                cursorPos + this->scroll + 1,backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
         }
 
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -167,6 +167,7 @@ bool BackupSetContentListState::populate_backupset_content() {
             if (strcmp(data->d_name, ".") == 0 ||
                 strcmp(data->d_name, "..") == 0 ||
                 !(data->d_type & DT_DIR) ||
+                strcmp(data->d_name, "mii_db_checkpoint") == 0 ||
                 strlen(data->d_name) < 16) // at least, a valid savedata backup folder should contain highid & lowid
                 continue;
 
