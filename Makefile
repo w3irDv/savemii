@@ -13,8 +13,7 @@ TOPDIR ?= $(CURDIR)
 # APP_SHORTNAME sets the short name of the application
 # APP_AUTHOR sets the author of the application
 #-------------------------------------------------------------------------------
-#APP_NAME	    := SaveMii /ProcessMod+SaveMyMiis
-APP_NAME	    := SaveMii RC1
+APP_NAME	    := SaveMii /ProcessMod+SaveMyMiis
 APP_SHORTNAME	:= SaveMii
 APP_AUTHOR	    := Ryuzaki-MrL (mod by w3irDv)
 

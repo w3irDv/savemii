@@ -13,9 +13,10 @@
 This homebrew allows you to back up your Wii U/vWii games savedata and your Miis to the SD card, and restore them later.
 
 This mod expands SaveMii's original capabilities:
-- to manage titles in bulk: multiple titles can be saved, restored and wiped at once using batch functions.
+- manage titles in bulk: multiple titles can be saved, restored and wiped at once using batch functions.
+- manage system titles
 - export/import vWii savedata in data.bin format
-- to backup/restore Mii databases and import/export/transform any mii. 
+- backup/restore Mii databases and import/export/transform any mii. 
 
 Savedata can also be easily moved between Wii U profiles, simplifying `Pretendo` setup.
 
