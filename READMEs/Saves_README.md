@@ -32,7 +32,7 @@ Allows you to backup/restore/wipe individual titles.
 	2. `All users`: Recommended option. Will backup all game data.
 	3. `From user: xxxxxxxx`. Will only backup the data for the specified user/profile. In this case, you must also specify if you want to save the "common" data or not. "Common" savedata is data shared by all profiles. Titles can have common save data, profile savedata or both.
 
-	<img src="new.png" width="40" align="center"> For vWii titles, you can choose the savedata format: "plain files", where  all individual files are copied to the selected slot in the SD card, or "compressed", where all files will be archived in a `data.bin` file. This "compressed" format is the standard format used by a Wii when backing up saves from the Data Managament menu. For the compressed format to work you need to provide some Wii encryption keys. See the [Encyption keys](#encryption-keys) section.
+	<img src="new.png" width="40" align="center"> For vWii titles, you can choose the savedata format: "plain files", where  all individual files are copied to the selected slot in the SD card, or "compressed", where all files will be archived in a `data.bin` file. This "compressed" format is the standard format used by a Wii when backing up saves from the Data Managament menu. For the compressed format to work you need to provide some Wii encryption keys. See the [Encyption keys](Keys_README.md) section.
 3. Press `A` to initiate the backup. After the backup is done, you can tag the slot with a meaningful name pressing `+` button while you are in the backup menu. If the slot is unneeded, you can delete it by pressing `-` button.
 
 *Wii U titles savedata layout:*
@@ -67,7 +67,7 @@ For vWii titles, savedata is directly under the slot folder.
    3. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console. You can specify if copy common savedata or not.
 	   If you are just copying the savedata from one profile id to a different one in the same console, choose `copy common savedata: no`. If you  are restoring to a new console with different profile ids, just choose `copy common savedata: yes` once for any of the profile ids, and copy the rest of profiles with `copy common savedata: no`
 
-	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` archive. If so, the restore task will by default decrypt and explode the files contained in it. You will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](#encryption-keys) section. Usually, this`data.bin` will be a "true" savedata if you have:
+	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` archive. If so, the restore task will by default decrypt and explode the files contained in it. You will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](Keys_README.md) section. Usually, this`data.bin` will be a "true" savedata if you have:
 	- backup previously the savedata in compressed format
 	- downloaded the a `.bin` savedata file from internet. Change its name to `data.bin` so SaveMii can detect it.
 	- copied it from the SD folder `/private/wii/title/<Product Code>` (where savedata exported by the Wii Data Management menu is stored) to the SaveMii slot. 
@@ -136,55 +136,7 @@ You can enter into this task only if the game has savedata in the Loadiine folde
 
 1. Enter into the task and just press `A` to initiate the import or the export task. For import tasks, SaveMii will check if the savedata in the SD belongs to the title and region you are trying to import to.
 
-If neded, you can select which keys to use to encrypt by pressing `Y` in the Export task menu. This will open the KeyList menu. All files in the `SD:/wiiu/backups/keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private, shared keys or the mac address. For more details, please see the [Encyption keys](#encryption-keys) section.
-
-
-## Encryption Keys
-
-<img src="new.png" width="40" align="center"> To Backup or Restore a `data.bin` savedata file you will need the Wii encryption keys.
-
-These are the keys needed for restoring a `data.bin` file  (they are the same for all Wiis):
-- sd_key
-- sd_iv
-- md5_blanker
-
-If you have access to a homebrewed Wii you can generate them with [xyzzy](https://oscwii.org/library/app/xyzzy-mod) hb app. Simply ensure that the `keys.txt` file that `xyyzz` generates is placed on the root of the SD you use for loading Aroma. If you cannot run `xyzzy`, you can ask google explicitly for their values (you need the *[values for sd_key sd_iv and md5_blanker wii decryption keys](https://hackmii.com/2008/04/keys-keys-keys/)*, not the Wii U ones) and then create a `keys.txt` file in the root of your sd with this content:
-```
-sd_key      = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits, no whitespaces between them)
-sd_iv       = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits)
-md5_blanker = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     (32 hex digits)
-```
-where xxxx...xxxx are a sequence of 32 hexadecimal digits   (no `0x`  in front of them, just the digits).
-
-To create a `data.bin` file, in addition to the above shared keys, you will need these keys:
-
-- console_id
-- ecc_private_key
-- ng_key_id
-- ng_signature
-
-and a mac address (SaveMii will use the one ftom the Wii U by default).
-
-These keys are already found in the `otp.bin` file that Aroma generates by default, so you don't need to worry about them. They can be found also in the `keys.txt` file generated by `zyxxy` in a real Wii (important: if you run `zyxxy`in a vWii, the `keys.txt` file will miss ng_key_id and ng_signature). 
-
-Despite being different from Wii to Wii, you can use the private keys belonging to any Wii to generate a savedata file in `data.bin` format that can be read in any other Wii. 
-
-### Where SaveMii looks for keys
-
-By default, SaveMii will:
-- look for a `keys.txt` file in the root of your SD card to load the shared keys. This is the only file needed to restore a `data.bin` file. These keys are the same for all Wii consoles, and are **the only one that you need to provide by yourself**.
-- look for `sd:/wiiu/backups/<console serial id >/otp.bin` to load the private keys (Aroma generates this  file). Both these and the the shared keys are needed to backup savedata files in `data.bin` format
-- get the MAC Address from the Wii U, also needed for create backups in `data.bin` format. 
-
-You can also copy `keys.txt`, `otp.bin` or just txt files containing  the shared keys, the private keys or the MAC Address to the `sd:/wiiu/backups/keys` folder.
-```
-console_id      = xxxxxxxx        (8 hex digits)
-ecc_private_key = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx     (60 hex digits)
-ng_key_id       = xxxxxxxx        (8 hex digits)
-ng_signature    = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..................xxxxxxxxxxxxxxxxxxxxxxxxxx     (120 hex digits)
-mac_address     = xxxxxxxxxxxx     (12 hex digits)
-```
-Then, from the `Backup` or `Export` tasks, you can press `Y` to open the KeyList menu. All files in the `keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private keys, the shared keys or the Mac Address. On the top-right of the Keys menu you can see the source for each key: `[P:.|S:.|M:.]`, for `P`rivate, `S`hared, `M`AC, where values can be `D`efault or `C`ustom. Files used as custom sources are marked with `P` `S` or `M`.   
+If neded, you can select which keys to use to encrypt by pressing `Y` in the Export task menu. This will open the KeyList menu. All files in the `SD:/wiiu/backups/keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private, shared keys or the mac address. For more details, please see the [Encyption keys](Keys_README.md) section.
 
 ## Configuration Options
 

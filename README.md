@@ -50,10 +50,18 @@ Use it at your own risk and please report any issues that may occur.
 <p align="left">
 
 <p align="left">
-<a href="READMEs/Tips_README.md" title="Miis"><img src="READMEs/tips.png" width="40" align="center"></a>&nbsp
-<a href="READMEs/Tips_README.md" title="Miis">Tips</a>
+<a href="READMEs/Keys_README.md" title="Keys"><img src="READMEs/key.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Keys_README.md" title="Keys">Tips</a>
 </p>
 <p align="left">
+
+
+<p align="left">
+<a href="READMEs/Tips_README.md" title="Tips"><img src="READMEs/tips.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Tips_README.md" title="Tips">Tips</a>
+</p>
+<p align="left">
+
 
 ----
 
