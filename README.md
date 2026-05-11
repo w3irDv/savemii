@@ -51,7 +51,7 @@ Use it at your own risk and please report any issues that may occur.
 
 <p align="left">
 <a href="READMEs/Keys_README.md" title="Keys"><img src="READMEs/key.png" width="40" align="center"></a>&nbsp
-<a href="READMEs/Keys_README.md" title="Keys">Tips</a>
+<a href="READMEs/Keys_README.md" title="Keys">Wii Encryption Keys</a>
 </p>
 <p align="left">
 
