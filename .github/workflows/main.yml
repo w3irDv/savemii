@@ -12,16 +12,16 @@ jobs:
           fetch-depth: 0
           submodules: true
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Build Docker Image (with layer caching)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: Dockerfile
           load: true  # This replaces 'docker build' and exports the image to the local daemon
           tags: builder:latest
-          cache-from: type=gha #
-          cache-to: type=gha,mode=max #
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Build artifacts
         run: |
           docker run --rm -v ${PWD}:/project builder:latest make release -j$(nproc)
