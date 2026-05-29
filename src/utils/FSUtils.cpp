@@ -239,7 +239,7 @@ bool FSUtils::setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, const
     free(shim);
 
     if (fserror != FS_ERROR_OK) {
-        Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting owner %08x /group %08x for\n%s"), FSAGetStatusStr(fserror), group, owner, path.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting owner %08x /group %08x for\n%s"), FSAGetStatusStr(fserror), owner, group, path.c_str());
         return false;
     }
 
