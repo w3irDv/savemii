@@ -143,9 +143,7 @@ bool ExcludesCfg::parseJsonCfg() {
     }
 
     if (errorCount != 0) {
-        std::string multilineError;
-        StringUtils::splitStringWithNewLines(koElements, multilineError);
-        Console::showMessage(ERROR_CONFIRM, _("Error parsing values in elements:\n%s"), multilineError.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Error parsing values in elements:\n%s"), koElements.c_str());
     }
 
     json_decref(root);

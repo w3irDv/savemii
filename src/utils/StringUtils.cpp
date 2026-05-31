@@ -19,6 +19,12 @@ std::string StringUtils::decodeXMLEscapeLine(std::string xmlString) {
     return xmlString;
 }
 
+/**
+ * @brief add new lines each MAXWIDTH chars, but is not UTF-8 safe
+ * 
+ * @param input 
+ * @param output 
+ */
 void StringUtils::splitStringWithNewLines(const std::string &input, std::string &output) {
     for (unsigned i = 0; i < input.length(); i += MAXWIDTH) {
         output = output + input.substr(i, MAXWIDTH) + "\n";

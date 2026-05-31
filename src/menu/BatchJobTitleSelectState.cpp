@@ -360,10 +360,31 @@ void BatchJobTitleSelectState::render() {
                     break;
             }
 
-            char shortName[32];
-            for (int p = 0; p < 32; p++)
-                shortName[p] = this->titles[c2t[i + this->scroll]].shortName[p];
-            shortName[31] = '\0';
+// make the name shorter so status after batch operation can be seen. utf8 safe.
+#define SHORTNAME_LENGTH 256
+#define MAX_CHARS        32
+            char shortName[SHORTNAME_LENGTH];
+            const char *full_short_name = this->titles[c2t[i + this->scroll]].shortName;
+            uint8_t number_of_chars = 0;
+            unsigned bytes = 0;
+            for (bytes = 0; bytes < strnlen(full_short_name, SHORTNAME_LENGTH - 1) && number_of_chars < MAX_CHARS;) {
+                size_t cplen;
+                if ((full_short_name[bytes] & 0xf8) == 0xf0)
+                    cplen = 4;
+                else if ((full_short_name[bytes] & 0xf0) == 0xe0)
+                    cplen = 3;
+                else if ((full_short_name[bytes] & 0xe0) == 0xc0)
+                    cplen = 2;
+                else
+                    cplen = 1;
+                bytes += cplen;
+                number_of_chars++;
+            }
+
+            for (unsigned i = 0; i < bytes; i++)
+                shortName[i] = full_short_name[i];
+            shortName[bytes] = '\0';
+
             Console::consolePrintPos(M_OFF + 3 + nameVWiiOffset, i + 2, "    %s %s%s%s%s %s%s",
                                      shortName,
                                      this->titles[c2t[i + this->scroll]].isTitleOnUSB ? "(USB)" : "(NAND)",
