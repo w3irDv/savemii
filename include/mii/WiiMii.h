@@ -84,9 +84,9 @@ public:
         const static inline uint8_t PARADE_DATA[0xC] = {0x7F, 0xFF, 0x7F, 0xFF, 0, 0, 0, 0, 0, 0, 0, 0};
         const static uint32_t MII_PARADE_SIZE = 0x1D4E0; // includes Magic and checksum
 
-        //const static uint32_t DB_OWNER = 0x1003;  // returns "NOT EMPTY" when changing mode
+        //const static uint32_t DB_OWNER = 0x1003;  // returns "NOT EMPTY" when changing mode ... but right value from uid.sys should be use it it worked
         //const static uint32_t DB_GROUP = 0x3031;
-        const static uint32_t DB_OWNER = 0x1004e200;   // we use default HB user till (if ..) the previous problem is solved
+        const static uint32_t DB_OWNER = 0;   //  we will use the region depenedent savemii user till (if ..) the previous problem is solved
         const static uint32_t DB_GROUP = 0x400;
         const static uint32_t DB_FSMODE = 0x666;
 

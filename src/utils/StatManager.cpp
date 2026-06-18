@@ -5,6 +5,7 @@
 #include <savemng.h>
 #include <sstream>
 #include <sys/stat.h>
+#include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/InProgress.h>
@@ -230,8 +231,8 @@ bool StatManager::stat_file_exists(Title *title, int slot) {
 }
 
 /// @brief Store in stat_file path to files that have fsmod, uid or gid diferent to the default one (640, uid=tid, gid=0x400)
-/// @param entryPath 
-/// @return 
+/// @param entryPath
+/// @return
 bool StatManager::get_stat(const std::string &entryPath) {
 
     FSAStat fsastat;
@@ -315,12 +316,12 @@ void StatManager::set_default_stat_cfg_for_wiiu_savedata(Title *title) {
     default_file_stat->fsmode = 0x660;
 }
 
-/// @brief Beware: Despite being called and configured, permissions for vWii will not be used because chmod does not always work in SLCCMPT. 
-/// @param title 
-void StatManager::set_default_stat_cfg_for_vwii_savedata([[maybe_unused]]Title *title) {
-// revert to savemii "legacy" defaults. Permissions stored in savemii stat file will be ok till the first time the user restore some data 
-    default_file_stat->uid = 0x1004e200;  // if chemod works at some point on SLCCMPT, this should be changed by the uid appearing for the title in /sys/uid.sys
-    default_file_stat->gid = 0x400;   // not clear what the true value should be if chmod worked ok. Seems that 0x3031 is the good one but vWii, but more investigation is needed
+/// @brief Beware: Despite being called and configured, permissions for vWii will not be used because chmod does not always work in SLCCMPT.
+/// @param title
+void StatManager::set_default_stat_cfg_for_vwii_savedata([[maybe_unused]] Title *title) {
+    // revert to savemii "legacy" defaults. Permissions stored in savemii stat file will be ok till the first time the user restore some data
+    default_file_stat->uid = AmbientConfig::savemii_title_id; // if chmod works at some point on SLCCMPT, this should be changed by the uid appearing for the title in /sys/uid.sys
+    default_file_stat->gid = 0x400;                           // not clear what the true value should be if chmod worked ok. Seems that 0x3031 is the good one but vWii, but more investigation is needed
     default_file_stat->fsmode = 0x666;
 }
 

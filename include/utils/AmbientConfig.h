@@ -11,6 +11,8 @@ namespace AmbientConfig {
     bool get_mac_address();
     bool get_author_id();
     void getWiiUSerialId();
+    void get_savemii_title_id();
+
 
     inline char device_hash[8] = {0};
     inline NetConfMACAddr mac_address;
@@ -18,5 +20,6 @@ namespace AmbientConfig {
     inline std::string unknownSerialId{"_WIIU_"};
     inline std::string thisConsoleSerialId = unknownSerialId;
     inline MCPRegion thisConsoleRegion;
+    inline uint32_t savemii_title_id = 0;
 
 }; // namespace AmbientConfig

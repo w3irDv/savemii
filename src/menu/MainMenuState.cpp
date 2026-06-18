@@ -120,9 +120,12 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             if (++cursorPos == ENTRYCOUNT)
                 --cursorPos;
         if (input->get(ButtonState::HOLD, Button::PLUS) && input->get(ButtonState::HOLD, Button::L)) {
+            Console::showMessage(OK_CONFIRM, "%08x",AmbientConfig::savemii_title_id);
+            statDebugUtils::statAct();
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::HOLD, Button::MINUS) && input->get(ButtonState::HOLD, Button::L)) {
+            statDebugUtils::statMiiEdit();
             return SUBSTATE_RUNNING;
         }
     } else if (this->state == STATE_DO_SUBSTATE) {

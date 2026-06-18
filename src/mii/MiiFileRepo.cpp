@@ -8,6 +8,7 @@
 #include <savemng.h>
 #include <string>
 #include <unistd.h>
+#include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
@@ -36,7 +37,7 @@ bool MiiFileRepo<WiiMii, WiiMiiData>::set_db_fsa_metadata() {
     db_group = WiiMiiData::DB::DB_GROUP;
     db_fsmode = (FSMode) WiiMiiData::DB::DB_FSMODE;
     if (path_to_repo.find("fs:/vol/") == std::string::npos) {
-        db_owner = WiiMiiData::DB::DB_OWNER;
+        db_owner = AmbientConfig::savemii_title_id; // not the original one, but chmod returns NON_EMPTY error otherwise
         return true;
     } else {
         db_owner = 0; // if we are persisting to SD, we will not set the owner, and defaults are OK.

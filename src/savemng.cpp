@@ -2153,7 +2153,7 @@ bool setOwnerAndModeForTitle(Title *title) {
 
 bool setLegacyOwnerAndModeForTitle(Title *title) {
 
-    uint32_t owner = 0x1004e200;
+    uint32_t owner = AmbientConfig::savemii_title_id;
     uint32_t group = 0x400;
     FSMode mode = (FSMode) 0x666;
 

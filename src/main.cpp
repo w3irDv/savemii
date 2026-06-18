@@ -102,10 +102,11 @@ int main() {
         return 0;
     }
 
-    StartupUtils::addInitMessage("Getting DeviceID , MACAddress and AuthorId");
+    StartupUtils::addInitMessage("Getting DeviceID , MACAddress, AuthorId, Savemii Title Id");
     AmbientConfig::get_device_hash();
     AmbientConfig::get_mac_address();
     AmbientConfig::get_author_id();
+    AmbientConfig::get_savemii_title_id();
 
     StartupUtils::addInitMessage(_("Initializing Radndom seed"));
     srand(time(NULL));

@@ -1,6 +1,8 @@
+#include <coreinit/title.h>
 #include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/LanguageUtils.h>
+
 
 bool AmbientConfig::get_device_hash() {
 
@@ -80,4 +82,11 @@ bool AmbientConfig::get_author_id() {
     nn::act::Finalize();
 
     return true;
+}
+
+
+void AmbientConfig::get_savemii_title_id() {
+
+    uint64_t titleId = OSGetTitleID();
+    savemii_title_id = (uint32_t) titleId;
 }
