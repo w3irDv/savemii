@@ -1,6 +1,6 @@
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
-# Run me from the repo root: scripts/mergePO.sh
+# Run me from the repo root: scripts/PO/mergePO.sh
 
 find . | grep -E "src.*\.cpp$|include.*\.h$"  | xargs xgettext --escape  --no-wrap --keyword=_  --language=C++ --from-code=UTF-8  --output=pot/messages.pot -
 
