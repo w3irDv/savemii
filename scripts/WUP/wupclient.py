@@ -31,7 +31,7 @@ def get_string(buffer, offset):
 class wupclient:
     s=None
 
-    def __init__(self, ip='YOUR.IP.HE.RE', port=1337):
+    def __init__(self, ip='192.168.1.38', port=1337):
         self.s=socket.socket()
         self.s.connect((ip, port))
         self.fsa_handle = None
@@ -43,11 +43,23 @@ class wupclient:
             self.fsa_handle = None
 
     # fundamental comms
-    def send(self, command, data):
+    def send(self, command, data, resp_len=None):
         request = struct.pack('>I', command) + data
 
-        self.s.send(request)
-        response = self.s.recv(0x600)
+        self.s.sendall(request)
+        if resp_len is None:
+            # small fixed-size reply : fits in one segment
+            response = self.s.recv(0x600)
+        else:
+            # known-length reply (4-byte status + payload) : the reply may be
+            # split across TCP segments, so loop until we have exactly resp_len
+            response = bytearray()
+            while len(response) < resp_len:
+                chunk = self.s.recv(resp_len - len(response))
+                if not chunk:  # connection closed early
+                    break
+                response += chunk
+            response = bytes(response)
 
         ret = struct.unpack(">I", response[:4])[0]
         return (ret, response[4:])
@@ -55,7 +67,8 @@ class wupclient:
     # core commands
     def read(self, addr, len):
         data = struct.pack(">II", addr, len)
-        ret, data = self.send(1, data)
+        # reply is the 4-byte status followed by exactly len bytes
+        ret, data = self.send(1, data, 4 + len)
         if ret == 0:
             return data
         else:
@@ -64,7 +77,7 @@ class wupclient:
 
     def send_and_exit(self, command, data):
         request = struct.pack('>I', command) + data
-        self.s.send(request)
+        self.s.sendall(request)
         self.s.close()
         self.s = None
         self.fsa_handle = None
@@ -280,6 +293,15 @@ class wupclient:
         (ret, data) = self.ioctl(handle, 0x14, inbuffer, 0x64)
         return (ret, struct.unpack(">IIIIIIIIIIIIIIIIIIIIIIIII", data))
 
+    # path-based stat (FSAGetStat) via GetInfoByQuery, query FSA_QUERY_INFO_STAT.
+    # authoritative owner/group/mode for both files and directories.
+    def FSA_GetStat(self, handle, path):
+        inbuffer = buffer(0x520)
+        copy_string(inbuffer, path, 0x0004)
+        copy_word(inbuffer, 0x5, 0x0284)  # FSA_QUERY_INFO_STAT
+        (ret, data) = self.ioctl(handle, 0x18, inbuffer, 0x68)  # GetInfoByQuery
+        return (ret, data[4:4 + 0x64])  # FSAStat bytes (drop 4-byte FSA prefix)
+
     def FSA_CloseFile(self, handle, file_handle):
         inbuffer = buffer(0x520)
         copy_word(inbuffer, file_handle, 0x4)
@@ -320,6 +342,15 @@ class wupclient:
         inbuffer = buffer(0x520)
         copy_string(inbuffer, path, 0x04)
         (ret, _) = self.ioctl(handle, 0x08, inbuffer, 0x293)
+        return ret
+
+    def FSA_Rename(self, handle, path_old, path_new):
+        # FSARequestRename { char oldPath[FS_MAX_PATH+1]; char newPath[FS_MAX_PATH+1]; }
+        # request data starts at 0x04; each path field is 0x280 (FS_MAX_PATH+1) wide.
+        inbuffer = buffer(0x520)
+        copy_string(inbuffer, path_old, 0x04)
+        copy_string(inbuffer, path_new, 0x284)
+        (ret, _) = self.ioctl(handle, 0x09, inbuffer, 0x293)
         return ret
         
     def FSA_FlushVolume(self, handle, path):
@@ -385,7 +416,7 @@ class wupclient:
             #     print(data[:data.index(0)].decode("ascii"))
             #     break
             # else:
-            print(data.decode("ascii"))
+            print(data.decode("ascii", errors="replace"))
 
     # file management
     def get_fsa_handle(self):
@@ -397,18 +428,30 @@ class wupclient:
         fsa_handle = self.get_fsa_handle()
         if path[0] != "/":
             path = self.cwd + "/" + path
-        ret = w.FSA_MakeDir(fsa_handle, path, flags)
+        ret = self.FSA_MakeDir(fsa_handle, path, flags)
         if ret == 0:
             return 0
         else:
             print("mkdir error (%s, %08X)" % (path, ret))
             return ret
 
+    def rename(self, path_old, path_new):
+        # Atomic FSA rename/move. Raises on failure so callers can detect it.
+        fsa_handle = self.get_fsa_handle()
+        if path_old[0] != "/":
+            path_old = self.cwd + "/" + path_old
+        if path_new[0] != "/":
+            path_new = self.cwd + "/" + path_new
+        ret = self.FSA_Rename(fsa_handle, path_old, path_new)
+        if ret != 0:
+            raise IOError("rename %s -> %s failed (%08X)" % (path_old, path_new, ret))
+        return 0
+
     def chmod(self, filename, flags):
         fsa_handle = self.get_fsa_handle()
         if filename[0] != "/":
             filename = self.cwd + "/" + filename
-        ret = w.FSA_ChangeMode(fsa_handle, filename, flags)
+        ret = self.FSA_ChangeMode(fsa_handle, filename, flags)
         print("chmod returned : " + hex(ret))
 
     # quota
@@ -416,7 +459,7 @@ class wupclient:
         fsa_handle = self.get_fsa_handle()
         if filename[0] != "/":
             filename = self.cwd + "/" + filename
-        ret = w.FSA_MakeQuota(fsa_handle, filename, flags, size)
+        ret = self.FSA_MakeQuota(fsa_handle, filename, flags, size)
         print("quota returned : " + hex(ret))
     
     # chown
@@ -424,7 +467,7 @@ class wupclient:
         fsa_handle = self.get_fsa_handle()
         if filename[0] != "/":
             filename = self.cwd + "/" + filename
-        ret = w.FSA_ChangeOwner(fsa_handle, filename, owner, group)
+        ret = self.FSA_ChangeOwner(fsa_handle, filename, owner, group)
         print("chown returned : " + hex(ret))
 
     def cd(self, path):
@@ -442,7 +485,7 @@ class wupclient:
 #silent version
     def silent_cd(self, path):
         if path[0] != "/" and self.cwd[0] == "/":
-            return self.cd(self.cwd + "/" + path)
+            return self.silent_cd(self.cwd + "/" + path)
         fsa_handle = self.get_fsa_handle()
         ret, dir_handle = self.FSA_OpenDir(fsa_handle, path if path != None else self.cwd)
         if ret == 0:
@@ -512,19 +555,21 @@ class wupclient:
                 self.dldir(path + "/" + e["name"])
     
     def cpdir(self, srcpath, dstpath):
-        entries = self.ls(srcpath, True)
-        q = [(srcpath, dstpath, e) for e in entries]
-        while len(q) > 0:
-            _srcpath, _dstpath, e = q.pop()
-            _srcpath += "/" + e["name"]
-            _dstpath += "/" + e["name"]
+        # raises on any FSA read error so callers can detect a failed copy
+        fsa_handle = self.get_fsa_handle()
+        ret, dir_handle = self.FSA_OpenDir(fsa_handle, srcpath)
+        if ret != 0:
+            raise IOError("cpdir: cannot open dir %s (%08X)" % (srcpath, ret))
+        self.FSA_CloseDir(fsa_handle, dir_handle)
+        for e in self.silent_ls(srcpath, True):
+            _srcpath = srcpath + "/" + e["name"]
+            _dstpath = dstpath + "/" + e["name"]
             if e["is_file"]:
                 print(e["name"])
                 self.cp(_srcpath, _dstpath)
             else:
                 self.mkdir(_dstpath, 0x600)
-                entries = self.ls(_srcpath, True)
-                q += [(_srcpath, _dstpath, e) for e in entries]
+                self.cpdir(_srcpath, _dstpath)
 
     def pwd(self):
         return self.cwd
@@ -533,25 +578,44 @@ class wupclient:
         fsa_handle = self.get_fsa_handle()
         ret, in_file_handle = self.FSA_OpenFile(fsa_handle, filename_in, "r")
         if ret != 0x0:
-            print("cp error : could not open " + filename_in)
-            return
+            raise IOError("cp: cannot open %s (%08X)" % (filename_in, ret))
         ret, out_file_handle = self.FSA_OpenFile(fsa_handle, filename_out, "w")
         if ret != 0x0:
-            print("cp error : could not open " + filename_out)
-            return
-        block_size = 0x10000
+            self.FSA_CloseFile(fsa_handle, in_file_handle)
+            raise IOError("cp: cannot open %s (%08X)" % (filename_out, ret))
+        # copy buffer size (console-side); callers may raise self.cp_block_size
+        # to cut round-trips. Fall back if the heap can't allocate it.
+        block_size = getattr(self, "cp_block_size", 0x10000)
+        min_block_size = getattr(self, "cp_block_size_min", 0x10000)
         buffer = self.alloc(block_size, 0x40)
+        while buffer == 0 and block_size > min_block_size:
+            block_size = max(block_size // 2, min_block_size)
+            buffer = self.alloc(block_size, 0x40)
+        if buffer == 0:
+            self.FSA_CloseFile(fsa_handle, out_file_handle)
+            self.FSA_CloseFile(fsa_handle, in_file_handle)
+            raise IOError("cp: could not allocate copy buffer")
         k = 0
-        while True:
-            ret, _ = self.FSA_ReadFilePtr(fsa_handle, in_file_handle, 0x1, block_size, buffer)
-            k += ret
-            ret = self.FSA_WriteFilePtr(fsa_handle, out_file_handle, 0x1, ret, buffer)
-            sys.stdout.write(hex(k) + "\r"); sys.stdout.flush();
-            if ret < block_size:
-                break
-        self.free(buffer)
-        ret = self.FSA_CloseFile(fsa_handle, out_file_handle)
-        ret = self.FSA_CloseFile(fsa_handle, in_file_handle)
+        try:
+            while True:
+                # valid read count is 0..block_size; anything larger is an
+                # FSA error code returned (unsigned) instead of a byte count
+                rret, _ = self.FSA_ReadFilePtr(fsa_handle, in_file_handle, 0x1, block_size, buffer)
+                if rret > block_size:
+                    raise IOError("cp: read error on %s (%08X)" % (filename_in, rret))
+                if rret == 0:
+                    break
+                wret = self.FSA_WriteFilePtr(fsa_handle, out_file_handle, 0x1, rret, buffer)
+                if wret != rret:  # short write or FSA error code
+                    raise IOError("cp: write error on %s (%08X, expected %X)" % (filename_out, wret, rret))
+                k += rret
+                sys.stdout.write(hex(k) + "\r"); sys.stdout.flush();
+                if rret < block_size:
+                    break
+        finally:
+            self.free(buffer)
+            self.FSA_CloseFile(fsa_handle, out_file_handle)
+            self.FSA_CloseFile(fsa_handle, in_file_handle)
 
     def df(self, filename_out, src, size):
         fsa_handle = self.get_fsa_handle()
@@ -630,11 +694,14 @@ class wupclient:
             return
         buffer = bytearray()
         block_size = 0x400
-        while True:
-            ret, data = self.FSA_ReadFile(fsa_handle, file_handle, 0x1, block_size if (block_size < size) else size)
+        while len(buffer) < size:
+            cur_size = min(block_size, size - len(buffer))
+            ret, data = self.FSA_ReadFile(fsa_handle, file_handle, 0x1, cur_size)
+            if ret == 0 or ret > cur_size:  # EOF or error code
+                break
             buffer += data[:ret]
             sys.stdout.write(hex(len(buffer)) + "\r"); sys.stdout.flush();
-            if len(buffer) >= size:
+            if ret < cur_size:              # short read = EOF
                 break
         ret = self.FSA_CloseFile(fsa_handle, file_handle)
         return buffer
@@ -747,6 +814,19 @@ class wupclient:
         if len(self.ls(path, True)) != 0:
             return
         ret = self.FSA_Remove(fsa_handle, path)
+
+    def rmtree(self, path):
+        # recursive, non-interactive delete (used for backup rollback)
+        fsa_handle = self.get_fsa_handle()
+        if path[0] != "/":
+            path = self.cwd + "/" + path
+        for e in self.silent_ls(path, True):
+            child = path + "/" + e["name"]
+            if e["is_file"]:
+                self.FSA_Remove(fsa_handle, child)
+            else:
+                self.rmtree(child)
+        return self.FSA_Remove(fsa_handle, path)
 
     def up(self, local_filename, filename = None):
         fsa_handle = self.get_fsa_handle()
@@ -1084,17 +1164,23 @@ def restore_mii_maker(region):
 
     owner=int(mii_maker,16)
 
-    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker)
+    if w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker) != 0:
+        print("restore aborted : could not enter title directory")
+        return
 
     w.chmod("user",0x600)
     w.chown("user",0x100000f6,0x400)
 
-    w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user")
+    if w.cd("/vol/storage_mlc01/usr/save/00050010/"+mii_maker+"/user") != 0:
+        print("restore aborted : could not enter user directory")
+        return
 
     w.mkquota("common",0x660,0x1790000)
     w.chown("common",owner,0x400)
 
-    w.cd("common")
+    if w.cd("common") != 0:
+        print("restore aborted : could not enter common directory")
+        return
 
     w.up("mm_bckp/stadio.sav","stadio.sav")
     w.chmod("stadio.sav",0x660)
@@ -1103,7 +1189,9 @@ def restore_mii_maker(region):
     w.mkdir("db",0x644)
     w.chown("db",owner,0x400)
 
-    w.cd("db")
+    if w.cd("db") != 0:
+        print("restore aborted : could not enter db directory")
+        return
 
     w.up("mm_bckp/db/FCL_DB.dat","FCL_DB.dat")
     w.up("mm_bckp/db/FFL_HDB.dat","FFL_HDB.dat")

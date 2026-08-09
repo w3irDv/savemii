@@ -13,3 +13,7 @@ TODO.txt
 .idea
 savemii.lst
 compile_commands.json
+
+# Python bytecode cache (scripts/) — regenerated on import, never commit
+__pycache__/
+*.py[cod]

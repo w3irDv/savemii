@@ -1,11 +1,11 @@
 # SaveMii WUT Port /ProcessMod + SaveMyMiis
 
-<p align="center"><a href="https://github.com/w3irdv/savemii/" title="SaveMii"><img src="savemii.png" width="350"></a></p>
+<p align="center"><a href="https://github.com/w3irDv/savemii/" title="SaveMii"><img src="savemii.png" width="350"></a></p>
 <p align="center">
-<a href="https://github.com/w3irdv/savemii/releases" title="Releases"><img src="https://img.shields.io/github/v/release/w3irdv/savemii?logo=github"></a>
+<a href="https://github.com/w3irDv/savemii/releases" title="Releases"><img src="https://img.shields.io/github/v/release/w3irDv/savemii?logo=github"></a>
 </p>
 
-**WiiU/vWii Save + Mii Manager**
+**Wii U/vWii Save + Mii Manager**
 
 `Original by Ryuzaki-MrL - Mod by GabyPCGeek - WUT Port by DaThinkingChair`<br>
 `/ProcessMod + SaveMyMiis by w3irDv.`
@@ -13,14 +13,14 @@
 This homebrew allows you to back up your Wii U/vWii games savedata and your Miis to the SD card, and restore them later.
 
 This mod expands SaveMii's original capabilities:
-- manage titles in bulk: multiple titles can be saved, restored and wiped at once using batch functions.
+- manage titles in bulk: multiple titles can be saved, restored and wiped at once using batch functions
 - manage system titles
 - export/import vWii savedata in data.bin format
-- backup/restore Mii databases and import/export/transform any mii. 
+- backup/restore Mii databases and import/export/transform any Mii
 
 Savedata can also be easily moved between Wii U profiles, simplifying `Pretendo` setup.
 
-Can also copy saves from NAND-USB if title is installed to both
+Can also copy saves between NAND and USB if a title is installed on both.
 
 
 ## Quick Notes
@@ -62,6 +62,11 @@ Use it at your own risk and please report any issues that may occur.
 </p>
 <p align="left">
 
+<p align="left">
+<a href="READMEs/Recovery_README.md" title="Recovery Resources"><img src="READMEs/Lifebelt.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Recovery_README.md" title="Recovery Resources">Recovery Resources</a>
+</p>
+<p align="left">
 
 ----
 
@@ -70,13 +75,13 @@ Use it at your own risk and please report any issues that may occur.
 - Fully compatible with Aroma
 - You can manage Miis
 - You can manage Wii U System Titles
-- You can restore uninitialized titles (WiiU and injects), without needing to run the game before restoring
+- You can restore uninitialized titles (Wii U and injects), without needing to run the game before restoring
 - It supports savedata in `data.bin` format
 - Addresses critical issues present in previous versions of the mod
 - Includes options to move/copy profiles, very useful for finalizing `Pretendo` setups
-- Performs error checks on all backup and restore operations to ensure they complete successfully.
-- All operations can be performed in batches.
-- It preserves file permissions (WiiU) and can backup saves with FAT32 non-compliant chars in its filename
+- Performs error checks on all backup and restore operations to ensure they complete successfully
+- All operations can be performed in batches
+- It preserves file permissions (Wii U) and can back up saves with FAT32 non-compliant chars in their filenames
 - Maintained
 - WUT port additions to the original:
   - Faster copy speeds
@@ -93,6 +98,6 @@ Use it at your own risk and please report any issues that may occur.
 - V10lator, for helping with a lot of stuff
 - Vague Rant, for testing
 - xploit-U, for creating the WUT port
-- HEYimHeroic, WiiBrew and WUT MiiData, for the unvaluable information on mii stuff
-- GaryOderNichts, for UDPIH, that was a blessing after an unfortunate test 
+- HEYimHeroic, WiiBrew and WUT MiiData, for the invaluable information on Mii stuff
+- GaryOderNichts, for UDPIH, that was a blessing after an unfortunate test
 - Segher and DJ_Skual, for their data.bin format implementations  
