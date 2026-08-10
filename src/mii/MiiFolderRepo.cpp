@@ -93,7 +93,9 @@ MiiData *MiiFolderRepo<MII, MIIDATA>::extract_mii_data(const std::string &mii_fi
     // CRC bytes to 0
     memset(mii_buffer + MIIDATA::MII_DATA_SIZE, 0, 4);
 
-    std::string extension = mii_filepath.substr(mii_filepath.find_last_of("."));
+    // guard npos: a dot-less filename would make substr(npos) throw std::out_of_range
+    size_t mii_filepath_dot = mii_filepath.find_last_of('.');
+    std::string extension = (mii_filepath_dot == std::string::npos) ? "" : mii_filepath.substr(mii_filepath_dot);
     if (extension == ".ffsd" || extension == ".ffcd" || extension == ".cfsd" || extension == ".cfcd" || extension == ".bin") {
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(mii_buffer, MIIDATA::MII_DATA_SIZE)) {
             Console::showMessage(ERROR_SHOW, _("Error switching le/be MiiData representation"));
@@ -129,7 +131,9 @@ bool MiiFolderRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_place
     size_t mii_file_size = MIIDATA::MII_DATA_SIZE; // Inititally, wo CRC. We will update it later if needed ...
 
     // switch be->le representation if needed
-    std::string extension = mii_filename.substr(mii_filename.find_last_of("."));
+    // guard npos: a dot-less filename would make substr(npos) throw std::out_of_range
+    size_t mii_filename_dot = mii_filename.find_last_of('.');
+    std::string extension = (mii_filename_dot == std::string::npos) ? "" : mii_filename.substr(mii_filename_dot);
     if (extension == ".ffsd" || extension == ".ffcd" || extension == ".cfsd" || extension == ".cfcd" || extension == ".bin") {
         if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) {
             Console::showMessage(ERROR_SHOW, _("Error switching le/be MiiData representation"));
