@@ -31,7 +31,7 @@ ssid=<your ssid here>
 key=<your wifikey here>
 key_type=WPA2_PSK_AES
 ```
-- Download this [wupclient.py](../scripts/wupclient.py) file to your computer
+- Download this [wupclient.py](../scripts/WUP/wupclient.py) file to your computer
 - Create a directory `mm_bckp` in the folder where you downloaded `wupclient.py`
 - Copy the backup of the Mii Maker `common` folder into `mm_bckp`
     - use the last backup you have
