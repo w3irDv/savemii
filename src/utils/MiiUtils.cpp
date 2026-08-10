@@ -720,8 +720,9 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                 bool is_wiiu_mii = (mii_repo->miis.at(mii_index)->mii_type == Mii::WIIU);
                 bool miiid_modified = mii_process_shared_state->transfer_ownership || mii_process_shared_state->make_it_local || mii_process_shared_state->update_timestamp ||
                                       mii_process_shared_state->toggle_normal_special_flag || mii_process_shared_state->toggle_temp_flag;
-                MiiData *original_mii_data;
-                original_mii_data = mii_data->clone(); // we may need original miiid later to update favorite section
+                MiiData *original_mii_data = nullptr;
+                if (mii_data != nullptr)
+                    original_mii_data = mii_data->clone(); // we may need original miiid later to update favorite section
                 if (mii_data != nullptr && original_mii_data != nullptr) {
                     bool effective_share_flag = mii_repo->miis[mii_index]->shareable;
                     if (mii_process_shared_state->toggle_share_flag) { // we assume that this memory operation will always succeed, so for sure the outcome would be a shared special mii
