@@ -155,6 +155,10 @@ ApplicationState::eSubState MiiTransformTasksState::update(Input *input) {
                 this->subState = std::make_unique<MiiRepoSelectState>(mii_repos_candidates, MiiProcess::SELECT_REPO_FOR_XFER_ATTRIBUTE, mii_process_shared_state);
             } else {
                 if (toggle_copy_flag || make_it_local || update_timestamp || toggle_normal_special_flag || toggle_share_flag || toggle_temp_flag || update_crc || toggle_favorite_flag || toggle_foreign_flag) {
+                    // restore SELECT_TRANSFORM_TASK: shared->state is clobbered to SELECT_REPO_FOR_XFER_ATTRIBUTE
+                    // if the xfer-repo picker was entered then backed out, which would send showMiiOperations
+                    // down the default branch and deref the unset auxiliar_mii_repo
+                    mii_process_shared_state->state = action;
                     uint16_t errorCounter = 0;
                     if (MiiUtils::xform_miis(errorCounter, mii_process_shared_state)) {
                         if (InProgress::abortTask == false)
