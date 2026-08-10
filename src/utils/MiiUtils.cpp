@@ -780,8 +780,11 @@ bool MiiUtils::xform_miis(uint16_t &errorCounter, MiiProcessSharedState *mii_pro
                     delete original_mii_data;
                 } else {
                     Console::showMessage(ERROR_SHOW, _("Error extracting MiiData for %s (by %s)"), mii_repo->miis[mii_index]->mii_name.c_str(), mii_repo->miis[mii_index]->creator_name.c_str());
-                    errorCounter++;
                 }
+                // count any Mii left KO as an error (extraction failure or failed import_miidata),
+                // matching export_miis. The share-warning skip sets NOT_TRIED and continues, so it isn't counted.
+                if (mii_view->at(mii_index).state == MiiStatus::KO)
+                    errorCounter++;
                 InProgress::currentStep++;
                 if (InProgress::totalSteps > 1) {
                     InProgress::input->read();
