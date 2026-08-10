@@ -224,8 +224,9 @@ bool MiiStadioSav::open_and_load_stadio() {
     stadio_max_alive_miis = __builtin_bswap32(stadio_max_alive_miis);
 #endif
 
-    for (size_t i = 0; i < WiiUMiiData::DB::MAX_MIIS; i++)
-        stadio_empty_frames.push_back(true);
+    // assign (not push_back): clears and sizes to exactly MAX_MIIS so reloads on the
+    // process-lifetime singleton stadio don't keep growing the vector.
+    stadio_empty_frames.assign(WiiUMiiData::DB::MAX_MIIS, true);
     stadio_alive_miis_counter = 0;
 
     {
@@ -517,6 +518,11 @@ bool MiiStadioSav::init_stadio_file() {
     FFL_stadio_last_empty_location = 0;
     ACCOUNT_stadio_last_empty_location = 0;
     stadio_last_empty_frame_index = 0;
+
+    // reset in-memory occupancy bookkeeping so it matches the freshly emptied stadio.
+    // Otherwise these keep pre-init values until the next open_and_load_stadio.
+    stadio_empty_frames.assign(WiiUMiiData::DB::MAX_MIIS, true);
+    stadio_alive_miis_counter = 0;
 
     this->fill_empty_stadio_file();
 
