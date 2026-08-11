@@ -161,8 +161,14 @@ void LanguageUtils::setMSG(const char *msgid, const char *msgstr) {
 
     uint32_t id = hash_string(msgid);
     MSG *msg = (MSG *) MEMAllocFromDefaultHeap(sizeof(MSG));
-    msg->id = id;
+    if (!msg)
+        return;
     msg->msgstr = strdup(msgstr);
+    if (!msg->msgstr) {
+        MEMFreeToDefaultHeap(msg);
+        return;
+    }
+    msg->id = id;
     msg->next = baseMSG;
     baseMSG = msg;
 }
