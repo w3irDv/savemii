@@ -36,7 +36,8 @@ void Input::read() {
     int32_t vpadReadCount = VPADRead(VPAD_CHAN_0, &vpad_status, 1, &vpadError);
     if (vpadReadCount < 1 || vpadError != VPAD_READ_SUCCESS)
         vpad_status = {};
-    KPADRead(WPAD_CHAN_0, &kpad_status, 1);
+    if (KPADRead(WPAD_CHAN_0, &kpad_status, 1) < 1)
+        kpad_status = {};
 }
 
 bool Input::get(ButtonState state, Button button) const {
