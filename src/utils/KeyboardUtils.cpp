@@ -33,25 +33,19 @@ void Keyboard::render() {
 std::string Keyboard::wstringToString(const std::wstring &wstr) {
     size_t size = wstr.length() * 4;
     char stringContent[size + 1];
-    std::string str;
-    if (wcstombs(stringContent, wstr.c_str(), size + 1) > 0) {
-        str.assign(stringContent);
-    } else {
-        str.assign("");
-    }
-    return str;
+    size_t converted = wcstombs(stringContent, wstr.c_str(), size + 1);
+    if (converted == (size_t) -1)
+        return std::string{};
+    return std::string(stringContent, converted);
 }
 
 std::wstring Keyboard::stringToWstring(const std::string &str) {
     size_t wsize = str.length();
     wchar_t wideStringContent[wsize + 1];
-    std::wstring wstr;
-    if (mbstowcs(wideStringContent, str.c_str(), wsize + 1) > 0) {
-        wstr.assign(wideStringContent);
-    } else {
-        wstr.assign(L"");
-    }
-    return wstr;
+    size_t converted = mbstowcs(wideStringContent, str.c_str(), wsize + 1);
+    if (converted == (size_t) -1)
+        return std::wstring{};
+    return std::wstring(wideStringContent, converted);
 }
 
 int Keyboard::kbLeft() {
