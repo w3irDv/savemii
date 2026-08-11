@@ -1,4 +1,5 @@
 #include <coreinit/title.h>
+#include <cstring>
 #include <utils/AmbientConfig.h>
 #include <utils/ConsoleUtils.h>
 #include <utils/LanguageUtils.h>
@@ -53,7 +54,9 @@ void AmbientConfig::getWiiUSerialId() {
     int32_t mcpHandle = MCP_Open();
     if (mcpHandle >= 0) {
         if (MCP_GetSysProdSettings(mcpHandle, &sysProd) == 0) {
-            thisConsoleSerialId = std::string(sysProd.code_id) + sysProd.serial_id;
+            thisConsoleSerialId =
+                std::string(sysProd.code_id, strnlen(sysProd.code_id, sizeof(sysProd.code_id))) +
+                std::string(sysProd.serial_id, strnlen(sysProd.serial_id, sizeof(sysProd.serial_id)));
             thisConsoleRegion = sysProd.game_region;
         }
         MCP_Close(mcpHandle);
@@ -62,17 +65,21 @@ void AmbientConfig::getWiiUSerialId() {
 
 
 bool AmbientConfig::get_author_id() {
-    nn::act::Initialize();
+    if (!nn::act::Initialize().IsSuccess())
+        return false;
+
     int i = 0;
     int accn = 0;
     uint8_t wiiu_accn = nn::act::GetNumOfAccounts();
     FFLStoreData mii;
+    bool found = false;
 
     while ((accn < wiiu_accn) && (i <= 12)) {
         if (nn::act::IsSlotOccupied(i)) {
             nn::Result result = nn::act::GetMiiEx(&mii, i);
             if (result.IsSuccess()) {
                 author_id = mii.data.core.author_id;
+                found = true;
                 break;
             }
             accn++;
@@ -81,7 +88,7 @@ bool AmbientConfig::get_author_id() {
     }
     nn::act::Finalize();
 
-    return true;
+    return found;
 }
 
 
