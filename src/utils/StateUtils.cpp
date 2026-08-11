@@ -70,9 +70,10 @@ bool State::AppRunning() {
 }
 
 void State::shutdown() {
-    if (!aroma)
+    if (aroma)
+        ProcUIShutdown();
+    else
         WHBProcShutdown();
-    ProcUIShutdown();
 }
 
 
