@@ -20,8 +20,16 @@ bool Metadata::read() {
         }
 
         char *data = (char *) aligned_alloc(0x40, FS_ALIGN(len + 1));
+        if (data == nullptr) {
+            fclose(f);
+            return false;
+        }
 
-        fread(data, 1, len, f);
+        if (fread(data, 1, len, f) != (size_t) len) {
+            free(data);
+            fclose(f);
+            return false;
+        }
         data[len] = '\0';
         fclose(f);
 
@@ -79,6 +87,7 @@ bool Metadata::read() {
             free(data);
             return true;
         }
+        free(data);
     }
     return false;
 }
@@ -212,8 +221,16 @@ bool Metadata::read_mii() {
         }
 
         char *data = (char *) aligned_alloc(0x40, FS_ALIGN(len + 1));
+        if (data == nullptr) {
+            fclose(f);
+            return false;
+        }
 
-        fread(data, 1, len, f);
+        if (fread(data, 1, len, f) != (size_t) len) {
+            free(data);
+            fclose(f);
+            return false;
+        }
         data[len] = '\0';
         fclose(f);
 
@@ -246,6 +263,7 @@ bool Metadata::read_mii() {
             free(data);
             return true;
         }
+        free(data);
     }
     return false;
 }
