@@ -29,6 +29,8 @@ WiiMii::WiiMii(std::string &mii_name, std::string &creator_name, std::string &ti
 MiiData *WiiMiiData::clone() {
 
     unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(this->mii_data_size);
+    if (mii_buffer == nullptr)
+        return nullptr;
     memcpy(mii_buffer, this->mii_data, mii_data_size);
     MiiData *miidata = new WiiMiiData(mii_buffer, this->mii_data_size);
 

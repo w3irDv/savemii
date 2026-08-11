@@ -43,8 +43,11 @@ const char * Mii::get_birth_platform_as_string() {
 }
 
 void *MiiData::allocate_memory(size_t size) {
-    void *buf = memalign(32, (size + 31) & (~31));
-    memset(buf, 0, (size + 31) & (~31));
+    size_t aligned = (size + 31) & (~31);
+    void *buf = memalign(32, aligned);
+    if (buf == nullptr)
+        return nullptr; // don't memset a null pointer on OOM; let callers handle the failure
+    memset(buf, 0, aligned);
     return buf;
 }
 

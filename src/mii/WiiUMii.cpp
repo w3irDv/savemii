@@ -30,6 +30,8 @@ WiiUMii::WiiUMii(std::string &mii_name, std::string &creator_name, std::string &
 MiiData *WiiUMiiData::clone() {
 
     unsigned char *mii_buffer = (unsigned char *) MiiData::allocate_memory(this->mii_data_size);
+    if (mii_buffer == nullptr)
+        return nullptr;
     memcpy(mii_buffer, this->mii_data, mii_data_size);
     MiiData *miidata = new WiiUMiiData(mii_buffer, this->mii_data_size);
 
@@ -301,6 +303,8 @@ bool WiiUMiiData::get_favorite_flag() {
 bool WiiUMiiData::flip_between_account_mii_data_and_mii_data(unsigned char *mii_buffer, size_t buffer_size) {
 
     unsigned char *tmp_raw_mii_data = (unsigned char *) MiiData::allocate_memory(buffer_size);
+    if (tmp_raw_mii_data == nullptr)
+        return false;
 
     for (unsigned int i = 0; i < buffer_size; i++) {
         memset(tmp_raw_mii_data + i, mii_buffer[account_2_ffl_index[i]], 1);

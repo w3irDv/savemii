@@ -559,6 +559,10 @@ bool MiiFileRepo<MII, MIIDATA>::populate_repo() {
         uint8_t raw_mii_data[MIIDATA::MII_DATA_SIZE];
         */
         unsigned char *raw_mii_data = (unsigned char *) MiiData::allocate_memory(MIIDATA::MII_DATA_SIZE);
+        if (raw_mii_data == nullptr) {
+            Console::showMessage(ERROR_SHOW, _("Cannot create memory buffer for reading the mii data"));
+            return false;
+        }
         memcpy(raw_mii_data, db_buffer + MIIDATA::DB::OFFSET + i * MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE);
         MiiData *current_miidata = new MIIDATA(raw_mii_data, MIIDATA::MII_DATA_SIZE);
 
