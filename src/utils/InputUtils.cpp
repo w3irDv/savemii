@@ -78,13 +78,16 @@ bool Input::get(ButtonState state, Button button) const {
     if (!kpad_status.error) {
         switch (kpad_status.extensionType) {
             case WPAD_EXT_CORE:
+            case WPAD_EXT_MPLUS:
                 kpadCoreState = examine(kpad_status);
                 break;
             case WPAD_EXT_NUNCHUK:
+            case WPAD_EXT_MPLUS_NUNCHUK:
                 kpadCoreState    = examine(kpad_status);
                 kpadNunchukState = examine(kpad_status.nunchuk);
                 break;
             case WPAD_EXT_CLASSIC:
+            case WPAD_EXT_MPLUS_CLASSIC:
                 kpadCoreState    = examine(kpad_status);
                 kpadClassicState = examine(kpad_status.classic);
                 break;
