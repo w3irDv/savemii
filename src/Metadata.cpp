@@ -14,6 +14,10 @@ bool Metadata::read() {
         fseek(f, 0, SEEK_END);
         long len = ftell(f);
         fseek(f, 0, SEEK_SET);
+        if (len < 0) {
+            fclose(f);
+            return false;
+        }
 
         char *data = (char *) aligned_alloc(0x40, FS_ALIGN(len + 1));
 
@@ -202,6 +206,10 @@ bool Metadata::read_mii() {
         fseek(f, 0, SEEK_END);
         long len = ftell(f);
         fseek(f, 0, SEEK_SET);
+        if (len < 0) {
+            fclose(f);
+            return false;
+        }
 
         char *data = (char *) aligned_alloc(0x40, FS_ALIGN(len + 1));
 
