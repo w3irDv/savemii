@@ -218,13 +218,22 @@ void FSUtils::flushVol(const std::string &dstPath) {
 
 bool FSUtils::setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, const std::string &path, FSError &fserror) {
 
-    fserror = FSAChangeMode(handle, FSUtils::newlibtoFSA(path).c_str(), mode);
+    const std::string fsaPath = FSUtils::newlibtoFSA(path);
+
+    fserror = FSAChangeMode(handle, fsaPath.c_str(), mode);
     if (fserror != FS_ERROR_OK) {
         Console::showMessage(ERROR_CONFIRM, _("Error\n%s\nsetting permissions for\n%s"), FSAGetStatusStr(fserror), path.c_str());
         return false;
     }
 
     fserror = FS_ERROR_OK;
+
+    if (fsaPath.size() > FS_MAX_PATH) {
+        Console::showMessage(ERROR_SHOW, _("Path too long to set owner\n\n%s"), path.c_str());
+        fserror = FS_ERROR_INVALID_PATH;
+        return false;
+    }
+
     FSAShimBuffer *shim = (FSAShimBuffer *) memalign(0x40, sizeof(FSAShimBuffer));
     if (!shim) {
         Console::showMessage(ERROR_SHOW, _("Error creating shim for change perms\n\n%s"), path.c_str());
@@ -233,7 +242,7 @@ bool FSUtils::setOwnerAndMode(uint32_t owner, uint32_t group, FSMode mode, const
 
     shim->clientHandle = handle;
     shim->ipcReqType = FSA_IPC_REQUEST_IOCTL;
-    strcpy(shim->request.changeOwner.path, FSUtils::newlibtoFSA(path).c_str());
+    strcpy(shim->request.changeOwner.path, fsaPath.c_str());
     shim->request.changeOwner.owner = owner;
     shim->request.changeOwner.group = group;
     shim->command = FSA_COMMAND_CHANGE_OWNER;
