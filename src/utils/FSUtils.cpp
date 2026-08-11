@@ -182,6 +182,8 @@ bool FSUtils::createFolderUnlocked(const std::string &path) {
 void FSUtils::FSAMakeQuotaFromDir(const char *src_path, const char *dst_path, uint64_t accountSize, uint64_t commonSize) {
     uint64_t quotaSize;
     DIR *src_dir = opendir(src_path);
+    if (src_dir == nullptr) // missing source is reported by the following copyDir
+        return;
     struct dirent *entry;
     while ((entry = readdir(src_dir)) != nullptr) {
         if (entry->d_type == DT_DIR) {
