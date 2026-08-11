@@ -18,6 +18,7 @@ Swkbd_LanguageType LanguageUtils::sysLang;
 Swkbd_LanguageType LanguageUtils::loadedLang;
 
 void LanguageUtils::loadLanguage(Swkbd_LanguageType language) {
+    gettextCleanUp();
     loadedLang = language;
     switch (language) {
         case Swkbd_LanguageType__Japanese:
