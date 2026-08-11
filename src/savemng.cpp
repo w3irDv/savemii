@@ -1125,6 +1125,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             break;
     }
 
+    FAT32EscapeFileManager::allowed_escape_root = StringUtils::stringFormat("%s/%08x/%08x/", path.c_str(), highID, lowID);
     if (!FAT32EscapeFileManager::rename_fat32_escaped_files(baseSrcPath, storage_vol, errorMessage, errorCode))
         goto flush_volume;
 

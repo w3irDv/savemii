@@ -43,6 +43,8 @@ public:
     static inline std::string source_profile_subpath{};
     static inline std::string target_profile_subpath{};
 
+    static inline std::string allowed_escape_root{};
+
 
 private:
     std::string title_backup_root{};

@@ -121,9 +121,16 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
     }
 
     for (auto entry_to_rename = rename_vector.rbegin(); entry_to_rename != rename_vector.rend(); entry_to_rename++) {
+        sPath = storage_vol + entry_to_rename->source; // <full escaped>
+        tPath = storage_vol + entry_to_rename->target; // <escaped>/<unescaped>
+
+        if (sPath.find("..") != std::string::npos || tPath.find("..") != std::string::npos ||
+            !sPath.starts_with(allowed_escape_root) || !tPath.starts_with(allowed_escape_root)) {
+            Console::showMessage(ERROR_CONFIRM, _("FAT32 rename entry points outside the save folder (corrupt or malicious backup):\n%s\n->\n%s"), sPath.c_str(), tPath.c_str());
+            goto close_and_error;
+        }
+
         if (entry_to_rename->fileType == IS_DIR) {
-            sPath = storage_vol + entry_to_rename->source; // <full escaped>
-            tPath = storage_vol + entry_to_rename->target; // <escaped>/<unescaped>
             if (rename(sPath.c_str(), tPath.c_str()) == 0)
                 continue;
             else {
@@ -131,9 +138,6 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                 goto close_and_error;
             }
         } else {                                           // IS_FILE
-            sPath = storage_vol + entry_to_rename->source; // <full escaped>
-            tPath = storage_vol + entry_to_rename->target; // <escaped>/<unescaped>
-
             if (is_wii_storage) {                                      // in slcc01 rename files returns invalid arguments error if target contains forbidden chars. Open/close works ok ...
                 if (FSUtils::copyFile(sPath.c_str(), tPath.c_str())) { // but at most only one entry in the path can contain forbiden chars. ... so we rename backwards
                     unlink(sPath.c_str());                             // target path can be 68 chars at most, including storage_slccc01:
@@ -217,6 +221,8 @@ bool Escape::escapeSpecialFAT32Chars(const std::string &originalName, std::strin
         case ONLY_BASEPATH: {
             begin = originalName.find(":") + 1;
             end = originalName.find_last_of("/");
+            if (end == std::string::npos)
+                end = len;
         } break;
         default:
             return -1;
