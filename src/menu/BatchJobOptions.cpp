@@ -146,12 +146,20 @@ BatchJobOptions::BatchJobOptions(Title *titles,
         }
     }
 
-    if (AccountUtils::vol_acc != nullptr)
+    if (AccountUtils::vol_acc != nullptr) {
         free(AccountUtils::vol_acc);
+        AccountUtils::vol_acc = nullptr;
+    }
     AccountUtils::vol_accn = sourceUsers.size();
 
     int i = 0;
     AccountUtils::vol_acc = (Account *) malloc(AccountUtils::vol_accn * sizeof(Account));
+    if (AccountUtils::vol_acc == nullptr) {
+        AccountUtils::vol_accn = 0;
+        Console::showMessage(ERROR_SHOW, _("Cannot allocate memory for the profile list."));
+        substate_return = true;
+        return;
+    }
     for (auto user : sourceUsers) {
         strcpy(AccountUtils::vol_acc[i].persistentID, user.substr(0, 8).c_str());
         AccountUtils::vol_acc[i].pID = strtoul(user.c_str(), nullptr, 16);
