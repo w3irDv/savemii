@@ -33,6 +33,10 @@ void AccountUtils::getAccountsWiiU() {
     int i = 0;
     int accn = 0;
     wiiu_accn = nn::act::GetNumOfAccounts();
+    if (wiiu_acc != nullptr) {
+        free(wiiu_acc);
+        wiiu_acc = nullptr;
+    }
     wiiu_acc = (Account *) malloc(wiiu_accn * sizeof(Account));
     if (wiiu_acc == nullptr) {
         wiiu_accn = 0;
