@@ -6,7 +6,7 @@
 namespace MiiSaveMng {
 
     bool isSlotEmpty(MiiRepo *mii_repo, uint8_t slot);
-    uint8_t getEmptySlot(MiiRepo *mii_repo);
+    int getEmptySlot(MiiRepo *mii_repo);
     void deleteSlot(MiiRepo *mii_repo, uint8_t slot);
 
     std::string getMiiRepoBackupPath(MiiRepo *mii_repo, uint32_t slot);

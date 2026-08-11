@@ -22,7 +22,7 @@ void MiiSaveMng::deleteSlot(MiiRepo *mii_repo, uint8_t slot) {
         } else
             Console::showMessage(ERROR_SHOW, _("Failed to delete slot %u."), slot);
     } else {
-        Console::showMessage(ERROR_CONFIRM, _("Folder $s\ndoes not exist."), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Folder %s\ndoes not exist."), path.c_str());
     }
 }
 
@@ -37,7 +37,7 @@ bool MiiSaveMng::isSlotEmpty(MiiRepo *mii_repo, uint8_t slot) {
     return ret <= 0;
 }
 
-uint8_t MiiSaveMng::getEmptySlot(MiiRepo *mii_repo) {
+int MiiSaveMng::getEmptySlot(MiiRepo *mii_repo) {
     for (int i = 0; i < 256; i++)
         if (MiiSaveMng::isSlotEmpty(mii_repo, i))
             return i;

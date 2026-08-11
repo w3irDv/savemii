@@ -1438,7 +1438,7 @@ void deleteSlot(Title *title, uint8_t slot, eSlotType slot_type) {
         } else
             Console::showMessage(ERROR_SHOW, _("Failed to delete slot %u."), slot_type == SAVEMII_SLOT ? slot : 0);
     } else {
-        Console::showMessage(ERROR_CONFIRM, _("Folder $s\ndoes not exist."), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Folder %s\ndoes not exist."), path.c_str());
     }
 }
 
