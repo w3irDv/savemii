@@ -106,6 +106,15 @@ void Keyboard::delPressed() {
 }
 
 void Keyboard::setCurrentKey() {
+    size_t rowSize = currentKeyboard[row].size();
+    if (rowSize == 0) {
+        currentKey.clear();
+        return;
+    }
+    if (column < 0)
+        column = 0;
+    else if ((size_t) column >= rowSize)
+        column = (int) rowSize - 1;
     currentKey = currentKeyboard[row].substr(column, 1);
 }
 
