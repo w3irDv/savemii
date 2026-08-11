@@ -647,19 +647,22 @@ void FSUtils::showDeleteOperations(bool isFolder, const char *name, const std::s
 }
 
 int32_t FSUtils::loadFile(const char *fPath, uint8_t **buf) {
-    int ret = -23;
+    int32_t ret = -23;
+    *buf = nullptr;
     FILE *file = fopen(fPath, "rb");
     if (file != nullptr) {
         struct stat st{};
-        stat(fPath, &st);
-        int size = st.st_size;
-
-        *buf = (uint8_t *) malloc(size);
-        if (*buf != nullptr) {
-            if (fread(*buf, size, 1, file) == 1)
-                ret = size;
-            else
-                free(*buf);
+        if (stat(fPath, &st) == 0 && st.st_size > 0) {
+            size_t size = (size_t) st.st_size;
+            uint8_t *data = (uint8_t *) malloc(size);
+            if (data != nullptr) {
+                if (fread(data, size, 1, file) == 1) {
+                    *buf = data;
+                    ret = (int32_t) size;
+                } else {
+                    free(data);
+                }
+            }
         }
         fclose(file);
     }
@@ -667,12 +670,12 @@ int32_t FSUtils::loadFile(const char *fPath, uint8_t **buf) {
 }
 
 int32_t FSUtils::loadFilePart(const char *fPath, uint32_t start, uint32_t size, uint8_t **buf) {
-    int ret = -23;
+    int32_t ret = -23;
+    *buf = nullptr;
     FILE *file = fopen(fPath, "rb");
     if (file != nullptr) {
         struct stat st{};
-        stat(fPath, &st);
-        if ((start + size) > st.st_size) {
+        if (stat(fPath, &st) != 0 || st.st_size < 0 || ((uint64_t) start + size) > (uint64_t) st.st_size) {
             fclose(file);
             return -43;
         }
@@ -681,12 +684,14 @@ int32_t FSUtils::loadFilePart(const char *fPath, uint32_t start, uint32_t size, 
             return -43;
         }
 
-        *buf = (uint8_t *) malloc(size);
-        if (*buf != nullptr) {
-            if (fread(*buf, size, 1, file) == 1)
-                ret = size;
-            else
-                free(*buf);
+        uint8_t *data = (uint8_t *) malloc(size);
+        if (data != nullptr) {
+            if (fread(data, size, 1, file) == 1) {
+                *buf = data;
+                ret = (int32_t) size;
+            } else {
+                free(data);
+            }
         }
         fclose(file);
     }
