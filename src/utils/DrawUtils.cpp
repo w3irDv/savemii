@@ -437,6 +437,8 @@ void DrawUtils::drawTGA(int x, int y, float scale, uint8_t *fileContent) {
     uint32_t w = tgaGetWidth(fileContent), h = tgaGetHeight(fileContent);
     uint32_t nw = w, nh = h;
     auto *out = (uint32_t *) tgaRead(fileContent, TGA_READER_RGBA);
+    if (out == nullptr)
+        return;
 
     if (scale <= 0) scale = 1;
     nw = w * scale;
