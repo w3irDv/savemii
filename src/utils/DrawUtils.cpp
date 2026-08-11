@@ -297,7 +297,7 @@ void DrawUtils::print(uint32_t x, uint32_t y, const char *string, bool alignRigh
     auto *buffer = new wchar_t[strlen(string) + 1];
 
     size_t num = mbstowcs(buffer, string, strlen(string));
-    if (num > 0) {
+    if (num != (size_t) -1 && num > 0) {
         buffer[num] = 0;
     } else {
         wchar_t *tmp = buffer;
@@ -369,7 +369,7 @@ uint32_t DrawUtils::getTextWidth(const char *string) {
     auto *buffer = new wchar_t[strlen(string) + 1];
 
     size_t num = mbstowcs(buffer, string, strlen(string));
-    if (num > 0) {
+    if (num != (size_t) -1 && num > 0) {
         buffer[num] = 0;
     } else {
         wchar_t *tmp = buffer;
