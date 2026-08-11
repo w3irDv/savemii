@@ -1045,7 +1045,7 @@ bool TitleUtils::guess_uninitialized_vwii_title_name_from_backup(Title *titles, 
                         }
                 }
             } else {
-                Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), strerror(errno));
+                Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), backupPath, strerror(errno));
                 return false;
             }
             closedir(dir);

@@ -177,7 +177,7 @@ bool BackupSetContentListState::populate_backupset_content() {
             backupset_content.push_back(bs);
         }
     } else {
-        Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), strerror(errno));
+        Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), bs_path.c_str(), strerror(errno));
         return false;
     }
     closedir(dir);

@@ -40,7 +40,7 @@ namespace Console {
     void consolePrintPosAutoFormat(int x, int y, size_t max_prompt_width, size_t vertical_line_space, const char *format, ...);
     bool promptConfirm(Style st, const std::string &question);
     Button promptMultipleChoice(Style st, const std::string &question);
-    void showMessage(Style St, const char *message, ...);
+    void showMessage(Style St, const char *message, ...) __attribute__((format(printf, 2, 3)));
 
     void waitForAnyButton();
 
