@@ -199,8 +199,16 @@ bool StatManager::open_stat_file_for_read(Title *title, int slot) {
         return false;
     }
 
-    char to_drop[25]; // first line contains the literal [STAT EXCEPTIONS FILE]
-    fgets(to_drop, sizeof(to_drop), stat_file_handle);
+    char header[64] = {0}; // first line must be the literal [STAT EXCEPTIONS FILE]
+    if (fgets(header, sizeof(header), stat_file_handle) != NULL)
+        header[strcspn(header, "\r\n")] = '\0';
+    if (strcmp(header, "[STAT EXCEPTIONS FILE]") != 0 &&
+        strcmp(header, "[STAT EXCEPTIONSFILE]") != 0) { // legacy pre-fix spelling
+        fclose(stat_file_handle);
+        stat_file_handle = NULL;
+        Console::showMessage(ERROR_CONFIRM, _("Invalid or corrupt permission file (bad header). Permissions will not be restored:\n\n%s"), statFilePath.c_str());
+        return false;
+    }
 
     return true;
 }
@@ -270,9 +278,8 @@ bool StatManager::get_stat(const std::string &entryPath) {
     if ((fsstatflags & FS_STAT_LINK) != 0)
         entryType.append("L");
     if (fsstatflags == 0) {
-        struct stat path_stat;
-        stat(entryPath.c_str(), &path_stat);
-        if (S_ISREG(path_stat.st_mode) != 0)
+        struct stat path_stat{};
+        if (stat(entryPath.c_str(), &path_stat) == 0 && S_ISREG(path_stat.st_mode) != 0)
             entryType.append("0F");
         else
             entryType.append("00");

@@ -36,9 +36,8 @@ bool statDebugUtils::statDir(const std::string &entryPath, FILE *file) {
     if ((fsstatflags & FS_STAT_LINK) != 0)
         entryType.append("L");
     if (fsstatflags == 0) {
-        struct stat path_stat;
-        stat(entryPath.c_str(), &path_stat);
-        if (S_ISREG(path_stat.st_mode) != 0)
+        struct stat path_stat{};
+        if (stat(entryPath.c_str(), &path_stat) == 0 && S_ISREG(path_stat.st_mode) != 0)
             entryType.append("0F");
         else
             entryType.append("00");
