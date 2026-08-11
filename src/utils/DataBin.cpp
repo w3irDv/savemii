@@ -189,7 +189,7 @@ error_state DataBin::get_mac(const char *keys_file, char *&error_message) {
     }
 
     char line[256];
-    error_state ret;
+    error_state ret = DBIN_OK;
 
     bool read_mac = false;
 
@@ -256,7 +256,7 @@ error_state DataBin::get_private_keys(const char *keys_file, char *&error_messag
 #endif
             read_ng_id = true;
         }
-        if (strncmp("ng_key_id", line, 5) == 0) {
+        if (strncmp("ng_key_id", line, 9) == 0) {
             ret = get_value(line, tmp_ng_key_id, 4);
             if (ret != DBIN_OK)
                 goto close_and_return;
@@ -399,6 +399,7 @@ void DataBin::writeLog(const char *s, ...) {
 
     va_start(ap, s);
     vsnprintf(message, sizeof message, s, ap);
+    va_end(ap);
 
     logBuffer.push_back(std::string(message));
 }
