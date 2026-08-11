@@ -81,7 +81,7 @@ VWII_BLACKLIST = frozenset({
 # StatManager.h  savemii_stat_info_file
 STAT_INFO_FILE = "savemii_cfg_statInfo.out"
 # StatManager.cpp:166 (batch overload used by backupAllSave)
-STAT_HEADER = "[STAT EXCEPTIONSFILE]\n"
+STAT_HEADER = "[STAT EXCEPTIONS FILE]\n"
 
 # FSStatFlags (filesystem.h:156) -> get_stat entryType chars (StatManager.cpp:250)
 STAT_FLAGS = (

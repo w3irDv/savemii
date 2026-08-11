@@ -154,7 +154,7 @@ Each slot gets SaveMii's permission-exceptions file so restores are lossless.
   known-good `FSA_GetStatFile` (0x14) on one real file at startup. On mismatch it
   warns and falls back to the readdir-`unk` stat (`build_stat_lines(...,
   use_path_stat=False)`) — best-effort rather than failing.
-- **Format** (`StatManager.cpp:236-279`): line 1 `[STAT EXCEPTIONSFILE]\n`, then
+- **Format** (`StatManager.cpp:236-279`): line 1 `[STAT EXCEPTIONS FILE]\n`, then
   per exception entry `"%s %x %x:%x %llx %s\n"` =
   `<type> <mode> <owner>:<group> <quota> <path_rel>`, where `type` composes
   `D`(0x80000000)/`Q`(0x60000000)/`F`(0x01000000)/`E`(0x00800000)/`L`(0x00010000)

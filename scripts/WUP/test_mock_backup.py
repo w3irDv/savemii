@@ -93,7 +93,7 @@ def scenario_structure():
 
         # stat sidecar overlay line
         sidecar = read(os.path.join(slot0, "savemii_cfg_statInfo.out")).decode()
-        check(sidecar.splitlines()[0] == "[STAT EXCEPTIONSFILE]", "sidecar header")
+        check(sidecar.splitlines()[0] == "[STAT EXCEPTIONS FILE]", "sidecar header")
         want = "DQ 660 10102100:400 1790000 %s/user/common" % TARGET_REL
         check(want in sidecar, "sidecar records overlaid common exception")
 
@@ -229,7 +229,7 @@ def scenario_vwii():
               "vWii save file copied")
         # default vWii stats match -> header-only sidecar (no exceptions)
         sidecar = read(os.path.join(slot0, "savemii_cfg_statInfo.out")).decode()
-        check(sidecar.strip() == "[STAT EXCEPTIONSFILE]",
+        check(sidecar.strip() == "[STAT EXCEPTIONS FILE]",
               "vWii sidecar header-only (defaults match)")
 
         root_meta = json.loads(read(os.path.join(batch, "savemiiMeta.json")))

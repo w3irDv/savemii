@@ -162,7 +162,7 @@ this never truncates or conflicts with SaveMii's own content.
 Lets restore reset IOSU **owner/group/mode** losslessly — a plain copy loses
 those. Reproduces SaveMii's `StatManager` "exceptions file":
 
-- Header `[STAT EXCEPTIONSFILE]\n` (`STAT_HEADER`).
+- Header `[STAT EXCEPTIONS FILE]\n` (`STAT_HEADER`).
 - One line per entry whose perms differ from the category default
   (`is_stat_exception`), formatted
   `<type> <mode> <owner>:<group> <quota> <device-relative-path>`
