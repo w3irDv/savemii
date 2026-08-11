@@ -136,8 +136,14 @@ bool ExcludesCfg::parseJsonCfg() {
         snprintf(lID_, 9, "%s", lID);
 
         titleID titleID;
-        titleID.highID = static_cast<uint32_t>(std::stoul(hID_, nullptr, 16));
-        titleID.lowID = static_cast<uint32_t>(std::stoul(lID_, nullptr, 16));
+        try {
+            titleID.highID = static_cast<uint32_t>(std::stoul(hID_, nullptr, 16));
+            titleID.lowID = static_cast<uint32_t>(std::stoul(lID_, nullptr, 16));
+        } catch (const std::exception &) {
+            errorCount++;
+            koElements = koElements + "el_e:" + std::to_string(i) + " ";
+            continue;
+        }
         titleID.isTitleOnUSB = json_boolean_value(u);
         titlesID.push_back(titleID);
     }
