@@ -38,17 +38,35 @@ int main() {
     WHBLogPrintf("Hello from savemii!");
 #endif
 
+    // Init progress: each step bumps init_level on success, so the single
+    // cleanup: section below unwinds exactly what is live, in one place.
+    enum {
+        L_NONE,
+        L_STATE,
+        L_OSSCREEN,
+        L_FONT,
+        L_ROMFS,
+        L_INPUT,
+        L_FS,
+        L_TITLES,
+        L_MIIREPOS
+    };
+    int init_level = L_NONE;
+
     State::init();
+    init_level = L_STATE;
 
     if (DrawUtils::LogConsoleInit()) {
         OSFatal("Failed to initialize OSSCreen");
     }
+    init_level = L_OSSCREEN;
 
     State::registerProcUICallbacks();
 
     if (!DrawUtils::initFont()) {
         OSFatal("Failed to init font");
     }
+    init_level = L_FONT;
 
     StartupUtils::addInitMessage("Getting Serial ID");
     AmbientConfig::getWiiUSerialId();
@@ -58,10 +76,9 @@ int main() {
     int res = romfsInit();
     if (res) {
         Console::showMessage(ERROR_SHOW, "Failed to init romfs: %d", res);
-        DrawUtils::endDraw();
-        State::shutdown();
-        return 0;
+        goto cleanup;
     }
+    init_level = L_ROMFS;
 
     StartupUtils::addInitMessage("Initializing global config");
     StartupUtils::addInitMessage("... can take several seconds on some SDs");
@@ -70,13 +87,7 @@ int main() {
 
     if (!GlobalCfg::global->init()) {
         Console::showMessage(ERROR_SHOW, "Failed to init global config file\n  Check SD card and sd:/wiiu/backups/savemiiCfg folder.");
-        romfsExit();
-
-        DrawUtils::deinitFont();
-        DrawUtils::LogConsoleFree();
-
-        State::shutdown();
-        return 0;
+        goto cleanup;
     }
 
     GlobalCfg::global->read();
@@ -85,6 +96,7 @@ int main() {
     StartupUtils::addInitMessage(_("Initializing WPAD and KPAD"));
 
     Input::initialize();
+    init_level = L_INPUT;
 
     StartupUtils::addInitMessage(_("Initializing loadWiiU Titles"));
 
@@ -94,13 +106,9 @@ int main() {
 
     if (!FSUtils::initFS()) {
         Console::showMessage(ERROR_SHOW, _("initFS failed. Please make sure your MochaPayload is up-to-date"));
-        DrawUtils::endDraw();
-        romfsExit();
-        DrawUtils::deinitFont();
-        DrawUtils::LogConsoleFree();
-        State::shutdown();
-        return 0;
+        goto cleanup;
     }
+    init_level = L_FS;
 
     StartupUtils::addInitMessage("Getting DeviceID , MACAddress, AuthorId, Savemii Title Id");
     AmbientConfig::get_device_hash();
@@ -122,6 +130,7 @@ int main() {
     TitleUtils::wiititles = TitleUtils::loadWiiTitles();
     TitleUtils::guess_uninitialized_vwii_title_name_from_backup(TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
     TitleUtils::wiiusystitles = TitleUtils::loadWiiUSysTitles(1);
+    init_level = L_TITLES;
     AccountUtils::getAccountsWiiU();
 
     TitleUtils::sortTitle(TitleUtils::wiiutitles, TitleUtils::wiiutitles + TitleUtils::wiiuTitlesCount, 1, true);
@@ -143,9 +152,11 @@ int main() {
     StartupUtils::addInitMessageWithIcon(_("Initializing Mii repos."));
 
     MiiUtils::initMiiRepos();
+    init_level = L_MIIREPOS;
 
     StartupUtils::resetMessageList();
 
+    { // scope the loop locals so `goto cleanup` (above) jumps over, not into, them
     Input input{};
     std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(TitleUtils::wiiutitles, TitleUtils::wiititles, TitleUtils::wiiusystitles, TitleUtils::wiiuTitlesCount,
                                                                            TitleUtils::vWiiTitlesCount, TitleUtils::wiiuSysTitlesCount);
@@ -182,20 +193,30 @@ int main() {
         }
         OSSleepTicks(OSMillisecondsToTicks(1));
     }
+    } // end loop-locals scope
 
-    MiiUtils::deinitMiiRepos();
-    TitleUtils::unloadTitles(TitleUtils::wiiutitles, TitleUtils::wiiuTitlesCount);
-    TitleUtils::unloadTitles(TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
-    TitleUtils::unloadTitles(TitleUtils::wiiusystitles, TitleUtils::wiiuSysTitlesCount);
-    FSUtils::deinit_fs_buffers();
-    FSUtils::shutdownFS();
-    LanguageUtils::gettextCleanUp();
-    romfsExit();
-
-    DrawUtils::deinitFont();
-    DrawUtils::LogConsoleFree();
-
-    State::shutdown();
-    Input::finalize();
+cleanup:
+    if (init_level >= L_MIIREPOS)
+        MiiUtils::deinitMiiRepos();
+    if (init_level >= L_TITLES) {
+        TitleUtils::unloadTitles(TitleUtils::wiiutitles, TitleUtils::wiiuTitlesCount);
+        TitleUtils::unloadTitles(TitleUtils::wiititles, TitleUtils::vWiiTitlesCount);
+        TitleUtils::unloadTitles(TitleUtils::wiiusystitles, TitleUtils::wiiuSysTitlesCount);
+    }
+    if (init_level >= L_FS) {
+        FSUtils::deinit_fs_buffers();
+        FSUtils::shutdownFS();
+    }
+    LanguageUtils::gettextCleanUp(); // self-guards on baseMSG == nullptr
+    if (init_level >= L_ROMFS)
+        romfsExit();
+    if (init_level >= L_FONT)
+        DrawUtils::deinitFont();
+    if (init_level >= L_OSSCREEN)
+        DrawUtils::LogConsoleFree();
+    if (init_level >= L_STATE)
+        State::shutdown();
+    if (init_level >= L_INPUT)
+        Input::finalize();
     return 0;
 }
