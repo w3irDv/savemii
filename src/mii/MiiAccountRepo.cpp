@@ -181,7 +181,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     std::string mii_data_str{};
     if (!MiiData::raw_mii_data_2_str(mii_data_str, miidata->mii_data, mii_data_size)) {
         Console::showMessage(ERROR_SHOW, _("Error deserializing WiiU MiiData"));
-        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) { // match the forward flip size at :168 so the undo is a strict inverse
             Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
         }
         return false;
@@ -193,7 +193,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     std::ifstream mii_file(account_dat);
     if (!mii_file.is_open()) {
         Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), account_dat.c_str(), strerror(errno));
-        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) { // match the forward flip size at :168 so the undo is a strict inverse
             Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
         }
         return false;
@@ -206,7 +206,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
     if (!tempFile.is_open()) {
         Console::showMessage(ERROR_CONFIRM, _("Error opening file \n%s\n\n%s"), tmp_account_dat.c_str(), strerror(errno));
         mii_file.close();
-        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
+        if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) { // match the forward flip size at :168 so the undo is a strict inverse
             Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
         }
         unlink(tmp_account_dat.c_str());
@@ -265,7 +265,7 @@ bool MiiAccountRepo<MII, MIIDATA>::import_miidata(MiiData *miidata, bool in_plac
         if (rename(tmp_account_dat.c_str(), account_dat.c_str()) == 0) {
             if (db_owner != 0)
                 FSUtils::flushVol(account_dat);
-            if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
+            if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) { // match the forward flip size at :168 so the undo is a strict inverse
                 Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
             }
             // STADIO
@@ -297,7 +297,7 @@ cleanup_managing_real_db:
     unlink(tmp_account_dat.c_str());
     if (db_owner != 0)
         FSUtils::flushVol(account_dat);
-    if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, mii_data_size)) {
+    if (!MIIDATA::flip_between_account_mii_data_and_mii_data(miidata->mii_data, MIIDATA::MII_DATA_SIZE)) { // match the forward flip size at :168 so the undo is a strict inverse
         Console::showMessage(WARNING_SHOW, _("Error transforming WiiU MiiData to Account MiiData"));
     }
     return false;
