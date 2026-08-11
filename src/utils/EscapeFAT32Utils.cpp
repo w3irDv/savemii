@@ -92,6 +92,9 @@ bool FAT32EscapeFileManager::rename_fat32_escaped_files(const std::string &baseS
                 Console::showMessage(ERROR_SHOW, _("Unexpected format for source in FAT32 translation file:\n%s"), tPath.c_str());
                 goto close_and_error;
             }
+        } else {
+            Console::showMessage(ERROR_CONFIRM, _("Incomplete/truncated FAT32 chars translation file:\n%s"), fat32_rename_file_path.c_str());
+            goto close_and_error;
         }
         if (enable_filtered_escape_path) {
             if (sPath.find(source_profile_subpath) == std::string::npos)
