@@ -108,10 +108,10 @@ int main() {
     AmbientConfig::get_author_id();
     AmbientConfig::get_savemii_title_id();
 
-    StartupUtils::addInitMessage(_("Initializing Radndom seed"));
+    StartupUtils::addInitMessage(_("Initializing Random seed"));
     srand(time(NULL));
 
-    StartupUtils::addInitMessage(_("Readng Encyption Keys"));
+    StartupUtils::addInitMessage(_("Reading Encryption Keys"));
     DataBin::initialize_default_keys();
 
     DrawUtils::beginDraw();
