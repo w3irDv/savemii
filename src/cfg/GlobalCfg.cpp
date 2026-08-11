@@ -55,7 +55,7 @@ bool GlobalCfg::parseJsonCfg() {
     json_t *language = json_object_get(root, "language");
     if (json_is_integer(language)) {
         int languageType = json_integer_value(language);
-        if (languageType >= 0 || languageType <= 12)
+        if (languageType >= 0 && languageType <= 12)
             Language = (Swkbd_LanguageType) languageType;
     }
 
