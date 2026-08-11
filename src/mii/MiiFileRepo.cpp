@@ -419,7 +419,7 @@ MiiData *MiiFileRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
         return nullptr;
     }
 
-    memcpy(mii_buffer, db_buffer + MIIDATA::DB::OFFSET + mii_location[index] * MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE);
+    memcpy(mii_buffer, db_buffer + MIIDATA::DB::OFFSET + mii_location.at(index) * MIIDATA::MII_DATA_SIZE, MIIDATA::MII_DATA_SIZE);
     // CRC bytes to 0
     memset(mii_buffer + MIIDATA::MII_DATA_SIZE, 0, 4);
 

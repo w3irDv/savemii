@@ -75,7 +75,7 @@ bool MiiAccountRepo<MII, MIIDATA>::persist_repo() {
 template<typename MII, typename MIIDATA>
 MiiData *MiiAccountRepo<MII, MIIDATA>::extract_mii_data(size_t index) {
 
-    std::string mii_filepath = this->mii_filepath[index];
+    std::string mii_filepath = this->mii_filepath.at(index);
     return this->extract_mii_data(mii_filepath);
 }
 
