@@ -305,19 +305,37 @@ bool FSUtils::writeThread(FILE *dstFile, LockingQueue<file_buffer> *ready, Locki
 bool FSUtils::copyFileThreaded(FILE *srcFile, FILE *dstFile, size_t totalSize, const std::string &pPath, const std::string &oPath) {
     LockingQueue<file_buffer> read;
     LockingQueue<file_buffer> write;
-    for (auto &buffer : buffers) {
-        if (!buffersInitialized) {
+    if (!buffersInitialized) {
+        bool allocOk = true;
+        for (auto &buffer : buffers) {
             buffer.buf = aligned_alloc(0x40, IO_MAX_FILE_BUFFER);
             buffer.len = 0;
             buffer.buf_size = IO_MAX_FILE_BUFFER;
+            if (buffer.buf == nullptr)
+                allocOk = false;
         }
-        read.push(buffer);
-    }
-    if (!buffersInitialized) {
         fileBuf[0] = static_cast<char *>(aligned_alloc(0x40, IO_MAX_FILE_BUFFER));
         fileBuf[1] = static_cast<char *>(aligned_alloc(0x40, IO_MAX_FILE_BUFFER));
+        if (fileBuf[0] == nullptr || fileBuf[1] == nullptr)
+            allocOk = false;
+
+        if (!allocOk) {
+            for (auto &buffer : buffers) {
+                free(buffer.buf);
+                buffer.buf = nullptr;
+            }
+            free(fileBuf[0]);
+            free(fileBuf[1]);
+            fileBuf[0] = fileBuf[1] = nullptr;
+            Console::showMessage(ERROR_CONFIRM, _("Cannot allocate copy buffers"));
+            return false;
+        }
+        buffersInitialized = true;
     }
-    buffersInitialized = true;
+
+    for (auto &buffer : buffers)
+        read.push(buffer);
+
     setvbuf(srcFile, fileBuf[0], _IOFBF, IO_MAX_FILE_BUFFER);
     setvbuf(dstFile, fileBuf[1], _IOFBF, IO_MAX_FILE_BUFFER);
 
