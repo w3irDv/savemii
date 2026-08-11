@@ -1,4 +1,5 @@
 #include <Metadata.h>
+#include <cstdlib>
 #include <cstring>
 #include <utils/FSUtils.h>
 #include <utils/LanguageUtils.h>
@@ -45,22 +46,22 @@ bool Metadata::read() {
             const char *hID = json_string_value(json_object_get(root, "highID"));
             if (hID != nullptr) {
                 snprintf(hexID, 9, "%s", hID);
-                this->highID = static_cast<uint32_t>(std::stoul(hexID, nullptr, 16));
+                this->highID = static_cast<uint32_t>(strtoul(hexID, nullptr, 16));
             }
             const char *lID = json_string_value(json_object_get(root, "lowID"));
             if (lID != nullptr) {
                 snprintf(hexID, 9, "%s", lID);
-                this->lowID = static_cast<uint32_t>(std::stoul(hexID, nullptr, 16));
+                this->lowID = static_cast<uint32_t>(strtoul(hexID, nullptr, 16));
             }
             const char *vWHID = json_string_value(json_object_get(root, "vWiiHighID"));
             if (vWHID != nullptr) {
                 snprintf(hexID, 9, "%s", vWHID);
-                this->vWiiHighID = static_cast<uint32_t>(std::stoul(hexID, nullptr, 16));
+                this->vWiiHighID = static_cast<uint32_t>(strtoul(hexID, nullptr, 16));
             }
             const char *vWLID = json_string_value(json_object_get(root, "vWiiLowID"));
             if (vWLID != nullptr) {
                 snprintf(hexID, 9, "%s", vWLID);
-                this->vWiiLowID = static_cast<uint32_t>(std::stoul(hexID, nullptr, 16));
+                this->vWiiLowID = static_cast<uint32_t>(strtoul(hexID, nullptr, 16));
             }
             const char *sName = json_string_value(json_object_get(root, "shortName"));
             if (sName != nullptr) {
