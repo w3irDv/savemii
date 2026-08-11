@@ -70,6 +70,16 @@ bool StatManager::apply_stat_file() {
         getline(ss, filename, '\n');
         filename = device + filename;
 
+        if (filename.find("..") != std::string::npos || !filename.starts_with(allowed_stat_root)) {
+            permErrors++;
+            std::string errorMessage = StringUtils::stringFormat(_("Stat file entry points outside the save folder and was skipped (corrupt or malicious backup):\n%s\n\nErrors so far: %d\nDo you want to continue?"), filename.c_str(), permErrors);
+            if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage)) {
+                InProgress::abortCopy = true;
+                return false;
+            }
+            continue;
+        }
+
         if (enable_filtered_stat) {
             if (filename.find(source_profile_subpath) == std::string::npos)
                 continue;
@@ -163,7 +173,7 @@ bool StatManager::open_stat_file_for_write(const std::string &path) {
 
     enable_get_stat = true;
 
-    fprintf(stat_file_handle, "[STAT EXCEPTIONSFILE]\n");
+    fprintf(stat_file_handle, "[STAT EXCEPTIONS FILE]\n");
 
     return true;
 }
@@ -177,6 +187,8 @@ bool StatManager::open_stat_file_for_read(Title *title, int slot) {
     const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     const std::string baseDstPath = getDynamicBackupPath(title, slot);
+
+    allowed_stat_root = StringUtils::stringFormat("%s/%08x/%08x/", path.c_str(), highID, lowID);
 
     std::string statFilePath = baseDstPath + "/" + savemii_stat_info_file;
 

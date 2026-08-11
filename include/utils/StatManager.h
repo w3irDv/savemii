@@ -48,6 +48,8 @@ namespace StatManager {
     inline std::string source_profile_subpath{};
     inline std::string target_profile_subpath{};
 
+    inline std::string allowed_stat_root{};
+
     inline FILE *stat_file_handle;
     inline std::string statFilePath{};
 
