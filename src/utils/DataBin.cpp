@@ -74,6 +74,10 @@ error_state DataBin::get_keys_from_otp(const char *otp_bin_file, char *&error_me
 error_state get_value(char *key_val, u8 *byte, size_t number_of_bytes) {
 
     char *eq_value = strchr(key_val, '=');
+    if (eq_value == nullptr) {
+        fatal(_("Error: missing '=' in key line:\n%s"), key_val);
+        return DBIN_ERR;
+    }
     int i = 1;
     while (eq_value[i] != '\0' && isspace((unsigned char) eq_value[i])) {
         i++;
@@ -193,8 +197,10 @@ error_state DataBin::get_mac(const char *keys_file, char *&error_message) {
         line[strcspn(line, "\r\n")] = '\0';
         if (strncmp("mac_address", line, 11) == 0) {
             ret = get_value(line, ng_mac, 6);
-            if (ret != DBIN_OK)
+            if (ret != DBIN_OK) {
+                fclose(fp);
                 return ret;
+            }
             read_mac = true;
         }
     }
