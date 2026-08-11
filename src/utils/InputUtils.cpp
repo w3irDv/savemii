@@ -32,7 +32,10 @@ void Input::finalize() {
 }
 
 void Input::read() {
-    VPADRead(VPAD_CHAN_0, &vpad_status, 1, nullptr);
+    VPADReadError vpadError = VPAD_READ_SUCCESS;
+    int32_t vpadReadCount = VPADRead(VPAD_CHAN_0, &vpad_status, 1, &vpadError);
+    if (vpadReadCount < 1 || vpadError != VPAD_READ_SUCCESS)
+        vpad_status = {};
     KPADRead(WPAD_CHAN_0, &kpad_status, 1);
 }
 
