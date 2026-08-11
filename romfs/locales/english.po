@@ -718,35 +718,35 @@ msgstr ""
 
 #: src/utils/KeyboardUtils.cpp:8
 msgid "KB_N_0"
-msgstr ""
+msgstr "1234567890-="
 
 #: src/utils/KeyboardUtils.cpp:9
 msgid "KB_N_1"
-msgstr ""
+msgstr "qwertyuiop[]|"
 
 #: src/utils/KeyboardUtils.cpp:10
 msgid "KB_N_2"
-msgstr ""
+msgstr "asdfghjkl;'"
 
 #: src/utils/KeyboardUtils.cpp:11
 msgid "KB_N_3"
-msgstr ""
+msgstr "zxcvbnm ,./"
 
 #: src/utils/KeyboardUtils.cpp:13
 msgid "KB_S_0"
-msgstr ""
+msgstr "!@#$%^&*()_+~"
 
 #: src/utils/KeyboardUtils.cpp:14
 msgid "KB_S_1"
-msgstr ""
+msgstr "QWERTYUIOP{}\\"
 
 #: src/utils/KeyboardUtils.cpp:15
 msgid "KB_S_2"
-msgstr ""
+msgstr "ASDFGHJKL:\""
 
 #: src/utils/KeyboardUtils.cpp:16
 msgid "KB_S_3"
-msgstr ""
+msgstr "ZXCVBNM <>"
 
 #: src/utils/FSUtils.cpp:95 src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:170
 #: src/savemng.cpp:1591 src/cfg/BaseCfg.cpp:23
