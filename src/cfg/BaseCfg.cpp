@@ -89,7 +89,18 @@ bool BaseCfg::readFile() {
     long len = ftell(fp);
     fseek(fp, 0, SEEK_SET);
 
+    if (len < 0) {
+        Console::showMessage(ERROR_CONFIRM, _("Error reading file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+        fclose(fp);
+        return false;
+    }
+
     configString = (char *) malloc(len + 1);
+    if (configString == nullptr) {
+        Console::showMessage(ERROR_CONFIRM, _("Error allocating memory to read file\n\n%s"), cfgFile.c_str());
+        fclose(fp);
+        return false;
+    }
 
     if (fread(configString, 1, len, fp) == 0)
         if (ferror(fp)) {
