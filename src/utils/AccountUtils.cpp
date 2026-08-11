@@ -34,6 +34,11 @@ void AccountUtils::getAccountsWiiU() {
     int accn = 0;
     wiiu_accn = nn::act::GetNumOfAccounts();
     wiiu_acc = (Account *) malloc(wiiu_accn * sizeof(Account));
+    if (wiiu_acc == nullptr) {
+        wiiu_accn = 0;
+        nn::act::Finalize();
+        return;
+    }
     uint16_t out[11];
     while ((accn < wiiu_accn) && (i <= 12)) {
         if (nn::act::IsSlotOccupied(i)) {
@@ -233,6 +238,10 @@ loadiine_savedata_renamed:
     }
 
     vol_acc = (Account *) malloc(vol_accn * sizeof(Account));
+    if (vol_acc == nullptr) {
+        vol_accn = 0;
+        return;
+    }
 
     // LOADIINE_SHARED_MODE
     if (jobType == exportLoadiine || jobType == importLoadiine) {
