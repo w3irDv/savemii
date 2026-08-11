@@ -294,6 +294,8 @@ void Console::consolePrintPosMultiline(int x, int y, const char *format, ...) {
         uint32_t maxLineLength = (MAX_PROMPT_WIDTH / 12 - x - X_OFFSET);
         if (maxLineLength < 1) {
             DrawUtils::print((x + X_OFFSET) * 12, y * 24, "overflow");
+            free(aggregated_message);
+            va_end(va);
             return;
         }
 
