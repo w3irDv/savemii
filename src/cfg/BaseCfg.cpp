@@ -106,11 +106,15 @@ bool BaseCfg::readFile() {
         if (ferror(fp)) {
             Console::showMessage(ERROR_CONFIRM, _("Error reading file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
             fclose(fp);
+            free(configString);
+            configString = nullptr;
             return false;
         }
     configString[len] = '\0';
     if (fclose(fp) != 0) {
         Console::showMessage(ERROR_CONFIRM, _("Error closing file\n\n%s\n\n%s"), cfgFile.c_str(), strerror(errno));
+        free(configString);
+        configString = nullptr;
         return false;
     }
 
