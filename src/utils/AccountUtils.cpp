@@ -1,4 +1,6 @@
 #include "segher-s_wii/tools.h"
+#include <cerrno>
+#include <cstring>
 #include <dirent.h>
 #include <nn/act/client_cpp.h>
 #include <savemng.h>
@@ -160,8 +162,10 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
                                 if (Console::promptConfirm(ST_WARNING, message.c_str())) {
                                     std::string data_bin_path = srcPath + "/data.bin";
                                     if (FSUtils::checkEntry(data_bin_path.c_str()) == 0) {
-                                        rename(custom_data_bin_path.c_str(), data_bin_path.c_str());
-                                        *data_bin_found = true;
+                                        if (rename(custom_data_bin_path.c_str(), data_bin_path.c_str()) == 0)
+                                            *data_bin_found = true;
+                                        else
+                                            Console::showMessage(ERROR_CONFIRM, _("Error renaming %s to data.bin\n\n%s"), data->d_name, strerror(errno));
                                     } else {
                                         Console::showMessage(ERROR_CONFIRM,_("data.bin file already exists in slot %d. Please remove it and try again"), slot_or_version);
                                     }
@@ -187,12 +191,16 @@ void AccountUtils::getAccountsFromVol(Title *title, int slot_or_version, eJobTyp
         std::string currentUserID = getUserID();
         std::string uniqueAccountPath = srcPath + "/" + currentUserID;
         if (FSUtils::checkEntry(uniqueAccountPath.c_str()) == 0) {
-            rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str());
-            for (const uint32_t &pID : profiles) {
-                if (pID == currentPersistentID)
-                    goto rename_shared_loadiine_common;
+            if (rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str()) != 0) {
+                unable_to_convert_from_loaddine = true;
+                Console::showMessage(ERROR_CONFIRM, _("Error converting loadiine 'u' profile\n\n%s"), strerror(errno));
+            } else {
+                for (const uint32_t &pID : profiles) {
+                    if (pID == currentPersistentID)
+                        goto rename_shared_loadiine_common;
+                }
+                profiles.push_back(currentPersistentID);
             }
-            profiles.push_back(currentPersistentID);
         } else {
             unable_to_convert_from_loaddine = true;
             Console::showMessage(ERROR_CONFIRM, "Found loadiine 'u' and dedicated '%s' profiles in backup. Please remove the unneeded one", currentUserID.c_str());
@@ -206,7 +214,10 @@ rename_shared_loadiine_common:
             goto loadiine_savedata_renamed;
         std::string uniqueAccountPath = srcPath + "/common";
         if (FSUtils::checkEntry(uniqueAccountPath.c_str()) == 0) {
-            rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str());
+            if (rename(loadiineSharedAccountPath.c_str(), uniqueAccountPath.c_str()) != 0) {
+                unable_to_convert_from_loaddine = true;
+                Console::showMessage(ERROR_CONFIRM, _("Error converting loadiine 'c' profile\n\n%s"), strerror(errno));
+            }
         } else {
             unable_to_convert_from_loaddine = true;
             Console::showMessage(ERROR_CONFIRM, "Found loadiine 'c' and dedicated 'common' profiles in backup. Please remove the unneeded one");
