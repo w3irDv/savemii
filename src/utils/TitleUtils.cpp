@@ -301,9 +301,10 @@ Title *TitleUtils::loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].isTitleOnUSB = isTitleOnUSB;
         titles[wiiuTitlesCount].listID = wiiuTitlesCount;
         titles[wiiuTitlesCount].indexID = wiiuTitlesCount;
-        if (TitleUtils::loadTitleIcon(&titles[wiiuTitlesCount]) < 0)
+        int32_t iconSize = TitleUtils::loadTitleIcon(&titles[wiiuTitlesCount]);
+        if (iconSize < 0)
             titles[wiiuTitlesCount].iconBuf = nullptr;
-        else if (!TitleUtils::verifyWiiUIconFormat(&titles[wiiuTitlesCount])) {
+        else if (iconSize < 0x11 || !TitleUtils::verifyWiiUIconFormat(&titles[wiiuTitlesCount])) {
             free(titles[wiiuTitlesCount].iconBuf);
             titles[wiiuTitlesCount].iconBuf = nullptr;
         }
@@ -838,9 +839,10 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
         titles[wiiuSysTitlesCount].isTitleOnUSB = isTitleOnUSB;
         titles[wiiuSysTitlesCount].listID = wiiuSysTitlesCount;
         titles[wiiuSysTitlesCount].indexID = wiiuSysTitlesCount;
-        if (TitleUtils::loadTitleIcon(&titles[wiiuSysTitlesCount]) < 0)
+        int32_t iconSize = TitleUtils::loadTitleIcon(&titles[wiiuSysTitlesCount]);
+        if (iconSize < 0)
             titles[wiiuSysTitlesCount].iconBuf = nullptr;
-        else if (!TitleUtils::verifyWiiUIconFormat(&titles[wiiuSysTitlesCount])) {
+        else if (iconSize < 0x11 || !TitleUtils::verifyWiiUIconFormat(&titles[wiiuSysTitlesCount])) {
             free(titles[wiiuSysTitlesCount].iconBuf);
             titles[wiiuSysTitlesCount].iconBuf = nullptr;
         }
@@ -968,6 +970,7 @@ void TitleUtils::setTitleNameBasedDirName(Title *title) {
     Escape::convertToFAT32ASCIICompliant(shortName, titleNameBasedDirName);
 
     strncpy(title->titleNameBasedDirName, titleNameBasedDirName.c_str(), FILENAME_BUFF_SIZE - 1);
+    title->titleNameBasedDirName[FILENAME_BUFF_SIZE - 1] = '\0';
 
     char idstr[ID_STR_BUFF_SIZE];
     sprintf(idstr, " [%08x-%08x]", title->highID, title->lowID);
