@@ -16,6 +16,10 @@ public:
                                                                            titlesCount(titlesCount), isWiiU(isWiiU) {
         BackupSetList::setBackupSetEntry(BackupSetList::getSelectedEntryForIndividualTitles());
         BackupSetList::setBackupSetSubPath();
+        // titleSort/sortAscending persist (static); re-sort the shared array on entry so the
+        // displayed order matches the remembered sort (also reconciles across Wii U / vWii lists).
+        if (titles != nullptr && titlesCount > 0)
+            TitleUtils::sortTitle(titles, titles + titlesCount, titleSort, sortAscending);
     }
     enum eState {
         STATE_TITLE_LIST,
@@ -42,10 +46,10 @@ private:
                                            _("Storage"),
                                            _("Storage+Name")};
 
-    int titleSort = 1;
+    static inline int titleSort = 1;
     int scroll = 0;
     int cursorPos = 0;
-    bool sortAscending = true;
+    static inline bool sortAscending = true;
     int targ = 0;
 
     bool noTitles = false;

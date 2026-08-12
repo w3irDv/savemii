@@ -121,11 +121,12 @@ namespace TitleUtils {
                 break;
             }
             case 2:
-                if (sortAscending) {
-                    std::ranges::sort(titles, last, std::ranges::less{}, &Title::isTitleOnUSB);
-                } else {
-                    std::ranges::sort(titles, last, std::ranges::greater{}, &Title::isTitleOnUSB);
-                }
+                // group by storage (USB/NAND order follows sortAscending), name ascending within each group
+                std::ranges::sort(titles, last, [sortAscending](const auto &a, const auto &b) {
+                    if (a.isTitleOnUSB != b.isTitleOnUSB)
+                        return sortAscending ? (a.isTitleOnUSB < b.isTitleOnUSB) : (a.isTitleOnUSB > b.isTitleOnUSB);
+                    return std::string_view(a.shortName) < std::string_view(b.shortName);
+                });
                 break;
             case 3: {
                 const auto proj = [](const Title &title) {
