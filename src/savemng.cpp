@@ -396,7 +396,10 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
         if (!FSUtils::folderEmpty(dstPath.c_str())) {
             int slotb = getEmptySlot(titleb);
             // backup is always of allusers
-            if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
+            if (slotb < 0) {
+                if (!Console::promptConfirm(ST_WARNING, _("There is no empty slot to back up the current savedata first.\n\nContinue without a backup?")))
+                    return -1;
+            } else if (Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
                 if (!(backupSavedata(titleb, slotb, -1, true, FILES, SAVEMII_SLOT, accountSource, _("pre-copyToOtherDev backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
                     return -1;
@@ -508,7 +511,10 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
         if (!FSUtils::folderEmpty(basePath.c_str())) {
             int slot = getEmptySlot(title);
             // backup is always of allusers
-            if ((slot >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
+            if (slot < 0) {
+                if (!Console::promptConfirm(ST_WARNING, _("There is no empty slot to back up the current savedata first.\n\nContinue without a backup?")))
+                    return -1;
+            } else if (Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
                 if (!(backupSavedata(title, slot, -1, true, FILES, SAVEMII_SLOT, accountSource, _("pre-copySavedataToOtherProfile backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Replicate aborted !!"));
                     return -1;
@@ -569,7 +575,10 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
         if (!FSUtils::folderEmpty(basePath.c_str())) {
             int slot = getEmptySlot(title);
             // backup is always of allusers
-            if ((slot >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
+            if (slot < 0) {
+                if (!Console::promptConfirm(ST_WARNING, _("There is no empty slot to back up the current savedata first.\n\nContinue without a backup?")))
+                    return -1;
+            } else if (Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?"))) {
                 if (!(backupSavedata(title, slot, -1, true, FILES, SAVEMII_SLOT, accountSource, _("pre-moveSavedataToOtherProfile backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Replicate aborted !!"));
                     return -1;
@@ -715,7 +724,13 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                 continue;
             InProgress::titleName.assign(titles[i].shortName);
             InProgress::currentStep++;
-            uint8_t slot = getEmptySlot(&titles[i], batchDatetime);
+            int emptySlot = getEmptySlot(&titles[i], batchDatetime);
+            if (emptySlot < 0) {
+                titlesKO++;
+                titles[i].currentDataSource.batchBackupState = KO;
+                continue;
+            }
+            uint8_t slot = (uint8_t) emptySlot;
             const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
             std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
             const std::string dstPath = getBatchBackupPath(&titles[i], slot, batchDatetime);
@@ -1012,7 +1027,12 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             BackupSetList::saveBackupSetSubPath();
             BackupSetList::setBackupSetSubPathToRoot();
             int slotb = getEmptySlot(title);
-            if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
+            if (slotb < 0) {
+                if (!Console::promptConfirm(ST_WARNING, _("There is no empty slot to back up the current savedata first.\n\nContinue without a backup?"))) {
+                    BackupSetList::restoreBackupSetSubPath();
+                    return -1;
+                }
+            } else if (Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
                 if (!(backupSavedata(title, slotb, -1, true, FILES, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES, _("pre-Restore backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
                     BackupSetList::restoreBackupSetSubPath();
@@ -1209,7 +1229,10 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
         }
         int slotb = getEmptySlot(title);
         // backup is always of full type
-        if ((slotb >= 0) && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first?")))
+        if (slotb < 0) {
+            if (!Console::promptConfirm(ST_WARNING, _("There is no empty slot to back up the current savedata first.\n\nContinue without a backup?")))
+                return -1;
+        } else if (Console::promptConfirm(ST_YES_NO, _("Backup current savedata first?")))
             if (!(backupSavedata(title, slotb, -1, true, FILES, SAVEMII_SLOT, accountSource, _("pre-Wipe backup")) == 0)) {
                 Console::showMessage(ERROR_SHOW, _("Backup Failed - Wipe aborted !!"));
                 return -1;
@@ -1307,7 +1330,10 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
     if (!Console::promptConfirm(ST_WARNING, _("Are you sure?")))
         return true;
     int slotb = getEmptySlot(title);
-    if (slotb >= 0 && Console::promptConfirm(ST_YES_NO, _("Backup current savedata first?")))
+    if (slotb < 0) {
+        if (!Console::promptConfirm(ST_WARNING, _("There is no empty slot to back up the current savedata first.\n\nContinue without a backup?")))
+            return true;
+    } else if (Console::promptConfirm(ST_YES_NO, _("Backup current savedata first?")))
         backupSavedata(title, slotb, 0, common, FILES, SAVEMII_SLOT);
     InProgress::titleName.assign(title->shortName);
     InProgress::jobType = importLoadiine;
