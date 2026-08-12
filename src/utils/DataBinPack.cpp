@@ -211,7 +211,7 @@ static error_state find_files_recursive(const char *path) {
             return DBIN_ERR;
         p[8] = perm;
         p[0x0a] = is_dir ? 2 : 1;
-        strcpy((char *) p + 0x0b, name + input_path_len + 1); // can overrun the buffer !!!
+        strcpy((char *) p + 0x0b, name + input_path_len + 1); // bounded by the >= 0x44 name check above
         // maybe fill up with dirt
 
         size = round_up(size, 0x40);

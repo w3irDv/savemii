@@ -184,6 +184,11 @@ static error_state do_backup_header(void) {
     files_size = be32(header + 0x10);
     total_size = be32(header + 0x1c);
 
+    // total_size is untrusted; the sig-check path computes an unsigned data_size =
+    // total_size - 0x340, which would wrap to a huge value if total_size < 0x340.
+    if (total_size < 0x340)
+        ERROR(_("Error: bad backup header (total_size too small)"));
+
     //LOG("%d files\n", n_files);
 
     return DBIN_OK;
