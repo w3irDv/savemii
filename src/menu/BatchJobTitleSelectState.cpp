@@ -58,6 +58,8 @@ bool testForceSaveInitFalse = true
             continue;
         if (strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0)
             continue;
+        if (this->titles[i].badMetadata)
+            continue;
         if (this->titles[i].is_GameCube)
             continue;
 
@@ -151,6 +153,7 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCoun
 
         //skipped cases
         if ((strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) ||
+            (this->titles[i].badMetadata) ||
             (!this->titles[i].saveInit) ||
             (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0)) || (this->titles[i].is_Inject && this->titles[i].vWiiHighID == 0) ||
             (this->titles[i].highID == 0) || (this->titles[i].lowID == 0)) {

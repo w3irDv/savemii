@@ -63,6 +63,7 @@ struct Title {
     char titleNameBasedDirName[256] = {0};
     eFileNameStyle fileNameStyle = titleName;
     bool shortName_from_title_data = false;
+    bool badMetadata = false;
 };
 
 struct Saves {

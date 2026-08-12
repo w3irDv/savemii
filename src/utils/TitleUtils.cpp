@@ -38,6 +38,24 @@ static bool contains(const T (&arr)[N], const T &element) {
     return false;
 }
 
+// value just past the tag's '>' (+skip more), or nullptr if tag/'>' absent
+static const char *xmlValue(const char *xml, const char *tag, int skip = 1) {
+    const char *p = strstr(xml, tag);
+    if (p == nullptr)
+        return nullptr;
+    p = strchr(p, '>');
+    return p != nullptr ? p + skip : nullptr;
+}
+
+// bounded copy of the value up to '<' into dst[dstSize]
+static void copyXmlField(char *dst, size_t dstSize, const char *src) {
+    size_t n = strcspn(src, "<");
+    if (n >= dstSize)
+        n = dstSize - 1;
+    memcpy(dst, src, n);
+    dst[n] = '\0';
+}
+
 Title *TitleUtils::loadWiiUTitles(int run) {
     static char *tList;
     static uint32_t receivedCount;
@@ -189,52 +207,81 @@ Title *TitleUtils::loadWiiUTitles(int run) {
 
         char *xmlBuf = nullptr;
         if (FSUtils::loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
-            char *cptr = strchr(strstr(xmlBuf, "product_code"), '>') + 7;
-            memset(titles[wiiuTitlesCount].productCode, 0, sizeof(titles[wiiuTitlesCount].productCode));
-            strlcpy(titles[wiiuTitlesCount].productCode, cptr, strcspn(cptr, "<") + 1);
+            Title &t = titles[wiiuTitlesCount];
+            bool badMeta = false;
+            const char *v;
+            char numBuf[32];
 
-            cptr = strchr(strstr(xmlBuf, "account_save_size"), '>') + 1;
-            char accountSaveSize[255];
-            strlcpy(accountSaveSize, cptr, strcspn(cptr, "<") + 1);
-            titles[wiiuTitlesCount].accountSaveSize = strtoull(accountSaveSize, nullptr, 16);
+            memset(t.productCode, 0, sizeof(t.productCode));
+            if ((v = xmlValue(xmlBuf, "product_code", 7)) != nullptr)
+                copyXmlField(t.productCode, sizeof(t.productCode), v);
+            else
+                badMeta = true;
 
-            cptr = strchr(strstr(xmlBuf, "common_save_size"), '>') + 1;
-            char commonSaveSize[255];
-            strlcpy(commonSaveSize, cptr, strcspn(cptr, "<") + 1);
-            titles[wiiuTitlesCount].commonSaveSize = strtoull(commonSaveSize, nullptr, 16);
+            if ((v = xmlValue(xmlBuf, "account_save_size")) != nullptr) {
+                copyXmlField(numBuf, sizeof(numBuf), v);
+                t.accountSaveSize = strtoull(numBuf, nullptr, 16);
+            } else
+                badMeta = true;
 
-            cptr = strchr(strstr(xmlBuf, "group_id"), '>') + 1;
-            char groupID[255];
-            strlcpy(groupID, cptr, strcspn(cptr, "<") + 1);
-            titles[wiiuTitlesCount].groupID = strtoul(groupID, nullptr, 16);
+            if ((v = xmlValue(xmlBuf, "common_save_size")) != nullptr) {
+                copyXmlField(numBuf, sizeof(numBuf), v);
+                t.commonSaveSize = strtoull(numBuf, nullptr, 16);
+            } else
+                badMeta = true;
 
-            cptr = strchr(strstr(xmlBuf, "reserved_flag2"), '>') + 1;
-            char vWiiLowID[255];
-            strlcpy(vWiiLowID, cptr, strcspn(cptr, "<") + 1);
-            titles[wiiuTitlesCount].vWiiLowID = strtoul(vWiiLowID, nullptr, 16);
+            if ((v = xmlValue(xmlBuf, "group_id")) != nullptr) {
+                copyXmlField(numBuf, sizeof(numBuf), v);
+                t.groupID = strtoul(numBuf, nullptr, 16);
+            } else
+                badMeta = true;
 
-            cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
-            memset(titles[wiiuTitlesCount].shortName, 0, sizeof(titles[wiiuTitlesCount].shortName));
-            if (strcspn(cptr, "<") == 0)
-                cptr = strchr(strstr(xmlBuf, "shortname_ja"), '>') + 1;
+            if ((v = xmlValue(xmlBuf, "reserved_flag2")) != nullptr) {
+                copyXmlField(numBuf, sizeof(numBuf), v);
+                t.vWiiLowID = strtoul(numBuf, nullptr, 16);
+            } else
+                badMeta = true;
 
-            StringUtils::decodeXMLEscapeLine(std::string(cptr));
-            strlcpy(titles[wiiuTitlesCount].shortName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
-            titles[wiiuTitlesCount].shortName_from_title_data = true;
+            memset(t.shortName, 0, sizeof(t.shortName));
+            v = xmlValue(xmlBuf, "shortname_en");
+            if (v == nullptr || strcspn(v, "<") == 0)
+                v = xmlValue(xmlBuf, "shortname_ja");
+            if (v != nullptr) {
+                std::string decoded = StringUtils::decodeXMLEscapeLine(std::string(v));
+                copyXmlField(t.shortName, sizeof(t.shortName), decoded.c_str());
+                t.shortName_from_title_data = true;
+            } else
+                badMeta = true;
 
-            cptr = strchr(strstr(xmlBuf, "longname_en"), '>') + 1;
-            memset(titles[i].longName, 0, sizeof(titles[i].longName));
-            if (strcspn(cptr, "<") == 0)
-                cptr = strchr(strstr(xmlBuf, "longname_ja"), '>') + 1;
-
-            strlcpy(titles[wiiuTitlesCount].longName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
+            memset(t.longName, 0, sizeof(t.longName));
+            v = xmlValue(xmlBuf, "longname_en");
+            if (v == nullptr || strcspn(v, "<") == 0)
+                v = xmlValue(xmlBuf, "longname_ja");
+            if (v != nullptr) {
+                std::string decoded = StringUtils::decodeXMLEscapeLine(std::string(v));
+                copyXmlField(t.longName, sizeof(t.longName), decoded.c_str());
+            } else
+                badMeta = true;
 
             free(xmlBuf);
+
+            if (badMeta) {
+                t.badMetadata = true;
+                t.accountSaveSize = 0;
+                t.commonSaveSize = 0;
+                t.groupID = 0;
+                t.vWiiLowID = 0;
+            }
         }
         if (strlen(titles[wiiuTitlesCount].shortName) == 0u) {
             sprintf(titles[wiiuTitlesCount].shortName, "%08x%08x",
                     titles[wiiuTitlesCount].highID,
                     titles[wiiuTitlesCount].lowID);
+            titles[wiiuTitlesCount].shortName_from_title_data = false;
+        }
+        if (titles[wiiuTitlesCount].badMetadata) {
+            std::string marked = std::string(_("CORRUPTED METADATA")) + " - " + titles[wiiuTitlesCount].shortName;
+            strlcpy(titles[wiiuTitlesCount].shortName, marked.c_str(), sizeof(titles[wiiuTitlesCount].shortName));
             titles[wiiuTitlesCount].shortName_from_title_data = false;
         }
 
@@ -702,55 +749,74 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
 
         char *xmlBuf = nullptr;
         if (FSUtils::loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
-            char *cptr = strchr(strstr(xmlBuf, "product_code"), '>') + 7;
-            memset(titles[wiiuSysTitlesCount].productCode, 0, sizeof(titles[wiiuSysTitlesCount].productCode));
-            strlcpy(titles[wiiuSysTitlesCount].productCode, cptr, strcspn(cptr, "<") + 1);
+            Title &t = titles[wiiuSysTitlesCount];
+            bool badMeta = false;
+            const char *v;
+            char numBuf[32];
 
-            cptr = strchr(strstr(xmlBuf, "account_save_size"), '>') + 1;
-            char accountSaveSize[255];
-            strlcpy(accountSaveSize, cptr, strcspn(cptr, "<") + 1);
-            titles[wiiuSysTitlesCount].accountSaveSize = strtoull(accountSaveSize, nullptr, 16);
+            memset(t.productCode, 0, sizeof(t.productCode));
+            if ((v = xmlValue(xmlBuf, "product_code", 7)) != nullptr)
+                copyXmlField(t.productCode, sizeof(t.productCode), v);
+            else
+                badMeta = true;
 
-            cptr = strchr(strstr(xmlBuf, "common_save_size"), '>') + 1;
-            char commonSaveSize[255];
-            strlcpy(commonSaveSize, cptr, strcspn(cptr, "<") + 1);
-            titles[wiiuSysTitlesCount].commonSaveSize = strtoull(commonSaveSize, nullptr, 16);
+            if ((v = xmlValue(xmlBuf, "account_save_size")) != nullptr) {
+                copyXmlField(numBuf, sizeof(numBuf), v);
+                t.accountSaveSize = strtoull(numBuf, nullptr, 16);
+            } else
+                badMeta = true;
 
-            cptr = strchr(strstr(xmlBuf, "group_id"), '>') + 1;
-            char groupID[255];
-            strlcpy(groupID, cptr, strcspn(cptr, "<") + 1);
-            titles[wiiuSysTitlesCount].groupID = strtoul(groupID, nullptr, 16);
+            if ((v = xmlValue(xmlBuf, "common_save_size")) != nullptr) {
+                copyXmlField(numBuf, sizeof(numBuf), v);
+                t.commonSaveSize = strtoull(numBuf, nullptr, 16);
+            } else
+                badMeta = true;
 
-            // DBG - NOT NEEDED
-            /*
-            cptr = strchr(strstr(xmlBuf, "reserved_flag2"), '>') + 1;
-            char vWiiLowID[255];
-            strlcpy(vWiiLowID, cptr, strcspn(cptr, "<") + 1);
-            titles[wiiuSysTitlesCount].vWiiLowID = strtoul(vWiiLowID, nullptr, 16);
-            */
+            if ((v = xmlValue(xmlBuf, "group_id")) != nullptr) {
+                copyXmlField(numBuf, sizeof(numBuf), v);
+                t.groupID = strtoul(numBuf, nullptr, 16);
+            } else
+                badMeta = true;
 
-            cptr = strchr(strstr(xmlBuf, "shortname_en"), '>') + 1;
-            memset(titles[wiiuSysTitlesCount].shortName, 0, sizeof(titles[wiiuSysTitlesCount].shortName));
-            if (strcspn(cptr, "<") == 0)
-                cptr = strchr(strstr(xmlBuf, "shortname_ja"), '>') + 1;
+            memset(t.shortName, 0, sizeof(t.shortName));
+            v = xmlValue(xmlBuf, "shortname_en");
+            if (v == nullptr || strcspn(v, "<") == 0)
+                v = xmlValue(xmlBuf, "shortname_ja");
+            if (v != nullptr) {
+                std::string decoded = StringUtils::decodeXMLEscapeLine(std::string(v));
+                copyXmlField(t.shortName, sizeof(t.shortName), decoded.c_str());
+                t.shortName_from_title_data = true;
+            } else
+                badMeta = true;
 
-            StringUtils::decodeXMLEscapeLine(std::string(cptr));
-            strlcpy(titles[wiiuSysTitlesCount].shortName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
-            titles[wiiuSysTitlesCount].shortName_from_title_data = true;
-
-            cptr = strchr(strstr(xmlBuf, "longname_en"), '>') + 1;
-            memset(titles[i].longName, 0, sizeof(titles[i].longName));
-            if (strcspn(cptr, "<") == 0)
-                cptr = strchr(strstr(xmlBuf, "longname_ja"), '>') + 1;
-
-            strlcpy(titles[wiiuSysTitlesCount].longName, StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), strcspn(StringUtils::decodeXMLEscapeLine(std::string(cptr)).c_str(), "<") + 1);
+            memset(t.longName, 0, sizeof(t.longName));
+            v = xmlValue(xmlBuf, "longname_en");
+            if (v == nullptr || strcspn(v, "<") == 0)
+                v = xmlValue(xmlBuf, "longname_ja");
+            if (v != nullptr) {
+                std::string decoded = StringUtils::decodeXMLEscapeLine(std::string(v));
+                copyXmlField(t.longName, sizeof(t.longName), decoded.c_str());
+            } else
+                badMeta = true;
 
             free(xmlBuf);
+
+            if (badMeta) {
+                t.badMetadata = true;
+                t.accountSaveSize = 0;
+                t.commonSaveSize = 0;
+                t.groupID = 0;
+            }
         }
         if (strlen(titles[wiiuSysTitlesCount].shortName) == 0u) {
             sprintf(titles[wiiuSysTitlesCount].shortName, "%08x%08x",
                     titles[wiiuSysTitlesCount].highID,
                     titles[wiiuSysTitlesCount].lowID);
+            titles[wiiuSysTitlesCount].shortName_from_title_data = false;
+        }
+        if (titles[wiiuSysTitlesCount].badMetadata) {
+            std::string marked = std::string(_("CORRUPTED METADATA")) + " - " + titles[wiiuSysTitlesCount].shortName;
+            strlcpy(titles[wiiuSysTitlesCount].shortName, marked.c_str(), sizeof(titles[wiiuSysTitlesCount].shortName));
             titles[wiiuSysTitlesCount].shortName_from_title_data = false;
         }
 

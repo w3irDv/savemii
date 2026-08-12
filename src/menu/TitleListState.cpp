@@ -49,6 +49,8 @@ void TitleListState::render() {
                     DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER, COLOR_LIST_DANGER_AT_CURSOR, cursorPos, i);
                 if ( this->titles[i + this->scroll].is_GameCube)
                     DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
+                if (this->titles[i + this->scroll].badMetadata)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER, COLOR_LIST_DANGER_AT_CURSOR, cursorPos, i);
                 Console::consolePrintPos(M_OFF + 1, i + 2, "   %s %s%s%s%s",
                                          this->titles[i + this->scroll].shortName,
                                          this->titles[i + this->scroll].isTitleOnUSB ? "(USB)" : "(NAND)",
@@ -94,6 +96,10 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
             this->targ = cursorPos + this->scroll;
             if (this->titles[this->targ].highID == 0 || this->titles[this->targ].lowID == 0)
                 return SUBSTATE_RUNNING;
+            if (this->titles[this->targ].badMetadata) {
+                Console::showMessage(ERROR_SHOW, _("This title cannot be managed due to problems with its metadata."));
+                return SUBSTATE_RUNNING;
+            }
             if (isWiiU) {
                 if (strcmp(this->titles[this->targ].shortName, "DONT TOUCH ME") == 0) {
                     if (!Console::promptConfirm(ST_ERROR, _("CBHC save. Could be dangerous to modify. Continue?")) ||
