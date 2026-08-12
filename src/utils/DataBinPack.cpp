@@ -196,6 +196,11 @@ static error_state find_files_recursive(const char *path) {
             size = sb.st_size;
         }
 
+        if (n_files >= MAXFILES) {
+            fatal(_("Error: too many files to archive (max %d)"), MAXFILES);
+            closedir(dir);
+            return DBIN_ERR;
+        }
         strcpy(src[n_files], name);
 
         p = files[n_files++];
@@ -298,6 +303,10 @@ static error_state find_files_toc(FILE *toc) {
 
         size = (is_dir ? 0 : sb.st_size);
 
+        if (n_files >= MAXFILES) {
+            fatal(_("Error: too many files to archive (max %d)"), MAXFILES);
+            return DBIN_ERR;
+        }
         strcpy(src[n_files], line);
 
         p = files[n_files++];
