@@ -213,6 +213,15 @@ static error_state do_file(void) {
     type = header[10];
     name = (char *) header + 11;
 
+    // The entry name is an untrusted 0x44-byte field (bytes 0x0b..0x4e, before the AES IV
+    // at 0x50). Require a terminator within it (else %s reads past the header) and reject
+    // any name that could escape the restore directory via path traversal. Names are
+    // relative paths and legitimately contain '/', so only ".." and a leading '/' are barred.
+    if (memchr(name, '\0', 0x44) == NULL)
+        ERROR(_("Error: bad file header (unterminated name)"));
+    if (name[0] == '/' || strstr(name, "..") != NULL)
+        ERROR(_("Error: unsafe entry name in data.bin"));
+
     DataBin::writeLog("file: size=%08x perm=%02x attr=%02x type=%02x name=%s", size, perm, attr, type, name);
     memset(DataBin::output_path + ouput_base_path_len, 0, 1);
     DataBin::showDataBinOperations(RESTORE);
