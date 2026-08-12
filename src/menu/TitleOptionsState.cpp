@@ -997,8 +997,12 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                     break;
                 case RESTORE:
                     if (!this->isWiiUTitle && this->data_bin_found && this->restore_uncompressed) {
+                        // A notInit inject runs initializeVWiiInjectTitle, whose TMD copy leaves a
+                        // "From:/To:" frame on screen; the bare pause would sit on it confusingly.
+                        bool willInitInject = !this->title.saveInit && this->title.is_Inject;
                         if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, DATA_BIN, SAVEMII_SLOT) == 0) {
-                            Console::waitForAnyButton();
+                            if (!willInitInject)
+                                Console::waitForAnyButton();
                             Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
                         }
                     } else {
@@ -1038,13 +1042,18 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
                         Console::showMessage(OK_SHOW, _("Savedata succesfully copied!"));
                     updateLoadiine();
                     break;
-                case IMPORT_FROM_SD_WII_DATA_MGMT:
+                case IMPORT_FROM_SD_WII_DATA_MGMT: {
+                    // A notInit inject runs initializeVWiiInjectTitle, whose TMD copy leaves a
+                    // "From:/To:" frame on screen; the bare pause would sit on it confusingly.
+                    bool willInitInject = !this->title.saveInit && this->title.is_Inject;
                     if (restoreSavedata(&this->title, slot, source_user_, wiiu_user, common, DATA_BIN, PRIVATE_SLOT) == 0) {
-                        Console::waitForAnyButton();
+                        if (!willInitInject)
+                            Console::waitForAnyButton();
                         Console::showMessage(OK_SHOW, _("Savedata succesfully restored!"));
                     }
                     updateImportAsWii();
                     break;
+                }
                 case EXPORT_TO_SD_WII_DATA_MGMT:
                     if (backupSavedata(&this->title, slot, source_user_, common, DATA_BIN, PRIVATE_SLOT, USE_SD_OR_STORAGE_PROFILES) == 0) {
                         Console::waitForAnyButton();

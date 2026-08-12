@@ -1059,7 +1059,7 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             errorMessage.assign(error_message);
             errorCode = 1024;
         }
-        goto flush_volume;
+        goto initialize_title;
     }
 
     switch (source_user) {
