@@ -494,7 +494,8 @@ Title *TitleUtils::loadWiiTitles() {
                     fseek(file, 0x20, SEEK_SET);
                     auto *bnrBuf = (uint16_t *) malloc(0x80);
                     if (bnrBuf != nullptr) {
-                        fread(bnrBuf, 0x02, 0x20, file);
+                        memset(bnrBuf, 0, 0x80);
+                        fread(bnrBuf, 0x02, 0x40, file);
                         memset(titles[i].shortName, 0, sizeof(titles[i].shortName));
                         for (int j = 0, k = 0; j < 0x20; j++) {
                             if (bnrBuf[j] < 0x80) {
