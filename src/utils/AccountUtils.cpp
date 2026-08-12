@@ -28,6 +28,14 @@ Account *AccountUtils::getVolAcc() {
     return vol_acc;
 }
 
+const char *AccountUtils::getVolAccPID(int idx) {
+    return (idx >= 0 && idx < vol_accn) ? vol_acc[idx].persistentID : "OUT_OF_BOUNDS";
+}
+
+const char *AccountUtils::getWiiUAccPID(int idx) {
+    return (idx >= 0 && idx < wiiu_accn) ? wiiu_acc[idx].persistentID : "OUT_OF_BOUNDS";
+}
+
 
 void AccountUtils::getAccountsWiiU() {
     /* get persistent ID - thanks to Maschell */

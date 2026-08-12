@@ -438,10 +438,10 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
             singleUser = true;
 
             if (accountSource == USE_WIIU_PROFILES)
-                srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[source_user].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(source_user)));
             else
-                srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::vol_acc[source_user].persistentID));
-            dstPath.append(StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[wiiu_user].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::getVolAccPID(source_user)));
+            dstPath.append(StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(wiiu_user)));
             break;
     }
 
@@ -526,11 +526,11 @@ int copySavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     std::string srcPath;
     if (accountSource == USE_WIIU_PROFILES)
-        srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[source_user].persistentID);
+        srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(source_user));
     else
-        srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::vol_acc[source_user].persistentID);
+        srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getVolAccPID(source_user));
 
-    std::string dstPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[wiiu_user].persistentID);
+    std::string dstPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(wiiu_user));
 
     std::string errorMessage{};
 
@@ -589,11 +589,11 @@ int moveSavedataToOtherProfile(Title *title, int8_t source_user, int8_t wiiu_use
 
     std::string srcPath;
     if (accountSource == USE_WIIU_PROFILES)
-        srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[source_user].persistentID);
+        srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(source_user));
     else
-        srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::vol_acc[source_user].persistentID);
+        srcPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getVolAccPID(source_user));
 
-    std::string dstPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[wiiu_user].persistentID);
+    std::string dstPath = basePath + StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(wiiu_user));
 
     std::string errorMessage{};
     if (FSUtils::checkEntry(dstPath.c_str()) == 2) {
@@ -902,11 +902,11 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
             doBase = true;
             doCommon = common;
             if (accountSource == USE_WIIU_PROFILES) {
-                srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[source_user].persistentID));
-                dstPath.append(StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[source_user].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(source_user)));
+                dstPath.append(StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(source_user)));
             } else {
-                srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::vol_acc[source_user].persistentID));
-                dstPath.append(StringUtils::stringFormat("/%s", AccountUtils::vol_acc[source_user].persistentID));
+                srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::getVolAccPID(source_user)));
+                dstPath.append(StringUtils::stringFormat("/%s", AccountUtils::getVolAccPID(source_user)));
             }
             break;
     }
@@ -1081,8 +1081,8 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             doBase = true;
             doCommon = common;
             singleUser = true;
-            srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::vol_acc[source_user].persistentID));
-            dstPath.append(StringUtils::stringFormat("/%s", AccountUtils::wiiu_acc[wiiu_user].persistentID));
+            srcPath.append(StringUtils::stringFormat("/%s", AccountUtils::getVolAccPID(source_user)));
+            dstPath.append(StringUtils::stringFormat("/%s", AccountUtils::getWiiUAccPID(wiiu_user)));
             break;
     }
 
@@ -1130,11 +1130,11 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             break;
         default:
             StatManager::enable_filtered_stat = true;
-            StatManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, AccountUtils::vol_acc[source_user].persistentID);
-            StatManager::target_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, AccountUtils::wiiu_acc[wiiu_user].persistentID);
+            StatManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, AccountUtils::getVolAccPID(source_user));
+            StatManager::target_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, AccountUtils::getWiiUAccPID(wiiu_user));
             FAT32EscapeFileManager::enable_filtered_escape_path = true;
-            FAT32EscapeFileManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, AccountUtils::vol_acc[source_user].persistentID);
-            FAT32EscapeFileManager::target_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, AccountUtils::wiiu_acc[wiiu_user].persistentID);
+            FAT32EscapeFileManager::source_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, AccountUtils::getVolAccPID(source_user));
+            FAT32EscapeFileManager::target_profile_subpath = StringUtils::stringFormat("%08x/user/%s", lowID, AccountUtils::getWiiUAccPID(wiiu_user));
             if (StatManager::source_profile_subpath != StatManager::target_profile_subpath) {
                 StatManager::needs_profile_translation = true;
                 FAT32EscapeFileManager::needs_profile_translation = true;
@@ -1264,9 +1264,9 @@ int wipeSavedata(Title *title, int8_t source_user, bool common, bool interactive
             doCommon = common;
             doMeta = false;
             if (accountSource == USE_WIIU_PROFILES)
-                srcPath += "/" + std::string(AccountUtils::wiiu_acc[source_user].persistentID);
+                srcPath += "/" + std::string(AccountUtils::getWiiUAccPID(source_user));
             else
-                srcPath += "/" + std::string(AccountUtils::vol_acc[source_user].persistentID);
+                srcPath += "/" + std::string(AccountUtils::getVolAccPID(source_user));
             break;
     }
 
@@ -1358,8 +1358,8 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
     uint32_t dstOffset = strlen(dstPath);
 
     if (source_user > -1) {
-        snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
-        snprintf(dstPath + dstOffset, PATH_SIZE - dstOffset, "/%s", AccountUtils::getWiiUAcc()[wiiu_user].persistentID);
+        snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getVolAccPID(source_user));
+        snprintf(dstPath + dstOffset, PATH_SIZE - dstOffset, "/%s", AccountUtils::getWiiUAccPID(wiiu_user));
         if (FSUtils::checkEntry(srcPath) == 2) {
             FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
             if (!FSUtils::copyDir(srcPath, dstPath)) {
@@ -1413,11 +1413,11 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
     uint32_t dstOffset = strlen(dstPath);
 
     if (source_user > -1) {
-        snprintf(dstPath + dstOffset, PATH_SIZE - dstOffset, "/%s", AccountUtils::getVolAcc()[wiiu_user].persistentID);
+        snprintf(dstPath + dstOffset, PATH_SIZE - dstOffset, "/%s", AccountUtils::getVolAccPID(wiiu_user));
         if (accountSource == USE_SD_OR_STORAGE_PROFILES)
-            snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
+            snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getVolAccPID(source_user));
         else
-            snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getWiiUAcc()[source_user].persistentID); // this option would need changes in TitleOptionsState, that assumes that source uses is from getVolAcc.
+            snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getWiiUAccPID(source_user)); // this option would need changes in TitleOptionsState, that assumes that source uses is from getVolAcc.
 
         if (FSUtils::checkEntry(srcPath) == 2) {
             if (!FSUtils::copyDir(srcPath, dstPath)) {
@@ -2118,8 +2118,8 @@ bool updateSaveinfo(Title *title, int8_t source_user, int8_t wiiu_user, eJobType
             getProfilesInPath(source_persistentIDs, profilesPath);
             break;
         default:
-            source_persistentIDs.push_back((std::string) "\"" + (AccountUtils::vol_acc[source_user].persistentID) + "\"");
-            target_persistentID = (std::string) "\"" + AccountUtils::wiiu_acc[wiiu_user].persistentID + "\"";
+            source_persistentIDs.push_back((std::string) "\"" + (AccountUtils::getVolAccPID(source_user)) + "\"");
+            target_persistentID = (std::string) "\"" + AccountUtils::getWiiUAccPID(wiiu_user) + "\"";
             break;
     }
 
