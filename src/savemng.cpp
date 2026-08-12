@@ -1651,9 +1651,12 @@ bool mergeTitleFolders(Title *title) {
     std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
 
     DIR *dir = opendir(idBasedPath.c_str());
+    if (dir == nullptr) {
+        Console::showMessage(ERROR_CONFIRM, _("Error opening folder\n\n%s\n\n%s"), idBasedPath.c_str(), strerror(errno));
+        return false;
+    }
     struct dirent *data;
-    errno = 0;
-    while ((data = readdir(dir)) != nullptr) {
+    while ((errno = 0, (data = readdir(dir)) != nullptr)) {
 
         if (strcmp(data->d_name, "..") == 0 || strcmp(data->d_name, ".") == 0)
             continue;
@@ -1697,7 +1700,6 @@ bool mergeTitleFolders(Title *title) {
             showAbortPrompt = true;
             continue;
         }
-        errno = 0;
     }
 
     if (errno != 0) {
