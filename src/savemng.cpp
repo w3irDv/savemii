@@ -168,7 +168,7 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *titl
         if (((data->d_type & DT_DIR) != 0) && ((strstr(data->d_name, productCode) != nullptr) ||
                                                (strstr(data->d_name, StringUtils::stringFormat("[%08x%08x]", highID, lowID).c_str()) != nullptr) ||
                                                (strstr(data->d_name, escaped_title_name) != nullptr))) {
-            sprintf(out, "%s/%s", loadiineSavePath, data->d_name);
+            snprintf(out, PATH_SIZE, "%s/%s", loadiineSavePath, data->d_name);
             closedir(dir);
             return true;
         }
@@ -177,7 +177,7 @@ bool getLoadiineGameSaveDir(char *out, const char *productCode, const char *titl
     Console::showMessage(ERROR_SHOW, _("Loadiine game folder not found."));
     closedir(dir);
 
-    sprintf(out, "%s/%s [%s]", loadiineSavePath, escaped_title_name, productCode);
+    snprintf(out, PATH_SIZE, "%s/%s [%s]", loadiineSavePath, escaped_title_name, productCode);
 
     return false;
 }
@@ -1319,9 +1319,9 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
     if (!getLoadiineGameSaveDir(srcPath, title->productCode, title->shortName, title->highID, title->lowID))
         return false;
     if (version != 0)
-        sprintf(srcPath + strlen(srcPath), "/v%i", version);
+        snprintf(srcPath + strlen(srcPath), PATH_SIZE - strlen(srcPath), "/v%i", version);
 
-    sprintf(dstPath, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
+    snprintf(dstPath, PATH_SIZE, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
 
     if (!FSUtils::createFolderUnlocked(dstPath)) {
         Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
@@ -1332,8 +1332,8 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
     uint32_t dstOffset = strlen(dstPath);
 
     if (source_user > -1) {
-        sprintf(srcPath + srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
-        sprintf(dstPath + dstOffset, "/%s", AccountUtils::getWiiUAcc()[wiiu_user].persistentID);
+        snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
+        snprintf(dstPath + dstOffset, PATH_SIZE - dstOffset, "/%s", AccountUtils::getWiiUAcc()[wiiu_user].persistentID);
         if (FSUtils::checkEntry(srcPath) == 2) {
             FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->accountSaveSize);
             if (!FSUtils::copyDir(srcPath, dstPath)) {
@@ -1344,10 +1344,10 @@ bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool
     }
     if (common) {
         if (loadiine_mode == LOADIINE_SHARED_SAVEDATA)
-            strcpy(srcPath + srcOffset, "/c\0");
+            strlcpy(srcPath + srcOffset, "/c", PATH_SIZE - srcOffset);
         else
-            strcpy(srcPath + srcOffset, "/common\0");
-        strcpy(dstPath + dstOffset, "/common\0");
+            strlcpy(srcPath + srcOffset, "/common", PATH_SIZE - srcOffset);
+        strlcpy(dstPath + dstOffset, "/common", PATH_SIZE - dstOffset);
 
         FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(dstPath).c_str(), 0x666, title->commonSaveSize);
         if (!FSUtils::copyDir(srcPath, dstPath)) {
@@ -1371,7 +1371,7 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
     if (!getLoadiineGameSaveDir(dstPath, title->productCode, title->shortName, title->highID, title->lowID))
         return false;
     if (version != 0)
-        sprintf(dstPath + strlen(dstPath), "/v%u", version);
+        snprintf(dstPath + strlen(dstPath), PATH_SIZE - strlen(dstPath), "/v%u", version);
 
     if (savemng::firstSDWrite)
         sdWriteDisclaimer();
@@ -1381,17 +1381,17 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
         return false;
     }
 
-    sprintf(srcPath, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
+    snprintf(srcPath, PATH_SIZE, "%s/usr/save/%08x/%08x/user", isUSB ? FSUtils::getUSB().c_str() : "storage_mlc01:", highID, lowID);
 
     uint32_t srcOffset = strlen(srcPath);
     uint32_t dstOffset = strlen(dstPath);
 
     if (source_user > -1) {
-        sprintf(dstPath + dstOffset, "/%s", AccountUtils::getVolAcc()[wiiu_user].persistentID);
+        snprintf(dstPath + dstOffset, PATH_SIZE - dstOffset, "/%s", AccountUtils::getVolAcc()[wiiu_user].persistentID);
         if (accountSource == USE_SD_OR_STORAGE_PROFILES)
-            sprintf(srcPath + srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
+            snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getVolAcc()[source_user].persistentID);
         else
-            sprintf(srcPath + srcOffset, "/%s", AccountUtils::getWiiUAcc()[source_user].persistentID); // this option would need changes in TitleOptionsState, that assumes that source uses is from getVolAcc.
+            snprintf(srcPath + srcOffset, PATH_SIZE - srcOffset, "/%s", AccountUtils::getWiiUAcc()[source_user].persistentID); // this option would need changes in TitleOptionsState, that assumes that source uses is from getVolAcc.
 
         if (FSUtils::checkEntry(srcPath) == 2) {
             if (!FSUtils::copyDir(srcPath, dstPath)) {
@@ -1402,10 +1402,10 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
     }
     if (common) {
         if (loadiine_mode == LOADIINE_SHARED_SAVEDATA)
-            strcpy(dstPath + dstOffset, "/c\0");
+            strlcpy(dstPath + dstOffset, "/c", PATH_SIZE - dstOffset);
         else
-            strcpy(dstPath + dstOffset, "/common\0");
-        strcpy(srcPath + srcOffset, "/common\0");
+            strlcpy(dstPath + dstOffset, "/common", PATH_SIZE - dstOffset);
+        strlcpy(srcPath + srcOffset, "/common", PATH_SIZE - srcOffset);
         if (!FSUtils::copyDir(srcPath, dstPath)) {
             Console::showMessage(ERROR_SHOW, _("Error copying common savedata."));
             return false;
