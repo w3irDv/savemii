@@ -204,6 +204,7 @@ Title *TitleUtils::loadWiiUTitles(int run) {
         titles[wiiuTitlesCount].saveInit = !saves[i].found;
 
         titles[wiiuTitlesCount].shortName_from_title_data = false;
+        titles[wiiuTitlesCount].badMetadata = false;
 
         char *xmlBuf = nullptr;
         if (FSUtils::loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
@@ -479,6 +480,7 @@ Title *TitleUtils::loadWiiTitles() {
                 titles[i].lowID = strtoul(data->d_name, nullptr, 16);
                 if (errno == EINVAL || errno == ERANGE)
                     continue;
+                titles[i].badMetadata = false;
                 memcpy(titles[i].productCode, &titles[i].lowID, 4);
                 for (int ii = 0; ii < 4; ii++)
                     if (titles[i].productCode[ii] == 0)
@@ -748,6 +750,7 @@ Title *TitleUtils::loadWiiUSysTitles(int run) {
         titles[wiiuSysTitlesCount].saveInit = !saves[i].found;
 
         titles[wiiuSysTitlesCount].shortName_from_title_data = false;
+        titles[wiiuSysTitlesCount].badMetadata = false;
 
         char *xmlBuf = nullptr;
         if (FSUtils::loadFile(path.c_str(), (uint8_t **) &xmlBuf) > 0) {
