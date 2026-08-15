@@ -68,7 +68,7 @@ ApplicationState::eSubState BatchBackupState::update(Input *input) {
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::X)) {
             this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<BackupSetListState>();
+            this->subState = std::make_unique<BackupSetListState>(eJobType::NONE);
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::A)) {

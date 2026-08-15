@@ -1,3 +1,4 @@
+#include "ApplicationState.h"
 #include "utils/DrawUtils.h"
 #include <coreinit/debug.h>
 #include <menu/BackupSetListState.h>
@@ -61,8 +62,13 @@ void BatchJobState::render() {
         Console::consolePrintPos(M_OFF, 3, wiiUTask, this->wiiuTitlesCount,
                                  (this->wiiuTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 4, vWiiTask, this->vWiiTitlesCount,
+        if (jobType == COPY_TO_OTHER_DEVICE)
+            Console::consolePrintPos(M_OFF, 4,  vWiiTask, this->wiiuTitlesCount,
+                                 (this->wiiuTitlesCount > 1) ? "s" : "");
+        else
+            Console::consolePrintPos(M_OFF, 4, vWiiTask, this->vWiiTitlesCount,
                                  (this->vWiiTitlesCount > 1) ? "s" : "");
+         ;
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
         DrawUtils::setFontColor(COLOR_INFO);
@@ -80,11 +86,11 @@ ApplicationState::eSubState BatchJobState::update(Input *input) {
                     switch (cursorPos) {
                         case 0:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, WIIU);
+                            this->subState = std::make_unique<BackupSetListState>(this->wiiutitles, this->wiiuTitlesCount, WIIU, RESTORE);
                             break;
                         case 1:
                             this->state = STATE_DO_SUBSTATE;
-                            this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, VWII);
+                            this->subState = std::make_unique<BackupSetListState>(this->wiititles, this->vWiiTitlesCount, VWII, RESTORE);
                             break;
                         default:
                             return SUBSTATE_RUNNING;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-27 00:04+0200\n"
+"POT-Creation-Date: 2026-08-16 19:37+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: include/menu/BatchJobTitleSelectState.h:41 include/menu/TitleListState.h:40
+#: include/menu/BatchJobTitleSelectState.h:41 include/menu/TitleListState.h:44
 msgid "None"
 msgstr "なし"
 
-#: include/menu/BatchJobTitleSelectState.h:42 include/menu/TitleListState.h:41
+#: include/menu/BatchJobTitleSelectState.h:42 include/menu/TitleListState.h:45
 msgid "Name"
 msgstr "名前"
 
-#: include/menu/BatchJobTitleSelectState.h:43 include/menu/TitleListState.h:42
+#: include/menu/BatchJobTitleSelectState.h:43 include/menu/TitleListState.h:46
 msgid "Storage"
 msgstr "ストレージ"
 
@@ -33,18 +33,18 @@ msgstr "ストレージ"
 msgid "Strg+Nm"
 msgstr "店舗+名前"
 
-#: include/menu/TitleListState.h:43
+#: include/menu/TitleListState.h:47
 msgid "Storage+Name"
 msgstr "ストレージ+名前"
 
 #: src/utils/DataBinUnpack.cpp:67 src/utils/DataBinUnpack.cpp:102
-#: src/utils/DataBinUnpack.cpp:203
+#: src/utils/DataBinUnpack.cpp:208
 #, c-format
 msgid "Error reading file header: %s"
 msgstr "ファイルヘッダーの読み込みエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:67 src/utils/DataBinUnpack.cpp:317
-#: src/utils/DataBinUnpack.cpp:384 src/utils/DataBinUnpack.cpp:401
+#: src/utils/DataBinUnpack.cpp:67 src/utils/DataBinUnpack.cpp:331
+#: src/utils/DataBinUnpack.cpp:398 src/utils/DataBinUnpack.cpp:415
 msgid "Probably trying to read beyond file size"
 msgstr "ファイルサイズを超えて読み取ろうとした可能性があります"
 
@@ -56,18 +56,18 @@ msgstr "エラー: MD5が一致しません"
 msgid "Error: bad file header size"
 msgstr "エラー: 不正なファイルヘッダーサイズ"
 
-#: src/utils/DataBinUnpack.cpp:127 src/utils/DataBinUnpack.cpp:266
+#: src/utils/DataBinUnpack.cpp:127 src/utils/DataBinUnpack.cpp:280
 #, c-format
 msgid "Error creating folder %s: %s"
 msgstr "フォルダ %s の作成エラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:144 src/utils/DataBinUnpack.cpp:241
-#: src/utils/DataBinUnpack.cpp:342 src/utils/DataBinUnpack.cpp:372
-#: src/utils/DataBinUnpack.cpp:437 src/utils/DataBinPack.cpp:106
-#: src/utils/DataBinPack.cpp:386 src/utils/DataBinPack.cpp:518
-#: src/utils/DataBinPack.cpp:525 src/utils/DataBin.cpp:31
-#: src/utils/DataBin.cpp:118 src/utils/DataBin.cpp:183
-#: src/utils/DataBin.cpp:225
+#: src/utils/DataBinUnpack.cpp:144 src/utils/DataBinUnpack.cpp:255
+#: src/utils/DataBinUnpack.cpp:356 src/utils/DataBinUnpack.cpp:386
+#: src/utils/DataBinUnpack.cpp:451 src/utils/DataBinPack.cpp:106
+#: src/utils/DataBinPack.cpp:395 src/utils/DataBinPack.cpp:527
+#: src/utils/DataBinPack.cpp:534 src/utils/DataBin.cpp:31
+#: src/utils/DataBin.cpp:122 src/utils/DataBin.cpp:187
+#: src/utils/DataBin.cpp:231
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "ファイル %s のオープンエラー: %s"
@@ -77,93 +77,105 @@ msgstr "ファイル %s のオープンエラー: %s"
 msgid "Error writing file %s: %s"
 msgstr "ファイル %s の書き込みエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:153 src/utils/DataBinUnpack.cpp:252
-#: src/utils/DataBinPack.cpp:573 src/utils/DataBinPack.cpp:582
+#: src/utils/DataBinUnpack.cpp:153 src/utils/DataBinUnpack.cpp:266
+#: src/utils/DataBinPack.cpp:582 src/utils/DataBinPack.cpp:591
 #, c-format
 msgid "Error closing file %s: %s"
 msgstr "ファイル %s のクローズエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:160 src/utils/DataBinUnpack.cpp:277
-#: src/utils/DataBinUnpack.cpp:461
+#: src/utils/DataBinUnpack.cpp:160 src/utils/DataBinUnpack.cpp:291
+#: src/utils/DataBinUnpack.cpp:475
 #, c-format
 msgid "Error setting permissions for file %s: %s"
 msgstr "ファイル %s の権限設定エラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:172 src/utils/DataBinUnpack.cpp:384
+#: src/utils/DataBinUnpack.cpp:172 src/utils/DataBinUnpack.cpp:398
 #, c-format
 msgid "Error reading Bk header: %s"
 msgstr "Bkヘッダーの読み取りエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:177 src/utils/DataBinUnpack.cpp:389
+#: src/utils/DataBinUnpack.cpp:177 src/utils/DataBinUnpack.cpp:403
 msgid "Error: no Bk header"
 msgstr "エラー: Bkヘッダーがありません"
 
-#: src/utils/DataBinUnpack.cpp:179 src/utils/DataBinUnpack.cpp:394
+#: src/utils/DataBinUnpack.cpp:179 src/utils/DataBinUnpack.cpp:408
 msgid "Error: wrong Bk header size"
 msgstr "エラー: Bkヘッダーサイズが不正です"
 
-#: src/utils/DataBinUnpack.cpp:208
+#: src/utils/DataBinUnpack.cpp:190
+msgid "Error: bad backup header (total_size too small)"
+msgstr ""
+
+#: src/utils/DataBinUnpack.cpp:213
 msgid "Error: bad file header magic number"
 msgstr "エラー: 不正なファイルヘッダーマジックナンバー"
 
-#: src/utils/DataBinUnpack.cpp:227 src/utils/DataBinUnpack.cpp:311
-#: src/utils/DataBinPack.cpp:380 src/utils/DataBinPack.cpp:458
+#: src/utils/DataBinUnpack.cpp:226
+msgid "Error: bad file header (unterminated name)"
+msgstr ""
+
+#: src/utils/DataBinUnpack.cpp:228
+msgid "Error: unsafe entry name in data.bin"
+msgstr ""
+
+#: src/utils/DataBinUnpack.cpp:241 src/utils/DataBinUnpack.cpp:325
+#: src/utils/DataBinPack.cpp:389 src/utils/DataBinPack.cpp:467
 msgid "Error: cannot malloc"
 msgstr "エラー: メモリ割り当て（malloc）ができません"
 
-#: src/utils/DataBinUnpack.cpp:231 src/utils/DataBinPack.cpp:110
-#: src/utils/DataBinPack.cpp:391 src/utils/DataBin.cpp:38
+#: src/utils/DataBinUnpack.cpp:245 src/utils/DataBinPack.cpp:110
+#: src/utils/DataBinPack.cpp:400 src/utils/DataBin.cpp:38
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "ファイル %s の読み取りエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:273
+#: src/utils/DataBinUnpack.cpp:287
 msgid "Error: unhandled file type"
 msgstr "エラー: 未対応のファイル形式"
 
-#: src/utils/DataBinUnpack.cpp:295
+#: src/utils/DataBinUnpack.cpp:309
 #, c-format
 msgid "Error reading signature: %s"
 msgstr "署名の読み取りエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:299
+#: src/utils/DataBinUnpack.cpp:313
 #, c-format
 msgid "Error reading NG cert: %s"
 msgstr "NG証明書の読み取りエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:303
+#: src/utils/DataBinUnpack.cpp:317
 #, c-format
 msgid "Error reading AP cert: %s"
 msgstr "AP証明書の読み取りエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:317
+#: src/utils/DataBinUnpack.cpp:331
 #, c-format
 msgid "Error reading data for sig check: %s"
 msgstr "署名確認用データの読み取りエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:327 src/utils/DataBinPack.cpp:487
+#: src/utils/DataBinUnpack.cpp:341 src/utils/DataBinPack.cpp:496
 msgid "Signature OK"
 msgstr "署名 OK"
 
-#: src/utils/DataBinUnpack.cpp:329
+#: src/utils/DataBinUnpack.cpp:343
 msgid "Error computing signature"
 msgstr "署名の計算エラー"
 
-#: src/utils/DataBinUnpack.cpp:377
+#: src/utils/DataBinUnpack.cpp:391
 #, c-format
 msgid "Error seeking Bk header: %s"
 msgstr "Bkヘッダーのシークエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:401
+#: src/utils/DataBinUnpack.cpp:415
 #, c-format
 msgid "Error reading file magic id: %s"
 msgstr "ファイルマジックIDの読み取りエラー: %s"
 
-#: src/utils/DataBinUnpack.cpp:406
+#: src/utils/DataBinUnpack.cpp:420
 msgid "Error: no file magic id"
 msgstr "エラー: ファイルマジックIDがありません"
 
-#: src/utils/DataBinUnpack.cpp:473
+#: src/utils/DataBinUnpack.cpp:487
 msgid ""
 "\n"
 " >>>> Extraction OK"
@@ -171,7 +183,7 @@ msgstr ""
 "\n"
 " >>>> 展開完了"
 
-#: src/utils/DataBinUnpack.cpp:474 src/utils/DataBinPack.cpp:589
+#: src/utils/DataBinUnpack.cpp:488 src/utils/DataBinPack.cpp:598
 msgid ""
 "\n"
 " Press any button to continue"
@@ -179,92 +191,96 @@ msgstr ""
 "\n"
 " 続けるには何かボタンを押してください"
 
-#: src/utils/TitleUtils.cpp:63 src/utils/TitleUtils.cpp:87
-#: src/utils/TitleUtils.cpp:130 src/utils/TitleUtils.cpp:175
-#: src/utils/TitleUtils.cpp:406 src/utils/TitleUtils.cpp:574
-#: src/utils/TitleUtils.cpp:598 src/utils/TitleUtils.cpp:641
-#: src/utils/TitleUtils.cpp:686
+#: src/utils/TitleUtils.cpp:81 src/utils/TitleUtils.cpp:105
+#: src/utils/TitleUtils.cpp:148 src/utils/TitleUtils.cpp:193
+#: src/utils/TitleUtils.cpp:455 src/utils/TitleUtils.cpp:625
+#: src/utils/TitleUtils.cpp:649 src/utils/TitleUtils.cpp:692
+#: src/utils/TitleUtils.cpp:737
 msgid "Out of memory."
 msgstr "メモリ不足です。"
 
-#: src/utils/TitleUtils.cpp:328 src/utils/TitleUtils.cpp:539
-#: src/utils/TitleUtils.cpp:816
+#: src/utils/TitleUtils.cpp:284 src/utils/TitleUtils.cpp:823
+msgid "CORRUPTED METADATA"
+msgstr ""
+
+#: src/utils/TitleUtils.cpp:377 src/utils/TitleUtils.cpp:590
+#: src/utils/TitleUtils.cpp:888
 #, c-format
 msgid "Loaded %i Wii U titles."
 msgstr "%i個のWiiUタイトルを読み込みました。"
 
-#: src/utils/TitleUtils.cpp:497
+#: src/utils/TitleUtils.cpp:548
 #, c-format
 msgid "%s [%s%s] (No banner.bin)"
 msgstr "%s [%s%s] (banner.bin なし)"
 
-#: src/utils/TitleUtils.cpp:540 src/utils/TitleUtils.cpp:817
+#: src/utils/TitleUtils.cpp:591 src/utils/TitleUtils.cpp:889
 #, c-format
 msgid "Loaded %i Wii titles."
 msgstr "%i 個の Wii タイトルをロードしました。"
 
-#: src/utils/TitleUtils.cpp:818
+#: src/utils/TitleUtils.cpp:890
 #, c-format
 msgid "Loaded %i Wii U Sys titles."
 msgstr "%i個のWii U Sysタイトルをロードしました。"
 
-#: src/utils/TitleUtils.cpp:1048 src/utils/DataBinPack.cpp:148
-#: src/menu/BackupSetContentListState.cpp:179
+#: src/utils/TitleUtils.cpp:1121 src/utils/DataBinPack.cpp:148
+#: src/menu/BackupSetContentListState.cpp:180
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr "ディレクトリ %s のオープンエラー: %s"
 
-#: src/utils/LanguageUtils.cpp:82 src/menu/ConfigMenuState.cpp:60
+#: src/utils/LanguageUtils.cpp:83 src/menu/ConfigMenuState.cpp:60
 #: src/menu/ConfigMenuState.cpp:96
 msgid "Japanese"
 msgstr "日本語"
 
-#: src/utils/LanguageUtils.cpp:84 src/utils/LanguageUtils.cpp:109
+#: src/utils/LanguageUtils.cpp:85 src/utils/LanguageUtils.cpp:110
 #: src/menu/ConfigMenuState.cpp:78 src/menu/ConfigMenuState.cpp:98
 msgid "English"
 msgstr "英語"
 
-#: src/utils/LanguageUtils.cpp:89 src/menu/ConfigMenuState.cpp:62
+#: src/utils/LanguageUtils.cpp:90 src/menu/ConfigMenuState.cpp:62
 #: src/menu/ConfigMenuState.cpp:114
 msgid "German"
 msgstr "ドイツ語"
 
-#: src/utils/LanguageUtils.cpp:91 src/menu/ConfigMenuState.cpp:64
+#: src/utils/LanguageUtils.cpp:92 src/menu/ConfigMenuState.cpp:64
 #: src/menu/ConfigMenuState.cpp:112
 msgid "Italian"
 msgstr "イタリア語"
 
-#: src/utils/LanguageUtils.cpp:93 src/menu/ConfigMenuState.cpp:68
+#: src/utils/LanguageUtils.cpp:94 src/menu/ConfigMenuState.cpp:68
 #: src/menu/ConfigMenuState.cpp:108
 msgid "Spanish"
 msgstr "スペイン語"
 
-#: src/utils/LanguageUtils.cpp:95 src/menu/ConfigMenuState.cpp:70
+#: src/utils/LanguageUtils.cpp:96 src/menu/ConfigMenuState.cpp:70
 #: src/menu/ConfigMenuState.cpp:106
 msgid "Traditional Chinese"
 msgstr "中国語（繁体字）"
 
-#: src/utils/LanguageUtils.cpp:97 src/menu/ConfigMenuState.cpp:72
+#: src/utils/LanguageUtils.cpp:98 src/menu/ConfigMenuState.cpp:72
 #: src/menu/ConfigMenuState.cpp:104
 msgid "Korean"
 msgstr "韓国語"
 
-#: src/utils/LanguageUtils.cpp:103 src/menu/ConfigMenuState.cpp:66
+#: src/utils/LanguageUtils.cpp:104 src/menu/ConfigMenuState.cpp:66
 #: src/menu/ConfigMenuState.cpp:110
 msgid "Portuguese"
 msgstr "ポルトガル語"
 
-#: src/utils/LanguageUtils.cpp:105 src/menu/ConfigMenuState.cpp:74
+#: src/utils/LanguageUtils.cpp:106 src/menu/ConfigMenuState.cpp:74
 #: src/menu/ConfigMenuState.cpp:102
 msgid "Russian"
 msgstr "ロシア語"
 
-#: src/utils/LanguageUtils.cpp:107 src/menu/ConfigMenuState.cpp:76
+#: src/utils/LanguageUtils.cpp:108 src/menu/ConfigMenuState.cpp:76
 #: src/menu/ConfigMenuState.cpp:100
 msgid "Simplified Chinese"
 msgstr "簡体字中国語"
 
-#: src/utils/AmbientConfig.cpp:21
+#: src/utils/AmbientConfig.cpp:24
 msgid ""
 "Error getting DeviceHash\n"
 "Only affects to WiiU Mii Transfomation > Set Device Hash\n"
@@ -346,10 +362,9 @@ msgstr ""
 "%s"
 
 #: src/utils/MiiUtils.cpp:330 src/utils/MiiUtils.cpp:433
-#: src/utils/MiiUtils.cpp:555 src/utils/MiiUtils.cpp:820
+#: src/utils/MiiUtils.cpp:555 src/utils/MiiUtils.cpp:824
 msgid "Aborting Task - MiiProcesSharedState is not completely initialized"
-msgstr ""
-"タスクを中止しています - MiiProcesSharedState が完全に初期化されていません"
+msgstr "タスクを中止しています - MiiProcesSharedState が完全に初期化されていません"
 
 #: src/utils/MiiUtils.cpp:337 src/utils/MiiUtils.cpp:440
 msgid "Aborting Task - Target Repo is null"
@@ -368,26 +383,20 @@ msgstr "タスクを中止しています - リポジトリ%s を開いてデー
 
 #: src/utils/MiiUtils.cpp:359
 msgid ""
-"You are exporting duplicated Miis. They are marked with DUP or D in the "
-"listings.\n"
+"You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
-"MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its miiid or normal/special/temp or device info for "
-"one of them"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
 msgstr ""
-"重複したMiiをエクスポートしています。リストでは「DUP」または「D」と表示されま"
-"す。\n"
+"重複したMiiをエクスポートしています。リストでは「DUP」または「D」と表示されます。\n"
 "\n"
-"重複したMiiは1つを除いてMiiMakerによってすべて削除されますが、MiiChannelでは"
-"削除されないようです。\n"
+"重複したMiiは1つを除いてMiiMakerによってすべて削除されますが、MiiChannelでは削除されないようです。\n"
 "\n"
-"重複したMiiのうち1つのmiiID、通常/スペシャル/一時デバイス情報、またはデバイス"
-"情報が更新される問題を修正してください。"
+"重複したMiiのうち1つのmiiID、通常/スペシャル/一時デバイス情報、またはデバイス情報が更新される問題を修正してください。"
 
 #: src/utils/MiiUtils.cpp:382 src/utils/MiiUtils.cpp:503
-#: src/utils/MiiUtils.cpp:782 src/menu/MiiSelectState.cpp:587
+#: src/utils/MiiUtils.cpp:783 src/menu/MiiSelectState.cpp:587
 #, c-format
 msgid "Error extracting MiiData for %s (by %s)"
 msgstr "%s の MiiData を抽出中にエラーが発生しました (作成者: %s)"
@@ -402,23 +411,17 @@ msgstr ""
 
 #: src/utils/MiiUtils.cpp:465
 msgid ""
-"You are importing duplicated Miis. They are marked with DUP or D in the "
-"listings.\n"
+"You are importing duplicated Miis. They are marked with DUP or D in the listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
-"MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its miiid or normal/special/temp or device info for "
-"one of them"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
 msgstr ""
-"重複したMiiをインポートしています。リストでは「DUP」または「D」と表示されま"
-"す。\n"
+"重複したMiiをインポートしています。リストでは「DUP」または「D」と表示されます。\n"
 "\n"
-"重複したMiiは1つを除いてMiiMakerによってすべて削除されますが、MiiChannelでは"
-"削除されないようです。\n"
+"重複したMiiは1つを除いてMiiMakerによってすべて削除されますが、MiiChannelでは削除されないようです。\n"
 "\n"
-"重複したMiiのうち1つのmiiID、通常/スペシャル/一時デバイス情報、またはデバイス"
-"情報が更新される問題を修正してください。"
+"重複したMiiのうち1つのmiiID、通常/スペシャル/一時デバイス情報、またはデバイス情報が更新される問題を修正してください。"
 
 #: src/utils/MiiUtils.cpp:519
 msgid ""
@@ -428,33 +431,24 @@ msgstr ""
 "インポート中にエラーが検出されました。\n"
 "データベースを保存しますか？"
 
-#: src/utils/MiiUtils.cpp:528 src/utils/MiiUtils.cpp:804
+#: src/utils/MiiUtils.cpp:528 src/utils/MiiUtils.cpp:808
 msgid ""
-"Duplicated Miis found in the repo. They are marked with DUP or D in the "
-"listings.\n"
+"Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
-"MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its MiiId, or toggling normal/special/temp flag or "
-"updating device info for one of them"
+"Please fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"
 msgstr ""
-"リポジトリ内に重複したMiiが見つかりました。リストにはDUPまたはDと表示されてい"
-"ます。\n"
+"リポジトリ内に重複したMiiが見つかりました。リストにはDUPまたはDと表示されています。\n"
 "\n"
-"MiiMakerは1つを除いて重複したMiiを削除しますが、MiiChannelはそれを気にしてい"
-"ないようです。\n"
+"MiiMakerは1つを除いて重複したMiiを削除しますが、MiiChannelはそれを気にしていないようです。\n"
 "\n"
-"MiiIDの更新、通常/特殊/一時フラグの切り替え、またはデバイス情報の更新を修正し"
-"てください。"
+"MiiIDの更新、通常/特殊/一時フラグの切り替え、またはデバイス情報の更新を修正してください。"
 
 #: src/utils/MiiUtils.cpp:584
 #, c-format
-msgid ""
-"Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
-msgstr ""
-"お気に入りセクションから%s（作成者%s）を削除できません。MiiDataの抽出中にエ"
-"ラーが発生しました"
+msgid "Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
+msgstr "お気に入りセクションから%s（作成者%s）を削除できません。MiiDataの抽出中にエラーが発生しました"
 
 #: src/utils/MiiUtils.cpp:588
 #, c-format
@@ -469,11 +463,9 @@ msgstr ""
 "ワイプ中にエラーが検出されました。\n"
 "データベースを保存しますか？"
 
-#: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:351 src/savemng.cpp:1473
+#: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:357 src/savemng.cpp:1500
 msgid "Please wait. First write to (some) SDs can take several seconds."
-msgstr ""
-"お待ちください。一部のSDカードへの最初の書き込みには数秒かかる場合がありま"
-"す。"
+msgstr "お待ちください。一部のSDカードへの最初の書き込みには数秒かかる場合があります。"
 
 #: src/utils/MiiUtils.cpp:673
 msgid "Transforming mii"
@@ -488,39 +480,33 @@ msgstr "miiを消去"
 msgid "Copying from: %s"
 msgstr "コピー元: %s"
 
-#: src/utils/MiiUtils.cpp:680 src/utils/DataBin.cpp:363
-#: src/utils/DataBin.cpp:366 src/utils/FSUtils.cpp:588 src/savemng.cpp:1629
+#: src/utils/MiiUtils.cpp:680 src/utils/DataBin.cpp:369
+#: src/utils/DataBin.cpp:372 src/utils/FSUtils.cpp:617 src/savemng.cpp:1656
 #, c-format
 msgid "To: %s"
 msgstr "宛先: %s"
 
-#: src/utils/MiiUtils.cpp:686 src/utils/DataBin.cpp:381
-#: src/utils/FSUtils.cpp:592 src/utils/FSUtils.cpp:611
+#: src/utils/MiiUtils.cpp:686 src/utils/DataBin.cpp:387
+#: src/utils/FSUtils.cpp:621 src/utils/FSUtils.cpp:640
 msgid "Will abort..."
 msgstr "中止します..."
 
-#: src/utils/MiiUtils.cpp:689 src/utils/DataBin.cpp:384
-#: src/utils/FSUtils.cpp:595 src/utils/FSUtils.cpp:614
+#: src/utils/MiiUtils.cpp:689 src/utils/DataBin.cpp:390
+#: src/utils/FSUtils.cpp:624 src/utils/FSUtils.cpp:643
 msgid "Abort:\\ue083+\\ue046"
 msgstr "中止:\\ue083+\\ue046"
 
-#: src/utils/MiiUtils.cpp:729
+#: src/utils/MiiUtils.cpp:730
 #, c-format
-msgid ""
-"Mii %s is Special and will be deleted by the Mii editor if it has the the "
-"Share flag on. Please first convert it to a Normal one."
-msgstr ""
-"Mii %sはスペシャルMiiです。共有フラグがオンになっているとMiiエディターによっ"
-"て削除されます。まずノーマルMiiに変換してください。"
+msgid "Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."
+msgstr "Mii %sはスペシャルMiiです。共有フラグがオンになっているとMiiエディターによって削除されます。まずノーマルMiiに変換してください。"
 
-#: src/utils/MiiUtils.cpp:756
+#: src/utils/MiiUtils.cpp:757
 #, c-format
-msgid ""
-"Share attribute will be disabled for Mii %s as it will be transformed to a "
-"Special one."
+msgid "Share attribute will be disabled for Mii %s as it will be transformed to a Special one."
 msgstr "Mii %sはスペシャルMiiに変身するため、シェア属性は無効になります。"
 
-#: src/utils/MiiUtils.cpp:796
+#: src/utils/MiiUtils.cpp:800
 msgid ""
 "Errors detected during transform.\n"
 "Do you want to save the database?"
@@ -528,60 +514,60 @@ msgstr ""
 "変換中にエラーが検出されました。\n"
 "データベースを保存しますか？"
 
-#: src/utils/MiiUtils.cpp:841
+#: src/utils/MiiUtils.cpp:845
 #, c-format
 msgid "DB file for %s not found. Do you want to initialize it?"
 msgstr "%s の DB ファイルが見つかりません。初期化しますか?"
 
-#: src/utils/MiiUtils.cpp:843
+#: src/utils/MiiUtils.cpp:847
 #, c-format
 msgid "Do you want to initialize db file %s? (ALL MIIS WILL BE WIPED!!!)"
 msgstr "DB ファイル %s を初期化しますか? (すべての MII が消去されます!!!)"
 
-#: src/utils/MiiUtils.cpp:849
+#: src/utils/MiiUtils.cpp:853
 #, c-format
 msgid "Db file %s initialized"
 msgstr "DB ファイル %s が初期化されました"
 
-#: src/utils/MiiUtils.cpp:852
+#: src/utils/MiiUtils.cpp:856
 #, c-format
 msgid "Error initializing db file %s"
 msgstr "db ファイル %s の初期化中にエラーが発生しました"
 
-#: src/utils/MiiUtils.cpp:854
+#: src/utils/MiiUtils.cpp:858
 #, c-format
 msgid "Initialize task for %s aborted"
 msgstr "%sのタスクの初期化を中止しました"
 
-#: src/utils/MiiUtils.cpp:868 src/menu/MiiDBOptionsState.cpp:59
+#: src/utils/MiiUtils.cpp:872 src/menu/MiiDBOptionsState.cpp:59
 msgid "This action is not supported on the selected repo."
 msgstr "このアクションは選択したリポジトリではサポートされていません。"
 
-#: src/utils/MiiUtils.cpp:894 src/mii/MiiAccountRepo.cpp:410
+#: src/utils/MiiUtils.cpp:898 src/mii/MiiAccountRepo.cpp:410
 #: src/mii/MiiRepo.cpp:130 src/mii/MiiRepo.cpp:216 src/mii/MiiRepo.cpp:285
-#: src/savemng.cpp:399 src/savemng.cpp:511 src/savemng.cpp:572
-#: src/savemng.cpp:1015
+#: src/savemng.cpp:402 src/savemng.cpp:517 src/savemng.cpp:581
+#: src/savemng.cpp:1035
 msgid "Backup current savedata first to next empty slot?"
 msgstr "現在のセーブデータを最初に次の空きスロットにバックアップしますか?"
 
-#: src/utils/MiiUtils.cpp:895
+#: src/utils/MiiUtils.cpp:899
 msgid "pre-XRestore backup"
 msgstr "pre-XRestoreバックアップ"
 
-#: src/utils/MiiUtils.cpp:896
+#: src/utils/MiiUtils.cpp:900
 msgid "Backup Failed - XRestore aborted !!"
 msgstr "バックアップに失敗しました - XRestoreを中止しました!!"
 
-#: src/utils/MiiUtils.cpp:922 src/utils/MiiUtils.cpp:934
-#: src/mii/MiiStadioSav.cpp:333 src/mii/MiiStadioSav.cpp:342
+#: src/utils/MiiUtils.cpp:926 src/utils/MiiUtils.cpp:938
+#: src/mii/MiiStadioSav.cpp:334 src/mii/MiiStadioSav.cpp:343
 #: src/mii/MiiAccountRepo.cpp:278 src/mii/MiiAccountRepo.cpp:287
-#: src/mii/MiiFileRepo.cpp:386 src/mii/MiiFileRepo.cpp:395
+#: src/mii/MiiFileRepo.cpp:387 src/mii/MiiFileRepo.cpp:396
 msgid "Unrecoverable Error - Please restore db from a Backup"
 msgstr "   回復不能なエラー - バックアップからデータベースを復元してください"
 
-#: src/utils/MiiUtils.cpp:925 src/utils/MiiUtils.cpp:937
-#: src/mii/MiiStadioSav.cpp:332 src/mii/MiiAccountRepo.cpp:277
-#: src/mii/MiiAccountRepo.cpp:292 src/mii/MiiFileRepo.cpp:385
+#: src/utils/MiiUtils.cpp:929 src/utils/MiiUtils.cpp:941
+#: src/mii/MiiStadioSav.cpp:333 src/mii/MiiAccountRepo.cpp:277
+#: src/mii/MiiAccountRepo.cpp:292 src/mii/MiiFileRepo.cpp:386
 #, c-format
 msgid ""
 "Error renaming file \n"
@@ -594,7 +580,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/MiiUtils.cpp:926 src/utils/MiiUtils.cpp:930
+#: src/utils/MiiUtils.cpp:930 src/utils/MiiUtils.cpp:934
 #, c-format
 msgid ""
 "Restored full account %s on %s account. \n"
@@ -605,10 +591,10 @@ msgstr ""
 "\n"
 "必要であればDBバックアップを復元してください。"
 
-#: src/utils/MiiUtils.cpp:929 src/mii/MiiStadioSav.cpp:338
-#: src/mii/MiiStadioSav.cpp:341 src/mii/MiiAccountRepo.cpp:283
-#: src/mii/MiiAccountRepo.cpp:286 src/mii/MiiFileRepo.cpp:391
-#: src/mii/MiiFileRepo.cpp:394
+#: src/utils/MiiUtils.cpp:933 src/mii/MiiStadioSav.cpp:339
+#: src/mii/MiiStadioSav.cpp:342 src/mii/MiiAccountRepo.cpp:283
+#: src/mii/MiiAccountRepo.cpp:286 src/mii/MiiFileRepo.cpp:392
+#: src/mii/MiiFileRepo.cpp:395
 #, c-format
 msgid ""
 "Error removing db file %s\n"
@@ -621,7 +607,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/utils/MiiUtils.cpp:933
+#: src/utils/MiiUtils.cpp:937
 #, c-format
 msgid ""
 "Error restoring db file %s\n"
@@ -634,19 +620,19 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/utils/MiiUtils.cpp:988 src/utils/MiiUtils.cpp:1004
+#: src/utils/MiiUtils.cpp:992 src/utils/MiiUtils.cpp:1008
 #, c-format
 msgid "Account %s does not exist in primary Account DB %s"
 msgstr "アカウント %s がプライマリ アカウント DB %s に存在しません"
 
 #: src/utils/DataBinPack.cpp:49 src/utils/DataBinPack.cpp:97
-#: src/utils/DataBinPack.cpp:192 src/utils/DataBinPack.cpp:293
-#: src/utils/StatManager.cpp:242
+#: src/utils/DataBinPack.cpp:192 src/utils/DataBinPack.cpp:298
+#: src/utils/StatManager.cpp:263
 #, c-format
 msgid "Error getting stat for %s: %s"
 msgstr "%s のステータス取得エラー: %s"
 
-#: src/utils/DataBinPack.cpp:78 src/utils/DataBinPack.cpp:316
+#: src/utils/DataBinPack.cpp:78 src/utils/DataBinPack.cpp:325
 #, c-format
 msgid "Error reading toc: %s"
 msgstr "目次(TOC)の読み取りエラー: %s"
@@ -671,55 +657,60 @@ msgstr "エラー: アーカイブするファイル名が長すぎます: %s"
 msgid "Error: not a regular file or a directory: %s"
 msgstr "エラー: 通常のファイルまたはディレクトリではありません: %s"
 
-#: src/utils/DataBinPack.cpp:223
+#: src/utils/DataBinPack.cpp:200 src/utils/DataBinPack.cpp:307
+#, c-format
+msgid "Error: too many files to archive (max %d)"
+msgstr ""
+
+#: src/utils/DataBinPack.cpp:228
 #, c-format
 msgid "Error closing dir %s: %s"
 msgstr "ディレクトリ %s のクローズエラー: %s"
 
-#: src/utils/DataBinPack.cpp:282
+#: src/utils/DataBinPack.cpp:287
 msgid "Error: no space in TOC line"
 msgstr "エラー: TOC行に空きがありません"
 
-#: src/utils/DataBinPack.cpp:288
+#: src/utils/DataBinPack.cpp:293
 #, c-format
 msgid "Error: wiggle - path too long: %s"
 msgstr "エラー: wiggle - パスが長すぎます: %s"
 
-#: src/utils/DataBinPack.cpp:339
+#: src/utils/DataBinPack.cpp:348
 #, c-format
 msgid "Error writing Bk header: %s"
 msgstr "Bkヘッダーの書き込みエラー: %s"
 
-#: src/utils/DataBinPack.cpp:369
+#: src/utils/DataBinPack.cpp:378
 #, c-format
 msgid "Error writing file header %d: %s"
 msgstr "ファイルヘッダー %d の書き込みエラー: %s"
 
-#: src/utils/DataBinPack.cpp:403
+#: src/utils/DataBinPack.cpp:412
 #, c-format
 msgid "Error writing file data %d: %s"
 msgstr "ファイルデータ %d の書き込みエラー: %s"
 
-#: src/utils/DataBinPack.cpp:463
+#: src/utils/DataBinPack.cpp:472
 msgid "Error reading data for sig check"
 msgstr "署名確認用データの読み取りエラー"
 
-#: src/utils/DataBinPack.cpp:475
+#: src/utils/DataBinPack.cpp:484
 #, c-format
 msgid "Error writing sig: %s"
 msgstr "署名の書き込みエラー: %s"
 
-#: src/utils/DataBinPack.cpp:479
+#: src/utils/DataBinPack.cpp:488
 #, c-format
 msgid "Error writing NG cert: %s"
 msgstr "NG証明書の書き込みエラー: %s"
 
-#: src/utils/DataBinPack.cpp:483
+#: src/utils/DataBinPack.cpp:492
 #, c-format
 msgid "Error writing AP cert: %s"
 msgstr "AP証明書の書き込みエラー: %s"
 
-#: src/utils/DataBinPack.cpp:588
+#: src/utils/DataBinPack.cpp:597
 msgid ""
 "\n"
 " >>>> Archiving OK"
@@ -727,7 +718,14 @@ msgstr ""
 "\n"
 " >>>> アーカイブ完了"
 
-#: src/utils/DataBin.cpp:84
+#: src/utils/DataBin.cpp:78
+#, c-format
+msgid ""
+"Error: missing '=' in key line:\n"
+"%s"
+msgstr ""
+
+#: src/utils/DataBin.cpp:88
 #, c-format
 msgid ""
 "Error: wrong  key length: expected %d - found %d\n"
@@ -736,41 +734,41 @@ msgstr ""
 "エラー: 不正なキー長: 期待値 %d - 実際値 %d\n"
 "%s"
 
-#: src/utils/DataBin.cpp:95
+#: src/utils/DataBin.cpp:99
 msgid "Error: No digits were found.\n"
 msgstr "エラー: 数字が見つかりませんでした。\n"
 
-#: src/utils/DataBin.cpp:98
+#: src/utils/DataBin.cpp:102
 #, c-format
 msgid "Error: Invalid character: %c\n"
 msgstr "エラー: 不正な文字: %c\n"
 
-#: src/utils/DataBin.cpp:159 src/utils/DataBin.cpp:286
+#: src/utils/DataBin.cpp:163 src/utils/DataBin.cpp:292
 #, c-format
 msgid "Cannot find keys%s in %s"
 msgstr "%2$s 内に %1$s キーが見つかりません"
 
-#: src/utils/DataBin.cpp:205
+#: src/utils/DataBin.cpp:211
 #, c-format
 msgid "MAC not found in %s"
 msgstr "%s 内に MAC が見つかりません"
 
-#: src/utils/DataBin.cpp:357 src/menu/MiiDBOptionsState.cpp:112
-#: src/menu/TitleOptionsState.cpp:429
+#: src/utils/DataBin.cpp:363 src/menu/MiiDBOptionsState.cpp:112
+#: src/menu/TitleOptionsState.cpp:420
 msgid "Backup"
 msgstr "バックアップ"
 
-#: src/utils/DataBin.cpp:357 src/menu/MiiDBOptionsState.cpp:120
-#: src/menu/TitleOptionsState.cpp:444
+#: src/utils/DataBin.cpp:363 src/menu/MiiDBOptionsState.cpp:120
+#: src/menu/TitleOptionsState.cpp:435
 msgid "Restore"
 msgstr "復元"
 
-#: src/utils/DataBin.cpp:362
+#: src/utils/DataBin.cpp:368
 #, c-format
 msgid "Extracting from: %s"
 msgstr "抽出元: %s"
 
-#: src/utils/DataBin.cpp:365
+#: src/utils/DataBin.cpp:371
 #, c-format
 msgid "Archiving from: %s"
 msgstr "アーカイブ元: %s"
@@ -828,7 +826,7 @@ msgid "KB_S_3"
 msgstr "ZXCVBNM <>"
 
 #: src/utils/FSUtils.cpp:95 src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:170
-#: src/savemng.cpp:1591 src/cfg/BaseCfg.cpp:23
+#: src/savemng.cpp:1618 src/cfg/BaseCfg.cpp:23
 #, c-format
 msgid ""
 "Error while creating folder:\n"
@@ -871,7 +869,7 @@ msgstr ""
 "%s の削除に失敗しました\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1818
+#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1847
 #, c-format
 msgid ""
 "Error while reading folder content\n"
@@ -901,7 +899,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:221
+#: src/utils/FSUtils.cpp:225
 #, c-format
 msgid ""
 "Error\n"
@@ -914,7 +912,15 @@ msgstr ""
 "権限を\n"
 "%s に設定中"
 
-#: src/utils/FSUtils.cpp:228
+#: src/utils/FSUtils.cpp:232
+#, c-format
+msgid ""
+"Path too long to set owner\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/utils/FSUtils.cpp:239
 #, c-format
 msgid ""
 "Error creating shim for change perms\n"
@@ -925,7 +931,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:242
+#: src/utils/FSUtils.cpp:253
 #, c-format
 msgid ""
 "Error\n"
@@ -938,7 +944,11 @@ msgstr ""
 "所有者 %08x /グループ %08x を\n"
 "%s に設定中"
 
-#: src/utils/FSUtils.cpp:345 src/savemng.cpp:1842 src/savemng.cpp:1896
+#: src/utils/FSUtils.cpp:330
+msgid "Cannot allocate copy buffers"
+msgstr ""
+
+#: src/utils/FSUtils.cpp:374 src/savemng.cpp:1871 src/savemng.cpp:1925
 #: src/cfg/BaseCfg.cpp:84
 #, c-format
 msgid ""
@@ -954,7 +964,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:367 src/utils/FSUtils.cpp:373 src/savemng.cpp:1927
+#: src/utils/FSUtils.cpp:396 src/utils/FSUtils.cpp:402 src/savemng.cpp:1956
 #: src/cfg/BaseCfg.cpp:46
 #, c-format
 msgid ""
@@ -970,7 +980,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:402
+#: src/utils/FSUtils.cpp:431
 msgid ""
 "\n"
 "\n"
@@ -980,13 +990,11 @@ msgstr ""
 "\n"
 "注意: セーブデータを消去していない場合は、復元前に消去してみてください"
 
-#: src/utils/FSUtils.cpp:410
+#: src/utils/FSUtils.cpp:439
 msgid "Error creating permission file - Backup/Restore is not reliable"
-msgstr ""
-"権限ファイルの作成中にエラーが発生しました - バックアップ/復元は信頼できませ"
-"ん"
+msgstr "権限ファイルの作成中にエラーが発生しました - バックアップ/復元は信頼できません"
 
-#: src/utils/FSUtils.cpp:428
+#: src/utils/FSUtils.cpp:457
 #, c-format
 msgid ""
 "Read error\n"
@@ -1001,7 +1009,7 @@ msgstr ""
 "\n"
 " %sからの読み取り中"
 
-#: src/utils/FSUtils.cpp:431
+#: src/utils/FSUtils.cpp:460
 #, c-format
 msgid ""
 "Write error\n"
@@ -1016,7 +1024,7 @@ msgstr ""
 "\n"
 " %sにコピー中"
 
-#: src/utils/FSUtils.cpp:445 src/utils/FSUtils.cpp:721
+#: src/utils/FSUtils.cpp:474 src/utils/FSUtils.cpp:755
 #: src/menu/BatchJobOptions.cpp:136 src/savemng.cpp:155 src/savemng.cpp:193
 #, c-format
 msgid ""
@@ -1032,7 +1040,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:470
+#: src/utils/FSUtils.cpp:499
 #, c-format
 msgid ""
 "Error creating folder\n"
@@ -1047,44 +1055,41 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:486
+#: src/utils/FSUtils.cpp:515
 #, c-format
 msgid ""
 "Error creating permission file - Backup/Restore is not reliable\n"
 "Errors so far: %d\n"
 "Do you want to continue?"
 msgstr ""
-"権限ファイルの作成中にエラーが発生しました - バックアップ/復元は信頼できませ"
-"ん\n"
+"権限ファイルの作成中にエラーが発生しました - バックアップ/復元は信頼できません\n"
 "これまでのエラー: %d\n"
 "続行しますか?"
 
-#: src/utils/FSUtils.cpp:517 src/utils/FSUtils.cpp:551
-#: src/utils/FSUtils.cpp:562
+#: src/utils/FSUtils.cpp:546 src/utils/FSUtils.cpp:580
+#: src/utils/FSUtils.cpp:591
 #, c-format
 msgid ""
 "Error copying directory - Backup/Restore is not reliable\n"
 "Errors so far: %d\n"
 "Do you want to continue?"
 msgstr ""
-"ディレクトリのコピー中にエラーが発生しました - バックアップ/リストアは信頼で"
-"きません\n"
+"ディレクトリのコピー中にエラーが発生しました - バックアップ/リストアは信頼できません\n"
 "これまでのエラー数: %d\n"
 "続行しますか？"
 
-#: src/utils/FSUtils.cpp:527
+#: src/utils/FSUtils.cpp:556
 #, c-format
 msgid ""
 "Error copying file - Backup/Restore is not reliable\n"
 "Errors so far: %d\n"
 "Do you want to continue?"
 msgstr ""
-"ファイルのコピー中にエラーが発生しました - バックアップ/リストアは信頼できま"
-"せん\n"
+"ファイルのコピー中にエラーが発生しました - バックアップ/リストアは信頼できません\n"
 "これまでのエラー数: %d\n"
 "続行しますか？"
 
-#: src/utils/FSUtils.cpp:550 src/utils/FSUtils.cpp:768
+#: src/utils/FSUtils.cpp:579 src/utils/FSUtils.cpp:802
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -1103,7 +1108,7 @@ msgstr ""
 "\n"
 "コピーが完了していない可能性があります"
 
-#: src/utils/FSUtils.cpp:561 src/utils/FSUtils.cpp:779 src/savemng.cpp:1711
+#: src/utils/FSUtils.cpp:590 src/utils/FSUtils.cpp:813 src/savemng.cpp:1740
 #, c-format
 msgid ""
 "Error while closing folder\n"
@@ -1118,27 +1123,27 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:586
+#: src/utils/FSUtils.cpp:615
 #, c-format
 msgid "Copying file: %s"
 msgstr "ファイルをコピー中: %s"
 
-#: src/utils/FSUtils.cpp:587
+#: src/utils/FSUtils.cpp:616
 #, c-format
 msgid "From: %s"
 msgstr "差出人: %s"
 
-#: src/utils/FSUtils.cpp:606
+#: src/utils/FSUtils.cpp:635
 #, c-format
 msgid "Deleting folder %s"
 msgstr "フォルダ %s を削除しています"
 
-#: src/utils/FSUtils.cpp:606
+#: src/utils/FSUtils.cpp:635
 #, c-format
 msgid "Deleting file %s"
 msgstr "ファイル %s を削除しています"
 
-#: src/utils/FSUtils.cpp:607
+#: src/utils/FSUtils.cpp:636
 #, c-format
 msgid ""
 "From: \n"
@@ -1147,8 +1152,8 @@ msgstr ""
 "差出人: \n"
 "%s"
 
-#: src/utils/FSUtils.cpp:740 src/utils/FSUtils.cpp:749
-#: src/utils/FSUtils.cpp:769 src/utils/FSUtils.cpp:780
+#: src/utils/FSUtils.cpp:774 src/utils/FSUtils.cpp:783
+#: src/utils/FSUtils.cpp:803 src/utils/FSUtils.cpp:814
 #, c-format
 msgid ""
 "Error setting permissions - Restore is not reliable\n"
@@ -1196,7 +1201,7 @@ msgstr ""
 "\n"
 "%s の FAT32 文字変換ファイルの更新エラー"
 
-#: src/utils/EscapeFAT32Utils.cpp:39 src/utils/EscapeFAT32Utils.cpp:114
+#: src/utils/EscapeFAT32Utils.cpp:39 src/utils/EscapeFAT32Utils.cpp:117
 #, c-format
 msgid ""
 "Error closing FAT32 chars translation file \n"
@@ -1236,7 +1241,14 @@ msgstr ""
 "FAT32変換ファイルのソースに予期しないフォーマットがあります:\n"
 "%s"
 
-#: src/utils/EscapeFAT32Utils.cpp:109
+#: src/utils/EscapeFAT32Utils.cpp:96
+#, c-format
+msgid ""
+"Incomplete/truncated FAT32 chars translation file:\n"
+"%s"
+msgstr ""
+
+#: src/utils/EscapeFAT32Utils.cpp:112
 #, c-format
 msgid ""
 "Error parsing FAT32 chars translation file \n"
@@ -1249,7 +1261,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/EscapeFAT32Utils.cpp:119
+#: src/utils/EscapeFAT32Utils.cpp:122
 #, c-format
 msgid ""
 "FAT32 chars translation file is empty\n"
@@ -1262,7 +1274,16 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/EscapeFAT32Utils.cpp:130 src/utils/EscapeFAT32Utils.cpp:149
+#: src/utils/EscapeFAT32Utils.cpp:132
+#, c-format
+msgid ""
+"FAT32 rename entry points outside the save folder (corrupt or malicious backup):\n"
+"%s\n"
+"->\n"
+"%s"
+msgstr ""
+
+#: src/utils/EscapeFAT32Utils.cpp:140 src/utils/EscapeFAT32Utils.cpp:156
 #, c-format
 msgid ""
 "Cannot rename folder \n"
@@ -1275,7 +1296,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/EscapeFAT32Utils.cpp:142
+#: src/utils/EscapeFAT32Utils.cpp:149
 #, c-format
 msgid ""
 "Cannot rename file \n"
@@ -1288,33 +1309,49 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/AccountUtils.cpp:150
+#: src/utils/AccountUtils.cpp:169
+#, c-format
+msgid "The file %s contains save data in data.bin format. If you have copied it to this slot in order to restore it, it must be renamed to 'data.bin'. It's that the case? If so, confirm it and I will rename the file."
+msgstr "ファイル %s には data.bin 形式のセーブデータが含まれています。復元するためにこのスロットにコピーした場合は、名前を 'data.bin' に変更する必要があります。変更しますか？確認後、ファイル名を変更します。"
+
+#: src/utils/AccountUtils.cpp:176
 #, c-format
 msgid ""
-"The file %s contains save data in data.bin format. If you have copied it to "
-"this slot in order to restore it, it must be renamed to 'data.bin'. It's "
-"that the case? If so, confirm it and I will rename the file."
+"Error renaming %s to data.bin\n"
+"\n"
+"%s"
 msgstr ""
-"ファイル %s には data.bin 形式のセーブデータが含まれています。復元するために"
-"このスロットにコピーした場合は、名前を 'data.bin' に変更する必要があります。"
-"変更しますか？確認後、ファイル名を変更します。"
 
-#: src/utils/AccountUtils.cpp:157
+#: src/utils/AccountUtils.cpp:178
 #, c-format
 msgid "data.bin file already exists in slot %d. Please remove it and try again"
-msgstr ""
-"スロット %d には既に data.bin ファイルが存在します。削除してからやり直してく"
-"ださい。"
+msgstr "スロット %d には既に data.bin ファイルが存在します。削除してからやり直してください。"
 
-#: src/utils/AccountUtils.cpp:216
+#: src/utils/AccountUtils.cpp:204
+#, c-format
+msgid ""
+"Error converting loadiine 'u' profile\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/utils/AccountUtils.cpp:227
+#, c-format
+msgid ""
+"Error converting loadiine 'c' profile\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/utils/AccountUtils.cpp:244
 msgid "UNABLE TO CONVERT FROM LOADIINE"
 msgstr "LOADIINE から変換できません"
 
-#: src/utils/AccountUtils.cpp:219
+#: src/utils/AccountUtils.cpp:247
 msgid "CONVERTED FROM LOADIINE"
 msgstr "LOADIINE から変換されました"
 
-#: src/utils/StatManager.cpp:60 src/utils/StatManager.cpp:84
+#: src/utils/StatManager.cpp:61 src/utils/StatManager.cpp:95
 #, c-format
 msgid ""
 "Error setting permissions - Backup/Restore is not reliable\n"
@@ -1325,7 +1362,17 @@ msgstr ""
 "これまでのエラー: %d\n"
 "続行しますか？"
 
-#: src/utils/StatManager.cpp:94
+#: src/utils/StatManager.cpp:75
+#, c-format
+msgid ""
+"Stat file entry points outside the save folder and was skipped (corrupt or malicious backup):\n"
+"%s\n"
+"\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+
+#: src/utils/StatManager.cpp:105
 #, c-format
 msgid ""
 "Error reading stat file\n"
@@ -1340,7 +1387,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/StatManager.cpp:113 src/utils/StatManager.cpp:293
+#: src/utils/StatManager.cpp:124 src/utils/StatManager.cpp:313
 #, c-format
 msgid ""
 "Error setting permissions for file: %s\n"
@@ -1351,14 +1398,14 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/StatManager.cpp:139 src/utils/StatManager.cpp:159
-#: src/utils/StatManager.cpp:185 src/mii/MiiStadioSav.cpp:179
-#: src/mii/MiiStadioSav.cpp:304 src/mii/MiiStadioSav.cpp:529
+#: src/utils/StatManager.cpp:150 src/utils/StatManager.cpp:170
+#: src/utils/StatManager.cpp:198 src/mii/MiiStadioSav.cpp:179
+#: src/mii/MiiStadioSav.cpp:305 src/mii/MiiStadioSav.cpp:535
 #: src/mii/MiiAccountRepo.cpp:87 src/mii/MiiAccountRepo.cpp:195
 #: src/mii/MiiAccountRepo.cpp:207 src/mii/MiiFolderRepo.cpp:60
-#: src/mii/MiiFolderRepo.cpp:160 src/mii/MiiFolderRepo.cpp:165
-#: src/mii/MiiFileRepo.cpp:273 src/mii/MiiFileRepo.cpp:354
-#: src/mii/MiiFileRepo.cpp:667
+#: src/mii/MiiFolderRepo.cpp:164 src/mii/MiiFolderRepo.cpp:169
+#: src/mii/MiiFileRepo.cpp:274 src/mii/MiiFileRepo.cpp:355
+#: src/mii/MiiFileRepo.cpp:672
 #, c-format
 msgid ""
 "Error opening file \n"
@@ -1371,8 +1418,16 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/StatManager.cpp:200 src/utils/StatManager.cpp:210
-#: src/savemng.cpp:1936 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:102
+#: src/utils/StatManager.cpp:209
+#, c-format
+msgid ""
+"Invalid or corrupt permission file (bad header). Permissions will not be restored:\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/utils/StatManager.cpp:221 src/utils/StatManager.cpp:231
+#: src/savemng.cpp:1965 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:115
 #, c-format
 msgid ""
 "Error closing file\n"
@@ -1387,7 +1442,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/StatManager.cpp:274
+#: src/utils/StatManager.cpp:294
 #, c-format
 msgid ""
 "Error writing stat file\n"
@@ -1398,55 +1453,51 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/main.cpp:85
+#: src/main.cpp:96
 msgid "Initializing WPAD and KPAD"
 msgstr "WPADとKPADを初期化しています"
 
-#: src/main.cpp:89
+#: src/main.cpp:101
 msgid "Initializing loadWiiU Titles"
 msgstr "WiiUタイトルのロードを初期化しています"
 
-#: src/main.cpp:93
+#: src/main.cpp:105
 msgid "Initializing FS"
 msgstr "FSを初期化しています"
 
-#: src/main.cpp:96
+#: src/main.cpp:108
 msgid "initFS failed. Please make sure your MochaPayload is up-to-date"
 msgstr "initFSに失敗しました。MochaPayloadが最新であることを確認してください"
 
-#: src/main.cpp:110
-msgid "Initializing Radndom seed"
-msgstr "乱数シードを初期化中"
+#: src/main.cpp:119
+msgid "Initializing Random seed"
+msgstr ""
 
-#: src/main.cpp:113
-msgid "Readng Encyption Keys"
-msgstr "暗号化キーを読み込み中"
+#: src/main.cpp:122
+msgid "Reading Encryption Keys"
+msgstr ""
 
-#: src/main.cpp:131
+#: src/main.cpp:141
 msgid "Initializing BackupSets metadata."
 msgstr "バックアップセットのメタデータを初期化しています。"
 
-#: src/main.cpp:135
+#: src/main.cpp:145
 msgid "Initializing Excludes config."
 msgstr "除外設定を初期化しています。"
 
-#: src/main.cpp:142
+#: src/main.cpp:152
 msgid "Initializing Mii repos."
 msgstr "Miiリポジトリを初期化しています。"
 
-#: src/main.cpp:175
+#: src/main.cpp:187
 msgid "\\ue044: Exit"
 msgstr "\\ue044 出口"
 
 #: src/mii/MiiStadioSav.cpp:169
-msgid ""
-"stadio.sav DB not found. Do you want to create one from existing associated "
-"FFL and ACCOUNT repos?"
-msgstr ""
-"stadio.sav DBが見つかりません。既存の関連FFLおよびACCOUNTリポジトリから作成し"
-"ますか？"
+msgid "stadio.sav DB not found. Do you want to create one from existing associated FFL and ACCOUNT repos?"
+msgstr "stadio.sav DBが見つかりません。既存の関連FFLおよびACCOUNTリポジトリから作成しますか？"
 
-#: src/mii/MiiStadioSav.cpp:185 src/mii/MiiFileRepo.cpp:279
+#: src/mii/MiiStadioSav.cpp:185 src/mii/MiiFileRepo.cpp:280
 #, c-format
 msgid ""
 "%s\n"
@@ -1457,7 +1508,7 @@ msgstr ""
 "\n"
 "DBファイルのサイズが予期しません: %d。%dバイト以上である必要があります。"
 
-#: src/mii/MiiStadioSav.cpp:193 src/mii/MiiFileRepo.cpp:287
+#: src/mii/MiiStadioSav.cpp:193 src/mii/MiiFileRepo.cpp:288
 #, c-format
 msgid ""
 "%s\n"
@@ -1469,7 +1520,7 @@ msgstr ""
 "DBデータ読み取り用のメモリバッファを作成できません"
 
 #: src/mii/MiiStadioSav.cpp:199 src/mii/MiiAccountRepo.cpp:238
-#: src/mii/MiiFolderRepo.cpp:83 src/mii/MiiFileRepo.cpp:293
+#: src/mii/MiiFolderRepo.cpp:83 src/mii/MiiFileRepo.cpp:294
 #, c-format
 msgid ""
 "Error reading file \n"
@@ -1482,7 +1533,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/mii/MiiStadioSav.cpp:205 src/mii/MiiFileRepo.cpp:299
+#: src/mii/MiiStadioSav.cpp:205 src/mii/MiiFileRepo.cpp:300
 #, c-format
 msgid ""
 "Error reading db\n"
@@ -1493,12 +1544,12 @@ msgstr ""
 "%s\n"
 "マジックナンバーが間違っています。"
 
-#: src/mii/MiiStadioSav.cpp:212 src/mii/MiiStadioSav.cpp:316
-#: src/mii/MiiStadioSav.cpp:541 src/mii/MiiAccountRepo.cpp:103
+#: src/mii/MiiStadioSav.cpp:212 src/mii/MiiStadioSav.cpp:317
+#: src/mii/MiiStadioSav.cpp:547 src/mii/MiiAccountRepo.cpp:103
 #: src/mii/MiiAccountRepo.cpp:247 src/mii/MiiAccountRepo.cpp:254
-#: src/mii/MiiFolderRepo.cpp:89 src/mii/MiiFolderRepo.cpp:171
-#: src/mii/MiiFileRepo.cpp:306 src/mii/MiiFileRepo.cpp:366
-#: src/mii/MiiFileRepo.cpp:679
+#: src/mii/MiiFolderRepo.cpp:89 src/mii/MiiFolderRepo.cpp:175
+#: src/mii/MiiFileRepo.cpp:307 src/mii/MiiFileRepo.cpp:367
+#: src/mii/MiiFileRepo.cpp:684
 #, c-format
 msgid ""
 "Error closing file \n"
@@ -1511,8 +1562,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/mii/MiiStadioSav.cpp:309 src/mii/MiiStadioSav.cpp:534
-#: src/mii/MiiFileRepo.cpp:359 src/mii/MiiFileRepo.cpp:672
+#: src/mii/MiiStadioSav.cpp:310 src/mii/MiiStadioSav.cpp:540
+#: src/mii/MiiFileRepo.cpp:360 src/mii/MiiFileRepo.cpp:677
 #: src/cfg/BaseCfg.cpp:51
 #, c-format
 msgid ""
@@ -1528,8 +1579,8 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/mii/MiiStadioSav.cpp:348 src/mii/MiiAccountRepo.cpp:295
-#: src/mii/MiiFileRepo.cpp:401
+#: src/mii/MiiStadioSav.cpp:349 src/mii/MiiAccountRepo.cpp:295
+#: src/mii/MiiFileRepo.cpp:402
 #, c-format
 msgid ""
 "Error managing temporal db %s\n"
@@ -1540,41 +1591,29 @@ msgstr ""
 "\n"
 "実際の mii db に対してアクションは実行されていません。"
 
-#: src/mii/MiiStadioSav.cpp:399
+#: src/mii/MiiStadioSav.cpp:400
 msgid "Cannot find an EMPTY location for the mii in the STADIO db"
 msgstr "STADIOデータベースにmiiの空の場所が見つかりません"
 
-#: src/mii/MiiStadioSav.cpp:405
+#: src/mii/MiiStadioSav.cpp:406
 msgid "Cannot find an EMPTY frame for the mii in the STADIO db"
 msgstr "STADIOデータベースにmiiの空フレームが見つかりません"
 
-#: src/mii/MiiStadioSav.cpp:479
-msgid ""
-"Warning: unable to populate Account repo. Non-critical error, you can "
-"continue"
-msgstr ""
-"警告: アカウントリポジトリにデータを追加できません。重大ではないエラーです。"
-"続行できます。"
+#: src/mii/MiiStadioSav.cpp:480
+msgid "Warning: unable to populate Account repo. Non-critical error, you can continue"
+msgstr "警告: アカウントリポジトリにデータを追加できません。重大ではないエラーです。続行できます。"
 
-#: src/mii/MiiStadioSav.cpp:490 src/mii/MiiStadioSav.cpp:587
+#: src/mii/MiiStadioSav.cpp:491 src/mii/MiiStadioSav.cpp:593
 #, c-format
-msgid ""
-"Warning: unable to import mii %s in STADIO. Non-critical error, you can "
-"continue"
-msgstr ""
-"警告: mii %s を STADIO にインポートできません。重大ではないエラーです。続行で"
-"きます。"
+msgid "Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"
+msgstr "警告: mii %s を STADIO にインポートできません。重大ではないエラーです。続行できます。"
 
-#: src/mii/MiiStadioSav.cpp:493 src/mii/MiiStadioSav.cpp:590
+#: src/mii/MiiStadioSav.cpp:494 src/mii/MiiStadioSav.cpp:596
 #, c-format
-msgid ""
-"Warning: unable to extract MiiData for %s (by %s). Non-critical error, you "
-"can continue"
-msgstr ""
-"警告: %s の MiiData を抽出できません (作成者: %s)。重大ではないエラーです。続"
-"行できます。"
+msgid "Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"
+msgstr "警告: %s の MiiData を抽出できません (作成者: %s)。重大ではないエラーです。続行できます。"
 
-#: src/mii/MiiStadioSav.cpp:508 src/mii/MiiFileRepo.cpp:648
+#: src/mii/MiiStadioSav.cpp:509 src/mii/MiiFileRepo.cpp:653
 #, c-format
 msgid ""
 "%s\n"
@@ -1585,15 +1624,12 @@ msgstr ""
 "\n"
 "DBデータを初期化するためのメモリバッファを作成できません"
 
-#: src/mii/MiiStadioSav.cpp:576
-msgid ""
-"Warning: unable to populate FFL repo. Non-critical error, you can continue"
-msgstr ""
-"警告：FFLリポジトリを入力できません。致命的なエラーではないため、続行可能で"
-"す。"
+#: src/mii/MiiStadioSav.cpp:582
+msgid "Warning: unable to populate FFL repo. Non-critical error, you can continue"
+msgstr "警告：FFLリポジトリを入力できません。致命的なエラーではないため、続行可能です。"
 
 #: src/mii/MiiAccountRepo.cpp:111 src/mii/MiiFolderRepo.cpp:67
-#: src/mii/MiiFileRepo.cpp:441
+#: src/mii/MiiFileRepo.cpp:442
 #, c-format
 msgid ""
 "%s\n"
@@ -1603,12 +1639,11 @@ msgid ""
 msgstr ""
 "%s\n"
 "\n"
-"Miiファイルのサイズが予想外です: %d。許可されているのは%dバイトまたは%dバイト"
-"です\n"
+"Miiファイルのサイズが予想外です: %d。許可されているのは%dバイトまたは%dバイトです\n"
 "ファイルはスキップされます"
 
 #: src/mii/MiiAccountRepo.cpp:118 src/mii/MiiFolderRepo.cpp:76
-#: src/mii/MiiFileRepo.cpp:417
+#: src/mii/MiiFileRepo.cpp:418
 #, c-format
 msgid ""
 "%s\n"
@@ -1623,13 +1658,13 @@ msgstr ""
 msgid "Error serializing WiiU MiiData"
 msgstr "WiiU MiiData のシリアル化エラー"
 
-#: src/mii/MiiAccountRepo.cpp:129 src/mii/MiiFolderRepo.cpp:99
-#: src/mii/MiiFolderRepo.cpp:135 src/mii/MiiFolderRepo.cpp:178
+#: src/mii/MiiAccountRepo.cpp:129 src/mii/MiiFolderRepo.cpp:101
+#: src/mii/MiiFolderRepo.cpp:139 src/mii/MiiFolderRepo.cpp:182
 msgid "Error switching le/be MiiData representation"
 msgstr "le/be MiiData 表現の切り替えエラー"
 
-#: src/mii/MiiAccountRepo.cpp:143 src/mii/MiiFolderRepo.cpp:114
-#: src/mii/MiiFileRepo.cpp:435
+#: src/mii/MiiAccountRepo.cpp:143 src/mii/MiiFolderRepo.cpp:116
+#: src/mii/MiiFileRepo.cpp:436
 msgid "Trying to import from null mii data"
 msgstr "nullのMiiデータからインポートしようとしています"
 
@@ -1637,7 +1672,7 @@ msgstr "nullのMiiデータからインポートしようとしています"
 msgid "Only in_place is allowed for account miidata"
 msgstr "アカウントのmiidataはin_placeのみ許可されます"
 
-#: src/mii/MiiAccountRepo.cpp:155 src/mii/MiiFolderRepo.cpp:145
+#: src/mii/MiiAccountRepo.cpp:155 src/mii/MiiFolderRepo.cpp:149
 #, c-format
 msgid ""
 "MiiData buffer is not big enough\n"
@@ -1669,17 +1704,17 @@ msgstr ""
 "ファイルの解析中にエラーが発生しました \n"
 "%s"
 
-#: src/mii/MiiAccountRepo.cpp:354 src/mii/MiiFolderRepo.cpp:232
+#: src/mii/MiiAccountRepo.cpp:354 src/mii/MiiFolderRepo.cpp:236
 #, c-format
 msgid "Reading Miis: %d"
 msgstr "Miiの読み取り中: %d"
 
-#: src/mii/MiiAccountRepo.cpp:411 src/mii/MiiRepo.cpp:131 src/savemng.cpp:1016
+#: src/mii/MiiAccountRepo.cpp:411 src/mii/MiiRepo.cpp:131 src/savemng.cpp:1036
 msgid "pre-Restore backup"
 msgstr "pre-Restore バックアップ"
 
-#: src/mii/MiiAccountRepo.cpp:412 src/mii/MiiRepo.cpp:132 src/savemng.cpp:401
-#: src/savemng.cpp:1017
+#: src/mii/MiiAccountRepo.cpp:412 src/mii/MiiRepo.cpp:132 src/savemng.cpp:404
+#: src/savemng.cpp:1037
 msgid "Backup Failed - Restore aborted !!"
 msgstr "バックアップ失敗 - リストアを中止しました !!"
 
@@ -1693,8 +1728,8 @@ msgstr "データのコピー中にエラーが発生しました。"
 msgid "Error creating folder."
 msgstr "フォルダの作成中にエラーが発生しました。"
 
-#: src/mii/MiiAccountRepo.cpp:435 src/mii/MiiRepo.cpp:189 src/savemng.cpp:1027
-#: src/savemng.cpp:1168
+#: src/mii/MiiAccountRepo.cpp:435 src/mii/MiiRepo.cpp:189 src/savemng.cpp:1047
+#: src/savemng.cpp:1189
 #, c-format
 msgid ""
 "%s\n"
@@ -1703,7 +1738,7 @@ msgstr ""
 "%s\n"
 "復元に失敗しました。"
 
-#: src/mii/MiiFolderRepo.cpp:124
+#: src/mii/MiiFolderRepo.cpp:126
 #, c-format
 msgid ""
 "Cannot find a name for the mii file:\n"
@@ -1714,7 +1749,7 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/mii/MiiFolderRepo.cpp:190 src/mii/MiiRepo.cpp:246
+#: src/mii/MiiFolderRepo.cpp:194 src/mii/MiiRepo.cpp:246
 #, c-format
 msgid ""
 "%s \n"
@@ -1727,71 +1762,63 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/mii/MiiFileRepo.cpp:154
+#: src/mii/MiiFileRepo.cpp:155
 #, c-format
 msgid "Maximum Numer of Favorite Miis (%d) reached"
 msgstr "お気に入りMiiの最大数（%d）に達しました"
 
-#: src/mii/MiiFileRepo.cpp:194
+#: src/mii/MiiFileRepo.cpp:195
 #, c-format
 msgid "Mii %s not found in Favorites section"
 msgstr "お気に入りセクションにMii %sが見つかりません"
 
-#: src/mii/MiiFileRepo.cpp:451
+#: src/mii/MiiFileRepo.cpp:452
 msgid "Cannot find an EMPTY location for the mii in the db"
 msgstr "データベースにmiiの空の場所が見つかりません"
 
-#: src/mii/MiiFileRepo.cpp:465
-msgid ""
-"Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be "
-"deleted when you open the Mii Channel. Do you want me to change it to a "
-"safer slice (0x4/3)?"
-msgstr ""
-"注意：これはMiiIDスライス0x1/3の通常Miiです。Miiチャンネルを開くと削除される"
-"可能性があります。より安全なスライス（0x4/3）に変更しますか？"
+#: src/mii/MiiFileRepo.cpp:466
+msgid "Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"
+msgstr "注意：これはMiiIDスライス0x1/3の通常Miiです。Miiチャンネルを開くと削除される可能性があります。より安全なスライス（0x4/3）に変更しますか？"
 
-#: src/mii/MiiFileRepo.cpp:480
-msgid ""
-"Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want "
-"me to change it to a Permanent one?"
-msgstr ""
-"注意：これは一時的なMiiなので、MiiMkakerには表示されません。永続的なMiiに変更"
-"しますか？"
+#: src/mii/MiiFileRepo.cpp:481
+msgid "Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"
+msgstr "注意：これは一時的なMiiなので、MiiMkakerには表示されません。永続的なMiiに変更しますか？"
 
-#: src/mii/MiiFileRepo.cpp:489
+#: src/mii/MiiFileRepo.cpp:490
 #, c-format
 msgid ""
-"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated "
-"mii, whereas MiiChannel doesn't seem to care.\n"
+"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"You can generate a new Mii ID for it, and it will become a completely new "
-"unique mii.\n"
+"You can generate a new Mii ID for it, and it will become a completely new unique mii.\n"
 "\n"
 "Do you want me to change Mii Id for this mii?"
 msgstr ""
-"重複したMii ID (%s) が見つかりました。MiiMakerは重複したMiiを削除しますが、"
-"MiiChannelはそれを気にしていないようです。\n"
+"重複したMii ID (%s) が見つかりました。MiiMakerは重複したMiiを削除しますが、MiiChannelはそれを気にしていないようです。\n"
 "\n"
 "新しいMii IDを生成すると、完全に新しい固有のMiiになります。\n"
 "\n"
 "このMiiのMii IDを変更しますか？"
 
-#: src/mii/MiiFileRepo.cpp:536
+#: src/mii/MiiFileRepo.cpp:537
 #, c-format
 msgid "DB %s has not been initialized"
 msgstr "DB %s は初期化されていません"
 
-#: src/mii/MiiFileRepo.cpp:551 src/mii/MiiFileRepo.cpp:554
+#: src/mii/MiiFileRepo.cpp:552 src/mii/MiiFileRepo.cpp:555
 #, c-format
 msgid "Looking for a Mii in location: %d/%d. Miis found: %d."
 msgstr "場所: %d/%dでMiiを検索しています。見つかったMii: %d個。"
 
-#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:807
+#: src/mii/MiiFileRepo.cpp:563
+msgid "Cannot create memory buffer for reading the mii data"
+msgstr ""
+
+#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:822
 msgid "Backup found on this slot. Overwrite it?"
 msgstr "このスロットでバックアップが見つかりました。 上書きしますか？"
 
-#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:833
-#: src/savemng.cpp:852 src/savemng.cpp:952
+#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:848
+#: src/savemng.cpp:867 src/savemng.cpp:967
 #, c-format
 msgid ""
 "%s\n"
@@ -1816,7 +1843,7 @@ msgstr "部分バックアップ"
 msgid "NO STADIO"
 msgstr "スタジオなし"
 
-#: src/mii/MiiRepo.cpp:104 src/savemng.cpp:771 src/savemng.cpp:954
+#: src/mii/MiiRepo.cpp:104 src/savemng.cpp:786 src/savemng.cpp:969
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr "使用できないスロット - バックアップに失敗しました"
 
@@ -1824,11 +1851,11 @@ msgstr "使用できないスロット - バックアップに失敗しました
 msgid "Restore aborted."
 msgstr "復元を中止しました。"
 
-#: src/mii/MiiRepo.cpp:217 src/savemng.cpp:1212
+#: src/mii/MiiRepo.cpp:217 src/savemng.cpp:1236
 msgid "pre-Wipe backup"
 msgstr "pre-Wipe バックアップ"
 
-#: src/mii/MiiRepo.cpp:218 src/savemng.cpp:1213
+#: src/mii/MiiRepo.cpp:218 src/savemng.cpp:1237
 msgid "Backup Failed - Wipe aborted !!"
 msgstr "バックアップ失敗 - ワイプを中止しました !!"
 
@@ -1844,7 +1871,7 @@ msgstr "データの消去エラー"
 msgid "Error deleting file."
 msgstr "ファイルの削除中にエラーが発生しました。"
 
-#: src/mii/MiiRepo.cpp:258 src/savemng.cpp:1299
+#: src/mii/MiiRepo.cpp:258 src/savemng.cpp:1323
 #, c-format
 msgid ""
 "%s\n"
@@ -1887,41 +1914,45 @@ msgstr "Wii U のタイトルが見つかりません。"
 msgid "No vWii titles found."
 msgstr "vWiiタイトルが見つかりません"
 
-#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:120
+#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:126
 msgid "Wii U Titles"
 msgstr "Wii U タイトル"
 
-#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:120
+#: src/menu/TitleListState.cpp:35 src/menu/TitleListState.cpp:126
 msgid "vWii Titles"
 msgstr "vWii タイトル"
 
-#: src/menu/TitleListState.cpp:37 src/menu/BatchJobTitleSelectState.cpp:276
-#: src/menu/BatchJobTitleSelectState.cpp:286
+#: src/menu/TitleListState.cpp:37 src/menu/BatchJobTitleSelectState.cpp:279
+#: src/menu/BatchJobTitleSelectState.cpp:289
 #, c-format
 msgid "%s Sort: %s \\ue084"
 msgstr "%s 並べ替え: %s \\ue084"
 
-#: src/menu/TitleListState.cpp:56
+#: src/menu/TitleListState.cpp:58
 msgid " [vWiiInject]"
 msgstr " [vWiiInject]"
 
-#: src/menu/TitleListState.cpp:57 src/menu/TitleListState.cpp:66
+#: src/menu/TitleListState.cpp:59 src/menu/TitleListState.cpp:68
 msgid " [Not Init]"
 msgstr " [初期化しない]"
 
-#: src/menu/TitleListState.cpp:75
+#: src/menu/TitleListState.cpp:77
 msgid "\\ue000: Select Game   \\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue000: ゲームを選択 \\ue085\\ue07e\\ue086: ページング \\ue001: 戻る"
 
-#: src/menu/TitleListState.cpp:99
+#: src/menu/TitleListState.cpp:100
+msgid "This title cannot be managed due to problems with its metadata."
+msgstr ""
+
+#: src/menu/TitleListState.cpp:105
 msgid "CBHC save. Could be dangerous to modify. Continue?"
 msgstr "CBHCセーブ。 変更するのは危険です。 継続しますか？"
 
-#: src/menu/TitleListState.cpp:100
+#: src/menu/TitleListState.cpp:106
 msgid "Are you REALLY sure?"
 msgstr "本当によろしいですか？"
 
-#: src/menu/TitleListState.cpp:113
+#: src/menu/TitleListState.cpp:119
 msgid ""
 "Savedata for this title has not been initialized.\n"
 "You can try to restore it, but in case that the restore fails,\n"
@@ -1937,12 +1968,10 @@ msgstr ""
 "\n"
 "タスク選択に進むことができます。"
 
-#: src/menu/TitleListState.cpp:119
+#: src/menu/TitleListState.cpp:125
 #, c-format
 msgid ""
-"SaveMii is now using a new name format for savedata folders. Instead of "
-"using hex values, folders will be named after the title name, so for this "
-"title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
+"SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
 "\n"
 "Do you want to rename already created backup folders?\n"
 "\n"
@@ -1953,9 +1982,7 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
-"SaveMiiはセーブデータフォルダに新しい命名形式を使用するようになりました。進数"
-"値ではなく、タイトル名に基づいてフォルダ名が付けられます。そのため、このタイ"
-"トルではフォルダ'%08x%08x'は'%s' となり、SD内で見つけやすくなります。\n"
+"SaveMiiはセーブデータフォルダに新しい命名形式を使用するようになりました。進数値ではなく、タイトル名に基づいてフォルダ名が付けられます。そのため、このタイトルではフォルダ'%08x%08x'は'%s' となり、SD内で見つけやすくなります。\n"
 "\n"
 "既に作成されたバックアップフォルダの名前を変更しますか？\n"
 "\n"
@@ -1966,7 +1993,7 @@ msgstr ""
 "\n"
 "\n"
 
-#: src/menu/TitleListState.cpp:140
+#: src/menu/TitleListState.cpp:146
 #, c-format
 msgid ""
 "Ok, legacy folder '%08x%08x' will be used.\n"
@@ -1981,7 +2008,7 @@ msgstr ""
 "\n"
 "アクセスするには、フォルダ間でデータを手動でコピーまたは移行してください。"
 
-#: src/menu/TitleListState.cpp:142
+#: src/menu/TitleListState.cpp:148
 #, c-format
 msgid "Ok, legacy folder '%08x%08x' will be used."
 msgstr "OK、従来のフォルダ '%08x%08x' が使用されます。"
@@ -1992,41 +2019,41 @@ msgstr "OK、従来のフォルダ '%08x%08x' が使用されます。"
 msgid "Selected Repo: %s"
 msgstr "選択されたリポジトリ: %s"
 
-#: src/menu/MiiDBOptionsState.cpp:76 src/menu/TitleOptionsState.cpp:132
+#: src/menu/MiiDBOptionsState.cpp:76 src/menu/TitleOptionsState.cpp:133
 #, c-format
 msgid "Select %s:"
 msgstr "%s を選択:"
 
-#: src/menu/MiiDBOptionsState.cpp:76 src/menu/TitleOptionsState.cpp:142
+#: src/menu/MiiDBOptionsState.cpp:76 src/menu/TitleOptionsState.cpp:143
 msgid "slot"
 msgstr "スロット"
 
 #: src/menu/MiiDBOptionsState.cpp:79 src/menu/MiiDBOptionsState.cpp:96
-#: src/menu/TitleOptionsState.cpp:135 src/menu/TitleOptionsState.cpp:146
-#: src/menu/TitleOptionsState.cpp:150 src/menu/TitleOptionsState.cpp:154
-#: src/menu/TitleOptionsState.cpp:188 src/menu/TitleOptionsState.cpp:192
-#: src/menu/TitleOptionsState.cpp:195 src/menu/TitleOptionsState.cpp:210
-#: src/menu/TitleOptionsState.cpp:215 src/menu/TitleOptionsState.cpp:219
-#: src/menu/TitleOptionsState.cpp:316 src/menu/TitleOptionsState.cpp:324
+#: src/menu/TitleOptionsState.cpp:136 src/menu/TitleOptionsState.cpp:147
+#: src/menu/TitleOptionsState.cpp:151 src/menu/TitleOptionsState.cpp:155
+#: src/menu/TitleOptionsState.cpp:189 src/menu/TitleOptionsState.cpp:193
+#: src/menu/TitleOptionsState.cpp:196 src/menu/TitleOptionsState.cpp:211
+#: src/menu/TitleOptionsState.cpp:216 src/menu/TitleOptionsState.cpp:220
+#: src/menu/TitleOptionsState.cpp:317 src/menu/TitleOptionsState.cpp:325
 msgid "Empty"
 msgstr "空の"
 
-#: src/menu/MiiDBOptionsState.cpp:80 src/menu/TitleOptionsState.cpp:136
-#: src/menu/TitleOptionsState.cpp:147 src/menu/TitleOptionsState.cpp:151
-#: src/menu/TitleOptionsState.cpp:155
+#: src/menu/MiiDBOptionsState.cpp:80 src/menu/TitleOptionsState.cpp:137
+#: src/menu/TitleOptionsState.cpp:148 src/menu/TitleOptionsState.cpp:152
+#: src/menu/TitleOptionsState.cpp:156
 msgid "Used"
 msgstr "使用済み"
 
-#: src/menu/MiiDBOptionsState.cpp:84 src/menu/TitleOptionsState.cpp:161
+#: src/menu/MiiDBOptionsState.cpp:84 src/menu/TitleOptionsState.cpp:162
 #, c-format
 msgid "Slot -> Date: %s"
 msgstr "スロット -> 日付: %s"
 
-#: src/menu/MiiDBOptionsState.cpp:94 src/menu/TitleOptionsState.cpp:314
+#: src/menu/MiiDBOptionsState.cpp:94 src/menu/TitleOptionsState.cpp:315
 msgid "Source:"
 msgstr "ソース:"
 
-#: src/menu/MiiDBOptionsState.cpp:94 src/menu/TitleOptionsState.cpp:314
+#: src/menu/MiiDBOptionsState.cpp:94 src/menu/TitleOptionsState.cpp:315
 msgid "Target:"
 msgstr "ターゲット:"
 
@@ -2035,11 +2062,11 @@ msgstr "ターゲット:"
 msgid "   %s Mii DB (%s)"
 msgstr "   %s Mii DB (%s)"
 
-#: src/menu/MiiDBOptionsState.cpp:96 src/menu/TitleOptionsState.cpp:188
-#: src/menu/TitleOptionsState.cpp:192 src/menu/TitleOptionsState.cpp:195
-#: src/menu/TitleOptionsState.cpp:210 src/menu/TitleOptionsState.cpp:215
-#: src/menu/TitleOptionsState.cpp:219 src/menu/TitleOptionsState.cpp:316
-#: src/menu/TitleOptionsState.cpp:324
+#: src/menu/MiiDBOptionsState.cpp:96 src/menu/TitleOptionsState.cpp:189
+#: src/menu/TitleOptionsState.cpp:193 src/menu/TitleOptionsState.cpp:196
+#: src/menu/TitleOptionsState.cpp:211 src/menu/TitleOptionsState.cpp:216
+#: src/menu/TitleOptionsState.cpp:220 src/menu/TitleOptionsState.cpp:317
+#: src/menu/TitleOptionsState.cpp:325
 msgid "Has Save"
 msgstr "保存あり"
 
@@ -2051,15 +2078,13 @@ msgstr "DB が消去されます"
 msgid "DB will be wiped and initialized"
 msgstr "DB が消去され、初期化されます"
 
-#: src/menu/MiiDBOptionsState.cpp:115 src/menu/TitleOptionsState.cpp:433
+#: src/menu/MiiDBOptionsState.cpp:115 src/menu/TitleOptionsState.cpp:424
 msgid "\\ue000: Backup  \\ue001: Back"
 msgstr "\\ue000: バックアップ \\ue001: 戻る"
 
-#: src/menu/MiiDBOptionsState.cpp:117 src/menu/TitleOptionsState.cpp:435
+#: src/menu/MiiDBOptionsState.cpp:117 src/menu/TitleOptionsState.cpp:426
 msgid "\\ue000: Backup  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
-msgstr ""
-"\\ue000 保存  \\ue045 タグスロット  \\ue046 スロットを削除  \\ue001 戻"
-"る"
+msgstr "\\ue000 保存  \\ue045 タグスロット  \\ue046 スロットを削除  \\ue001 戻る"
 
 #: src/menu/MiiDBOptionsState.cpp:123
 msgid "\\ue000: Restore  \\ue001: Back"
@@ -2081,11 +2106,11 @@ msgstr "\\ue000: XRestore \\ue001: 戻る"
 msgid "\\ue000: XRestore  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue000: XRestore \\ue045 タグスロット\\ue001: 戻る"
 
-#: src/menu/MiiDBOptionsState.cpp:136 src/menu/TitleOptionsState.cpp:459
+#: src/menu/MiiDBOptionsState.cpp:136 src/menu/TitleOptionsState.cpp:450
 msgid "Wipe"
 msgstr "消去"
 
-#: src/menu/MiiDBOptionsState.cpp:138 src/menu/TitleOptionsState.cpp:461
+#: src/menu/MiiDBOptionsState.cpp:138 src/menu/TitleOptionsState.cpp:452
 msgid "\\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue000:ワイプ \\ue001:戻る"
 
@@ -2097,15 +2122,15 @@ msgstr "初期化"
 msgid "\\ue000: Initialize  \\ue001: Back"
 msgstr "\\ue000: 初期化\\ue001: 戻る"
 
-#: src/menu/MiiDBOptionsState.cpp:227 src/menu/TitleOptionsState.cpp:947
+#: src/menu/MiiDBOptionsState.cpp:227 src/menu/TitleOptionsState.cpp:939
 msgid "No data selected to backup"
 msgstr "バックアップするデータが選択されていません"
 
-#: src/menu/MiiDBOptionsState.cpp:229 src/menu/TitleOptionsState.cpp:949
+#: src/menu/MiiDBOptionsState.cpp:229 src/menu/TitleOptionsState.cpp:941
 msgid "No data selected to wipe"
 msgstr "消去するデータが選択されていません"
 
-#: src/menu/MiiDBOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:957
+#: src/menu/MiiDBOptionsState.cpp:231 src/menu/TitleOptionsState.cpp:949
 msgid "No data selected to restore"
 msgstr "復元するデータが選択されていません"
 
@@ -2187,35 +2212,20 @@ msgid "Select which Miis to Import"
 msgstr "インポートするMiiを選択してください"
 
 #: src/menu/MiiSelectState.cpp:162
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  "
-"\\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue002\\ue084: 表示 \\ue000: Miiのインポート "
-"\\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue002\\ue084: 表示 \\ue000: Miiのインポート \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:164
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue002: 表示 \\ue000: Mii のインポート \\ue001: 戻"
-"る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue002: 表示 \\ue000: Mii のインポート \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:167
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
-"\\ue000: Import  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002\\ue084: 表"
-"示 \\ue000: インポート \\ue001:戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Import  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002\\ue084: 表示 \\ue000: インポート \\ue001:戻る"
 
 #: src/menu/MiiSelectState.cpp:169
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
-"\\ue000: Import  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/設定解除 \\ue002: 表示 "
-"\\ue000: インポート \\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Import  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/設定解除 \\ue002: 表示 \\ue000: インポート \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:171
 msgid ">> Import"
@@ -2230,20 +2240,12 @@ msgid "Select which Miis to Export"
 msgstr "エクスポートするMiiを選択してください"
 
 #: src/menu/MiiSelectState.cpp:177
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
-"\\ue000: Export  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002\\ue084: 表"
-"示 \\ue000: エクスポート \\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Export  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002\\ue084: 表示 \\ue000: エクスポート \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:179
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
-"\\ue000: Export  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/設定解除 \\ue002: 表示 "
-"\\ue000: エクスポート \\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/設定解除 \\ue002: 表示 \\ue000: エクスポート \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:180
 msgid ">> Export"
@@ -2258,19 +2260,15 @@ msgid "Select which Mii to Restore"
 msgstr "復元するMiiを選択してください"
 
 #: src/menu/MiiSelectState.cpp:186
-msgid ""
-"\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  "
-"\\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue002\\ue083\\ue084: 表示 \\ue000: Miiの復元 "
-"\\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue002\\ue083\\ue084: 表示 \\ue000: Miiの復元 \\ue001: 戻る"
 
-#: src/menu/MiiSelectState.cpp:187 src/menu/BatchJobTitleSelectState.cpp:226
+#: src/menu/MiiSelectState.cpp:187 src/menu/BatchJobTitleSelectState.cpp:229
 msgid ">> Restore"
 msgstr ">> 復元"
 
 #: src/menu/MiiSelectState.cpp:188 src/menu/MiiSelectState.cpp:233
-#: src/menu/BatchJobTitleSelectState.cpp:227
+#: src/menu/BatchJobTitleSelectState.cpp:230
 msgid "|Restored|"
 msgstr "|復元済み|"
 
@@ -2279,26 +2277,18 @@ msgid "Select which Miis to Wipe"
 msgstr "消去するMiiを選択してください"
 
 #: src/menu/MiiSelectState.cpp:193
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
-"\\ue000: Wipe  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002\\ue084: 表"
-"示 \\ue000: ワイプ \\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002\\ue084: 表示 \\ue000: ワイプ \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:195
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
-"\\ue000: Wipe  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/設定解除 \\ue002: 表示 "
-"\\ue000: ワイプ \\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/設定解除 \\ue002: 表示 \\ue000: ワイプ \\ue001: 戻る"
 
-#: src/menu/MiiSelectState.cpp:196 src/menu/BatchJobTitleSelectState.cpp:244
+#: src/menu/MiiSelectState.cpp:196 src/menu/BatchJobTitleSelectState.cpp:247
 msgid ">> Wipe"
 msgstr ">> ワイプ"
 
-#: src/menu/MiiSelectState.cpp:197 src/menu/BatchJobTitleSelectState.cpp:245
+#: src/menu/MiiSelectState.cpp:197 src/menu/BatchJobTitleSelectState.cpp:248
 msgid "|Wiped|"
 msgstr "|ワイプ済み|"
 
@@ -2307,20 +2297,12 @@ msgid "Select which Miis to Transform"
 msgstr "変身させるMiiを選択してください"
 
 #: src/menu/MiiSelectState.cpp:202
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
-"\\ue000: Tasks  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002\\ue084: 表"
-"示 \\ue000: タスク \\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Tasks  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002\\ue084: 表示 \\ue000: タスク \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:204
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  "
-"\\ue000: Tasks  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002: 表示 "
-"\\ue000: タスク \\ue001: 戻る"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  \\ue000: Tasks  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて切り替え \\ue002: 表示 \\ue000: タスク \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:205
 msgid ">> Transform"
@@ -2335,20 +2317,12 @@ msgid "Select Mii to copy attrs from"
 msgstr "属性をコピーするMiiを選択"
 
 #: src/menu/MiiSelectState.cpp:211
-msgid ""
-"\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform "
-"Miis  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: テンプレートを選択 \\ue002\\ue084: 表示 \\ue000: Miiの変身 "
-"\\ue001: 戻る"
+msgid "\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: テンプレートを選択 \\ue002\\ue084: 表示 \\ue000: Miiの変身 \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:213
-msgid ""
-"\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  "
-"\\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: テンプレートを選択 \\ue002\\ue084: 表示 \\ue000: Miiの変身"
-"\\ue001: 戻る"
+msgid "\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: テンプレートを選択 \\ue002\\ue084: 表示 \\ue000: Miiの変身\\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:214
 msgid ">> Use as template"
@@ -2359,19 +2333,12 @@ msgid "Select Mii to be overwritten"
 msgstr "上書きするMiiを選択"
 
 #: src/menu/MiiSelectState.cpp:220 src/menu/MiiSelectState.cpp:229
-msgid ""
-"\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  "
-"\\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 対象のMiiを選択 \\ue002\\ue084: 表示 \\ue000: 続行 \\ue001: "
-"戻る"
+msgid "\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 対象のMiiを選択 \\ue002\\ue084: 表示 \\ue000: 続行 \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:222 src/menu/MiiSelectState.cpp:231
-msgid ""
-"\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  "
-"\\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 対象のMiiを選択 \\ue002: 表示 \\ue000: 続行 \\ue001: 戻る"
+msgid "\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 対象のMiiを選択 \\ue002: 表示 \\ue000: 続行 \\ue001: 戻る"
 
 #: src/menu/MiiSelectState.cpp:223
 msgid ">> Import here"
@@ -2410,24 +2377,24 @@ msgid "There are no miis matching selected filters."
 msgstr "選択したフィルターに一致するMiiはありません。"
 
 #: src/menu/MiiSelectState.cpp:353 src/menu/MiiSelectState.cpp:361
-#: src/menu/BatchJobTitleSelectState.cpp:336
-#: src/menu/BatchJobTitleSelectState.cpp:347
-#: src/menu/BatchJobTitleSelectState.cpp:351
-#: src/menu/BatchJobTitleSelectState.cpp:355
+#: src/menu/BatchJobTitleSelectState.cpp:339
+#: src/menu/BatchJobTitleSelectState.cpp:350
+#: src/menu/BatchJobTitleSelectState.cpp:354
+#: src/menu/BatchJobTitleSelectState.cpp:358
 msgid ">> Skip"
 msgstr ">> スキップ"
 
-#: src/menu/MiiSelectState.cpp:356 src/menu/BatchJobTitleSelectState.cpp:339
+#: src/menu/MiiSelectState.cpp:356 src/menu/BatchJobTitleSelectState.cpp:342
 msgid "[OK]"
 msgstr "[OK]"
 
-#: src/menu/MiiSelectState.cpp:360 src/menu/BatchJobTitleSelectState.cpp:354
+#: src/menu/MiiSelectState.cpp:360 src/menu/BatchJobTitleSelectState.cpp:357
 msgid "[KO]"
 msgstr "[KO]"
 
-#: src/menu/MiiSelectState.cpp:361 src/menu/BatchJobTitleSelectState.cpp:347
-#: src/menu/BatchJobTitleSelectState.cpp:351
-#: src/menu/BatchJobTitleSelectState.cpp:355
+#: src/menu/MiiSelectState.cpp:361 src/menu/BatchJobTitleSelectState.cpp:350
+#: src/menu/BatchJobTitleSelectState.cpp:354
+#: src/menu/BatchJobTitleSelectState.cpp:358
 msgid ">> Retry"
 msgstr ">> 再試行"
 
@@ -2573,57 +2540,57 @@ msgstr "消去に失敗しました - グローバルエラー"
 msgid "Wipe has failed for %d miis"
 msgstr "%d個のMiiの消去に失敗しました"
 
-#: src/menu/MiiSelectState.cpp:577 src/menu/MiiTransformTasksState.cpp:161
+#: src/menu/MiiSelectState.cpp:577 src/menu/MiiTransformTasksState.cpp:165
 msgid "Miis transform ok"
 msgstr "Mii変換OK"
 
-#: src/menu/MiiSelectState.cpp:579 src/menu/MiiTransformTasksState.cpp:163
+#: src/menu/MiiSelectState.cpp:579 src/menu/MiiTransformTasksState.cpp:167
 msgid "Task aborted - Partial Miis transform ok"
 msgstr "タスク中止 - Miiの部分変換OK"
 
-#: src/menu/MiiSelectState.cpp:582 src/menu/MiiTransformTasksState.cpp:166
+#: src/menu/MiiSelectState.cpp:582 src/menu/MiiTransformTasksState.cpp:170
 msgid "Transform has failed - Global Error"
 msgstr "変換に失敗しました - グローバルエラー"
 
-#: src/menu/MiiSelectState.cpp:584 src/menu/MiiTransformTasksState.cpp:168
+#: src/menu/MiiSelectState.cpp:584 src/menu/MiiTransformTasksState.cpp:172
 #, c-format
 msgid "Transform has failed for %d miis"
 msgstr "%d個のMiiの変換に失敗しました"
 
-#: src/menu/BackupSetListState.cpp:70
+#: src/menu/BackupSetListState.cpp:71
 msgid "BackupSets"
 msgstr "バックアップセット"
 
-#: src/menu/BackupSetListState.cpp:72
+#: src/menu/BackupSetListState.cpp:73
 msgid "BackupSets (filter applied)"
 msgstr "バックアップセット (フィルター適用済み)"
 
-#: src/menu/BackupSetListState.cpp:75
+#: src/menu/BackupSetListState.cpp:76
 #, c-format
 msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 並べ替え: %s \\ue084"
 
-#: src/menu/BackupSetListState.cpp:98
-msgid ""
-"\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  "
-"\\ue003: Filter  \\ue001: Back"
+#: src/menu/BackupSetListState.cpp:101
+msgid "\\ue000: Clone to CEMU/Dolphin \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
 msgstr ""
-"\\ue000: 選択  \\ue002: 内容を表示  \\ue045: タグ  \\ue046: 消去  \\ue003: "
-"フィルター  \\ue001: 戻る"
 
-#: src/menu/BackupSetListState.cpp:100
-msgid ""
-"\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  "
-"\\ue001: Back"
+#: src/menu/BackupSetListState.cpp:103
+msgid "\\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
 msgstr ""
-"\\ue000: バックアップセット選択  \\ue002: 内容を表示  \\ue003: リストを絞り込"
-"み  \\ue001: 戻る"
 
-#: src/menu/BackupSetListState.cpp:111
-msgid "Root BackupSet cannot be selected for batchRestore"
-msgstr "ルートバックアップセットはバッチ復元に選択できません"
+#: src/menu/BackupSetListState.cpp:107
+msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
+msgstr "\\ue000: 選択  \\ue002: 内容を表示  \\ue045: タグ  \\ue046: 消去  \\ue003: フィルター  \\ue001: 戻る"
 
-#: src/menu/BackupSetListState.cpp:120
+#: src/menu/BackupSetListState.cpp:109
+msgid "\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
+msgstr "\\ue000: バックアップセット選択  \\ue002: 内容を表示  \\ue003: リストを絞り込み  \\ue001: 戻る"
+
+#: src/menu/BackupSetListState.cpp:122
+msgid "Root BackupSet cannot be selected for batch operations"
+msgstr ""
+
+#: src/menu/BackupSetListState.cpp:134
 #, c-format
 msgid ""
 "BackupSet selected:\n"
@@ -2640,139 +2607,111 @@ msgstr ""
 "\n"
 "このコンソール: %s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:224
+#: src/menu/BatchJobTitleSelectState.cpp:227
 msgid "Batch Restore - Select"
 msgstr "バッチリストア - 選択"
 
-#: src/menu/BatchJobTitleSelectState.cpp:225
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore "
-"titles  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/設定解除 \\ue045\\ue046: すべて設定/設定解除 \\ue000: タ"
-"イトルを復元 \\ue001: 戻る"
+#: src/menu/BatchJobTitleSelectState.cpp:228
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/設定解除 \\ue045\\ue046: すべて設定/設定解除 \\ue000: タイトルを復元 \\ue001: 戻る"
 
-#: src/menu/BatchJobTitleSelectState.cpp:230
+#: src/menu/BatchJobTitleSelectState.cpp:233
 msgid "Batch ProfileCopy - Select"
 msgstr "プロファイルコピーの一括コピー - 選択"
 
-#: src/menu/BatchJobTitleSelectState.cpp:231
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"ProfileCopy  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: プロファイ"
-"ルコピー \\ue001: 戻る"
+#: src/menu/BatchJobTitleSelectState.cpp:234
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: プロファイルコピー \\ue001: 戻る"
 
-#: src/menu/BatchJobTitleSelectState.cpp:232
-#: src/menu/BatchJobTitleSelectState.cpp:250
-#: src/menu/BatchJobTitleSelectState.cpp:256
+#: src/menu/BatchJobTitleSelectState.cpp:235
+#: src/menu/BatchJobTitleSelectState.cpp:253
+#: src/menu/BatchJobTitleSelectState.cpp:259
 msgid ">> Copy"
 msgstr ">> コピー"
 
-#: src/menu/BatchJobTitleSelectState.cpp:233
-#: src/menu/BatchJobTitleSelectState.cpp:251
-#: src/menu/BatchJobTitleSelectState.cpp:257
+#: src/menu/BatchJobTitleSelectState.cpp:236
+#: src/menu/BatchJobTitleSelectState.cpp:254
+#: src/menu/BatchJobTitleSelectState.cpp:260
 msgid "|Copied|"
 msgstr "|コピーしました|"
 
-#: src/menu/BatchJobTitleSelectState.cpp:236
+#: src/menu/BatchJobTitleSelectState.cpp:239
 msgid "Batch ProfileMove - Select"
 msgstr "プロファイル一括移動 - 選択"
 
-#: src/menu/BatchJobTitleSelectState.cpp:237
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"ProfileMove  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: プロファイ"
-"ル移動 \\ue001: 戻る"
+#: src/menu/BatchJobTitleSelectState.cpp:240
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: プロファイル移動 \\ue001: 戻る"
 
-#: src/menu/BatchJobTitleSelectState.cpp:238
+#: src/menu/BatchJobTitleSelectState.cpp:241
 msgid ">> Move"
 msgstr ">> 移動"
 
-#: src/menu/BatchJobTitleSelectState.cpp:239
+#: src/menu/BatchJobTitleSelectState.cpp:242
 msgid "|Moved|"
 msgstr "|移動済み|"
 
-#: src/menu/BatchJobTitleSelectState.cpp:242
+#: src/menu/BatchJobTitleSelectState.cpp:245
 msgid "Batch Wipe - Select"
 msgstr "バッチワイプ - 選択"
 
-#: src/menu/BatchJobTitleSelectState.cpp:243
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"WipeProfile  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: "
-"WipeProfile \\ue001: 戻る"
+#: src/menu/BatchJobTitleSelectState.cpp:246
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: WipeProfile \\ue001: 戻る"
 
-#: src/menu/BatchJobTitleSelectState.cpp:248
+#: src/menu/BatchJobTitleSelectState.cpp:251
 msgid "Batch Copy To USB - Select"
 msgstr "USBへの一括コピー - 選択"
 
-#: src/menu/BatchJobTitleSelectState.cpp:249
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"CopyToUSB  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: CopyToUSB "
-"\\ue001: 戻る"
+#: src/menu/BatchJobTitleSelectState.cpp:252
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: CopyToUSB \\ue001: 戻る"
 
-#: src/menu/BatchJobTitleSelectState.cpp:254
+#: src/menu/BatchJobTitleSelectState.cpp:257
 msgid "Batch Copy To NAND - Select"
 msgstr "バッチコピー（NAND）- 選択"
 
-#: src/menu/BatchJobTitleSelectState.cpp:255
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"CopyToNAND  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: "
-"CopyToNAND \\ue001: 戻る"
+#: src/menu/BatchJobTitleSelectState.cpp:258
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 設定/解除 \\ue045\\ue046: すべて設定/解除 \\ue000: CopyToNAND \\ue001: 戻る"
 
-#: src/menu/BatchJobTitleSelectState.cpp:260
+#: src/menu/BatchJobTitleSelectState.cpp:263
 msgid "Batch Backup - Select & Go"
 msgstr "バッチバックアップ - 選択して実行"
 
-#: src/menu/BatchJobTitleSelectState.cpp:261
-msgid ""
-"\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  "
-"\\ue000Backup  \\ue001Back"
-msgstr ""
-"\\ue003\\ue07e 設定/設定解除 \\ue045\\ue046 すべて設定/設定解除 \\ue002 除外 "
-"\\ue000 バックアップ \\ue001 戻る"
+#: src/menu/BatchJobTitleSelectState.cpp:264
+msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
+msgstr "\\ue003\\ue07e 設定/設定解除 \\ue045\\ue046 すべて設定/設定解除 \\ue002 除外 \\ue000 バックアップ \\ue001 戻る"
 
-#: src/menu/BatchJobTitleSelectState.cpp:262
+#: src/menu/BatchJobTitleSelectState.cpp:265
 msgid ">> Backup"
 msgstr ">> バックアップ"
 
-#: src/menu/BatchJobTitleSelectState.cpp:263
+#: src/menu/BatchJobTitleSelectState.cpp:266
 msgid "|Saved|"
 msgstr "|保存されました|"
 
-#: src/menu/BatchJobTitleSelectState.cpp:280
+#: src/menu/BatchJobTitleSelectState.cpp:283
 msgid "There are no titles matching selected filters."
 msgstr "選択したフィルターに一致するタイトルはありません。"
 
-#: src/menu/BatchJobTitleSelectState.cpp:344
+#: src/menu/BatchJobTitleSelectState.cpp:347
 msgid "[AB-BackupFailed]"
 msgstr "[AB-BackupFailed]"
 
-#: src/menu/BatchJobTitleSelectState.cpp:346
+#: src/menu/BatchJobTitleSelectState.cpp:349
 msgid "[AB]"
 msgstr "[AB]"
 
-#: src/menu/BatchJobTitleSelectState.cpp:350
+#: src/menu/BatchJobTitleSelectState.cpp:353
 msgid "[WR]"
 msgstr "[WR]"
 
-#: src/menu/BatchJobTitleSelectState.cpp:412
+#: src/menu/BatchJobTitleSelectState.cpp:436
 msgid "Please select some titles to work on"
 msgstr "作業するタイトルをいくつか選択してください"
 
-#: src/menu/BatchJobTitleSelectState.cpp:461
+#: src/menu/BatchJobTitleSelectState.cpp:485
 msgid ""
 "\\ue000  Apply saved excludes\n"
 "\\ue045  Save current excludes\n"
@@ -2782,48 +2721,48 @@ msgstr ""
 "\\ue045 現在の除外を保存 \n"
 "\\ue001 戻る"
 
-#: src/menu/BatchJobTitleSelectState.cpp:476 src/menu/ConfigMenuState.cpp:134
+#: src/menu/BatchJobTitleSelectState.cpp:500 src/menu/ConfigMenuState.cpp:134
 msgid "Configuration saved"
 msgstr "設定を保存しました"
 
-#: src/menu/BatchJobTitleSelectState.cpp:478 src/menu/ConfigMenuState.cpp:136
+#: src/menu/BatchJobTitleSelectState.cpp:502 src/menu/ConfigMenuState.cpp:136
 msgid "Error saving configuration"
 msgstr "設定の保存中にエラーが発生しました。"
 
-#: src/menu/BatchJobTitleSelectState.cpp:545
+#: src/menu/BatchJobTitleSelectState.cpp:569
 msgid "Batch Restore - Review & Go"
 msgstr "バッチリストア - 確認＆実行"
 
-#: src/menu/BatchJobTitleSelectState.cpp:546
-#: src/menu/BatchJobTitleSelectState.cpp:548
-#: src/menu/BatchJobTitleSelectState.cpp:549
+#: src/menu/BatchJobTitleSelectState.cpp:570
+#: src/menu/BatchJobTitleSelectState.cpp:572
+#: src/menu/BatchJobTitleSelectState.cpp:573
 msgid "- Restore"
 msgstr "- リストア"
 
-#: src/menu/BatchJobTitleSelectState.cpp:546
+#: src/menu/BatchJobTitleSelectState.cpp:570
 #, c-format
 msgid "- Restore from %s to < %s (%s) >"
 msgstr "- %s から < %s (%s) > へ復元"
 
-#: src/menu/BatchJobTitleSelectState.cpp:547
+#: src/menu/BatchJobTitleSelectState.cpp:571
 #, c-format
 msgid "pre-BatchRestore Backup (vWii: %d%s"
 msgstr "pre-BatchRestoreバックアップ（vWii: %d%s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:547
+#: src/menu/BatchJobTitleSelectState.cpp:571
 #, c-format
 msgid "pre-BatchRestore Backup (WiiU: %d%s"
 msgstr "pre-BatchRestoreバックアップ（WiiU: %d%s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:548
+#: src/menu/BatchJobTitleSelectState.cpp:572
 msgid "- Restore allusers"
 msgstr "- すべてのユーザーを復元"
 
-#: src/menu/BatchJobTitleSelectState.cpp:549
+#: src/menu/BatchJobTitleSelectState.cpp:573
 msgid "- Restore no user"
 msgstr "- ユーザーをリストアしない"
 
-#: src/menu/BatchJobTitleSelectState.cpp:550
+#: src/menu/BatchJobTitleSelectState.cpp:574
 #, c-format
 msgid ""
 "%s\n"
@@ -2838,27 +2777,27 @@ msgstr ""
 "これまでのエラー数: %d\n"
 "次のタイトルに進みますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:551
+#: src/menu/BatchJobTitleSelectState.cpp:575
 msgid "Batch Restore paused - Do you want to abort?"
 msgstr "バッチ復元が一時停止されました - 中止しますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:554
+#: src/menu/BatchJobTitleSelectState.cpp:578
 msgid "Batch ProfileCopy - Review & Go"
 msgstr "プロファイルコピーの一括コピー - 確認＆実行"
 
-#: src/menu/BatchJobTitleSelectState.cpp:555
-#: src/menu/BatchJobTitleSelectState.cpp:582
-#: src/menu/BatchJobTitleSelectState.cpp:591
+#: src/menu/BatchJobTitleSelectState.cpp:579
+#: src/menu/BatchJobTitleSelectState.cpp:606
+#: src/menu/BatchJobTitleSelectState.cpp:615
 #, c-format
 msgid "- Copy from < %s (%s)> to < %s (%s) >"
 msgstr "- < %s (%s)> から < %s (%s) > にコピー"
 
-#: src/menu/BatchJobTitleSelectState.cpp:556
+#: src/menu/BatchJobTitleSelectState.cpp:580
 #, c-format
 msgid "pre-BatchProfileCopy Backup (WiiU: %d%s"
 msgstr "pre-BatchProfileCopyバックアップ（WiiU：%d%s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:559
+#: src/menu/BatchJobTitleSelectState.cpp:583
 #, c-format
 msgid ""
 "%s\n"
@@ -2873,25 +2812,25 @@ msgstr ""
 "これまでのエラー数: %d\n"
 "次のタイトルに進みますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:560
+#: src/menu/BatchJobTitleSelectState.cpp:584
 msgid "Batch ProfileCopy paused - Do you want to abort?"
 msgstr "バッチプロファイルコピーが一時停止されました - 中止しますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:563
+#: src/menu/BatchJobTitleSelectState.cpp:587
 msgid "Batch ProfileMove - Review & Go"
 msgstr "プロファイル一括移動 - 確認して実行"
 
-#: src/menu/BatchJobTitleSelectState.cpp:564
+#: src/menu/BatchJobTitleSelectState.cpp:588
 #, c-format
 msgid "- Move < %s (%s)> to < %s (%s) >"
 msgstr "- <%s (%s)> を <%s (%s) > に移動します"
 
-#: src/menu/BatchJobTitleSelectState.cpp:565
+#: src/menu/BatchJobTitleSelectState.cpp:589
 #, c-format
 msgid "pre-BatchProfileMove Backup (WiiU: %d%s"
 msgstr "pre-BatchProfileMoveバックアップ（WiiU: %d%s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:568
+#: src/menu/BatchJobTitleSelectState.cpp:592
 #, c-format
 msgid ""
 "%s\n"
@@ -2906,44 +2845,44 @@ msgstr ""
 "これまでのエラー数: %d\n"
 "次のタイトルに進みますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:569
+#: src/menu/BatchJobTitleSelectState.cpp:593
 msgid "Batch ProfileMove paused - Do you want to abort?"
 msgstr "バッチプロファイル移動が一時停止されました - 中止しますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:572
+#: src/menu/BatchJobTitleSelectState.cpp:596
 msgid "Batch Wipe - Review & Go"
 msgstr "バッチワイプ - 確認して実行"
 
-#: src/menu/BatchJobTitleSelectState.cpp:573
-#: src/menu/BatchJobTitleSelectState.cpp:575
-#: src/menu/BatchJobTitleSelectState.cpp:576
+#: src/menu/BatchJobTitleSelectState.cpp:597
+#: src/menu/BatchJobTitleSelectState.cpp:599
+#: src/menu/BatchJobTitleSelectState.cpp:600
 msgid "- Wipe"
 msgstr "- ワイプ"
 
-#: src/menu/BatchJobTitleSelectState.cpp:573
+#: src/menu/BatchJobTitleSelectState.cpp:597
 #, c-format
 msgid "- Wipe  < %s (%s)>"
 msgstr "- <%s (%s)> をワイプ"
 
-#: src/menu/BatchJobTitleSelectState.cpp:574
+#: src/menu/BatchJobTitleSelectState.cpp:598
 #, c-format
 msgid "pre-BatchWipe Backup (vWii: %d%s"
 msgstr "pre-BatchWipeバックアップ（vWii: %d%s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:574
+#: src/menu/BatchJobTitleSelectState.cpp:598
 #, c-format
 msgid "pre-BatchWipe Backup (WiiU: %d%s"
 msgstr "pre-BatchWipeバックアップ（WiiU: %d%s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:575
+#: src/menu/BatchJobTitleSelectState.cpp:599
 msgid "- Wipe allusers"
 msgstr "- 全ユーザーをワイプ"
 
-#: src/menu/BatchJobTitleSelectState.cpp:576
+#: src/menu/BatchJobTitleSelectState.cpp:600
 msgid "- Wipe no user"
 msgstr "- どのユーザーもワイプしない"
 
-#: src/menu/BatchJobTitleSelectState.cpp:577
+#: src/menu/BatchJobTitleSelectState.cpp:601
 #, c-format
 msgid ""
 "%s\n"
@@ -2958,30 +2897,30 @@ msgstr ""
 "これまでのエラー数: %d\n"
 "次のタイトルに進みますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:578
+#: src/menu/BatchJobTitleSelectState.cpp:602
 msgid "Batch Wipe paused - Do you want to abort?"
 msgstr "バッチワイプが一時停止されました - 中止しますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:581
+#: src/menu/BatchJobTitleSelectState.cpp:605
 msgid "Batch Copy To USB - Review & Go"
 msgstr "USBへの一括コピー - 確認＆実行"
 
-#: src/menu/BatchJobTitleSelectState.cpp:583
+#: src/menu/BatchJobTitleSelectState.cpp:607
 #, c-format
 msgid "pre-BatchCopyToUSB Backup (WiiU: %d%s"
 msgstr "pre-BatchCopyToUSBバックアップ（WiiU：%d%s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:584
-#: src/menu/BatchJobTitleSelectState.cpp:593
+#: src/menu/BatchJobTitleSelectState.cpp:608
+#: src/menu/BatchJobTitleSelectState.cpp:617
 msgid "- Copy allusers"
 msgstr "- すべてのユーザーをコピー"
 
-#: src/menu/BatchJobTitleSelectState.cpp:585
-#: src/menu/BatchJobTitleSelectState.cpp:594
+#: src/menu/BatchJobTitleSelectState.cpp:609
+#: src/menu/BatchJobTitleSelectState.cpp:618
 msgid "- Copy no user"
 msgstr "- ユーザーをコピーしません"
 
-#: src/menu/BatchJobTitleSelectState.cpp:586
+#: src/menu/BatchJobTitleSelectState.cpp:610
 #, c-format
 msgid ""
 "%s\n"
@@ -2996,20 +2935,20 @@ msgstr ""
 "これまでのエラー: %d\n"
 "次のタイトルに進みますか?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:587
+#: src/menu/BatchJobTitleSelectState.cpp:611
 msgid "Batch Copy To USB paused - Do you want to abort?"
 msgstr "USBへのバッチコピーが一時停止されました - 中止しますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:590
+#: src/menu/BatchJobTitleSelectState.cpp:614
 msgid "Batch Copy To NAND - Review & Go"
 msgstr "バッチコピー（NAND）- 確認して実行"
 
-#: src/menu/BatchJobTitleSelectState.cpp:592
+#: src/menu/BatchJobTitleSelectState.cpp:616
 #, c-format
 msgid "pre-BatchCopyToNAND Backup (WiiU: %d%s"
 msgstr "pre-BatchCopyToNANDバックアップ（WiiU：%d%s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:595
+#: src/menu/BatchJobTitleSelectState.cpp:619
 #, c-format
 msgid ""
 "%s\n"
@@ -3024,11 +2963,11 @@ msgstr ""
 "これまでのエラー: %d\n"
 "次のタイトルを続行しますか?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:596
+#: src/menu/BatchJobTitleSelectState.cpp:620
 msgid "Batch Copy To NAND paused - Do you want to abort?"
 msgstr "NANDへのバッチコピーが一時停止されました - 中止しますか？"
 
-#: src/menu/BatchJobTitleSelectState.cpp:613
+#: src/menu/BatchJobTitleSelectState.cpp:637
 #, c-format
 msgid ""
 "%s\n"
@@ -3059,35 +2998,35 @@ msgstr ""
 "\n"
 "\n"
 
-#: src/menu/BatchJobTitleSelectState.cpp:634
+#: src/menu/BatchJobTitleSelectState.cpp:658
 msgid "- Include common savedata: Yes"
 msgstr "- 共通セーブデータを含める：はい"
 
-#: src/menu/BatchJobTitleSelectState.cpp:634
+#: src/menu/BatchJobTitleSelectState.cpp:658
 msgid "- Include common savedata: No"
 msgstr "- 共通セーブデータを含める：いいえ"
 
-#: src/menu/BatchJobTitleSelectState.cpp:635
-#: src/menu/BatchJobTitleSelectState.cpp:640
+#: src/menu/BatchJobTitleSelectState.cpp:659
+#: src/menu/BatchJobTitleSelectState.cpp:664
 msgid "- Wipe data: Yes"
 msgstr "- データをワイプ: はい"
 
-#: src/menu/BatchJobTitleSelectState.cpp:635
-#: src/menu/BatchJobTitleSelectState.cpp:640
+#: src/menu/BatchJobTitleSelectState.cpp:659
+#: src/menu/BatchJobTitleSelectState.cpp:664
 msgid "- Wipe data: No"
 msgstr "- データをワイプ: いいえ"
 
-#: src/menu/BatchJobTitleSelectState.cpp:636
-#: src/menu/BatchJobTitleSelectState.cpp:641
+#: src/menu/BatchJobTitleSelectState.cpp:660
+#: src/menu/BatchJobTitleSelectState.cpp:665
 msgid "- Perform full backup: Yes"
 msgstr "- フルバックアップを実行：はい"
 
-#: src/menu/BatchJobTitleSelectState.cpp:636
-#: src/menu/BatchJobTitleSelectState.cpp:641
+#: src/menu/BatchJobTitleSelectState.cpp:660
+#: src/menu/BatchJobTitleSelectState.cpp:665
 msgid "- Perform full backup: No"
 msgstr "- フルバックアップを実行：いいえ"
 
-#: src/menu/BatchJobTitleSelectState.cpp:638
+#: src/menu/BatchJobTitleSelectState.cpp:662
 #, c-format
 msgid ""
 "%s\n"
@@ -3114,7 +3053,7 @@ msgstr ""
 "続行しますか？\n"
 "\n"
 
-#: src/menu/BatchJobTitleSelectState.cpp:653
+#: src/menu/BatchJobTitleSelectState.cpp:677
 msgid ""
 "You have selected some injected titles.\n"
 "If its restore fails, try them again as a vWii title.\n"
@@ -3126,7 +3065,7 @@ msgstr ""
 "\n"
 "続行できます。"
 
-#: src/menu/BatchJobTitleSelectState.cpp:658
+#: src/menu/BatchJobTitleSelectState.cpp:682
 msgid ""
 "You have selected uninitialized titles.\n"
 "If its restore fails, run the Game to create \n"
@@ -3135,19 +3074,18 @@ msgid ""
 "You can continue."
 msgstr ""
 "初期化されていないタイトルを選択しました。\n"
-"復元に失敗した場合は、ゲームを実行して初期セーブデータを作成し、再試行してく"
-"ださい。\n"
+"復元に失敗した場合は、ゲームを実行して初期セーブデータを作成し、再試行してください。\n"
 "\n"
 "続行できます。"
 
-#: src/menu/BatchJobTitleSelectState.cpp:693
-#: src/menu/BatchJobTitleSelectState.cpp:869 src/menu/BatchBackupState.cpp:145
+#: src/menu/BatchJobTitleSelectState.cpp:717
+#: src/menu/BatchJobTitleSelectState.cpp:893 src/menu/BatchBackupState.cpp:145
 msgid "ERROR WIPING BACKUPSET"
 msgstr "バックアップセットの消去エラー"
 
-#: src/menu/BatchJobTitleSelectState.cpp:719
-#: src/menu/BatchJobTitleSelectState.cpp:728 src/menu/TitleOptionsState.cpp:962
-#: src/menu/TitleOptionsState.cpp:970
+#: src/menu/BatchJobTitleSelectState.cpp:743
+#: src/menu/BatchJobTitleSelectState.cpp:752 src/menu/TitleOptionsState.cpp:954
+#: src/menu/TitleOptionsState.cpp:962
 #, c-format
 msgid ""
 "%s\n"
@@ -3155,24 +3093,22 @@ msgid ""
 "Task aborted: would have restored savedata to a non-existent profile.\n"
 "\n"
 "Try to restore using 'from/to user' options"
-msgstr ""
-"%s」タスクが中止されました。存在しないプロファイルにセーブデータが復元されま"
-"す。「from/to ユーザー」オプションを使用して復元をお試しください"
+msgstr "%s」タスクが中止されました。存在しないプロファイルにセーブデータが復元されます。「from/to ユーザー」オプションを使用して復元をお試しください"
 
-#: src/menu/BatchJobTitleSelectState.cpp:865 src/menu/BatchBackupState.cpp:141
+#: src/menu/BatchJobTitleSelectState.cpp:889 src/menu/BatchBackupState.cpp:141
 msgid "Do you want to wipe this incomplete batch backup?"
 msgstr "この不完全なバッチ バックアップを消去しますか?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:922
+#: src/menu/BatchJobTitleSelectState.cpp:946
 #, c-format
 msgid "PARTIAL - %d %s title%s OK"
 msgstr "部分 - %d %sタイトル%s OK"
 
-#: src/menu/BatchJobTitleSelectState.cpp:927
+#: src/menu/BatchJobTitleSelectState.cpp:951
 msgid "FAILED - No titles"
 msgstr "失敗 - タイトルなし"
 
-#: src/menu/BatchJobTitleSelectState.cpp:929
+#: src/menu/BatchJobTitleSelectState.cpp:953
 #, c-format
 msgid "FAILED - OK/KO > %s: %d/%d"
 msgstr "失敗 - %s以上：%d/%d"
@@ -3197,20 +3133,12 @@ msgid "Source[P:%s|S:%s|M:%s]"
 msgstr "ソース[P:%s|S:%s|M:%s]"
 
 #: src/menu/KeyListState.cpp:65
-msgid ""
-"Highlight a file, and using the buttons indicated below load a key from it. "
-"Default keys (belonging to this console) can be loaded at once with \\ue045."
-msgstr ""
-"ファイルを選択し、以下のボタンを使用してキーを読み込みます。この本体のデフォ"
-"ルトキーは \\ue045 で一括読み込み可能です。"
+msgid "Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."
+msgstr "ファイルを選択し、以下のボタンを使用してキーを読み込みます。この本体のデフォルトキーは \\ue045 で一括読み込み可能です。"
 
 #: src/menu/KeyListState.cpp:70
-msgid ""
-"Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: "
-"Default  \\ue001: Back"
-msgstr ""
-"キー設定:  \\ue003 Private  \\ue002 Shared  \\ue000 MAC  \\ue045 デフォル"
-"ト  \\ue001: 戻る"
+msgid "Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: Default  \\ue001: Back"
+msgstr "キー設定:  \\ue003 Private  \\ue002 Shared  \\ue000 MAC  \\ue045 デフォルト  \\ue001: 戻る"
 
 #: src/menu/KeyListState.cpp:92
 #, c-format
@@ -3232,104 +3160,95 @@ msgstr "カスタムMAC設定エラー: %s"
 msgid "Error setting default keys and mac: %s"
 msgstr "デフォルトキーおよびMAC設定エラー: %s"
 
-#: src/menu/BatchJobState.cpp:27
+#: src/menu/BatchJobState.cpp:28
 msgid "Batch Restore"
 msgstr "バッチリストア"
 
-#: src/menu/BatchJobState.cpp:28
+#: src/menu/BatchJobState.cpp:29
 #, c-format
 msgid "   Restore Wii U (%u Title%s)"
 msgstr "   Wii U (%u タイトル%s) を復元"
 
-#: src/menu/BatchJobState.cpp:29
+#: src/menu/BatchJobState.cpp:30
 #, c-format
 msgid "   Restore vWii (%u Title%s)"
 msgstr "   vWii (%u タイトル%s) を復元"
 
-#: src/menu/BatchJobState.cpp:30
+#: src/menu/BatchJobState.cpp:31
 msgid ""
 "Batch Restore allows you to restore all savedata from a BatchBackup \n"
 "* to the same user profiles\n"
 "* to a different user in the same console \n"
 "* or to a different console where the games are already installed.\n"
-"In the later case, it is recommended to first run the game to initialize the "
-"savedata."
+"In the later case, it is recommended to first run the game to initialize the savedata."
 msgstr ""
 "バッチリストアを使用すると、バッチバックアップからすべてのセーブデータを\n"
 "* 同じユーザープロファイルに\n"
 "* 復元するか、\n"
 "* 同じコンソール内の別のユーザーに\n"
-"* 復元するか、ゲームが既にインストールされている別のコンソールに復元すること"
-"ができます。\n"
-"後者の場合は、まずゲームを実行してセーブデータを初期化することをお勧めしま"
-"す。"
+"* 復元するか、ゲームが既にインストールされている別のコンソールに復元することができます。\n"
+"後者の場合は、まずゲームを実行してセーブデータを初期化することをお勧めします。"
 
-#: src/menu/BatchJobState.cpp:31
+#: src/menu/BatchJobState.cpp:32
 msgid "\\ue000: Continue to BackupSet selection  \\ue001: Back"
 msgstr "\\ue000: バックアップセットの選択に進む \\ue001: 戻る"
 
-#: src/menu/BatchJobState.cpp:34
+#: src/menu/BatchJobState.cpp:35
 msgid "Batch Wipe"
 msgstr "バッチワイプ"
 
-#: src/menu/BatchJobState.cpp:35
+#: src/menu/BatchJobState.cpp:36
 #, c-format
 msgid "   Wipe Wii U Profiles (%u Title%s)"
 msgstr "   Wii U プロフィールをワイプ (%u タイトル%s)"
 
-#: src/menu/BatchJobState.cpp:36
+#: src/menu/BatchJobState.cpp:37
 #, c-format
 msgid "   Wipe vWii Savedata (%u Title%s)"
 msgstr "   vWii セーブデータをワイプ (%u タイトル%s)"
 
-#: src/menu/BatchJobState.cpp:37
+#: src/menu/BatchJobState.cpp:38
 msgid ""
-"Batch Wipe allows you to wipe savedata belonging to a given profile across "
-"all selected titles. It detects also savedata belonging to profiles not "
-"defined in the console.\n"
+"Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n"
 "\n"
 "Just:\n"
 "- select which data to wipe\n"
 "- select titles to act on\n"
 "- and go!"
 msgstr ""
-"バッチワイプを使用すると、選択したすべてのタイトルの特定のプロファイルに属す"
-"るセーブデータをワイプできます。\n"
+"バッチワイプを使用すると、選択したすべてのタイトルの特定のプロファイルに属するセーブデータをワイプできます。\n"
 "コンソールに定義されていないプロファイルに属するセーブデータも検出します。\n"
 "\n"
 "- ワイプするデータを選択\n"
 "- 操作するタイトルを選択\n"
 "- 実行！"
 
-#: src/menu/BatchJobState.cpp:38 src/menu/BatchJobState.cpp:45
+#: src/menu/BatchJobState.cpp:39 src/menu/BatchJobState.cpp:46
 msgid "\\ue000: Continue to savedata selection  \\ue001: Back"
 msgstr "\\ue000: セーブデータの選択に進む \\ue001: 戻る"
 
-#: src/menu/BatchJobState.cpp:41
+#: src/menu/BatchJobState.cpp:42
 msgid "Batch Copy To Other Device"
 msgstr "バッチコピー（他のデバイス）"
 
-#: src/menu/BatchJobState.cpp:42
+#: src/menu/BatchJobState.cpp:43
 msgid "   Copy Wii U Savedata from NAND to USB"
 msgstr "   Wii U セーブデータを NAND から USB にコピー"
 
-#: src/menu/BatchJobState.cpp:43
+#: src/menu/BatchJobState.cpp:44
 msgid "   Copy Wii U Savedata from USB to NAND"
 msgstr "   Wii U セーブデータを USB から NAND にコピー"
 
-#: src/menu/BatchJobState.cpp:44
+#: src/menu/BatchJobState.cpp:45
 msgid ""
-"Batch Copy To Other Device allows you to transfer savedata between NAND and "
-"USB for all selected titles that already have savedata on both media.\n"
+"Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n"
 "\n"
 "Just:\n"
 "- select which data to copy\n"
 "- select titles to act on\n"
 "- and go!"
 msgstr ""
-"バッチコピー（他のデバイス）」を使用すると、NANDとUSBの間で、両方のメディアに"
-"セーブデータが保存されているすべての選択したタイトルのセーブデータを転送でき"
-"ます。\n"
+"バッチコピー（他のデバイス）」を使用すると、NANDとUSBの間で、両方のメディアにセーブデータが保存されているすべての選択したタイトルのセーブデータを転送できます。\n"
 "\n"
 "操作は\n"
 "- コピーするデータを選択\n"
@@ -3389,12 +3308,10 @@ msgstr "   SD Wiiデータの 'private' スロットから読み込み"
 #: src/menu/TitleTaskState.cpp:88
 msgid ""
 "This title is a GameCube inject.\n"
-"Saves cannot be managed using SaveMii. Check Nintendont for more details on "
-"how to proceed."
+"Saves cannot be managed using SaveMii. Check Nintendont for more details on how to proceed."
 msgstr ""
 "このタイトルはGameCube injectです。\n"
-"SaveMiiでセーブデータを管理することはできません。詳細はNintendontを確認してく"
-"ださい。"
+"SaveMiiでセーブデータを管理することはできません。詳細はNintendontを確認してください。"
 
 #: src/menu/TitleTaskState.cpp:91
 msgid ""
@@ -3402,8 +3319,7 @@ msgid ""
 "If needed, vWii saves can also be managed using\n"
 "  the vWii Save Management section."
 msgstr ""
-"このタイトルはインジェクトです（vWii または GC タイトルが WiiU タイトルとして"
-"パッケージ化されています）。\n"
+"このタイトルはインジェクトです（vWii または GC タイトルが WiiU タイトルとしてパッケージ化されています）。\n"
 "必要に応じて、vWii セーブも vWii セーブ管理セクションを使用して管理できます。"
 
 #: src/menu/TitleTaskState.cpp:98 src/menu/MiiTasksState.cpp:165
@@ -3411,12 +3327,8 @@ msgid "\\ue000: Select Task  \\ue001: Back"
 msgstr "\\ue000: タスクを選択 \\ue001: 戻る"
 
 #: src/menu/TitleTaskState.cpp:110
-msgid ""
-"This inject does not seem neither a disc based Wii/GC game nor a VC/WiiWare. "
-"Cannot be managed by SaveMii."
-msgstr ""
-"このinjectはディスク版Wii/GCゲーム、VC/WiiWareのいずれでもないようです。"
-"SaveMiiでは管理できません。"
+msgid "This inject does not seem neither a disc based Wii/GC game nor a VC/WiiWare. Cannot be managed by SaveMii."
+msgstr "このinjectはディスク版Wii/GCゲーム、VC/WiiWareのいずれでもないようです。SaveMiiでは管理できません。"
 
 #: src/menu/TitleTaskState.cpp:137
 msgid "No save to Backup."
@@ -3447,12 +3359,8 @@ msgid "No save to export to SD Wii Data slot."
 msgstr "SD Wiiデータスロットへ書き出すセーブデータがありません。"
 
 #: src/menu/TitleTaskState.cpp:188
-msgid ""
-"GameCube injects savedata cannot be restored with SaveMii. Check Nintendont "
-"documentation to manually copy savedata"
-msgstr ""
-"GameCube injectのセーブデータはSaveMiiで復元できません。Nintendontのドキュメ"
-"ントを確認し、手動でコピーしてください。"
+msgid "GameCube injects savedata cannot be restored with SaveMii. Check Nintendont documentation to manually copy savedata"
+msgstr "GameCube injectのセーブデータはSaveMiiで復元できません。Nintendontのドキュメントを確認し、手動でコピーしてください。"
 
 #: src/menu/TitleTaskState.cpp:199
 msgid "Title has no profile savedata"
@@ -3460,9 +3368,31 @@ msgstr "タイトルにプロファイルセーブデータがありません。
 
 #: src/menu/TitleTaskState.cpp:210
 msgid "At least two profiles are needed to Copy/Move To OtherProfile."
+msgstr "他のプロファイルにコピー/移動するには、少なくとも2つのプロファイルが必要です。"
+
+#: src/menu/BackupSetManagementState.cpp:25
+msgid "BackupSet Management"
 msgstr ""
-"他のプロファイルにコピー/移動するには、少なくとも2つのプロファイルが必要で"
-"す。"
+
+#: src/menu/BackupSetManagementState.cpp:28
+msgid "   Set / Show Content / Tag / Wipe Backupsets"
+msgstr ""
+
+#: src/menu/BackupSetManagementState.cpp:31
+msgid "   Make a BackupSet CEMU/Dolphin compatible"
+msgstr ""
+
+#: src/menu/BackupSetManagementState.cpp:39
+msgid "Set the default BackupSet (tasks will used it as their backup repo, tag a BS with a name, or wipe a BS"
+msgstr ""
+
+#: src/menu/BackupSetManagementState.cpp:42
+msgid "Take an existent Batch BackupSet and create a clone with the NAND/USB format ready to copy to CEMU or Dolphin"
+msgstr ""
+
+#: src/menu/BackupSetManagementState.cpp:53 src/menu/BatchTasksState.cpp:82
+msgid "\\ue002: Options \\ue000: Select Batch Task"
+msgstr "\\ue002: オプション \\ue000: バッチタスクの選択"
 
 #: src/menu/MiiTransformTasksState.cpp:24
 msgid "Mii Transform Tasks"
@@ -3497,8 +3427,8 @@ msgstr "[%s]"
 #: src/menu/MiiTransformTasksState.cpp:61
 #: src/menu/MiiTransformTasksState.cpp:65
 #: src/menu/MiiTransformTasksState.cpp:72
-#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:335
-#: src/menu/BatchJobOptions.cpp:341 src/menu/BatchJobOptions.cpp:349
+#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:343
+#: src/menu/BatchJobOptions.cpp:349 src/menu/BatchJobOptions.cpp:357
 #: src/menu/ConfigMenuState.cpp:24 src/menu/ConfigMenuState.cpp:28
 #: src/menu/ConfigMenuState.cpp:33 src/menu/ConfigMenuState.cpp:38
 msgid "Yes"
@@ -3514,8 +3444,8 @@ msgstr "はい"
 #: src/menu/MiiTransformTasksState.cpp:61
 #: src/menu/MiiTransformTasksState.cpp:65
 #: src/menu/MiiTransformTasksState.cpp:72
-#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:341
-#: src/menu/BatchJobOptions.cpp:349 src/menu/ConfigMenuState.cpp:24
+#: src/menu/MiiTransformTasksState.cpp:76 src/menu/BatchJobOptions.cpp:349
+#: src/menu/BatchJobOptions.cpp:357 src/menu/ConfigMenuState.cpp:24
 #: src/menu/ConfigMenuState.cpp:28 src/menu/ConfigMenuState.cpp:33
 #: src/menu/ConfigMenuState.cpp:38
 msgid "No"
@@ -3562,84 +3492,48 @@ msgid "   Togle Temporary Flag On/Off:"
 msgstr "   一時フラグのオン/オフの切り替え:"
 
 #: src/menu/MiiTransformTasksState.cpp:83
-msgid ""
-"Selected miis will get the physical appearance of the mii you will select in "
-"the next menu."
+msgid "Selected miis will get the physical appearance of the mii you will select in the next menu."
 msgstr "選択されたMiiは次のメニューで選択するMiiの外観を取得します。"
 
 #: src/menu/MiiTransformTasksState.cpp:86
-msgid ""
-"Selected miis will get the ownership attributes of the template mii, so "
-"after they will belong to template console. Current games association is "
-"lost."
-msgstr ""
-"選択されたMiiはテンプレートMiiの所有権属性を取得し、その後テンプレート本体に"
-"所属するようになります。現在のゲームの関連付けは失われます。"
+msgid "Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost."
+msgstr "選択されたMiiはテンプレートMiiの所有権属性を取得し、その後テンプレート本体に所属するようになります。現在のゲームの関連付けは失われます。"
 
 #: src/menu/MiiTransformTasksState.cpp:89
-msgid ""
-"Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as "
-"created on this console. Updates Mii Id, so games association is lost."
-msgstr ""
-"MiiのMACアドレスとAuthID（WiiU）を更新し、このコンソールで作成されたように表"
-"示します。Mii IDを更新し、ゲームの関連付けを行います。失われました。"
+msgid "Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost."
+msgstr "MiiのMACアドレスとAuthID（WiiU）を更新し、このコンソールで作成されたように表示します。Mii IDを更新し、ゲームの関連付けを行います。失われました。"
 
 #: src/menu/MiiTransformTasksState.cpp:92
-msgid ""
-"So the mii has a new unique Mii Id (Beware! It will no longer be tied to any "
-"game that expects the older Mii Id)."
-msgstr ""
-"Miiに新しい固有のMii IDが割り当てられます（注意！古いMii IDを必要とするゲーム"
-"には関連付けられません）"
+msgid "So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)."
+msgstr "Miiに新しい固有のMii IDが割り当てられます（注意！古いMii IDを必要とするゲームには関連付けられません）"
 
 #: src/menu/MiiTransformTasksState.cpp:95
 msgid "Mark Miis as a favorite one so they appear in games that support them."
-msgstr ""
-"Miiをお気に入りとしてマークすると、それをサポートするゲームに表示されます。"
+msgstr "Miiをお気に入りとしてマークすると、それをサポートするゲームに表示されます。"
 
 #: src/menu/MiiTransformTasksState.cpp:98
 msgid "So the mii can travel to other consoles."
 msgstr "Miiを他のコンソールに移動できます。"
 
 #: src/menu/MiiTransformTasksState.cpp:101
-msgid ""
-"You can transform a normal Mii into an special one, and viceversa. This "
-"updates the Mii Id, so games association is lost."
-msgstr ""
-"通常のMiiを特別なMiiに、またはその逆に変換できます。これによりMii IDが更新さ"
-"れ、ゲームの関連付けが失われます。"
+msgid "You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost."
+msgstr "通常のMiiを特別なMiiに、またはその逆に変換できます。これによりMii IDが更新され、ゲームの関連付けが失われます。"
 
 #: src/menu/MiiTransformTasksState.cpp:104
-msgid ""
-"Wii Miis can be forced as foreign irrespective of where they were created. "
-"This updates the Mii Id (mii games association is lost)."
-msgstr ""
-"Wii Mii は、作成された場所に関係なく、強制的に外部 Mii として扱うことができま"
-"す。これにより Mii ID が更新されます (mii ゲームの関連付けが失われます)。"
+msgid "Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost)."
+msgstr "Wii Mii は、作成された場所に関係なく、強制的に外部 Mii として扱うことができます。これにより Mii ID が更新されます (mii ゲームの関連付けが失われます)。"
 
 #: src/menu/MiiTransformTasksState.cpp:107
-msgid ""
-"CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd "
-"files) or for the entire DB (for miis in a FFL or RFL file repo)."
-msgstr ""
-"CRCは選択した mii (ffsd、bin、cfsd、または rsd ファイルの場合) または DB 全"
-"体 (FFL または RFL ファイル リポジトリ内の mii の場合) に対して再計算されま"
-"す。"
+msgid "CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo)."
+msgstr "CRCは選択した mii (ffsd、bin、cfsd、または rsd ファイルの場合) または DB 全体 (FFL または RFL ファイル リポジトリ内の mii の場合) に対して再計算されます。"
 
 #: src/menu/MiiTransformTasksState.cpp:110
-msgid ""
-"So people that does not own the mii can modifiy it by creating a copy of the "
-"original."
-msgstr ""
-"Miiを所有していない人が、オリジナルのコピーを作成してMiiを変更できます。"
+msgid "So people that does not own the mii can modifiy it by creating a copy of the original."
+msgstr "Miiを所有していない人が、オリジナルのコピーを作成してMiiを変更できます。"
 
 #: src/menu/MiiTransformTasksState.cpp:113
-msgid ""
-"Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games "
-"association is lost)."
-msgstr ""
-"一時MiiはFFL DBで参照できません。これによりMii IDが更新されます(miiゲームの関"
-"連付けが失われます)。"
+msgid "Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost)."
+msgstr "一時MiiはFFL DBで参照できません。これによりMii IDが更新されます(miiゲームの関連付けが失われます)。"
 
 #: src/menu/MiiTransformTasksState.cpp:127
 msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Select Mii Template  \\ue001: Back"
@@ -3649,7 +3543,7 @@ msgstr "\\ue003\\ue07e: 設定/解除 \\ue000: Miiテンプレートの選択 \\
 msgid "\\ue003\\ue07e: Set/Unset  \\ue000: Transform  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 設定/解除 \\ue000: 変身 \\ue001: 戻る"
 
-#: src/menu/MiiTransformTasksState.cpp:172
+#: src/menu/MiiTransformTasksState.cpp:176
 msgid "Please select an option"
 msgstr "オプションを選択してください"
 
@@ -3674,8 +3568,7 @@ msgid "   Backup DB"
 msgstr "   DBをバックアップ"
 
 #: src/menu/MiiTasksState.cpp:37
-msgid ""
-"   Restore Full DB (Full restore - all account attributes - for one profile)"
+msgid "   Restore Full DB (Full restore - all account attributes - for one profile)"
 msgstr "   DB全体を復元（完全復元 - 全アカウント属性 - 1つのプロファイル用）"
 
 #: src/menu/MiiTasksState.cpp:39
@@ -3741,22 +3634,12 @@ msgid "Backup All Wii U Account folders and files"
 msgstr "Wii Uアカウントのフォルダとファイルをすべてバックアップ"
 
 #: src/menu/MiiTasksState.cpp:95
-msgid ""
-"Restore One Wii U Account files (all info, including but not only MiiData). "
-"Needs a console restart to take effect."
-msgstr ""
-"Wii Uアカウントのファイル（Miiデータを含むすべての情報）を復元します。反映す"
-"るには本体の再起動が必要です。"
+msgid "Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect."
+msgstr "Wii Uアカウントのファイル（Miiデータを含むすべての情報）を復元します。反映するには本体の再起動が必要です。"
 
 #: src/menu/MiiTasksState.cpp:98
-msgid ""
-"Restore MiiData + MiiImg from One Wii U Account to a different one (neither "
-"NNID nor PNID nor other attributes are modified). Needs a console restart to "
-"take effect."
-msgstr ""
-"Miiデータを復元 + Wii Uアカウントから別のアカウントへMiiImgを復元します"
-"（NNID、PNID、その他の属性は変更されません）。反映するには本体の再起動が必要"
-"です。"
+msgid "Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect."
+msgstr "Miiデータを復元 + Wii Uアカウントから別のアカウントへMiiImgを復元します（NNID、PNID、その他の属性は変更されません）。反映するには本体の再起動が必要です。"
 
 #: src/menu/MiiTasksState.cpp:101 src/menu/MiiTasksState.cpp:131
 msgid "List all Miis and some of its attributes"
@@ -3767,24 +3650,12 @@ msgid "Export Miis to other repos"
 msgstr "Miiを他のリポジトリにエクスポート"
 
 #: src/menu/MiiTasksState.cpp:107
-msgid ""
-"Import MiiData from a mii in another repo. Needs console restart and re-"
-"register the user (User Settings > Change Mii > Edit Registered Mi > "
-"Register) to take full effect"
-msgstr ""
-"別のリポジトリのMIIからMiiデータをインポートします。完全に有効にするには、コ"
-"ンソールを再起動してユーザーを再登録する必要があります（ユーザー設定 > Miiの"
-"変更 > 登録済みMiiの編集 > 登録）。"
+msgid "Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+msgstr "別のリポジトリのMIIからMiiデータをインポートします。完全に有効にするには、コンソールを再起動してユーザーを再登録する必要があります（ユーザー設定 > Miiの変更 > 登録済みMiiの編集 > 登録）。"
 
 #: src/menu/MiiTasksState.cpp:110
-msgid ""
-"Change attributes (share/copy/miiid/owner) or appareance of miis. Needs "
-"console restart and re-register the user (User Settings > Change Mii > Edit "
-"Registered Mi > Register) to take full effect"
-msgstr ""
-"miiの属性（共有/コピー/miiid/オーナー）または外観を変更します。変更を有効にす"
-"るには、コンソールを再起動し、ユーザーを再登録する必要があります（ユーザー設"
-"定 > Miiの変更 > 登録済みMiiの編集 > 登録）。"
+msgid "Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+msgstr "miiの属性（共有/コピー/miiid/オーナー）または外観を変更します。変更を有効にするには、コンソールを再起動し、ユーザーを再登録する必要があります（ユーザー設定 > Miiの変更 > 登録済みMiiの編集 > 登録）。"
 
 #: src/menu/MiiTasksState.cpp:119
 msgid "Backup Mii Database in their enterity"
@@ -3823,10 +3694,8 @@ msgid "Keyboard"
 msgstr "キーボード"
 
 #: src/menu/KeyboardState.cpp:38
-msgid ""
-"\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
-msgstr ""
-"\\ue000: キーを押す \\ue003: Shift \\ue002: Del \\ue045: OK! \\ue001: 戻る"
+msgid "\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
+msgstr "\\ue000: キーを押す \\ue003: Shift \\ue002: Del \\ue045: OK! \\ue001: 戻る"
 
 #: src/menu/BatchBackupState.cpp:27
 msgid "Batch Backup"
@@ -3900,14 +3769,14 @@ msgstr "    %s [インストール済み]"
 
 #: src/menu/BackupSetContentListState.cpp:85
 #, c-format
-msgid "%s  [%d]"
-msgstr "%s  [%d]"
+msgid "[%d] %s"
+msgstr ""
 
 #: src/menu/BackupSetContentListState.cpp:91
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue085\\ue07e\\ue086: ページ切り替え   \\ue001: 戻る"
 
-#: src/menu/BackupSetContentListState.cpp:175
+#: src/menu/BackupSetContentListState.cpp:176
 msgid "< no savedata >"
 msgstr "< セーブデータなし >"
 
@@ -3919,12 +3788,15 @@ msgid ""
 "cannot be retrieved"
 msgstr "%s のセーブデータ情報を取得できません"
 
-#: src/menu/BatchJobOptions.cpp:177
-msgid "Can't Copy/Move To OtherProfile if there is only one profile."
+#: src/menu/BatchJobOptions.cpp:159
+msgid "Cannot allocate memory for the profile list."
 msgstr ""
-"プロファイルが1つしかない場合は、他のプロファイルにコピー/移動できません。"
 
-#: src/menu/BatchJobOptions.cpp:216
+#: src/menu/BatchJobOptions.cpp:185
+msgid "Can't Copy/Move To OtherProfile if there is only one profile."
+msgstr "プロファイルが1つしかない場合は、他のプロファイルにコピー/移動できません。"
+
+#: src/menu/BatchJobOptions.cpp:224
 msgid ""
 "WARNING\n"
 "Some titles contain savedata for profiles that do not exist in this console\n"
@@ -3933,27 +3805,21 @@ msgid ""
 "* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."
 msgstr ""
 "警告\n"
-"一部のタイトルには、このコンソールに存在しないプロファイルのセーブデータが含"
-"まれていますこのセーブデータは無視されます。次の操作を実行できます:\n"
+"一部のタイトルには、このコンソールに存在しないプロファイルのセーブデータが含まれていますこのセーブデータは無視されます。次の操作を実行できます:\n"
 "* 「allusers」オプションまたはバッチバックアップでバックアップする\n"
-"* 「バッチワイプ/他のプロファイルへのバッチコピー」タスクでワイプまたは移動す"
-"る。"
+"* 「バッチワイプ/他のプロファイルへのバッチコピー」タスクでワイプまたは移動する。"
 
-#: src/menu/BatchJobOptions.cpp:219
+#: src/menu/BatchJobOptions.cpp:227
 msgid ""
-"The BackupSet contains savedata for profiles that don't exist in this "
-"console. You can continue, but 'allusers' restore process will fail for "
-"those titles.\n"
+"The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n"
 "\n"
 "Recommended action: restore from/to individual users."
 msgstr ""
-"バックアップセットには、この本体に存在しないプロファイルのセーブデータが含ま"
-"れています。続行できますが、これらのタイトルの 'すべてのユーザー' 復元プロセ"
-"スは失敗します。\n"
+"バックアップセットには、この本体に存在しないプロファイルのセーブデータが含まれています。続行できますが、これらのタイトルの 'すべてのユーザー' 復元プロセスは失敗します。\n"
 "\n"
 "推奨アクション: 個々のユーザーから/個々のユーザーへ復元します。 "
 
-#: src/menu/BatchJobOptions.cpp:223
+#: src/menu/BatchJobOptions.cpp:231
 msgid ""
 "\n"
 "\n"
@@ -3965,7 +3831,7 @@ msgstr ""
 "存在しないプロファイル:\n"
 " "
 
-#: src/menu/BatchJobOptions.cpp:225
+#: src/menu/BatchJobOptions.cpp:233
 msgid ""
 "\n"
 "Titles affected:\n"
@@ -3973,129 +3839,125 @@ msgstr ""
 "\n"
 "影響を受けるタイトル:\n"
 
-#: src/menu/BatchJobOptions.cpp:249
+#: src/menu/BatchJobOptions.cpp:257
 msgid "BatchJob - Options"
 msgstr "バッチリストア - オプション"
 
-#: src/menu/BatchJobOptions.cpp:250 src/menu/TitleOptionsState.cpp:180
+#: src/menu/BatchJobOptions.cpp:258 src/menu/TitleOptionsState.cpp:181
 msgid "Select SD user to copy from:"
 msgstr "コピー元のSDユーザーを選択:"
 
-#: src/menu/BatchJobOptions.cpp:251
+#: src/menu/BatchJobOptions.cpp:259
 msgid "Only 'common' savedata will be restored"
 msgstr "共通セーブデータのみ復元されます"
 
-#: src/menu/BatchJobOptions.cpp:252
+#: src/menu/BatchJobOptions.cpp:260
 msgid "'common' savedata will also be restored"
 msgstr "共通セーブデータも復元されます"
 
-#: src/menu/BatchJobOptions.cpp:255
+#: src/menu/BatchJobOptions.cpp:263
 msgid "Batch ProfileCopy - Options"
 msgstr "バッチプロファイルコピー - オプション"
 
-#: src/menu/BatchJobOptions.cpp:256 src/menu/BatchJobOptions.cpp:262
-#: src/menu/BatchJobOptions.cpp:274 src/menu/BatchJobOptions.cpp:280
-#: src/menu/TitleOptionsState.cpp:180
+#: src/menu/BatchJobOptions.cpp:264 src/menu/BatchJobOptions.cpp:270
+#: src/menu/BatchJobOptions.cpp:282 src/menu/BatchJobOptions.cpp:288
+#: src/menu/TitleOptionsState.cpp:181
 msgid "Select Wii U user to copy from:"
 msgstr "コピー元のWii Uユーザーを選択してください:"
 
-#: src/menu/BatchJobOptions.cpp:261
+#: src/menu/BatchJobOptions.cpp:269
 msgid "Batch ProfileMove - Options"
 msgstr "プロファイル一括移動 - オプション"
 
-#: src/menu/BatchJobOptions.cpp:267
+#: src/menu/BatchJobOptions.cpp:275
 msgid "Batch Wipe - Options"
 msgstr "バッチワイプ - オプション"
 
-#: src/menu/BatchJobOptions.cpp:268 src/menu/TitleOptionsState.cpp:180
+#: src/menu/BatchJobOptions.cpp:276 src/menu/TitleOptionsState.cpp:181
 msgid "Select Wii U user to wipe:"
 msgstr "Wii U ユーザーを選択してください:"
 
-#: src/menu/BatchJobOptions.cpp:269
+#: src/menu/BatchJobOptions.cpp:277
 msgid "Only 'common' savedata will be deleted"
 msgstr "共通セーブデータのみ削除されます"
 
-#: src/menu/BatchJobOptions.cpp:270
+#: src/menu/BatchJobOptions.cpp:278
 msgid "'common' savedata will also be deleted"
 msgstr "共通セーブデータも削除されます"
 
-#: src/menu/BatchJobOptions.cpp:273
+#: src/menu/BatchJobOptions.cpp:281
 msgid "Batch CopyToUSB - Options"
 msgstr "USBへの一括コピー - オプション"
 
-#: src/menu/BatchJobOptions.cpp:275 src/menu/BatchJobOptions.cpp:281
+#: src/menu/BatchJobOptions.cpp:283 src/menu/BatchJobOptions.cpp:289
 msgid "Only 'common' savedata will be copied"
 msgstr "共通セーブデータのみコピーされます"
 
-#: src/menu/BatchJobOptions.cpp:276 src/menu/BatchJobOptions.cpp:282
+#: src/menu/BatchJobOptions.cpp:284 src/menu/BatchJobOptions.cpp:290
 msgid "'common' savedata will also be copied"
 msgstr "共通セーブデータもコピーされます"
 
-#: src/menu/BatchJobOptions.cpp:279
+#: src/menu/BatchJobOptions.cpp:287
 msgid "Batch CopyToNAND - Options"
 msgstr "バッチコピー（NAND）- オプション"
 
-#: src/menu/BatchJobOptions.cpp:295
+#: src/menu/BatchJobOptions.cpp:303
 #, c-format
 msgid "BS: %s"
 msgstr "BS: %s"
 
-#: src/menu/BatchJobOptions.cpp:301 src/menu/BatchJobOptions.cpp:323
-#: src/menu/TitleOptionsState.cpp:185 src/menu/TitleOptionsState.cpp:207
+#: src/menu/BatchJobOptions.cpp:309 src/menu/BatchJobOptions.cpp:331
+#: src/menu/TitleOptionsState.cpp:186 src/menu/TitleOptionsState.cpp:208
 msgid "only common save"
 msgstr "共通保存のみ"
 
-#: src/menu/BatchJobOptions.cpp:304 src/menu/BatchJobOptions.cpp:309
+#: src/menu/BatchJobOptions.cpp:312 src/menu/BatchJobOptions.cpp:317
 msgid "Ok"
 msgstr "OK"
 
-#: src/menu/BatchJobOptions.cpp:306 src/menu/TitleOptionsState.cpp:187
+#: src/menu/BatchJobOptions.cpp:314 src/menu/TitleOptionsState.cpp:188
 msgid "all users"
 msgstr "全てのユーザー"
 
-#: src/menu/BatchJobOptions.cpp:320 src/menu/TitleOptionsState.cpp:204
+#: src/menu/BatchJobOptions.cpp:328 src/menu/TitleOptionsState.cpp:205
 msgid "Select Wii U user to copy to:"
 msgstr "コピー先のWii Uユーザーを選択してください:"
 
-#: src/menu/BatchJobOptions.cpp:325 src/menu/TitleOptionsState.cpp:209
+#: src/menu/BatchJobOptions.cpp:333 src/menu/TitleOptionsState.cpp:210
 msgid "same user than in source"
 msgstr "ソースと同じユーザー"
 
-#: src/menu/BatchJobOptions.cpp:333 src/menu/TitleOptionsState.cpp:274
+#: src/menu/BatchJobOptions.cpp:341 src/menu/TitleOptionsState.cpp:275
 msgid "Include 'common' save?"
 msgstr "「共通」保存を含めますか?"
 
-#: src/menu/BatchJobOptions.cpp:335
+#: src/menu/BatchJobOptions.cpp:343
 msgid "No "
 msgstr "いいえ"
 
-#: src/menu/BatchJobOptions.cpp:341
+#: src/menu/BatchJobOptions.cpp:349
 #, c-format
 msgid "   Wipe target users savedata before restoring: < %s >"
 msgstr "   復元前に対象ユーザーのセーブデータを消去: < %s >"
 
-#: src/menu/BatchJobOptions.cpp:345
+#: src/menu/BatchJobOptions.cpp:353
 msgid "   Target user savedata will be wiped"
 msgstr "   対象ユーザーのセーブデータは消去されます。"
 
-#: src/menu/BatchJobOptions.cpp:349
+#: src/menu/BatchJobOptions.cpp:357
 #, c-format
 msgid "   Backup all data before restoring (strongly recommended): < %s >"
-msgstr ""
-"   リストア前にすべてのデータをバックアップしてください (強く推奨): < %s >"
+msgstr "   リストア前にすべてのデータをバックアップしてください (強く推奨): < %s >"
 
-#: src/menu/BatchJobOptions.cpp:355
+#: src/menu/BatchJobOptions.cpp:363
 msgid "\\ue000: Ok! Go to Title selection  \\ue001: Back"
 msgstr "\\ue000: OK! タイトル選択へ移動 \\ue001: 戻る"
 
-#: src/menu/BatchJobOptions.cpp:357
-msgid ""
-"\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: "
-"Back"
-msgstr ""
-"\\ue002: 未定義のプロファイル \\ue000: OK! タイトルの選択に進む \\ue001: 戻る"
-
 #: src/menu/BatchJobOptions.cpp:365
+msgid "\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"
+msgstr "\\ue002: 未定義のプロファイル \\ue000: OK! タイトルの選択に進む \\ue001: 戻る"
+
+#: src/menu/BatchJobOptions.cpp:373
 msgid ""
 "\n"
 "Do you want to continue?\n"
@@ -4117,8 +3979,7 @@ msgstr "Miiをインポートするリポジトリを選択"
 
 #: src/menu/MiiRepoSelectState.cpp:72
 msgid "\\ue000: To Select Miis to Import from this repo  \\ue001: Back"
-msgstr ""
-"\\ue000: このリポジトリからインポートするMiiを選択するには \\ue001: 戻る"
+msgstr "\\ue000: このリポジトリからインポートするMiiを選択するには \\ue001: 戻る"
 
 #: src/menu/MiiRepoSelectState.cpp:75
 msgid "Select Repo to Export Miis to"
@@ -4126,8 +3987,7 @@ msgstr "Miiをエクスポートするリポジトリを選択"
 
 #: src/menu/MiiRepoSelectState.cpp:76
 msgid "\\ue000: To Select Miis to Export to this repo  \\ue001: Back"
-msgstr ""
-"\\ue000: このリポジトリにエクスポートするMiiを選択するには \\ue001: 戻る"
+msgstr "\\ue000: このリポジトリにエクスポートするMiiを選択するには \\ue001: 戻る"
 
 #: src/menu/MiiRepoSelectState.cpp:79
 msgid "Select Mii Repo to Manage"
@@ -4178,18 +4038,14 @@ msgstr "\\ue002: オプション \\ue000: モードの選択"
 
 #: src/menu/MainMenuState.cpp:80
 msgid ""
-"This task allows you to backup/restore savedata for MiiMaker, Internet "
-"Browser and other system titles.\n"
+"This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n"
 "\n"
-"Proceed with caution and be aware of what you are modifying! Some saves can "
-"affect system behavior, and misuse on them can have unexpected "
-"consequences!\n"
+"Proceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n"
 "\n"
 "Do you want to continue?\n"
 "\n"
 msgstr ""
-"このタイトルはインジェクト（vWiiまたはGCタイトルをWiiUタイトルとしてパッケー"
-"ジ化したもの）です。\n"
+"このタイトルはインジェクト（vWiiまたはGCタイトルをWiiUタイトルとしてパッケージ化したもの）です。\n"
 "必要に応じて、vWiiセーブデータはvWiiセーブ管理セクションで管理できます。"
 
 #: src/menu/ConfigMenuState.cpp:17
@@ -4229,380 +4085,340 @@ msgstr "\\ue045 設定を保存 \\ue001: 戻る"
 msgid "Error processing configuration"
 msgstr "設定の処理中にエラーが発生しました"
 
-#: src/menu/TitleOptionsState.cpp:105
+#: src/menu/TitleOptionsState.cpp:106
 #, c-format
 msgid "BackupSet: %s"
 msgstr "バックアップセット: %s"
 
-#: src/menu/TitleOptionsState.cpp:121
+#: src/menu/TitleOptionsState.cpp:122
 msgid "Destination:"
 msgstr "行き先："
 
-#: src/menu/TitleOptionsState.cpp:126
+#: src/menu/TitleOptionsState.cpp:127
 msgid "   Copy profile savedata to a different profile."
 msgstr "   プロファイルのセーブデータを別のプロファイルにコピーします。"
 
-#: src/menu/TitleOptionsState.cpp:129
+#: src/menu/TitleOptionsState.cpp:130
 msgid "   Move profile savedata to a different profile."
 msgstr "   プロファイルのセーブデータを別のプロファイルに移動します。"
 
-#: src/menu/TitleOptionsState.cpp:130
+#: src/menu/TitleOptionsState.cpp:131
 msgid "   - Target profile will be wiped."
 msgstr "   - 対象プロファイルは消去されます。"
 
-#: src/menu/TitleOptionsState.cpp:132
+#: src/menu/TitleOptionsState.cpp:133
 msgid "version"
 msgstr "バージョン"
 
-#: src/menu/TitleOptionsState.cpp:138
+#: src/menu/TitleOptionsState.cpp:139
 msgid "Delete from:"
 msgstr "から削除:"
 
-#: src/menu/TitleOptionsState.cpp:142
+#: src/menu/TitleOptionsState.cpp:143
 #, c-format
 msgid "Select %s [%s]%s:"
 msgstr "%s [%s]%s を選択:"
 
-#: src/menu/TitleOptionsState.cpp:153
+#: src/menu/TitleOptionsState.cpp:154
 #, c-format
 msgid "   Go! (slot in SD: %s)"
 msgstr "   実行! (SDスロット: %s)"
 
-#: src/menu/TitleOptionsState.cpp:183
+#: src/menu/TitleOptionsState.cpp:184
 msgid "metadata + savedata"
 msgstr "メタデータ + セーブデータ"
 
-#: src/menu/TitleOptionsState.cpp:228
+#: src/menu/TitleOptionsState.cpp:229
 msgid "Source has 'common' savedata, only it will be saved"
 msgstr "ソースに「共通」セーブデータがあります。こちらのみが保存されます"
 
-#: src/menu/TitleOptionsState.cpp:229
+#: src/menu/TitleOptionsState.cpp:230
 msgid "Source has 'common' savedata, it will also be saved"
 msgstr "ソースに「共通」セーブデータがあります。これも保存されます"
 
-#: src/menu/TitleOptionsState.cpp:232
+#: src/menu/TitleOptionsState.cpp:233
 msgid "Source has 'common' savedata, only it will be restored"
 msgstr "ソースに「共通」セーブデータがあります。こちらのみが復元されます"
 
-#: src/menu/TitleOptionsState.cpp:233
+#: src/menu/TitleOptionsState.cpp:234
 msgid "Source has 'common' savedata, it will also be restored"
 msgstr "ソースに「共通」セーブデータがあります。これも復元されます"
 
-#: src/menu/TitleOptionsState.cpp:236
+#: src/menu/TitleOptionsState.cpp:237
 msgid "'common' savedata found, only it will be deleted"
 msgstr "共通 セーブデータが見つかりました。これのみが削除されます"
 
-#: src/menu/TitleOptionsState.cpp:237
+#: src/menu/TitleOptionsState.cpp:238
 msgid "'common' savedata found, it will also be deleted"
 msgstr "共通 セーブデータが見つかりました。これも削除されます"
 
-#: src/menu/TitleOptionsState.cpp:240
+#: src/menu/TitleOptionsState.cpp:241
 msgid "Source has 'common' savedata, only it will be copied"
 msgstr "ソースに「共通」セーブデータがあります。こちらのみがコピーされます"
 
-#: src/menu/TitleOptionsState.cpp:241
+#: src/menu/TitleOptionsState.cpp:242
 msgid "Source 'common' savedata, it will also be copied"
 msgstr "元の「共通」セーブデータもコピーされます"
 
-#: src/menu/TitleOptionsState.cpp:259 src/menu/TitleOptionsState.cpp:292
+#: src/menu/TitleOptionsState.cpp:260 src/menu/TitleOptionsState.cpp:293
 #, c-format
 msgid "(Target has 'common': %s)"
 msgstr "(ターゲットに'共通'があります: %s)"
 
-#: src/menu/TitleOptionsState.cpp:260 src/menu/TitleOptionsState.cpp:277
-#: src/menu/TitleOptionsState.cpp:293
+#: src/menu/TitleOptionsState.cpp:261 src/menu/TitleOptionsState.cpp:278
+#: src/menu/TitleOptionsState.cpp:294
 msgid "yes"
 msgstr "はい"
 
-#: src/menu/TitleOptionsState.cpp:260 src/menu/TitleOptionsState.cpp:277
-#: src/menu/TitleOptionsState.cpp:293
+#: src/menu/TitleOptionsState.cpp:261 src/menu/TitleOptionsState.cpp:278
+#: src/menu/TitleOptionsState.cpp:294
 msgid "no "
 msgstr "いいえ"
 
-#: src/menu/TitleOptionsState.cpp:283 src/menu/TitleOptionsState.cpp:290
+#: src/menu/TitleOptionsState.cpp:284 src/menu/TitleOptionsState.cpp:291
 msgid "No 'common' save found."
 msgstr "「共通」の保存が見つかりません。"
 
-#: src/menu/TitleOptionsState.cpp:283 src/menu/TitleOptionsState.cpp:290
+#: src/menu/TitleOptionsState.cpp:284 src/menu/TitleOptionsState.cpp:291
 msgid "Source: No 'common' save found."
 msgstr "ソース: 「共通」セーブデータが見つかりません"
 
-#: src/menu/TitleOptionsState.cpp:315
+#: src/menu/TitleOptionsState.cpp:316
 msgid "Savedata in NAND"
 msgstr "NAND内のセーブデータ"
 
-#: src/menu/TitleOptionsState.cpp:318
+#: src/menu/TitleOptionsState.cpp:319
 msgid "Select vWii data to wipe:"
 msgstr "消去するvWiiデータを選択:"
 
-#: src/menu/TitleOptionsState.cpp:321
+#: src/menu/TitleOptionsState.cpp:322
 msgid "full metadata + savedata"
 msgstr "完全なメタデータ + セーブデータ"
 
-#: src/menu/TitleOptionsState.cpp:323
+#: src/menu/TitleOptionsState.cpp:324
 msgid "savedata"
 msgstr "savedata"
 
-#: src/menu/TitleOptionsState.cpp:330
+#: src/menu/TitleOptionsState.cpp:332
 msgid "'data.bin' savedata found. Uncompress and restore:"
 msgstr "'data.bin' セーブデータが見つかりました。展開して復元:"
 
-#: src/menu/TitleOptionsState.cpp:332
+#: src/menu/TitleOptionsState.cpp:334
 msgid "yes, I know this is a true data.bin file"
 msgstr "はい、これが正規の data.bin ファイルであることを承知しています"
 
-#: src/menu/TitleOptionsState.cpp:332
+#: src/menu/TitleOptionsState.cpp:334
 msgid "no, just copy back the data.bin file as is"
 msgstr "いいえ、data.bin ファイルをそのままコピーします"
 
-#: src/menu/TitleOptionsState.cpp:337 src/menu/TitleOptionsState.cpp:369
-msgid ""
-"WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv "
-"md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see "
-"github.com/w3irDv/savemii)."
-msgstr ""
-"警告：data.binが見つかりましたが、復号用の共有キーがありません。sd:/keys.txt "
-"に sd_key sd_iv md5_blanker を追加するか、\\ue003 を押してキーファイルを選択"
-"してください（github.com/w3irDv/savemii を参照）。"
+#: src/menu/TitleOptionsState.cpp:339
+msgid "WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."
+msgstr "警告：data.binが見つかりましたが、復号用の共有キーがありません。sd:/keys.txt に sd_key sd_iv md5_blanker を追加するか、\\ue003 を押してキーファイルを選択してください（github.com/w3irDv/savemii を参照）。"
 
-#: src/menu/TitleOptionsState.cpp:340 src/menu/TitleOptionsState.cpp:372
+#: src/menu/TitleOptionsState.cpp:342
 msgid "WARNING: Game TitleId does not match the one in savedata."
 msgstr "警告：ゲームのTitleIdがセーブデータ内のものと一致しません。"
 
-#: src/menu/TitleOptionsState.cpp:341 src/menu/TitleOptionsState.cpp:373
+#: src/menu/TitleOptionsState.cpp:343
 msgid "This savedata is for a different game/region."
 msgstr "このセーブデータは別のゲームまたはリージョン用です。"
 
-#: src/menu/TitleOptionsState.cpp:346
+#: src/menu/TitleOptionsState.cpp:349
 msgid "Compress backup:"
 msgstr "バックアップを圧縮:"
 
-#: src/menu/TitleOptionsState.cpp:348
+#: src/menu/TitleOptionsState.cpp:351
 msgid "yes, I neeed a data.bin file"
 msgstr "はい、data.bin ファイルが必要です"
 
-#: src/menu/TitleOptionsState.cpp:348
+#: src/menu/TitleOptionsState.cpp:351
 msgid "no, plain files are ok (classic savemii format)"
 msgstr "いいえ、通常のファイルで構いません (従来の savemii 形式)"
 
-#: src/menu/TitleOptionsState.cpp:352 src/menu/TitleOptionsState.cpp:361
-msgid ""
-"No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/"
-"keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/"
-"savemii)."
-msgstr ""
-"セーブデータを暗号化するための共有キーがありません。sd:/keys.txt に sd_key "
-"sd_iv md5_blanker を追加するか、\\ue003 を押してキーファイルを選択してくださ"
-"い。"
+#: src/menu/TitleOptionsState.cpp:355
+msgid "Compress savedata to sd:/private/wii/title where it can be read by standard Wii Data Management"
+msgstr "標準のWiiデータ管理で読み取れるよう、sd:/private/wii/title にセーブデータを圧縮して保存します"
 
-#: src/menu/TitleOptionsState.cpp:358
-msgid ""
-"Compress savedata to sd:/private/wii/title where it can be read by standard "
-"Wii Data Management"
-msgstr ""
-"標準のWiiデータ管理で読み取れるよう、sd:/private/wii/title にセーブデータを圧"
-"縮して保存します"
+#: src/menu/TitleOptionsState.cpp:360
+msgid "No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."
+msgstr "セーブデータを暗号化するための共有キーがありません。sd:/keys.txt に sd_key sd_iv md5_blanker を追加するか、\\ue003 を押してキーファイルを選択してください。"
 
-#: src/menu/TitleOptionsState.cpp:366
+#: src/menu/TitleOptionsState.cpp:365
 msgid "Restore backup from sd:/private/wii/title"
 msgstr "sd:/private/wii/title からバックアップを復元"
 
-#: src/menu/TitleOptionsState.cpp:438
+#: src/menu/TitleOptionsState.cpp:429
 msgid "\\ue000: Backup  \\ue003: Keys  \\ue001: Back"
 msgstr "\\ue000: バックアップ  \\ue003: キー  \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:440
-msgid ""
-"\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  "
-"\\ue001: Back"
-msgstr ""
-"\\ue000 保存 \\ue003 キー  \\ue045 スロットにタグ付け  \\ue046 ス"
-"ロット削除  \\ue001 戻る"
+#: src/menu/TitleOptionsState.cpp:431
+msgid "\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
+msgstr "\\ue000 保存 \\ue003 キー  \\ue045 スロットにタグ付け  \\ue046 スロット削除  \\ue001 戻る"
 
-#: src/menu/TitleOptionsState.cpp:448
+#: src/menu/TitleOptionsState.cpp:439
 msgid "\\ue000: Restore  \\ue002: Change BackupSet  \\ue001: Back"
 msgstr "\\ue000: 復元  \\ue002: バックアップセット変更  \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:450
-msgid ""
-"\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
-msgstr ""
-"\\ue000 復元  \\ue002 BackupSet変更  \\ue045 スロットにタグ付け  \\ue001 戻る"
+#: src/menu/TitleOptionsState.cpp:441
+msgid "\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue000 復元  \\ue002 BackupSet変更  \\ue045 スロットにタグ付け  \\ue001 戻る"
 
-#: src/menu/TitleOptionsState.cpp:453
-msgid ""
-"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"
-msgstr ""
-"\\ue000: 復元  \\ue003: キー  \\ue002: BackupSet変更  \\ue001: 戻る"
+#: src/menu/TitleOptionsState.cpp:444
+msgid "\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"
+msgstr "\\ue000: 復元  \\ue003: キー  \\ue002: BackupSet変更  \\ue001: 戻る"
+
+#: src/menu/TitleOptionsState.cpp:446
+msgid "\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue000 復元  \\ue003 キー  \\ue002 BackupSet変更  \\ue045 スロットにタグ付け  \\ue001 戻る"
 
 #: src/menu/TitleOptionsState.cpp:455
-msgid ""
-"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
-msgstr ""
-"\\ue000 復元  \\ue003 キー  \\ue002 BackupSet変更  \\ue045 スロットにタグ付け  \\ue001 戻る"
-
-#: src/menu/TitleOptionsState.cpp:464
 msgid "Copy to Other Profile"
 msgstr "他のプロファイルにコピーします。"
 
-#: src/menu/TitleOptionsState.cpp:466 src/menu/TitleOptionsState.cpp:486
+#: src/menu/TitleOptionsState.cpp:457 src/menu/TitleOptionsState.cpp:477
 msgid "\\ue000: Copy  \\ue001: Back"
 msgstr "\\ue000: コピー \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:469
+#: src/menu/TitleOptionsState.cpp:460
 msgid "Move to Other Profile"
 msgstr "他のプロファイルに移動"
 
-#: src/menu/TitleOptionsState.cpp:471
+#: src/menu/TitleOptionsState.cpp:462
 msgid "\\ue000: Move  \\ue001: Back"
 msgstr "\\ue000: 移動 \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:474
+#: src/menu/TitleOptionsState.cpp:465
 msgid "Import Loadiine"
 msgstr "ロードラインのインポート"
 
-#: src/menu/TitleOptionsState.cpp:476
+#: src/menu/TitleOptionsState.cpp:467
 msgid "\\ue000: Import  \\ue001: Back"
 msgstr "\\ue000: インポート \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:479
+#: src/menu/TitleOptionsState.cpp:470
 msgid "Export Loadiine"
 msgstr "ロードラインのエクスポート"
 
-#: src/menu/TitleOptionsState.cpp:481
+#: src/menu/TitleOptionsState.cpp:472
 msgid "\\ue000: Export  \\ue001: Back"
 msgstr "\\ue000: エクスポート \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:484
+#: src/menu/TitleOptionsState.cpp:475
 msgid "Copy to Other Device"
 msgstr "他のデバイスにコピーします。"
 
-#: src/menu/TitleOptionsState.cpp:489
+#: src/menu/TitleOptionsState.cpp:480
 msgid "Import from SD Wii Save"
 msgstr "SD Wiiセーブから読み込み"
 
-#: src/menu/TitleOptionsState.cpp:491
+#: src/menu/TitleOptionsState.cpp:482
 msgid "\\ue000: Import  \\ue003: Keys  \\ue001: Back"
 msgstr "\\ue000: インポート  \\ue003: キー  \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:494
+#: src/menu/TitleOptionsState.cpp:485
 msgid "Export to SD Wii Save"
 msgstr "SD Wiiセーブへ書き出し"
 
-#: src/menu/TitleOptionsState.cpp:497
+#: src/menu/TitleOptionsState.cpp:488
 msgid "\\ue000: Export  \\ue003: Keys  \\ue001: Back"
 msgstr "\\ue000: エクスポート  \\ue003: キー  \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:499
+#: src/menu/TitleOptionsState.cpp:490
 msgid "\\ue000: Export  \\ue003: Keys  \\ue046 Delete Slot  \\ue001: Back"
-msgstr ""
-"\\ue000: エクスポート  \\ue003: キー  \\ue046 スロット削除  \\ue001: 戻る"
+msgstr "\\ue000: エクスポート  \\ue003: キー  \\ue046 スロット削除  \\ue001: 戻る"
 
-#: src/menu/TitleOptionsState.cpp:951
+#: src/menu/TitleOptionsState.cpp:943
 msgid "No data selected to copyToOtherProfile"
 msgstr "他のプロファイルにコピーするデータが選択されていません"
 
-#: src/menu/TitleOptionsState.cpp:953
+#: src/menu/TitleOptionsState.cpp:945
 msgid "No data selected to moveProfile"
 msgstr "プロファイルを移動するデータが選択されていません"
 
-#: src/menu/TitleOptionsState.cpp:955
+#: src/menu/TitleOptionsState.cpp:947
 msgid "No data selected to copy"
 msgstr "コピーするデータが選択されていません"
 
-#: src/menu/TitleOptionsState.cpp:980
+#: src/menu/TitleOptionsState.cpp:972
 #, c-format
 msgid ""
 "'data.bin' uncompress aborted: no shared keys found.\n"
-"Provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key "
-"and md5_blanker values (they are console independent). Check github.com/"
-"w3irDv/savemii for more info.\n"
+"Provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
 "'data.bin' の展開を中止しました：共有キーが見つかりません。\n"
-"SDカードのルートに、Wiiの sd_iv, sd_key, md5_blanker の値（これらは本体に依存"
-"しません）を含む 'keys.txt' ファイルを用意してください。詳細は github.com/"
-"w3irDv/savemii を確認してください。\n"
+"SDカードのルートに、Wiiの sd_iv, sd_key, md5_blanker の値（これらは本体に依存しません）を含む 'keys.txt' ファイルを用意してください。詳細は github.com/w3irDv/savemii を確認してください。\n"
 "\n"
 "キー初期化エラー:\n"
 "%s\n"
 
-#: src/menu/TitleOptionsState.cpp:985
+#: src/menu/TitleOptionsState.cpp:977
 #, c-format
 msgid ""
 "'data.bin' compress aborted: no shared keys found.\n"
-" Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, "
-"sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/"
-"savemii for more info.\n"
+" Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
 "'data.bin' の圧縮を中止しました：共有キーが見つかりません。\n"
-"SDカードのルートに、Wiiの sd_iv, sd_key, md5_blanker の値を含む 'keys.txt' "
-"ファイルを用意してください。詳細は github.com/w3irDv/savemii を確認してくださ"
-"い。\n"
+"SDカードのルートに、Wiiの sd_iv, sd_key, md5_blanker の値を含む 'keys.txt' ファイルを用意してください。詳細は github.com/w3irDv/savemii を確認してください。\n"
 "\n"
 "キー初期化エラー:\n"
 "%s\n"
 
-#: src/menu/TitleOptionsState.cpp:987
+#: src/menu/TitleOptionsState.cpp:979
 #, c-format
 msgid ""
 "'data.bin' compress aborted: no private keys found.\n"
-" Please check that the Wii U 'otp.bin' file is in SD:/wiiu/backups/"
-"<SerialId>. Check github.com/w3irDv/savemii for more info.\n"
+" Please check that the Wii U 'otp.bin' file is in SD:/wiiu/backups/<SerialId>. Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
 "'data.bin' の圧縮を中止しました：プライベートキーが見つかりません。\n"
-"Wii Uの 'otp.bin' ファイルが SD:/wiiu/backups/<SerialId> にあるか確認してくだ"
-"さい。詳細は github.com/w3irDv/savemii を確認してください。\n"
+"Wii Uの 'otp.bin' ファイルが SD:/wiiu/backups/<SerialId> にあるか確認してください。詳細は github.com/w3irDv/savemii を確認してください。\n"
 "\n"
 "キー初期化エラー:\n"
 "%s\n"
 
-#: src/menu/TitleOptionsState.cpp:989
+#: src/menu/TitleOptionsState.cpp:981
 #, c-format
 msgid ""
 "'data.bin' compress aborted: mac_address not found.\n"
-" Please provide a 'keys.txt' file in the root of the SD with a mac_address "
-"(from any Wii). Check github.com/w3irDv/savemii for more info.\n"
+" Please provide a 'keys.txt' file in the root of the SD with a mac_address (from any Wii). Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
 "'data.bin' の圧縮を中止しました：mac_address が見つかりません。\n"
-"SDカードのルートに、mac_address（どのWiiのものでも可）を含む 'keys.txt' ファ"
-"イルを用意してください。詳細は github.com/w3irDv/savemii を確認してくださ"
-"い。\n"
+"SDカードのルートに、mac_address（どのWiiのものでも可）を含む 'keys.txt' ファイルを用意してください。詳細は github.com/w3irDv/savemii を確認してください。\n"
 "\n"
 "キー初期化エラー:\n"
 "%s\n"
 
-#: src/menu/TitleOptionsState.cpp:997 src/menu/TitleOptionsState.cpp:1002
-#: src/menu/TitleOptionsState.cpp:1059
+#: src/menu/TitleOptionsState.cpp:989 src/menu/TitleOptionsState.cpp:994
+#: src/menu/TitleOptionsState.cpp:1060
 msgid "Savedata succesfully backed up!"
 msgstr "セーブデータのバックアップに成功しました！"
 
-#: src/menu/TitleOptionsState.cpp:1010 src/menu/TitleOptionsState.cpp:1014
+#: src/menu/TitleOptionsState.cpp:1006 src/menu/TitleOptionsState.cpp:1010
 #: src/menu/TitleOptionsState.cpp:1052
 msgid "Savedata succesfully restored!"
 msgstr "セーブデータの復元に成功しました！"
 
-#: src/menu/TitleOptionsState.cpp:1020
+#: src/menu/TitleOptionsState.cpp:1016
 msgid "Savedata succesfully wiped!"
 msgstr "セーブデータの消去に成功しました！"
 
-#: src/menu/TitleOptionsState.cpp:1026
+#: src/menu/TitleOptionsState.cpp:1022
 msgid "Savedata succesfully moved!"
 msgstr "セーブデータの移動に成功しました！"
 
-#: src/menu/TitleOptionsState.cpp:1031 src/menu/TitleOptionsState.cpp:1036
-#: src/menu/TitleOptionsState.cpp:1041 src/menu/TitleOptionsState.cpp:1046
+#: src/menu/TitleOptionsState.cpp:1027 src/menu/TitleOptionsState.cpp:1032
+#: src/menu/TitleOptionsState.cpp:1037 src/menu/TitleOptionsState.cpp:1042
 msgid "Savedata succesfully copied!"
 msgstr "セーブデータのコピーに成功しました！"
 
@@ -4649,46 +4465,20 @@ msgstr ""
 "セーブデータを初期化するためにゲームを最初に起動する必要がなくなりました。"
 
 #: src/menu/BatchTasksState.cpp:62
-msgid ""
-"Batch Wipe allows you to wipe savedata belonging to a given profile across "
-"all selected titles. It detects also savedata belonging to profiles not "
-"defined in the console."
-msgstr ""
-"バッチワイプを使用すると、選択したすべてのタイトルで、特定のプロファイルに属"
-"するセーブデータをワイプできます。コンソールに定義されていないプロファイルに"
-"属するセーブデータも検出されます。"
+msgid "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
+msgstr "バッチワイプを使用すると、選択したすべてのタイトルで、特定のプロファイルに属するセーブデータをワイプできます。コンソールに定義されていないプロファイルに属するセーブデータも検出されます。"
 
 #: src/menu/BatchTasksState.cpp:65
-msgid ""
-"Batch Move To Other Profile allows you to move savedata from one user "
-"profile to a different user profile. There is no data copy, just a renaming "
-"of folders, so it is very quick.."
-msgstr ""
-"他のプロファイルへのバッチ移動を使用すると、セーブデータをあるユーザープロ"
-"ファイルから別のユーザープロファイルに移動できます。データのコピーは行われ"
-"ず、フォルダ名の変更のみなので、非常に高速です。"
+msgid "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
+msgstr "他のプロファイルへのバッチ移動を使用すると、セーブデータをあるユーザープロファイルから別のユーザープロファイルに移動できます。データのコピーは行われず、フォルダ名の変更のみなので、非常に高速です。"
 
 #: src/menu/BatchTasksState.cpp:68
-msgid ""
-"Batch Copy To Other Profile allows you to transfer savedata from one user "
-"profile to a different user profile. Savedata from the source data remains "
-"untouched."
-msgstr ""
-"他のプロファイルへのバッチコピーを使用すると、あるユーザープロファイルから別"
-"のユーザープロファイルにセーブデータを転送できます。ソースデータのセーブデー"
-"タはそのまま残ります。"
+msgid "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
+msgstr "他のプロファイルへのバッチコピーを使用すると、あるユーザープロファイルから別のユーザープロファイルにセーブデータを転送できます。ソースデータのセーブデータはそのまま残ります。"
 
 #: src/menu/BatchTasksState.cpp:71
-msgid ""
-"Batch Copy To Other Device allows you to transfer savedata between NAND and "
-"USB for all selected titles that already have savedata on both media."
-msgstr ""
-"他のデバイスへのバッチコピーを使用すると、NANDとUSBの両方に既にセーブデータが"
-"あるすべての選択したタイトルのセーブデータを転送できます。"
-
-#: src/menu/BatchTasksState.cpp:82
-msgid "\\ue002: Options \\ue000: Select Batch Task"
-msgstr "\\ue002: オプション \\ue000: バッチタスクの選択"
+msgid "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
+msgstr "他のデバイスへのバッチコピーを使用すると、NANDとUSBの両方に既にセーブデータがあるすべての選択したタイトルのセーブデータを転送できます。"
 
 #: src/savemng.cpp:156
 msgid "Failed to open Loadiine game save directory."
@@ -4698,37 +4488,45 @@ msgstr "Loadiine ゲームの保存ディレクトリを開けませんでした
 msgid "Loadiine game folder not found."
 msgstr "読み込み中のゲーム フォルダが見つかりません。"
 
-#: src/savemng.cpp:394 src/savemng.cpp:506 src/savemng.cpp:567
-#: src/savemng.cpp:1008 src/savemng.cpp:1206 src/savemng.cpp:1306
-#: src/savemng.cpp:1361 src/savemng.cpp:1417 src/miisavemng.cpp:14
+#: src/savemng.cpp:394 src/savemng.cpp:509 src/savemng.cpp:573
+#: src/savemng.cpp:1023 src/savemng.cpp:1227 src/savemng.cpp:1330
+#: src/savemng.cpp:1388 src/savemng.cpp:1444 src/miisavemng.cpp:14
 msgid "Are you sure?"
 msgstr "本当によろしいですか？"
 
-#: src/savemng.cpp:400
+#: src/savemng.cpp:400 src/savemng.cpp:515 src/savemng.cpp:579
+#: src/savemng.cpp:1031 src/savemng.cpp:1233 src/savemng.cpp:1334
+msgid ""
+"There is no empty slot to back up the current savedata first.\n"
+"\n"
+"Continue without a backup?"
+msgstr ""
+
+#: src/savemng.cpp:403
 msgid "pre-copyToOtherDev backup"
 msgstr "pre-copyToOtherDev バックアップ"
 
-#: src/savemng.cpp:409
+#: src/savemng.cpp:412
 msgid "Copy failed."
 msgstr "コピーに失敗しました。"
 
-#: src/savemng.cpp:419 src/savemng.cpp:873 src/savemng.cpp:1047
+#: src/savemng.cpp:422 src/savemng.cpp:888 src/savemng.cpp:1067
 msgid "source_user=-3 is not allowed for this task"
 msgstr "このタスクではsource_user=-3は許可されていません"
 
-#: src/savemng.cpp:451 src/savemng.cpp:904 src/savemng.cpp:1409
+#: src/savemng.cpp:454 src/savemng.cpp:919 src/savemng.cpp:1436
 msgid "Error copying common savedata."
 msgstr "共通セーブデータのコピー中にエラーが発生しました。"
 
-#: src/savemng.cpp:464 src/savemng.cpp:913
+#: src/savemng.cpp:467 src/savemng.cpp:928
 msgid "Error copying savedata."
 msgstr "セーブデータのコピー中にエラーが発生しました。"
 
-#: src/savemng.cpp:465 src/savemng.cpp:535 src/savemng.cpp:914
+#: src/savemng.cpp:468 src/savemng.cpp:541 src/savemng.cpp:929
 msgid "Error copying profile savedata."
 msgstr "プロファイルのセーブデータのコピー中にエラーが発生しました。"
 
-#: src/savemng.cpp:485
+#: src/savemng.cpp:488
 #, c-format
 msgid ""
 "%s\n"
@@ -4737,15 +4535,15 @@ msgstr ""
 "%s\n"
 "コピーに失敗しました。"
 
-#: src/savemng.cpp:512
+#: src/savemng.cpp:518
 msgid "pre-copySavedataToOtherProfile backup"
 msgstr "pre-copySavedataToOtherProfile バックアップ"
 
-#: src/savemng.cpp:513 src/savemng.cpp:574
+#: src/savemng.cpp:519 src/savemng.cpp:583
 msgid "Backup Failed - Replicate aborted !!"
 msgstr "バックアップ失敗 - レプリケーションを中止しました !!"
 
-#: src/savemng.cpp:546
+#: src/savemng.cpp:552
 #, c-format
 msgid ""
 "%s\n"
@@ -4754,11 +4552,11 @@ msgstr ""
 "%s\n"
 "プロファイルのコピーに失敗しました。"
 
-#: src/savemng.cpp:573
+#: src/savemng.cpp:582
 msgid "pre-moveSavedataToOtherProfile backup"
 msgstr "プロファイル移動前のセーブデータを他のプロファイルへバックアップ"
 
-#: src/savemng.cpp:592
+#: src/savemng.cpp:601
 #, c-format
 msgid ""
 "Error deleting savedata folder\n"
@@ -4767,7 +4565,7 @@ msgstr ""
 "セーブデータフォルダの削除エラー\n"
 "%s"
 
-#: src/savemng.cpp:599
+#: src/savemng.cpp:608
 #, c-format
 msgid ""
 "Unable to rename folder \n"
@@ -4786,7 +4584,7 @@ msgstr ""
 "\n"
 "バックアップを復元し、エラーを修正してからもう一度お試しください。"
 
-#: src/savemng.cpp:618
+#: src/savemng.cpp:627
 #, c-format
 msgid ""
 "%s\n"
@@ -4795,11 +4593,11 @@ msgstr ""
 "%s\n"
 "プロファイルの移動に失敗しました。"
 
-#: src/savemng.cpp:747
+#: src/savemng.cpp:762
 msgid "Do you want to cancel batch backup?"
 msgstr "バッチ バックアップをキャンセルしますか?"
 
-#: src/savemng.cpp:772
+#: src/savemng.cpp:787
 #, c-format
 msgid ""
 "%s\n"
@@ -4814,57 +4612,47 @@ msgstr ""
 "これまでのエラー数: %d\n"
 "続行しますか?"
 
-#: src/savemng.cpp:837
+#: src/savemng.cpp:852
 msgid "BACKUP IN PROGRESS"
 msgstr "バックアップ中"
 
-#: src/savemng.cpp:858 src/savemng.cpp:939
-msgid ""
-"Backup will not preserve permissions. This is a system title and backup will "
-"only proceed when you resolve the issue."
-msgstr ""
-"バックアップでは権限が保持されません。これはシステムタイトルであり、問​​題が解"
-"決された場合にのみバックアップが続行されます。"
+#: src/savemng.cpp:873 src/savemng.cpp:954
+msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
+msgstr "バックアップでは権限が保持されません。これはシステムタイトルであり、問​​題が解決された場合にのみバックアップが続行されます。"
 
-#: src/savemng.cpp:861 src/savemng.cpp:942
-msgid ""
-"Backup will not preserve permissions. It can work (legacy mode) but it is "
-"advised to solve the issue and retry."
-msgstr ""
-"バックアップでは権限が保持されません。レガシーモードでは正常に動作しますが、"
-"問題を解決してから再試行することをお勧めします。"
+#: src/savemng.cpp:876 src/savemng.cpp:957
+msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
+msgstr "バックアップでは権限が保持されません。レガシーモードでは正常に動作しますが、問題を解決してから再試行することをお勧めします。"
 
-#: src/savemng.cpp:922
+#: src/savemng.cpp:937
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
-msgstr ""
-"警告 - メタデータ saveinfo.xml のコピー中にエラーが発生しました。重大ではあり"
-"ません。"
+msgstr "警告 - メタデータ saveinfo.xml のコピー中にエラーが発生しました。重大ではありません。"
 
-#: src/savemng.cpp:931
+#: src/savemng.cpp:946
 msgid "Error closing FAT32 chars translation file"
 msgstr "FAT32文字変換ファイルのクローズ中にエラーが発生しました"
 
-#: src/savemng.cpp:943
+#: src/savemng.cpp:958
 msgid "WARNING - NO PERMS"
 msgstr "警告 - 権限がありません"
 
-#: src/savemng.cpp:1074 src/savemng.cpp:1353
+#: src/savemng.cpp:1094 src/savemng.cpp:1380
 msgid "Error restoring common savedata."
 msgstr "共通セーブデータの復元中にエラーが発生しました。"
 
-#: src/savemng.cpp:1087
+#: src/savemng.cpp:1107
 msgid "Error restoring savedata."
 msgstr "セーブデータの復元中にエラーが発生しました。"
 
-#: src/savemng.cpp:1088
+#: src/savemng.cpp:1108
 msgid "Error restoring profile savedata."
 msgstr "プロファイルセーブデータの復元中にエラーが発生しました。"
 
-#: src/savemng.cpp:1142
+#: src/savemng.cpp:1163
 msgid "Error setting permissions"
 msgstr "権限設定エラー"
 
-#: src/savemng.cpp:1203
+#: src/savemng.cpp:1224
 msgid ""
 "This option is a last resort in case something has gone wrong when\n"
 "restoring data. It will wipe metadata and savedata, and the title \n"
@@ -4874,34 +4662,31 @@ msgid ""
 "\n"
 "Continue?"
 msgstr ""
-"このタスクでは、MiiMaker、インターネットブラウザ、その他のシステムタイトルの"
-"セーブデータをバックアップ/復元できます。\n"
+"このタスクでは、MiiMaker、インターネットブラウザ、その他のシステムタイトルのセーブデータをバックアップ/復元できます。\n"
 "\n"
-"変更内容に十分注意して作業を進めてください。一部のセーブデータはシステムの動"
-"作に影響を与える可能性があり、誤用すると予期せぬ結果を招く可能性がありま"
-"す。\n"
+"変更内容に十分注意して作業を進めてください。一部のセーブデータはシステムの動作に影響を与える可能性があり、誤用すると予期せぬ結果を招く可能性があります。\n"
 "\n"
 "続行しますか？\n"
 "\n"
 
-#: src/savemng.cpp:1203 src/savemng.cpp:1206 src/savemng.cpp:1417
+#: src/savemng.cpp:1224 src/savemng.cpp:1227 src/savemng.cpp:1444
 #: src/miisavemng.cpp:14
 msgid "Hm, are you REALLY sure?"
 msgstr "うーん、本当によろしいですか？"
 
-#: src/savemng.cpp:1211 src/savemng.cpp:1309
+#: src/savemng.cpp:1235 src/savemng.cpp:1336
 msgid "Backup current savedata first?"
 msgstr "最初に現在のセーブデータをバックアップしますか?"
 
-#: src/savemng.cpp:1252
+#: src/savemng.cpp:1276
 msgid "Error wiping common savedata."
 msgstr "共通セーブデータの消去中にエラーが発生しました。"
 
-#: src/savemng.cpp:1256
+#: src/savemng.cpp:1280
 msgid "Error deleting common folder."
 msgstr "共通フォルダ削除エラー"
 
-#: src/savemng.cpp:1257
+#: src/savemng.cpp:1281
 #, c-format
 msgid ""
 "%s \n"
@@ -4914,23 +4699,23 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1264
+#: src/savemng.cpp:1288
 msgid "Error wiping savedata."
 msgstr "セーブデータの消去中にエラーが発生しました。"
 
-#: src/savemng.cpp:1265
+#: src/savemng.cpp:1289
 msgid "Error wiping profile savedata."
 msgstr "プロファイルセーブデータの消去中にエラーが発生しました。"
 
-#: src/savemng.cpp:1270
+#: src/savemng.cpp:1294
 msgid "Error deleting savedata folder."
 msgstr "セーブデータフォルダ削除エラー"
 
-#: src/savemng.cpp:1271
+#: src/savemng.cpp:1295
 msgid "Error deleting profile savedata folder."
 msgstr "プロファイルセーブデータフォルダ削除エラー"
 
-#: src/savemng.cpp:1272
+#: src/savemng.cpp:1296
 #, c-format
 msgid ""
 "%s \n"
@@ -4943,15 +4728,15 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1282
+#: src/savemng.cpp:1306
 msgid "Error wiping metadata+savedata."
 msgstr "メタデータ+セーブデータの消去エラー"
 
-#: src/savemng.cpp:1287
+#: src/savemng.cpp:1311
 msgid "Error deleting title folder."
 msgstr "タイトルフォルダの削除中にエラーが発生しました。"
 
-#: src/savemng.cpp:1288
+#: src/savemng.cpp:1312
 #, c-format
 msgid ""
 "%s \n"
@@ -4964,46 +4749,25 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1326 src/savemng.cpp:1339 src/savemng.cpp:1379
+#: src/savemng.cpp:1353 src/savemng.cpp:1366
 msgid "Failed to import savedata from loadiine."
 msgstr "loadiineからのセーブデータ読み込みに失敗しました。"
 
-#: src/savemng.cpp:1397
+#: src/savemng.cpp:1406 src/savemng.cpp:1424
 msgid "Failed to export savedata to loadiine."
 msgstr "loadiineへのセーブデータ書き出しに失敗しました。"
 
-#: src/savemng.cpp:1423 src/savemng.cpp:1428 src/savemng.cpp:1451
+#: src/savemng.cpp:1450 src/savemng.cpp:1455 src/savemng.cpp:1478
 msgid "Error setting path. Aborting."
 msgstr "パスの設定中にエラーが発生しました。中止します。"
 
-#: src/savemng.cpp:1436 src/savemng.cpp:1438 src/miisavemng.cpp:21
+#: src/savemng.cpp:1463 src/savemng.cpp:1465 src/miisavemng.cpp:21
 #: src/miisavemng.cpp:23
 #, c-format
 msgid "Failed to delete slot %u."
 msgstr "スロット %u の削除に失敗しました。"
 
-#: src/savemng.cpp:1440 src/miisavemng.cpp:25
-msgid ""
-"Folder $s\n"
-"does not exist."
-msgstr ""
-"フォルダ$s\n"
-"が存在しません。"
-
-#: src/savemng.cpp:1447
-msgid "Wipe BackupSet - Are you sure?"
-msgstr "バックアップセットを消去 - よろしいですか？"
-
-#: src/savemng.cpp:1447
-msgid "Wipe BackupSet - Hm, are you REALLY sure?"
-msgstr "バックアップセットを消去 - うーん、本当によろしいですか？"
-
-#: src/savemng.cpp:1457 src/savemng.cpp:1461
-#, c-format
-msgid "Failed to delete backupSet %s."
-msgstr "バックアップセット %s の削除に失敗しました。"
-
-#: src/savemng.cpp:1465
+#: src/savemng.cpp:1467 src/savemng.cpp:1492 src/miisavemng.cpp:25
 #, c-format
 msgid ""
 "Folder %s\n"
@@ -5012,7 +4776,20 @@ msgstr ""
 "フォルダ%s\n"
 "が存在しません。"
 
-#: src/savemng.cpp:1515
+#: src/savemng.cpp:1474
+msgid "Wipe BackupSet - Are you sure?"
+msgstr "バックアップセットを消去 - よろしいですか？"
+
+#: src/savemng.cpp:1474
+msgid "Wipe BackupSet - Hm, are you REALLY sure?"
+msgstr "バックアップセットを消去 - うーん、本当によろしいですか？"
+
+#: src/savemng.cpp:1484 src/savemng.cpp:1488
+#, c-format
+msgid "Failed to delete backupSet %s."
+msgstr "バックアップセット %s の削除に失敗しました。"
+
+#: src/savemng.cpp:1542
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -5031,7 +4808,7 @@ msgstr ""
 "- 中止: %d\n"
 "- スキップ: %d\n"
 
-#: src/savemng.cpp:1517
+#: src/savemng.cpp:1544
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -5050,7 +4827,7 @@ msgstr ""
 "- 中止: %d\n"
 "- スキップ: %d (初期化されていない %d 件を含む)\n"
 
-#: src/savemng.cpp:1526
+#: src/savemng.cpp:1553
 msgid ""
 "\n"
 "Failed Titles:"
@@ -5058,26 +4835,23 @@ msgstr ""
 "\n"
 "失敗したタイトル:"
 
-#: src/savemng.cpp:1565
+#: src/savemng.cpp:1592
 #, c-format
 msgid ""
 "Unable to merge folder '%08x%08x' with existent folder\n"
 "'%s'\n"
 "\n"
-"Some backups may have been moved to this last folder. Please fix errors and "
-"try again, or manually move contents from one folder to the other.\n"
+"Some backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n"
 "\n"
 "Backup/restore operations will still use old '%08x%08x' folder"
 msgstr ""
 "フォルダ '%08x%08x' を既存のフォルダ '%s' と結合できません\n"
 "\n"
-"一部のバックアップがこのフォルダに移動さ​​れている可能性があります。エラーを修"
-"正してもう一度お試しください。または手動で移動してください。コンテンツをある"
-"フォルダから別のフォルダに移動しました。\n"
+"一部のバックアップがこのフォルダに移動さ​​れている可能性があります。エラーを修正してもう一度お試しください。または手動で移動してください。コンテンツをあるフォルダから別のフォルダに移動しました。\n"
 "\n"
 "バックアップ/復元操作では、引き続き古い'%08x%08x'フォルダが使用されます。"
 
-#: src/savemng.cpp:1572
+#: src/savemng.cpp:1599
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -5100,7 +4874,7 @@ msgstr ""
 "\n"
 "バックアップ/復元操作では古い'%08x%08x'フォルダが引き続き使用されます"
 
-#: src/savemng.cpp:1577
+#: src/savemng.cpp:1604
 #, c-format
 msgid ""
 "Unable to rename folder '%08x%08x' to\n"
@@ -5108,8 +4882,7 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-"Please fix errors and try again, or manually move contents from one folder "
-"to the other.\n"
+"Please fix errors and try again, or manually move contents from one folder to the other.\n"
 "\n"
 "Backup/restore operations will still use old '%08x%08x' folder"
 msgstr ""
@@ -5117,12 +4890,11 @@ msgstr ""
 "\n"
 "%s\n"
 "\n"
-"エラーを修正してもう一度お試しいただくか、コンテンツを手動で別のフォルダに移"
-"動してください。\n"
+"エラーを修正してもう一度お試しいただくか、コンテンツを手動で別のフォルダに移動してください。\n"
 "\n"
 "バックアップ/復元操作では、引き続き古い'%08x%08x'フォルダが使用されます。"
 
-#: src/savemng.cpp:1596
+#: src/savemng.cpp:1623
 #, c-format
 msgid ""
 "Failed to delete (test) folder \n"
@@ -5137,12 +4909,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1628
+#: src/savemng.cpp:1655
 #, c-format
 msgid "Migrating from folder: %08x%08x"
 msgstr "フォルダから移行しています: %08x%08x"
 
-#: src/savemng.cpp:1634
+#: src/savemng.cpp:1661
 #, c-format
 msgid ""
 "Error renaming/moving '%08x%08x' to \n"
@@ -5160,7 +4932,17 @@ msgstr ""
 "\n"
 "続行しますか?\n"
 
-#: src/savemng.cpp:1661
+#: src/savemng.cpp:1681
+#, c-format
+msgid ""
+"Error opening folder\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/savemng.cpp:1691
 #, c-format
 msgid ""
 "Errors so far in this (sub)task: %d\n"
@@ -5169,7 +4951,7 @@ msgstr ""
 "この（サブ）タスクでこれまでに発生したエラー: %d\n"
 "続行しますか?"
 
-#: src/savemng.cpp:1679
+#: src/savemng.cpp:1709
 #, c-format
 msgid ""
 "Cannot move %s from '%08x%08x' to\n"
@@ -5184,7 +4966,7 @@ msgstr ""
 "\n"
 " に移動できません。ファイルは既にターゲット フォルダーに存在します。"
 
-#: src/savemng.cpp:1687
+#: src/savemng.cpp:1717
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -5203,7 +4985,7 @@ msgstr ""
 "\n"
 "移動未試行！"
 
-#: src/savemng.cpp:1695
+#: src/savemng.cpp:1725
 #, c-format
 msgid ""
 "Cannot rename folder '%08x%08x/%s' to\n"
@@ -5218,7 +5000,7 @@ msgstr ""
 "\n"
 "%s に変更できません"
 
-#: src/savemng.cpp:1704
+#: src/savemng.cpp:1733
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -5237,7 +5019,7 @@ msgstr ""
 "\n"
 "移行が完了していない可能性があります"
 
-#: src/savemng.cpp:1717
+#: src/savemng.cpp:1746
 #, c-format
 msgid ""
 "Error merging folders: after moving all slots, folder\n"
@@ -5252,7 +5034,7 @@ msgstr ""
 "\n"
 "は空でないため削除できません"
 
-#: src/savemng.cpp:1723
+#: src/savemng.cpp:1752
 #, c-format
 msgid ""
 "Failed to delete (legacy) folder\n"
@@ -5267,7 +5049,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1758
+#: src/savemng.cpp:1787
 #, c-format
 msgid ""
 "Backup contains savedata for the profile '%s',\n"
@@ -5276,12 +5058,12 @@ msgstr ""
 "「バックアップにはプロファイル '%s' のセーブデータが含まれていますが、\n"
 "このコンソールにプロファイルが存在しません。」"
 
-#: src/savemng.cpp:1797
+#: src/savemng.cpp:1826
 #, c-format
 msgid "... and %d more"
 msgstr "...およびその他 %d 件"
 
-#: src/savemng.cpp:1962
+#: src/savemng.cpp:1991
 #, c-format
 msgid ""
 "Error setting quota for \n"
@@ -5290,15 +5072,15 @@ msgstr ""
 "\n"
 "%s のクォータ設定エラー"
 
-#: src/savemng.cpp:1989
+#: src/savemng.cpp:2018
 msgid "Error creating init data"
 msgstr "初期データ作成エラー"
 
-#: src/savemng.cpp:2038
+#: src/savemng.cpp:2067
 msgid "Error creating vWii init data"
 msgstr "vWii 初期化データの作成中にエラーが発生しました"
 
-#: src/savemng.cpp:2072
+#: src/savemng.cpp:2101
 #, c-format
 msgid ""
 "Sourcce saveinfo\n"
@@ -5309,13 +5091,11 @@ msgstr ""
 "%s\n"
 "が見つかりません。"
 
-#: src/savemng.cpp:2105
+#: src/savemng.cpp:2134
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical.\n"
-msgstr ""
-"警告 - メタデータ saveinfo.xml のコピー中にエラーが発生しました。重大ではあり"
-"ません。\n"
+msgstr "警告 - メタデータ saveinfo.xml のコピー中にエラーが発生しました。重大ではありません。\n"
 
-#: src/Metadata.cpp:86 src/Metadata.cpp:98
+#: src/Metadata.cpp:100 src/Metadata.cpp:112
 msgid ", from "
 msgstr "、から"
 
@@ -5355,7 +5135,7 @@ msgstr ""
 msgid "Error: unexpected format (%s not an array)"
 msgstr "エラー: 予期しない形式です (%s は配列ではありません)"
 
-#: src/cfg/ExcludesCfg.cpp:148
+#: src/cfg/ExcludesCfg.cpp:152
 #, c-format
 msgid ""
 "Error parsing values in elements:\n"
@@ -5386,7 +5166,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/cfg/BaseCfg.cpp:96
+#: src/cfg/BaseCfg.cpp:93 src/cfg/BaseCfg.cpp:107
 #, c-format
 msgid ""
 "Error reading file\n"
@@ -5400,3 +5180,31 @@ msgstr ""
 "%s\n"
 "\n"
 "%s"
+
+#: src/cfg/BaseCfg.cpp:100
+#, c-format
+msgid ""
+"Error allocating memory to read file\n"
+"\n"
+"%s"
+msgstr ""
+
+#~ msgid "Initializing Radndom seed"
+#~ msgstr "乱数シードを初期化中"
+
+#~ msgid "Readng Encyption Keys"
+#~ msgstr "暗号化キーを読み込み中"
+
+#~ msgid "Root BackupSet cannot be selected for batchRestore"
+#~ msgstr "ルートバックアップセットはバッチ復元に選択できません"
+
+#, c-format
+#~ msgid "%s  [%d]"
+#~ msgstr "%s  [%d]"
+
+#~ msgid ""
+#~ "Folder $s\n"
+#~ "does not exist."
+#~ msgstr ""
+#~ "フォルダ$s\n"
+#~ "が存在しません。"

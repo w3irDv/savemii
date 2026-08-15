@@ -1403,7 +1403,7 @@ bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool c
         sdWriteDisclaimer();
 
     if (!FSUtils::createFolder(dstPath)) {
-        Console::showMessage(ERROR_SHOW, _("Failed to import savedata from loadiine."));
+        Console::showMessage(ERROR_SHOW, _("Failed to export savedata to loadiine."));
         return false;
     }
 

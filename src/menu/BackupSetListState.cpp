@@ -1,3 +1,4 @@
+#include "ApplicationState.h"
 #include "menu/BackupSetContentListState.h"
 #include <BackupSetList.h>
 #include <Metadata.h>
@@ -19,8 +20,8 @@ int BackupSetListState::cursorPos = 0;
 int BackupSetListState::scroll = 0;
 static std::string language;
 
-BackupSetListState::BackupSetListState() {
-    finalScreen = true;
+BackupSetListState::BackupSetListState(eJobType jobType) : jobType(jobType) {
+
     this->sortAscending = BackupSetList::sortAscending;
     if (BackupSetList::getIsInitializationRequired()) {
         BackupSetList::initBackupSetList();
@@ -29,10 +30,10 @@ BackupSetListState::BackupSetListState() {
     }
 }
 
-BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleType titleType) : titles(titles),
-                                                                                               titlesCount(titlesCount),
-                                                                                               titleType(titleType) {
-    finalScreen = false;
+BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleType titleType, eJobType jobType) : titles(titles),
+                                                                                                                 titlesCount(titlesCount),
+                                                                                                                 titleType(titleType),
+                                                                                                                 jobType(jobType) {
     if (BackupSetList::getIsInitializationRequired()) {
         BackupSetList::initBackupSetList();
         BackupSetListState::resetCursorPosition();
@@ -94,10 +95,20 @@ void BackupSetListState::render() {
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
-        if (cursorPos + scroll > 0)
-            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"));
-        else
-            Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"));
+        switch (jobType) {
+            case CEMU_DOLPHIN_CLONE:
+                if (cursorPos + scroll > 0)
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Clone to CEMU/Dolphin \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"));
+                else
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"));
+                break;
+            default:
+                if (cursorPos + scroll > 0)
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"));
+                else
+                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"));
+                break;
+        }
     }
 }
 
@@ -106,29 +117,40 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::B))
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::A)) {
-            if (!finalScreen) {
+            if (jobType != eJobType::NONE) {
                 if (cursorPos + scroll == 0) {
-                    Console::showMessage(ERROR_SHOW, _("Root BackupSet cannot be selected for batchRestore"));
+                    Console::showMessage(ERROR_SHOW, _("Root BackupSet cannot be selected for batch operations"));
                     return SUBSTATE_RUNNING;
                 }
             }
             BackupSetList::setBackupSetEntry(cursorPos + scroll);
             BackupSetList::setBackupSetSubPath();
-            if (finalScreen) {
-                BackupSetList::setSelectedEntryForIndividualTitles(cursorPos + scroll);
-                char message[256];
-                const char *messageTemplate = _("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
-                snprintf(message, 256, messageTemplate,
-                         BackupSetList::currentBackupSetList->at(cursorPos + scroll).c_str(),
-                         BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll).c_str(),
-                         BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos + scroll).c_str(),
-                         AmbientConfig::thisConsoleSerialId.c_str());
-                Console::showMessage(OK_CONFIRM, message);
-                return SUBSTATE_RETURN;
-            } else // is a step in batchRestore
-            {
-                this->state = STATE_DO_SUBSTATE;
-                this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
+
+            switch (jobType) {
+                case eJobType::NONE: // it is not a step in a batch task
+                {
+                    BackupSetList::setSelectedEntryForIndividualTitles(cursorPos + scroll);
+                    char message[256];
+                    const char *messageTemplate = _("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
+                    snprintf(message, 256, messageTemplate,
+                             BackupSetList::currentBackupSetList->at(cursorPos + scroll).c_str(),
+                             BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll).c_str(),
+                             BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos + scroll).c_str(),
+                             AmbientConfig::thisConsoleSerialId.c_str());
+                    Console::showMessage(OK_CONFIRM, message);
+                }
+                    return SUBSTATE_RETURN;
+                    break;
+                case RESTORE:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
+                    break;
+                case CEMU_DOLPHIN_CLONE:
+                    Console::showMessage(ERROR_SHOW, "DO CEMU DOLPHIN CLONE ...");
+                    return SUBSTATE_RETURN;
+                    break;
+                default:
+                    break;
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::Y)) {
@@ -196,11 +218,10 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         }
         if (input->get(ButtonState::TRIGGER, Button::X)) {
             std::string bs_path = BackupSetList::getBackupSetPath(cursorPos + scroll);
-            if (bs_path.size() > 0 )
+            if (bs_path.size() > 0)
                 bs_path.pop_back(); // by construction, it contains a trailing /
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<BackupSetContentListState>(bs_path);
-        
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);

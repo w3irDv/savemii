@@ -503,7 +503,7 @@ ApplicationState::eSubState TitleOptionsState::update(Input *input) {
             if (this->task == RESTORE) {
                 this->state = STATE_DO_SUBSTATE;
                 this->substateCalled = STATE_BACKUPSET_MENU;
-                this->subState = std::make_unique<BackupSetListState>();
+                this->subState = std::make_unique<BackupSetListState>(eJobType::NONE);
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::Y)) {

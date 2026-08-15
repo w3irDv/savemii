@@ -1,6 +1,6 @@
 #include <BackupSetList.h>
 #include <coreinit/debug.h>
-#include <menu/BackupSetListState.h>
+#include <menu/BackupSetManagementState.h>
 #include <menu/BatchTasksState.h>
 #include <menu/ConfigMenuState.h>
 #include <menu/MainMenuState.h>
@@ -91,8 +91,8 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
                     break;
                 case 4:
                     this->state = STATE_DO_SUBSTATE;
-                    this->substateCalled = STATE_BACKUPSET_MENU;
-                    this->subState = std::make_unique<BackupSetListState>();
+                    this->substateCalled = STATE_BACKUPSET_MANAGEMENT_MENU;
+                    this->subState = std::make_unique<BackupSetManagementState>();
                     break;
                 case 5:
                     this->state = STATE_DO_SUBSTATE;
@@ -134,7 +134,7 @@ ApplicationState::eSubState MainMenuState::update(Input *input) {
             // keep running.
             return SUBSTATE_RUNNING;
         } else if (retSubState == SUBSTATE_RETURN) {
-            //     if ( this->substateCalled == STATE_BACKUPSET_MENU) {
+            //     if ( this->substateCalled == STATE_BACKUPSET_MANAGEMENT_MENU) {
             //         slot = 0;
             //         AccountUtils::getAccountsFromVol(&this->title, slot);
             //     }

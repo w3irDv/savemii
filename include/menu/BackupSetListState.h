@@ -7,8 +7,8 @@
 
 class BackupSetListState : public ApplicationState {
 public:
-    BackupSetListState();
-    BackupSetListState(Title *titles, int titlesCount, eTitleType titleType);
+    BackupSetListState(eJobType jobType);
+    BackupSetListState(Title *titles, int titlesCount, eTitleType titleType, eJobType jobType);
 
     static void resetCursorPosition();
     static void resetCursorAndScroll();
@@ -29,7 +29,6 @@ private:
     std::unique_ptr<ApplicationState> subState{};
     eState state = STATE_BACKUPSET_MENU;
     eSubstateCalled substateCalled = NONE;
-    bool finalScreen;
 
     bool sortAscending;
 
@@ -45,6 +44,8 @@ private:
     int titlesCount;
 
     eTitleType titleType;
+
+    eJobType jobType;
 
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);
