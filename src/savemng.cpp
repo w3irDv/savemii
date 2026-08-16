@@ -692,7 +692,7 @@ int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= fals
 }
 
 
-int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles /*= false*/) {
+int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles) {
     if (savemng::firstSDWrite)
         sdWriteDisclaimer();
 

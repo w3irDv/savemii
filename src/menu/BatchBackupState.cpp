@@ -130,11 +130,11 @@ void BatchBackupState::backup_all_saves() {
     TitleUtils::reset_backup_state(this->wiiutitles, this->wiiuTitlesCount);
     TitleUtils::reset_backup_state(this->wiititles, this->vWiiTitlesCount);
     TitleUtils::reset_backup_state(this->wiiusystitles, this->wiiuSysTitlesCount);
-    wiiU_backup_failed_counter = backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime, wiiU_backup_ok_counter);
+    wiiU_backup_failed_counter = backupAllSave(this->wiiutitles, this->wiiuTitlesCount, batchDatetime, wiiU_backup_ok_counter,ALL_TITLES);
     if (!InProgress::abortTask) {
-        wii_backup_failed_counter = backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime, wii_backup_ok_counter);
+        wii_backup_failed_counter = backupAllSave(this->wiititles, this->vWiiTitlesCount, batchDatetime, wii_backup_ok_counter, ALL_TITLES);
         if (!InProgress::abortTask)
-            wii_backup_failed_counter = backupAllSave(this->wiiusystitles, this->wiiuSysTitlesCount, batchDatetime, wiiU_sys_backup_ok_counter);
+            wii_backup_failed_counter = backupAllSave(this->wiiusystitles, this->wiiuSysTitlesCount, batchDatetime, wiiU_sys_backup_ok_counter, ALL_TITLES);
     }
 
     if (InProgress::abortTask) {
