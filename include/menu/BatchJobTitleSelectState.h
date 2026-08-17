@@ -1,5 +1,6 @@
 #pragma once
 
+#include "utils/CustomTypes.h"
 #include <ApplicationState.h>
 #include <cfg/ExcludesCfg.h>
 #include <memory>
@@ -13,7 +14,7 @@ public:
     BatchJobTitleSelectState(int source_user, int wiiu_user, bool common, bool wipeBeforeRestore, bool fullBackup, Title *titles,
                              int titlesCount, eTitleType titleType, eJobType jobType);
 
-    BatchJobTitleSelectState(Title *titles, int titlesCount, eTitleType titleType, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType);
+    BatchJobTitleSelectState(Title *titles, int titlesCount, eTitleType titleType, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType, eBackupLayout backup_layout = SAVEMII);
 
     enum eState {
         STATE_BATCH_JOB_TITLE_SELECT,
@@ -68,11 +69,12 @@ private:
             " > KO"};
 
     void executeBatchProcess();
-    void executeBatchBackup();
+    void executeBatchBackup(eBackupLayout backup_layout = SAVEMII);
 
     std::unique_ptr<ExcludesCfg> &excludes = ExcludesCfg::wiiuExcludes;
 
     eJobType jobType;
+    eBackupLayout backup_layout = SAVEMII;
 
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);

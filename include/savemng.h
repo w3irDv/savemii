@@ -69,7 +69,7 @@ int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, i
 bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode);
 bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode, eAccountSource accountSource = USE_SD_OR_STORAGE_PROFILES);
 void deleteSlot(Title *title, uint8_t slot, eSlotType slot_stype);
-bool wipeBackupSet(const std::string &subPath, bool force = false);
+bool wipeBackupSet(const std::string &subPath, bool force, eBackupLayout backup_layout = SAVEMII);
 void sdWriteDisclaimer(Color = COLOR_BLACK);
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles);
 void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> &failedTitles);

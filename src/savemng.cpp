@@ -713,8 +713,8 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             if (onlySelectedTitles)
                 if (!titles[i].currentDataSource.selectedForBackup)
                     continue;
-            if (!titles[i].saveInit || titles[i].is_GameCube || (backup_layout == EMULATOR && titles[i].is_Inject)) { // in emulator layout, injects have saves in the vWii side 
-                titles[i].currentDataSource.batchBackupState = OK_NO_DATA; // .. so the restore process will be tried, in case we have been called from batchRestore
+            if (!titles[i].saveInit || titles[i].is_GameCube || (backup_layout == EMULATOR && titles[i].is_Inject)) { // in emulator layout, injects have saves in the vWii side
+                titles[i].currentDataSource.batchBackupState = OK_NO_DATA;                                            // .. so the restore process will be tried, in case we have been called from batchRestore
                 titles[i].currentDataSource.selectedForBackup = false;
                 continue;
             }
@@ -1516,15 +1516,27 @@ void deleteSlot(Title *title, uint8_t slot, eSlotType slot_type) {
     }
 }
 
-bool wipeBackupSet(const std::string &subPath, bool force /* = false*/) {
+bool wipeBackupSet(const std::string &subPath, bool force, eBackupLayout backup_layout /* = SAVEMII*/) {
     InProgress::jobType = WIPE_BACKUPSET;
     if (!force)
         if (!Console::promptConfirm(ST_WARNING, _("Wipe BackupSet - Are you sure?")) || !Console::promptConfirm(ST_WIPE, _("Wipe BackupSet - Hm, are you REALLY sure?")))
             return false;
-    const std::string path = StringUtils::stringFormat("%s%s", backupPath, subPath.c_str());
-    if (path.find(batchBackupPath) == std::string::npos) {
-        Console::showMessage(ERROR_SHOW, _("Error setting path. Aborting."));
-        return false;
+    std::string path{};
+    switch (backup_layout) {
+        case SAVEMII:
+            path = StringUtils::stringFormat("%s%s", backupPath, subPath.c_str());
+            if (path.find(batchBackupPath) == std::string::npos) {
+                Console::showMessage(ERROR_SHOW, _("Error setting path. Aborting."));
+                return false;
+            }
+            break;
+        case EMULATOR:
+            path = StringUtils::stringFormat("%s%s", emulator_backup_path.c_str(), subPath.c_str());
+            break;
+        default:
+            Console::showMessage(ERROR_SHOW, _("No backup layout defined. Aborting."));
+            return false;
+            break;
     }
     if (FSUtils::checkEntry(path.c_str()) == 2) {
         if (FSUtils::removeDir(path)) {

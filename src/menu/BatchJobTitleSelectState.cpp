@@ -1,3 +1,4 @@
+#include "utils/CustomTypes.h"
 #include <BackupSetList.h>
 #include <cfg/ExcludesCfg.h>
 #include <cfg/GlobalCfg.h>
@@ -135,8 +136,16 @@ bool testForceSaveInitFalse = true
     candidatesCount = (int) this->c2t.size();
 }
 
-// BatchBackup constructor
-BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCount, eTitleType titleType, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType) : titles(titles),
+/**
+ * @brief Construct a new Batch Job Title Select State  for BatchBackup
+ * 
+ * @param titles 
+ * @param titlesCount 
+ * @param titleType 
+ * @param excludes 
+ * @param jobType 
+ */
+BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCount, eTitleType titleType, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType, eBackupLayout /* = SAVEMII */) : titles(titles),
                                                                                                                                                                      titlesCount(titlesCount),
                                                                                                                                                                      titleType(titleType),
                                                                                                                                                                      excludes(excludes),
@@ -438,7 +447,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
         processSelectedTitles:
             if (jobType == BACKUP) {
                 job2batch();
-                executeBatchBackup();
+                executeBatchBackup(backup_layout);
                 batch2job();
             } else
                 executeBatchProcess();
@@ -876,20 +885,23 @@ void BatchJobTitleSelectState::executeBatchProcess() {
     showBatchStatusCounters(titlesOK, titlesAborted, titlesWarning, titlesKO, titlesSkipped, titlesNotInitialized, failedTitles);
 }
 
-
-void BatchJobTitleSelectState::executeBatchBackup() {
+/**
+ * @brief backup of selected titles. accepts backup_layout. if backup_layout == EMULATOR, it does not write backupset metadada nor call backupset lazy initializaton
+ * 
+ */
+void BatchJobTitleSelectState::executeBatchBackup(eBackupLayout backup_layout /*= SAVEMII*/) {
 
     InProgress::totalSteps = countTitlesToSave(this->titles, this->titlesCount, true);
     InProgress::currentStep = 0;
     InProgress::abortTask = false;
     const std::string batchDatetime = getNowDateForFolder();
     int titles_ok_counter = 0;
-    int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, titles_ok_counter, ONLY_SELECTED_TITLES);
+    int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, titles_ok_counter, ONLY_SELECTED_TITLES, backup_layout);
     if (InProgress::abortTask) {
         if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to wipe this incomplete batch backup?"))) {
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
-            if (!wipeBackupSet("/batch/" + batchDatetime, true)) {
+            if (!wipeBackupSet("/batch/" + batchDatetime, true, backup_layout)) {
                 writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
                 BackupSetList::setIsInitializationRequired(true);
             }
@@ -903,7 +915,8 @@ void BatchJobTitleSelectState::executeBatchBackup() {
         }
     }
 
-    BackupSetList::setIsInitializationRequired(true);
+    if (backup_layout == SAVEMII)
+        BackupSetList::setIsInitializationRequired(true);
 
     int titlesOK = 0;
     int titlesAborted = 0;
@@ -956,7 +969,8 @@ void BatchJobTitleSelectState::executeBatchBackup() {
                                         titles_failed_counter);
     }
 
-    writeBackupAllMetadata(batchDatetime, tag.c_str());
+    if (backup_layout == SAVEMII)
+        writeBackupAllMetadata(batchDatetime, tag.c_str());
 
     showBatchStatusCounters(titlesOK, titlesAborted, titlesWarning, titlesKO, titlesSkipped, titlesNotInitialized, failedTitles);
 }
