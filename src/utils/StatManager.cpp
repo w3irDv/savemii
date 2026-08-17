@@ -142,7 +142,7 @@ bool StatManager::open_stat_file_for_write(Title *title, int slot) {
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     const std::string baseDstPath = getDynamicBackupPath(title, slot);
 
-    statFilePath = baseDstPath + "/" + savemii_stat_info_file;
+    statFilePath = get_savemii_stat_info_file_path(baseDstPath);
 
     stat_file_handle = fopen(statFilePath.c_str(), "w");
 
@@ -163,7 +163,7 @@ bool StatManager::open_stat_file_for_write(Title *title, int slot) {
 /// @return
 bool StatManager::open_stat_file_for_write(const std::string &path) {
 
-    statFilePath = path + "/" + savemii_stat_info_file;
+    statFilePath = get_savemii_stat_info_file_path(path);
     stat_file_handle = fopen(statFilePath.c_str(), "w");
 
     if (stat_file_handle == NULL) {
@@ -190,7 +190,7 @@ bool StatManager::open_stat_file_for_read(Title *title, int slot) {
 
     allowed_stat_root = StringUtils::stringFormat("%s/%08x/%08x/", path.c_str(), highID, lowID);
 
-    std::string statFilePath = baseDstPath + "/" + savemii_stat_info_file;
+    std::string statFilePath = get_savemii_stat_info_file_path(baseDstPath);
 
 
     stat_file_handle = fopen(statFilePath.c_str(), "r");
@@ -245,7 +245,7 @@ bool StatManager::stat_file_exists(Title *title, int slot) {
     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
     const std::string baseDstPath = getDynamicBackupPath(title, slot);
 
-    statFilePath = baseDstPath + "/" + savemii_stat_info_file;
+    statFilePath = get_savemii_stat_info_file_path(baseDstPath);
 
     return (FSUtils::checkEntry(statFilePath.c_str()) == 1);
 }

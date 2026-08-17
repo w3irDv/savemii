@@ -114,6 +114,8 @@ public:
     static bool isRootBackupSet() { return (backupSetSubPath == "/"); }
     static void setSelectedEntryForIndividualTitles(int i) { selectedEntryForIndividualTitles = i; }
 
+    bool clone_as_emulator(int i);
+
 
 private:
     static bool sortAscending;

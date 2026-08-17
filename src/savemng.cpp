@@ -1,3 +1,5 @@
+#include "utils/CustomTypes.h"
+#include "utils/FSUtils.h"
 #include <BackupSetList.h>
 #include <Metadata.h>
 #include <algorithm>
@@ -129,7 +131,7 @@ std::string getBackupPath(Title *title, uint8_t slot, eSlotType slot_type) {
             return getPrivateSavedataSlot(title);
             break;
     }
-    return std::string("UNKNOWN"); // CANNOT_HAPPEN 
+    return std::string("UNKNOWN"); // CANNOT_HAPPEN
 }
 
 
@@ -680,7 +682,7 @@ void writeBackupAllMetadata(const std::string &batchDatetime, const std::string 
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= false*/) {
     int titlesToSave = 0;
     for (int i = 0; i < count; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit || (titles[i].is_Inject  && titles[i].vWiiHighID == 0)) {
+        if (titles[i].highID == 0 || titles[i].lowID == 0 || !titles[i].saveInit || (titles[i].is_Inject && titles[i].vWiiHighID == 0)) {
             continue;
         }
         if (onlySelectedTitles)
@@ -692,7 +694,7 @@ int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= fals
 }
 
 
-int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles) {
+int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles, eBackupLayout backup_layout) {
     if (savemng::firstSDWrite)
         sdWriteDisclaimer();
 
@@ -704,12 +706,14 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
 
     InProgress::jobType = BACKUP;
 
+    bool stat_manager_flag = (backup_layout == SAVEMII ? ENABLE_STAT_MANAGER : DISABLE_STAT_MANAGER);
+
     for (int sourceStorage = 0; sourceStorage < 2; sourceStorage++) {
         for (int i = 0; i < count; i++) {
             if (onlySelectedTitles)
                 if (!titles[i].currentDataSource.selectedForBackup)
                     continue;
-            if (!titles[i].saveInit || titles[i].is_GameCube) {
+            if (!titles[i].saveInit || titles[i].is_GameCube || (backup_layout == EMULATOR && titles[i].is_Inject)) { // in emulator layout, injects have saves in the vWii side 
                 titles[i].currentDataSource.batchBackupState = OK_NO_DATA; // .. so the restore process will be tried, in case we have been called from batchRestore
                 titles[i].currentDataSource.selectedForBackup = false;
                 continue;
@@ -731,9 +735,22 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                 continue;
             }
             uint8_t slot = (uint8_t) emptySlot;
+            if (slot > 0 && backup_layout == EMULATOR) // for emulator, only the active savedata (<- the one in slot 0) is copied
+                continue;
             const std::string path = (isWii ? "storage_slcc01:/title" : (isUSB ? (FSUtils::getUSB() + "/usr/save").c_str() : "storage_mlc01:/usr/save"));
-            std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
-            const std::string dstPath = getBatchBackupPath(&titles[i], slot, batchDatetime);
+            std::string srcPath{};
+            std::string dstPath{};
+            switch (backup_layout) {
+                case EMULATOR:
+                    // wec copy all content under the save folder for the title
+                    srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
+                    dstPath = StringUtils::stringFormat("%s/%s/%08x/%08x", emulator_backup_path.c_str(), batchDatetime.c_str(), highID, lowID);
+                    break;
+                default:
+                    srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
+                    dstPath = getBatchBackupPath(&titles[i], slot, batchDatetime);
+                    break;
+            }
             const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", path.c_str(), highID, lowID);
 
 //#define MOCKALLBACKUP
@@ -748,23 +765,44 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                     FAT32EscapeFileManager::active_fat32_escape_file_manager = std::make_unique<FAT32EscapeFileManager>(dstPath);
                     if (FAT32EscapeFileManager::active_fat32_escape_file_manager->open_for_write()) {
                         Escape::setPrefix(srcPath, dstPath);
-                        if (FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE, ENABLE_STAT_MANAGER)) {
-                            if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1)
+                        if (FSUtils::copyDir(srcPath, dstPath, GENERATE_FAT32_TRANSLATION_FILE, stat_manager_flag)) {
+                            if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()) == 1 && backup_layout == SAVEMII)
                                 FSUtils::copyFile(metaSavePath + "/saveinfo.xml", dstPath + "/savemii_saveinfo.xml");
                             if (FAT32EscapeFileManager::active_fat32_escape_file_manager->close()) {
+                                std::string fat32_rename_file_path = FAT32EscapeFileManager::active_fat32_escape_file_manager->get_fat32_rename_file_path();
                                 FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
                                 if (StatManager::close_stat_file_for_write()) {
-                                    writeMetadata(&titles[i], slot, isUSB, batchDatetime, "", FILES);
-                                    titles[i].currentDataSource.batchBackupState = OK;
-                                    titles[i].currentDataSource.selectedForBackup = false;
-                                    titlesOK++;
-                                    if (InProgress::abortTask) {
-                                        if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to cancel batch backup?")))
-                                            return titlesKO;
-                                        else
-                                            InProgress::abortTask = false;
+                                    bool savedata_contains_escaped_files = false;
+                                    if (backup_layout == EMULATOR) {
+                                        int number_of_lines = 0;
+                                        std::string line;
+                                        std::ifstream fat32_file(fat32_rename_file_path);
+                                        while (std::getline(fat32_file, line))
+                                            if (++number_of_lines == 2) {
+                                                savedata_contains_escaped_files = true;
+                                                break;
+                                            }
                                     }
-                                    continue;
+                                    if (backup_layout == SAVEMII || (backup_layout == EMULATOR && !savedata_contains_escaped_files)) {
+                                        titles[i].currentDataSource.batchBackupState = OK;
+                                        titles[i].currentDataSource.selectedForBackup = false;
+                                        titlesOK++;
+                                        if (backup_layout == SAVEMII)
+                                            writeMetadata(&titles[i], slot, isUSB, batchDatetime, "", FILES);
+                                        if (backup_layout == EMULATOR) {
+                                            // wipe unneeded meta files
+                                            std::string stat_file_path = StatManager::get_savemii_stat_info_file_path(dstPath);
+                                            unlink(stat_file_path.c_str());
+                                            unlink(fat32_rename_file_path.c_str());
+                                        }
+                                        if (InProgress::abortTask) {
+                                            if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to cancel batch backup?")))
+                                                return titlesKO;
+                                            else
+                                                InProgress::abortTask = false;
+                                        }
+                                        continue;
+                                    }
                                 }
                             } else {
                                 FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
@@ -783,7 +821,17 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             // backup for this tile has failed
             titlesKO++;
             titles[i].currentDataSource.batchBackupState = KO;
-            writeMetadata(&titles[i], slot, isUSB, batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
+            switch (backup_layout) {
+                case SAVEMII:
+                    writeMetadata(&titles[i], slot, isUSB, batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
+                    break;
+                case EMULATOR:
+                    if (FSUtils::removeDir(dstPath))
+                        unlink(dstPath.c_str());
+                    break;
+                default:
+                    break;
+            }
             std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), titles[i].shortName, titlesKO);
             if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                 InProgress::abortTask = true;
@@ -1504,7 +1552,7 @@ void sdWriteDisclaimer(Color bg_color /*= COLOR_BLACK*/) {
 
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles) {
     for (int i = 0; i < titlesCount; i++) {
-        if (titles[i].highID == 0 || titles[i].lowID == 0 || (titles[i].is_Inject  && titles[i].vWiiHighID == 0)) // || !titles[i].saveInit)
+        if (titles[i].highID == 0 || titles[i].lowID == 0 || (titles[i].is_Inject && titles[i].vWiiHighID == 0)) // || !titles[i].saveInit)
             titlesNotInitialized++;
         std::string failedTitle;
 

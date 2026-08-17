@@ -32,6 +32,7 @@ public:
     bool open_for_write();
     bool append(const std::string &s_path, const std::string &t_path, bool fileType);
     bool close();
+    std::string get_fat32_rename_file_path() { return fat32_rename_file_path;};
 
     static bool rename_fat32_escaped_files(const std::string &baseSrcPath, const std::string &storage_vol, std::string &errorMessage, int &errorCode);
 

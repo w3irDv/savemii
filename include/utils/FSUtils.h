@@ -12,6 +12,7 @@
 #define GENERATE_FAT32_TRANSLATION_FILE true
 #define NOFAT32_TRANSLATION false
 #define ENABLE_STAT_MANAGER true
+#define DISABLE_STAT_MANAGER false
 
 struct file_buffer {
     void *buf;

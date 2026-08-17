@@ -123,12 +123,12 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     return SUBSTATE_RUNNING;
                 }
             }
-            BackupSetList::setBackupSetEntry(cursorPos + scroll);
-            BackupSetList::setBackupSetSubPath();
 
             switch (jobType) {
                 case eJobType::NONE: // it is not a step in a batch task
                 {
+                    BackupSetList::setBackupSetEntry(cursorPos + scroll);
+                    BackupSetList::setBackupSetSubPath();
                     BackupSetList::setSelectedEntryForIndividualTitles(cursorPos + scroll);
                     char message[256];
                     const char *messageTemplate = _("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
@@ -142,11 +142,14 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     return SUBSTATE_RETURN;
                     break;
                 case RESTORE:
+                    BackupSetList::setBackupSetEntry(cursorPos + scroll);
+                    BackupSetList::setBackupSetSubPath();
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
                     break;
                 case CEMU_DOLPHIN_CLONE:
                     Console::showMessage(ERROR_SHOW, "DO CEMU DOLPHIN CLONE ...");
+                    BackupSetList::currentBackupSetList->clone_as_emulator(cursorPos + scroll);
                     return SUBSTATE_RETURN;
                     break;
                 default:

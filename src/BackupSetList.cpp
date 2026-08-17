@@ -230,3 +230,35 @@ template void BSMetadataValues::Left(attr<std::greater<std::string>> &);
 template void BSMetadataValues::Left(attr<std::less<std::string>> &);
 
 
+
+
+bool BackupSetList::clone_as_emulator(int i) {
+
+    //std::string path_to_backupset = entryPath;
+
+
+    std::string backup_set = backupSetListRoot + "/" + this->at(i);
+
+    std::error_code ec;
+    for (const auto &entry : fs::directory_iterator(backup_set, ec)) {
+
+        std::filesystem::path filename = entry.path();
+        std::string filename_str = filename.string();
+
+        if (!fs::is_regular_file(filename)) {
+            //Console::showMessage(ERROR_CONFIRM, "ERROR");
+            continue;
+        }
+
+    }
+
+    if (ec.value() != 0) {
+        //Console::showMessage(ERROR_CONFIRM, "Error accessing Mii repo  %s at %s:\n\n %s", repo_name.c_str(), path_to_repo.c_str(), ec.message().c_str());
+        return false;
+    }
+
+    return true;
+
+
+}
+

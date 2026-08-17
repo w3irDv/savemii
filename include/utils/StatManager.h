@@ -24,7 +24,6 @@ namespace StatManager {
     void enable_flags_for_backup();
     void enable_flags_for_copy();
     void disable_all_flags();
-
     class StatData {
     public:
         StatData(uint32_t uid, uint32_t gid, uint16_t fsmode) : uid(uid), gid(gid), fsmode(fsmode) {}
@@ -54,5 +53,7 @@ namespace StatManager {
     inline std::string statFilePath{};
 
     inline const std::string savemii_stat_info_file = "savemii_cfg_statInfo.out";
+
+    inline std::string get_savemii_stat_info_file_path(const std::string & path) { return path + "/" + savemii_stat_info_file ;};
 
 } // namespace StatManager
