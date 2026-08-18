@@ -1,3 +1,4 @@
+#include "ApplicationState.h"
 #include "utils/CustomTypes.h"
 #include <BackupSetList.h>
 #include <cfg/ExcludesCfg.h>
@@ -145,7 +146,7 @@ bool testForceSaveInitFalse = true
  * @param excludes 
  * @param jobType 
  */
-BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCount, eTitleType titleType, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType, eBackupLayout /* = SAVEMII */) : titles(titles),
+BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCount, eTitleType titleType, std::unique_ptr<ExcludesCfg> &excludes, eJobType jobType) : titles(titles),
                                                                                                                                                                      titlesCount(titlesCount),
                                                                                                                                                                      titleType(titleType),
                                                                                                                                                                      excludes(excludes),
@@ -164,8 +165,10 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCoun
         if ((strcmp(this->titles[i].shortName, "DONT TOUCH ME") == 0) ||
             (this->titles[i].badMetadata) ||
             (!this->titles[i].saveInit) ||
-            (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0)) || (this->titles[i].is_Inject && this->titles[i].vWiiHighID == 0) ||
-            (this->titles[i].highID == 0) || (this->titles[i].lowID == 0)) {
+            (isWii && (strcmp(this->titles[i].productCode, "OHBC") == 0)) ||
+            (this->titles[i].is_Inject && this->titles[i].vWiiHighID == 0) ||
+            (this->titles[i].highID == 0) || (this->titles[i].lowID == 0) ||
+            (this->titles[i].is_Inject && jobType == CEMU_DOLPHIN_EXPORT)) {
             this->titles[i].currentDataSource.selectedForBackup = false;
             this->titles[i].currentDataSource.candidateForBackup = false;
             excludedFromCandidates++;
@@ -273,6 +276,12 @@ void BatchJobTitleSelectState::render() {
                 screenOptions = _("\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back");
                 nextActionBrief = _(">> Backup");
                 lastActionBriefOk = _("|Saved|");
+                break;
+            case CEMU_DOLPHIN_EXPORT:
+                menuTitle = _("Emul Export - Select & Go");
+                screenOptions = _("\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Export");
+                nextActionBrief = _(">> Export");
+                lastActionBriefOk = _("|Exported|");
                 break;
             default:
                 menuTitle = "";
@@ -445,9 +454,9 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
             Console::showMessage(ERROR_SHOW, _("Please select some titles to work on"));
             return SUBSTATE_RUNNING;
         processSelectedTitles:
-            if (jobType == BACKUP) {
+            if (jobType == BACKUP || jobType == CEMU_DOLPHIN_EXPORT) {
                 job2batch();
-                executeBatchBackup(backup_layout);
+                executeBatchBackup(jobType == BACKUP ? SAVEMII : EMULATOR);
                 batch2job();
             } else
                 executeBatchProcess();
@@ -489,7 +498,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
             }
             return SUBSTATE_RUNNING;
         }
-        if (input->get(ButtonState::TRIGGER, Button::X) && jobType == BACKUP) {
+        if (input->get(ButtonState::TRIGGER, Button::X) && ( jobType == BACKUP || jobType == CEMU_DOLPHIN_EXPORT)) {
             job2batch();
             std::string choices = _("\\ue000  Apply saved excludes\n\\ue045  Save current excludes\n\\ue001  Back");
             bool done = false;

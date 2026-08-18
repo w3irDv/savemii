@@ -96,7 +96,7 @@ void BackupSetListState::render() {
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         switch (jobType) {
-            case CEMU_DOLPHIN_CLONE:
+            case CEMU_DOLPHIN_EXPORT:
                 if (cursorPos + scroll > 0)
                     Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Clone to CEMU/Dolphin \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"));
                 else
@@ -147,7 +147,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
                     break;
-                case CEMU_DOLPHIN_CLONE:
+                case CEMU_DOLPHIN_EXPORT:
                     Console::showMessage(ERROR_SHOW, "DO CEMU DOLPHIN CLONE ...");
                     BackupSetList::currentBackupSetList->clone_as_emulator(cursorPos + scroll);
                     return SUBSTATE_RETURN;

@@ -1,3 +1,4 @@
+#include "menu/ExportAsState.h"
 #include "utils/DrawUtils.h"
 #include <BackupSetList.h>
 #include <coreinit/debug.h>
@@ -20,7 +21,7 @@
 #include <utils/StringUtils.h>
 #include <utils/statDebug.h>
 
-#define ENTRYCOUNT 6
+#define ENTRYCOUNT 7
 
 void BatchTasksState::render() {
     if (this->state == STATE_DO_SUBSTATE) {
@@ -46,6 +47,8 @@ void BatchTasksState::render() {
         Console::consolePrintPos(M_OFF, 7, _("   Batch Copy to Other Profile"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
         Console::consolePrintPos(M_OFF, 8, _("   Batch Copy to Other Device"));
+        DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
+        Console::consolePrintPos(M_OFF, 9, _("   Export in CEMU/Dolphin format"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
@@ -69,6 +72,9 @@ void BatchTasksState::render() {
                 break;
             case 5:
                 info = _("Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.");
+                break;
+            case 6:
+                info = _("Export savedata in a fromat ready to be copied to a CEMU or Dolphin folders.");
                 break;
             default:
                 info = "";
@@ -113,6 +119,10 @@ ApplicationState::eSubState BatchTasksState::update(Input *input) {
                 case 5:
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchJobState>(this->wiiutitles, this->wiititles, this->wiiuTitlesCount, this->vWiiTitlesCount, COPY_TO_OTHER_DEVICE);
+                    break;
+                case 6:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->subState = std::make_unique<ExportAsState>(this->wiiutitles, this->wiititles, this->wiiusystitles, this->wiiuTitlesCount, this->vWiiTitlesCount, this->wiiuSysTitlesCount);
                     break;
                 default:
                     break;

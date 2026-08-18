@@ -26,7 +26,7 @@ enum eJobType {
     NONE = 17,
     EXPORT_TO_SD_WII_DATA_MGMT = 18,
     IMPORT_FROM_SD_WII_DATA_MGMT = 19,
-    CEMU_DOLPHIN_CLONE = 20
+    CEMU_DOLPHIN_EXPORT = 20
 };
 
 enum eTitleType {

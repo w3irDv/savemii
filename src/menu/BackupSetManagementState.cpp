@@ -69,7 +69,7 @@ ApplicationState::eSubState BackupSetManagementState::update(Input *input) {
                 case 1:
                     this->state = STATE_DO_SUBSTATE;
                     this->substateCalled = STATE_BACKUPSET_MENU;
-                    this->subState = std::make_unique<BackupSetListState>(CEMU_DOLPHIN_CLONE);
+                    this->subState = std::make_unique<BackupSetListState>(CEMU_DOLPHIN_EXPORT);
                     break;
                 default:
                     break;

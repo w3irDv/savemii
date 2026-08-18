@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 00:58+0200\n"
+"POT-Creation-Date: 2026-08-19 23:53+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1924,8 +1924,8 @@ msgstr "Wii-U-Titel"
 msgid "vWii Titles"
 msgstr "vWii-Titel"
 
-#: src/menu/TitleListState.cpp:37 src/menu/BatchJobTitleSelectState.cpp:280
-#: src/menu/BatchJobTitleSelectState.cpp:290
+#: src/menu/TitleListState.cpp:37 src/menu/BatchJobTitleSelectState.cpp:297
+#: src/menu/BatchJobTitleSelectState.cpp:307
 #, c-format
 msgid "%s Sort: %s \\ue084"
 msgstr "%s Sortierung: %s \\ue084"
@@ -2252,11 +2252,11 @@ msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue002\\ue084:Ansicht 
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue002:Ansicht \\ue000: Export \\ue001: Zurück"
 
-#: src/menu/MiiSelectState.cpp:180
+#: src/menu/MiiSelectState.cpp:180 src/menu/BatchJobTitleSelectState.cpp:283
 msgid ">> Export"
 msgstr ">> Export"
 
-#: src/menu/MiiSelectState.cpp:181
+#: src/menu/MiiSelectState.cpp:181 src/menu/BatchJobTitleSelectState.cpp:284
 msgid "|Exported|"
 msgstr "|Exportiert|"
 
@@ -2268,12 +2268,12 @@ msgstr "Welchen wiederherzustellenden Mii auswählen"
 msgid "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue002\\ue083\\ue084:Ansicht \\ue000: Mii wiederherstellen \\ue001: Zurück"
 
-#: src/menu/MiiSelectState.cpp:187 src/menu/BatchJobTitleSelectState.cpp:230
+#: src/menu/MiiSelectState.cpp:187 src/menu/BatchJobTitleSelectState.cpp:241
 msgid ">> Restore"
 msgstr ">> Wiederherstellen"
 
 #: src/menu/MiiSelectState.cpp:188 src/menu/MiiSelectState.cpp:233
-#: src/menu/BatchJobTitleSelectState.cpp:231
+#: src/menu/BatchJobTitleSelectState.cpp:242
 msgid "|Restored|"
 msgstr "|Wiederhergestellt|"
 
@@ -2289,11 +2289,11 @@ msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue002\\ue084:Ansicht 
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue002:Ansicht \\ue000: Löschen \\ue001: Zurück"
 
-#: src/menu/MiiSelectState.cpp:196 src/menu/BatchJobTitleSelectState.cpp:248
+#: src/menu/MiiSelectState.cpp:196 src/menu/BatchJobTitleSelectState.cpp:259
 msgid ">> Wipe"
 msgstr ">> Löschen"
 
-#: src/menu/MiiSelectState.cpp:197 src/menu/BatchJobTitleSelectState.cpp:249
+#: src/menu/MiiSelectState.cpp:197 src/menu/BatchJobTitleSelectState.cpp:260
 msgid "|Wiped|"
 msgstr "|Gelöscht|"
 
@@ -2382,24 +2382,24 @@ msgid "There are no miis matching selected filters."
 msgstr "Es gibt keine Miis, die den ausgewählten Filtern entsprechen."
 
 #: src/menu/MiiSelectState.cpp:353 src/menu/MiiSelectState.cpp:361
-#: src/menu/BatchJobTitleSelectState.cpp:340
-#: src/menu/BatchJobTitleSelectState.cpp:351
-#: src/menu/BatchJobTitleSelectState.cpp:355
-#: src/menu/BatchJobTitleSelectState.cpp:359
+#: src/menu/BatchJobTitleSelectState.cpp:357
+#: src/menu/BatchJobTitleSelectState.cpp:368
+#: src/menu/BatchJobTitleSelectState.cpp:372
+#: src/menu/BatchJobTitleSelectState.cpp:376
 msgid ">> Skip"
 msgstr ">> Überspringen"
 
-#: src/menu/MiiSelectState.cpp:356 src/menu/BatchJobTitleSelectState.cpp:343
+#: src/menu/MiiSelectState.cpp:356 src/menu/BatchJobTitleSelectState.cpp:360
 msgid "[OK]"
 msgstr "[OK]"
 
-#: src/menu/MiiSelectState.cpp:360 src/menu/BatchJobTitleSelectState.cpp:358
+#: src/menu/MiiSelectState.cpp:360 src/menu/BatchJobTitleSelectState.cpp:375
 msgid "[KO]"
 msgstr "[KO]"
 
-#: src/menu/MiiSelectState.cpp:361 src/menu/BatchJobTitleSelectState.cpp:351
-#: src/menu/BatchJobTitleSelectState.cpp:355
-#: src/menu/BatchJobTitleSelectState.cpp:359
+#: src/menu/MiiSelectState.cpp:361 src/menu/BatchJobTitleSelectState.cpp:368
+#: src/menu/BatchJobTitleSelectState.cpp:372
+#: src/menu/BatchJobTitleSelectState.cpp:376
 msgid ">> Retry"
 msgstr ">> Erneut versuchen"
 
@@ -2612,111 +2612,119 @@ msgstr ""
 "\n"
 "Diese Konsole: %s"
 
-#: src/menu/BatchJobTitleSelectState.cpp:228
+#: src/menu/BatchJobTitleSelectState.cpp:239
 msgid "Batch Restore - Select"
 msgstr "Stapelwiederherstellung – Auswählen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:229
+#: src/menu/BatchJobTitleSelectState.cpp:240
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue000:Wiederherstellen \\ue001:Zurück"
 
-#: src/menu/BatchJobTitleSelectState.cpp:234
+#: src/menu/BatchJobTitleSelectState.cpp:245
 msgid "Batch ProfileCopy - Select"
 msgstr "Stapelprofilkopie – Auswählen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:235
+#: src/menu/BatchJobTitleSelectState.cpp:246
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue000: Profilkopie \\ue001: Zurück"
 
-#: src/menu/BatchJobTitleSelectState.cpp:236
-#: src/menu/BatchJobTitleSelectState.cpp:254
-#: src/menu/BatchJobTitleSelectState.cpp:260
+#: src/menu/BatchJobTitleSelectState.cpp:247
+#: src/menu/BatchJobTitleSelectState.cpp:265
+#: src/menu/BatchJobTitleSelectState.cpp:271
 msgid ">> Copy"
 msgstr ">> Kopieren"
 
-#: src/menu/BatchJobTitleSelectState.cpp:237
-#: src/menu/BatchJobTitleSelectState.cpp:255
-#: src/menu/BatchJobTitleSelectState.cpp:261
+#: src/menu/BatchJobTitleSelectState.cpp:248
+#: src/menu/BatchJobTitleSelectState.cpp:266
+#: src/menu/BatchJobTitleSelectState.cpp:272
 msgid "|Copied|"
 msgstr "|Kopiert|"
 
-#: src/menu/BatchJobTitleSelectState.cpp:240
+#: src/menu/BatchJobTitleSelectState.cpp:251
 msgid "Batch ProfileMove - Select"
 msgstr "Batch-Profilverschiebung – Auswählen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:241
+#: src/menu/BatchJobTitleSelectState.cpp:252
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue000: Profil verschieben \\ue001: Zurück"
 
-#: src/menu/BatchJobTitleSelectState.cpp:242
+#: src/menu/BatchJobTitleSelectState.cpp:253
 msgid ">> Move"
 msgstr ">> Verschieben"
 
-#: src/menu/BatchJobTitleSelectState.cpp:243
+#: src/menu/BatchJobTitleSelectState.cpp:254
 msgid "|Moved|"
 msgstr "|Verschoben|"
 
-#: src/menu/BatchJobTitleSelectState.cpp:246
+#: src/menu/BatchJobTitleSelectState.cpp:257
 msgid "Batch Wipe - Select"
 msgstr "Stapellöschung – Auswählen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:247
+#: src/menu/BatchJobTitleSelectState.cpp:258
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue000: WipeProfile \\ue001: Zurück"
 
-#: src/menu/BatchJobTitleSelectState.cpp:252
+#: src/menu/BatchJobTitleSelectState.cpp:263
 msgid "Batch Copy To USB - Select"
 msgstr "Stapelkopie auf USB – Auswählen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:253
+#: src/menu/BatchJobTitleSelectState.cpp:264
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue000: CopyToUSB \\ue001: Zurück"
 
-#: src/menu/BatchJobTitleSelectState.cpp:258
+#: src/menu/BatchJobTitleSelectState.cpp:269
 msgid "Batch Copy To NAND - Select"
 msgstr "Stapelkopie auf NAND – Auswählen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:259
+#: src/menu/BatchJobTitleSelectState.cpp:270
 msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue000: CopyToNAND \\ue001: Zurück"
 
-#: src/menu/BatchJobTitleSelectState.cpp:264
+#: src/menu/BatchJobTitleSelectState.cpp:275
 msgid "Batch Backup - Select & Go"
 msgstr "Stapelsicherung – Auswählen & Los"
 
-#: src/menu/BatchJobTitleSelectState.cpp:265
+#: src/menu/BatchJobTitleSelectState.cpp:276
 msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
 msgstr "\\ue003\\ue07e:Akt/Deakt \\ue045\\ue046:Alle a/d \\ue002Ausgeschlossen \\ue000Sicherung \\ue001Zurück"
 
-#: src/menu/BatchJobTitleSelectState.cpp:266
+#: src/menu/BatchJobTitleSelectState.cpp:277
 msgid ">> Backup"
 msgstr ">> Backup"
 
-#: src/menu/BatchJobTitleSelectState.cpp:267
+#: src/menu/BatchJobTitleSelectState.cpp:278
 msgid "|Saved|"
 msgstr "|Gespeichert|"
 
-#: src/menu/BatchJobTitleSelectState.cpp:284
+#: src/menu/BatchJobTitleSelectState.cpp:281
+msgid "Emul Export - Select & Go"
+msgstr ""
+
+#: src/menu/BatchJobTitleSelectState.cpp:282
+msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Export"
+msgstr ""
+
+#: src/menu/BatchJobTitleSelectState.cpp:301
 msgid "There are no titles matching selected filters."
 msgstr "Es gibt keine Titel, die den ausgewählten Filtern entsprechen."
 
-#: src/menu/BatchJobTitleSelectState.cpp:348
+#: src/menu/BatchJobTitleSelectState.cpp:365
 msgid "[AB-BackupFailed]"
 msgstr "[AB-BackupFailed]"
 
-#: src/menu/BatchJobTitleSelectState.cpp:350
+#: src/menu/BatchJobTitleSelectState.cpp:367
 msgid "[AB]"
 msgstr "[AB]"
 
-#: src/menu/BatchJobTitleSelectState.cpp:354
+#: src/menu/BatchJobTitleSelectState.cpp:371
 msgid "[WR]"
 msgstr "[WR]"
 
-#: src/menu/BatchJobTitleSelectState.cpp:437
+#: src/menu/BatchJobTitleSelectState.cpp:454
 msgid "Please select some titles to work on"
 msgstr "Bitte wählen Sie einige Titel aus, die bearbeitet werden sollen.' Ein"
 
-#: src/menu/BatchJobTitleSelectState.cpp:486
+#: src/menu/BatchJobTitleSelectState.cpp:503
 msgid ""
 "\\ue000  Apply saved excludes\n"
 "\\ue045  Save current excludes\n"
@@ -2726,48 +2734,48 @@ msgstr ""
 "\\ue045: Aktuelle Ausschlüsse speichern\n"
 "\\ue001: Zurück"
 
-#: src/menu/BatchJobTitleSelectState.cpp:501 src/menu/ConfigMenuState.cpp:134
+#: src/menu/BatchJobTitleSelectState.cpp:518 src/menu/ConfigMenuState.cpp:134
 msgid "Configuration saved"
 msgstr "Konfiguration gespeichert"
 
-#: src/menu/BatchJobTitleSelectState.cpp:503 src/menu/ConfigMenuState.cpp:136
+#: src/menu/BatchJobTitleSelectState.cpp:520 src/menu/ConfigMenuState.cpp:136
 msgid "Error saving configuration"
 msgstr "Fehler beim Speichern der Konfiguration."
 
-#: src/menu/BatchJobTitleSelectState.cpp:570
+#: src/menu/BatchJobTitleSelectState.cpp:587
 msgid "Batch Restore - Review & Go"
 msgstr "Stapelwiederherstellung – Überprüfen & Los"
 
-#: src/menu/BatchJobTitleSelectState.cpp:571
-#: src/menu/BatchJobTitleSelectState.cpp:573
-#: src/menu/BatchJobTitleSelectState.cpp:574
+#: src/menu/BatchJobTitleSelectState.cpp:588
+#: src/menu/BatchJobTitleSelectState.cpp:590
+#: src/menu/BatchJobTitleSelectState.cpp:591
 msgid "- Restore"
 msgstr "- Wiederherstellen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:571
+#: src/menu/BatchJobTitleSelectState.cpp:588
 #, c-format
 msgid "- Restore from %s to < %s (%s) >"
 msgstr "- Von %s nach < %s (%s) > wiederherstellen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:572
+#: src/menu/BatchJobTitleSelectState.cpp:589
 #, c-format
 msgid "pre-BatchRestore Backup (vWii: %d%s"
 msgstr "Pre-BatchRestore-Backup (vWii: %d%s)"
 
-#: src/menu/BatchJobTitleSelectState.cpp:572
+#: src/menu/BatchJobTitleSelectState.cpp:589
 #, c-format
 msgid "pre-BatchRestore Backup (WiiU: %d%s"
 msgstr "Pre-BatchRestore-Backup (WiiU: %d%s)"
 
-#: src/menu/BatchJobTitleSelectState.cpp:573
+#: src/menu/BatchJobTitleSelectState.cpp:590
 msgid "- Restore allusers"
 msgstr "- Alle Benutzer wiederherstellen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:574
+#: src/menu/BatchJobTitleSelectState.cpp:591
 msgid "- Restore no user"
 msgstr "- Kein Benutzer wiederherstellen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:575
+#: src/menu/BatchJobTitleSelectState.cpp:592
 #, c-format
 msgid ""
 "%s\n"
@@ -2782,27 +2790,27 @@ msgstr ""
 "Bisherige Fehler: %d\n"
 "Möchten Sie mit dem nächsten Titel fortfahren?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:576
+#: src/menu/BatchJobTitleSelectState.cpp:593
 msgid "Batch Restore paused - Do you want to abort?"
 msgstr "Stapelwiederherstellung angehalten – Abbruch?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:579
+#: src/menu/BatchJobTitleSelectState.cpp:596
 msgid "Batch ProfileCopy - Review & Go"
 msgstr "Stapelprofilkopie – Überprüfen & Los"
 
-#: src/menu/BatchJobTitleSelectState.cpp:580
-#: src/menu/BatchJobTitleSelectState.cpp:607
-#: src/menu/BatchJobTitleSelectState.cpp:616
+#: src/menu/BatchJobTitleSelectState.cpp:597
+#: src/menu/BatchJobTitleSelectState.cpp:624
+#: src/menu/BatchJobTitleSelectState.cpp:633
 #, c-format
 msgid "- Copy from < %s (%s)> to < %s (%s) >"
 msgstr "- Kopiere von < %s (%s)> nach < %s (%s) >"
 
-#: src/menu/BatchJobTitleSelectState.cpp:581
+#: src/menu/BatchJobTitleSelectState.cpp:598
 #, c-format
 msgid "pre-BatchProfileCopy Backup (WiiU: %d%s"
 msgstr "Pre-BatchProfileCopy-Backup (WiiU: %d%s)"
 
-#: src/menu/BatchJobTitleSelectState.cpp:584
+#: src/menu/BatchJobTitleSelectState.cpp:601
 #, c-format
 msgid ""
 "%s\n"
@@ -2817,25 +2825,25 @@ msgstr ""
 "Bisherige Fehler: %d\n"
 "Möchten Sie mit dem nächsten Titel fortfahren?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:585
+#: src/menu/BatchJobTitleSelectState.cpp:602
 msgid "Batch ProfileCopy paused - Do you want to abort?"
 msgstr "Stapelverarbeitung Profilkopie angehalten – Abbruch?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:588
+#: src/menu/BatchJobTitleSelectState.cpp:605
 msgid "Batch ProfileMove - Review & Go"
 msgstr "Batch-Profilverschiebung – Überprüfen & Weiter"
 
-#: src/menu/BatchJobTitleSelectState.cpp:589
+#: src/menu/BatchJobTitleSelectState.cpp:606
 #, c-format
 msgid "- Move < %s (%s)> to < %s (%s) >"
 msgstr "- < %s (%s)> nach < %s (%s)> verschieben"
 
-#: src/menu/BatchJobTitleSelectState.cpp:590
+#: src/menu/BatchJobTitleSelectState.cpp:607
 #, c-format
 msgid "pre-BatchProfileMove Backup (WiiU: %d%s"
 msgstr "Pre-BatchProfileMove-Backup (WiiU: %d%s)"
 
-#: src/menu/BatchJobTitleSelectState.cpp:593
+#: src/menu/BatchJobTitleSelectState.cpp:610
 #, c-format
 msgid ""
 "%s\n"
@@ -2850,44 +2858,44 @@ msgstr ""
 "Bisherige Fehler: %d\n"
 "Möchten Sie mit dem nächsten Titel fortfahren?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:594
+#: src/menu/BatchJobTitleSelectState.cpp:611
 msgid "Batch ProfileMove paused - Do you want to abort?"
 msgstr "Stapelverarbeitung Profilverschiebung angehalten – Abbruch?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:597
+#: src/menu/BatchJobTitleSelectState.cpp:614
 msgid "Batch Wipe - Review & Go"
 msgstr "Stapellöschung – Überprüfen & Fortfahren"
 
-#: src/menu/BatchJobTitleSelectState.cpp:598
-#: src/menu/BatchJobTitleSelectState.cpp:600
-#: src/menu/BatchJobTitleSelectState.cpp:601
+#: src/menu/BatchJobTitleSelectState.cpp:615
+#: src/menu/BatchJobTitleSelectState.cpp:617
+#: src/menu/BatchJobTitleSelectState.cpp:618
 msgid "- Wipe"
 msgstr "– Löschen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:598
+#: src/menu/BatchJobTitleSelectState.cpp:615
 #, c-format
 msgid "- Wipe  < %s (%s)>"
 msgstr "– < %s (%s)> löschen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:599
+#: src/menu/BatchJobTitleSelectState.cpp:616
 #, c-format
 msgid "pre-BatchWipe Backup (vWii: %d%s"
 msgstr "Pre-BatchWipe-Backup (vWii: %d%s)"
 
-#: src/menu/BatchJobTitleSelectState.cpp:599
+#: src/menu/BatchJobTitleSelectState.cpp:616
 #, c-format
 msgid "pre-BatchWipe Backup (WiiU: %d%s"
 msgstr "Pre-BatchWipe-Backup (WiiU: %d%s)"
 
-#: src/menu/BatchJobTitleSelectState.cpp:600
+#: src/menu/BatchJobTitleSelectState.cpp:617
 msgid "- Wipe allusers"
 msgstr "– Alle Benutzer löschen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:601
+#: src/menu/BatchJobTitleSelectState.cpp:618
 msgid "- Wipe no user"
 msgstr "– Keinen Benutzer löschen"
 
-#: src/menu/BatchJobTitleSelectState.cpp:602
+#: src/menu/BatchJobTitleSelectState.cpp:619
 #, c-format
 msgid ""
 "%s\n"
@@ -2902,30 +2910,30 @@ msgstr ""
 "Bisherige Fehler: %d\n"
 "Möchten Sie mit dem nächsten Titel fortfahren?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:603
+#: src/menu/BatchJobTitleSelectState.cpp:620
 msgid "Batch Wipe paused - Do you want to abort?"
 msgstr "Stapellöschung angehalten – Abbruch?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:606
+#: src/menu/BatchJobTitleSelectState.cpp:623
 msgid "Batch Copy To USB - Review & Go"
 msgstr "Stapelkopie auf USB – Überprüfen & Los"
 
-#: src/menu/BatchJobTitleSelectState.cpp:608
+#: src/menu/BatchJobTitleSelectState.cpp:625
 #, c-format
 msgid "pre-BatchCopyToUSB Backup (WiiU: %d%s"
 msgstr "Pre-BatchCopyToUSB-Backup (WiiU: %d%s)"
 
-#: src/menu/BatchJobTitleSelectState.cpp:609
-#: src/menu/BatchJobTitleSelectState.cpp:618
+#: src/menu/BatchJobTitleSelectState.cpp:626
+#: src/menu/BatchJobTitleSelectState.cpp:635
 msgid "- Copy allusers"
 msgstr "– Alle Benutzer kopieren"
 
-#: src/menu/BatchJobTitleSelectState.cpp:610
-#: src/menu/BatchJobTitleSelectState.cpp:619
+#: src/menu/BatchJobTitleSelectState.cpp:627
+#: src/menu/BatchJobTitleSelectState.cpp:636
 msgid "- Copy no user"
 msgstr "– Keinen Benutzer kopieren"
 
-#: src/menu/BatchJobTitleSelectState.cpp:611
+#: src/menu/BatchJobTitleSelectState.cpp:628
 #, c-format
 msgid ""
 "%s\n"
@@ -2940,20 +2948,20 @@ msgstr ""
 "Bisherige Fehler: %d\n"
 "Möchten Sie mit dem nächsten Titel fortfahren?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:612
+#: src/menu/BatchJobTitleSelectState.cpp:629
 msgid "Batch Copy To USB paused - Do you want to abort?"
 msgstr "Stapelkopie auf USB angehalten – Abbruch?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:615
+#: src/menu/BatchJobTitleSelectState.cpp:632
 msgid "Batch Copy To NAND - Review & Go"
 msgstr "Stapelkopie auf NAND – Überprüfen & Los"
 
-#: src/menu/BatchJobTitleSelectState.cpp:617
+#: src/menu/BatchJobTitleSelectState.cpp:634
 #, c-format
 msgid "pre-BatchCopyToNAND Backup (WiiU: %d%s"
 msgstr "Pre-BatchCopyToNAND-Backup (WiiU: %d%s)"
 
-#: src/menu/BatchJobTitleSelectState.cpp:620
+#: src/menu/BatchJobTitleSelectState.cpp:637
 #, c-format
 msgid ""
 "%s\n"
@@ -2968,11 +2976,11 @@ msgstr ""
 "Bisherige Fehler: %d\n"
 "Möchten Sie mit dem nächsten Titel fortfahren?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:621
+#: src/menu/BatchJobTitleSelectState.cpp:638
 msgid "Batch Copy To NAND paused - Do you want to abort?"
 msgstr "Stapelkopie auf NAND angehalten – Abbruch?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:638
+#: src/menu/BatchJobTitleSelectState.cpp:655
 #, c-format
 msgid ""
 "%s\n"
@@ -3003,35 +3011,35 @@ msgstr ""
 "\n"
 "\n"
 
-#: src/menu/BatchJobTitleSelectState.cpp:659
+#: src/menu/BatchJobTitleSelectState.cpp:676
 msgid "- Include common savedata: Yes"
 msgstr "– Gemeinsame Speicherdaten einschließen: Ja"
 
-#: src/menu/BatchJobTitleSelectState.cpp:659
+#: src/menu/BatchJobTitleSelectState.cpp:676
 msgid "- Include common savedata: No"
 msgstr "– Gemeinsame Speicherdaten einschließen: Nein"
 
-#: src/menu/BatchJobTitleSelectState.cpp:660
-#: src/menu/BatchJobTitleSelectState.cpp:665
+#: src/menu/BatchJobTitleSelectState.cpp:677
+#: src/menu/BatchJobTitleSelectState.cpp:682
 msgid "- Wipe data: Yes"
 msgstr "– Daten löschen: Ja"
 
-#: src/menu/BatchJobTitleSelectState.cpp:660
-#: src/menu/BatchJobTitleSelectState.cpp:665
+#: src/menu/BatchJobTitleSelectState.cpp:677
+#: src/menu/BatchJobTitleSelectState.cpp:682
 msgid "- Wipe data: No"
 msgstr "– Daten löschen: Nein"
 
-#: src/menu/BatchJobTitleSelectState.cpp:661
-#: src/menu/BatchJobTitleSelectState.cpp:666
+#: src/menu/BatchJobTitleSelectState.cpp:678
+#: src/menu/BatchJobTitleSelectState.cpp:683
 msgid "- Perform full backup: Yes"
 msgstr "– Vollständige Sicherung durchführen: Ja"
 
-#: src/menu/BatchJobTitleSelectState.cpp:661
-#: src/menu/BatchJobTitleSelectState.cpp:666
+#: src/menu/BatchJobTitleSelectState.cpp:678
+#: src/menu/BatchJobTitleSelectState.cpp:683
 msgid "- Perform full backup: No"
 msgstr "– Vollständige Sicherung durchführen: Nein"
 
-#: src/menu/BatchJobTitleSelectState.cpp:663
+#: src/menu/BatchJobTitleSelectState.cpp:680
 #, c-format
 msgid ""
 "%s\n"
@@ -3058,7 +3066,7 @@ msgstr ""
 "Fortfahren?\n"
 "\n"
 
-#: src/menu/BatchJobTitleSelectState.cpp:678
+#: src/menu/BatchJobTitleSelectState.cpp:695
 msgid ""
 "You have selected some injected titles.\n"
 "If its restore fails, try them again as a vWii title.\n"
@@ -3070,7 +3078,7 @@ msgstr ""
 "\n"
 "Du kannst fortfahren."
 
-#: src/menu/BatchJobTitleSelectState.cpp:683
+#: src/menu/BatchJobTitleSelectState.cpp:700
 msgid ""
 "You have selected uninitialized titles.\n"
 "If its restore fails, run the Game to create \n"
@@ -3083,13 +3091,13 @@ msgstr ""
 "\n"
 "Du kannst fortfahren."
 
-#: src/menu/BatchJobTitleSelectState.cpp:718
-#: src/menu/BatchJobTitleSelectState.cpp:897 src/menu/BatchBackupState.cpp:145
+#: src/menu/BatchJobTitleSelectState.cpp:735
+#: src/menu/BatchJobTitleSelectState.cpp:914 src/menu/BatchBackupState.cpp:145
 msgid "ERROR WIPING BACKUPSET"
 msgstr "FEHLER BEIM LÖSCHEN DES BACKUPSETS"
 
-#: src/menu/BatchJobTitleSelectState.cpp:744
-#: src/menu/BatchJobTitleSelectState.cpp:753 src/menu/TitleOptionsState.cpp:954
+#: src/menu/BatchJobTitleSelectState.cpp:761
+#: src/menu/BatchJobTitleSelectState.cpp:770 src/menu/TitleOptionsState.cpp:954
 #: src/menu/TitleOptionsState.cpp:962
 #, c-format
 msgid ""
@@ -3107,20 +3115,20 @@ msgstr ""
 "Versuchen Sie, die Daten mit den \n"
 "Optionen 'Von/An Benutzer' wiederherzustellen."
 
-#: src/menu/BatchJobTitleSelectState.cpp:893 src/menu/BatchBackupState.cpp:141
+#: src/menu/BatchJobTitleSelectState.cpp:910 src/menu/BatchBackupState.cpp:141
 msgid "Do you want to wipe this incomplete batch backup?"
 msgstr "Diese unvollständige Stapelsicherung löschen?"
 
-#: src/menu/BatchJobTitleSelectState.cpp:951
+#: src/menu/BatchJobTitleSelectState.cpp:968
 #, c-format
 msgid "PARTIAL - %d %s title%s OK"
 msgstr "TEILSBACKUP - %d %s Titel%s OK"
 
-#: src/menu/BatchJobTitleSelectState.cpp:956
+#: src/menu/BatchJobTitleSelectState.cpp:973
 msgid "FAILED - No titles"
 msgstr "FEHLGESCHLAGEN - Keine Titel"
 
-#: src/menu/BatchJobTitleSelectState.cpp:958
+#: src/menu/BatchJobTitleSelectState.cpp:975
 #, c-format
 msgid "FAILED - OK/KO > %s: %d/%d"
 msgstr "FEHLGESCHLAGEN - OK/KO > %s: %d/%d"
@@ -3396,9 +3404,42 @@ msgstr ""
 msgid "Take an existent Batch BackupSet and create a clone with the NAND/USB format ready to copy to CEMU or Dolphin"
 msgstr ""
 
-#: src/menu/BackupSetManagementState.cpp:53 src/menu/BatchTasksState.cpp:82
+#: src/menu/BackupSetManagementState.cpp:53 src/menu/BatchTasksState.cpp:88
 msgid "\\ue002: Options \\ue000: Select Batch Task"
 msgstr "\\ue002: Optionen \\ue000: Stapelverarbeitungsaufgabe auswählen"
+
+#: src/menu/ExportAsState.cpp:28
+msgid "Export As"
+msgstr ""
+
+#: src/menu/ExportAsState.cpp:30
+#, c-format
+msgid "   Export Wii U as CEMU (%u Title%s)"
+msgstr ""
+
+#: src/menu/ExportAsState.cpp:33
+#, c-format
+msgid "   Export vWii as Dolphin(%u Title%s)"
+msgstr ""
+
+#: src/menu/ExportAsState.cpp:36
+#, c-format
+msgid "   Export Wii U System Titles as CEMU (%u Title%s)"
+msgstr ""
+
+#: src/menu/ExportAsState.cpp:43
+msgid ""
+"Reminder: Your Excludes will be applied to\n"
+"  'Export Wii U' and 'Export vWii' tasks"
+msgstr ""
+
+#: src/menu/ExportAsState.cpp:49
+msgid "Export Wii U or vWii savedata in a format ready to be copied to the corresponding foder in CEMU or Dolphin"
+msgstr ""
+
+#: src/menu/ExportAsState.cpp:53 src/menu/TitleOptionsState.cpp:472
+msgid "\\ue000: Export  \\ue001: Back"
+msgstr "\\ue000: Exportieren  \\ue001: Zurück"
 
 #: src/menu/MiiTransformTasksState.cpp:24
 msgid "Mii Transform Tasks"
@@ -3733,7 +3774,7 @@ msgid ""
 "  'Backup Wii U' and 'Backup vWii' tasks"
 msgstr "Erinnerung: Ihre Ausnahmen werden auf die Aufgaben 'Wii U sichern' und 'vWii sichern' angewendet."
 
-#: src/menu/BatchBackupState.cpp:51 src/menu/BatchTasksState.cpp:56
+#: src/menu/BatchBackupState.cpp:51 src/menu/BatchTasksState.cpp:59
 msgid ""
 "Batch Backup allows you to backup savedata:\n"
 "* for All titles at once (WiiU+ vWii)\n"
@@ -4304,10 +4345,6 @@ msgstr "\\ue000: Importieren  \\ue001: Zurück"
 msgid "Export Loadiine"
 msgstr "Ladeprogramm exportieren"
 
-#: src/menu/TitleOptionsState.cpp:472
-msgid "\\ue000: Export  \\ue001: Back"
-msgstr "\\ue000: Exportieren  \\ue001: Zurück"
-
 #: src/menu/TitleOptionsState.cpp:475
 msgid "Copy to Other Device"
 msgstr "Auf anderes Gerät kopieren"
@@ -4427,35 +4464,39 @@ msgstr "Speicherdaten erfolgreich verschoben!"
 msgid "Savedata succesfully copied!"
 msgstr "Speicherdaten erfolgreich kopiert!"
 
-#: src/menu/BatchTasksState.cpp:35
+#: src/menu/BatchTasksState.cpp:36
 msgid "Batch Tasks Menu"
 msgstr "Stapelverarbeitung Aufgabenmenü"
 
-#: src/menu/BatchTasksState.cpp:38
+#: src/menu/BatchTasksState.cpp:39
 msgid "   Batch Backup"
 msgstr "   Massensicherung"
 
-#: src/menu/BatchTasksState.cpp:40
+#: src/menu/BatchTasksState.cpp:41
 msgid "   Batch Restore"
 msgstr "   Stapelwiederherstellung"
 
-#: src/menu/BatchTasksState.cpp:42
+#: src/menu/BatchTasksState.cpp:43
 msgid "   Batch Wipe"
 msgstr "   Stapellöschen"
 
-#: src/menu/BatchTasksState.cpp:44
+#: src/menu/BatchTasksState.cpp:45
 msgid "   Batch Move to Other Profile"
 msgstr "   Batch-Verschieben in ein anderes Profil"
 
-#: src/menu/BatchTasksState.cpp:46
+#: src/menu/BatchTasksState.cpp:47
 msgid "   Batch Copy to Other Profile"
 msgstr "   Stapelkopie in anderes Profil kopieren"
 
-#: src/menu/BatchTasksState.cpp:48
+#: src/menu/BatchTasksState.cpp:49
 msgid "   Batch Copy to Other Device"
 msgstr "   Stapelkopie auf anderes Gerät"
 
-#: src/menu/BatchTasksState.cpp:59
+#: src/menu/BatchTasksState.cpp:51
+msgid "   Export in CEMU/Dolphin format"
+msgstr ""
+
+#: src/menu/BatchTasksState.cpp:62
 msgid ""
 "Batch Restore allows you to restore all savedata from a BatchBackup \n"
 "* to the same user profiles\n"
@@ -4469,21 +4510,25 @@ msgstr ""
 "* oder auf einer anderen Konsole, auf der die Spiele bereits installiert sind, wiederherstellen.\n"
 "Jetzt ist es nicht mehr nötig, das Spiel vorher zu starten, um die Speicherdaten zu initialisieren."
 
-#: src/menu/BatchTasksState.cpp:62
+#: src/menu/BatchTasksState.cpp:65
 msgid "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
 msgstr "Mit „Stapellöschung“ können Sie Speicherdaten eines bestimmten Profils in allen ausgewählten Titeln löschen. Es erkennt auch Speicherdaten von Profilen, die nicht in der Konsole definiert sind."
 
-#: src/menu/BatchTasksState.cpp:65
+#: src/menu/BatchTasksState.cpp:68
 msgid "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
 msgstr "Mit „Stapelverarbeitung in anderes Profil verschieben“ können Sie Speicherdaten von einem Benutzerprofil in ein anderes verschieben. Es werden keine Daten kopiert, sondern nur Ordner umbenannt. Daher geht es sehr schnell."
 
-#: src/menu/BatchTasksState.cpp:68
+#: src/menu/BatchTasksState.cpp:71
 msgid "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
 msgstr "Mit Stapelkopie auf anderes Profil können Sie Speicherdaten von einem Benutzerprofil auf ein anderes Benutzerprofil übertragen. Die Speicherdaten der Quelldaten bleiben unberührt."
 
-#: src/menu/BatchTasksState.cpp:71
+#: src/menu/BatchTasksState.cpp:74
 msgid "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
 msgstr "Mit Stapelkopie auf anderes Gerät können Sie Speicherdaten zwischen NAND und USB für alle ausgewählten Titel übertragen, die bereits Speicherdaten auf beiden Medien haben."
+
+#: src/menu/BatchTasksState.cpp:77
+msgid "Export savedata in a fromat ready to be copied to a CEMU or Dolphin folders."
+msgstr ""
 
 #: src/savemng.cpp:158
 msgid "Failed to open Loadiine game save directory."
