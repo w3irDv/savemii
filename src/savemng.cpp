@@ -58,7 +58,7 @@ std::string getSlotFormatType(Title *title, uint8_t slot) {
     if (((highID & 0xFFFFFFF0) == 0x00010000) && (slot == 255))
         return "L"; // LegacyBackup
     else {
-        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID);
+        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), highID, lowID);
         if (FSUtils::checkEntry(idBasedPath.c_str()) == 2) //hilo dir already exists
             return "H";
         else
@@ -86,12 +86,12 @@ std::string getDynamicBackupBasePath(Title *title) {
     uint32_t highID = title->highID;
     uint32_t lowID = title->lowID;
 
-    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID);
+    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), highID, lowID);
 
     if (FSUtils::checkEntry(idBasedPath.c_str()) == 2) //hilo dir already exists
-        return StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), highID, lowID);
+        return StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), highID, lowID);
     else
-        return StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
+        return StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
 }
 
 
@@ -238,7 +238,7 @@ bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime) {
 
 bool isSlotEmptyInTitleNameBasedPath(Title *title, uint8_t slot) {
     std::string path;
-    path = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName) + "/" + std::to_string(slot);
+    path = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), title->titleNameBasedDirName) + "/" + std::to_string(slot);
     int ret = FSUtils::checkEntry(path.c_str());
     return ret <= 0;
 }
@@ -1072,22 +1072,22 @@ int restoreSavedata(Title *title, uint8_t slot, int8_t source_user, int8_t wiiu_
             return -1;
         if (!FSUtils::folderEmpty(dstPath.c_str())) {
             // individual backups always to ROOT backupSet and always allusers
-            BackupSetList::saveBackupSetSubPath();
-            BackupSetList::setBackupSetSubPathToRoot();
+            BackupSetList::currentBackupSetList->saveBackupSetSubPath();
+            BackupSetList::currentBackupSetList->setBackupSetSubPathToRoot();
             int slotb = getEmptySlot(title);
             if (slotb < 0) {
                 if (!Console::promptConfirm(ST_WARNING, _("There is no empty slot to back up the current savedata first.\n\nContinue without a backup?"))) {
-                    BackupSetList::restoreBackupSetSubPath();
+                    BackupSetList::currentBackupSetList->restoreBackupSetSubPath();
                     return -1;
                 }
             } else if (Console::promptConfirm(ST_YES_NO, _("Backup current savedata first to next empty slot?")))
                 if (!(backupSavedata(title, slotb, -1, true, FILES, SAVEMII_SLOT, USE_SD_OR_STORAGE_PROFILES, _("pre-Restore backup")) == 0)) {
                     Console::showMessage(ERROR_SHOW, _("Backup Failed - Restore aborted !!"));
-                    BackupSetList::restoreBackupSetSubPath();
+                    BackupSetList::currentBackupSetList->restoreBackupSetSubPath();
                     return -1;
                 }
 
-            BackupSetList::restoreBackupSetSubPath();
+            BackupSetList::currentBackupSetList->restoreBackupSetSubPath();
         }
     }
 
@@ -1623,7 +1623,7 @@ void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning,
 
 bool isTitleUsingIdBasedPath(Title *title) {
 
-    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->highID, title->lowID);
+    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), title->highID, title->lowID);
     if (FSUtils::checkEntry(idBasedPath.c_str()) == 2)
         return true;
     else
@@ -1632,7 +1632,7 @@ bool isTitleUsingIdBasedPath(Title *title) {
 
 bool isTitleUsingTitleNameBasedPath(Title *title) {
 
-    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
+    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
     if (FSUtils::checkEntry(titleNameBasedPath.c_str()) == 2)
         return true;
     else
@@ -1644,8 +1644,8 @@ bool renameTitleFolder(Title *title) {
     if (savemng::firstSDWrite)
         sdWriteDisclaimer();
 
-    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->highID, title->lowID);
-    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
+    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), title->highID, title->lowID);
+    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
 
     if (FSUtils::checkEntry(titleNameBasedPath.c_str()) == 2) {
         if (!mergeTitleFolders(title)) {
@@ -1692,7 +1692,7 @@ bool renameAllTitlesFolder(Title *titles, int titlesCount) {
     int titlesToMigrate = 0;
 
     for (int i = 0; i < titlesCount; i++) {
-        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), titles[i].highID, titles[i].lowID);
+        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), titles[i].highID, titles[i].lowID);
         if (FSUtils::checkEntry(idBasedPath.c_str()) == 0)
             continue;
         titlesToMigrate++;
@@ -1701,7 +1701,7 @@ bool renameAllTitlesFolder(Title *titles, int titlesCount) {
     int step = 1;
     for (int i = 0; i < titlesCount; i++) {
 
-        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), titles[i].highID, titles[i].lowID);
+        std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), titles[i].highID, titles[i].lowID);
         if (FSUtils::checkEntry(idBasedPath.c_str()) == 0)
             continue;
 
@@ -1733,8 +1733,8 @@ bool mergeTitleFolders(Title *title) {
     int mergeErrorsCounter = 0;
     bool showAbortPrompt = false;
 
-    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->highID, title->lowID);
-    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
+    std::string idBasedPath = StringUtils::stringFormat("%s%s%08x%08x", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), title->highID, title->lowID);
+    std::string titleNameBasedPath = StringUtils::stringFormat("%s%s%s", backupPath, BackupSetList::currentBackupSetList->getBackupSetSubPath().c_str(), title->titleNameBasedDirName);
 
     DIR *dir = opendir(idBasedPath.c_str());
     if (dir == nullptr) {

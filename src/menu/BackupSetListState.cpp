@@ -22,11 +22,11 @@ static std::string language;
 
 BackupSetListState::BackupSetListState(eJobType jobType) : jobType(jobType) {
 
-    this->sortAscending = BackupSetList::sortAscending;
-    if (BackupSetList::getIsInitializationRequired()) {
-        BackupSetList::initBackupSetList();
+    this->sortAscending = BackupSetList::currentBackupSetList->sortAscending;
+    if (BackupSetList::currentBackupSetList->getIsInitializationRequired()) {
+        BackupSetList::currentBackupSetList->initBackupSetList();
         BackupSetListState::resetCursorPosition();
-        BackupSetList::setIsInitializationRequired(false);
+        BackupSetList::currentBackupSetList->setIsInitializationRequired(false);
     }
 }
 
@@ -34,17 +34,17 @@ BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleTyp
                                                                                                                  titlesCount(titlesCount),
                                                                                                                  titleType(titleType),
                                                                                                                  jobType(jobType) {
-    if (BackupSetList::getIsInitializationRequired()) {
-        BackupSetList::initBackupSetList();
+    if (BackupSetList::currentBackupSetList->getIsInitializationRequired()) {
+        BackupSetList::currentBackupSetList->initBackupSetList();
         BackupSetListState::resetCursorPosition();
-        BackupSetList::setIsInitializationRequired(false);
+        BackupSetList::currentBackupSetList->setIsInitializationRequired(false);
     }
 }
 
 void BackupSetListState::resetCursorPosition() { // if bslist is modified after a new batch Backup
     if (cursorPos == 0)
         return;
-    if (BackupSetList::sortAscending) {
+    if (BackupSetList::currentBackupSetList->sortAscending) {
         return;
     } else {
         cursorPos++;
@@ -86,7 +86,7 @@ void BackupSetListState::render() {
             DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
             if (backupSetItem == BackupSetList::ROOT_BS)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_HIGH, COLOR_LIST_HIGH_AT_CURSOR, cursorPos, i);
-            if (backupSetItem == BackupSetList::getBackupSetEntry())
+            if (backupSetItem == BackupSetList::currentBackupSetList->getBackupSetEntry())
                 DrawUtils::setFontColorByCursor(COLOR_CURRENT_BS, COLOR_CURRENT_BS_AT_CURSOR, cursorPos, i);
 
             Console::consolePrintPos(M_OFF - 1, i + 2, "  %s", backupSetItem.substr(0, 15).c_str());
@@ -128,9 +128,9 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             switch (jobType) {
                 case eJobType::NONE: // it is not a step in a batch task
                 {
-                    BackupSetList::setBackupSetEntry(cursorPos + scroll);
-                    BackupSetList::setBackupSetSubPath();
-                    BackupSetList::setSelectedEntryForIndividualTitles(cursorPos + scroll);
+                    BackupSetList::currentBackupSetList->setBackupSetEntry(cursorPos + scroll);
+                    BackupSetList::currentBackupSetList->setBackupSetSubPath();
+                    BackupSetList::currentBackupSetList->setSelectedEntryForIndividualTitles(cursorPos + scroll);
                     char message[256];
                     const char *messageTemplate = _("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
                     snprintf(message, 256, messageTemplate,
@@ -143,8 +143,8 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     return SUBSTATE_RETURN;
                     break;
                 case RESTORE:
-                    BackupSetList::setBackupSetEntry(cursorPos + scroll);
-                    BackupSetList::setBackupSetSubPath();
+                    BackupSetList::currentBackupSetList->setBackupSetEntry(cursorPos + scroll);
+                    BackupSetList::currentBackupSetList->setBackupSetSubPath();
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
                     break;
@@ -200,14 +200,14 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::MINUS)) {
             int entry = cursorPos + scroll;
             if (entry > 0) {
-                if (BackupSetList::getBackupSetSubPath() == BackupSetList::getBackupSetSubPath(entry)) {
-                    BackupSetList::setBackupSetEntry(entry - 1);
-                    BackupSetList::setBackupSetSubPath();
+                if (BackupSetList::currentBackupSetList->getBackupSetSubPath() == BackupSetList::currentBackupSetList->getBackupSetSubPath(entry)) {
+                    BackupSetList::currentBackupSetList->setBackupSetEntry(entry - 1);
+                    BackupSetList::currentBackupSetList->setBackupSetSubPath();
                 }
                 InProgress::totalSteps = InProgress::currentStep = 1;
                 InProgress::titleName.assign(BackupSetList::currentBackupSetList->at(entry));
-                if (wipeBackupSet(BackupSetList::getBackupSetSubPath(entry), false)) {
-                    BackupSetList::initBackupSetList();
+                if (wipeBackupSet(BackupSetList::currentBackupSetList->getBackupSetSubPath(entry), false)) {
+                    BackupSetList::currentBackupSetList->initBackupSetList();
                     cursorPos--;
                 }
             }
@@ -221,7 +221,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::X)) {
-            std::string bs_path = BackupSetList::getBackupSetPath(cursorPos + scroll);
+            std::string bs_path = BackupSetList::currentBackupSetList->getBackupSetPath(cursorPos + scroll);
             if (bs_path.size() > 0)
                 bs_path.pop_back(); // by construction, it contains a trailing /
             this->state = STATE_DO_SUBSTATE;
@@ -247,10 +247,10 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     delete metadataObj;
                 }
             }
-            if (BackupSetList::getIsInitializationRequired()) {
-                BackupSetList::initBackupSetList();
+            if (BackupSetList::currentBackupSetList->getIsInitializationRequired()) {
+                BackupSetList::currentBackupSetList->initBackupSetList();
                 BackupSetListState::resetCursorPosition();
-                BackupSetList::setIsInitializationRequired(false);
+                BackupSetList::currentBackupSetList->setIsInitializationRequired(false);
             }
             this->subState.reset();
             this->state = STATE_BACKUPSET_MENU;

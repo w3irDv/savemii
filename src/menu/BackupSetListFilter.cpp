@@ -76,7 +76,7 @@ ApplicationState::eSubState BackupSetListFilterState::update(Input *input) {
     }
     if (input->get(ButtonState::TRIGGER, Button::A)) {
         backupSetList->filter();
-        backupSetList->sort(BackupSetList::getSortAscending());
+        backupSetList->sort(BackupSetList::currentBackupSetList->getSortAscending());
         BackupSetListState::resetCursorAndScroll();
         return SUBSTATE_RETURN;
     }

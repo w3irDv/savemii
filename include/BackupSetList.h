@@ -70,10 +70,11 @@ public:
     friend class BackupSetListFilterState;
     BackupSetList() {};
     BackupSetList(const char *backupSetListRoot);
-    static std::unique_ptr<BackupSetList> currentBackupSetList;
+    inline static std::unique_ptr<BackupSetList> currentBackupSetList = nullptr;
+    inline static std::unique_ptr<BackupSetList> currentExportSetList = nullptr;
 
     void sort(bool sortAscending = false);
-    static bool getSortAscending() { return sortAscending; };
+    bool getSortAscending() { return sortAscending; };
     std::string at(int i);
     std::string getSerialIdAt(int i);
     std::string getStretchedSerialIdAt(int i);
@@ -90,35 +91,35 @@ public:
     void resetTagRange();
     BSMetadataValues *getBSMetadataValues() { return &bsMetadataValues; };
 
-    static const std::string ROOT_BS;
-    static std::string getBackupSetSubPath() { return backupSetSubPath; };
-    static std::string getBackupSetPath() { return currentBackupSetList->backupSetListRoot + backupSetSubPath; };
-    static std::string getBackupSetEntry() { return backupSetEntry; };
-    static std::string getBackupSetSubPath(int i);
-    static std::string getBackupSetPath(int i);
-    static int getSelectedEntryForIndividualTitles() { return selectedEntryForIndividualTitles; }
-    static void setBackupSetEntry(int i);
-    static void setBackupSetSubPath();
-    static void initBackupSetList();
-    static void setBackupSetSubPathToRoot() { backupSetSubPath = "/"; }
-    static void setBackupSetToRoot() {
+    inline static const std::string ROOT_BS = ">> Root <<";
+    std::string getBackupSetSubPath() { return backupSetSubPath; };
+    std::string getBackupSetPath() { return currentBackupSetList->backupSetListRoot + backupSetSubPath; };
+    std::string getBackupSetEntry() { return backupSetEntry; };
+    std::string getBackupSetSubPath(int i);
+    std::string getBackupSetPath(int i);
+    int getSelectedEntryForIndividualTitles() { return selectedEntryForIndividualTitles; }
+    void setBackupSetEntry(int i);
+    void setBackupSetSubPath();
+    void initBackupSetList();
+    void setBackupSetSubPathToRoot() { backupSetSubPath = "/"; }
+    void setBackupSetToRoot() {
         setBackupSetEntry(0);
         setBackupSetSubPathToRoot();
     }
-    static void saveBackupSetSubPath() { savedBackupSetSubPath = backupSetSubPath; }
-    static void restoreBackupSetSubPath() { backupSetSubPath = savedBackupSetSubPath; }
-    static bool getIsInitializationRequired() { return isInitializationRequired; }
-    static void setIsInitializationRequired(bool isInitializationRequired_) {
+    void saveBackupSetSubPath() { savedBackupSetSubPath = backupSetSubPath; }
+    void restoreBackupSetSubPath() { backupSetSubPath = savedBackupSetSubPath; }
+    bool getIsInitializationRequired() { return isInitializationRequired; }
+    void setIsInitializationRequired(bool isInitializationRequired_) {
         BackupSetList::isInitializationRequired = isInitializationRequired_;
     }
-    static bool isRootBackupSet() { return (backupSetSubPath == "/"); }
-    static void setSelectedEntryForIndividualTitles(int i) { selectedEntryForIndividualTitles = i; }
+    bool isRootBackupSet() { return (backupSetSubPath == "/"); }
+    void setSelectedEntryForIndividualTitles(int i) { selectedEntryForIndividualTitles = i; }
 
     bool clone_as_emulator(int i);
 
 
 private:
-    static bool sortAscending;
+    bool sortAscending = false;
     std::vector<BackupSetItemView> backupSetsView;
     std::vector<BackupSetItem> backupSets;
     std::vector<std::string> serialIds;
@@ -128,9 +129,9 @@ private:
     int entriesView;
     int entries;
     std::string backupSetListRoot;
-    static std::string backupSetSubPath;
-    static std::string backupSetEntry;
-    static std::string savedBackupSetSubPath;
-    inline static int selectedEntryForIndividualTitles = 0;
-    inline static bool isInitializationRequired = false;
+    std::string backupSetSubPath{"/"};  // path from batch backup to the backupSet folder
+    std::string backupSetEntry = ROOT_BS;   // folder name
+    std::string savedBackupSetSubPath {};
+    int selectedEntryForIndividualTitles = 0;
+    bool isInitializationRequired = false;
 };

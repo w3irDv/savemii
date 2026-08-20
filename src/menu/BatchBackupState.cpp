@@ -143,13 +143,13 @@ void BatchBackupState::backup_all_saves() {
             InProgress::titleName.assign(batchDatetime);
             if (!wipeBackupSet("/batch/" + batchDatetime, true)) {
                 writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
-                BackupSetList::setIsInitializationRequired(true);
+                BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
             }
             return;
         }
     }
 
-    BackupSetList::setIsInitializationRequired(true);
+    BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
 
     std::string tag;
     if (wiiU_backup_failed_counter == 0 && wii_backup_failed_counter == 0 && !InProgress::abortTask) {

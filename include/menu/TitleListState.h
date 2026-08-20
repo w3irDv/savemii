@@ -14,8 +14,8 @@ class TitleListState : public ApplicationState {
 public:
     explicit TitleListState(Title *titles, int titlesCount, bool isWiiU) : titles(titles),
                                                                            titlesCount(titlesCount), isWiiU(isWiiU) {
-        BackupSetList::setBackupSetEntry(BackupSetList::getSelectedEntryForIndividualTitles());
-        BackupSetList::setBackupSetSubPath();
+        BackupSetList::currentBackupSetList->setBackupSetEntry(BackupSetList::currentBackupSetList->getSelectedEntryForIndividualTitles());
+        BackupSetList::currentBackupSetList->setBackupSetSubPath();
         // titleSort/sortAscending persist (static); re-sort the shared array on entry so the
         // displayed order matches the remembered sort (also reconciles across Wii U / vWii lists).
         if (titles != nullptr && titlesCount > 0)

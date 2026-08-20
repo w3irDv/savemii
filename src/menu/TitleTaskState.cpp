@@ -177,7 +177,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             }
 
             if (this->task == BACKUP || this->task == WIPE_PROFILE || this->task == PROFILE_TO_PROFILE || this->task == MOVE_PROFILE || this->task == COPY_TO_OTHER_DEVICE) {
-                BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                BackupSetList::currentBackupSetList->setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 gameBackupBasePath = getDynamicBackupBasePath(&this->title);
                 AccountUtils::getAccountsFromVol(&this->title, slot, this->task, gameBackupBasePath, &data_bin_found);
             }
@@ -189,7 +189,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
                     return SUBSTATE_RUNNING;
                 }
 
-                BackupSetList::setBackupSetSubPath();
+                BackupSetList::currentBackupSetList->setBackupSetSubPath();
                 gameBackupBasePath = getDynamicBackupBasePath(&this->title);
                 AccountUtils::getAccountsFromVol(&this->title, slot, RESTORE, gameBackupBasePath, &data_bin_found);
             }
@@ -216,7 +216,7 @@ ApplicationState::eSubState TitleTaskState::update(Input *input) {
             if ((this->task == importLoadiine) || (this->task == exportLoadiine)) {
                 source_user = 0;
                 wiiu_user = 0;
-                BackupSetList::setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
+                BackupSetList::currentBackupSetList->setBackupSetSubPathToRoot(); // default behaviour: unaware of backupsets
                 char gamePath[PATH_SIZE];
                 if (!getLoadiineGameSaveDir(gamePath, this->title.productCode, this->title.shortName, this->title.highID, this->title.lowID)) {
                     return SUBSTATE_RUNNING;

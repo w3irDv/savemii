@@ -733,10 +733,10 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             InProgress::titleName.assign(batchDatetime);
             if (!wipeBackupSet("/batch/" + batchDatetime, true))
                 writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
-            BackupSetList::setIsInitializationRequired(true);
+            BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
             return;
         }
-        BackupSetList::setIsInitializationRequired(true);
+        BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
         std::string tag = StringUtils::stringFormat(backupDescription, titles_ok_counter, titles_failed_counter == 0 ? ")" : "+E)");
         writeBackupAllMetadata(batchDatetime, tag.c_str());
     }
@@ -912,7 +912,7 @@ void BatchJobTitleSelectState::executeBatchBackup(eBackupLayout backup_layout /*
             InProgress::titleName.assign(batchDatetime);
             if (!wipeBackupSet("/batch/" + batchDatetime, true, backup_layout)) {
                 writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
-                BackupSetList::setIsInitializationRequired(true);
+                BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
             }
             for (int i = 0; i < this->candidatesCount; i++) {                            // we have deleted the backup, so we must reset title state
                 if (this->titles[i].currentDataSource.selectedToBeProcessed) {           // backup all save has (partially) unset selectedForBackup,
@@ -925,7 +925,7 @@ void BatchJobTitleSelectState::executeBatchBackup(eBackupLayout backup_layout /*
     }
 
     if (backup_layout == SAVEMII)
-        BackupSetList::setIsInitializationRequired(true);
+        BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
 
     int titlesOK = 0;
     int titlesAborted = 0;

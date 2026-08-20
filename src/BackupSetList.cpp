@@ -9,14 +9,6 @@
 #include <algorithm>
 #include <set>
 
-bool BackupSetList::sortAscending = false;
-const std::string BackupSetList::ROOT_BS = ">> Root <<";
-std::string BackupSetList::backupSetSubPath = "/";;
-std::string BackupSetList::backupSetEntry = ROOT_BS;
-std::string BackupSetList::savedBackupSetSubPath {};
-
-std::unique_ptr<BackupSetList> BackupSetList::currentBackupSetList  = std::make_unique<BackupSetList>();
-
 extern const char *backupPath;
 extern const char *batchBackupPath;
 

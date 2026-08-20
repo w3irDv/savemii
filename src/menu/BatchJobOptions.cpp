@@ -300,7 +300,7 @@ void BatchJobOptions::render() {
         Console::consolePrintPos(16, 0, menuTitle);
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
         if (jobType == RESTORE)
-            Console::consolePrintPosAligned(0, 4, 2, _("BS: %s"), BackupSetList::getBackupSetEntry().c_str());
+            Console::consolePrintPosAligned(0, 4, 2, _("BS: %s"), BackupSetList::currentBackupSetList->getBackupSetEntry().c_str());
         DrawUtils::setFontColor(COLOR_TEXT);
         if (titleType == WIIU || titleType == WIIU_SYS) {
             Console::consolePrintPos(M_OFF, 3, sourceUserPrompt);

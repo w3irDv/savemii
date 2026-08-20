@@ -102,9 +102,9 @@ void TitleOptionsState::render() {
             if (this->task == BACKUP)
                 DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
             else
-                DrawUtils::setFontColor(BackupSetList::isRootBackupSet() ? COLOR_INFO_AT_CURSOR : COLOR_LIST_DANGER_AT_CURSOR);
+                DrawUtils::setFontColor(BackupSetList::currentBackupSetList->currentBackupSetList->isRootBackupSet() ? COLOR_INFO_AT_CURSOR : COLOR_LIST_DANGER_AT_CURSOR);
             Console::consolePrintPosAligned(0, 4, 2, _("BackupSet: %s"),
-                                            (this->task == BACKUP) ? BackupSetList::ROOT_BS.c_str() : BackupSetList::getBackupSetEntry().c_str());
+                                            (this->task == BACKUP) ? BackupSetList::currentBackupSetList->ROOT_BS.c_str() : BackupSetList::currentBackupSetList->getBackupSetEntry().c_str());
         }
         entrycount = 2;
         DrawUtils::setFontColor(COLOR_TEXT);

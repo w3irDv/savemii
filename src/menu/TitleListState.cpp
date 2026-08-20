@@ -121,7 +121,7 @@ ApplicationState::eSubState TitleListState::update(Input *input) {
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<TitleTaskState>(this->titles[this->targ], this->titles, this->titlesCount);
 
-            if (isTitleUsingIdBasedPath(&this->titles[targ]) && BackupSetList::isRootBackupSet() && checkIdVsTitleNameBasedPath) {
+            if (isTitleUsingIdBasedPath(&this->titles[targ]) && BackupSetList::currentBackupSetList->isRootBackupSet() && checkIdVsTitleNameBasedPath) {
                 const char *choices = _("SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n\nDo you want to rename already created backup folders?\n\n\\ue000  Yes, but only for this title\n\\ue045  Yes, please migrate all %s\n\\ue001  Not this time\n\\ue002  Not in this session\n\n\n");
                 std::string message = StringUtils::stringFormat(choices, this->titles[targ].highID, this->titles[targ].lowID, this->titles[targ].titleNameBasedDirName, isWiiU ? _("Wii U Titles") : _("vWii Titles"));
                 bool done = false;
