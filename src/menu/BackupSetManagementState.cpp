@@ -28,7 +28,7 @@ void BackupSetManagementState::render() {
         Console::consolePrintPos(M_OFF, 3, _("   Set / Show Content / Tag / Wipe Backupsets"));
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 5, _("   Make a BackupSet CEMU/Dolphin compatible"));
+        Console::consolePrintPos(M_OFF, 5, _("   Show Content / Tag / Wipe  CEMU/Dolphin compatible"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + (cursorPos > 0 ? 1 : 0) + cursorPos, "\u2192");
@@ -39,7 +39,7 @@ void BackupSetManagementState::render() {
                 info = _("Set the default BackupSet (tasks will used it as their backup repo, tag a BS with a name, or wipe a BS");
                 break;
             case 1:
-                info = _("Take an existent Batch BackupSet and create a clone with the NAND/USB format ready to copy to CEMU or Dolphin");
+                info = _("Show content of/ tag / wipe  CEMU or Dolphin export folders");
                 break;
             default:
                 info = "";
@@ -50,7 +50,7 @@ void BackupSetManagementState::render() {
         Console::consolePrintPosAutoFormat(M_OFF, 10, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Options \\ue000: Select Batch Task"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Options \\ue000: Select BackupSet Task"));
     }
 }
 
@@ -66,12 +66,13 @@ ApplicationState::eSubState BackupSetManagementState::update(Input *input) {
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>(eJobType::NONE);
                     break;
-                case 1:
-                    this->state = STATE_DO_SUBSTATE;
-                    this->substateCalled = STATE_BACKUPSET_MENU;
-                    this->subState = std::make_unique<BackupSetListState>(CEMU_DOLPHIN_EXPORT);
-                    break;
+                //case 1:
+                //    this->state = STATE_DO_SUBSTATE;
+                //    this->substateCalled = STATE_BACKUPSET_MENU;
+                //    this->subState = std::make_unique<BackupSetListState>(CEMU_DOLPHIN_EXPORT); // a little bit inconsistent with "NONE", this 
+                //    break;
                 default:
+                    Console::showMessage(ERROR_SHOW, "Not yet implemented");
                     break;
             }
         }

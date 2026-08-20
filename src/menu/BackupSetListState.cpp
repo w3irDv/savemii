@@ -97,9 +97,6 @@ void BackupSetListState::render() {
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         switch (jobType) {
             case CEMU_DOLPHIN_EXPORT:
-                if (cursorPos + scroll > 0)
-                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Clone to CEMU/Dolphin \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"));
-                else
                     Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"));
                 break;
             default:
@@ -116,6 +113,10 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
     if (this->state == STATE_BACKUPSET_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::B))
             return SUBSTATE_RETURN;
+        if (jobType == eJobType::CEMU_DOLPHIN_EXPORT) { // NOTHING IMPLEMENTED
+            Console::showMessage(ERROR_SHOW, "Not yey implmeneted");
+            return SUBSTATE_RUNNING;
+        }
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             if (jobType != eJobType::NONE) {
                 if (cursorPos + scroll == 0) {
@@ -147,11 +148,11 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
                     break;
-                case CEMU_DOLPHIN_EXPORT:
-                    Console::showMessage(ERROR_SHOW, "DO CEMU DOLPHIN CLONE ...");
-                    BackupSetList::currentBackupSetList->clone_as_emulator(cursorPos + scroll);
-                    return SUBSTATE_RETURN;
-                    break;
+                //case CEMU_DOLPHIN_EXPORT:
+                //   Console::showMessage(ERROR_SHOW, "DO CEMU DOLPHIN CLONE ...");
+                //    BackupSetList::currentBackupSetList->clone_as_emulator(cursorPos + scroll);
+                //    return SUBSTATE_RETURN;
+                //    break;
                 default:
                     break;
             }
@@ -205,7 +206,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 }
                 InProgress::totalSteps = InProgress::currentStep = 1;
                 InProgress::titleName.assign(BackupSetList::currentBackupSetList->at(entry));
-                if (wipeBackupSet(BackupSetList::getBackupSetSubPath(entry),false)) {
+                if (wipeBackupSet(BackupSetList::getBackupSetSubPath(entry), false)) {
                     BackupSetList::initBackupSetList();
                     cursorPos--;
                 }

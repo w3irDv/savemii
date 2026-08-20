@@ -50,7 +50,7 @@ void ExportAsState::render() {
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
-        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Export  \\ue001: Back"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: ExportFolder Management \\ue000: Export  \\ue001: Back"));
     }
 }
 
@@ -66,7 +66,7 @@ ApplicationState::eSubState ExportAsState::update(Input *input) {
             return SUBSTATE_RETURN;
         if (input->get(ButtonState::TRIGGER, Button::X)) {
             this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<BackupSetListState>(eJobType::NONE);
+            this->subState = std::make_unique<BackupSetListState>(eJobType::CEMU_DOLPHIN_EXPORT);
             return SUBSTATE_RUNNING;
         }
         if (input->get(ButtonState::TRIGGER, Button::A)) {
