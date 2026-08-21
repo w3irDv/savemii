@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ApplicationState.h>
+#include <BackupSetList.h>
 #include <memory>
 #include <savemng.h>
 #include <utils/InputUtils.h>

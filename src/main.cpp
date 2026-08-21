@@ -140,9 +140,8 @@ int main() {
     StartupUtils::resetMessageList();
     StartupUtils::addInitMessageWithIcon(_("Initializing BackupSets metadata."));
 
-    
-    BackupSetList::currentBackupSetList  = std::make_unique<BackupSetList>();
-    BackupSetList::currentBackupSetList->initBackupSetList();
+    BackupSetList::initBackupSetList();
+    BackupSetList::initExportSetList();
 
     StartupUtils::addInitMessageWithIcon(_("Initializing Excludes config."));
 

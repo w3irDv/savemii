@@ -2,6 +2,7 @@
 
 #include "utils/CustomTypes.h"
 #include <ApplicationState.h>
+#include <BackupSetList.h>
 #include <cfg/ExcludesCfg.h>
 #include <memory>
 #include <savemng.h>
@@ -74,6 +75,7 @@ private:
     std::unique_ptr<ExcludesCfg> &excludes = ExcludesCfg::wiiuExcludes;
 
     eJobType jobType;
+    std::unique_ptr<BackupSetList>& working_backupset_list;
 
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);

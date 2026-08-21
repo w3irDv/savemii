@@ -20,31 +20,45 @@ int BackupSetListState::cursorPos = 0;
 int BackupSetListState::scroll = 0;
 static std::string language;
 
-BackupSetListState::BackupSetListState(eJobType jobType) : jobType(jobType) {
+BackupSetListState::BackupSetListState(eJobType jobType) : jobType(jobType), working_backupset_list(determineList(jobType)) {
 
-    this->sortAscending = BackupSetList::currentBackupSetList->sortAscending;
-    if (BackupSetList::currentBackupSetList->getIsInitializationRequired()) {
-        BackupSetList::currentBackupSetList->initBackupSetList();
-        BackupSetListState::resetCursorPosition();
-        BackupSetList::currentBackupSetList->setIsInitializationRequired(false);
+    cursorPos = 0;
+    scroll = 0;
+
+    this->sortAscending = working_backupset_list->sortAscending;
+    if (working_backupset_list->getIsInitializationRequired()) {
+        BackupSetList::reInitXSetList(jobType);
+        BackupSetListState::resetCursorPosition(working_backupset_list->sortAscending);
+        working_backupset_list->setIsInitializationRequired(false);
     }
 }
 
 BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleType titleType, eJobType jobType) : titles(titles),
                                                                                                                  titlesCount(titlesCount),
                                                                                                                  titleType(titleType),
-                                                                                                                 jobType(jobType) {
-    if (BackupSetList::currentBackupSetList->getIsInitializationRequired()) {
-        BackupSetList::currentBackupSetList->initBackupSetList();
-        BackupSetListState::resetCursorPosition();
-        BackupSetList::currentBackupSetList->setIsInitializationRequired(false);
+                                                                                                                 jobType(jobType),
+                                                                                                                 working_backupset_list(determineList(jobType)) {
+    cursorPos = 0;
+    scroll = 0;
+    
+    if (working_backupset_list->getIsInitializationRequired()) {
+        BackupSetList::reInitXSetList(jobType);
+        BackupSetListState::resetCursorPosition(working_backupset_list->sortAscending);
+        working_backupset_list->setIsInitializationRequired(false);
     }
 }
 
-void BackupSetListState::resetCursorPosition() { // if bslist is modified after a new batch Backup
+std::unique_ptr<BackupSetList>& BackupSetListState::determineList(eJobType type) {
+    if (type == CEMU_DOLPHIN_EXPORT) {
+        return BackupSetList::currentExportSetList;
+    }
+    return BackupSetList::currentBackupSetList;
+}
+
+void BackupSetListState::resetCursorPosition(bool sort_ascending) { // if bslist is modified after a new batch Backup
     if (cursorPos == 0)
         return;
-    if (BackupSetList::currentBackupSetList->sortAscending) {
+    if (sort_ascending) {
         return;
     } else {
         cursorPos++;
@@ -67,7 +81,7 @@ void BackupSetListState::render() {
     if (this->state == STATE_BACKUPSET_MENU) {
         std::string backupSetItem;
         DrawUtils::setFontColor(COLOR_INFO);
-        if (BackupSetList::currentBackupSetList->entriesView == BackupSetList::currentBackupSetList->entries) {
+        if (working_backupset_list->entriesView == working_backupset_list->entries) {
             Console::consolePrintPosAligned(0, 4, 1, _("BackupSets"));
         } else {
             Console::consolePrintPosAligned(0, 4, 1, _("BackupSets (filter applied)"));
@@ -76,9 +90,9 @@ void BackupSetListState::render() {
         Console::consolePrintPosAligned(0, 4, 2, _("\\ue083 Sort: %s \\ue084"),
                                         this->sortAscending ? "\u2191" : "\u2193");
         for (int i = 0; i < MAX_TITLE_SHOW; i++) {
-            if (i + scroll < 0 || i + scroll >= BackupSetList::currentBackupSetList->entriesView)
+            if (i + scroll < 0 || i + scroll >= working_backupset_list->entriesView)
                 break;
-            backupSetItem = BackupSetList::currentBackupSetList->at(i + scroll);
+            backupSetItem = working_backupset_list->at(i + scroll);
 
 
             DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT, COLOR_LIST_INJECT_AT_CURSOR, cursorPos, i);
@@ -86,18 +100,18 @@ void BackupSetListState::render() {
             DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
             if (backupSetItem == BackupSetList::ROOT_BS)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_HIGH, COLOR_LIST_HIGH_AT_CURSOR, cursorPos, i);
-            if (backupSetItem == BackupSetList::currentBackupSetList->getBackupSetEntry())
+            if (backupSetItem == working_backupset_list->getBackupSetEntry())
                 DrawUtils::setFontColorByCursor(COLOR_CURRENT_BS, COLOR_CURRENT_BS_AT_CURSOR, cursorPos, i);
 
             Console::consolePrintPos(M_OFF - 1, i + 2, "  %s", backupSetItem.substr(0, 15).c_str());
-            Console::consolePrintPos(21, i + 2, "%s", BackupSetList::currentBackupSetList->getStretchedSerialIdAt(i + scroll).c_str());
-            Console::consolePrintPos(33, i + 2, "%s", BackupSetList::currentBackupSetList->getTagAt(i + scroll).c_str());
+            Console::consolePrintPos(21, i + 2, "%s", working_backupset_list->getStretchedSerialIdAt(i + scroll).c_str());
+            Console::consolePrintPos(33, i + 2, "%s", working_backupset_list->getTagAt(i + scroll).c_str());
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         switch (jobType) {
             case CEMU_DOLPHIN_EXPORT:
-                    Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Show Content  \\ue003: Filter List \\ue045: Tag \\ue001: Back"));
                 break;
             default:
                 if (cursorPos + scroll > 0)
@@ -113,10 +127,6 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
     if (this->state == STATE_BACKUPSET_MENU) {
         if (input->get(ButtonState::TRIGGER, Button::B))
             return SUBSTATE_RETURN;
-        if (jobType == eJobType::CEMU_DOLPHIN_EXPORT) { // NOTHING IMPLEMENTED
-            Console::showMessage(ERROR_SHOW, "Not yey implmeneted");
-            return SUBSTATE_RUNNING;
-        }
         if (input->get(ButtonState::TRIGGER, Button::A)) {
             if (jobType != eJobType::NONE) {
                 if (cursorPos + scroll == 0) {
@@ -128,29 +138,29 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             switch (jobType) {
                 case eJobType::NONE: // it is not a step in a batch task
                 {
-                    BackupSetList::currentBackupSetList->setBackupSetEntry(cursorPos + scroll);
-                    BackupSetList::currentBackupSetList->setBackupSetSubPath();
-                    BackupSetList::currentBackupSetList->setSelectedEntryForIndividualTitles(cursorPos + scroll);
+                    working_backupset_list->setBackupSetEntry(cursorPos + scroll);
+                    working_backupset_list->setBackupSetSubPath();
+                    working_backupset_list->setSelectedEntryForIndividualTitles(cursorPos + scroll);
                     char message[256];
                     const char *messageTemplate = _("BackupSet selected:\n - TimeStamp: %s\n - Tag: %s\n - From console: %s\n\nThis console: %s");
                     snprintf(message, 256, messageTemplate,
-                             BackupSetList::currentBackupSetList->at(cursorPos + scroll).c_str(),
-                             BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll).c_str(),
-                             BackupSetList::currentBackupSetList->getSerialIdAt(cursorPos + scroll).c_str(),
+                             working_backupset_list->at(cursorPos + scroll).c_str(),
+                             working_backupset_list->getTagAt(cursorPos + scroll).c_str(),
+                             working_backupset_list->getSerialIdAt(cursorPos + scroll).c_str(),
                              AmbientConfig::thisConsoleSerialId.c_str());
                     Console::showMessage(OK_CONFIRM, message);
                 }
                     return SUBSTATE_RETURN;
                     break;
                 case RESTORE:
-                    BackupSetList::currentBackupSetList->setBackupSetEntry(cursorPos + scroll);
-                    BackupSetList::currentBackupSetList->setBackupSetSubPath();
+                    working_backupset_list->setBackupSetEntry(cursorPos + scroll);
+                    working_backupset_list->setBackupSetSubPath();
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
                     break;
                 //case CEMU_DOLPHIN_EXPORT:
                 //   Console::showMessage(ERROR_SHOW, "DO CEMU DOLPHIN CLONE ...");
-                //    BackupSetList::currentBackupSetList->clone_as_emulator(cursorPos + scroll);
+                //    working_backupset_list->clone_as_emulator(cursorPos + scroll);
                 //    return SUBSTATE_RETURN;
                 //    break;
                 default:
@@ -160,12 +170,12 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::Y)) {
             this->state = STATE_DO_SUBSTATE;
             this->substateCalled = STATE_BACKUPSET_FILTER;
-            this->subState = std::make_unique<BackupSetListFilterState>(BackupSetList::currentBackupSetList);
+            this->subState = std::make_unique<BackupSetListFilterState>(working_backupset_list);
         }
         if (input->get(ButtonState::TRIGGER, Button::L)) {
             if (this->sortAscending) {
                 this->sortAscending = false;
-                BackupSetList::currentBackupSetList->sort(this->sortAscending);
+                working_backupset_list->sort(this->sortAscending);
                 cursorPos = 0;
                 scroll = 0;
             }
@@ -173,41 +183,41 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         if (input->get(ButtonState::TRIGGER, Button::R)) {
             if (!this->sortAscending) {
                 this->sortAscending = true;
-                BackupSetList::currentBackupSetList->sort(this->sortAscending);
+                working_backupset_list->sort(this->sortAscending);
                 cursorPos = 0;
                 scroll = 0;
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::DOWN) || input->get(ButtonState::REPEAT, Button::DOWN)) {
             moveDown();
-            tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll);
+            tag = working_backupset_list->getTagAt(cursorPos + scroll);
             newTag = tag;
         }
         if (input->get(ButtonState::TRIGGER, Button::UP) || input->get(ButtonState::REPEAT, Button::UP)) {
             moveUp();
-            tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll);
+            tag = working_backupset_list->getTagAt(cursorPos + scroll);
             newTag = tag;
         }
         if (input->get(ButtonState::TRIGGER, Button::RIGHT) || input->get(ButtonState::REPEAT, Button::RIGHT) || input->get(ButtonState::TRIGGER, Button::ZR) || input->get(ButtonState::REPEAT, Button::ZR)) {
             moveDown(MAX_TITLE_SHOW / 2 - 1, false);
-            tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll);
+            tag = working_backupset_list->getTagAt(cursorPos + scroll);
             newTag = tag;
         } else if (input->get(ButtonState::TRIGGER, Button::LEFT) || input->get(ButtonState::REPEAT, Button::LEFT) || input->get(ButtonState::TRIGGER, Button::ZL) || input->get(ButtonState::REPEAT, Button::ZL)) {
             moveUp(MAX_TITLE_SHOW / 2 - 1, false);
-            tag = BackupSetList::currentBackupSetList->getTagAt(cursorPos + scroll);
+            tag = working_backupset_list->getTagAt(cursorPos + scroll);
             newTag = tag;
         }
         if (input->get(ButtonState::TRIGGER, Button::MINUS)) {
             int entry = cursorPos + scroll;
             if (entry > 0) {
-                if (BackupSetList::currentBackupSetList->getBackupSetSubPath() == BackupSetList::currentBackupSetList->getBackupSetSubPath(entry)) {
-                    BackupSetList::currentBackupSetList->setBackupSetEntry(entry - 1);
-                    BackupSetList::currentBackupSetList->setBackupSetSubPath();
+                if (working_backupset_list->getBackupSetSubPath() == working_backupset_list->getBackupSetSubPath(entry)) {
+                    working_backupset_list->setBackupSetEntry(entry - 1);
+                    working_backupset_list->setBackupSetSubPath();
                 }
                 InProgress::totalSteps = InProgress::currentStep = 1;
-                InProgress::titleName.assign(BackupSetList::currentBackupSetList->at(entry));
-                if (wipeBackupSet(BackupSetList::currentBackupSetList->getBackupSetSubPath(entry), false)) {
-                    BackupSetList::currentBackupSetList->initBackupSetList();
+                InProgress::titleName.assign(working_backupset_list->at(entry));
+                if (wipeBackupSet(working_backupset_list->at(entry), false)) {
+                    BackupSetList::reInitXSetList(jobType);
                     cursorPos--;
                 }
             }
@@ -221,11 +231,12 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             }
         }
         if (input->get(ButtonState::TRIGGER, Button::X)) {
-            std::string bs_path = BackupSetList::currentBackupSetList->getBackupSetPath(cursorPos + scroll);
+            std::string bs_path = working_backupset_list->getBackupSetPath(cursorPos + scroll);
             if (bs_path.size() > 0)
                 bs_path.pop_back(); // by construction, it contains a trailing /
             this->state = STATE_DO_SUBSTATE;
             this->subState = std::make_unique<BackupSetContentListState>(bs_path);
+            Console::showMessage(ERROR_CONFIRM, "bpath %s",bs_path.c_str());
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
@@ -235,22 +246,22 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
         } else if (retSubState == SUBSTATE_RETURN) {
             if (this->substateCalled == STATE_KEYBOARD) {
                 if (tag != newTag) {
-                    std::string entryPath = BackupSetList::currentBackupSetList->at(cursorPos + scroll);
+                    std::string entryPath = working_backupset_list->at(cursorPos + scroll);
                     Metadata *metadataObj = new Metadata(getBatchBackupPathRoot(entryPath));
                     metadataObj->read();
                     metadataObj->setTag(newTag);
                     metadataObj->write();
-                    BackupSetList::currentBackupSetList->setTagBSVAt(cursorPos + scroll, newTag);
-                    BackupSetList::currentBackupSetList->setTagBSAt(BackupSetList::currentBackupSetList->v2b[cursorPos + scroll], newTag);
+                    working_backupset_list->setTagBSVAt(cursorPos + scroll, newTag);
+                    working_backupset_list->setTagBSAt(working_backupset_list->v2b[cursorPos + scroll], newTag);
                     if (newTag != "")
-                        BackupSetList::currentBackupSetList->resetTagRange();
+                        working_backupset_list->resetTagRange();
                     delete metadataObj;
                 }
             }
-            if (BackupSetList::currentBackupSetList->getIsInitializationRequired()) {
-                BackupSetList::currentBackupSetList->initBackupSetList();
-                BackupSetListState::resetCursorPosition();
-                BackupSetList::currentBackupSetList->setIsInitializationRequired(false);
+            if (working_backupset_list->getIsInitializationRequired()) {
+                BackupSetList::reInitXSetList(jobType);
+                BackupSetListState::resetCursorPosition(working_backupset_list->sortAscending);
+                working_backupset_list->setIsInitializationRequired(false);
             }
             this->subState.reset();
             this->state = STATE_BACKUPSET_MENU;
@@ -262,14 +273,14 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
 
 void BackupSetListState::moveDown(unsigned amount, bool wrap) {
     while (amount--) {
-        if (BackupSetList::currentBackupSetList->entriesView <= MAX_TITLE_SHOW) {
+        if (working_backupset_list->entriesView <= MAX_TITLE_SHOW) {
             if (wrap)
-                cursorPos = (cursorPos + 1) % BackupSetList::currentBackupSetList->entriesView;
+                cursorPos = (cursorPos + 1) % working_backupset_list->entriesView;
             else
-                cursorPos = std::min(cursorPos + 1, BackupSetList::currentBackupSetList->entriesView - 1);
+                cursorPos = std::min(cursorPos + 1, working_backupset_list->entriesView - 1);
         } else if (cursorPos < MAX_WINDOW_SCROLL)
             cursorPos++;
-        else if (((cursorPos + scroll + 1) % BackupSetList::currentBackupSetList->entriesView) != 0)
+        else if (((cursorPos + scroll + 1) % working_backupset_list->entriesView) != 0)
             scroll++;
         else if (wrap)
             cursorPos = scroll = 0;
@@ -286,10 +297,10 @@ void BackupSetListState::moveUp(unsigned amount, bool wrap) {
             // cursorPos == 0
             if (!wrap)
                 return;
-            if (BackupSetList::currentBackupSetList->entriesView > MAX_TITLE_SHOW)
-                scroll = BackupSetList::currentBackupSetList->entriesView - (cursorPos = MAX_WINDOW_SCROLL) - 1;
+            if (working_backupset_list->entriesView > MAX_TITLE_SHOW)
+                scroll = working_backupset_list->entriesView - (cursorPos = MAX_WINDOW_SCROLL) - 1;
             else
-                cursorPos = BackupSetList::currentBackupSetList->entriesView - 1;
+                cursorPos = working_backupset_list->entriesView - 1;
         }
     }
 }

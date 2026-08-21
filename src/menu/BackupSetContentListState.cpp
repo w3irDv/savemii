@@ -1,3 +1,4 @@
+#include "ApplicationState.h"
 #include <Metadata.h>
 #include <algorithm>
 #include <coreinit/debug.h>
@@ -21,8 +22,8 @@
 
 BackupSetContentListState::BackupSetContentListState(std::string &bs_path) : bs_path(bs_path) {
 
-    populate_backupset_content();
-    backupset_content_size = (int) backupset_content.size();
+    if (populate_backupset_content())
+        backupset_content_size = (int) backupset_content.size();
 
     bs_name = bs_path.substr(bs_path.find_last_of('/'), std::string::npos);
 }
@@ -36,6 +37,14 @@ void BackupSetContentListState::render() {
         return;
     }
     if (this->state == STATE_BACKUPSET_CONTENT_LIST) {
+
+        if (backupset_content_size == 0) {
+            DrawUtils::endDraw();
+            Console::showMessage(ERROR_SHOW, _("Backup set is empty"));
+            DrawUtils::beginDraw();
+            DrawUtils::setRedraw(true);
+            return;
+        }
 
         DrawUtils::setFontColor(COLOR_INFO);
         Console::consolePrintPosAligned(0, 4, 1, _("BackupSet Content"));

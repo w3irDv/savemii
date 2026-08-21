@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BackupSetList.h"
 #include <ApplicationState.h>
 #include <memory>
 #include <savemng.h>
@@ -10,7 +11,7 @@ public:
     BackupSetListState(eJobType jobType);
     BackupSetListState(Title *titles, int titlesCount, eTitleType titleType, eJobType jobType);
 
-    static void resetCursorPosition();
+    static void resetCursorPosition(bool sort_ascending);
     static void resetCursorAndScroll();
     enum eState {
         STATE_BACKUPSET_MENU,
@@ -46,6 +47,8 @@ private:
     eTitleType titleType;
 
     eJobType jobType;
+    std::unique_ptr<BackupSetList>& working_backupset_list;
+    static std::unique_ptr<BackupSetList>& determineList(eJobType type);
 
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);

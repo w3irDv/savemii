@@ -39,7 +39,8 @@ bool testForceSaveInitFalse = true
      titles(titles),
      titlesCount(titlesCount),
      titleType(titleType),
-     jobType(jobType) {
+     jobType(jobType),
+     working_backupset_list(jobType == CEMU_DOLPHIN_EXPORT ? BackupSetList::currentExportSetList : BackupSetList::currentBackupSetList) {
     // from batchRestore to batch* -> restore variables refer to the task performed, and backup to the source data, wether in SD or NAND or USB
     // All this should be renamed in a neutral way.
 
@@ -150,7 +151,8 @@ BatchJobTitleSelectState::BatchJobTitleSelectState(Title *titles, int titlesCoun
                                                                                                                                                                      titlesCount(titlesCount),
                                                                                                                                                                      titleType(titleType),
                                                                                                                                                                      excludes(excludes),
-                                                                                                                                                                     jobType(jobType) {
+                                                                                                                                                                     jobType(jobType),
+                                                                                                                                                                     working_backupset_list(jobType == CEMU_DOLPHIN_EXPORT ? BackupSetList::currentExportSetList : BackupSetList::currentBackupSetList) {
 
     c2t.clear();
     // from the subset of titles with backup data, filter out the ones without the specified user info
@@ -498,7 +500,7 @@ ApplicationState::eSubState BatchJobTitleSelectState::update(Input *input) {
             }
             return SUBSTATE_RUNNING;
         }
-        if (input->get(ButtonState::TRIGGER, Button::X) && ( jobType == BACKUP || jobType == CEMU_DOLPHIN_EXPORT)) {
+        if (input->get(ButtonState::TRIGGER, Button::X) && (jobType == BACKUP || jobType == CEMU_DOLPHIN_EXPORT)) {
             job2batch();
             std::string choices = _("\\ue000  Apply saved excludes\n\\ue045  Save current excludes\n\\ue001  Back");
             bool done = false;
@@ -731,7 +733,7 @@ void BatchJobTitleSelectState::executeBatchProcess() {
         if (InProgress::abortTask) { // user has aborted job in the backup phase, we can safely remove the backupset
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
-            if (!wipeBackupSet("/batch/" + batchDatetime, true))
+            if (!wipeBackupSet(batchDatetime, true))
                 writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
             BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
             return;
@@ -904,15 +906,16 @@ void BatchJobTitleSelectState::executeBatchBackup(eBackupLayout backup_layout /*
     InProgress::currentStep = 0;
     InProgress::abortTask = false;
     const std::string batchDatetime = getNowDateForFolder();
+    std::string backupSet_path_prefix = BackupSetList::get_backupSet_path_prefix(backup_layout);
     int titles_ok_counter = 0;
     int titles_failed_counter = backupAllSave(this->titles, this->titlesCount, batchDatetime, titles_ok_counter, ONLY_SELECTED_TITLES, backup_layout);
     if (InProgress::abortTask) {
         if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to wipe this incomplete batch backup?"))) {
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
-            if (!wipeBackupSet("/batch/" + batchDatetime, true, backup_layout)) {
-                writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
-                BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
+            if (!wipeBackupSet(batchDatetime, true, backup_layout)) {
+                writeBackupAllMetadata(backupSet_path_prefix, batchDatetime, _("ERROR WIPING BACKUPSET"));
+                working_backupset_list->setIsInitializationRequired(true);
             }
             for (int i = 0; i < this->candidatesCount; i++) {                            // we have deleted the backup, so we must reset title state
                 if (this->titles[i].currentDataSource.selectedToBeProcessed) {           // backup all save has (partially) unset selectedForBackup,
@@ -924,8 +927,7 @@ void BatchJobTitleSelectState::executeBatchBackup(eBackupLayout backup_layout /*
         }
     }
 
-    if (backup_layout == SAVEMII)
-        BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
+    working_backupset_list->setIsInitializationRequired(true);
 
     int titlesOK = 0;
     int titlesAborted = 0;
@@ -978,8 +980,11 @@ void BatchJobTitleSelectState::executeBatchBackup(eBackupLayout backup_layout /*
                                         titles_failed_counter);
     }
 
-    if (backup_layout == SAVEMII)
-        writeBackupAllMetadata(batchDatetime, tag.c_str());
+    if (backup_layout == EMULATOR)
+        tag = (titleType == VWII ? "Dolphin - " : "CEMU - ") + tag;
+
+    writeBackupAllMetadata(backupSet_path_prefix, batchDatetime, tag.c_str());
+
 
     showBatchStatusCounters(titlesOK, titlesAborted, titlesWarning, titlesKO, titlesSkipped, titlesNotInitialized, failedTitles);
 }

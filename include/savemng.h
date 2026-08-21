@@ -44,8 +44,6 @@ enum eSlotType {
     PRIVATE_SLOT
 };
 
-inline const std::string emulator_backup_path = "fs:/vol/external01/wiiu/backups/cemu_dolphin";
-
 bool hasProfileSave(Title *title, bool inSD, bool iine, const char *user, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path);
 bool hasCommonSave(Title *title, bool inSD, bool iine, uint8_t slot, int version, bool loadiine_savedata_mode, const char *game_backup_base_path);
 bool hasSavedata(Title *title, bool inSD, uint8_t slot, const char *game_backup_base_path);
@@ -58,6 +56,7 @@ std::string getNowDate() __attribute__((hot));
 void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &tag, eBackupFormat backup_format) __attribute__((hot));
 void writeMetadata(Title *title, uint8_t slot, const std::string &source, const std::string &tag, eBackupFormat backup_format);
 void writeBackupAllMetadata(const std::string &Date, const std::string &tag);
+void writeBackupAllMetadata(const std::string &backupSet_path_prefix,const std::string &Date, const std::string &tag);
 int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles, eBackupLayout backup_layout = SAVEMII) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
 int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eBackupFormat backup_format, eSlotType slot_type, eAccountSource accountSource = USE_WIIU_PROFILES, const std::string &tag = "") __attribute__((hot));
@@ -69,7 +68,7 @@ int copySavedataToOtherDevice(Title *title, Title *titled, int8_t source_user, i
 bool importFromLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode);
 bool exportToLoadiine(Title *title, int8_t source_user, int8_t wiiu_user, bool common, int version, bool loadiine_mode, eAccountSource accountSource = USE_SD_OR_STORAGE_PROFILES);
 void deleteSlot(Title *title, uint8_t slot, eSlotType slot_stype);
-bool wipeBackupSet(const std::string &subPath, bool force, eBackupLayout backup_layout = SAVEMII);
+bool wipeBackupSet(const std::string &backupSetEntry, bool force, eBackupLayout backup_layout = SAVEMII);
 void sdWriteDisclaimer(Color = COLOR_BLACK);
 void summarizeBackupCounters(Title *titles, int titlesCount, int &titlesOK, int &titlesAborted, int &titlesWarning, int &titlesKO, int &titlesSkipped, int &titlesNotInitialized, std::vector<std::string> &failedTitles);
 void showBatchStatusCounters(int titlesOK, int titlesAborted, int titlesWarning, int titlesKO, int titlesSkipped, int titlesNotInitialized, std::vector<std::string> &failedTitles);
@@ -78,6 +77,7 @@ std::string getDynamicBackupBasePath(Title *title);
 std::string getDynamicBackupBasePathSGMGX(Title *title);
 std::string getBatchBackupPath(Title *title, uint8_t slot, const std::string &datetime);
 std::string getBatchBackupPathRoot(const std::string &datetime);
+std::string getBatchBackupPathRoot(const std::string &backupSet_path_prefix, const std::string &datetime);
 std::string getPrivateSavedataSlot(Title *title);
 bool isTitleUsingIdBasedPath(Title *title);
 bool isTitleUsingTitleNameBasedPath(Title *title);

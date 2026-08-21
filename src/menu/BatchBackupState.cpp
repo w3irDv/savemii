@@ -141,7 +141,7 @@ void BatchBackupState::backup_all_saves() {
         if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to wipe this incomplete batch backup?"))) {
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
-            if (!wipeBackupSet("/batch/" + batchDatetime, true)) {
+            if (!wipeBackupSet(batchDatetime, true)) {
                 writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
                 BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
             }

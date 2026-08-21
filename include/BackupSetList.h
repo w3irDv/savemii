@@ -1,10 +1,11 @@
 #pragma once
 
+#include "ApplicationState.h"
 #include <memory>
 #include <set>
 #include <string>
+#include <utils/CustomTypes.h>
 #include <vector>
-
 
 class BSMetadataValues {
     friend class BSMetadata;
@@ -69,7 +70,7 @@ public:
     friend class BackupSetListState;
     friend class BackupSetListFilterState;
     BackupSetList() {};
-    BackupSetList(const char *backupSetListRoot);
+    BackupSetList(eBackupLayout backup_layout);
     inline static std::unique_ptr<BackupSetList> currentBackupSetList = nullptr;
     inline static std::unique_ptr<BackupSetList> currentExportSetList = nullptr;
 
@@ -93,14 +94,27 @@ public:
 
     inline static const std::string ROOT_BS = ">> Root <<";
     std::string getBackupSetSubPath() { return backupSetSubPath; };
-    std::string getBackupSetPath() { return currentBackupSetList->backupSetListRoot + backupSetSubPath; };
+    std::string getBackupSetPath() { return backupSetListRoot + backupSetSubPath; };
     std::string getBackupSetEntry() { return backupSetEntry; };
     std::string getBackupSetSubPath(int i);
     std::string getBackupSetPath(int i);
     int getSelectedEntryForIndividualTitles() { return selectedEntryForIndividualTitles; }
     void setBackupSetEntry(int i);
     void setBackupSetSubPath();
-    void initBackupSetList();
+    static std::string get_backupSet_path_prefix(eBackupLayout backup_layout) {
+        switch (backup_layout) {
+            case EMULATOR:
+                return "cemu_dolphin";
+                break;
+            case SAVEMII:
+            default:
+                return "batch";
+                break;
+        }
+    };
+    static void initBackupSetList();
+    static void initExportSetList();
+    static void reInitXSetList(eJobType job_type);
     void setBackupSetSubPathToRoot() { backupSetSubPath = "/"; }
     void setBackupSetToRoot() {
         setBackupSetEntry(0);
@@ -129,9 +143,11 @@ private:
     int entriesView;
     int entries;
     std::string backupSetListRoot;
-    std::string backupSetSubPath{"/"};  // path from batch backup to the backupSet folder
-    std::string backupSetEntry = ROOT_BS;   // folder name
-    std::string savedBackupSetSubPath {};
+    std::string backupSetSubPath{"/"};    // backupPath+ backupSetSubPath -> contain title folders   = bakupPath`+"/batch"+backupSetEntry for backupSets
+    std::string backupSetEntry = ROOT_BS; // folder name
+    std::string savedBackupSetSubPath{};
     int selectedEntryForIndividualTitles = 0;
     bool isInitializationRequired = false;
+
+    const std::string backupSet_path_prefix;
 };

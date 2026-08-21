@@ -66,11 +66,11 @@ ApplicationState::eSubState BackupSetManagementState::update(Input *input) {
                     this->substateCalled = STATE_BACKUPSET_MENU;
                     this->subState = std::make_unique<BackupSetListState>(eJobType::NONE);
                     break;
-                //case 1:
-                //    this->state = STATE_DO_SUBSTATE;
-                //    this->substateCalled = STATE_BACKUPSET_MENU;
-                //    this->subState = std::make_unique<BackupSetListState>(CEMU_DOLPHIN_EXPORT); // a little bit inconsistent with "NONE", this 
-                //    break;
+                case 1:
+                    this->state = STATE_DO_SUBSTATE;
+                    this->substateCalled = STATE_BACKUPSET_MENU;
+                    this->subState = std::make_unique<BackupSetListState>(CEMU_DOLPHIN_EXPORT); // a little bit inconsistent with "NONE", this
+                    break;
                 default:
                     Console::showMessage(ERROR_SHOW, "Not yet implemented");
                     break;

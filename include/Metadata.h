@@ -49,6 +49,14 @@ public:
         path = getBatchBackupPathRoot(datetime) + "/savemiiMeta.json";
     }
 
+    Metadata(const std::string &backupSet_path_prefix, const std::string &datetime, const std::string &storage, const std::string &serialId, const std::string &tag) : Date(datetime),
+                                                                                                                                                                       storage(storage),
+                                                                                                                                                                       serialId(serialId),
+                                                                                                                                                                       tag(tag) {
+        path = getBatchBackupPathRoot(backupSet_path_prefix, datetime) + "/savemiiMeta.json";
+    }
+
+
     Metadata(MiiRepo *mii_repo, uint8_t slot) : slot(slot),
                                                 path(MiiSaveMng::getMiiRepoBackupPath(mii_repo, slot).append("/savemiiMeta.json")),
                                                 serialId(AmbientConfig::thisConsoleSerialId), repo_name(mii_repo->repo_name) {};
@@ -62,12 +70,12 @@ public:
     std::string getDate() { return Date; };
     std::string getTag() { return tag; };
     void setTag(const std::string &tag_) { this->tag = tag_; };
-    void setBackupFormat(eBackupFormat backup_format) { backupFormat.assign(backup_format == FILES ? "FILES" : "DATA_BIN");};
+    void setBackupFormat(eBackupFormat backup_format) { backupFormat.assign(backup_format == FILES ? "FILES" : "DATA_BIN"); };
     std::string getSerialId() { return serialId; };
     uint32_t getVWiiHighID() { return this->vWiiHighID; };
     uint32_t getHighID() { return this->highID; };
     uint32_t getLowID() { return this->lowID; };
-    char *getShortName() { return shortName;};
+    char *getShortName() { return shortName; };
 
     bool read_mii();
     bool write_mii();
@@ -89,6 +97,6 @@ private:
     std::string tag{};
 
     std::string backupFormat{};
-    
+
     std::string repo_name{};
 };

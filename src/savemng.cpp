@@ -115,6 +115,10 @@ std::string getBatchBackupPathRoot(const std::string &datetime) {
     return StringUtils::stringFormat("%s/%s", batchBackupPath, datetime.c_str());
 }
 
+std::string getBatchBackupPathRoot(const std::string &backupSet_path_prefix,const std::string &datetime) {
+    return StringUtils::stringFormat("%s/%s/%s", backupPath, backupSet_path_prefix.c_str(),datetime.c_str());
+}
+
 // SD wii SaveData manager backup path in /private/wii/title
 std::string getPrivateSavedataSlot(Title *title) {
     return StringUtils::stringFormat("fs:/vol/external01/private/wii/title/%s", title->is_Inject ? title->vWiiInjectProductCode : title->productCode);
@@ -678,6 +682,12 @@ void writeBackupAllMetadata(const std::string &batchDatetime, const std::string 
     delete metadataObj;
 }
 
+void writeBackupAllMetadata(const std::string &backupSet_path_prefix, const std::string &batchDatetime, const std::string &tag) {
+    Metadata *metadataObj = new Metadata(backupSet_path_prefix,batchDatetime, "", AmbientConfig::thisConsoleSerialId, tag);
+    metadataObj->write();
+    delete metadataObj;
+}
+
 
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles /*= false*/) {
     int titlesToSave = 0;
@@ -742,9 +752,9 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             std::string dstPath{};
             switch (backup_layout) {
                 case EMULATOR:
-                    // wec copy all content under the save folder for the title
+                    // we copy all content under the title's save folder
                     srcPath = StringUtils::stringFormat("%s/%08x/%08x", path.c_str(), highID, lowID);
-                    dstPath = StringUtils::stringFormat("%s/%s/%08x/%08x", emulator_backup_path.c_str(), batchDatetime.c_str(), highID, lowID);
+                    dstPath = StringUtils::stringFormat("%s/%s/%s/%08x/%08x", backupPath, BackupSetList::get_backupSet_path_prefix(backup_layout).c_str(), batchDatetime.c_str(), highID, lowID);
                     break;
                 default:
                     srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", path.c_str(), highID, lowID, isWii ? "data" : "user");
@@ -1516,40 +1526,26 @@ void deleteSlot(Title *title, uint8_t slot, eSlotType slot_type) {
     }
 }
 
-bool wipeBackupSet(const std::string &subPath, bool force, eBackupLayout backup_layout /* = SAVEMII*/) {
+bool wipeBackupSet(const std::string &backupSetEntry, bool force, eBackupLayout backup_layout /* = SAVEMII*/) {
     InProgress::jobType = WIPE_BACKUPSET;
     if (!force)
         if (!Console::promptConfirm(ST_WARNING, _("Wipe BackupSet - Are you sure?")) || !Console::promptConfirm(ST_WIPE, _("Wipe BackupSet - Hm, are you REALLY sure?")))
             return false;
     std::string path{};
-    switch (backup_layout) {
-        case SAVEMII:
-            path = StringUtils::stringFormat("%s%s", backupPath, subPath.c_str());
-            if (path.find(batchBackupPath) == std::string::npos) {
-                Console::showMessage(ERROR_SHOW, _("Error setting path. Aborting."));
-                return false;
-            }
-            break;
-        case EMULATOR:
-            path = StringUtils::stringFormat("%s%s", emulator_backup_path.c_str(), subPath.c_str());
-            break;
-        default:
-            Console::showMessage(ERROR_SHOW, _("No backup layout defined. Aborting."));
-            return false;
-            break;
-    }
+    path = StringUtils::stringFormat("%s/%s/%s", backupPath, BackupSetList::get_backupSet_path_prefix(backup_layout).c_str(),backupSetEntry.c_str());
+    
     if (FSUtils::checkEntry(path.c_str()) == 2) {
         if (FSUtils::removeDir(path)) {
             if (unlink(path.c_str()) == -1) {
-                Console::showMessage(ERROR_SHOW, _("Failed to delete backupSet %s."), subPath.c_str());
+                Console::showMessage(ERROR_SHOW, _("Failed to delete backupSet %s."), backupSetEntry.c_str());
                 return false;
             }
         } else {
-            Console::showMessage(ERROR_SHOW, _("Failed to delete backupSet %s."), subPath.c_str());
+            Console::showMessage(ERROR_SHOW, _("Failed to delete backupSet %s."), backupSetEntry.c_str());
             return false;
         }
     } else {
-        Console::showMessage(ERROR_CONFIRM, _("Folder %s\ndoes not exist."), path.c_str());
+        Console::showMessage(ERROR_CONFIRM, _("Folder %s\ndoes not exist."), backupSetEntry.c_str());
     }
     return true;
 }
