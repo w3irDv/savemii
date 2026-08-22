@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BackupSetList.h"
+#include "utils/CustomTypes.h"
 #include <ApplicationState.h>
 #include <memory>
 #include <savemng.h>
@@ -33,8 +34,8 @@ private:
 
     bool sortAscending;
 
-    static int cursorPos;
-    static int scroll;
+    static inline int cursorPos = 0;
+    static inline int scroll = 0;
 
     std::string backupSetListRoot;
 

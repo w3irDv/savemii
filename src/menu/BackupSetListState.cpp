@@ -16,20 +16,21 @@
 #define MAX_TITLE_SHOW    14
 #define MAX_WINDOW_SCROLL 6
 
-int BackupSetListState::cursorPos = 0;
-int BackupSetListState::scroll = 0;
 static std::string language;
 
 BackupSetListState::BackupSetListState(eJobType jobType) : jobType(jobType), working_backupset_list(determineList(jobType)) {
-
-    cursorPos = 0;
-    scroll = 0;
 
     this->sortAscending = working_backupset_list->sortAscending;
     if (working_backupset_list->getIsInitializationRequired()) {
         BackupSetList::reInitXSetList(jobType);
         BackupSetListState::resetCursorPosition(working_backupset_list->sortAscending);
         working_backupset_list->setIsInitializationRequired(false);
+    }
+
+
+    if (working_backupset_list->getSizeView() < cursorPos + scroll) {
+        cursorPos = 0;
+        scroll = 0;
     }
 }
 
@@ -40,7 +41,7 @@ BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleTyp
                                                                                                                  working_backupset_list(determineList(jobType)) {
     cursorPos = 0;
     scroll = 0;
-    
+
     if (working_backupset_list->getIsInitializationRequired()) {
         BackupSetList::reInitXSetList(jobType);
         BackupSetListState::resetCursorPosition(working_backupset_list->sortAscending);
@@ -48,7 +49,7 @@ BackupSetListState::BackupSetListState(Title *titles, int titlesCount, eTitleTyp
     }
 }
 
-std::unique_ptr<BackupSetList>& BackupSetListState::determineList(eJobType type) {
+std::unique_ptr<BackupSetList> &BackupSetListState::determineList(eJobType type) {
     if (type == CEMU_DOLPHIN_EXPORT) {
         return BackupSetList::currentExportSetList;
     }
@@ -111,7 +112,7 @@ void BackupSetListState::render() {
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         switch (jobType) {
             case CEMU_DOLPHIN_EXPORT:
-                Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Show Content  \\ue003: Filter List \\ue045: Tag \\ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"));
                 break;
             default:
                 if (cursorPos + scroll > 0)
@@ -216,7 +217,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 }
                 InProgress::totalSteps = InProgress::currentStep = 1;
                 InProgress::titleName.assign(working_backupset_list->at(entry));
-                if (wipeBackupSet(working_backupset_list->at(entry), false)) {
+                if (wipeBackupSet(working_backupset_list->at(entry), false,working_backupset_list->backup_layout)) {
                     BackupSetList::reInitXSetList(jobType);
                     cursorPos--;
                 }
@@ -235,8 +236,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             if (bs_path.size() > 0)
                 bs_path.pop_back(); // by construction, it contains a trailing /
             this->state = STATE_DO_SUBSTATE;
-            this->subState = std::make_unique<BackupSetContentListState>(bs_path);
-            Console::showMessage(ERROR_CONFIRM, "bpath %s",bs_path.c_str());
+            this->subState = std::make_unique<BackupSetContentListState>(bs_path, working_backupset_list->backup_layout);
         }
     } else if (this->state == STATE_DO_SUBSTATE) {
         auto retSubState = this->subState->update(input);
@@ -247,7 +247,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
             if (this->substateCalled == STATE_KEYBOARD) {
                 if (tag != newTag) {
                     std::string entryPath = working_backupset_list->at(cursorPos + scroll);
-                    Metadata *metadataObj = new Metadata(getBatchBackupPathRoot(entryPath));
+                    Metadata *metadataObj = new Metadata(getBatchBackupPathRoot(working_backupset_list->backupSet_path_prefix, entryPath));
                     metadataObj->read();
                     metadataObj->setTag(newTag);
                     metadataObj->write();

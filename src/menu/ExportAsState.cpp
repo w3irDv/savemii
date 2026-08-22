@@ -30,7 +30,7 @@ void ExportAsState::render() {
         Console::consolePrintPos(M_OFF, 3, _("   Export Wii U as CEMU (%u Title%s)"), this->wiiuTitlesCount,
                                  (this->wiiuTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 4, _("   Export vWii as Dolphin(%u Title%s)"), this->vWiiTitlesCount,
+        Console::consolePrintPos(M_OFF, 4, _("   Export vWii as Dolphin (%u Title%s)"), this->vWiiTitlesCount,
                                  (this->vWiiTitlesCount > 1) ? "s" : "");
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
         Console::consolePrintPos(M_OFF, 5, _("   Export Wii U System Titles as CEMU (%u Title%s)"), this->wiiuSysTitlesCount,
@@ -46,7 +46,7 @@ void ExportAsState::render() {
 
 
         DrawUtils::setFontColor(COLOR_INFO);
-        Console::consolePrintPos(M_OFF, 11, _("Export Wii U or vWii savedata in a format ready to be copied to the corresponding foder in CEMU or Dolphin"));
+        Console::consolePrintPosAutoFormat(M_OFF, 11,  MAX_PROMPT_WIDTH, NARROW_LINE_SPACE,_("Export Wii U or vWii savedata in a format ready to be copied to the corresponding foder in CEMU or Dolphin emulator installation."));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");

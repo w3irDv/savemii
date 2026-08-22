@@ -10,7 +10,7 @@
 
 class BackupSetContentListState : public ApplicationState {
 public:
-    explicit BackupSetContentListState(std::string &bs_path);
+    explicit BackupSetContentListState(std::string &bs_path, eBackupLayout backup_layout);
 
 
     enum eState {
@@ -40,10 +40,13 @@ private:
 
     int  backupset_content_size = 0;
 
+    eBackupLayout backup_layout = SAVEMII;
+
     int scroll = 0;
     int cursorPos = 0;
 
     bool populate_backupset_content();
+    bool populate_exportset_content();
 
     void moveDown(unsigned amount = 1, bool wrap = true);
     void moveUp(unsigned amount = 1, bool wrap = true);

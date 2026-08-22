@@ -1,4 +1,5 @@
 #include "ApplicationState.h"
+#include "utils/CustomTypes.h"
 #include <Metadata.h>
 #include <algorithm>
 #include <coreinit/debug.h>
@@ -20,10 +21,18 @@
 #define MAX_WINDOW_SCROLL 6
 
 
-BackupSetContentListState::BackupSetContentListState(std::string &bs_path) : bs_path(bs_path) {
+BackupSetContentListState::BackupSetContentListState(std::string &bs_path, eBackupLayout backup_layout) : bs_path(bs_path), backup_layout(backup_layout) {
 
-    if (populate_backupset_content())
-        backupset_content_size = (int) backupset_content.size();
+    switch (backup_layout) {
+        case EMULATOR:
+            if (populate_exportset_content())
+                backupset_content_size = (int) backupset_content.size();
+            break;
+        default:
+            if (populate_backupset_content())
+                backupset_content_size = (int) backupset_content.size();
+            break;
+    }
 
     bs_name = bs_path.substr(bs_path.find_last_of('/'), std::string::npos);
 }
@@ -92,7 +101,7 @@ void BackupSetContentListState::render() {
         } else {
             DrawUtils::setFontColor(COLOR_INFO);
             Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, _("[%d] %s"),
-                cursorPos + this->scroll + 1,backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
+                                               cursorPos + this->scroll + 1, backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
         }
 
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -288,6 +297,98 @@ bool BackupSetContentListState::populate_backupset_content() {
             }
         }
     }
+
+    return true;
+}
+
+bool BackupSetContentListState::populate_exportset_content() {
+
+    DIR *dir = opendir(bs_path.c_str());
+    if (dir != nullptr) {
+        struct dirent *data;
+        while ((data = readdir(dir)) != nullptr) {
+            if (strcmp(data->d_name, ".") == 0 ||
+                strcmp(data->d_name, "..") == 0 ||
+                !(data->d_type & DT_DIR) ||
+                strcmp(data->d_name, "mii_db_checkpoint") == 0 ||
+                strlen(data->d_name) != 8) // it must be a highid
+                continue;
+
+            uint32_t highID = 0;
+            if (str2uint(highID, data->d_name, 16) != SUCCESS) // assume "true" highID
+                continue;
+
+            std::string title_folder = bs_path + "/" + data->d_name;
+            DIR *tdir = opendir(title_folder.c_str());
+            if (tdir != nullptr) {
+                struct dirent *tdata;
+                while ((tdata = readdir(tdir)) != nullptr) {
+
+                    if (strcmp(tdata->d_name, ".") == 0 ||
+                        strcmp(tdata->d_name, "..") == 0 ||
+                        !(tdata->d_type & DT_DIR) ||
+                        strcmp(tdata->d_name, "mii_db_checkpoint") == 0 ||
+                        strlen(tdata->d_name) != 8) // it must be a highid
+                        continue;
+
+                    uint32_t lowID = 0;
+                    if (str2uint(lowID, tdata->d_name, 16) != SUCCESS) // assume "true" lowID
+                        continue;
+
+                    std::string folder_name{tdata->d_name};
+                    bs_item bs = {.title_folder_name = folder_name};
+                    bs.uninstalled_title_name.assign(_("< no savedata >")); // default: title is not installed.
+
+                    if (lowID == 0 || highID == 0) // just in case
+                        continue;
+
+                    // check if the title is installed.
+                    Title *titles = 0;
+                    int titles_count = 0;
+                    switch (highID) {
+                        case 0x00050000:
+                        case 0x00050002:
+                            titles = TitleUtils::wiiutitles;
+                            titles_count = TitleUtils::wiiuTitlesCount;
+                            break;
+                        case 0x00050010:
+                        case 0x00050030:
+                            titles = TitleUtils::wiiusystitles;
+                            titles_count = TitleUtils::wiiuSysTitlesCount;
+                            break;
+                        case 0x00010000:
+                        case 0x00010001:
+                        case 0x00010004:
+                            titles = TitleUtils::wiititles;
+                            titles_count = TitleUtils::vWiiTitlesCount;
+                            break;
+                        default:
+                            continue;
+                            break;
+                    }
+
+                    for (int i = 0; i < titles_count; i++) {
+                        if (titles[i].lowID == lowID) {
+                            if (titles[i].highID == highID) { // installed title, we will use title and icon from memory
+                                bs.installed = true;
+                                bs.title = &titles[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    backupset_content.push_back(bs);
+                }
+            } else {
+                Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), title_folder.c_str(), strerror(errno));
+                return false;
+            }
+        }
+    } else {
+        Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), bs_path.c_str(), strerror(errno));
+        return false;
+    }
+    closedir(dir);
 
     return true;
 }

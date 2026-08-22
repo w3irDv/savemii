@@ -74,7 +74,7 @@ void BatchTasksState::render() {
                 info = _("Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.");
                 break;
             case 6:
-                info = _("Export savedata in a fromat ready to be copied to a CEMU or Dolphin folders.");
+                info = _("Export savedata in a format ready to be copied to a CEMU or Dolphin folder.");
                 break;
             default:
                 info = "";
@@ -82,7 +82,7 @@ void BatchTasksState::render() {
         }
 
         DrawUtils::setFontColor(COLOR_INFO_AT_CURSOR);
-        Console::consolePrintPosAutoFormat(M_OFF, 10, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, info);
+        Console::consolePrintPosAutoFormat(M_OFF, 11, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);        
         Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Options \\ue000: Select Batch Task"));

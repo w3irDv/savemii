@@ -149,5 +149,7 @@ private:
     int selectedEntryForIndividualTitles = 0;
     bool isInitializationRequired = false;
 
+    eBackupLayout backup_layout = SAVEMII;
+
     const std::string backupSet_path_prefix;
 };

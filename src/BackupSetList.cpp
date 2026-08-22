@@ -13,9 +13,9 @@
 
 extern const char *backupPath;
 
-BackupSetList::BackupSetList(eBackupLayout backup_layout) : backupSet_path_prefix(get_backupSet_path_prefix(backup_layout)) {
+BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup_layout),backupSet_path_prefix(get_backupSet_path_prefix(backup_layout)) {
 
-    this->backupSetListRoot = std::string{backupPath} + "/" + get_backupSet_path_prefix(backup_layout);
+    this->backupSetListRoot = std::string{backupPath} + "/" + backupSet_path_prefix;
 
     BSMetadata bsm;
 
@@ -250,7 +250,13 @@ template void BSMetadataValues::Right(attr<std::less<std::string>> &);
 template void BSMetadataValues::Left(attr<std::greater<std::string>> &);
 template void BSMetadataValues::Left(attr<std::less<std::string>> &);
 
-
+/**
+ * @brief unused function - TBD - path nand > SD in CEMU/DOLHIN format (just a plain copy is already implmented. Now the inverse ... may be transform this incomplete function, may be tune the batchRestore process
+ * 
+ * @param i 
+ * @return true 
+ * @return false 
+ */
 bool BackupSetList::clone_as_emulator(int i) {
 
     //std::string path_to_backupset = entryPath;
