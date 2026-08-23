@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-22 14:18+0200\n"
+"POT-Creation-Date: 2026-08-23 13:59+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -225,9 +225,10 @@ msgid "Loaded %i Wii U Sys titles."
 msgstr "%i個のWii U Sysタイトルをロードしました。"
 
 #: src/utils/TitleUtils.cpp:1121 src/utils/DataBinPack.cpp:148
+#: src/BackupSetList.cpp:387 src/BackupSetList.cpp:395
 #: src/menu/BackupSetContentListState.cpp:198
-#: src/menu/BackupSetContentListState.cpp:383
-#: src/menu/BackupSetContentListState.cpp:388
+#: src/menu/BackupSetContentListState.cpp:385
+#: src/menu/BackupSetContentListState.cpp:392
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr "ディレクトリ %s のオープンエラー: %s"
@@ -465,7 +466,7 @@ msgstr ""
 "ワイプ中にエラーが検出されました。\n"
 "データベースを保存しますか？"
 
-#: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:357 src/savemng.cpp:1556
+#: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:357 src/savemng.cpp:1579
 msgid "Please wait. First write to (some) SDs can take several seconds."
 msgstr "お待ちください。一部のSDカードへの最初の書き込みには数秒かかる場合があります。"
 
@@ -483,7 +484,7 @@ msgid "Copying from: %s"
 msgstr "コピー元: %s"
 
 #: src/utils/MiiUtils.cpp:680 src/utils/DataBin.cpp:369
-#: src/utils/DataBin.cpp:372 src/utils/FSUtils.cpp:617 src/savemng.cpp:1712
+#: src/utils/DataBin.cpp:372 src/utils/FSUtils.cpp:617 src/savemng.cpp:1735
 #, c-format
 msgid "To: %s"
 msgstr "宛先: %s"
@@ -548,7 +549,7 @@ msgstr "このアクションは選択したリポジトリではサポートさ
 #: src/utils/MiiUtils.cpp:898 src/mii/MiiAccountRepo.cpp:410
 #: src/mii/MiiRepo.cpp:130 src/mii/MiiRepo.cpp:216 src/mii/MiiRepo.cpp:285
 #: src/savemng.cpp:408 src/savemng.cpp:523 src/savemng.cpp:587
-#: src/savemng.cpp:1093
+#: src/savemng.cpp:1116
 msgid "Backup current savedata first to next empty slot?"
 msgstr "現在のセーブデータを最初に次の空きスロットにバックアップしますか?"
 
@@ -828,7 +829,7 @@ msgid "KB_S_3"
 msgstr "ZXCVBNM <>"
 
 #: src/utils/FSUtils.cpp:95 src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:170
-#: src/savemng.cpp:1674 src/cfg/BaseCfg.cpp:23
+#: src/savemng.cpp:1697 src/cfg/BaseCfg.cpp:23
 #, c-format
 msgid ""
 "Error while creating folder:\n"
@@ -871,7 +872,7 @@ msgstr ""
 "%s の削除に失敗しました\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1903
+#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1926
 #, c-format
 msgid ""
 "Error while reading folder content\n"
@@ -950,7 +951,7 @@ msgstr ""
 msgid "Cannot allocate copy buffers"
 msgstr ""
 
-#: src/utils/FSUtils.cpp:374 src/savemng.cpp:1927 src/savemng.cpp:1981
+#: src/utils/FSUtils.cpp:374 src/savemng.cpp:1950 src/savemng.cpp:2004
 #: src/cfg/BaseCfg.cpp:84
 #, c-format
 msgid ""
@@ -966,7 +967,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:396 src/utils/FSUtils.cpp:402 src/savemng.cpp:2012
+#: src/utils/FSUtils.cpp:396 src/utils/FSUtils.cpp:402 src/savemng.cpp:2035
 #: src/cfg/BaseCfg.cpp:46
 #, c-format
 msgid ""
@@ -1110,7 +1111,7 @@ msgstr ""
 "\n"
 "コピーが完了していない可能性があります"
 
-#: src/utils/FSUtils.cpp:590 src/utils/FSUtils.cpp:813 src/savemng.cpp:1796
+#: src/utils/FSUtils.cpp:590 src/utils/FSUtils.cpp:813 src/savemng.cpp:1819
 #, c-format
 msgid ""
 "Error while closing folder\n"
@@ -1429,7 +1430,7 @@ msgid ""
 msgstr ""
 
 #: src/utils/StatManager.cpp:221 src/utils/StatManager.cpp:231
-#: src/savemng.cpp:2021 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:115
+#: src/savemng.cpp:2044 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:115
 #, c-format
 msgid ""
 "Error closing file\n"
@@ -1494,6 +1495,35 @@ msgstr "Miiリポジトリを初期化しています。"
 #: src/main.cpp:188
 msgid "\\ue044: Exit"
 msgstr "\\ue044 出口"
+
+#: src/BackupSetList.cpp:271
+#, c-format
+msgid "BackupSet %s has already SAVEMII format"
+msgstr ""
+
+#: src/BackupSetList.cpp:369 src/savemng.cpp:832
+msgid "Do you want to cancel batch backup?"
+msgstr "バッチ バックアップをキャンセルしますか?"
+
+#: src/BackupSetList.cpp:379 src/mii/MiiRepo.cpp:104 src/savemng.cpp:859
+#: src/savemng.cpp:1050
+msgid "UNUSABLE SLOT - BACKUP FAILED"
+msgstr "使用できないスロット - バックアップに失敗しました"
+
+#: src/BackupSetList.cpp:380 src/savemng.cpp:868
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Backup failed.\n"
+"Errors so far: %d\n"
+"Do you want to continue?"
+msgstr ""
+"%s\n"
+"\n"
+"バックアップに失敗しました。\n"
+"これまでのエラー数: %d\n"
+"続行しますか?"
 
 #: src/mii/MiiStadioSav.cpp:169
 msgid "stadio.sav DB not found. Do you want to create one from existing associated FFL and ACCOUNT repos?"
@@ -1711,12 +1741,12 @@ msgstr ""
 msgid "Reading Miis: %d"
 msgstr "Miiの読み取り中: %d"
 
-#: src/mii/MiiAccountRepo.cpp:411 src/mii/MiiRepo.cpp:131 src/savemng.cpp:1094
+#: src/mii/MiiAccountRepo.cpp:411 src/mii/MiiRepo.cpp:131 src/savemng.cpp:1117
 msgid "pre-Restore backup"
 msgstr "pre-Restore バックアップ"
 
 #: src/mii/MiiAccountRepo.cpp:412 src/mii/MiiRepo.cpp:132 src/savemng.cpp:410
-#: src/savemng.cpp:1095
+#: src/savemng.cpp:1118
 msgid "Backup Failed - Restore aborted !!"
 msgstr "バックアップ失敗 - リストアを中止しました !!"
 
@@ -1730,8 +1760,8 @@ msgstr "データのコピー中にエラーが発生しました。"
 msgid "Error creating folder."
 msgstr "フォルダの作成中にエラーが発生しました。"
 
-#: src/mii/MiiAccountRepo.cpp:435 src/mii/MiiRepo.cpp:189 src/savemng.cpp:1105
-#: src/savemng.cpp:1247
+#: src/mii/MiiAccountRepo.cpp:435 src/mii/MiiRepo.cpp:189 src/savemng.cpp:1128
+#: src/savemng.cpp:1270
 #, c-format
 msgid ""
 "%s\n"
@@ -1815,12 +1845,12 @@ msgstr "場所: %d/%dでMiiを検索しています。見つかったMii: %d個�
 msgid "Cannot create memory buffer for reading the mii data"
 msgstr ""
 
-#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:880
+#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:903
 msgid "Backup found on this slot. Overwrite it?"
 msgstr "このスロットでバックアップが見つかりました。 上書きしますか？"
 
-#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:906
-#: src/savemng.cpp:925 src/savemng.cpp:1025
+#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:929
+#: src/savemng.cpp:948 src/savemng.cpp:1048
 #, c-format
 msgid ""
 "%s\n"
@@ -1845,19 +1875,15 @@ msgstr "部分バックアップ"
 msgid "NO STADIO"
 msgstr "スタジオなし"
 
-#: src/mii/MiiRepo.cpp:104 src/savemng.cpp:836 src/savemng.cpp:1027
-msgid "UNUSABLE SLOT - BACKUP FAILED"
-msgstr "使用できないスロット - バックアップに失敗しました"
-
 #: src/mii/MiiRepo.cpp:142
 msgid "Restore aborted."
 msgstr "復元を中止しました。"
 
-#: src/mii/MiiRepo.cpp:217 src/savemng.cpp:1294
+#: src/mii/MiiRepo.cpp:217 src/savemng.cpp:1317
 msgid "pre-Wipe backup"
 msgstr "pre-Wipe バックアップ"
 
-#: src/mii/MiiRepo.cpp:218 src/savemng.cpp:1295
+#: src/mii/MiiRepo.cpp:218 src/savemng.cpp:1318
 msgid "Backup Failed - Wipe aborted !!"
 msgstr "バックアップ失敗 - ワイプを中止しました !!"
 
@@ -1873,7 +1899,7 @@ msgstr "データの消去エラー"
 msgid "Error deleting file."
 msgstr "ファイルの削除中にエラーが発生しました。"
 
-#: src/mii/MiiRepo.cpp:258 src/savemng.cpp:1381
+#: src/mii/MiiRepo.cpp:258 src/savemng.cpp:1404
 #, c-format
 msgid ""
 "%s\n"
@@ -2559,36 +2585,36 @@ msgstr "変換に失敗しました - グローバルエラー"
 msgid "Transform has failed for %d miis"
 msgstr "%d個のMiiの変換に失敗しました"
 
-#: src/menu/BackupSetListState.cpp:86
+#: src/menu/BackupSetListState.cpp:87
 msgid "BackupSets"
 msgstr "バックアップセット"
 
-#: src/menu/BackupSetListState.cpp:88
+#: src/menu/BackupSetListState.cpp:89
 msgid "BackupSets (filter applied)"
 msgstr "バックアップセット (フィルター適用済み)"
 
-#: src/menu/BackupSetListState.cpp:91
+#: src/menu/BackupSetListState.cpp:92
 #, c-format
 msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 並べ替え: %s \\ue084"
 
-#: src/menu/BackupSetListState.cpp:115
-msgid "\\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
+#: src/menu/BackupSetListState.cpp:116
+msgid "\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 Filter  \\ue001 Back"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:119
+#: src/menu/BackupSetListState.cpp:120
 msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
 msgstr "\\ue000: 選択  \\ue002: 内容を表示  \\ue045: タグ  \\ue046: 消去  \\ue003: フィルター  \\ue001: 戻る"
 
-#: src/menu/BackupSetListState.cpp:121
+#: src/menu/BackupSetListState.cpp:122
 msgid "\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
 msgstr "\\ue000: バックアップセット選択  \\ue002: 内容を表示  \\ue003: リストを絞り込み  \\ue001: 戻る"
 
-#: src/menu/BackupSetListState.cpp:134
+#: src/menu/BackupSetListState.cpp:135
 msgid "Root BackupSet cannot be selected for batch operations"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:146
+#: src/menu/BackupSetListState.cpp:147
 #, c-format
 msgid ""
 "BackupSet selected:\n"
@@ -2604,6 +2630,31 @@ msgstr ""
 " - コンソールから: %s\n"
 "\n"
 "このコンソール: %s"
+
+#: src/menu/BackupSetListState.cpp:165
+#, c-format
+msgid ""
+"Creating a new backupSet from %s Cemu/Dolphin/plain exportSet\n"
+"Continue?"
+msgstr ""
+
+#: src/menu/BackupSetListState.cpp:174
+msgid "BackupSet succesfully created from CEMU/Dolplhin data"
+msgstr ""
+
+#: src/menu/BackupSetListState.cpp:176
+msgid "Error creaing BackupSet from CEMU/Dolplhin data"
+msgstr ""
+
+#: src/menu/BackupSetListState.cpp:178 src/menu/BackupSetListState.cpp:180
+#, c-format
+msgid "BackupSet creation aborted. OK: %d  KO: %d"
+msgstr ""
+
+#: src/menu/BackupSetListState.cpp:182
+#, c-format
+msgid "Error creating BackupSet createted from CEMU/Dolplhin data. OK: %d  KO: %d"
+msgstr ""
 
 #: src/menu/BatchJobTitleSelectState.cpp:241
 msgid "Batch Restore - Select"
@@ -3381,19 +3432,21 @@ msgid "BackupSet Management"
 msgstr ""
 
 #: src/menu/BackupSetManagementState.cpp:28
-msgid "   Set / Show Content / Tag / Wipe Backupsets"
+msgid "   Set as default / Show Content / Tag / Wipe a Backupset"
 msgstr ""
 
 #: src/menu/BackupSetManagementState.cpp:31
-msgid "   Show Content / Tag / Wipe  CEMU/Dolphin compatible"
+msgid "   Convert / Show Content / Tag / Wipe  CEMU/Dolphin compatible backups"
 msgstr ""
 
 #: src/menu/BackupSetManagementState.cpp:39
-msgid "Set the default BackupSet (tasks will used it as their backup repo, tag a BS with a name, or wipe a BS"
+msgid "Set the default BackupSet (tasks will used it as their backup repo), tag it with a name, or wipe any backupSet"
 msgstr ""
 
 #: src/menu/BackupSetManagementState.cpp:42
-msgid "Show content of/ tag / wipe  CEMU or Dolphin export folders"
+msgid ""
+"* Convert a CEMU/DOLPHIN/plain title or save folders to a bacth restorable backupSet\n"
+"* Show content , tag or wipe  CEMU or Dolphin export folders"
 msgstr ""
 
 #: src/menu/BackupSetManagementState.cpp:53
@@ -4545,13 +4598,13 @@ msgid "Loadiine game folder not found."
 msgstr "読み込み中のゲーム フォルダが見つかりません。"
 
 #: src/savemng.cpp:400 src/savemng.cpp:515 src/savemng.cpp:579
-#: src/savemng.cpp:1081 src/savemng.cpp:1285 src/savemng.cpp:1388
-#: src/savemng.cpp:1446 src/savemng.cpp:1502 src/miisavemng.cpp:14
+#: src/savemng.cpp:1104 src/savemng.cpp:1308 src/savemng.cpp:1411
+#: src/savemng.cpp:1469 src/savemng.cpp:1525 src/miisavemng.cpp:14
 msgid "Are you sure?"
 msgstr "本当によろしいですか？"
 
 #: src/savemng.cpp:406 src/savemng.cpp:521 src/savemng.cpp:585
-#: src/savemng.cpp:1089 src/savemng.cpp:1291 src/savemng.cpp:1392
+#: src/savemng.cpp:1112 src/savemng.cpp:1314 src/savemng.cpp:1415
 msgid ""
 "There is no empty slot to back up the current savedata first.\n"
 "\n"
@@ -4566,19 +4619,19 @@ msgstr "pre-copyToOtherDev バックアップ"
 msgid "Copy failed."
 msgstr "コピーに失敗しました。"
 
-#: src/savemng.cpp:428 src/savemng.cpp:946 src/savemng.cpp:1125
+#: src/savemng.cpp:428 src/savemng.cpp:969 src/savemng.cpp:1148
 msgid "source_user=-3 is not allowed for this task"
 msgstr "このタスクではsource_user=-3は許可されていません"
 
-#: src/savemng.cpp:460 src/savemng.cpp:977 src/savemng.cpp:1494
+#: src/savemng.cpp:460 src/savemng.cpp:1000 src/savemng.cpp:1517
 msgid "Error copying common savedata."
 msgstr "共通セーブデータのコピー中にエラーが発生しました。"
 
-#: src/savemng.cpp:473 src/savemng.cpp:986
+#: src/savemng.cpp:473 src/savemng.cpp:1009
 msgid "Error copying savedata."
 msgstr "セーブデータのコピー中にエラーが発生しました。"
 
-#: src/savemng.cpp:474 src/savemng.cpp:547 src/savemng.cpp:987
+#: src/savemng.cpp:474 src/savemng.cpp:547 src/savemng.cpp:1010
 msgid "Error copying profile savedata."
 msgstr "プロファイルのセーブデータのコピー中にエラーが発生しました。"
 
@@ -4649,66 +4702,47 @@ msgstr ""
 "%s\n"
 "プロファイルの移動に失敗しました。"
 
-#: src/savemng.cpp:809
-msgid "Do you want to cancel batch backup?"
-msgstr "バッチ バックアップをキャンセルしますか?"
-
-#: src/savemng.cpp:845
-#, c-format
-msgid ""
-"%s\n"
-"\n"
-"Backup failed.\n"
-"Errors so far: %d\n"
-"Do you want to continue?"
-msgstr ""
-"%s\n"
-"\n"
-"バックアップに失敗しました。\n"
-"これまでのエラー数: %d\n"
-"続行しますか?"
-
-#: src/savemng.cpp:910
+#: src/savemng.cpp:933
 msgid "BACKUP IN PROGRESS"
 msgstr "バックアップ中"
 
-#: src/savemng.cpp:931 src/savemng.cpp:1012
+#: src/savemng.cpp:954 src/savemng.cpp:1035
 msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
 msgstr "バックアップでは権限が保持されません。これはシステムタイトルであり、問​​題が解決された場合にのみバックアップが続行されます。"
 
-#: src/savemng.cpp:934 src/savemng.cpp:1015
+#: src/savemng.cpp:957 src/savemng.cpp:1038
 msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
 msgstr "バックアップでは権限が保持されません。レガシーモードでは正常に動作しますが、問題を解決してから再試行することをお勧めします。"
 
-#: src/savemng.cpp:995
+#: src/savemng.cpp:1018
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
 msgstr "警告 - メタデータ saveinfo.xml のコピー中にエラーが発生しました。重大ではありません。"
 
-#: src/savemng.cpp:1004
+#: src/savemng.cpp:1027
 msgid "Error closing FAT32 chars translation file"
 msgstr "FAT32文字変換ファイルのクローズ中にエラーが発生しました"
 
-#: src/savemng.cpp:1016
+#: src/savemng.cpp:1039
 msgid "WARNING - NO PERMS"
 msgstr "警告 - 権限がありません"
 
-#: src/savemng.cpp:1152 src/savemng.cpp:1438
+#: src/savemng.cpp:1175 src/savemng.cpp:1461
 msgid "Error restoring common savedata."
 msgstr "共通セーブデータの復元中にエラーが発生しました。"
 
-#: src/savemng.cpp:1165
+#: src/savemng.cpp:1188
 msgid "Error restoring savedata."
 msgstr "セーブデータの復元中にエラーが発生しました。"
 
-#: src/savemng.cpp:1166
+#: src/savemng.cpp:1189
 msgid "Error restoring profile savedata."
 msgstr "プロファイルセーブデータの復元中にエラーが発生しました。"
 
-#: src/savemng.cpp:1221
+#: src/savemng.cpp:1244
 msgid "Error setting permissions"
 msgstr "権限設定エラー"
 
-#: src/savemng.cpp:1282
+#: src/savemng.cpp:1305
 msgid ""
 "This option is a last resort in case something has gone wrong when\n"
 "restoring data. It will wipe metadata and savedata, and the title \n"
@@ -4725,24 +4759,24 @@ msgstr ""
 "続行しますか？\n"
 "\n"
 
-#: src/savemng.cpp:1282 src/savemng.cpp:1285 src/savemng.cpp:1502
+#: src/savemng.cpp:1305 src/savemng.cpp:1308 src/savemng.cpp:1525
 #: src/miisavemng.cpp:14
 msgid "Hm, are you REALLY sure?"
 msgstr "うーん、本当によろしいですか？"
 
-#: src/savemng.cpp:1293 src/savemng.cpp:1394
+#: src/savemng.cpp:1316 src/savemng.cpp:1417
 msgid "Backup current savedata first?"
 msgstr "最初に現在のセーブデータをバックアップしますか?"
 
-#: src/savemng.cpp:1334
+#: src/savemng.cpp:1357
 msgid "Error wiping common savedata."
 msgstr "共通セーブデータの消去中にエラーが発生しました。"
 
-#: src/savemng.cpp:1338
+#: src/savemng.cpp:1361
 msgid "Error deleting common folder."
 msgstr "共通フォルダ削除エラー"
 
-#: src/savemng.cpp:1339
+#: src/savemng.cpp:1362
 #, c-format
 msgid ""
 "%s \n"
@@ -4755,23 +4789,23 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1346
+#: src/savemng.cpp:1369
 msgid "Error wiping savedata."
 msgstr "セーブデータの消去中にエラーが発生しました。"
 
-#: src/savemng.cpp:1347
+#: src/savemng.cpp:1370
 msgid "Error wiping profile savedata."
 msgstr "プロファイルセーブデータの消去中にエラーが発生しました。"
 
-#: src/savemng.cpp:1352
+#: src/savemng.cpp:1375
 msgid "Error deleting savedata folder."
 msgstr "セーブデータフォルダ削除エラー"
 
-#: src/savemng.cpp:1353
+#: src/savemng.cpp:1376
 msgid "Error deleting profile savedata folder."
 msgstr "プロファイルセーブデータフォルダ削除エラー"
 
-#: src/savemng.cpp:1354
+#: src/savemng.cpp:1377
 #, c-format
 msgid ""
 "%s \n"
@@ -4784,15 +4818,15 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1364
+#: src/savemng.cpp:1387
 msgid "Error wiping metadata+savedata."
 msgstr "メタデータ+セーブデータの消去エラー"
 
-#: src/savemng.cpp:1369
+#: src/savemng.cpp:1392
 msgid "Error deleting title folder."
 msgstr "タイトルフォルダの削除中にエラーが発生しました。"
 
-#: src/savemng.cpp:1370
+#: src/savemng.cpp:1393
 #, c-format
 msgid ""
 "%s \n"
@@ -4805,25 +4839,25 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1411 src/savemng.cpp:1424
+#: src/savemng.cpp:1434 src/savemng.cpp:1447
 msgid "Failed to import savedata from loadiine."
 msgstr "loadiineからのセーブデータ読み込みに失敗しました。"
 
-#: src/savemng.cpp:1464 src/savemng.cpp:1482
+#: src/savemng.cpp:1487 src/savemng.cpp:1505
 msgid "Failed to export savedata to loadiine."
 msgstr "loadiineへのセーブデータ書き出しに失敗しました。"
 
-#: src/savemng.cpp:1508 src/savemng.cpp:1513
+#: src/savemng.cpp:1531 src/savemng.cpp:1536
 msgid "Error setting path. Aborting."
 msgstr "パスの設定中にエラーが発生しました。中止します。"
 
-#: src/savemng.cpp:1521 src/savemng.cpp:1523 src/miisavemng.cpp:21
+#: src/savemng.cpp:1544 src/savemng.cpp:1546 src/miisavemng.cpp:21
 #: src/miisavemng.cpp:23
 #, c-format
 msgid "Failed to delete slot %u."
 msgstr "スロット %u の削除に失敗しました。"
 
-#: src/savemng.cpp:1525 src/savemng.cpp:1548 src/miisavemng.cpp:25
+#: src/savemng.cpp:1548 src/savemng.cpp:1571 src/miisavemng.cpp:25
 #, c-format
 msgid ""
 "Folder %s\n"
@@ -4832,20 +4866,20 @@ msgstr ""
 "フォルダ%s\n"
 "が存在しません。"
 
-#: src/savemng.cpp:1532
+#: src/savemng.cpp:1555
 msgid "Wipe BackupSet - Are you sure?"
 msgstr "バックアップセットを消去 - よろしいですか？"
 
-#: src/savemng.cpp:1532
+#: src/savemng.cpp:1555
 msgid "Wipe BackupSet - Hm, are you REALLY sure?"
 msgstr "バックアップセットを消去 - うーん、本当によろしいですか？"
 
-#: src/savemng.cpp:1540 src/savemng.cpp:1544
+#: src/savemng.cpp:1563 src/savemng.cpp:1567
 #, c-format
 msgid "Failed to delete backupSet %s."
 msgstr "バックアップセット %s の削除に失敗しました。"
 
-#: src/savemng.cpp:1598
+#: src/savemng.cpp:1621
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4864,7 +4898,7 @@ msgstr ""
 "- 中止: %d\n"
 "- スキップ: %d\n"
 
-#: src/savemng.cpp:1600
+#: src/savemng.cpp:1623
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4883,7 +4917,7 @@ msgstr ""
 "- 中止: %d\n"
 "- スキップ: %d (初期化されていない %d 件を含む)\n"
 
-#: src/savemng.cpp:1609
+#: src/savemng.cpp:1632
 msgid ""
 "\n"
 "Failed Titles:"
@@ -4891,7 +4925,7 @@ msgstr ""
 "\n"
 "失敗したタイトル:"
 
-#: src/savemng.cpp:1648
+#: src/savemng.cpp:1671
 #, c-format
 msgid ""
 "Unable to merge folder '%08x%08x' with existent folder\n"
@@ -4907,7 +4941,7 @@ msgstr ""
 "\n"
 "バックアップ/復元操作では、引き続き古い'%08x%08x'フォルダが使用されます。"
 
-#: src/savemng.cpp:1655
+#: src/savemng.cpp:1678
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -4930,7 +4964,7 @@ msgstr ""
 "\n"
 "バックアップ/復元操作では古い'%08x%08x'フォルダが引き続き使用されます"
 
-#: src/savemng.cpp:1660
+#: src/savemng.cpp:1683
 #, c-format
 msgid ""
 "Unable to rename folder '%08x%08x' to\n"
@@ -4950,7 +4984,7 @@ msgstr ""
 "\n"
 "バックアップ/復元操作では、引き続き古い'%08x%08x'フォルダが使用されます。"
 
-#: src/savemng.cpp:1679
+#: src/savemng.cpp:1702
 #, c-format
 msgid ""
 "Failed to delete (test) folder \n"
@@ -4965,12 +4999,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1711
+#: src/savemng.cpp:1734
 #, c-format
 msgid "Migrating from folder: %08x%08x"
 msgstr "フォルダから移行しています: %08x%08x"
 
-#: src/savemng.cpp:1717
+#: src/savemng.cpp:1740
 #, c-format
 msgid ""
 "Error renaming/moving '%08x%08x' to \n"
@@ -4988,7 +5022,7 @@ msgstr ""
 "\n"
 "続行しますか?\n"
 
-#: src/savemng.cpp:1737
+#: src/savemng.cpp:1760
 #, c-format
 msgid ""
 "Error opening folder\n"
@@ -4998,7 +5032,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/savemng.cpp:1747
+#: src/savemng.cpp:1770
 #, c-format
 msgid ""
 "Errors so far in this (sub)task: %d\n"
@@ -5007,7 +5041,7 @@ msgstr ""
 "この（サブ）タスクでこれまでに発生したエラー: %d\n"
 "続行しますか?"
 
-#: src/savemng.cpp:1765
+#: src/savemng.cpp:1788
 #, c-format
 msgid ""
 "Cannot move %s from '%08x%08x' to\n"
@@ -5022,7 +5056,7 @@ msgstr ""
 "\n"
 " に移動できません。ファイルは既にターゲット フォルダーに存在します。"
 
-#: src/savemng.cpp:1773
+#: src/savemng.cpp:1796
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -5041,7 +5075,7 @@ msgstr ""
 "\n"
 "移動未試行！"
 
-#: src/savemng.cpp:1781
+#: src/savemng.cpp:1804
 #, c-format
 msgid ""
 "Cannot rename folder '%08x%08x/%s' to\n"
@@ -5056,7 +5090,7 @@ msgstr ""
 "\n"
 "%s に変更できません"
 
-#: src/savemng.cpp:1789
+#: src/savemng.cpp:1812
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -5075,7 +5109,7 @@ msgstr ""
 "\n"
 "移行が完了していない可能性があります"
 
-#: src/savemng.cpp:1802
+#: src/savemng.cpp:1825
 #, c-format
 msgid ""
 "Error merging folders: after moving all slots, folder\n"
@@ -5090,7 +5124,7 @@ msgstr ""
 "\n"
 "は空でないため削除できません"
 
-#: src/savemng.cpp:1808
+#: src/savemng.cpp:1831
 #, c-format
 msgid ""
 "Failed to delete (legacy) folder\n"
@@ -5105,7 +5139,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1843
+#: src/savemng.cpp:1866
 #, c-format
 msgid ""
 "Backup contains savedata for the profile '%s',\n"
@@ -5114,12 +5148,12 @@ msgstr ""
 "「バックアップにはプロファイル '%s' のセーブデータが含まれていますが、\n"
 "このコンソールにプロファイルが存在しません。」"
 
-#: src/savemng.cpp:1882
+#: src/savemng.cpp:1905
 #, c-format
 msgid "... and %d more"
 msgstr "...およびその他 %d 件"
 
-#: src/savemng.cpp:2047
+#: src/savemng.cpp:2070
 #, c-format
 msgid ""
 "Error setting quota for \n"
@@ -5128,15 +5162,15 @@ msgstr ""
 "\n"
 "%s のクォータ設定エラー"
 
-#: src/savemng.cpp:2074
+#: src/savemng.cpp:2097
 msgid "Error creating init data"
 msgstr "初期データ作成エラー"
 
-#: src/savemng.cpp:2123
+#: src/savemng.cpp:2146
 msgid "Error creating vWii init data"
 msgstr "vWii 初期化データの作成中にエラーが発生しました"
 
-#: src/savemng.cpp:2157
+#: src/savemng.cpp:2180
 #, c-format
 msgid ""
 "Sourcce saveinfo\n"
@@ -5147,7 +5181,7 @@ msgstr ""
 "%s\n"
 "が見つかりません。"
 
-#: src/savemng.cpp:2190
+#: src/savemng.cpp:2213
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical.\n"
 msgstr "警告 - メタデータ saveinfo.xml のコピー中にエラーが発生しました。重大ではありません。\n"
 

@@ -328,7 +328,7 @@ bool BackupSetContentListState::populate_exportset_content() {
                         strcmp(tdata->d_name, "..") == 0 ||
                         !(tdata->d_type & DT_DIR) ||
                         strcmp(tdata->d_name, "mii_db_checkpoint") == 0 ||
-                        strlen(tdata->d_name) != 8) // it must be a highid
+                        strlen(tdata->d_name) != 8) // it must be a lowID
                         continue;
 
                     uint32_t lowID = 0;
@@ -377,12 +377,16 @@ bool BackupSetContentListState::populate_exportset_content() {
                         }
                     }
 
+                    // TODO read banner or metadata to get the title Name even if it is not istalled
+
                     backupset_content.push_back(bs);
                 }
             } else {
                 Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), title_folder.c_str(), strerror(errno));
+                closedir(dir);
                 return false;
             }
+            closedir(tdir);
         }
     } else {
         Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), bs_path.c_str(), strerror(errno));

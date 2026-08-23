@@ -1,8 +1,11 @@
 #include "ApplicationState.h"
+#include "utils/ConsoleUtils.h"
 #include "utils/CustomTypes.h"
 #include <BackupSetList.h>
 #include <Metadata.h>
 #include <savemng.h>
+#include <utils/LanguageUtils.h>
+#include <utils/StringUtils.h>
 
 #include <algorithm>
 #include <cstring>
@@ -12,8 +15,9 @@
 #include <vector>
 
 extern const char *backupPath;
+extern const char *batchBackupPath;
 
-BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup_layout),backupSet_path_prefix(get_backupSet_path_prefix(backup_layout)) {
+BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup_layout), backupSet_path_prefix(get_backupSet_path_prefix(backup_layout)) {
 
     this->backupSetListRoot = std::string{backupPath} + "/" + backupSet_path_prefix;
 
@@ -165,7 +169,7 @@ std::string BackupSetList::getBackupSetSubPath(int i) {
 }
 
 std::string BackupSetList::getBackupSetPath(int i) {
-    
+
     return backupPath + getBackupSetSubPath(i);
 };
 
@@ -250,36 +254,154 @@ template void BSMetadataValues::Right(attr<std::less<std::string>> &);
 template void BSMetadataValues::Left(attr<std::greater<std::string>> &);
 template void BSMetadataValues::Left(attr<std::less<std::string>> &);
 
+
 /**
- * @brief unused function - TBD - path nand > SD in CEMU/DOLHIN format (just a plain copy is already implmented. Now the inverse ... may be transform this incomplete function, may be tune the batchRestore process
+ * @brief transform a Export from CEMU / DOLPHIN / plain copy from Wii U save folder to a backupSet that can be restored usinf batchRestore
  * 
  * @param i 
- * @return true 
- * @return false 
+ * @param titlesOK 
+ * @param titlesKO 
+ * @return int 0 = OK, -1 = format is already SaveMii,  -2 = abirted by use due to error, -3 = aborted to user, -4 = cannot open container 
  */
-bool BackupSetList::clone_as_emulator(int i) {
 
-    //std::string path_to_backupset = entryPath;
+int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO) {
 
+    if (this->backup_layout == SAVEMII) {
+        // TODO: if we recover the name, print it here
+        Console::showMessage(ERROR_SHOW, _("BackupSet %s has already SAVEMII format"), this->at(i).c_str());
+        return -1;
+    }
 
-    std::string backup_set = backupSetListRoot + "/" + this->at(i);
+    if (savemng::firstSDWrite)
+        sdWriteDisclaimer();
 
-    std::error_code ec;
-    for (const auto &entry : fs::directory_iterator(backup_set, ec)) {
+    const std::string batchDatetime = getNowDateForFolder();
 
-        std::filesystem::path filename = entry.path();
-        std::string filename_str = filename.string();
+    InProgress::copyErrorsCounter = 0;
+    InProgress::abortCopy = false;
+    InProgress::immediateAbort = false;
+    titlesKO = 0;
+    titlesOK = 0;
 
-        if (!fs::is_regular_file(filename)) {
-            //Console::showMessage(ERROR_CONFIRM, "ERROR");
-            continue;
+    InProgress::jobType = BACKUP; // TODO: custom jobType
+
+    bool stat_manager_flag = DISABLE_STAT_MANAGER;
+
+    std::string bs_path = getBackupSetPath(i);
+
+    DIR *dir = opendir(bs_path.c_str());
+    if (dir != nullptr) {
+        struct dirent *data;
+        while ((data = readdir(dir)) != nullptr) {
+            if (strcmp(data->d_name, ".") == 0 ||
+                strcmp(data->d_name, "..") == 0 ||
+                !(data->d_type & DT_DIR) ||
+                strcmp(data->d_name, "mii_db_checkpoint") == 0 ||
+                strlen(data->d_name) != 8) // it must be a highid
+                continue;
+
+            uint32_t highID = 0;
+            if (str2uint(highID, data->d_name, 16) != SUCCESS) // assume "true" highID
+                continue;
+
+            std::string high_id{data->d_name};
+
+            bool isWii = false;
+            [[maybe_unused]] bool isWiiUSysTitle = false;
+            [[maybe_unused]] bool isWiiUTitle = false;
+            switch (highID) {
+                case 0x00050000:
+                case 0x00050002:
+                    isWiiUTitle = true;
+                    break;
+                case 0x00050010:
+                case 0x00050030:
+                    isWiiUSysTitle = true;
+                    break;
+                case 0x00010000:
+                case 0x00010001:
+                case 0x00010004:
+                    isWii = true;
+                    break;
+                default:
+                    continue;
+                    break;
+            }
+
+            std::string titles_folder = bs_path + "/" + data->d_name;
+            DIR *titles_dir = opendir(titles_folder.c_str());
+            if (titles_dir != nullptr) {
+                struct dirent *title_data;
+                while ((title_data = readdir(titles_dir)) != nullptr) {
+
+                    if (strcmp(title_data->d_name, ".") == 0 ||
+                        strcmp(title_data->d_name, "..") == 0 ||
+                        !(title_data->d_type & DT_DIR) ||
+                        strcmp(title_data->d_name, "mii_db_checkpoint") == 0 ||
+                        strlen(title_data->d_name) != 8) // it must be a lowID
+                        continue;
+
+                    uint32_t lowID = 0;
+                    if (str2uint(lowID, title_data->d_name, 16) != SUCCESS) // assume "true" lowID
+                        continue;
+
+                    if (lowID == 0 || highID == 0) // just in case
+                        continue;
+
+                    std::string low_id{title_data->d_name};
+
+                    InProgress::titleName.assign(low_id); // TODO: name
+                    InProgress::currentStep++;
+
+                    std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", bs_path.c_str(), highID, lowID, isWii ? "data" : "user");
+                    std::string dstBasePath = StringUtils::stringFormat("%s/%s", batchBackupPath, batchDatetime.c_str());
+                    std::string dstPath = StringUtils::stringFormat("%s/%08x%08x/%u", dstBasePath.c_str(), highID, lowID, 0); // use old savemii hex folder
+
+                    const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", bs_path.c_str(), highID, lowID);
+
+                    if (FSUtils::createFolder(dstPath.c_str())) {
+                        if (FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, stat_manager_flag)) {
+                            if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()))
+                                FSUtils::copyFile(metaSavePath + "/saveinfo.xml", dstPath + "/savemii_saveinfo.xml");
+                            titlesOK++;
+                            writeMetadata(highID, lowID, "", dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, "", FILES);
+                            if (InProgress::abortTask) {
+                                if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to cancel batch backup?")))
+                                    return -2;
+                                else
+                                    InProgress::abortTask = false;
+                            }
+                            continue;
+                        }
+                    }
+                    // backup for this tile has failed
+                    titlesKO++;
+                    writeMetadata(highID, lowID, "", dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
+                    std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), low_id.c_str(), titlesKO);
+                    if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+                        InProgress::abortTask = true;
+                        return -3;
+                    }
+                }
+            } else {
+                Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), titles_folder.c_str(), strerror(errno));
+                return -4;
+                closedir(dir);
+            }
+            closedir(titles_dir);
         }
+    } else {
+        // Cannot open container
+        Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), bs_path.c_str(), strerror(errno));
+        return -4;
     }
+    closedir(dir);
 
-    if (ec.value() != 0) {
-        //Console::showMessage(ERROR_CONFIRM, "Error accessing Mii repo  %s at %s:\n\n %s", repo_name.c_str(), path_to_repo.c_str(), ec.message().c_str());
-        return false;
-    }
+// TODO: sensible tag based on bs_sentry and Dolphin/Cemu ...
+    writeBackupAllMetadata(batchDatetime.c_str(), "FROM EMULATOR");
 
-    return true;
+    // TODO: decide where the wipe backupset in case of error is placed, move messages according and conditionally set the initialization flag
+    currentBackupSetList->setIsInitializationRequired(true);
+
+    return 0;
 }

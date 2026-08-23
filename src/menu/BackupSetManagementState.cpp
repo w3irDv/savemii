@@ -25,10 +25,10 @@ void BackupSetManagementState::render() {
         Console::consolePrintPosAligned(0, 4, 1, _("BackupSet Management"));
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 3, _("   Set / Show Content / Tag / Wipe Backupsets"));
+        Console::consolePrintPos(M_OFF, 3, _("   Set as default / Show Content / Tag / Wipe a Backupset"));
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 5, _("   Show Content / Tag / Wipe  CEMU/Dolphin compatible"));
+        Console::consolePrintPos(M_OFF, 5, _("   Convert / Show Content / Tag / Wipe  CEMU/Dolphin compatible backups"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + (cursorPos > 0 ? 1 : 0) + cursorPos, "\u2192");
@@ -36,10 +36,10 @@ void BackupSetManagementState::render() {
         const char *info;
         switch (cursorPos) {
             case 0:
-                info = _("Set the default BackupSet (tasks will used it as their backup repo, tag a BS with a name, or wipe a BS");
+                info = _("Set the default BackupSet (tasks will used it as their backup repo), tag it with a name, or wipe any backupSet");
                 break;
             case 1:
-                info = _("Show content of/ tag / wipe  CEMU or Dolphin export folders");
+                info = _("* Convert a CEMU/DOLPHIN/plain title or save folders to a bacth restorable backupSet\n* Show content , tag or wipe  CEMU or Dolphin export folders");
                 break;
             default:
                 info = "";

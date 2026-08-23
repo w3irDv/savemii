@@ -2,6 +2,7 @@
 
 #include "miisavemng.h"
 #include <BackupSetList.h>
+#include <cstdint>
 #include <jansson.h>
 #include <mii/Mii.h>
 #include <savemng.h>
@@ -69,18 +70,23 @@ public:
     bool set(const std::string &date, const std::string &source);
     std::string getDate() { return Date; };
     std::string getTag() { return tag; };
-    void setTag(const std::string &tag_) { this->tag = tag_; };
-    void setBackupFormat(eBackupFormat backup_format) { backupFormat.assign(backup_format == FILES ? "FILES" : "DATA_BIN"); };
     std::string getSerialId() { return serialId; };
     uint32_t getVWiiHighID() { return this->vWiiHighID; };
     uint32_t getHighID() { return this->highID; };
     uint32_t getLowID() { return this->lowID; };
     char *getShortName() { return shortName; };
+    void setTag(const std::string &tag_) { this->tag = tag_; };
+    void setBackupFormat(eBackupFormat backup_format) { backupFormat.assign(backup_format == FILES ? "FILES" : "DATA_BIN"); };
+    void setHighID(uint32_t highID) { this->highID = highID; };
+    void setLowID(uint32_t lowID) { this->lowID = lowID; };
+    void setDate(const std::string &Date) { this->Date = Date; };
+    void setStorage(const std::string &storage) { this->storage = storage; };
+    void setSerialId(const std::string &serialId) { this->serialId = serialId; };
+    void setTitleName(const std::string &titleName) { strlcpy(this->shortName, titleName.c_str(), 256); };
+
 
     bool read_mii();
     bool write_mii();
-    void setDate(const std::string &Date) { this->Date = Date; };
-    void setStorage(const std::string &storage) { this->storage = storage; };
 
 private:
     uint32_t highID = 0;

@@ -115,8 +115,8 @@ std::string getBatchBackupPathRoot(const std::string &datetime) {
     return StringUtils::stringFormat("%s/%s", batchBackupPath, datetime.c_str());
 }
 
-std::string getBatchBackupPathRoot(const std::string &backupSet_path_prefix,const std::string &datetime) {
-    return StringUtils::stringFormat("%s/%s/%s", backupPath, backupSet_path_prefix.c_str(),datetime.c_str());
+std::string getBatchBackupPathRoot(const std::string &backupSet_path_prefix, const std::string &datetime) {
+    return StringUtils::stringFormat("%s/%s/%s", backupPath, backupSet_path_prefix.c_str(), datetime.c_str());
 }
 
 // SD wii SaveData manager backup path in /private/wii/title
@@ -668,6 +668,29 @@ void writeMetadata(Title *title, uint8_t slot, const std::string &source, const 
     delete metadataObj;
 }
 
+/**
+ * @brief Called from emulator_2_savemii, to create a minimal title savemii metainfo
+ * 
+ * @param path 
+ * @param source 
+ * @param batchDatetime 
+ * @param tag 
+ * @param backup_format 
+ */
+void writeMetadata(uint32_t highID, uint32_t lowID, const std::string title_name, const std::string path, const std::string &source, const std::string serialId, const std::string &batchDatetime, const std::string &tag, eBackupFormat backup_format) {
+    Metadata *metadataObj = new Metadata(path);
+    metadataObj->setTag(tag);
+    metadataObj->setBackupFormat(backup_format);
+    metadataObj->setLowID(lowID);
+    metadataObj->setHighID(highID);
+    metadataObj->setDate(batchDatetime);
+    metadataObj->setStorage(source);
+    metadataObj->setSerialId(serialId);
+    metadataObj->setTitleName(title_name);
+    metadataObj->write();
+    delete metadataObj;
+}
+
 void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag, eBackupFormat backup_format) {
     Metadata *metadataObj = new Metadata(title, slot, batchDatetime);
     metadataObj->setTag(tag);
@@ -683,7 +706,7 @@ void writeBackupAllMetadata(const std::string &batchDatetime, const std::string 
 }
 
 void writeBackupAllMetadata(const std::string &backupSet_path_prefix, const std::string &batchDatetime, const std::string &tag) {
-    Metadata *metadataObj = new Metadata(backupSet_path_prefix,batchDatetime, "", AmbientConfig::thisConsoleSerialId, tag);
+    Metadata *metadataObj = new Metadata(backupSet_path_prefix, batchDatetime, "", AmbientConfig::thisConsoleSerialId, tag);
     metadataObj->write();
     delete metadataObj;
 }
@@ -1532,8 +1555,8 @@ bool wipeBackupSet(const std::string &backupSetEntry, bool force, eBackupLayout 
         if (!Console::promptConfirm(ST_WARNING, _("Wipe BackupSet - Are you sure?")) || !Console::promptConfirm(ST_WIPE, _("Wipe BackupSet - Hm, are you REALLY sure?")))
             return false;
     std::string path{};
-    path = StringUtils::stringFormat("%s/%s/%s", backupPath, BackupSetList::get_backupSet_path_prefix(backup_layout).c_str(),backupSetEntry.c_str());
-    
+    path = StringUtils::stringFormat("%s/%s/%s", backupPath, BackupSetList::get_backupSet_path_prefix(backup_layout).c_str(), backupSetEntry.c_str());
+
     if (FSUtils::checkEntry(path.c_str()) == 2) {
         if (FSUtils::removeDir(path)) {
             if (unlink(path.c_str()) == -1) {

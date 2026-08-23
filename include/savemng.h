@@ -55,6 +55,7 @@ std::string getNowDateForFolder() __attribute__((hot));
 std::string getNowDate() __attribute__((hot));
 void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &tag, eBackupFormat backup_format) __attribute__((hot));
 void writeMetadata(Title *title, uint8_t slot, const std::string &source, const std::string &tag, eBackupFormat backup_format);
+void writeMetadata(uint32_t highID, uint32_t lowID, const std::string title_name, const std::string path, const std::string &source, const std::string serialId, const std::string &batchDatetime, const std::string &tag, eBackupFormat backup_format);
 void writeBackupAllMetadata(const std::string &Date, const std::string &tag);
 void writeBackupAllMetadata(const std::string &backupSet_path_prefix,const std::string &Date, const std::string &tag);
 int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles, eBackupLayout backup_layout = SAVEMII) __attribute__((hot));

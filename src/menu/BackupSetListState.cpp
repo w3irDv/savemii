@@ -1,5 +1,6 @@
 #include "ApplicationState.h"
 #include "menu/BackupSetContentListState.h"
+#include "utils/StringUtils.h"
 #include <BackupSetList.h>
 #include <Metadata.h>
 #include <coreinit/debug.h>
@@ -112,7 +113,7 @@ void BackupSetListState::render() {
         Console::consolePrintPos(-1, 2 + cursorPos, "\u2192");
         switch (jobType) {
             case CEMU_DOLPHIN_EXPORT:
-                Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"));
+                Console::consolePrintPosAligned(17, 4, 2, _("\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 Filter  \\ue001 Back"));
                 break;
             default:
                 if (cursorPos + scroll > 0)
@@ -159,11 +160,30 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                     this->state = STATE_DO_SUBSTATE;
                     this->subState = std::make_unique<BatchJobOptions>(titles, titlesCount, titleType, RESTORE);
                     break;
-                //case CEMU_DOLPHIN_EXPORT:
-                //   Console::showMessage(ERROR_SHOW, "DO CEMU DOLPHIN CLONE ...");
-                //    working_backupset_list->clone_as_emulator(cursorPos + scroll);
-                //    return SUBSTATE_RETURN;
-                //    break;
+                case CEMU_DOLPHIN_EXPORT:
+                    char confirm_message[256];
+                    snprintf(confirm_message, sizeof(confirm_message), _("Creating a new backupSet from %s Cemu/Dolphin/plain exportSet\nContinue?"), working_backupset_list->at(cursorPos + scroll).c_str());
+                    if (!Console::promptConfirm(ST_WARNING, confirm_message))
+                        return SUBSTATE_RUNNING;
+                    {
+                        int titlesOK = 0;
+                        int titlesKO = 0;
+                        int RC = 0;
+                        RC = working_backupset_list->emulator_2_savemii(cursorPos + scroll, titlesOK, titlesKO);
+                        if (RC == 0) {
+                            Console::showMessage(OK_SHOW, _("BackupSet succesfully created from CEMU/Dolplhin data"));
+                        } else if (RC == -1) {
+                            Console::showMessage(ERROR_SHOW, _("Error creaing BackupSet from CEMU/Dolplhin data"));
+                        } else if (RC == -2) {
+                            Console::showMessage(ERROR_CONFIRM, _("BackupSet creation aborted. OK: %d  KO: %d"), titlesOK, titlesKO);
+                        } else if (RC == -3) {
+                            Console::showMessage(titlesKO == 0 ? WARNING_CONFIRM : ERROR_CONFIRM, _("BackupSet creation aborted. OK: %d  KO: %d"), titlesOK, titlesKO);
+                        } else if (RC == -4) {
+                            Console::showMessage(ERROR_CONFIRM, _("Error creating BackupSet createted from CEMU/Dolplhin data. OK: %d  KO: %d"), titlesOK, titlesKO);
+                        }
+                    }
+                    return SUBSTATE_RETURN;
+                    break;
                 default:
                     break;
             }
@@ -217,7 +237,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                 }
                 InProgress::totalSteps = InProgress::currentStep = 1;
                 InProgress::titleName.assign(working_backupset_list->at(entry));
-                if (wipeBackupSet(working_backupset_list->at(entry), false,working_backupset_list->backup_layout)) {
+                if (wipeBackupSet(working_backupset_list->at(entry), false, working_backupset_list->backup_layout)) {
                     BackupSetList::reInitXSetList(jobType);
                     cursorPos--;
                 }

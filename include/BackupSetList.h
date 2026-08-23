@@ -129,7 +129,7 @@ public:
     bool isRootBackupSet() { return (backupSetSubPath == "/"); }
     void setSelectedEntryForIndividualTitles(int i) { selectedEntryForIndividualTitles = i; }
 
-    bool clone_as_emulator(int i);
+    int emulator_2_savemii(int i, int &titlesOK, int &titlesKO);
 
 
 private:
