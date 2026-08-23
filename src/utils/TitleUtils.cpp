@@ -1127,3 +1127,100 @@ bool TitleUtils::guess_uninitialized_vwii_title_name_from_backup(Title *titles, 
 
     return true;
 }
+
+/**
+ * @brief Get the vwii title name name from banner.bin, return true if name found, false otherwise 
+ * 
+ * @param banner_path 
+ * @param title_name 
+ * @return true name found, title_name contains it
+ * @return false name not found, title_name unmodified 
+ */
+bool TitleUtils::get_vwii_title_name(const std::string &banner_path, std::string &title_name) {
+    bool RC = false;
+
+    FILE *file = fopen(banner_path.c_str(), "rb");
+    if (file == nullptr) {
+        return false;
+    }
+
+    if (fseek(file, 0x20, SEEK_SET) != 0) {
+        fclose(file);
+        return false;
+    }
+
+    uint16_t bnrBuf[32] = {0};
+    size_t bytesRead = fread(bnrBuf, sizeof(uint16_t), 32, file);
+    fclose(file);
+
+    if (bytesRead == 0) {
+        return false;
+    }
+
+    std::string resultName;
+    resultName.reserve(96);
+
+    for (int j = 0; j < 32; j++) {
+        uint16_t ch = bnrBuf[j];
+        if (ch == 0) break;
+
+        if (ch < 0x80) {
+            resultName.push_back(static_cast<char>(ch));
+        } else if ((ch & 0xF000) > 0) {
+            resultName.push_back(static_cast<char>(0xE0 | ((ch & 0xF000) >> 12)));
+            resultName.push_back(static_cast<char>(0x80 | ((ch & 0xFC0) >> 6)));
+            resultName.push_back(static_cast<char>(0x80 | (ch & 0x3F)));
+        } else if (ch < 0x400) {
+            resultName.push_back(static_cast<char>(0xC0 | ((ch & 0x3C0) >> 6)));
+            resultName.push_back(static_cast<char>(0x80 | (ch & 0x3F)));
+        } else {
+            resultName.push_back(static_cast<char>(0xD0 | ((ch & 0x3C0) >> 6)));
+            resultName.push_back(static_cast<char>(0x80 | (ch & 0x3F)));
+        }
+    }
+
+    if (!resultName.empty()) {
+        title_name = std::move(resultName);
+        RC = true;
+    }
+
+    return RC;
+}
+
+
+/**
+ * @brief Get the wiiu title name from a metasave.xml, return true if name found, false otherwise 
+ * 
+ * @param path 
+ * @param title_name 
+ * @return true name found, title_name contains it
+ * @return false name not found, title_name unmodified
+ */
+bool TitleUtils::get_wiiu_title_name(const std::string &path, std::string &title_name) {
+    bool RC = false;
+    char *xmlBuf = nullptr;
+
+    if (FSUtils::loadFile(path.c_str(), reinterpret_cast<uint8_t **>(&xmlBuf)) > 0 && xmlBuf != nullptr) {
+        const char *v = xmlValue(xmlBuf, "shortname_en");
+
+        if (v == nullptr || strcspn(v, "<") == 0) {
+            v = xmlValue(xmlBuf, "shortname_ja");
+        }
+
+        if (v != nullptr) {
+            std::string raw_value(v);
+
+            size_t n = raw_value.find('<');
+            if (n != std::string::npos) {
+                raw_value = raw_value.substr(0, n);
+            }
+
+            title_name = StringUtils::decodeXMLEscapeLine(raw_value);
+            RC = true;
+        }
+
+        free(xmlBuf); 
+    }
+
+    return RC;
+}

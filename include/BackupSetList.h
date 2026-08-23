@@ -129,7 +129,7 @@ public:
     bool isRootBackupSet() { return (backupSetSubPath == "/"); }
     void setSelectedEntryForIndividualTitles(int i) { selectedEntryForIndividualTitles = i; }
 
-    int emulator_2_savemii(int i, int &titlesOK, int &titlesKO);
+    int emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::string &batchDateTime);
 
 
 private:

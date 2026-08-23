@@ -169,7 +169,8 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                         int titlesOK = 0;
                         int titlesKO = 0;
                         int RC = 0;
-                        RC = working_backupset_list->emulator_2_savemii(cursorPos + scroll, titlesOK, titlesKO);
+                        std::string batchDatetime{};
+                        RC = working_backupset_list->emulator_2_savemii(cursorPos + scroll, titlesOK, titlesKO, batchDatetime);
                         if (RC == 0) {
                             Console::showMessage(OK_SHOW, _("BackupSet succesfully created from CEMU/Dolplhin data"));
                         } else if (RC == -1) {
@@ -180,6 +181,19 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                             Console::showMessage(titlesKO == 0 ? WARNING_CONFIRM : ERROR_CONFIRM, _("BackupSet creation aborted. OK: %d  KO: %d"), titlesOK, titlesKO);
                         } else if (RC == -4) {
                             Console::showMessage(ERROR_CONFIRM, _("Error creating BackupSet createted from CEMU/Dolplhin data. OK: %d  KO: %d"), titlesOK, titlesKO);
+                        }
+
+
+                        if (RC != 0) {
+                            if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to wipe this incomplete batch backup?"))) {
+                                InProgress::totalSteps = InProgress::currentStep = 1;
+                                InProgress::titleName.assign(batchDatetime);
+                                BackupSetList::currentBackupSetList->setIsInitializationRequired(false);
+                                if (!wipeBackupSet(batchDatetime, true)) {
+                                    writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
+                                    BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
+                                }
+                            }
                         }
                     }
                     return SUBSTATE_RETURN;

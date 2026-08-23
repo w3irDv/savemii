@@ -157,4 +157,8 @@ namespace TitleUtils {
         for (int id = 0; id < last - titles; id++)
             titles[id].indexID = id;
     };
+
+    bool get_vwii_title_name(const std::string &banner_path, std::string &title_name);
+    bool get_wiiu_title_name(const std::string &meta_path, std::string &title_name);
+
 } // namespace TitleUtils

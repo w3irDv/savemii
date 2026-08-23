@@ -1,6 +1,7 @@
 #include "ApplicationState.h"
 #include "utils/ConsoleUtils.h"
 #include "utils/CustomTypes.h"
+#include "utils/TitleUtils.h"
 #include <BackupSetList.h>
 #include <Metadata.h>
 #include <savemng.h>
@@ -264,10 +265,9 @@ template void BSMetadataValues::Left(attr<std::less<std::string>> &);
  * @return int 0 = OK, -1 = format is already SaveMii,  -2 = abirted by use due to error, -3 = aborted to user, -4 = cannot open container 
  */
 
-int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO) {
+int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::string &batchDatetime) {
 
     if (this->backup_layout == SAVEMII) {
-        // TODO: if we recover the name, print it here
         Console::showMessage(ERROR_SHOW, _("BackupSet %s has already SAVEMII format"), this->at(i).c_str());
         return -1;
     }
@@ -275,7 +275,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO) {
     if (savemng::firstSDWrite)
         sdWriteDisclaimer();
 
-    const std::string batchDatetime = getNowDateForFolder();
+    batchDatetime = getNowDateForFolder();
 
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
@@ -283,11 +283,14 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO) {
     titlesKO = 0;
     titlesOK = 0;
 
-    InProgress::jobType = BACKUP; // TODO: custom jobType
+    InProgress::jobType = CONVERT_CEMU_DOLPHIN_TO_BS;
 
     bool stat_manager_flag = DISABLE_STAT_MANAGER;
 
     std::string bs_path = getBackupSetPath(i);
+
+    bool exportset_has_wiiu = false;
+    bool exportset_has_vwii = false;
 
     DIR *dir = opendir(bs_path.c_str());
     if (dir != nullptr) {
@@ -306,22 +309,33 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO) {
 
             std::string high_id{data->d_name};
 
+            Title *titles = 0;
+            int titles_count = 0;
             bool isWii = false;
-            [[maybe_unused]] bool isWiiUSysTitle = false;
-            [[maybe_unused]] bool isWiiUTitle = false;
+            bool isWiiUSysTitle = false;
+            bool isWiiUTitle = false;
             switch (highID) {
                 case 0x00050000:
                 case 0x00050002:
+                    titles = TitleUtils::wiiutitles;
+                    titles_count = TitleUtils::wiiuTitlesCount;
                     isWiiUTitle = true;
+                    exportset_has_wiiu = true;
                     break;
                 case 0x00050010:
                 case 0x00050030:
+                    titles = TitleUtils::wiiusystitles;
+                    titles_count = TitleUtils::wiiuSysTitlesCount;
                     isWiiUSysTitle = true;
+                    exportset_has_wiiu = true;
                     break;
                 case 0x00010000:
                 case 0x00010001:
                 case 0x00010004:
+                    titles = TitleUtils::wiititles;
+                    titles_count = TitleUtils::vWiiTitlesCount;
                     isWii = true;
+                    exportset_has_vwii = true;
                     break;
                 default:
                     continue;
@@ -350,14 +364,35 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO) {
 
                     std::string low_id{title_data->d_name};
 
-                    InProgress::titleName.assign(low_id); // TODO: name
-                    InProgress::currentStep++;
-
                     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", bs_path.c_str(), highID, lowID, isWii ? "data" : "user");
                     std::string dstBasePath = StringUtils::stringFormat("%s/%s", batchBackupPath, batchDatetime.c_str());
                     std::string dstPath = StringUtils::stringFormat("%s/%08x%08x/%u", dstBasePath.c_str(), highID, lowID, 0); // use old savemii hex folder
 
                     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", bs_path.c_str(), highID, lowID);
+                    const std::string banner_path = StringUtils::stringFormat("%s/%08x/%08x/data/banner.bin", bs_path.c_str(), highID, lowID);
+
+                    std::string title_name = high_id + "-" + low_id;
+
+                    bool installed = false;
+                    for (int i = 0; i < titles_count; i++) {
+                        if (titles[i].lowID == lowID) {
+                            if (titles[i].highID == highID) { // installed title, we will use title from memory
+                                title_name = titles[i].shortName;
+                                installed = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (installed == false) {
+                        if (isWiiUTitle || isWiiUSysTitle)
+                            TitleUtils::get_wiiu_title_name(metaSavePath + "/meta.xml", title_name);
+                        else
+                            TitleUtils::get_vwii_title_name(banner_path, title_name);
+                    }
+
+                    InProgress::titleName = title_name;
+                    InProgress::currentStep++;
 
                     if (FSUtils::createFolder(dstPath.c_str())) {
                         if (FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, stat_manager_flag)) {
@@ -376,7 +411,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO) {
                     }
                     // backup for this tile has failed
                     titlesKO++;
-                    writeMetadata(highID, lowID, "", dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
+                    writeMetadata(highID, lowID, title_name, dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
                     std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), low_id.c_str(), titlesKO);
                     if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                         InProgress::abortTask = true;
@@ -397,10 +432,34 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO) {
     }
     closedir(dir);
 
-// TODO: sensible tag based on bs_sentry and Dolphin/Cemu ...
-    writeBackupAllMetadata(batchDatetime.c_str(), "FROM EMULATOR");
+    std::string tag;
+    std::string emulator{};
+    if (exportset_has_vwii && exportset_has_vwii) {
+        emulator = "CEMU/Dolphin"; // strange .. but
+    } else if (exportset_has_vwii) {
+        emulator = "Dolphin";
+    } else if (exportset_has_wiiu) {
+        emulator = "CEMU";
+    } else {
+        emulator = "UNKNOWN";
+    }
 
-    // TODO: decide where the wipe backupset in case of error is placed, move messages according and conditionally set the initialization flag
+    if (titlesOK > 0 && titlesKO == 0) {
+        tag = StringUtils::stringFormat(_("FROM %s - %d title%s OK"),
+                                        emulator.c_str(),
+                                        titlesOK,
+                                        (titlesOK == 1) ? "" : "s");
+    } else if (titlesOK == 0) {
+        tag = StringUtils::stringFormat(_("FROM %s - FAILED - No titles"), emulator.c_str());
+    } else if (titlesKO > 0) {
+        tag = StringUtils::stringFormat(_("FROM %s - FAILED - OK/KO > %s: %d/%d"),
+                                        emulator.c_str(),
+                                        titlesOK,
+                                        titlesKO);
+    }
+
+    writeBackupAllMetadata(batchDatetime.c_str(), tag.c_str());
+
     currentBackupSetList->setIsInitializationRequired(true);
 
     return 0;

@@ -318,6 +318,8 @@ bool BackupSetContentListState::populate_exportset_content() {
             if (str2uint(highID, data->d_name, 16) != SUCCESS) // assume "true" highID
                 continue;
 
+            std::string high_id{data->d_name};
+
             std::string title_folder = bs_path + "/" + data->d_name;
             DIR *tdir = opendir(title_folder.c_str());
             if (tdir != nullptr) {
@@ -335,8 +337,8 @@ bool BackupSetContentListState::populate_exportset_content() {
                     if (str2uint(lowID, tdata->d_name, 16) != SUCCESS) // assume "true" lowID
                         continue;
 
-                    std::string folder_name{tdata->d_name};
-                    bs_item bs = {.title_folder_name = folder_name};
+                    std::string low_id{tdata->d_name};
+                    bs_item bs = {.title_folder_name = low_id};
                     bs.uninstalled_title_name.assign(_("< no savedata >")); // default: title is not installed.
 
                     if (lowID == 0 || highID == 0) // just in case
@@ -345,22 +347,28 @@ bool BackupSetContentListState::populate_exportset_content() {
                     // check if the title is installed.
                     Title *titles = 0;
                     int titles_count = 0;
+                    [[maybe_unused]] bool isWii = false;
+                    bool isWiiUSysTitle = false;
+                    bool isWiiUTitle = false;
                     switch (highID) {
                         case 0x00050000:
                         case 0x00050002:
                             titles = TitleUtils::wiiutitles;
                             titles_count = TitleUtils::wiiuTitlesCount;
+                            isWiiUTitle = true;
                             break;
                         case 0x00050010:
                         case 0x00050030:
                             titles = TitleUtils::wiiusystitles;
                             titles_count = TitleUtils::wiiuSysTitlesCount;
+                            isWiiUSysTitle = true;
                             break;
                         case 0x00010000:
                         case 0x00010001:
                         case 0x00010004:
                             titles = TitleUtils::wiititles;
                             titles_count = TitleUtils::vWiiTitlesCount;
+                            isWii = true;
                             break;
                         default:
                             continue;
@@ -377,9 +385,20 @@ bool BackupSetContentListState::populate_exportset_content() {
                         }
                     }
 
-                    // TODO read banner or metadata to get the title Name even if it is not istalled
+                    if (bs.installed == false) { // not installed, let's try meta or banner
+                        std::string title_name = high_id + "-" + low_id;
 
-                    backupset_content.push_back(bs);
+                        if (isWiiUTitle || isWiiUSysTitle) {
+                            const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta/meta.xml", bs_path.c_str(), highID, lowID);
+                            TitleUtils::get_wiiu_title_name(metaSavePath, title_name);
+                        } else {
+                            const std::string banner_path = StringUtils::stringFormat("%s/%08x/%08x/data/banner.bin", bs_path.c_str(), highID, lowID);
+                            TitleUtils::get_vwii_title_name(banner_path, title_name);
+                        }
+                        bs.uninstalled_title_name = std::move(title_name);
+                    }
+
+                    backupset_content.push_back(std::move(bs));
                 }
             } else {
                 Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), title_folder.c_str(), strerror(errno));
