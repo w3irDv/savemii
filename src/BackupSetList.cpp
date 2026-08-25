@@ -374,6 +374,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                     std::string title_name = high_id + "-" + low_id;
 
                     bool installed = false;
+
                     for (int i = 0; i < titles_count; i++) {
                         if (titles[i].lowID == lowID) {
                             if (titles[i].highID == highID) { // installed title, we will use title from memory
@@ -394,6 +395,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                     InProgress::titleName = title_name;
                     InProgress::currentStep++;
 
+                    InProgress::copyErrorsCounter = 0;
                     if (FSUtils::createFolder(dstPath.c_str())) {
                         if (FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, stat_manager_flag)) {
                             if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()))
@@ -412,7 +414,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                     // backup for this tile has failed
                     titlesKO++;
                     writeMetadata(highID, lowID, title_name, dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
-                    std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), low_id.c_str(), titlesKO);
+                    std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), title_name.c_str(), titlesKO);
                     if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                         InProgress::abortTask = true;
                         return -3;
@@ -452,7 +454,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
     } else if (titlesOK == 0) {
         tag = StringUtils::stringFormat(_("FROM %s - FAILED - No titles"), emulator.c_str());
     } else if (titlesKO > 0) {
-        tag = StringUtils::stringFormat(_("FROM %s - FAILED - OK/KO > %s: %d/%d"),
+        tag = StringUtils::stringFormat(_("FROM %s - FAILED - OK/KO > %d/%d"),
                                         emulator.c_str(),
                                         titlesOK,
                                         titlesKO);

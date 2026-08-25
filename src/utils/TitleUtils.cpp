@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <coreinit/debug.h>
 #include <coreinit/mcp.h>
+#include <cstdint>
 #include <cstring>
 #include <dirent.h>
 #include <icon.h>
@@ -1219,8 +1220,28 @@ bool TitleUtils::get_wiiu_title_name(const std::string &path, std::string &title
             RC = true;
         }
 
-        free(xmlBuf); 
+        free(xmlBuf);
     }
 
     return RC;
+}
+
+ /**
+  * @brief Simpler load icon function to be used in populate_exportset_content
+  * 
+  * @param icon_path 
+  * @param iconBuf 
+  * @param isWii 
+  * @return int32_t 
+  */
+ int32_t TitleUtils::loadTitleIcon(const std::string &icon_path, std::vector<uint8_t> &iconBuf, bool isWii) {
+    if (FSUtils::checkEntry(icon_path.c_str()) != 1) {
+        return -23;
+    }
+
+    if (isWii) {
+        return FSUtils::loadFilePart(icon_path.c_str(), 0xA0, 24576, iconBuf);
+    }
+    
+    return FSUtils::loadFile(icon_path.c_str(), iconBuf);
 }

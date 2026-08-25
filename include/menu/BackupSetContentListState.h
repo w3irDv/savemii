@@ -3,6 +3,7 @@
 #include <ApplicationState.h>
 #include <memory>
 #include <savemng.h>
+#include <string>
 #include <utils/DataBin.h>
 #include <utils/InputUtils.h>
 #include <utils/LanguageUtils.h>
@@ -30,15 +31,17 @@ private:
 
     struct bs_item {
         bool installed = false;
-        char *title_name = nullptr;
-        Title *title = 0;
+        std::string title_name{};
+        Title *title = nullptr;
         std::string title_folder_name{};
         std::string uninstalled_title_name{};
+        std::vector<uint8_t> uninstalled_iconBuf{};
+        bool uninstalled_isWii = false;
     };
 
-    std::vector<bs_item> backupset_content; 
+    std::vector<bs_item> backupset_content;
 
-    int  backupset_content_size = 0;
+    int backupset_content_size = 0;
 
     eBackupLayout backup_layout = SAVEMII;
 

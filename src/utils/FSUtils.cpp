@@ -1,3 +1,5 @@
+#include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <dirent.h>
 #include <malloc.h>
@@ -11,6 +13,8 @@
 #include <utils/LanguageUtils.h>
 #include <utils/StatManager.h>
 #include <utils/StringUtils.h>
+#include <vector>
+
 
 static file_buffer buffers[16];
 static char *fileBuf[2];
@@ -819,6 +823,71 @@ bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, co
     }
 
     return (InProgress::copyErrorsCounter == 0);
+}
+
+int32_t FSUtils::loadFile(const char *fPath, std::vector<uint8_t> &buf) {
+    buf.clear();
+
+    FILE *file = fopen(fPath, "rb");
+    if (file == nullptr) return -23;
+
+    struct stat st{};
+    if (stat(fPath, &st) != 0 || st.st_size <= 0) {
+        fclose(file);
+        return -23; // invalid or empty
+    }
+
+    size_t size = (size_t) st.st_size;
+
+    try {
+        buf.resize(size);
+    } catch (const std::bad_alloc &) {
+        fclose(file);
+        return -50; // OOM
+    }
+
+    if (fread(buf.data(), size, 1, file) != 1) {
+        buf.clear();
+        fclose(file);
+        return -23;
+    }
+
+    fclose(file);
+    return (int32_t) size;
+}
+
+int32_t FSUtils::loadFilePart(const char *fPath, uint32_t start, uint32_t size, std::vector<uint8_t> &buf) {
+    buf.clear();
+
+    FILE *file = fopen(fPath, "rb");
+    if (file == nullptr) return -23;
+
+    struct stat st{};
+    if (stat(fPath, &st) != 0 || st.st_size < 0 || ((uint64_t) start + size) > (uint64_t) st.st_size) {
+        fclose(file);
+        return -43;
+    }
+
+    if (fseek(file, start, SEEK_SET) == -1) {
+        fclose(file);
+        return -43;
+    }
+
+    try {
+        buf.resize(size);
+    } catch (const std::bad_alloc &) {
+        fclose(file);
+        return -50;
+    }
+
+    if (fread(buf.data(), size, 1, file) != 1) {
+        buf.clear();
+        fclose(file);
+        return -23;
+    }
+
+    fclose(file);
+    return (int32_t) size;
 }
 
 /// @brief rename that for vWii storage does copy&delete because rename does not work (returns IO ERROR)

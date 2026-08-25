@@ -61,6 +61,9 @@ namespace FSUtils {
     int32_t loadFile(const char *fPath, uint8_t **buf) __attribute__((hot));
     int32_t loadFilePart(const char *fPath, uint32_t start, uint32_t size, uint8_t **buf);
 
+    int32_t loadFile(const char *fPath, std::vector<uint8_t> &buf);
+    int32_t loadFilePart(const char *fPath, uint32_t start, uint32_t size, std::vector<uint8_t> &buf);
+
     bool folderEmpty(const char *fPath);
     bool folderEmptyIgnoreSavemii(const char *fPath);
 

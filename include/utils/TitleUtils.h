@@ -5,6 +5,7 @@
 #include <string_view>
 #include <tuple>
 #include <utils/CustomTypes.h>
+#include <vector>
 
 enum eBatchJobState {
     NOT_TRIED = 0,
@@ -96,6 +97,7 @@ namespace TitleUtils {
     template<class It>
     void sortTitle(It titles, It last, int tsort = 1, bool sortAscending = true);
 
+    int32_t loadTitleIcon(const std::string &icon_path, std::vector<uint8_t> &iconBuf, bool isWii);
     int32_t loadTitleIcon(Title *title) __attribute__((hot));
     bool verifyWiiUIconFormat(Title *title);
 

@@ -102,6 +102,14 @@ void BackupSetContentListState::render() {
             DrawUtils::setFontColor(COLOR_INFO);
             Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, _("[%d] %s"),
                                                cursorPos + this->scroll + 1, backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
+            if (!backupset_content.at(cursorPos + this->scroll).uninstalled_iconBuf.empty()) {
+                if (backupset_content.at(cursorPos + this->scroll).uninstalled_isWii) {
+                    DrawUtils::drawRGB5A3(615, 348, 1, backupset_content.at(cursorPos + this->scroll).uninstalled_iconBuf.data());
+                } else {
+                    DrawUtils::drawTGA(678, 284, 1, backupset_content.at(cursorPos + this->scroll).uninstalled_iconBuf.data());
+                }
+            }
+
         }
 
         DrawUtils::setFontColor(COLOR_TEXT);
@@ -245,6 +253,7 @@ bool BackupSetContentListState::populate_backupset_content() {
         // check if the title is installed.
         Title *titles = 0;
         int titles_count = 0;
+        bool isWii = false;
         switch (highID) {
             case 0x00050000:
             case 0x00050002:
@@ -261,6 +270,7 @@ bool BackupSetContentListState::populate_backupset_content() {
             case 0x00010004:
                 titles = TitleUtils::wiititles;
                 titles_count = TitleUtils::vWiiTitlesCount;
+                isWii = true;
                 break;
             default:
                 continue;
@@ -278,6 +288,7 @@ bool BackupSetContentListState::populate_backupset_content() {
         }
 
         if (item.installed == false) {
+            item.uninstalled_isWii = isWii;
             // maybe it has a savemiMeta.json we can use to get the title name
             std::string savemii_json = bs_path + "/" + item.title_folder_name + "/0";
             Metadata *metadataObj = new Metadata(savemii_json);
@@ -338,7 +349,7 @@ bool BackupSetContentListState::populate_exportset_content() {
                         continue;
 
                     std::string low_id{tdata->d_name};
-                    bs_item bs = {.title_folder_name = low_id};
+                    bs_item bs = {.title_folder_name = high_id + "/" + low_id};
                     bs.uninstalled_title_name.assign(_("< no savedata >")); // default: title is not installed.
 
                     if (lowID == 0 || highID == 0) // just in case
@@ -347,7 +358,7 @@ bool BackupSetContentListState::populate_exportset_content() {
                     // check if the title is installed.
                     Title *titles = 0;
                     int titles_count = 0;
-                    [[maybe_unused]] bool isWii = false;
+                    bool isWii = false;
                     bool isWiiUSysTitle = false;
                     bool isWiiUTitle = false;
                     switch (highID) {
@@ -375,6 +386,7 @@ bool BackupSetContentListState::populate_exportset_content() {
                             break;
                     }
 
+
                     for (int i = 0; i < titles_count; i++) {
                         if (titles[i].lowID == lowID) {
                             if (titles[i].highID == highID) { // installed title, we will use title and icon from memory
@@ -387,15 +399,20 @@ bool BackupSetContentListState::populate_exportset_content() {
 
                     if (bs.installed == false) { // not installed, let's try meta or banner
                         std::string title_name = high_id + "-" + low_id;
-
+                        std::string icon_path{};
                         if (isWiiUTitle || isWiiUSysTitle) {
                             const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta/meta.xml", bs_path.c_str(), highID, lowID);
                             TitleUtils::get_wiiu_title_name(metaSavePath, title_name);
+                            icon_path = StringUtils::stringFormat("%s/%08x/%08x/meta/iconTex.tga", bs_path.c_str(), highID, lowID);
                         } else {
                             const std::string banner_path = StringUtils::stringFormat("%s/%08x/%08x/data/banner.bin", bs_path.c_str(), highID, lowID);
                             TitleUtils::get_vwii_title_name(banner_path, title_name);
+                            icon_path = std::move(banner_path);
                         }
                         bs.uninstalled_title_name = std::move(title_name);
+                        bs.uninstalled_isWii = isWii;
+
+                        TitleUtils::loadTitleIcon(icon_path, bs.uninstalled_iconBuf, isWii);
                     }
 
                     backupset_content.push_back(std::move(bs));
