@@ -179,7 +179,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                             Console::showMessage(ERROR_CONFIRM, _("BackupSet creation aborted. OK: %d  KO: %d"), titlesOK, titlesKO);
                         } else if (RC == -3) {
                             Console::showMessage(titlesKO == 0 ? WARNING_CONFIRM : ERROR_CONFIRM, _("BackupSet creation aborted. OK: %d  KO: %d"), titlesOK, titlesKO);
-                        } else if (RC == -4) {
+                        } else {
                             Console::showMessage(ERROR_CONFIRM, _("Error creating BackupSet createted from CEMU/Dolplhin data. OK: %d  KO: %d"), titlesOK, titlesKO);
                         }
 

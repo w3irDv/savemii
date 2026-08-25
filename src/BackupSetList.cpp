@@ -262,7 +262,7 @@ template void BSMetadataValues::Left(attr<std::less<std::string>> &);
  * @param i 
  * @param titlesOK 
  * @param titlesKO 
- * @return int 0 = OK, -1 = format is already SaveMii,  -2 = abirted by use due to error, -3 = aborted to user, -4 = cannot open container 
+ * @return int 0 = OK, -1 = format is already SaveMii,  -2 = aborted by use due to error, -3 = aborted by the user, -4 = cannot open container , -5 = titleKO != 0, -6 => no titles ok
  */
 
 int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::string &batchDatetime) {
@@ -395,8 +395,9 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                     InProgress::titleName = title_name;
                     InProgress::currentStep++;
 
-                    InProgress::copyErrorsCounter = 0;
-                    InProgress::promptedErrorsCounter = 0;
+                    // TODO: uncomment after check
+                    //InProgress::copyErrorsCounter = 0;
+                    //InProgress::promptedErrorsCounter = 0;
                     if (FSUtils::createFolder(dstPath.c_str())) {
                         if (FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, stat_manager_flag)) {
                             if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()))
@@ -447,23 +448,26 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
         emulator = "UNKNOWN";
     }
 
+    int RC = 0;
     if (titlesOK > 0 && titlesKO == 0) {
         tag = StringUtils::stringFormat(_("FROM %s - %d title%s OK"),
                                         emulator.c_str(),
                                         titlesOK,
                                         (titlesOK == 1) ? "" : "s");
     } else if (titlesOK == 0) {
-        tag = StringUtils::stringFormat(_("FROM %s - FAILED - No titles"), emulator.c_str());
+        tag = StringUtils::stringFormat(_("%s FAILED - No titles"), emulator.c_str());
+        RC = -6;
     } else if (titlesKO > 0) {
-        tag = StringUtils::stringFormat(_("FROM %s - FAILED - OK/KO > %d/%d"),
+        tag = StringUtils::stringFormat(_("%s FAILED - OK/KO > %d/%d"),
                                         emulator.c_str(),
                                         titlesOK,
                                         titlesKO);
+                                        RC = -5;
     }
 
     writeBackupAllMetadata(batchDatetime.c_str(), tag.c_str());
 
     currentBackupSetList->setIsInitializationRequired(true);
 
-    return 0;
+    return RC;
 }
