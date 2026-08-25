@@ -418,6 +418,8 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_account(const std::string &src
         if (FSUtils::copyDir(srcPath, dstPath)) {
             if (dstPath.find("fs:/vol/") == std::string::npos) { // avoid to call FSA when testing  on SD
                 FSError fserror;
+                InProgress::copyErrorsCounter = 0; // setOwnerAndModeRec requires the counter zeroed on entry
+                InProgress::promptedErrorsCounter = 0;
                 FSUtils::setOwnerAndModeRec(db_owner, db_group, db_fsmode, dstPath, fserror);
                 FSUtils::flushVol(dstPath);
             }
@@ -467,6 +469,8 @@ int MiiAccountRepo<WiiUMii, WiiUMiiData>::restore_mii_account_from_repo(int targ
     if (FSUtils::copyDir(source_path, target_path)) {
         if (target_path.find("fs:/vol/") == std::string::npos) { // avoid to call FSA when testing  on SD
             FSError fserror;
+            InProgress::copyErrorsCounter = 0; // setOwnerAndModeRec requires the counter zeroed on entry
+            InProgress::promptedErrorsCounter = 0;
             FSUtils::setOwnerAndModeRec(db_owner, db_group, db_fsmode, target_path, fserror);
             FSUtils::flushVol(target_path);
         }

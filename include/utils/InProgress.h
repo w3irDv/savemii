@@ -12,5 +12,6 @@ public:
     inline static eJobType jobType = NONE;
     inline static bool abortCopy = false;
     inline static int copyErrorsCounter = 0;
+    inline static int promptedErrorsCounter = 0; // errors already acknowledged by the user
     inline static bool immediateAbort = false;
 };

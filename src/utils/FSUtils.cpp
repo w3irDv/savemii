@@ -24,6 +24,8 @@ static size_t written = 0;
 static int readError;
 static int writeError;
 
+static bool confirmContinueOnCopyError(const std::string &msg);
+
 bool FSUtils::initFS() {
     FSAInit();
     handle = FSAAddClient(nullptr);
@@ -517,8 +519,7 @@ dir_created:
             if (!StatManager::get_stat(sPath)) {
                 InProgress::copyErrorsCounter++;
                 std::string errorMessage = StringUtils::stringFormat(_("Error creating permission file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-                if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-                    InProgress::abortCopy = true;
+                if (!confirmContinueOnCopyError(errorMessage)) {
                     closedir(dir);
                     return false;
                 }
@@ -543,13 +544,8 @@ dir_created:
 
         if ((data->d_type & DT_DIR) != 0) {
             if (!copyDir(sPath + StringUtils::stringFormat("/%s", data->d_name), targetPath, if_generate_FAT32_translation_file, enable_stat_manager)) {
-                if (InProgress::abortCopy) {
-                    closedir(dir);
-                    return false;
-                }
                 std::string errorMessage = StringUtils::stringFormat(_("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-                if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-                    InProgress::abortCopy = true;
+                if (!confirmContinueOnCopyError(errorMessage)) {
                     closedir(dir);
                     return false;
                 }
@@ -558,8 +554,7 @@ dir_created:
             if (!copyFile(sPath + StringUtils::stringFormat("/%s", data->d_name), targetPath, if_generate_FAT32_translation_file, enable_stat_manager)) {
                 InProgress::copyErrorsCounter++;
                 std::string errorMessage = StringUtils::stringFormat(_("Error copying file - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-                if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-                    InProgress::abortCopy = true;
+                if (!confirmContinueOnCopyError(errorMessage)) {
                     closedir(dir);
                     return false;
                 }
@@ -582,8 +577,7 @@ dir_created:
         InProgress::copyErrorsCounter++;
         Console::showMessage(ERROR_CONFIRM, _("Error while parsing folder content\n\n%s\n\n%s\n\nCopy may be incomplete"), sPath.c_str(), strerror(errno));
         std::string errorMessage = StringUtils::stringFormat(_("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-        if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-            InProgress::abortCopy = true;
+        if (!confirmContinueOnCopyError(errorMessage)) {
             closedir(dir);
             return false;
         }
@@ -593,8 +587,7 @@ dir_created:
         InProgress::copyErrorsCounter++;
         Console::showMessage(ERROR_CONFIRM, _("Error while closing folder\n\n%s\n\n%s"), sPath.c_str(), strerror(errno));
         std::string errorMessage = StringUtils::stringFormat(_("Error copying directory - Backup/Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-        if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-            InProgress::abortCopy = true;
+        if (!confirmContinueOnCopyError(errorMessage)) {
             return false;
         }
     }
@@ -771,22 +764,17 @@ bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, co
 
         if ((data->d_type & DT_DIR) != 0) {
             if (!setOwnerAndModeRec(owner, group, mode, tPath, fserror)) {
-                if (InProgress::abortCopy) {
-                    closedir(dir);
-                    return false;
-                }
                 std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-                if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-                    InProgress::abortCopy = true;
+                if (!confirmContinueOnCopyError(errorMessage)) {
                     closedir(dir);
                     return false;
                 }
             }
         } else {
             if (!setOwnerAndMode(owner, group, mode, tPath, fserror)) {
+                InProgress::copyErrorsCounter++;
                 std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-                if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-                    InProgress::abortCopy = true;
+                if (!confirmContinueOnCopyError(errorMessage)) {
                     closedir(dir);
                     return false;
                 }
@@ -805,8 +793,7 @@ bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, co
         InProgress::copyErrorsCounter++;
         Console::showMessage(ERROR_CONFIRM, _("Error while parsing folder content\n\n%s\n\n%s\n\nCopy may be incomplete"), path.c_str(), strerror(errno));
         std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-        if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-            InProgress::abortCopy = true;
+        if (!confirmContinueOnCopyError(errorMessage)) {
             closedir(dir);
             return false;
         }
@@ -816,8 +803,7 @@ bool FSUtils::setOwnerAndModeRec(uint32_t owner, uint32_t group, FSMode mode, co
         InProgress::copyErrorsCounter++;
         Console::showMessage(ERROR_CONFIRM, _("Error while closing folder\n\n%s\n\n%s"), path.c_str(), strerror(errno));
         std::string errorMessage = StringUtils::stringFormat(_("Error setting permissions - Restore is not reliable\nErrors so far: %d\nDo you want to continue?"), InProgress::copyErrorsCounter);
-        if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-            InProgress::abortCopy = true;
+        if (!confirmContinueOnCopyError(errorMessage)) {
             return false;
         }
     }
@@ -906,4 +892,28 @@ int FSUtils::slc_resilient_rename(std::string &src_path, std::string &dst_path) 
     }
 
     return res;
+}
+
+/**
+ * @brief Prompt "do you want to continue?" at most once per NEW copy error. 
+ *  - if the user already chose to abort deeper in the recursion, propagate the abort without prompting
+ * - if no error is newer than the last one the user was asked about, the error was already handled
+ *   below (message/prompt already shown) so continue silently instead of re-prompting at each level
+ * @param msg 
+ * @return true to continue
+ * @return false to abort
+ */
+static bool confirmContinueOnCopyError(const std::string &msg) {
+    if (InProgress::promptedErrorsCounter > InProgress::copyErrorsCounter)
+        InProgress::promptedErrorsCounter = 0; // copyErrorsCounter was reset by a new operation, drop stale ack
+    if (InProgress::abortCopy)
+        return false;
+    if (InProgress::copyErrorsCounter <= InProgress::promptedErrorsCounter)
+        return true; // already acknowledged deeper down
+    if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), msg.c_str())) {
+        InProgress::abortCopy = true;
+        return false;
+    }
+    InProgress::promptedErrorsCounter = InProgress::copyErrorsCounter;
+    return true;
 }

@@ -469,6 +469,8 @@ int copySavedataToOtherDevice(Title *title, Title *titleb, int8_t source_user, i
         } else {
             FSUtils::FSAMakeQuotaFromDir(srcPath.c_str(), dstPath.c_str(), titleb->accountSaveSize, titleb->commonSaveSize);
         }
+        InProgress::copyErrorsCounter = 0; // judge the base copy independently of a preceding common-copy error
+        InProgress::promptedErrorsCounter = 0;
         if (!FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, ENABLE_STAT_MANAGER)) {
             errorMessage = ((errorMessage.size() == 0) ? "" : (errorMessage + "\n")) + ((source_user == -1) ? _("Error copying savedata.")
                                                                                                             : _("Error copying profile savedata."));
@@ -788,6 +790,8 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
 
 //#define MOCKALLBACKUP
 #ifndef MOCKALLBACKUP
+            InProgress::copyErrorsCounter = 0; // per-title, so copyDir's result reflects THIS title only
+            InProgress::promptedErrorsCounter = 0;
             if (FSUtils::createFolder(dstPath.c_str())) {
                 StatManager::enable_flags_for_backup();
                 if (StatManager::open_stat_file_for_write(dstPath)) {
@@ -2245,6 +2249,8 @@ bool setOwnerAndModeForTitle(Title *title) {
     //Console::showMessage(ERROR_CONFIRM, "%08x - %08x - %08x - %s", owner, group, mode, srcPath.c_str());
 
     FSError fserror;
+    InProgress::copyErrorsCounter = 0; // setOwnerAndModeRec requires the counter zeroed on entry
+    InProgress::promptedErrorsCounter = 0;
     FSUtils::setOwnerAndModeRec(owner, group, mode, srcPath, fserror);
 
 
@@ -2282,6 +2288,8 @@ bool setLegacyOwnerAndModeForTitle(Title *title) {
     //Console::showMessage(ERROR_CONFIRM, "%08x - %08x - %08x - %s", owner, group, mode, srcPath.c_str());
 
     FSError fserror;
+    InProgress::copyErrorsCounter = 0; // setOwnerAndModeRec requires the counter zeroed on entry
+    InProgress::promptedErrorsCounter = 0;
     FSUtils::setOwnerAndModeRec(owner, group, mode, srcPath, fserror);
 
     FSUtils::flushVol(srcPath);
