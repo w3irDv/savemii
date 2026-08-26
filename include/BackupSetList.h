@@ -140,8 +140,8 @@ private:
     std::vector<std::string> tags;
     std::vector<int> v2b;
     BSMetadataValues bsMetadataValues;
-    int entriesView;
-    int entries;
+    int entriesView = 0;
+    int entries = 0;
     std::string backupSetListRoot;
     std::string backupSetSubPath{"/"};    // backupPath+ backupSetSubPath -> contain title folders   = bakupPath`+"/batch"+backupSetEntry for backupSets
     std::string backupSetEntry = ROOT_BS; // folder name

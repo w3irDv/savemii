@@ -18,6 +18,20 @@
 extern const char *backupPath;
 extern const char *batchBackupPath;
 
+namespace {
+// closes a DIR* on scope exit, so early returns cannot leak the handle
+struct DirGuard {
+    DIR *d;
+    explicit DirGuard(DIR *dir) : d(dir) {}
+    ~DirGuard() {
+        if (d)
+            closedir(d);
+    }
+    DirGuard(const DirGuard &) = delete;
+    DirGuard &operator=(const DirGuard &) = delete;
+};
+} // namespace
+
 BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup_layout), backupSet_path_prefix(get_backupSet_path_prefix(backup_layout)) {
 
     this->backupSetListRoot = std::string{backupPath} + "/" + backupSet_path_prefix;
@@ -212,7 +226,8 @@ void BackupSetList::filter() {
 }
 
 void BackupSetList::resetTagRange() {
-    bsMetadataValues.tag.range.erase(bsMetadataValues.tag.range.begin(), bsMetadataValues.tag.range.end());
+    bsMetadataValues.tag.range.clear();
+    bsMetadataValues.tag.range.insert("*");
     for (unsigned int i = 0; i < this->backupSets.size(); i++) {
         if (backupSets[i].bsItemMetadata.tag != "")
             bsMetadataValues.tag.range.insert(backupSets[i].bsItemMetadata.tag);
@@ -294,6 +309,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
 
     DIR *dir = opendir(bs_path.c_str());
     if (dir != nullptr) {
+        DirGuard dirGuard{dir};
         struct dirent *data;
         while ((data = readdir(dir)) != nullptr) {
             if (strcmp(data->d_name, ".") == 0 ||
@@ -345,6 +361,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
             std::string titles_folder = bs_path + "/" + data->d_name;
             DIR *titles_dir = opendir(titles_folder.c_str());
             if (titles_dir != nullptr) {
+                DirGuard titlesGuard{titles_dir};
                 struct dirent *title_data;
                 while ((title_data = readdir(titles_dir)) != nullptr) {
 
@@ -394,10 +411,8 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
 
                     InProgress::titleName = title_name;
                     InProgress::currentStep++;
-
-                    // TODO: uncomment after check
-                    //InProgress::copyErrorsCounter = 0;
-                    //InProgress::promptedErrorsCounter = 0;
+                    InProgress::copyErrorsCounter = 0;
+                    InProgress::promptedErrorsCounter = 0;
                     if (FSUtils::createFolder(dstPath.c_str())) {
                         if (FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, stat_manager_flag)) {
                             if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()))
@@ -424,21 +439,18 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                 }
             } else {
                 Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), titles_folder.c_str(), strerror(errno));
-                return -4;
-                closedir(dir);
+                return -4; // dirGuard closes `dir`
             }
-            closedir(titles_dir);
         }
     } else {
         // Cannot open container
         Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), bs_path.c_str(), strerror(errno));
         return -4;
     }
-    closedir(dir);
 
     std::string tag;
     std::string emulator{};
-    if (exportset_has_vwii && exportset_has_vwii) {
+    if (exportset_has_wiiu && exportset_has_vwii) {
         emulator = "CEMU/Dolphin"; // strange .. but
     } else if (exportset_has_vwii) {
         emulator = "Dolphin";
