@@ -25,16 +25,17 @@ BackupSetContentListState::BackupSetContentListState(std::string &bs_path, eBack
 
     switch (backup_layout) {
         case EMULATOR:
-            if (populate_exportset_content())
-                backupset_content_size = (int) backupset_content.size();
+            populate_exportset_content();
             break;
         default:
-            if (populate_backupset_content())
-                backupset_content_size = (int) backupset_content.size();
+            populate_backupset_content();
             break;
     }
 
-    bs_name = bs_path.substr(bs_path.find_last_of('/'), std::string::npos);
+    backupset_content_size = (int) backupset_content.size(); // always in sync with the vector
+
+    size_t slash = bs_path.find_last_of('/');
+    bs_name = (slash == std::string::npos) ? bs_path : bs_path.substr(slash);
 }
 
 void BackupSetContentListState::render() {
@@ -291,11 +292,10 @@ bool BackupSetContentListState::populate_backupset_content() {
             item.uninstalled_isWii = isWii;
             // maybe it has a savemiMeta.json we can use to get the title name
             std::string savemii_json = bs_path + "/" + item.title_folder_name + "/0";
-            Metadata *metadataObj = new Metadata(savemii_json);
-            if (metadataObj->read()) {
-                shortName.assign(metadataObj->getShortName());
+            Metadata metadataObj(savemii_json);
+            if (metadataObj.read()) {
+                shortName.assign(metadataObj.getShortName());
             }
-            delete metadataObj;
 
             if (shortName.size() > 0) { // if the name was found in savemiiMeta.json , its better to use it because it contains original utf8 chars that were trasnlated to _ in the folder name
                 item.uninstalled_title_name = shortName;
@@ -405,7 +405,7 @@ bool BackupSetContentListState::populate_exportset_content() {
                             TitleUtils::get_wiiu_title_name(metaSavePath, title_name);
                             icon_path = StringUtils::stringFormat("%s/%08x/%08x/meta/iconTex.tga", bs_path.c_str(), highID, lowID);
                         } else {
-                            const std::string banner_path = StringUtils::stringFormat("%s/%08x/%08x/data/banner.bin", bs_path.c_str(), highID, lowID);
+                            std::string banner_path = StringUtils::stringFormat("%s/%08x/%08x/data/banner.bin", bs_path.c_str(), highID, lowID);
                             TitleUtils::get_vwii_title_name(banner_path, title_name);
                             icon_path = std::move(banner_path);
                         }
