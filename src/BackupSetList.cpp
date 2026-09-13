@@ -19,17 +19,17 @@ extern const char *backupPath;
 extern const char *batchBackupPath;
 
 namespace {
-// closes a DIR* on scope exit, so early returns cannot leak the handle
-struct DirGuard {
-    DIR *d;
-    explicit DirGuard(DIR *dir) : d(dir) {}
-    ~DirGuard() {
-        if (d)
-            closedir(d);
-    }
-    DirGuard(const DirGuard &) = delete;
-    DirGuard &operator=(const DirGuard &) = delete;
-};
+    // closes a DIR* on scope exit, so early returns cannot leak the handle
+    struct DirGuard {
+        DIR *d;
+        explicit DirGuard(DIR *dir) : d(dir) {}
+        ~DirGuard() {
+            if (d)
+                closedir(d);
+        }
+        DirGuard(const DirGuard &) = delete;
+        DirGuard &operator=(const DirGuard &) = delete;
+    };
 } // namespace
 
 BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup_layout), backupSet_path_prefix(get_backupSet_path_prefix(backup_layout)) {
@@ -413,6 +413,8 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                     InProgress::currentStep++;
                     InProgress::copyErrorsCounter = 0;
                     InProgress::promptedErrorsCounter = 0;
+                    if (FSUtils::checkEntry(srcPath.c_str()) == 0) // silently continue if title has no savedata
+                        continue;
                     if (FSUtils::createFolder(dstPath.c_str())) {
                         if (FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, stat_manager_flag)) {
                             if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()))
@@ -474,7 +476,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                                         emulator.c_str(),
                                         titlesOK,
                                         titlesKO);
-                                        RC = -5;
+        RC = -5;
     }
 
     writeBackupAllMetadata(batchDatetime.c_str(), tag.c_str());
