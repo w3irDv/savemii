@@ -74,6 +74,7 @@ public:
     uint32_t getVWiiHighID() { return this->vWiiHighID; };
     uint32_t getHighID() { return this->highID; };
     uint32_t getLowID() { return this->lowID; };
+    int getBackupHealth() { return this->backupHealth; };
     char *getShortName() { return shortName; };
     void setTag(const std::string &tag_) { this->tag = tag_; };
     void setBackupFormat(eBackupFormat backup_format) { backupFormat.assign(backup_format == FILES ? "FILES" : "DATA_BIN"); };
@@ -83,6 +84,7 @@ public:
     void setStorage(const std::string &storage) { this->storage = storage; };
     void setSerialId(const std::string &serialId) { this->serialId = serialId; };
     void setTitleName(const std::string &titleName) { strlcpy(this->shortName, titleName.c_str(), 256); };
+    void setBackupHealth(int backupHealth) { this->backupHealth = backupHealth; }
 
 
     bool read_mii();
@@ -103,6 +105,8 @@ private:
     std::string tag{};
 
     std::string backupFormat{};
+
+    int backupHealth = 0;
 
     std::string repo_name{};
 };

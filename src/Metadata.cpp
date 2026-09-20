@@ -83,6 +83,15 @@ bool Metadata::read() {
             if (backup_format_char != nullptr) {
                 this->backupFormat.assign(backup_format_char);
             }
+            const char *backupHealth = json_string_value(json_object_get(root, "backupHealth"));
+            if (backupHealth != nullptr) {
+                try { 
+                    this->backupHealth = std::stoi(backupHealth,nullptr,10);
+                }
+                catch (...) {
+                    this->backupHealth = 0 ; // legacy behaviour, backups are assumed to be ok ...
+                }
+            }
             json_decref(root);
             free(data);
             return true;
@@ -155,6 +164,7 @@ bool Metadata::write() {
     json_object_set_new(config, "vWiiLowID", json_string(lID));
     json_object_set_new(config, "shortName", json_string(this->shortName));
     json_object_set_new(config, "backupFormat", json_string(this->backupFormat.c_str()));
+    json_object_set_new(config, "backupHealth", json_string(std::to_string(this->backupHealth).c_str()));
 
     char *configString = json_dumps(config, JSON_INDENT(2));
     if (configString == nullptr)
@@ -186,6 +196,7 @@ bool Metadata::write_mii() {
     json_object_set_new(config, "storage", json_string(this->storage.c_str()));
     json_object_set_new(config, "tag", json_string(this->tag.c_str()));
     json_object_set_new(config, "repoName", json_string(this->repo_name.c_str()));
+    json_object_set_new(config, "backupHealth", json_string(std::to_string(this->backupHealth).c_str()));
 
     char *configString = json_dumps(config, JSON_INDENT(2));
     if (configString == nullptr)
@@ -258,6 +269,15 @@ bool Metadata::read_mii() {
             const char *repo_name = json_string_value(json_object_get(root, "repo_name"));
             if (repo_name != nullptr) {
                 this->repo_name.assign(repo_name);
+            }
+            const char *backupHealth = json_string_value(json_object_get(root, "backupHealth"));
+            if (backupHealth != nullptr) {
+                try { 
+                    this->backupHealth = std::stoi(backupHealth,nullptr,10);
+                }
+                catch (...) {
+                    this->backupHealth = 0 ; // legacy behaviour, backups are assumed to be ok ...
+                }
             }
             json_decref(root);
             free(data);
