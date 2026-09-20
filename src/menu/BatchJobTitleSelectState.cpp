@@ -734,13 +734,13 @@ void BatchJobTitleSelectState::executeBatchProcess() {
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
             if (!wipeBackupSet(batchDatetime, true))
-                writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
+                writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"),BACKUPSET_WIPE_ERROR);
             BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
             return;
         }
         BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
         std::string tag = StringUtils::stringFormat(backupDescription, titles_ok_counter, titles_failed_counter == 0 ? ")" : "+E)");
-        writeBackupAllMetadata(batchDatetime, tag.c_str());
+        writeBackupAllMetadata(batchDatetime, tag.c_str(), titles_failed_counter == 0 ? BACKUPSET_OK : BACKUPSET_CONTAIN_ERRORS);
     }
 
     for (int i = 0; i < titlesCount; i++) {
@@ -914,7 +914,7 @@ void BatchJobTitleSelectState::executeBatchBackup(eBackupLayout backup_layout /*
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
             if (!wipeBackupSet(batchDatetime, true, backup_layout)) {
-                writeBackupAllMetadata(backupSet_path_prefix, batchDatetime, _("ERROR WIPING BACKUPSET"));
+                writeBackupAllMetadata(backupSet_path_prefix, batchDatetime, _("ERROR WIPING BACKUPSET"),BACKUPSET_WIPE_ERROR);
                 working_backupset_list->setIsInitializationRequired(true);
             }
             for (int i = 0; i < this->candidatesCount; i++) {                            // we have deleted the backup, so we must reset title state
@@ -983,7 +983,7 @@ void BatchJobTitleSelectState::executeBatchBackup(eBackupLayout backup_layout /*
     if (backup_layout == EMULATOR)
         tag = (titleType == VWII ? "Dolphin - " : "CEMU - ") + tag;
 
-    writeBackupAllMetadata(backupSet_path_prefix, batchDatetime, tag.c_str());
+    writeBackupAllMetadata(backupSet_path_prefix, batchDatetime, tag.c_str(), titles_failed_counter == 0 ? BACKUPSET_OK : BACKUPSET_CONTAIN_ERRORS);
 
 
     showBatchStatusCounters(titlesOK, titlesAborted, titlesWarning, titlesKO, titlesSkipped, titlesNotInitialized, failedTitles);

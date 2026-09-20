@@ -190,7 +190,7 @@ ApplicationState::eSubState BackupSetListState::update(Input *input) {
                                 InProgress::titleName.assign(batchDatetime);
                                 BackupSetList::currentBackupSetList->setIsInitializationRequired(false);
                                 if (!wipeBackupSet(batchDatetime, true)) {
-                                    writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
+                                    writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"), BACKUPSET_WIPE_ERROR);
                                     BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
                                 }
                             }

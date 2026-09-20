@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <mii/Mii.h>
+#include <string>
 
 namespace MiiSaveMng {
 
@@ -11,6 +11,6 @@ namespace MiiSaveMng {
 
     std::string getMiiRepoBackupPath(MiiRepo *mii_repo, uint32_t slot);
 
-    void writeMiiMetadata(MiiRepo *mii_repo, uint8_t slot, const std::string &tag);
-    
-};
+    void writeMiiMetadata(MiiRepo *mii_repo, uint8_t slot, const std::string &tag, int backup_health);
+
+}; // namespace MiiSaveMng

@@ -45,11 +45,12 @@ int MiiSaveMng::getEmptySlot(MiiRepo *mii_repo) {
 }
 
 
-void MiiSaveMng::writeMiiMetadata(MiiRepo *mii_repo, uint8_t slot, const std::string &tag) {
+void MiiSaveMng::writeMiiMetadata(MiiRepo *mii_repo, uint8_t slot, const std::string &tag, int backup_health) {
     Metadata *metadataObj = new Metadata(mii_repo, slot);
     metadataObj->setTag(tag);
     metadataObj->setDate(getNowDate());
     metadataObj->setStorage("internal");
+    metadataObj->setBackupHealth(backup_health);
     metadataObj->write_mii();
     delete metadataObj;
 }

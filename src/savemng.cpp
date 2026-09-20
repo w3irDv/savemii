@@ -654,18 +654,20 @@ std::string getNowDateForFolder() {
                                      now.tm_hour, now.tm_min, now.tm_sec);
 }
 
-void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &tag, eBackupFormat backup_format) {
+void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &tag, int backup_health, eBackupFormat backup_format) {
     Metadata *metadataObj = new Metadata(title, slot);
     metadataObj->setTag(tag);
     metadataObj->setBackupFormat(backup_format);
+    metadataObj->setBackupHealth(backup_health);
     metadataObj->set(getNowDate(), isUSB);
     delete metadataObj;
 }
 
-void writeMetadata(Title *title, uint8_t slot, const std::string &source, const std::string &tag, eBackupFormat backup_format) {
+void writeMetadata(Title *title, uint8_t slot, const std::string &source, const std::string &tag, int backup_health, eBackupFormat backup_format) {
     Metadata *metadataObj = new Metadata(title, slot);
     metadataObj->setTag(tag);
     metadataObj->setBackupFormat(backup_format);
+    metadataObj->setBackupHealth(backup_health);
     metadataObj->set(getNowDate(), source);
     delete metadataObj;
 }
@@ -679,7 +681,7 @@ void writeMetadata(Title *title, uint8_t slot, const std::string &source, const 
  * @param tag 
  * @param backup_format 
  */
-void writeMetadata(uint32_t highID, uint32_t lowID, const std::string title_name, const std::string path, const std::string &source, const std::string serialId, const std::string &batchDatetime, const std::string &tag, eBackupFormat backup_format) {
+void writeMetadata(uint32_t highID, uint32_t lowID, const std::string title_name, const std::string path, const std::string &source, const std::string serialId, const std::string &batchDatetime, const std::string &tag, int backup_health, eBackupFormat backup_format) {
     Metadata *metadataObj = new Metadata(path);
     metadataObj->setTag(tag);
     metadataObj->setBackupFormat(backup_format);
@@ -689,26 +691,30 @@ void writeMetadata(uint32_t highID, uint32_t lowID, const std::string title_name
     metadataObj->setStorage(source);
     metadataObj->setSerialId(serialId);
     metadataObj->setTitleName(title_name);
+    metadataObj->setBackupHealth(backup_health);
     metadataObj->write();
     delete metadataObj;
 }
 
-void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag, eBackupFormat backup_format) {
+void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &batchDatetime, const std::string &tag, int backup_health, eBackupFormat backup_format) {
     Metadata *metadataObj = new Metadata(title, slot, batchDatetime);
     metadataObj->setTag(tag);
     metadataObj->setBackupFormat(backup_format);
+    metadataObj->setBackupHealth(backup_health);
     metadataObj->set(getNowDate(), isUSB);
     delete metadataObj;
 }
 
-void writeBackupAllMetadata(const std::string &batchDatetime, const std::string &tag) {
+void writeBackupAllMetadata(const std::string &batchDatetime, const std::string &tag, int backup_health) {
     Metadata *metadataObj = new Metadata(batchDatetime, "", AmbientConfig::thisConsoleSerialId, tag);
+    metadataObj->setBackupHealth(backup_health);
     metadataObj->write();
     delete metadataObj;
 }
 
-void writeBackupAllMetadata(const std::string &backupSet_path_prefix, const std::string &batchDatetime, const std::string &tag) {
+void writeBackupAllMetadata(const std::string &backupSet_path_prefix, const std::string &batchDatetime, const std::string &tag, int backup_health) {
     Metadata *metadataObj = new Metadata(backupSet_path_prefix, batchDatetime, "", AmbientConfig::thisConsoleSerialId, tag);
+    metadataObj->setBackupHealth(backup_health);
     metadataObj->write();
     delete metadataObj;
 }
@@ -825,7 +831,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                                         titles[i].currentDataSource.selectedForBackup = false;
                                         titlesOK++;
                                         if (backup_layout == SAVEMII)
-                                            writeMetadata(&titles[i], slot, isUSB, batchDatetime, "", FILES);
+                                            writeMetadata(&titles[i], slot, isUSB, batchDatetime, "", BACKUP_OK, FILES);
                                         if (backup_layout == EMULATOR) {
                                             // wipe unneeded meta files
                                             std::string stat_file_path = StatManager::get_savemii_stat_info_file_path(dstPath);
@@ -860,7 +866,7 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
             titles[i].currentDataSource.batchBackupState = KO;
             switch (backup_layout) {
                 case SAVEMII:
-                    writeMetadata(&titles[i], slot, isUSB, batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
+                    writeMetadata(&titles[i], slot, isUSB, batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), BACKUP_KO, FILES);
                     break;
                 case EMULATOR:
                     if (FSUtils::removeDir(dstPath))
@@ -934,7 +940,7 @@ int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, 
         return 8;
     }
 
-    writeMetadata(title, slot, isUSB, _("BACKUP IN PROGRESS"), backup_format);
+    writeMetadata(title, slot, isUSB, _("BACKUP IN PROGRESS"), errorCode, backup_format);
 
     if (backup_format == DATA_BIN) {
         dstPath = dstPath + "/data.bin";
@@ -1040,18 +1046,18 @@ backup_cleanup_and_return:
                 errorCode += 64;
             } else {
                 Console::showMessage(WARNING_CONFIRM, _("Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."));
-                writeMetadata(title, slot, isUSB, _("WARNING - NO PERMS"), backup_format);
+                writeMetadata(title, slot, isUSB, _("WARNING - NO PERMS"), errorCode, backup_format);  // TODO!  Now is useless ... will be overwritten later
             }
         } // we have set enable_get_stat to false
     }
 
 update_metadata_and_return:
     if (errorCode == 0)
-        writeMetadata(title, slot, isUSB, tag, backup_format);
+        writeMetadata(title, slot, isUSB, tag, errorCode, backup_format);
     else {
         errorMessage = (std::string) _("%s\nBackup failed. DO NOT restore from this slot.") + "\n" + errorMessage;
         Console::showMessage(ERROR_CONFIRM, errorMessage.c_str(), title->shortName);
-        writeMetadata(title, slot, isUSB, _("UNUSABLE SLOT - BACKUP FAILED"), backup_format);
+        writeMetadata(title, slot, isUSB, _("UNUSABLE SLOT - BACKUP FAILED"), errorCode, backup_format);
     }
     return errorCode;
 }

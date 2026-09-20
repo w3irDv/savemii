@@ -142,7 +142,7 @@ void BatchBackupState::backup_all_saves() {
             InProgress::totalSteps = InProgress::currentStep = 1;
             InProgress::titleName.assign(batchDatetime);
             if (!wipeBackupSet(batchDatetime, true)) {
-                writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"));
+                writeBackupAllMetadata(batchDatetime, _("ERROR WIPING BACKUPSET"),BACKUPSET_WIPE_ERROR);
                 BackupSetList::currentBackupSetList->setIsInitializationRequired(true);
             }
             return;
@@ -155,7 +155,7 @@ void BatchBackupState::backup_all_saves() {
     if (wiiU_backup_failed_counter == 0 && wii_backup_failed_counter == 0 && !InProgress::abortTask) {
         tag = StringUtils::stringFormat(_("ALL OK - WU:%d,vW:%d,S:%d titles"),
                                         wiiU_backup_ok_counter, wii_backup_ok_counter,wiiU_sys_backup_ok_counter);
-        writeBackupAllMetadata(batchDatetime, tag.c_str());
+        writeBackupAllMetadata(batchDatetime, tag.c_str(),BACKUPSET_OK);
     } else {
         if (wiiU_backup_failed_counter > 0 || wii_backup_failed_counter > 0 || wiiU_sys_backup_failed_counter > 0)
             tag = StringUtils::stringFormat(_("OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"),
@@ -165,7 +165,7 @@ void BatchBackupState::backup_all_saves() {
         else
             tag = StringUtils::stringFormat(_("PARTIAL - WU:%d,vW:%d,S:%d OK"),
                                             wiiU_backup_ok_counter, wii_backup_ok_counter, wiiU_sys_backup_ok_counter);
-        writeBackupAllMetadata(batchDatetime, tag.c_str());
+        writeBackupAllMetadata(batchDatetime, tag.c_str(),BACKUPSET_CONTAIN_ERRORS);
     }
 
     summarizeBackupCounters(this->wiiutitles, this->wiiuTitlesCount, titlesOK, titlesAborted, titlesWarning, titlesKO, titlesSkipped, titlesNotInitialized, failedTitles);

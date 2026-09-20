@@ -25,6 +25,13 @@ namespace fs = std::filesystem;
 #define LOADIINE_SHARED_SAVEDATA true
 #define LOADIINE_UNIQUE_SAVEDATA false
 
+#define BACKUPSET_CONTAIN_ERRORS (-1)
+#define BACKUPSET_OK             0
+#define BACKUPSET_WIPE_ERROR     (-2)
+
+#define BACKUP_OK                0
+#define BACKUP_KO                (-1)
+
 namespace savemng {
     inline bool firstSDWrite = true;
 };
@@ -53,11 +60,11 @@ bool isSlotEmpty(Title *title, uint8_t slot, eSlotType slot_type = SAVEMII_SLOT)
 bool isSlotEmpty(Title *title, uint8_t slot, const std::string &batchDatetime);
 std::string getNowDateForFolder() __attribute__((hot));
 std::string getNowDate() __attribute__((hot));
-void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &tag, eBackupFormat backup_format) __attribute__((hot));
-void writeMetadata(Title *title, uint8_t slot, const std::string &source, const std::string &tag, eBackupFormat backup_format);
-void writeMetadata(uint32_t highID, uint32_t lowID, const std::string title_name, const std::string path, const std::string &source, const std::string serialId, const std::string &batchDatetime, const std::string &tag, eBackupFormat backup_format);
-void writeBackupAllMetadata(const std::string &Date, const std::string &tag);
-void writeBackupAllMetadata(const std::string &backupSet_path_prefix,const std::string &Date, const std::string &tag);
+void writeMetadata(Title *title, uint8_t slot, bool isUSB, const std::string &tag, int backup_health, eBackupFormat backup_format) __attribute__((hot));
+void writeMetadata(Title *title, uint8_t slot, const std::string &source, const std::string &tag, int backup_health, eBackupFormat backup_format);
+void writeMetadata(uint32_t highID, uint32_t lowID, const std::string title_name, const std::string path, const std::string &source, const std::string serialId, const std::string &batchDatetime, const std::string &tag, int backup_health, eBackupFormat backup_format);
+void writeBackupAllMetadata(const std::string &Date, const std::string &tag, int backup_health);
+void writeBackupAllMetadata(const std::string &backupSet_path_prefix, const std::string &Date, const std::string &tag, int backup_health);
 int backupAllSave(Title *titles, int count, const std::string &batchDatetime, int &titlesOK, bool onlySelectedTitles, eBackupLayout backup_layout = SAVEMII) __attribute__((hot));
 int countTitlesToSave(Title *titles, int count, bool onlySelectedTitles = false) __attribute__((hot));
 int backupSavedata(Title *title, uint8_t slot, int8_t source_user, bool common, eBackupFormat backup_format, eSlotType slot_type, eAccountSource accountSource = USE_WIIU_PROFILES, const std::string &tag = "") __attribute__((hot));

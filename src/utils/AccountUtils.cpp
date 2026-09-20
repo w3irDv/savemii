@@ -242,10 +242,10 @@ loadiine_savedata_renamed:
             const std::string source{"SD"};
             if (unable_to_convert_from_loaddine) {
                 const std::string tagMessage{_("UNABLE TO CONVERT FROM LOADIINE")};
-                writeMetadata(title, (uint8_t) slot_or_version, source, tagMessage, FILES);
+                writeMetadata(title, (uint8_t) slot_or_version, source, tagMessage, BACKUP_KO, FILES);
             } else {
                 const std::string tagMessage{_("CONVERTED FROM LOADIINE")};
-                writeMetadata(title, (uint8_t) slot_or_version, source, tagMessage, FILES);
+                writeMetadata(title, (uint8_t) slot_or_version, source, tagMessage, BACKUP_OK, FILES);
             }
         }
     }

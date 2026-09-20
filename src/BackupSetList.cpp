@@ -420,7 +420,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                             if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()))
                                 FSUtils::copyFile(metaSavePath + "/saveinfo.xml", dstPath + "/savemii_saveinfo.xml");
                             titlesOK++;
-                            writeMetadata(highID, lowID, "", dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, "", FILES);
+                            writeMetadata(highID, lowID, "", dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, "", BACKUP_OK, FILES);
                             if (InProgress::abortTask) {
                                 if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to cancel batch backup?")))
                                     return -2;
@@ -432,7 +432,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                     }
                     // backup for this tile has failed
                     titlesKO++;
-                    writeMetadata(highID, lowID, title_name, dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), FILES);
+                    writeMetadata(highID, lowID, title_name, dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), BACKUP_KO, FILES);
                     std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), title_name.c_str(), titlesKO);
                     if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
                         InProgress::abortTask = true;
@@ -479,7 +479,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
         RC = -5;
     }
 
-    writeBackupAllMetadata(batchDatetime.c_str(), tag.c_str());
+    writeBackupAllMetadata(batchDatetime.c_str(), tag.c_str(),RC);
 
     currentBackupSetList->setIsInitializationRequired(true);
 
