@@ -288,14 +288,17 @@ bool BackupSetContentListState::populate_backupset_content() {
             }
         }
 
+        std::string savemii_json = bs_path + "/" + item.title_folder_name + "/0";
+        Metadata metadataObj(savemii_json);
+        bool hasMeta = metadataObj.read();
+        if (hasMeta)
+            item.backup_health = metadataObj.getBackupHealth();
+
         if (item.installed == false) {
             item.uninstalled_isWii = isWii;
             // maybe it has a savemiMeta.json we can use to get the title name
-            std::string savemii_json = bs_path + "/" + item.title_folder_name + "/0";
-            Metadata metadataObj(savemii_json);
-            if (metadataObj.read()) {
+            if (hasMeta)
                 shortName.assign(metadataObj.getShortName());
-            }
 
             if (shortName.size() > 0) { // if the name was found in savemiiMeta.json , its better to use it because it contains original utf8 chars that were trasnlated to _ in the folder name
                 item.uninstalled_title_name = shortName;

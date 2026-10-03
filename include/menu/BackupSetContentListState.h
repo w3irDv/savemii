@@ -37,6 +37,7 @@ private:
         std::string uninstalled_title_name{};
         std::vector<uint8_t> uninstalled_iconBuf{};
         bool uninstalled_isWii = false;
+        int backup_health = BACKUP_OK;
     };
 
     std::vector<bs_item> backupset_content;
