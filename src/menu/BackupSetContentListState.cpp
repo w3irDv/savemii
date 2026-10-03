@@ -68,6 +68,8 @@ void BackupSetContentListState::render() {
                 break;
 
             DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
+            if (backupset_content.at(i + this->scroll).backup_health != BACKUP_OK)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER, COLOR_LIST_DANGER_AT_CURSOR, cursorPos, i);
 
             if (backupset_content.at(i + this->scroll).installed) {
                 Console::consolePrintPos(M_OFF, i + 2, _("    %s [Installed]"), backupset_content.at(i + this->scroll).title->shortName);
@@ -86,7 +88,7 @@ void BackupSetContentListState::render() {
 
 
         if (backupset_content.at(cursorPos + this->scroll).installed) {
-            DrawUtils::setFontColor(COLOR_INFO);
+            DrawUtils::setFontColor(backupset_content.at(cursorPos + this->scroll).backup_health != BACKUP_OK ? COLOR_LIST_DANGER_AT_CURSOR : COLOR_INFO);
             Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, "[%d] %s", cursorPos + this->scroll + 1, backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
             Console::consolePrintPos(M_OFF + 2, MAX_TITLE_SHOW + 5, "%s  [%s]",
                                      backupset_content.at(cursorPos + this->scroll).title->productCode,
@@ -100,7 +102,7 @@ void BackupSetContentListState::render() {
                 }
             }
         } else {
-            DrawUtils::setFontColor(COLOR_INFO);
+            DrawUtils::setFontColor(backupset_content.at(cursorPos + this->scroll).backup_health != BACKUP_OK ? COLOR_LIST_DANGER_AT_CURSOR : COLOR_INFO);
             Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, _("[%d] %s"),
                                                cursorPos + this->scroll + 1, backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
             if (!backupset_content.at(cursorPos + this->scroll).uninstalled_iconBuf.empty()) {
