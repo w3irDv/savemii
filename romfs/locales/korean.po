@@ -3950,7 +3950,6 @@ msgid ""
 "\n"
 "\n"
 "Non-existent profiles:\n"
-"  "
 msgstr ""
 "\n"
 "\n"
@@ -5188,12 +5187,8 @@ msgstr "... 및 %d개 추가"
 
 #: src/savemng.cpp:2080
 #, c-format
-msgid ""
-"Error setting quota for \n"
-"%s"
-msgstr ""
-"\n"
-"%s에 대한 할당량 설정 오류"
+msgid "Error setting quota for %s"
+msgstr "%s에 대한 할당량 설정 오류"
 
 #: src/savemng.cpp:2107
 msgid "Error creating init data"

@@ -3972,12 +3972,10 @@ msgid ""
 "\n"
 "\n"
 "Non-existent profiles:\n"
-"  "
 msgstr ""
 "\n"
 "\n"
 "存在しないプロファイル:\n"
-" "
 
 #: src/menu/BatchJobOptions.cpp:233
 msgid ""
@@ -5216,12 +5214,8 @@ msgstr "...およびその他 %d 件"
 
 #: src/savemng.cpp:2080
 #, c-format
-msgid ""
-"Error setting quota for \n"
-"%s"
-msgstr ""
-"\n"
-"%s のクォータ設定エラー"
+msgid "Error setting quota for %s"
+msgstr "%s のクォータ設定エラー"
 
 #: src/savemng.cpp:2107
 msgid "Error creating init data"

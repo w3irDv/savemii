@@ -3532,7 +3532,6 @@ msgid ""
 "\n"
 "\n"
 "Non-existent profiles:\n"
-"  "
 msgstr ""
 
 #: src/menu/BatchJobOptions.cpp:233
@@ -4610,9 +4609,7 @@ msgstr ""
 
 #: src/savemng.cpp:2080
 #, c-format
-msgid ""
-"Error setting quota for \n"
-"%s"
+msgid "Error setting quota for %s"
 msgstr ""
 
 #: src/savemng.cpp:2107

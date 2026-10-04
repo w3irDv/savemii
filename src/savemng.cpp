@@ -2077,7 +2077,7 @@ bool initializeWiiUTitle(Title *title, std::string &errorMessage, int &errorCode
     FSError fserror;
 
     if (FSAMakeQuota(FSUtils::handle, FSUtils::newlibtoFSA(metaSavePath).c_str(), 0x666, 0x80000) != FS_ERROR_OK) {
-        errorMessage.append("\n" + StringUtils::stringFormat(_("Error setting quota for \n%s"), metaSavePath.c_str()));
+        errorMessage.append("\n" + StringUtils::stringFormat(_("Error setting quota for %s"), metaSavePath.c_str()));
         errorCode += 4;
         goto error;
     }

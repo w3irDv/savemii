@@ -3980,7 +3980,6 @@ msgid ""
 "\n"
 "\n"
 "Non-existent profiles:\n"
-"  "
 msgstr ""
 "\n"
 "\n"
@@ -4199,7 +4198,9 @@ msgid ""
 "\n"
 "Do you want to continue?\n"
 "\n"
-msgstr "Mit dieser Aufgabe können Sie Speicherdaten für MiiMaker, Internet Browser und andere Systemtitel sichern/wiederherstellen.Gehen Sie mit Vorsicht vor und seien Sie sich der Änderungen bewusst! Einige Spielstände können das Systemverhalten beeinflussen, und ein Missbrauch kann unerwartete Folgen haben! Möchten Sie fortfahren?"
+msgstr ""
+"Mit dieser Aufgabe können Sie Speicherdaten für MiiMaker, Internet Browser und andere Systemtitel sichern/wiederherstellen.Gehen Sie mit Vorsicht vor und seien Sie sich der Änderungen bewusst! Einige Spielstände können das Systemverhalten beeinflussen, und ein Missbrauch kann unerwartete Folgen haben! Möchten Sie fortfahren?\n"
+"\n"
 
 #: src/menu/ConfigMenuState.cpp:17
 msgid "Configuration Options"
@@ -4972,7 +4973,7 @@ msgstr ""
 "- Warnung: %d\n"
 "- KO: %d\n"
 "- Abgebrochen: %d\n"
-"- Übersprungen: %d (einschließlich %d nicht initialisiert)"
+"- Übersprungen: %d (einschließlich %d nicht initialisiert)\n"
 
 #: src/savemng.cpp:1642
 msgid ""
@@ -5211,12 +5212,8 @@ msgstr "... und %d mehr"
 
 #: src/savemng.cpp:2080
 #, c-format
-msgid ""
-"Error setting quota for \n"
-"%s"
-msgstr ""
-"Fehler beim Festlegen des Kontingents für \n"
-"%s"
+msgid "Error setting quota for %s"
+msgstr "Fehler beim Festlegen des Kontingents für %s"
 
 #: src/savemng.cpp:2107
 msgid "Error creating init data"

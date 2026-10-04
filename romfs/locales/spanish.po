@@ -3911,7 +3911,7 @@ msgid ""
 "cannot be retrieved"
 msgstr ""
 "No se puede recuperar la información de datos guardados de\n"
-"%s\n"
+"%s"
 
 #: src/menu/BatchJobOptions.cpp:159
 msgid "Cannot allocate memory for the profile list."
@@ -3949,12 +3949,10 @@ msgid ""
 "\n"
 "\n"
 "Non-existent profiles:\n"
-"  "
 msgstr ""
 "\n"
 "\n"
 "Perfiles inexistentes:\n"
-" "
 
 #: src/menu/BatchJobOptions.cpp:233
 msgid ""
@@ -4169,7 +4167,9 @@ msgid ""
 "\n"
 "Do you want to continue?\n"
 "\n"
-msgstr "Esta tarea permite realizar copias de seguridad/restaurar datos guardados para MiiMaker, el navegador de Internet y otros títulos del sistema.¡Procede con precaución y ten cuidado con lo que modificas! Algunas partidas guardadas pueden afectar el funcionamiento del sistema, y ​​un mal uso de ellas puede tener consecuencias inesperadas. ¿Quieres continuar?"
+msgstr ""
+"Esta tarea permite realizar copias de seguridad/restaurar datos guardados para MiiMaker, el navegador de Internet y otros títulos del sistema.¡Procede con precaución y ten cuidado con lo que modificas! Algunas partidas guardadas pueden afectar el funcionamiento del sistema, y ​​un mal uso de ellas puede tener consecuencias inesperadas. ¿Quieres continuar?\n"
+"\n"
 
 #: src/menu/ConfigMenuState.cpp:17
 msgid "Configuration Options"
@@ -5186,12 +5186,8 @@ msgstr "... y %d más"
 
 #: src/savemng.cpp:2080
 #, c-format
-msgid ""
-"Error setting quota for \n"
-"%s"
-msgstr ""
-"Error al configurar la cuota para \n"
-"%s"
+msgid "Error setting quota for %s"
+msgstr "Error al configurar la cuota para %s"
 
 #: src/savemng.cpp:2107
 msgid "Error creating init data"

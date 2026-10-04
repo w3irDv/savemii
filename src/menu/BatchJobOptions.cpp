@@ -228,7 +228,7 @@ nxtCheck:
                 break;
             default:;
         }
-        titlesWithUndefinedProfilesSummary.append(_("\n\nNon-existent profiles:\n  "));
+        titlesWithUndefinedProfilesSummary.append(_("\n\nNon-existent profiles:\n"));
         titlesWithUndefinedProfilesSummary += undefinedUsersMessage;
         titlesWithUndefinedProfilesSummary.append(_("\nTitles affected:\n"));
         titleListInColumns(titlesWithUndefinedProfilesSummary, titlesWithNonExistentProfile);
