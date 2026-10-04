@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 13:59+0200\n"
+"POT-Creation-Date: 2026-10-03 20:20+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -104,7 +104,7 @@ msgstr "Erro: tamanho incorreto do cabeçalho Bk"
 
 #: src/utils/DataBinUnpack.cpp:190
 msgid "Error: bad backup header (total_size too small)"
-msgstr ""
+msgstr "Erro: cabeçalho de backup inválido (total_size muito pequeno)"
 
 #: src/utils/DataBinUnpack.cpp:213
 msgid "Error: bad file header magic number"
@@ -112,11 +112,11 @@ msgstr "Erro: número mágico do cabeçalho do arquivo inválido"
 
 #: src/utils/DataBinUnpack.cpp:226
 msgid "Error: bad file header (unterminated name)"
-msgstr ""
+msgstr "Erro: cabeçalho de arquivo inválido (nome não terminado)"
 
 #: src/utils/DataBinUnpack.cpp:228
 msgid "Error: unsafe entry name in data.bin"
-msgstr ""
+msgstr "Erro: nome de entrada inseguro em data.bin"
 
 #: src/utils/DataBinUnpack.cpp:241 src/utils/DataBinUnpack.cpp:325
 #: src/utils/DataBinPack.cpp:389 src/utils/DataBinPack.cpp:467
@@ -191,44 +191,44 @@ msgstr ""
 "\n"
 " Pressione qualquer botão para continuar"
 
-#: src/utils/TitleUtils.cpp:81 src/utils/TitleUtils.cpp:105
-#: src/utils/TitleUtils.cpp:148 src/utils/TitleUtils.cpp:193
-#: src/utils/TitleUtils.cpp:455 src/utils/TitleUtils.cpp:625
-#: src/utils/TitleUtils.cpp:649 src/utils/TitleUtils.cpp:692
-#: src/utils/TitleUtils.cpp:737
+#: src/utils/TitleUtils.cpp:82 src/utils/TitleUtils.cpp:106
+#: src/utils/TitleUtils.cpp:149 src/utils/TitleUtils.cpp:194
+#: src/utils/TitleUtils.cpp:456 src/utils/TitleUtils.cpp:626
+#: src/utils/TitleUtils.cpp:650 src/utils/TitleUtils.cpp:693
+#: src/utils/TitleUtils.cpp:738
 msgid "Out of memory."
 msgstr "Sem espaço livre."
 
-#: src/utils/TitleUtils.cpp:284 src/utils/TitleUtils.cpp:823
+#: src/utils/TitleUtils.cpp:285 src/utils/TitleUtils.cpp:824
 msgid "CORRUPTED METADATA"
-msgstr ""
+msgstr "METADADOS CORROMPIDOS"
 
-#: src/utils/TitleUtils.cpp:377 src/utils/TitleUtils.cpp:590
-#: src/utils/TitleUtils.cpp:888
+#: src/utils/TitleUtils.cpp:378 src/utils/TitleUtils.cpp:591
+#: src/utils/TitleUtils.cpp:889
 #, c-format
 msgid "Loaded %i Wii U titles."
 msgstr "%i títulos de Wii U carregados."
 
-#: src/utils/TitleUtils.cpp:548
+#: src/utils/TitleUtils.cpp:549
 #, c-format
 msgid "%s [%s%s] (No banner.bin)"
 msgstr "%s [%s%s] (Sem banner.bin)"
 
-#: src/utils/TitleUtils.cpp:591 src/utils/TitleUtils.cpp:889
+#: src/utils/TitleUtils.cpp:592 src/utils/TitleUtils.cpp:890
 #, c-format
 msgid "Loaded %i Wii titles."
 msgstr "%i títulos de Wii carregados."
 
-#: src/utils/TitleUtils.cpp:890
+#: src/utils/TitleUtils.cpp:891
 #, c-format
 msgid "Loaded %i Wii U Sys titles."
 msgstr "%i títulos do sistema Wii U carregados."
 
-#: src/utils/TitleUtils.cpp:1121 src/utils/DataBinPack.cpp:148
-#: src/BackupSetList.cpp:387 src/BackupSetList.cpp:395
-#: src/menu/BackupSetContentListState.cpp:198
-#: src/menu/BackupSetContentListState.cpp:385
-#: src/menu/BackupSetContentListState.cpp:392
+#: src/utils/TitleUtils.cpp:1122 src/utils/DataBinPack.cpp:148
+#: src/BackupSetList.cpp:443 src/BackupSetList.cpp:449
+#: src/menu/BackupSetContentListState.cpp:209
+#: src/menu/BackupSetContentListState.cpp:426
+#: src/menu/BackupSetContentListState.cpp:433
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr "Erro ao abrir o diretório %s: %s"
@@ -459,7 +459,7 @@ msgstr ""
 "Erros detectados durante a limpeza.\n"
 "Deseja salvar o banco de dados?"
 
-#: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:357 src/savemng.cpp:1579
+#: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:357 src/savemng.cpp:1589
 msgid "Please wait. First write to (some) SDs can take several seconds."
 msgstr "Aguarde. A primeira gravação em (alguns) SDs pode levar vários segundos."
 
@@ -477,18 +477,18 @@ msgid "Copying from: %s"
 msgstr "Copiando de: %s"
 
 #: src/utils/MiiUtils.cpp:680 src/utils/DataBin.cpp:369
-#: src/utils/DataBin.cpp:372 src/utils/FSUtils.cpp:617 src/savemng.cpp:1735
+#: src/utils/DataBin.cpp:372 src/utils/FSUtils.cpp:614 src/savemng.cpp:1745
 #, c-format
 msgid "To: %s"
 msgstr "Para: %s"
 
 #: src/utils/MiiUtils.cpp:686 src/utils/DataBin.cpp:387
-#: src/utils/FSUtils.cpp:621 src/utils/FSUtils.cpp:640
+#: src/utils/FSUtils.cpp:618 src/utils/FSUtils.cpp:637
 msgid "Will abort..."
 msgstr "Abortará..."
 
 #: src/utils/MiiUtils.cpp:689 src/utils/DataBin.cpp:390
-#: src/utils/FSUtils.cpp:624 src/utils/FSUtils.cpp:643
+#: src/utils/FSUtils.cpp:621 src/utils/FSUtils.cpp:640
 msgid "Abort:\\ue083+\\ue046"
 msgstr "Abortar:\\ue083+\\ue046"
 
@@ -541,8 +541,8 @@ msgstr "Esta ação não é compatível com o repositório selecionado."
 
 #: src/utils/MiiUtils.cpp:898 src/mii/MiiAccountRepo.cpp:410
 #: src/mii/MiiRepo.cpp:130 src/mii/MiiRepo.cpp:216 src/mii/MiiRepo.cpp:285
-#: src/savemng.cpp:408 src/savemng.cpp:523 src/savemng.cpp:587
-#: src/savemng.cpp:1116
+#: src/savemng.cpp:408 src/savemng.cpp:525 src/savemng.cpp:589
+#: src/savemng.cpp:1126
 msgid "Backup current savedata first to next empty slot?"
 msgstr "Copiar o save atual no slot livre?"
 
@@ -659,7 +659,7 @@ msgstr "Erro: não é um arquivo comum ou diretório: %s"
 #: src/utils/DataBinPack.cpp:200 src/utils/DataBinPack.cpp:307
 #, c-format
 msgid "Error: too many files to archive (max %d)"
-msgstr ""
+msgstr "Erro: arquivos demais para arquivar (máx. %d)"
 
 #: src/utils/DataBinPack.cpp:228
 #, c-format
@@ -723,6 +723,8 @@ msgid ""
 "Error: missing '=' in key line:\n"
 "%s"
 msgstr ""
+"Erro: '=' ausente na linha da chave:\n"
+"%s"
 
 #: src/utils/DataBin.cpp:88
 #, c-format
@@ -824,8 +826,8 @@ msgstr "ASDFGHJKL:\""
 msgid "KB_S_3"
 msgstr "ZXCVBNM <>"
 
-#: src/utils/FSUtils.cpp:95 src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:170
-#: src/savemng.cpp:1697 src/cfg/BaseCfg.cpp:23
+#: src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:107
+#: src/utils/FSUtils.cpp:176 src/savemng.cpp:1707 src/cfg/BaseCfg.cpp:23
 #, c-format
 msgid ""
 "Error while creating folder:\n"
@@ -840,7 +842,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:130
+#: src/utils/FSUtils.cpp:136
 #, c-format
 msgid ""
 "Failed to delete folder\n"
@@ -855,7 +857,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:138
+#: src/utils/FSUtils.cpp:144
 #, c-format
 msgid ""
 "Failed to delete file\n"
@@ -870,7 +872,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1926
+#: src/utils/FSUtils.cpp:160 src/savemng.cpp:1936
 #, c-format
 msgid ""
 "Error while reading folder content\n"
@@ -885,7 +887,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:176
+#: src/utils/FSUtils.cpp:182
 #, c-format
 msgid ""
 "Error while creating final folder:\n"
@@ -900,7 +902,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:225
+#: src/utils/FSUtils.cpp:231
 #, c-format
 msgid ""
 "Error\n"
@@ -913,15 +915,18 @@ msgstr ""
 "definindo permissões para\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:232
+#: src/utils/FSUtils.cpp:238
 #, c-format
 msgid ""
 "Path too long to set owner\n"
 "\n"
 "%s"
 msgstr ""
+"Caminho longo demais para definir o proprietário\n"
+"\n"
+"%s"
 
-#: src/utils/FSUtils.cpp:239
+#: src/utils/FSUtils.cpp:245
 #, c-format
 msgid ""
 "Error creating shim for change perms\n"
@@ -932,7 +937,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:253
+#: src/utils/FSUtils.cpp:259
 #, c-format
 msgid ""
 "Error\n"
@@ -945,11 +950,11 @@ msgstr ""
 "definindo proprietário %08x / grupo %08x para\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:330
+#: src/utils/FSUtils.cpp:336
 msgid "Cannot allocate copy buffers"
-msgstr ""
+msgstr "Não foi possível alocar os buffers de cópia"
 
-#: src/utils/FSUtils.cpp:374 src/savemng.cpp:1950 src/savemng.cpp:2004
+#: src/utils/FSUtils.cpp:380 src/savemng.cpp:1960 src/savemng.cpp:2014
 #: src/cfg/BaseCfg.cpp:84
 #, c-format
 msgid ""
@@ -965,7 +970,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:396 src/utils/FSUtils.cpp:402 src/savemng.cpp:2035
+#: src/utils/FSUtils.cpp:402 src/utils/FSUtils.cpp:408 src/savemng.cpp:2045
 #: src/cfg/BaseCfg.cpp:46
 #, c-format
 msgid ""
@@ -981,7 +986,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:431
+#: src/utils/FSUtils.cpp:437
 msgid ""
 "\n"
 "\n"
@@ -992,11 +997,11 @@ msgstr ""
 "Cuidado: se você não fez isso, tente apagar os dados salvos \n"
 "antes de restaurar"
 
-#: src/utils/FSUtils.cpp:439
+#: src/utils/FSUtils.cpp:445
 msgid "Error creating permission file - Backup/Restore is not reliable"
 msgstr "Erro ao criar o arquivo de permissões - Backup/Restauração não é confiável"
 
-#: src/utils/FSUtils.cpp:457
+#: src/utils/FSUtils.cpp:463
 #, c-format
 msgid ""
 "Read error\n"
@@ -1011,7 +1016,7 @@ msgstr ""
 "\n"
 " lendo de %s"
 
-#: src/utils/FSUtils.cpp:460
+#: src/utils/FSUtils.cpp:466
 #, c-format
 msgid ""
 "Write error\n"
@@ -1026,7 +1031,7 @@ msgstr ""
 "\n"
 " copiando para %s"
 
-#: src/utils/FSUtils.cpp:474 src/utils/FSUtils.cpp:755
+#: src/utils/FSUtils.cpp:480 src/utils/FSUtils.cpp:752
 #: src/menu/BatchJobOptions.cpp:136 src/savemng.cpp:161 src/savemng.cpp:199
 #, c-format
 msgid ""
@@ -1042,7 +1047,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:499
+#: src/utils/FSUtils.cpp:505
 #, c-format
 msgid ""
 "Error creating folder\n"
@@ -1057,7 +1062,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:515
+#: src/utils/FSUtils.cpp:521
 #, c-format
 msgid ""
 "Error creating permission file - Backup/Restore is not reliable\n"
@@ -1068,8 +1073,8 @@ msgstr ""
 "Erros até o momento: %d\n"
 "Deseja continuar?"
 
-#: src/utils/FSUtils.cpp:546 src/utils/FSUtils.cpp:580
-#: src/utils/FSUtils.cpp:591
+#: src/utils/FSUtils.cpp:547 src/utils/FSUtils.cpp:579
+#: src/utils/FSUtils.cpp:589
 #, c-format
 msgid ""
 "Error copying directory - Backup/Restore is not reliable\n"
@@ -1091,7 +1096,7 @@ msgstr ""
 "Erros até o momento: %d\n"
 "Deseja continuar?"
 
-#: src/utils/FSUtils.cpp:579 src/utils/FSUtils.cpp:802
+#: src/utils/FSUtils.cpp:578 src/utils/FSUtils.cpp:794
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -1110,7 +1115,7 @@ msgstr ""
 "\n"
 "A cópia pode estar incompleta"
 
-#: src/utils/FSUtils.cpp:590 src/utils/FSUtils.cpp:813 src/savemng.cpp:1819
+#: src/utils/FSUtils.cpp:588 src/utils/FSUtils.cpp:804 src/savemng.cpp:1829
 #, c-format
 msgid ""
 "Error while closing folder\n"
@@ -1125,27 +1130,27 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:615
+#: src/utils/FSUtils.cpp:612
 #, c-format
 msgid "Copying file: %s"
 msgstr "Copiando: %s"
 
-#: src/utils/FSUtils.cpp:616
+#: src/utils/FSUtils.cpp:613
 #, c-format
 msgid "From: %s"
 msgstr "De: %s"
 
-#: src/utils/FSUtils.cpp:635
+#: src/utils/FSUtils.cpp:632
 #, c-format
 msgid "Deleting folder %s"
 msgstr "Excluindo pasta %s"
 
-#: src/utils/FSUtils.cpp:635
+#: src/utils/FSUtils.cpp:632
 #, c-format
 msgid "Deleting file %s"
 msgstr "Excluindo arquivo %s"
 
-#: src/utils/FSUtils.cpp:636
+#: src/utils/FSUtils.cpp:633
 #, c-format
 msgid ""
 "From: \n"
@@ -1154,8 +1159,8 @@ msgstr ""
 "De:\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:774 src/utils/FSUtils.cpp:783
-#: src/utils/FSUtils.cpp:803 src/utils/FSUtils.cpp:814
+#: src/utils/FSUtils.cpp:767 src/utils/FSUtils.cpp:776
+#: src/utils/FSUtils.cpp:795 src/utils/FSUtils.cpp:805
 #, c-format
 msgid ""
 "Error setting permissions - Restore is not reliable\n"
@@ -1250,6 +1255,8 @@ msgid ""
 "Incomplete/truncated FAT32 chars translation file:\n"
 "%s"
 msgstr ""
+"Arquivo de tradução de caracteres FAT32 incompleto/truncado:\n"
+"%s"
 
 #: src/utils/EscapeFAT32Utils.cpp:112
 #, c-format
@@ -1285,6 +1292,10 @@ msgid ""
 "->\n"
 "%s"
 msgstr ""
+"A entrada de renomeação FAT32 aponta para fora da pasta de salvamento (backup corrompido ou malicioso):\n"
+"%s\n"
+"->\n"
+"%s"
 
 #: src/utils/EscapeFAT32Utils.cpp:140 src/utils/EscapeFAT32Utils.cpp:156
 #, c-format
@@ -1324,6 +1335,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Erro ao renomear %s para data.bin\n"
+"\n"
+"%s"
 
 #: src/utils/AccountUtils.cpp:178
 #, c-format
@@ -1337,6 +1351,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Erro ao converter o perfil loadiine 'u'\n"
+"\n"
+"%s"
 
 #: src/utils/AccountUtils.cpp:227
 #, c-format
@@ -1345,6 +1362,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Erro ao converter o perfil loadiine 'c'\n"
+"\n"
+"%s"
 
 #: src/utils/AccountUtils.cpp:244
 msgid "UNABLE TO CONVERT FROM LOADIINE"
@@ -1374,6 +1394,11 @@ msgid ""
 "Errors so far: %d\n"
 "Do you want to continue?"
 msgstr ""
+"A entrada do arquivo stat aponta para fora da pasta de salvamento e foi ignorada (backup corrompido ou malicioso):\n"
+"%s\n"
+"\n"
+"Erros até o momento: %d\n"
+"Deseja continuar?"
 
 #: src/utils/StatManager.cpp:105
 #, c-format
@@ -1428,9 +1453,12 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Arquivo de permissões inválido ou corrompido (cabeçalho inválido). As permissões não serão restauradas:\n"
+"\n"
+"%s"
 
 #: src/utils/StatManager.cpp:221 src/utils/StatManager.cpp:231
-#: src/savemng.cpp:2044 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:115
+#: src/savemng.cpp:2054 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:115
 #, c-format
 msgid ""
 "Error closing file\n"
@@ -1474,11 +1502,11 @@ msgstr "Falha na inicialização do sistema de arquivos. Certifique-se de que se
 
 #: src/main.cpp:119
 msgid "Initializing Random seed"
-msgstr ""
+msgstr "Inicializando a semente aleatória"
 
 #: src/main.cpp:122
 msgid "Reading Encryption Keys"
-msgstr ""
+msgstr "Lendo as chaves de criptografia"
 
 #: src/main.cpp:141
 msgid "Initializing BackupSets metadata."
@@ -1496,21 +1524,21 @@ msgstr "Inicializando repositórios Mii."
 msgid "\\ue044: Exit"
 msgstr "\\ue044: Sair"
 
-#: src/BackupSetList.cpp:271
+#: src/BackupSetList.cpp:286
 #, c-format
 msgid "BackupSet %s has already SAVEMII format"
-msgstr ""
+msgstr "O BackupSet %s já está no formato SAVEMII"
 
-#: src/BackupSetList.cpp:369 src/savemng.cpp:832
+#: src/BackupSetList.cpp:425 src/savemng.cpp:842
 msgid "Do you want to cancel batch backup?"
 msgstr "Deseja cancelar o backup em lote?"
 
-#: src/BackupSetList.cpp:379 src/mii/MiiRepo.cpp:104 src/savemng.cpp:859
-#: src/savemng.cpp:1050
+#: src/BackupSetList.cpp:435 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
+#: src/savemng.cpp:1060
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr "SLOT INUSÁVEL - FALHA NO BACKUP"
 
-#: src/BackupSetList.cpp:380 src/savemng.cpp:868
+#: src/BackupSetList.cpp:436 src/savemng.cpp:878
 #, c-format
 msgid ""
 "%s\n"
@@ -1524,6 +1552,21 @@ msgstr ""
 "Falha no backup.\n"
 "Erros até o momento: %d\n"
 "Deseja continuar?"
+
+#: src/BackupSetList.cpp:467
+#, c-format
+msgid "FROM %s - %d title%s OK"
+msgstr "DE %s - %d título%s OK"
+
+#: src/BackupSetList.cpp:472
+#, c-format
+msgid "%s FAILED - No titles"
+msgstr "%s FALHOU - Nenhum título"
+
+#: src/BackupSetList.cpp:475
+#, c-format
+msgid "%s FAILED - OK/KO > %d/%d"
+msgstr "%s FALHOU - OK/KO > %d/%d"
 
 #: src/mii/MiiStadioSav.cpp:169
 msgid "stadio.sav DB not found. Do you want to create one from existing associated FFL and ACCOUNT repos?"
@@ -1739,27 +1782,27 @@ msgstr ""
 msgid "Reading Miis: %d"
 msgstr "Lendo Miis: %d"
 
-#: src/mii/MiiAccountRepo.cpp:411 src/mii/MiiRepo.cpp:131 src/savemng.cpp:1117
+#: src/mii/MiiAccountRepo.cpp:411 src/mii/MiiRepo.cpp:131 src/savemng.cpp:1127
 msgid "pre-Restore backup"
 msgstr "backup pre-Restore"
 
 #: src/mii/MiiAccountRepo.cpp:412 src/mii/MiiRepo.cpp:132 src/savemng.cpp:410
-#: src/savemng.cpp:1118
+#: src/savemng.cpp:1128
 msgid "Backup Failed - Restore aborted !!"
 msgstr "Backup falhou - Restauração abortada!!"
 
-#: src/mii/MiiAccountRepo.cpp:426 src/mii/MiiAccountRepo.cpp:475
+#: src/mii/MiiAccountRepo.cpp:428 src/mii/MiiAccountRepo.cpp:479
 #: src/mii/MiiRepo.cpp:56 src/mii/MiiRepo.cpp:80 src/mii/MiiRepo.cpp:145
 #: src/mii/MiiRepo.cpp:178
 msgid "Error copying data."
 msgstr "Erro ao copiar os dados."
 
-#: src/mii/MiiAccountRepo.cpp:430 src/mii/MiiRepo.cpp:150
+#: src/mii/MiiAccountRepo.cpp:432 src/mii/MiiRepo.cpp:150
 msgid "Error creating folder."
 msgstr "Erro ao criar a pasta."
 
-#: src/mii/MiiAccountRepo.cpp:435 src/mii/MiiRepo.cpp:189 src/savemng.cpp:1128
-#: src/savemng.cpp:1270
+#: src/mii/MiiAccountRepo.cpp:437 src/mii/MiiRepo.cpp:189 src/savemng.cpp:1138
+#: src/savemng.cpp:1280
 #, c-format
 msgid ""
 "%s\n"
@@ -1841,14 +1884,14 @@ msgstr "Procurando um Mii na localização: %d/%d. Miis encontrados: %d."
 
 #: src/mii/MiiFileRepo.cpp:563
 msgid "Cannot create memory buffer for reading the mii data"
-msgstr ""
+msgstr "Não foi possível criar o buffer de memória para ler os dados do mii"
 
-#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:903
+#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:913
 msgid "Backup found on this slot. Overwrite it?"
 msgstr "Este slot já possui backup. Sobreescrever?"
 
-#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:929
-#: src/savemng.cpp:948 src/savemng.cpp:1048
+#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:939
+#: src/savemng.cpp:958 src/savemng.cpp:1058
 #, c-format
 msgid ""
 "%s\n"
@@ -1877,11 +1920,11 @@ msgstr "SEM ESTÁDIO"
 msgid "Restore aborted."
 msgstr "Restauração abortada."
 
-#: src/mii/MiiRepo.cpp:217 src/savemng.cpp:1317
+#: src/mii/MiiRepo.cpp:217 src/savemng.cpp:1327
 msgid "pre-Wipe backup"
 msgstr "backup pre-Wipe"
 
-#: src/mii/MiiRepo.cpp:218 src/savemng.cpp:1318
+#: src/mii/MiiRepo.cpp:218 src/savemng.cpp:1328
 msgid "Backup Failed - Wipe aborted !!"
 msgstr "Backup falhou - Limpeza abortada!!"
 
@@ -1897,7 +1940,7 @@ msgstr "Erro ao limpar os dados."
 msgid "Error deleting file."
 msgstr "Erro ao excluir o arquivo."
 
-#: src/mii/MiiRepo.cpp:258 src/savemng.cpp:1404
+#: src/mii/MiiRepo.cpp:258 src/savemng.cpp:1414
 #, c-format
 msgid ""
 "%s\n"
@@ -1968,7 +2011,7 @@ msgstr "\\ue000: Selecionar Jogo \\ue085\\ue07e\\ue086: Paginação \\ue001: Vol
 
 #: src/menu/TitleListState.cpp:100
 msgid "This title cannot be managed due to problems with its metadata."
-msgstr ""
+msgstr "Este título não pode ser gerenciado devido a problemas com seus metadados."
 
 #: src/menu/TitleListState.cpp:105
 msgid "CBHC save. Could be dangerous to modify. Continue?"
@@ -2433,7 +2476,7 @@ msgstr "[COPY"
 #: src/menu/MiiSelectState.cpp:417 src/menu/MiiSelectState.cpp:433
 #: src/menu/MiiSelectState.cpp:443 src/menu/MiiSelectState.cpp:448
 #: src/menu/MiiSelectState.cpp:455 src/menu/MiiSelectState.cpp:466
-#: src/menu/BackupSetContentListState.cpp:61
+#: src/menu/BackupSetContentListState.cpp:62
 #, c-format
 msgid "%s"
 msgstr "%s"
@@ -2598,7 +2641,7 @@ msgstr "\\ue083 Organizar: %s \\ue084"
 
 #: src/menu/BackupSetListState.cpp:116
 msgid "\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 Filter  \\ue001 Back"
-msgstr ""
+msgstr "\\ue000 Converter  \\ue002 Mostrar conteúdo  \\ue045 Tag  \\ue046 Limpar  \\ue003 Filtrar  \\ue001 Voltar"
 
 #: src/menu/BackupSetListState.cpp:120
 msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
@@ -2610,7 +2653,7 @@ msgstr "\\ue000: Selecionar BackupSet  \\ue002: Conteúdo  \\ue003: Filtrar List
 
 #: src/menu/BackupSetListState.cpp:135
 msgid "Root BackupSet cannot be selected for batch operations"
-msgstr ""
+msgstr "O BackupSet raiz não pode ser selecionado para operações em lote"
 
 #: src/menu/BackupSetListState.cpp:147
 #, c-format
@@ -2635,24 +2678,37 @@ msgid ""
 "Creating a new backupSet from %s Cemu/Dolphin/plain exportSet\n"
 "Continue?"
 msgstr ""
+"Criando um novo BackupSet a partir do exportSet %s Cemu/Dolphin/simples\n"
+"Continuar?"
 
-#: src/menu/BackupSetListState.cpp:174
+#: src/menu/BackupSetListState.cpp:175
 msgid "BackupSet succesfully created from CEMU/Dolplhin data"
-msgstr ""
+msgstr "BackupSet criado com sucesso a partir dos dados CEMU/Dolphin"
 
-#: src/menu/BackupSetListState.cpp:176
+#: src/menu/BackupSetListState.cpp:177
 msgid "Error creaing BackupSet from CEMU/Dolplhin data"
-msgstr ""
+msgstr "Erro ao criar o BackupSet a partir dos dados CEMU/Dolphin"
 
-#: src/menu/BackupSetListState.cpp:178 src/menu/BackupSetListState.cpp:180
+#: src/menu/BackupSetListState.cpp:179 src/menu/BackupSetListState.cpp:181
 #, c-format
 msgid "BackupSet creation aborted. OK: %d  KO: %d"
-msgstr ""
+msgstr "Criação do BackupSet cancelada. OK: %d  KO: %d"
 
-#: src/menu/BackupSetListState.cpp:182
+#: src/menu/BackupSetListState.cpp:183
 #, c-format
-msgid "Error creating BackupSet createted from CEMU/Dolplhin data. OK: %d  KO: %d"
-msgstr ""
+msgid "Error creating BackupSet from CEMU/Dolplhin data. Titles OK: %d  Titles KO: %d"
+msgstr "Erro ao criar o BackupSet a partir dos dados CEMU/Dolphin. Títulos OK: %d  Títulos KO: %d"
+
+#: src/menu/BackupSetListState.cpp:188
+#: src/menu/BatchJobTitleSelectState.cpp:913 src/menu/BatchBackupState.cpp:141
+msgid "Do you want to wipe this incomplete batch backup?"
+msgstr "Deseja apagar este backup em lote incompleto?"
+
+#: src/menu/BackupSetListState.cpp:193
+#: src/menu/BatchJobTitleSelectState.cpp:737
+#: src/menu/BatchJobTitleSelectState.cpp:917 src/menu/BatchBackupState.cpp:145
+msgid "ERROR WIPING BACKUPSET"
+msgstr "ERRO AO LIMPAR O CONJUNTO DE BACKUP"
 
 #: src/menu/BatchJobTitleSelectState.cpp:241
 msgid "Batch Restore - Select"
@@ -2740,11 +2796,11 @@ msgstr "|Salvo|"
 
 #: src/menu/BatchJobTitleSelectState.cpp:283
 msgid "Emul Export - Select & Go"
-msgstr ""
+msgstr "Exportação de Emulador - Selecionar e Iniciar"
 
 #: src/menu/BatchJobTitleSelectState.cpp:284
 msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Export"
-msgstr ""
+msgstr "\\ue003\\ue07eMarcar/Desmarcar  \\ue045\\ue046Marcar/Desmarcar tudo  \\ue002Exclusões  \\ue000Exportar  \\ue001Exportar"
 
 #: src/menu/BatchJobTitleSelectState.cpp:303
 msgid "There are no titles matching selected filters."
@@ -3125,11 +3181,6 @@ msgid ""
 "You can continue."
 msgstr "Você selecionou títulos não inicializados. Se a restauração falhar, execute o jogo para criar alguns dados salvos iniciais e tente novamente. Você pode continuar."
 
-#: src/menu/BatchJobTitleSelectState.cpp:737
-#: src/menu/BatchJobTitleSelectState.cpp:917 src/menu/BatchBackupState.cpp:145
-msgid "ERROR WIPING BACKUPSET"
-msgstr "ERRO AO LIMPAR O CONJUNTO DE BACKUP"
-
 #: src/menu/BatchJobTitleSelectState.cpp:763
 #: src/menu/BatchJobTitleSelectState.cpp:772 src/menu/TitleOptionsState.cpp:954
 #: src/menu/TitleOptionsState.cpp:962
@@ -3146,10 +3197,6 @@ msgstr ""
 "Tarefa abortada: os dados seriam restaurados para um perfil inexistente.\n"
 "\n"
 "Tente restaurar usando as opções 'de/para usuário'"
-
-#: src/menu/BatchJobTitleSelectState.cpp:913 src/menu/BatchBackupState.cpp:141
-msgid "Do you want to wipe this incomplete batch backup?"
-msgstr "Deseja apagar este backup em lote incompleto?"
 
 #: src/menu/BatchJobTitleSelectState.cpp:970
 #, c-format
@@ -3370,12 +3417,9 @@ msgid ""
 "If needed, vWii saves can also be managed using\n"
 "  the vWii Save Management section."
 msgstr ""
-"Esta tarefa permite que você faça backup/restaure dados salvos do MiiMaker, do navegador de internet e de outros títulos do sistema.\n"
-"\n"
-"Proceda com cautela e esteja ciente do que você está modificando! Alguns arquivos salvos podem afetar o comportamento do sistema e o uso indevido deles pode ter consequências inesperadas!\n"
-"\n"
-"Deseja continuar?\n"
-"\n"
+"Este título é um inject (título de vWii ou GC empacotado como um título de Wii U).\n"
+"Se necessário, os arquivos de salvamento do vWii também podem ser gerenciados usando\n"
+"  a seção Gerenciamento de Salvamento do vWii."
 
 #: src/menu/TitleTaskState.cpp:98 src/menu/MiiTasksState.cpp:165
 msgid "\\ue000: Select Task  \\ue001: Back"
@@ -3427,62 +3471,66 @@ msgstr "Pelo menos dois perfis são necessários para Copiar/Mover para Outro Pe
 
 #: src/menu/BackupSetManagementState.cpp:25
 msgid "BackupSet Management"
-msgstr ""
+msgstr "Gerenciamento de BackupSet"
 
 #: src/menu/BackupSetManagementState.cpp:28
 msgid "   Set as default / Show Content / Tag / Wipe a Backupset"
-msgstr ""
+msgstr "   Definir como padrão / Mostrar conteúdo / Tag / Limpar um BackupSet"
 
 #: src/menu/BackupSetManagementState.cpp:31
 msgid "   Convert / Show Content / Tag / Wipe  CEMU/Dolphin compatible backups"
-msgstr ""
+msgstr "   Converter / Mostrar conteúdo / Tag / Limpar backups compatíveis com CEMU/Dolphin"
 
 #: src/menu/BackupSetManagementState.cpp:39
 msgid "Set the default BackupSet (tasks will used it as their backup repo), tag it with a name, or wipe any backupSet"
-msgstr ""
+msgstr "Defina o BackupSet padrão (as tarefas o usarão como repositório de backup), marque-o com um nome ou limpe qualquer BackupSet"
 
 #: src/menu/BackupSetManagementState.cpp:42
 msgid ""
 "* Convert a CEMU/DOLPHIN/plain title or save folders to a bacth restorable backupSet\n"
 "* Show content , tag or wipe  CEMU or Dolphin export folders"
 msgstr ""
+"* Converta um título ou pastas de salvamento CEMU/DOLPHIN/simples em um BackupSet restaurável em lote\n"
+"* Mostre o conteúdo, marque ou limpe pastas de exportação do CEMU ou Dolphin"
 
 #: src/menu/BackupSetManagementState.cpp:53
 msgid "\\ue002: Options \\ue000: Select BackupSet Task"
-msgstr ""
+msgstr "\\ue002: Opções \\ue000: Selecionar tarefa de BackupSet"
 
 #: src/menu/ExportAsState.cpp:28
 msgid "Export As"
-msgstr ""
+msgstr "Exportar como"
 
 #: src/menu/ExportAsState.cpp:30
 #, c-format
 msgid "   Export Wii U as CEMU (%u Title%s)"
-msgstr ""
+msgstr "   Exportar Wii U como CEMU (%u Título%s)"
 
 #: src/menu/ExportAsState.cpp:33
 #, c-format
 msgid "   Export vWii as Dolphin (%u Title%s)"
-msgstr ""
+msgstr "   Exportar vWii como Dolphin (%u Título%s)"
 
 #: src/menu/ExportAsState.cpp:36
 #, c-format
 msgid "   Export Wii U System Titles as CEMU (%u Title%s)"
-msgstr ""
+msgstr "   Exportar títulos de sistema do Wii U como CEMU (%u Título%s)"
 
 #: src/menu/ExportAsState.cpp:43
 msgid ""
 "Reminder: Your Excludes will be applied to\n"
 "  'Export Wii U' and 'Export vWii' tasks"
 msgstr ""
+"Lembrete: suas exclusões serão aplicadas às tarefas\n"
+"  'Exportar Wii U' e 'Exportar vWii'"
 
 #: src/menu/ExportAsState.cpp:49
 msgid "Export Wii U or vWii savedata in a format ready to be copied to the corresponding foder in CEMU or Dolphin emulator installation."
-msgstr ""
+msgstr "Exporte os savedata do Wii U ou vWii em um formato pronto para ser copiado para a pasta correspondente da instalação do emulador CEMU ou Dolphin."
 
 #: src/menu/ExportAsState.cpp:53
 msgid "\\ue002: ExportFolder Management \\ue000: Export  \\ue001: Back"
-msgstr ""
+msgstr "\\ue002: Gerenciamento da pasta de exportação \\ue000: Exportar  \\ue001: Voltar"
 
 #: src/menu/MiiTransformTasksState.cpp:24
 msgid "Mii Transform Tasks"
@@ -3848,30 +3896,30 @@ msgstr "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
 msgid "PARTIAL - WU:%d,vW:%d,S:%d OK"
 msgstr "PARCIAL - WU:%d,vW:%d,S:%d OK"
 
-#: src/menu/BackupSetContentListState.cpp:52
+#: src/menu/BackupSetContentListState.cpp:53
 msgid "Backup set is empty"
-msgstr ""
+msgstr "O backup set está vazio"
 
-#: src/menu/BackupSetContentListState.cpp:59
+#: src/menu/BackupSetContentListState.cpp:60
 msgid "BackupSet Content"
 msgstr "Conteúdo do BackupSet"
 
-#: src/menu/BackupSetContentListState.cpp:72
+#: src/menu/BackupSetContentListState.cpp:75
 #, c-format
 msgid "    %s [Installed]"
 msgstr "    %s [Instalado]"
 
-#: src/menu/BackupSetContentListState.cpp:103
+#: src/menu/BackupSetContentListState.cpp:106
 #, c-format
 msgid "[%d] %s"
-msgstr ""
+msgstr "[%d] %s"
 
-#: src/menu/BackupSetContentListState.cpp:109
+#: src/menu/BackupSetContentListState.cpp:120
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue085\\ue07e\\ue086: Paginação   \\ue001: Voltar"
 
-#: src/menu/BackupSetContentListState.cpp:194
-#: src/menu/BackupSetContentListState.cpp:340
+#: src/menu/BackupSetContentListState.cpp:205
+#: src/menu/BackupSetContentListState.cpp:358
 msgid "< no savedata >"
 msgstr "< sem dados de save >"
 
@@ -3888,7 +3936,7 @@ msgstr ""
 
 #: src/menu/BatchJobOptions.cpp:159
 msgid "Cannot allocate memory for the profile list."
-msgstr ""
+msgstr "Não foi possível alocar memória para a lista de perfis."
 
 #: src/menu/BatchJobOptions.cpp:185
 msgid "Can't Copy/Move To OtherProfile if there is only one profile."
@@ -4142,7 +4190,13 @@ msgid ""
 "\n"
 "Do you want to continue?\n"
 "\n"
-msgstr "Visualização por data e hora"
+msgstr ""
+"Esta tarefa permite que você faça backup/restaure dados salvos do MiiMaker, do navegador de internet e de outros títulos do sistema.\n"
+"\n"
+"Proceda com cautela e esteja ciente do que você está modificando! Alguns arquivos salvos podem afetar o comportamento do sistema e o uso indevido deles pode ter consequências inesperadas!\n"
+"\n"
+"Deseja continuar?\n"
+"\n"
 
 #: src/menu/ConfigMenuState.cpp:17
 msgid "Configuration Options"
@@ -4548,7 +4602,7 @@ msgstr "   Cópia em Lote para Outro Dispositivo"
 
 #: src/menu/BatchTasksState.cpp:51
 msgid "   Export in CEMU/Dolphin format"
-msgstr ""
+msgstr "   Exportar no formato CEMU/Dolphin"
 
 #: src/menu/BatchTasksState.cpp:62
 msgid ""
@@ -4577,7 +4631,7 @@ msgstr "Cópia em lote para outro dispositivo permite transferir dados salvos en
 
 #: src/menu/BatchTasksState.cpp:77
 msgid "Export savedata in a format ready to be copied to a CEMU or Dolphin folder."
-msgstr ""
+msgstr "Exporte os savedata em um formato pronto para ser copiado para uma pasta CEMU ou Dolphin."
 
 #: src/menu/BatchTasksState.cpp:88
 msgid "\\ue002: Options \\ue000: Select Batch Task"
@@ -4591,19 +4645,22 @@ msgstr "Falha ao abrir pasta de save (Loadiine)."
 msgid "Loadiine game folder not found."
 msgstr "Pasta do jogo não encontrada (Loadiine)."
 
-#: src/savemng.cpp:400 src/savemng.cpp:515 src/savemng.cpp:579
-#: src/savemng.cpp:1104 src/savemng.cpp:1308 src/savemng.cpp:1411
-#: src/savemng.cpp:1469 src/savemng.cpp:1525 src/miisavemng.cpp:14
+#: src/savemng.cpp:400 src/savemng.cpp:517 src/savemng.cpp:581
+#: src/savemng.cpp:1114 src/savemng.cpp:1318 src/savemng.cpp:1421
+#: src/savemng.cpp:1479 src/savemng.cpp:1535 src/miisavemng.cpp:14
 msgid "Are you sure?"
 msgstr "Tem certeza?"
 
-#: src/savemng.cpp:406 src/savemng.cpp:521 src/savemng.cpp:585
-#: src/savemng.cpp:1112 src/savemng.cpp:1314 src/savemng.cpp:1415
+#: src/savemng.cpp:406 src/savemng.cpp:523 src/savemng.cpp:587
+#: src/savemng.cpp:1122 src/savemng.cpp:1324 src/savemng.cpp:1425
 msgid ""
 "There is no empty slot to back up the current savedata first.\n"
 "\n"
 "Continue without a backup?"
 msgstr ""
+"Não há slot vazio para fazer backup dos savedata atuais primeiro.\n"
+"\n"
+"Continuar sem um backup?"
 
 #: src/savemng.cpp:409
 msgid "pre-copyToOtherDev backup"
@@ -4613,23 +4670,23 @@ msgstr "backup pre-copyToOtherDev"
 msgid "Copy failed."
 msgstr "Falha ao copiar."
 
-#: src/savemng.cpp:428 src/savemng.cpp:969 src/savemng.cpp:1148
+#: src/savemng.cpp:428 src/savemng.cpp:979 src/savemng.cpp:1158
 msgid "source_user=-3 is not allowed for this task"
 msgstr "source_user=-3 não é permitido para esta tarefa"
 
-#: src/savemng.cpp:460 src/savemng.cpp:1000 src/savemng.cpp:1517
+#: src/savemng.cpp:460 src/savemng.cpp:1010 src/savemng.cpp:1527
 msgid "Error copying common savedata."
 msgstr "Erro ao copiar dados salvos comuns."
 
-#: src/savemng.cpp:473 src/savemng.cpp:1009
+#: src/savemng.cpp:475 src/savemng.cpp:1019
 msgid "Error copying savedata."
 msgstr "Erro ao copiar dados salvos."
 
-#: src/savemng.cpp:474 src/savemng.cpp:547 src/savemng.cpp:1010
+#: src/savemng.cpp:476 src/savemng.cpp:549 src/savemng.cpp:1020
 msgid "Error copying profile savedata."
 msgstr "Erro ao copiar dados salvos do perfil."
 
-#: src/savemng.cpp:494
+#: src/savemng.cpp:496
 #, c-format
 msgid ""
 "%s\n"
@@ -4638,15 +4695,15 @@ msgstr ""
 "%s\n"
 "Falha na cópia."
 
-#: src/savemng.cpp:524
+#: src/savemng.cpp:526
 msgid "pre-copySavedataToOtherProfile backup"
 msgstr "backup pre-copySavedataToOtherProfile"
 
-#: src/savemng.cpp:525 src/savemng.cpp:589
+#: src/savemng.cpp:527 src/savemng.cpp:591
 msgid "Backup Failed - Replicate aborted !!"
 msgstr "Backup falhou - Replicação abortada!!"
 
-#: src/savemng.cpp:558
+#: src/savemng.cpp:560
 #, c-format
 msgid ""
 "%s\n"
@@ -4655,11 +4712,11 @@ msgstr ""
 "%s\n"
 "Falha ao copiar o perfil."
 
-#: src/savemng.cpp:588
+#: src/savemng.cpp:590
 msgid "pre-moveSavedataToOtherProfile backup"
 msgstr "backup pré-moveSavedataToOtherProfile"
 
-#: src/savemng.cpp:607
+#: src/savemng.cpp:609
 #, c-format
 msgid ""
 "Error deleting savedata folder\n"
@@ -4668,7 +4725,7 @@ msgstr ""
 "Erro ao excluir a pasta de dados salvos\n"
 "%s"
 
-#: src/savemng.cpp:614
+#: src/savemng.cpp:616
 #, c-format
 msgid ""
 "Unable to rename folder \n"
@@ -4687,7 +4744,7 @@ msgstr ""
 "\n"
 "Restaure o backup, corrija os erros e tente novamente."
 
-#: src/savemng.cpp:633
+#: src/savemng.cpp:635
 #, c-format
 msgid ""
 "%s\n"
@@ -4696,47 +4753,47 @@ msgstr ""
 "%s\n"
 "Falha ao mover o perfil."
 
-#: src/savemng.cpp:933
+#: src/savemng.cpp:943
 msgid "BACKUP IN PROGRESS"
 msgstr "BACKUP EM ANDAMENTO"
 
-#: src/savemng.cpp:954 src/savemng.cpp:1035
+#: src/savemng.cpp:964 src/savemng.cpp:1045
 msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
 msgstr "O backup não preservará as permissões. Este é um título do sistema e o backup só prosseguirá quando você resolver o problema."
 
-#: src/savemng.cpp:957 src/savemng.cpp:1038
+#: src/savemng.cpp:967 src/savemng.cpp:1048
 msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
 msgstr "O backup não preservará as permissões. Pode funcionar (modo legado), mas é aconselhável resolver o problema e tentar novamente."
 
-#: src/savemng.cpp:1018
+#: src/savemng.cpp:1028
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
 msgstr "Aviso - Erro ao copiar os metadados saveinfo.xml. Não é crítico."
 
-#: src/savemng.cpp:1027
+#: src/savemng.cpp:1037
 msgid "Error closing FAT32 chars translation file"
 msgstr "Erro ao fechar o arquivo de tradução de caracteres FAT32"
 
-#: src/savemng.cpp:1039
+#: src/savemng.cpp:1049
 msgid "WARNING - NO PERMS"
 msgstr "AVISO - SEM PERMISSÕES"
 
-#: src/savemng.cpp:1175 src/savemng.cpp:1461
+#: src/savemng.cpp:1185 src/savemng.cpp:1471
 msgid "Error restoring common savedata."
 msgstr "Erro ao restaurar dados salvos comuns."
 
-#: src/savemng.cpp:1188
+#: src/savemng.cpp:1198
 msgid "Error restoring savedata."
 msgstr "Erro ao restaurar os dados salvos."
 
-#: src/savemng.cpp:1189
+#: src/savemng.cpp:1199
 msgid "Error restoring profile savedata."
 msgstr "Erro ao restaurar os dados salvos do perfil."
 
-#: src/savemng.cpp:1244
+#: src/savemng.cpp:1254
 msgid "Error setting permissions"
 msgstr "Erro ao definir permissões"
 
-#: src/savemng.cpp:1305
+#: src/savemng.cpp:1315
 msgid ""
 "This option is a last resort in case something has gone wrong when\n"
 "restoring data. It will wipe metadata and savedata, and the title \n"
@@ -4745,26 +4802,33 @@ msgid ""
 "the Wii U Data Management menu.\n"
 "\n"
 "Continue?"
-msgstr "Este título é um inject (título de vWii ou GC empacotado como um título de Wii U). Se necessário, os arquivos de salvamento do vWii também podem ser gerenciados usando a seção Gerenciamento de Salvamento do vWii."
+msgstr ""
+"Esta opção é um último recurso caso algo tenha dado errado ao\n"
+"restaurar os dados. Ela apagará os metadados e os dados salvos, e o título \n"
+"ficará não inicializado. Não faz nada com o código do jogo instalado.\n"
+"É equivalente a apagar completamente os dados salvos pelo \n"
+"menu de Gerenciamento de Dados do Wii U.\n"
+"\n"
+"Continuar?"
 
-#: src/savemng.cpp:1305 src/savemng.cpp:1308 src/savemng.cpp:1525
+#: src/savemng.cpp:1315 src/savemng.cpp:1318 src/savemng.cpp:1535
 #: src/miisavemng.cpp:14
 msgid "Hm, are you REALLY sure?"
 msgstr "Hum, você quer REALMENTE fazer isso?"
 
-#: src/savemng.cpp:1316 src/savemng.cpp:1417
+#: src/savemng.cpp:1326 src/savemng.cpp:1427
 msgid "Backup current savedata first?"
 msgstr "Deseja fazer backup do save?"
 
-#: src/savemng.cpp:1357
+#: src/savemng.cpp:1367
 msgid "Error wiping common savedata."
 msgstr "Erro ao limpar os dados salvos comuns."
 
-#: src/savemng.cpp:1361
+#: src/savemng.cpp:1371
 msgid "Error deleting common folder."
 msgstr "Erro ao excluir pasta comum."
 
-#: src/savemng.cpp:1362
+#: src/savemng.cpp:1372
 #, c-format
 msgid ""
 "%s \n"
@@ -4777,23 +4841,23 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1369
+#: src/savemng.cpp:1379
 msgid "Error wiping savedata."
 msgstr "Erro ao limpar os dados salvos."
 
-#: src/savemng.cpp:1370
+#: src/savemng.cpp:1380
 msgid "Error wiping profile savedata."
 msgstr "Erro ao limpar os dados salvos do perfil."
 
-#: src/savemng.cpp:1375
+#: src/savemng.cpp:1385
 msgid "Error deleting savedata folder."
 msgstr "Erro ao excluir pasta de dados salvos."
 
-#: src/savemng.cpp:1376
+#: src/savemng.cpp:1386
 msgid "Error deleting profile savedata folder."
 msgstr "Erro ao excluir pasta de dados salvos do perfil."
 
-#: src/savemng.cpp:1377
+#: src/savemng.cpp:1387
 #, c-format
 msgid ""
 "%s \n"
@@ -4806,15 +4870,15 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1387
+#: src/savemng.cpp:1397
 msgid "Error wiping metadata+savedata."
 msgstr "Erro ao limpar metadados + dados salvos."
 
-#: src/savemng.cpp:1392
+#: src/savemng.cpp:1402
 msgid "Error deleting title folder."
 msgstr "Erro ao excluir a pasta do título."
 
-#: src/savemng.cpp:1393
+#: src/savemng.cpp:1403
 #, c-format
 msgid ""
 "%s \n"
@@ -4827,45 +4891,45 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1434 src/savemng.cpp:1447
+#: src/savemng.cpp:1444 src/savemng.cpp:1457
 msgid "Failed to import savedata from loadiine."
 msgstr "Falha ao importar dados de save do Loadiine."
 
-#: src/savemng.cpp:1487 src/savemng.cpp:1505
+#: src/savemng.cpp:1497 src/savemng.cpp:1515
 msgid "Failed to export savedata to loadiine."
 msgstr "Falha ao exportar dados de save para o Loadiine."
 
-#: src/savemng.cpp:1531 src/savemng.cpp:1536
+#: src/savemng.cpp:1541 src/savemng.cpp:1546
 msgid "Error setting path. Aborting."
 msgstr "Erro ao definir o caminho. Abortando."
 
-#: src/savemng.cpp:1544 src/savemng.cpp:1546 src/miisavemng.cpp:21
+#: src/savemng.cpp:1554 src/savemng.cpp:1556 src/miisavemng.cpp:21
 #: src/miisavemng.cpp:23
 #, c-format
 msgid "Failed to delete slot %u."
 msgstr "Falha ao excluir o slot %u."
 
-#: src/savemng.cpp:1548 src/savemng.cpp:1571 src/miisavemng.cpp:25
+#: src/savemng.cpp:1558 src/savemng.cpp:1581 src/miisavemng.cpp:25
 #, c-format
 msgid ""
 "Folder %s\n"
 "does not exist."
 msgstr " A pasta %s não existe."
 
-#: src/savemng.cpp:1555
+#: src/savemng.cpp:1565
 msgid "Wipe BackupSet - Are you sure?"
 msgstr "Limpar conjunto de backups - Tem certeza?"
 
-#: src/savemng.cpp:1555
+#: src/savemng.cpp:1565
 msgid "Wipe BackupSet - Hm, are you REALLY sure?"
 msgstr "Limpar conjunto de backup - Hm, você tem MESMO certeza?"
 
-#: src/savemng.cpp:1563 src/savemng.cpp:1567
+#: src/savemng.cpp:1573 src/savemng.cpp:1577
 #, c-format
 msgid "Failed to delete backupSet %s."
 msgstr "Falha ao excluir o backupSet %s."
 
-#: src/savemng.cpp:1621
+#: src/savemng.cpp:1631
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4884,7 +4948,7 @@ msgstr ""
 "- Abortado: %d\n"
 "- Ignorado: %d\n"
 
-#: src/savemng.cpp:1623
+#: src/savemng.cpp:1633
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4903,7 +4967,7 @@ msgstr ""
 "- Abortado: %d\n"
 "- Ignorado: %d (incluindo %d não inicializado)\n"
 
-#: src/savemng.cpp:1632
+#: src/savemng.cpp:1642
 msgid ""
 "\n"
 "Failed Titles:"
@@ -4911,7 +4975,7 @@ msgstr ""
 "\n"
 "Títulos com falha:"
 
-#: src/savemng.cpp:1671
+#: src/savemng.cpp:1681
 #, c-format
 msgid ""
 "Unable to merge folder '%08x%08x' with existent folder\n"
@@ -4928,7 +4992,7 @@ msgstr ""
 "\n"
 "As operações de backup/restauração ainda usarão a pasta antiga '%08x%08x'."
 
-#: src/savemng.cpp:1678
+#: src/savemng.cpp:1688
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -4951,7 +5015,7 @@ msgstr ""
 "\n"
 "As operações de backup/restauração ainda usarão a pasta antiga '%08x%08x'"
 
-#: src/savemng.cpp:1683
+#: src/savemng.cpp:1693
 #, c-format
 msgid ""
 "Unable to rename folder '%08x%08x' to\n"
@@ -4971,7 +5035,7 @@ msgstr ""
 "\n"
 "As operações de backup/restauração ainda usarão a pasta antiga '%08x%08x'."
 
-#: src/savemng.cpp:1702
+#: src/savemng.cpp:1712
 #, c-format
 msgid ""
 "Failed to delete (test) folder \n"
@@ -4986,12 +5050,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1734
+#: src/savemng.cpp:1744
 #, c-format
 msgid "Migrating from folder: %08x%08x"
 msgstr "Migrando da pasta: %08x%08x"
 
-#: src/savemng.cpp:1740
+#: src/savemng.cpp:1750
 #, c-format
 msgid ""
 "Error renaming/moving '%08x%08x' to \n"
@@ -5010,7 +5074,7 @@ msgstr ""
 "\n"
 "Deseja continuar?\n"
 
-#: src/savemng.cpp:1760
+#: src/savemng.cpp:1770
 #, c-format
 msgid ""
 "Error opening folder\n"
@@ -5019,8 +5083,13 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Erro ao abrir a pasta\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
 
-#: src/savemng.cpp:1770
+#: src/savemng.cpp:1780
 #, c-format
 msgid ""
 "Errors so far in this (sub)task: %d\n"
@@ -5029,7 +5098,7 @@ msgstr ""
 "Erros até o momento nesta (sub)tarefa: %d\n"
 "Deseja continuar?"
 
-#: src/savemng.cpp:1788
+#: src/savemng.cpp:1798
 #, c-format
 msgid ""
 "Cannot move %s from '%08x%08x' to\n"
@@ -5044,7 +5113,7 @@ msgstr ""
 "\n"
 "arquivo já existente na pasta de destino."
 
-#: src/savemng.cpp:1796
+#: src/savemng.cpp:1806
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -5063,7 +5132,7 @@ msgstr ""
 "\n"
 "Movimentação não tentada!"
 
-#: src/savemng.cpp:1804
+#: src/savemng.cpp:1814
 #, c-format
 msgid ""
 "Cannot rename folder '%08x%08x/%s' to\n"
@@ -5078,7 +5147,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1812
+#: src/savemng.cpp:1822
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -5097,7 +5166,7 @@ msgstr ""
 "\n"
 "A migração pode estar incompleta"
 
-#: src/savemng.cpp:1825
+#: src/savemng.cpp:1835
 #, c-format
 msgid ""
 "Error merging folders: after moving all slots, folder\n"
@@ -5112,7 +5181,7 @@ msgstr ""
 "\n"
 " ainda não está vazia e não pode ser excluída."
 
-#: src/savemng.cpp:1831
+#: src/savemng.cpp:1841
 #, c-format
 msgid ""
 "Failed to delete (legacy) folder\n"
@@ -5127,7 +5196,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1866
+#: src/savemng.cpp:1876
 #, c-format
 msgid ""
 "Backup contains savedata for the profile '%s',\n"
@@ -5136,12 +5205,12 @@ msgstr ""
 "O backup contém dados salvos para o perfil %s,\n"
 "mas o perfil não existe neste console."
 
-#: src/savemng.cpp:1905
+#: src/savemng.cpp:1915
 #, c-format
 msgid "... and %d more"
 msgstr "... e mais %d"
 
-#: src/savemng.cpp:2070
+#: src/savemng.cpp:2080
 #, c-format
 msgid ""
 "Error setting quota for \n"
@@ -5150,15 +5219,15 @@ msgstr ""
 "Erro ao definir a cota para \n"
 "%s"
 
-#: src/savemng.cpp:2097
+#: src/savemng.cpp:2107
 msgid "Error creating init data"
 msgstr "Erro ao criar dados de inicialização"
 
-#: src/savemng.cpp:2146
+#: src/savemng.cpp:2156
 msgid "Error creating vWii init data"
 msgstr "Erro ao criar os dados de inicialização do vWii"
 
-#: src/savemng.cpp:2180
+#: src/savemng.cpp:2190
 #, c-format
 msgid ""
 "Sourcce saveinfo\n"
@@ -5169,11 +5238,11 @@ msgstr ""
 "%s\n"
 " não encontradas."
 
-#: src/savemng.cpp:2213
+#: src/savemng.cpp:2223
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical.\n"
 msgstr "Aviso - Erro ao copiar o arquivo saveinfo.xml dos metadados. Não é crítico.\n"
 
-#: src/Metadata.cpp:100 src/Metadata.cpp:112
+#: src/Metadata.cpp:109 src/Metadata.cpp:121
 msgid ", from "
 msgstr ", de "
 
@@ -5266,6 +5335,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Erro ao alocar memória para ler o arquivo\n"
+"\n"
+"%s"
 
 #~ msgid "Initializing Radndom seed"
 #~ msgstr "Inicializando semente aleatória (seed)"

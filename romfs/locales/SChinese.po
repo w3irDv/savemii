@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 13:59+0200\n"
+"POT-Creation-Date: 2026-10-03 20:20+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -103,7 +103,7 @@ msgstr "错误：Bk 文件头大小错误"
 
 #: src/utils/DataBinUnpack.cpp:190
 msgid "Error: bad backup header (total_size too small)"
-msgstr ""
+msgstr "错误：备份头无效（total_size 太小）"
 
 #: src/utils/DataBinUnpack.cpp:213
 msgid "Error: bad file header magic number"
@@ -111,11 +111,11 @@ msgstr "错误：文件头魔数（Magic Number）错误"
 
 #: src/utils/DataBinUnpack.cpp:226
 msgid "Error: bad file header (unterminated name)"
-msgstr ""
+msgstr "错误：文件头无效（名称未终止）"
 
 #: src/utils/DataBinUnpack.cpp:228
 msgid "Error: unsafe entry name in data.bin"
-msgstr ""
+msgstr "错误：data.bin 中的条目名称不安全"
 
 #: src/utils/DataBinUnpack.cpp:241 src/utils/DataBinUnpack.cpp:325
 #: src/utils/DataBinPack.cpp:389 src/utils/DataBinPack.cpp:467
@@ -190,44 +190,44 @@ msgstr ""
 "\n"
 " 按任意键继续"
 
-#: src/utils/TitleUtils.cpp:81 src/utils/TitleUtils.cpp:105
-#: src/utils/TitleUtils.cpp:148 src/utils/TitleUtils.cpp:193
-#: src/utils/TitleUtils.cpp:455 src/utils/TitleUtils.cpp:625
-#: src/utils/TitleUtils.cpp:649 src/utils/TitleUtils.cpp:692
-#: src/utils/TitleUtils.cpp:737
+#: src/utils/TitleUtils.cpp:82 src/utils/TitleUtils.cpp:106
+#: src/utils/TitleUtils.cpp:149 src/utils/TitleUtils.cpp:194
+#: src/utils/TitleUtils.cpp:456 src/utils/TitleUtils.cpp:626
+#: src/utils/TitleUtils.cpp:650 src/utils/TitleUtils.cpp:693
+#: src/utils/TitleUtils.cpp:738
 msgid "Out of memory."
 msgstr "内存不足"
 
-#: src/utils/TitleUtils.cpp:284 src/utils/TitleUtils.cpp:823
+#: src/utils/TitleUtils.cpp:285 src/utils/TitleUtils.cpp:824
 msgid "CORRUPTED METADATA"
-msgstr ""
+msgstr "元数据已损坏"
 
-#: src/utils/TitleUtils.cpp:377 src/utils/TitleUtils.cpp:590
-#: src/utils/TitleUtils.cpp:888
+#: src/utils/TitleUtils.cpp:378 src/utils/TitleUtils.cpp:591
+#: src/utils/TitleUtils.cpp:889
 #, c-format
 msgid "Loaded %i Wii U titles."
 msgstr "已加载 %i 个Wii U软件。"
 
-#: src/utils/TitleUtils.cpp:548
+#: src/utils/TitleUtils.cpp:549
 #, c-format
 msgid "%s [%s%s] (No banner.bin)"
 msgstr "%s [%s%s] (无 banner.bin)"
 
-#: src/utils/TitleUtils.cpp:591 src/utils/TitleUtils.cpp:889
+#: src/utils/TitleUtils.cpp:592 src/utils/TitleUtils.cpp:890
 #, c-format
 msgid "Loaded %i Wii titles."
 msgstr "已加载 %i 个Wii软件"
 
-#: src/utils/TitleUtils.cpp:890
+#: src/utils/TitleUtils.cpp:891
 #, c-format
 msgid "Loaded %i Wii U Sys titles."
 msgstr "已加载%i个Wii U系统游戏。"
 
-#: src/utils/TitleUtils.cpp:1121 src/utils/DataBinPack.cpp:148
-#: src/BackupSetList.cpp:387 src/BackupSetList.cpp:395
-#: src/menu/BackupSetContentListState.cpp:198
-#: src/menu/BackupSetContentListState.cpp:385
-#: src/menu/BackupSetContentListState.cpp:392
+#: src/utils/TitleUtils.cpp:1122 src/utils/DataBinPack.cpp:148
+#: src/BackupSetList.cpp:443 src/BackupSetList.cpp:449
+#: src/menu/BackupSetContentListState.cpp:209
+#: src/menu/BackupSetContentListState.cpp:426
+#: src/menu/BackupSetContentListState.cpp:433
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr "打开目录 %s 出错：%s"
@@ -463,7 +463,7 @@ msgstr ""
 "擦除过程中检测到错误。\n"
 "是否保存数据库？"
 
-#: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:357 src/savemng.cpp:1579
+#: src/utils/MiiUtils.cpp:660 src/utils/DataBin.cpp:357 src/savemng.cpp:1589
 msgid "Please wait. First write to (some) SDs can take several seconds."
 msgstr "请稍候。首次写入SD卡可能需要几秒钟。"
 
@@ -481,18 +481,18 @@ msgid "Copying from: %s"
 msgstr "正在从：%s 复制"
 
 #: src/utils/MiiUtils.cpp:680 src/utils/DataBin.cpp:369
-#: src/utils/DataBin.cpp:372 src/utils/FSUtils.cpp:617 src/savemng.cpp:1735
+#: src/utils/DataBin.cpp:372 src/utils/FSUtils.cpp:614 src/savemng.cpp:1745
 #, c-format
 msgid "To: %s"
 msgstr "到 %s"
 
 #: src/utils/MiiUtils.cpp:686 src/utils/DataBin.cpp:387
-#: src/utils/FSUtils.cpp:621 src/utils/FSUtils.cpp:640
+#: src/utils/FSUtils.cpp:618 src/utils/FSUtils.cpp:637
 msgid "Will abort..."
 msgstr "将中止..."
 
 #: src/utils/MiiUtils.cpp:689 src/utils/DataBin.cpp:390
-#: src/utils/FSUtils.cpp:624 src/utils/FSUtils.cpp:643
+#: src/utils/FSUtils.cpp:621 src/utils/FSUtils.cpp:640
 msgid "Abort:\\ue083+\\ue046"
 msgstr "中止:\\ue083+\\ue046"
 
@@ -545,8 +545,8 @@ msgstr "所选存储库不支持此操作。"
 
 #: src/utils/MiiUtils.cpp:898 src/mii/MiiAccountRepo.cpp:410
 #: src/mii/MiiRepo.cpp:130 src/mii/MiiRepo.cpp:216 src/mii/MiiRepo.cpp:285
-#: src/savemng.cpp:408 src/savemng.cpp:523 src/savemng.cpp:587
-#: src/savemng.cpp:1116
+#: src/savemng.cpp:408 src/savemng.cpp:525 src/savemng.cpp:589
+#: src/savemng.cpp:1126
 msgid "Backup current savedata first to next empty slot?"
 msgstr "是否在下一个槽位中备份当前的保存数据？"
 
@@ -660,7 +660,7 @@ msgstr "错误：不是常规文件或目录：%s"
 #: src/utils/DataBinPack.cpp:200 src/utils/DataBinPack.cpp:307
 #, c-format
 msgid "Error: too many files to archive (max %d)"
-msgstr ""
+msgstr "错误：要归档的文件过多（最多 %d 个）"
 
 #: src/utils/DataBinPack.cpp:228
 #, c-format
@@ -724,6 +724,8 @@ msgid ""
 "Error: missing '=' in key line:\n"
 "%s"
 msgstr ""
+"错误：键行中缺少 '='：\n"
+"%s"
 
 #: src/utils/DataBin.cpp:88
 #, c-format
@@ -825,8 +827,8 @@ msgstr "ASDFGHJKL:\""
 msgid "KB_S_3"
 msgstr "ZXCVBNM <>"
 
-#: src/utils/FSUtils.cpp:95 src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:170
-#: src/savemng.cpp:1697 src/cfg/BaseCfg.cpp:23
+#: src/utils/FSUtils.cpp:101 src/utils/FSUtils.cpp:107
+#: src/utils/FSUtils.cpp:176 src/savemng.cpp:1707 src/cfg/BaseCfg.cpp:23
 #, c-format
 msgid ""
 "Error while creating folder:\n"
@@ -841,7 +843,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:130
+#: src/utils/FSUtils.cpp:136
 #, c-format
 msgid ""
 "Failed to delete folder\n"
@@ -856,7 +858,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:138
+#: src/utils/FSUtils.cpp:144
 #, c-format
 msgid ""
 "Failed to delete file\n"
@@ -871,7 +873,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:154 src/savemng.cpp:1926
+#: src/utils/FSUtils.cpp:160 src/savemng.cpp:1936
 #, c-format
 msgid ""
 "Error while reading folder content\n"
@@ -886,7 +888,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:176
+#: src/utils/FSUtils.cpp:182
 #, c-format
 msgid ""
 "Error while creating final folder:\n"
@@ -901,7 +903,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:225
+#: src/utils/FSUtils.cpp:231
 #, c-format
 msgid ""
 "Error\n"
@@ -914,15 +916,18 @@ msgstr ""
 "设置权限时出错\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:232
+#: src/utils/FSUtils.cpp:238
 #, c-format
 msgid ""
 "Path too long to set owner\n"
 "\n"
 "%s"
 msgstr ""
+"路径太长，无法设置所有者\n"
+"\n"
+"%s"
 
-#: src/utils/FSUtils.cpp:239
+#: src/utils/FSUtils.cpp:245
 #, c-format
 msgid ""
 "Error creating shim for change perms\n"
@@ -933,7 +938,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:253
+#: src/utils/FSUtils.cpp:259
 #, c-format
 msgid ""
 "Error\n"
@@ -946,11 +951,11 @@ msgstr ""
 "设置所有者 %08x / 组 %08x 时出错\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:330
+#: src/utils/FSUtils.cpp:336
 msgid "Cannot allocate copy buffers"
-msgstr ""
+msgstr "无法分配复制缓冲区"
 
-#: src/utils/FSUtils.cpp:374 src/savemng.cpp:1950 src/savemng.cpp:2004
+#: src/utils/FSUtils.cpp:380 src/savemng.cpp:1960 src/savemng.cpp:2014
 #: src/cfg/BaseCfg.cpp:84
 #, c-format
 msgid ""
@@ -966,7 +971,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:396 src/utils/FSUtils.cpp:402 src/savemng.cpp:2035
+#: src/utils/FSUtils.cpp:402 src/utils/FSUtils.cpp:408 src/savemng.cpp:2045
 #: src/cfg/BaseCfg.cpp:46
 #, c-format
 msgid ""
@@ -982,7 +987,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:431
+#: src/utils/FSUtils.cpp:437
 msgid ""
 "\n"
 "\n"
@@ -992,11 +997,11 @@ msgstr ""
 "\n"
 "注意: 如果您尚未执行此操作，请尝试在恢复之前擦除保存数据"
 
-#: src/utils/FSUtils.cpp:439
+#: src/utils/FSUtils.cpp:445
 msgid "Error creating permission file - Backup/Restore is not reliable"
 msgstr "创建权限文件时出错 - 备份/恢复功能不可靠"
 
-#: src/utils/FSUtils.cpp:457
+#: src/utils/FSUtils.cpp:463
 #, c-format
 msgid ""
 "Read error\n"
@@ -1011,7 +1016,7 @@ msgstr ""
 "\n"
 "从%s读取"
 
-#: src/utils/FSUtils.cpp:460
+#: src/utils/FSUtils.cpp:466
 #, c-format
 msgid ""
 "Write error\n"
@@ -1026,7 +1031,7 @@ msgstr ""
 "\n"
 "复制到 %s"
 
-#: src/utils/FSUtils.cpp:474 src/utils/FSUtils.cpp:755
+#: src/utils/FSUtils.cpp:480 src/utils/FSUtils.cpp:752
 #: src/menu/BatchJobOptions.cpp:136 src/savemng.cpp:161 src/savemng.cpp:199
 #, c-format
 msgid ""
@@ -1042,7 +1047,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:499
+#: src/utils/FSUtils.cpp:505
 #, c-format
 msgid ""
 "Error creating folder\n"
@@ -1057,7 +1062,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:515
+#: src/utils/FSUtils.cpp:521
 #, c-format
 msgid ""
 "Error creating permission file - Backup/Restore is not reliable\n"
@@ -1068,8 +1073,8 @@ msgstr ""
 "目前为止的错误数：%d\n"
 "是否继续？"
 
-#: src/utils/FSUtils.cpp:546 src/utils/FSUtils.cpp:580
-#: src/utils/FSUtils.cpp:591
+#: src/utils/FSUtils.cpp:547 src/utils/FSUtils.cpp:579
+#: src/utils/FSUtils.cpp:589
 #, c-format
 msgid ""
 "Error copying directory - Backup/Restore is not reliable\n"
@@ -1091,7 +1096,7 @@ msgstr ""
 "目前为止的错误数: %d\n"
 "是否要继续？"
 
-#: src/utils/FSUtils.cpp:579 src/utils/FSUtils.cpp:802
+#: src/utils/FSUtils.cpp:578 src/utils/FSUtils.cpp:794
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -1110,7 +1115,7 @@ msgstr ""
 "\n"
 "复制可能不完整"
 
-#: src/utils/FSUtils.cpp:590 src/utils/FSUtils.cpp:813 src/savemng.cpp:1819
+#: src/utils/FSUtils.cpp:588 src/utils/FSUtils.cpp:804 src/savemng.cpp:1829
 #, c-format
 msgid ""
 "Error while closing folder\n"
@@ -1125,27 +1130,27 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/utils/FSUtils.cpp:615
+#: src/utils/FSUtils.cpp:612
 #, c-format
 msgid "Copying file: %s"
 msgstr "正在复制文件 %s"
 
-#: src/utils/FSUtils.cpp:616
+#: src/utils/FSUtils.cpp:613
 #, c-format
 msgid "From: %s"
 msgstr "从 %s"
 
-#: src/utils/FSUtils.cpp:635
+#: src/utils/FSUtils.cpp:632
 #, c-format
 msgid "Deleting folder %s"
 msgstr "正在删除 %s 文件夹"
 
-#: src/utils/FSUtils.cpp:635
+#: src/utils/FSUtils.cpp:632
 #, c-format
 msgid "Deleting file %s"
 msgstr "正在删除文件 %s"
 
-#: src/utils/FSUtils.cpp:636
+#: src/utils/FSUtils.cpp:633
 #, c-format
 msgid ""
 "From: \n"
@@ -1154,8 +1159,8 @@ msgstr ""
 "从: \n"
 "%s"
 
-#: src/utils/FSUtils.cpp:774 src/utils/FSUtils.cpp:783
-#: src/utils/FSUtils.cpp:803 src/utils/FSUtils.cpp:814
+#: src/utils/FSUtils.cpp:767 src/utils/FSUtils.cpp:776
+#: src/utils/FSUtils.cpp:795 src/utils/FSUtils.cpp:805
 #, c-format
 msgid ""
 "Error setting permissions - Restore is not reliable\n"
@@ -1249,6 +1254,8 @@ msgid ""
 "Incomplete/truncated FAT32 chars translation file:\n"
 "%s"
 msgstr ""
+"FAT32 字符转换文件不完整或被截断：\n"
+"%s"
 
 #: src/utils/EscapeFAT32Utils.cpp:112
 #, c-format
@@ -1284,6 +1291,10 @@ msgid ""
 "->\n"
 "%s"
 msgstr ""
+"FAT32 重命名条目指向存档文件夹之外（损坏或恶意的备份）：\n"
+"%s\n"
+"->\n"
+"%s"
 
 #: src/utils/EscapeFAT32Utils.cpp:140 src/utils/EscapeFAT32Utils.cpp:156
 #, c-format
@@ -1323,6 +1334,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"将 %s 重命名为 data.bin 时出错\n"
+"\n"
+"%s"
 
 #: src/utils/AccountUtils.cpp:178
 #, c-format
@@ -1336,6 +1350,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"转换 loadiine 'u' 配置文件时出错\n"
+"\n"
+"%s"
 
 #: src/utils/AccountUtils.cpp:227
 #, c-format
@@ -1344,6 +1361,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"转换 loadiine 'c' 配置文件时出错\n"
+"\n"
+"%s"
 
 #: src/utils/AccountUtils.cpp:244
 msgid "UNABLE TO CONVERT FROM LOADIINE"
@@ -1373,6 +1393,11 @@ msgid ""
 "Errors so far: %d\n"
 "Do you want to continue?"
 msgstr ""
+"stat 文件条目指向存档文件夹之外，已跳过（损坏或恶意的备份）：\n"
+"%s\n"
+"\n"
+"目前为止的错误数：%d\n"
+"是否要继续？"
 
 #: src/utils/StatManager.cpp:105
 #, c-format
@@ -1426,9 +1451,12 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"权限文件无效或损坏（头部错误）。权限将不会被还原：\n"
+"\n"
+"%s"
 
 #: src/utils/StatManager.cpp:221 src/utils/StatManager.cpp:231
-#: src/savemng.cpp:2044 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:115
+#: src/savemng.cpp:2054 src/cfg/BaseCfg.cpp:57 src/cfg/BaseCfg.cpp:115
 #, c-format
 msgid ""
 "Error closing file\n"
@@ -1472,11 +1500,11 @@ msgstr "initFS失败。请确保您的MochaPayload是最新的"
 
 #: src/main.cpp:119
 msgid "Initializing Random seed"
-msgstr ""
+msgstr "正在初始化随机数种子"
 
 #: src/main.cpp:122
 msgid "Reading Encryption Keys"
-msgstr ""
+msgstr "正在读取加密密钥"
 
 #: src/main.cpp:141
 msgid "Initializing BackupSets metadata."
@@ -1494,21 +1522,21 @@ msgstr "正在初始化Mii存储库。"
 msgid "\\ue044: Exit"
 msgstr "\\ue044: 退出"
 
-#: src/BackupSetList.cpp:271
+#: src/BackupSetList.cpp:286
 #, c-format
 msgid "BackupSet %s has already SAVEMII format"
-msgstr ""
+msgstr "存档集 %s 已经是 SAVEMII 格式"
 
-#: src/BackupSetList.cpp:369 src/savemng.cpp:832
+#: src/BackupSetList.cpp:425 src/savemng.cpp:842
 msgid "Do you want to cancel batch backup?"
 msgstr "是否要取消批量备份？"
 
-#: src/BackupSetList.cpp:379 src/mii/MiiRepo.cpp:104 src/savemng.cpp:859
-#: src/savemng.cpp:1050
+#: src/BackupSetList.cpp:435 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
+#: src/savemng.cpp:1060
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr "无法使用的槽位！备份失败！"
 
-#: src/BackupSetList.cpp:380 src/savemng.cpp:868
+#: src/BackupSetList.cpp:436 src/savemng.cpp:878
 #, c-format
 msgid ""
 "%s\n"
@@ -1522,6 +1550,21 @@ msgstr ""
 "备份失败。\n"
 "目前为止的错误数：%d\n"
 "是否要继续？"
+
+#: src/BackupSetList.cpp:467
+#, c-format
+msgid "FROM %s - %d title%s OK"
+msgstr "来自 %s - %d 个软件%s OK"
+
+#: src/BackupSetList.cpp:472
+#, c-format
+msgid "%s FAILED - No titles"
+msgstr "%s 失败 - 没有软件"
+
+#: src/BackupSetList.cpp:475
+#, c-format
+msgid "%s FAILED - OK/KO > %d/%d"
+msgstr "%s 失败 - OK/KO > %d/%d"
 
 #: src/mii/MiiStadioSav.cpp:169
 msgid "stadio.sav DB not found. Do you want to create one from existing associated FFL and ACCOUNT repos?"
@@ -1739,27 +1782,27 @@ msgstr ""
 msgid "Reading Miis: %d"
 msgstr "正在读取Mii：%d"
 
-#: src/mii/MiiAccountRepo.cpp:411 src/mii/MiiRepo.cpp:131 src/savemng.cpp:1117
+#: src/mii/MiiAccountRepo.cpp:411 src/mii/MiiRepo.cpp:131 src/savemng.cpp:1127
 msgid "pre-Restore backup"
 msgstr "预还原备份"
 
 #: src/mii/MiiAccountRepo.cpp:412 src/mii/MiiRepo.cpp:132 src/savemng.cpp:410
-#: src/savemng.cpp:1118
+#: src/savemng.cpp:1128
 msgid "Backup Failed - Restore aborted !!"
 msgstr "备份失败 - 恢复已中止！！"
 
-#: src/mii/MiiAccountRepo.cpp:426 src/mii/MiiAccountRepo.cpp:475
+#: src/mii/MiiAccountRepo.cpp:428 src/mii/MiiAccountRepo.cpp:479
 #: src/mii/MiiRepo.cpp:56 src/mii/MiiRepo.cpp:80 src/mii/MiiRepo.cpp:145
 #: src/mii/MiiRepo.cpp:178
 msgid "Error copying data."
 msgstr "复制数据时出错。 "
 
-#: src/mii/MiiAccountRepo.cpp:430 src/mii/MiiRepo.cpp:150
+#: src/mii/MiiAccountRepo.cpp:432 src/mii/MiiRepo.cpp:150
 msgid "Error creating folder."
 msgstr "创建文件夹时出错。"
 
-#: src/mii/MiiAccountRepo.cpp:435 src/mii/MiiRepo.cpp:189 src/savemng.cpp:1128
-#: src/savemng.cpp:1270
+#: src/mii/MiiAccountRepo.cpp:437 src/mii/MiiRepo.cpp:189 src/savemng.cpp:1138
+#: src/savemng.cpp:1280
 #, c-format
 msgid ""
 "%s\n"
@@ -1841,14 +1884,14 @@ msgstr "正在位置%d/%d查找Mii。已找到Mii：%d。"
 
 #: src/mii/MiiFileRepo.cpp:563
 msgid "Cannot create memory buffer for reading the mii data"
-msgstr ""
+msgstr "无法创建用于读取 mii 数据的内存缓冲区"
 
-#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:903
+#: src/mii/MiiRepo.cpp:25 src/savemng.cpp:913
 msgid "Backup found on this slot. Overwrite it?"
 msgstr "这个槽位有保存数据，覆盖吗？"
 
-#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:929
-#: src/savemng.cpp:948 src/savemng.cpp:1048
+#: src/mii/MiiRepo.cpp:44 src/mii/MiiRepo.cpp:102 src/savemng.cpp:939
+#: src/savemng.cpp:958 src/savemng.cpp:1058
 #, c-format
 msgid ""
 "%s\n"
@@ -1877,11 +1920,11 @@ msgstr "无STADIO"
 msgid "Restore aborted."
 msgstr "恢复已中止。"
 
-#: src/mii/MiiRepo.cpp:217 src/savemng.cpp:1317
+#: src/mii/MiiRepo.cpp:217 src/savemng.cpp:1327
 msgid "pre-Wipe backup"
 msgstr "预删除备份"
 
-#: src/mii/MiiRepo.cpp:218 src/savemng.cpp:1318
+#: src/mii/MiiRepo.cpp:218 src/savemng.cpp:1328
 msgid "Backup Failed - Wipe aborted !!"
 msgstr "备份失败 - 擦除已中止！！"
 
@@ -1897,7 +1940,7 @@ msgstr "擦除数据时出错。"
 msgid "Error deleting file."
 msgstr "删除文件时出错。"
 
-#: src/mii/MiiRepo.cpp:258 src/savemng.cpp:1404
+#: src/mii/MiiRepo.cpp:258 src/savemng.cpp:1414
 #, c-format
 msgid ""
 "%s\n"
@@ -1968,7 +2011,7 @@ msgstr "\\ue000：选择游戏 \\ue085\\ue07e\\ue086：分页 \\ue001：返回"
 
 #: src/menu/TitleListState.cpp:100
 msgid "This title cannot be managed due to problems with its metadata."
-msgstr ""
+msgstr "由于元数据存在问题，无法管理此软件。"
 
 #: src/menu/TitleListState.cpp:105
 msgid "CBHC save. Could be dangerous to modify. Continue?"
@@ -2434,7 +2477,7 @@ msgstr "复制"
 #: src/menu/MiiSelectState.cpp:417 src/menu/MiiSelectState.cpp:433
 #: src/menu/MiiSelectState.cpp:443 src/menu/MiiSelectState.cpp:448
 #: src/menu/MiiSelectState.cpp:455 src/menu/MiiSelectState.cpp:466
-#: src/menu/BackupSetContentListState.cpp:61
+#: src/menu/BackupSetContentListState.cpp:62
 #, c-format
 msgid "%s"
 msgstr "%s"
@@ -2599,7 +2642,7 @@ msgstr "\\ue083 排序方式: %s \\ue084"
 
 #: src/menu/BackupSetListState.cpp:116
 msgid "\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 Filter  \\ue001 Back"
-msgstr ""
+msgstr "\\ue000 转换  \\ue002 显示内容  \\ue045 标签  \\ue046 删除  \\ue003 筛选  \\ue001 返回"
 
 #: src/menu/BackupSetListState.cpp:120
 msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
@@ -2611,7 +2654,7 @@ msgstr "\\ue000: 选择备份集  \\ue002: 显示内容  \\ue003: 过滤列表  
 
 #: src/menu/BackupSetListState.cpp:135
 msgid "Root BackupSet cannot be selected for batch operations"
-msgstr ""
+msgstr "根存档集无法用于批量操作"
 
 #: src/menu/BackupSetListState.cpp:147
 #, c-format
@@ -2636,24 +2679,37 @@ msgid ""
 "Creating a new backupSet from %s Cemu/Dolphin/plain exportSet\n"
 "Continue?"
 msgstr ""
+"正在从 %s Cemu/Dolphin/普通导出集创建新的存档集\n"
+"是否继续？"
 
-#: src/menu/BackupSetListState.cpp:174
+#: src/menu/BackupSetListState.cpp:175
 msgid "BackupSet succesfully created from CEMU/Dolplhin data"
-msgstr ""
+msgstr "已成功从 CEMU/Dolphin 数据创建存档集"
 
-#: src/menu/BackupSetListState.cpp:176
+#: src/menu/BackupSetListState.cpp:177
 msgid "Error creaing BackupSet from CEMU/Dolplhin data"
-msgstr ""
+msgstr "从 CEMU/Dolphin 数据创建存档集时出错"
 
-#: src/menu/BackupSetListState.cpp:178 src/menu/BackupSetListState.cpp:180
+#: src/menu/BackupSetListState.cpp:179 src/menu/BackupSetListState.cpp:181
 #, c-format
 msgid "BackupSet creation aborted. OK: %d  KO: %d"
-msgstr ""
+msgstr "存档集创建已中止。OK：%d  KO：%d"
 
-#: src/menu/BackupSetListState.cpp:182
+#: src/menu/BackupSetListState.cpp:183
 #, c-format
-msgid "Error creating BackupSet createted from CEMU/Dolplhin data. OK: %d  KO: %d"
-msgstr ""
+msgid "Error creating BackupSet from CEMU/Dolplhin data. Titles OK: %d  Titles KO: %d"
+msgstr "从 CEMU/Dolphin 数据创建存档集时出错。软件 OK：%d  软件 KO：%d"
+
+#: src/menu/BackupSetListState.cpp:188
+#: src/menu/BatchJobTitleSelectState.cpp:913 src/menu/BatchBackupState.cpp:141
+msgid "Do you want to wipe this incomplete batch backup?"
+msgstr "是否要擦除此不完整的批量备份？"
+
+#: src/menu/BackupSetListState.cpp:193
+#: src/menu/BatchJobTitleSelectState.cpp:737
+#: src/menu/BatchJobTitleSelectState.cpp:917 src/menu/BatchBackupState.cpp:145
+msgid "ERROR WIPING BACKUPSET"
+msgstr "擦除备份集时出错"
 
 #: src/menu/BatchJobTitleSelectState.cpp:241
 msgid "Batch Restore - Select"
@@ -2741,11 +2797,11 @@ msgstr "|已保存|"
 
 #: src/menu/BatchJobTitleSelectState.cpp:283
 msgid "Emul Export - Select & Go"
-msgstr ""
+msgstr "模拟器导出 - 选择并开始"
 
 #: src/menu/BatchJobTitleSelectState.cpp:284
 msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Export"
-msgstr ""
+msgstr "\\ue003\\ue07e设置/取消  \\ue045\\ue046全部设置/取消  \\ue002排除  \\ue000导出  \\ue001导出"
 
 #: src/menu/BatchJobTitleSelectState.cpp:303
 msgid "There are no titles matching selected filters."
@@ -3134,11 +3190,6 @@ msgstr ""
 "\n"
 "您可以继续。"
 
-#: src/menu/BatchJobTitleSelectState.cpp:737
-#: src/menu/BatchJobTitleSelectState.cpp:917 src/menu/BatchBackupState.cpp:145
-msgid "ERROR WIPING BACKUPSET"
-msgstr "擦除备份集时出错"
-
 #: src/menu/BatchJobTitleSelectState.cpp:763
 #: src/menu/BatchJobTitleSelectState.cpp:772 src/menu/TitleOptionsState.cpp:954
 #: src/menu/TitleOptionsState.cpp:962
@@ -3155,10 +3206,6 @@ msgstr ""
 "任务已中止：原本会将保存数据恢复至不存在的配置文件。\n"
 "\n"
 "尝试使用'从/到用户'选项进行恢复"
-
-#: src/menu/BatchJobTitleSelectState.cpp:913 src/menu/BatchBackupState.cpp:141
-msgid "Do you want to wipe this incomplete batch backup?"
-msgstr "是否要擦除此不完整的批量备份？"
 
 #: src/menu/BatchJobTitleSelectState.cpp:970
 #, c-format
@@ -3431,62 +3478,66 @@ msgstr "复制/移动到其他档案至少需要两个档案。"
 
 #: src/menu/BackupSetManagementState.cpp:25
 msgid "BackupSet Management"
-msgstr ""
+msgstr "存档集管理"
 
 #: src/menu/BackupSetManagementState.cpp:28
 msgid "   Set as default / Show Content / Tag / Wipe a Backupset"
-msgstr ""
+msgstr "   设为默认 / 显示内容 / 标签 / 删除存档集"
 
 #: src/menu/BackupSetManagementState.cpp:31
 msgid "   Convert / Show Content / Tag / Wipe  CEMU/Dolphin compatible backups"
-msgstr ""
+msgstr "   转换 / 显示内容 / 标签 / 删除 CEMU/Dolphin 兼容备份"
 
 #: src/menu/BackupSetManagementState.cpp:39
 msgid "Set the default BackupSet (tasks will used it as their backup repo), tag it with a name, or wipe any backupSet"
-msgstr ""
+msgstr "设置默认存档集（任务将以其作为备份存储库）、用名称为其添加标签，或删除任意存档集"
 
 #: src/menu/BackupSetManagementState.cpp:42
 msgid ""
 "* Convert a CEMU/DOLPHIN/plain title or save folders to a bacth restorable backupSet\n"
 "* Show content , tag or wipe  CEMU or Dolphin export folders"
 msgstr ""
+"* 将 CEMU/DOLPHIN/普通软件或存档文件夹转换为可批量还原的存档集\n"
+"* 显示、标记或删除 CEMU 或 Dolphin 导出文件夹"
 
 #: src/menu/BackupSetManagementState.cpp:53
 msgid "\\ue002: Options \\ue000: Select BackupSet Task"
-msgstr ""
+msgstr "\\ue002：选项 \\ue000：选择存档集任务"
 
 #: src/menu/ExportAsState.cpp:28
 msgid "Export As"
-msgstr ""
+msgstr "导出为"
 
 #: src/menu/ExportAsState.cpp:30
 #, c-format
 msgid "   Export Wii U as CEMU (%u Title%s)"
-msgstr ""
+msgstr "   将 Wii U 导出为 CEMU（%u 个软件%s）"
 
 #: src/menu/ExportAsState.cpp:33
 #, c-format
 msgid "   Export vWii as Dolphin (%u Title%s)"
-msgstr ""
+msgstr "   将 vWii 导出为 Dolphin（%u 个软件%s）"
 
 #: src/menu/ExportAsState.cpp:36
 #, c-format
 msgid "   Export Wii U System Titles as CEMU (%u Title%s)"
-msgstr ""
+msgstr "   将 Wii U 系统软件导出为 CEMU（%u 个软件%s）"
 
 #: src/menu/ExportAsState.cpp:43
 msgid ""
 "Reminder: Your Excludes will be applied to\n"
 "  'Export Wii U' and 'Export vWii' tasks"
 msgstr ""
+"提醒：您的排除项将应用于\n"
+"  “导出 Wii U”和“导出 vWii”任务"
 
 #: src/menu/ExportAsState.cpp:49
 msgid "Export Wii U or vWii savedata in a format ready to be copied to the corresponding foder in CEMU or Dolphin emulator installation."
-msgstr ""
+msgstr "将 Wii U 或 vWii 存档数据导出为可直接复制到 CEMU 或 Dolphin 模拟器安装目录对应文件夹的格式。"
 
 #: src/menu/ExportAsState.cpp:53
 msgid "\\ue002: ExportFolder Management \\ue000: Export  \\ue001: Back"
-msgstr ""
+msgstr "\\ue002：导出文件夹管理 \\ue000：导出  \\ue001：返回"
 
 #: src/menu/MiiTransformTasksState.cpp:24
 msgid "Mii Transform Tasks"
@@ -3852,30 +3903,30 @@ msgstr "OK/KOs > WU:%d/%d,vW:%d/%d,S:%d/%d"
 msgid "PARTIAL - WU:%d,vW:%d,S:%d OK"
 msgstr "部分备份 - WU:%d,vW:%d,S:%d 确定"
 
-#: src/menu/BackupSetContentListState.cpp:52
+#: src/menu/BackupSetContentListState.cpp:53
 msgid "Backup set is empty"
-msgstr ""
+msgstr "存档集为空"
 
-#: src/menu/BackupSetContentListState.cpp:59
+#: src/menu/BackupSetContentListState.cpp:60
 msgid "BackupSet Content"
 msgstr "备份集内容"
 
-#: src/menu/BackupSetContentListState.cpp:72
+#: src/menu/BackupSetContentListState.cpp:75
 #, c-format
 msgid "    %s [Installed]"
 msgstr "    %s [已安装]"
 
-#: src/menu/BackupSetContentListState.cpp:103
+#: src/menu/BackupSetContentListState.cpp:106
 #, c-format
 msgid "[%d] %s"
-msgstr ""
+msgstr "[%d] %s"
 
-#: src/menu/BackupSetContentListState.cpp:109
+#: src/menu/BackupSetContentListState.cpp:120
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue085\\ue07e\\ue086: 翻页   \\ue001: 返回"
 
-#: src/menu/BackupSetContentListState.cpp:194
-#: src/menu/BackupSetContentListState.cpp:340
+#: src/menu/BackupSetContentListState.cpp:205
+#: src/menu/BackupSetContentListState.cpp:358
 msgid "< no savedata >"
 msgstr "< 无存档数据 >"
 
@@ -3892,7 +3943,7 @@ msgstr ""
 
 #: src/menu/BatchJobOptions.cpp:159
 msgid "Cannot allocate memory for the profile list."
-msgstr ""
+msgstr "无法为配置文件列表分配内存。"
 
 #: src/menu/BatchJobOptions.cpp:185
 msgid "Can't Copy/Move To OtherProfile if there is only one profile."
@@ -4556,7 +4607,7 @@ msgstr "   批量复制到其他设备"
 
 #: src/menu/BatchTasksState.cpp:51
 msgid "   Export in CEMU/Dolphin format"
-msgstr ""
+msgstr "   以 CEMU/Dolphin 格式导出"
 
 #: src/menu/BatchTasksState.cpp:62
 msgid ""
@@ -4585,7 +4636,7 @@ msgstr "批量复制到其他设备允许您在 NAND 和 USB 之间传输所有�
 
 #: src/menu/BatchTasksState.cpp:77
 msgid "Export savedata in a format ready to be copied to a CEMU or Dolphin folder."
-msgstr ""
+msgstr "将存档数据导出为可直接复制到 CEMU 或 Dolphin 文件夹的格式。"
 
 #: src/menu/BatchTasksState.cpp:88
 msgid "\\ue002: Options \\ue000: Select Batch Task"
@@ -4599,19 +4650,22 @@ msgstr "Loadiine游戏文件夹无法打开。"
 msgid "Loadiine game folder not found."
 msgstr "没有发现Loadiine游戏文件夹。"
 
-#: src/savemng.cpp:400 src/savemng.cpp:515 src/savemng.cpp:579
-#: src/savemng.cpp:1104 src/savemng.cpp:1308 src/savemng.cpp:1411
-#: src/savemng.cpp:1469 src/savemng.cpp:1525 src/miisavemng.cpp:14
+#: src/savemng.cpp:400 src/savemng.cpp:517 src/savemng.cpp:581
+#: src/savemng.cpp:1114 src/savemng.cpp:1318 src/savemng.cpp:1421
+#: src/savemng.cpp:1479 src/savemng.cpp:1535 src/miisavemng.cpp:14
 msgid "Are you sure?"
 msgstr "你确定吗？"
 
-#: src/savemng.cpp:406 src/savemng.cpp:521 src/savemng.cpp:585
-#: src/savemng.cpp:1112 src/savemng.cpp:1314 src/savemng.cpp:1415
+#: src/savemng.cpp:406 src/savemng.cpp:523 src/savemng.cpp:587
+#: src/savemng.cpp:1122 src/savemng.cpp:1324 src/savemng.cpp:1425
 msgid ""
 "There is no empty slot to back up the current savedata first.\n"
 "\n"
 "Continue without a backup?"
 msgstr ""
+"没有空的存档槽位可先备份当前存档数据。\n"
+"\n"
+"是否不备份而继续？"
 
 #: src/savemng.cpp:409
 msgid "pre-copyToOtherDev backup"
@@ -4621,23 +4675,23 @@ msgstr "预复制到其它设备备份"
 msgid "Copy failed."
 msgstr "复制保存数据失败。"
 
-#: src/savemng.cpp:428 src/savemng.cpp:969 src/savemng.cpp:1148
+#: src/savemng.cpp:428 src/savemng.cpp:979 src/savemng.cpp:1158
 msgid "source_user=-3 is not allowed for this task"
 msgstr "此任务不允许使用 source_user=-3"
 
-#: src/savemng.cpp:460 src/savemng.cpp:1000 src/savemng.cpp:1517
+#: src/savemng.cpp:460 src/savemng.cpp:1010 src/savemng.cpp:1527
 msgid "Error copying common savedata."
 msgstr "复制通用保存数据时出错。"
 
-#: src/savemng.cpp:473 src/savemng.cpp:1009
+#: src/savemng.cpp:475 src/savemng.cpp:1019
 msgid "Error copying savedata."
 msgstr "复制保存数据时出错。"
 
-#: src/savemng.cpp:474 src/savemng.cpp:547 src/savemng.cpp:1010
+#: src/savemng.cpp:476 src/savemng.cpp:549 src/savemng.cpp:1020
 msgid "Error copying profile savedata."
 msgstr "复制配置文件保存数据时出错。"
 
-#: src/savemng.cpp:494
+#: src/savemng.cpp:496
 #, c-format
 msgid ""
 "%s\n"
@@ -4646,15 +4700,15 @@ msgstr ""
 "%s\n"
 "复制失败。"
 
-#: src/savemng.cpp:524
+#: src/savemng.cpp:526
 msgid "pre-copySavedataToOtherProfile backup"
 msgstr "pre-copySavedataToOtherProfile 备份"
 
-#: src/savemng.cpp:525 src/savemng.cpp:589
+#: src/savemng.cpp:527 src/savemng.cpp:591
 msgid "Backup Failed - Replicate aborted !!"
 msgstr "备份失败 - 复制已中止！！"
 
-#: src/savemng.cpp:558
+#: src/savemng.cpp:560
 #, c-format
 msgid ""
 "%s\n"
@@ -4663,11 +4717,11 @@ msgstr ""
 "%s\n"
 "复制档案失败。"
 
-#: src/savemng.cpp:588
+#: src/savemng.cpp:590
 msgid "pre-moveSavedataToOtherProfile backup"
 msgstr "将存档数据移动到其他档案前备份"
 
-#: src/savemng.cpp:607
+#: src/savemng.cpp:609
 #, c-format
 msgid ""
 "Error deleting savedata folder\n"
@@ -4676,7 +4730,7 @@ msgstr ""
 "删除存档文件夹时出错\n"
 "%s"
 
-#: src/savemng.cpp:614
+#: src/savemng.cpp:616
 #, c-format
 msgid ""
 "Unable to rename folder \n"
@@ -4695,7 +4749,7 @@ msgstr ""
 "\n"
 "请恢复备份，修复错误，然后重试"
 
-#: src/savemng.cpp:633
+#: src/savemng.cpp:635
 #, c-format
 msgid ""
 "%s\n"
@@ -4704,47 +4758,47 @@ msgstr ""
 "%s\n"
 "移动档案失败。"
 
-#: src/savemng.cpp:933
+#: src/savemng.cpp:943
 msgid "BACKUP IN PROGRESS"
 msgstr "备份正在进行中"
 
-#: src/savemng.cpp:954 src/savemng.cpp:1035
+#: src/savemng.cpp:964 src/savemng.cpp:1045
 msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
 msgstr "备份不会保留权限。这是一个系统游戏，只有在您解决问题后备份才会继续。"
 
-#: src/savemng.cpp:957 src/savemng.cpp:1038
+#: src/savemng.cpp:967 src/savemng.cpp:1048
 msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
 msgstr "备份不会保留权限。虽然在传统模式下可以运行，但建议您先解决问题再重试。"
 
-#: src/savemng.cpp:1018
+#: src/savemng.cpp:1028
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical."
 msgstr "警告 - 复制元数据 saveinfo.xml 时出错。非关键错误。"
 
-#: src/savemng.cpp:1027
+#: src/savemng.cpp:1037
 msgid "Error closing FAT32 chars translation file"
 msgstr "关闭FAT32字符转换文件时出错"
 
-#: src/savemng.cpp:1039
+#: src/savemng.cpp:1049
 msgid "WARNING - NO PERMS"
 msgstr "警告 - 无权限"
 
-#: src/savemng.cpp:1175 src/savemng.cpp:1461
+#: src/savemng.cpp:1185 src/savemng.cpp:1471
 msgid "Error restoring common savedata."
 msgstr "恢复通用存档时出错。"
 
-#: src/savemng.cpp:1188
+#: src/savemng.cpp:1198
 msgid "Error restoring savedata."
 msgstr "恢复存档时出错。"
 
-#: src/savemng.cpp:1189
+#: src/savemng.cpp:1199
 msgid "Error restoring profile savedata."
 msgstr "恢复配置文件存档时出错。"
 
-#: src/savemng.cpp:1244
+#: src/savemng.cpp:1254
 msgid "Error setting permissions"
 msgstr "设置权限时出错"
 
-#: src/savemng.cpp:1305
+#: src/savemng.cpp:1315
 msgid ""
 "This option is a last resort in case something has gone wrong when\n"
 "restoring data. It will wipe metadata and savedata, and the title \n"
@@ -4759,24 +4813,24 @@ msgstr ""
 "\n"
 "继续吗？"
 
-#: src/savemng.cpp:1305 src/savemng.cpp:1308 src/savemng.cpp:1525
+#: src/savemng.cpp:1315 src/savemng.cpp:1318 src/savemng.cpp:1535
 #: src/miisavemng.cpp:14
 msgid "Hm, are you REALLY sure?"
 msgstr "你真的真的要这样做吗？？"
 
-#: src/savemng.cpp:1316 src/savemng.cpp:1417
+#: src/savemng.cpp:1326 src/savemng.cpp:1427
 msgid "Backup current savedata first?"
 msgstr "要不要先备份现在的保存数据？"
 
-#: src/savemng.cpp:1357
+#: src/savemng.cpp:1367
 msgid "Error wiping common savedata."
 msgstr "擦除通用存档数据时出错。"
 
-#: src/savemng.cpp:1361
+#: src/savemng.cpp:1371
 msgid "Error deleting common folder."
 msgstr "删除通用文件夹时出错。"
 
-#: src/savemng.cpp:1362
+#: src/savemng.cpp:1372
 #, c-format
 msgid ""
 "%s \n"
@@ -4789,23 +4843,23 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1369
+#: src/savemng.cpp:1379
 msgid "Error wiping savedata."
 msgstr "擦除存档数据时出错。"
 
-#: src/savemng.cpp:1370
+#: src/savemng.cpp:1380
 msgid "Error wiping profile savedata."
 msgstr "擦除配置文件存档数据时出错。"
 
-#: src/savemng.cpp:1375
+#: src/savemng.cpp:1385
 msgid "Error deleting savedata folder."
 msgstr "删除保存数据文件夹时出错。"
 
-#: src/savemng.cpp:1376
+#: src/savemng.cpp:1386
 msgid "Error deleting profile savedata folder."
 msgstr "删除配置文件保存数据文件夹时出错。"
 
-#: src/savemng.cpp:1377
+#: src/savemng.cpp:1387
 #, c-format
 msgid ""
 "%s \n"
@@ -4818,15 +4872,15 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1387
+#: src/savemng.cpp:1397
 msgid "Error wiping metadata+savedata."
 msgstr "擦除元数据和存档数据时出错。"
 
-#: src/savemng.cpp:1392
+#: src/savemng.cpp:1402
 msgid "Error deleting title folder."
 msgstr "删除标题文件夹时出错。"
 
-#: src/savemng.cpp:1393
+#: src/savemng.cpp:1403
 #, c-format
 msgid ""
 "%s \n"
@@ -4839,25 +4893,25 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: src/savemng.cpp:1434 src/savemng.cpp:1447
+#: src/savemng.cpp:1444 src/savemng.cpp:1457
 msgid "Failed to import savedata from loadiine."
 msgstr "从 loadiine 导入存档数据失败。"
 
-#: src/savemng.cpp:1487 src/savemng.cpp:1505
+#: src/savemng.cpp:1497 src/savemng.cpp:1515
 msgid "Failed to export savedata to loadiine."
 msgstr "导出存档数据到 loadiine 失败。"
 
-#: src/savemng.cpp:1531 src/savemng.cpp:1536
+#: src/savemng.cpp:1541 src/savemng.cpp:1546
 msgid "Error setting path. Aborting."
 msgstr "错误的路径设置！已取消操作。"
 
-#: src/savemng.cpp:1544 src/savemng.cpp:1546 src/miisavemng.cpp:21
+#: src/savemng.cpp:1554 src/savemng.cpp:1556 src/miisavemng.cpp:21
 #: src/miisavemng.cpp:23
 #, c-format
 msgid "Failed to delete slot %u."
 msgstr "无法删除槽位%u。"
 
-#: src/savemng.cpp:1548 src/savemng.cpp:1571 src/miisavemng.cpp:25
+#: src/savemng.cpp:1558 src/savemng.cpp:1581 src/miisavemng.cpp:25
 #, c-format
 msgid ""
 "Folder %s\n"
@@ -4866,20 +4920,20 @@ msgstr ""
 "文件夹 %s\n"
 "不存在"
 
-#: src/savemng.cpp:1555
+#: src/savemng.cpp:1565
 msgid "Wipe BackupSet - Are you sure?"
 msgstr "删除存档集 - 是否继续？"
 
-#: src/savemng.cpp:1555
+#: src/savemng.cpp:1565
 msgid "Wipe BackupSet - Hm, are you REALLY sure?"
 msgstr "删除存档集 - 你真的真的要这样做吗？？"
 
-#: src/savemng.cpp:1563 src/savemng.cpp:1567
+#: src/savemng.cpp:1573 src/savemng.cpp:1577
 #, c-format
 msgid "Failed to delete backupSet %s."
 msgstr "无法删除存档集%s。"
 
-#: src/savemng.cpp:1621
+#: src/savemng.cpp:1631
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4898,7 +4952,7 @@ msgstr ""
 "- 已中止：%d\n"
 "- 已跳过：%d\n"
 
-#: src/savemng.cpp:1623
+#: src/savemng.cpp:1633
 #, c-format
 msgid ""
 "Task completed. Results:\n"
@@ -4917,7 +4971,7 @@ msgstr ""
 "- 已中止：%d\n"
 "- 已跳过：%d（包括 %d 个未初始化的配置文件）\n"
 
-#: src/savemng.cpp:1632
+#: src/savemng.cpp:1642
 msgid ""
 "\n"
 "Failed Titles:"
@@ -4925,7 +4979,7 @@ msgstr ""
 "\n"
 "失败的标题: "
 
-#: src/savemng.cpp:1671
+#: src/savemng.cpp:1681
 #, c-format
 msgid ""
 "Unable to merge folder '%08x%08x' with existent folder\n"
@@ -4941,7 +4995,7 @@ msgstr ""
 "\n"
 "备份/恢复操作仍将使用旧文件夹'%08x%08x'文件夹"
 
-#: src/savemng.cpp:1678
+#: src/savemng.cpp:1688
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -4964,7 +5018,7 @@ msgstr ""
 "\n"
 "备份/恢复操作仍将使用旧的'%08x%08x'文件夹"
 
-#: src/savemng.cpp:1683
+#: src/savemng.cpp:1693
 #, c-format
 msgid ""
 "Unable to rename folder '%08x%08x' to\n"
@@ -4984,7 +5038,7 @@ msgstr ""
 "\n"
 "备份/恢复操作仍将使用旧的'%08x%08x'文件夹"
 
-#: src/savemng.cpp:1702
+#: src/savemng.cpp:1712
 #, c-format
 msgid ""
 "Failed to delete (test) folder \n"
@@ -4999,12 +5053,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1734
+#: src/savemng.cpp:1744
 #, c-format
 msgid "Migrating from folder: %08x%08x"
 msgstr "正在从文件夹: %08x%08x 迁移"
 
-#: src/savemng.cpp:1740
+#: src/savemng.cpp:1750
 #, c-format
 msgid ""
 "Error renaming/moving '%08x%08x' to \n"
@@ -5021,7 +5075,7 @@ msgstr ""
 "\n"
 "是否继续？\n"
 
-#: src/savemng.cpp:1760
+#: src/savemng.cpp:1770
 #, c-format
 msgid ""
 "Error opening folder\n"
@@ -5030,8 +5084,13 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"打开文件夹时出错\n"
+"\n"
+"%s\n"
+"\n"
+"%s"
 
-#: src/savemng.cpp:1770
+#: src/savemng.cpp:1780
 #, c-format
 msgid ""
 "Errors so far in this (sub)task: %d\n"
@@ -5040,7 +5099,7 @@ msgstr ""
 "此（子）任务中目前出现的错误: %d\n"
 "是否继续？"
 
-#: src/savemng.cpp:1788
+#: src/savemng.cpp:1798
 #, c-format
 msgid ""
 "Cannot move %s from '%08x%08x' to\n"
@@ -5055,7 +5114,7 @@ msgstr ""
 "\n"
 "文件已存在于目标文件夹中。"
 
-#: src/savemng.cpp:1796
+#: src/savemng.cpp:1806
 #, c-format
 msgid ""
 "Error creating/removing (test) target folder\n"
@@ -5074,7 +5133,7 @@ msgstr ""
 "\n"
 "未尝试移动！"
 
-#: src/savemng.cpp:1804
+#: src/savemng.cpp:1814
 #, c-format
 msgid ""
 "Cannot rename folder '%08x%08x/%s' to\n"
@@ -5089,7 +5148,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1812
+#: src/savemng.cpp:1822
 #, c-format
 msgid ""
 "Error while parsing folder content\n"
@@ -5108,7 +5167,7 @@ msgstr ""
 "\n"
 "迁移可能不完整"
 
-#: src/savemng.cpp:1825
+#: src/savemng.cpp:1835
 #, c-format
 msgid ""
 "Error merging folders: after moving all slots, folder\n"
@@ -5123,7 +5182,7 @@ msgstr ""
 "\n"
 "仍然不为空，无法删除。"
 
-#: src/savemng.cpp:1831
+#: src/savemng.cpp:1841
 #, c-format
 msgid ""
 "Failed to delete (legacy) folder\n"
@@ -5138,7 +5197,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/savemng.cpp:1866
+#: src/savemng.cpp:1876
 #, c-format
 msgid ""
 "Backup contains savedata for the profile '%s',\n"
@@ -5147,12 +5206,12 @@ msgstr ""
 "备份包含配置文件 '%s' 的保存数据，\n"
 "但该配置文件不存在于此控制台"
 
-#: src/savemng.cpp:1905
+#: src/savemng.cpp:1915
 #, c-format
 msgid "... and %d more"
 msgstr "……以及 %d 个其他"
 
-#: src/savemng.cpp:2070
+#: src/savemng.cpp:2080
 #, c-format
 msgid ""
 "Error setting quota for \n"
@@ -5161,15 +5220,15 @@ msgstr ""
 "设置配额时出错\n"
 "%s"
 
-#: src/savemng.cpp:2097
+#: src/savemng.cpp:2107
 msgid "Error creating init data"
 msgstr "创建初始化数据时出错"
 
-#: src/savemng.cpp:2146
+#: src/savemng.cpp:2156
 msgid "Error creating vWii init data"
 msgstr "创建 vWii 初始化数据时出错"
 
-#: src/savemng.cpp:2180
+#: src/savemng.cpp:2190
 #, c-format
 msgid ""
 "Sourcce saveinfo\n"
@@ -5180,11 +5239,11 @@ msgstr ""
 "%s\n"
 "。"
 
-#: src/savemng.cpp:2213
+#: src/savemng.cpp:2223
 msgid "Warning - Error copying metadata saveinfo.xml. Not critical.\n"
 msgstr "警告 - 复制元数据 saveinfo.xml 时出错。非严重错误。\n"
 
-#: src/Metadata.cpp:100 src/Metadata.cpp:112
+#: src/Metadata.cpp:109 src/Metadata.cpp:121
 msgid ", from "
 msgstr "，来自"
 
@@ -5277,6 +5336,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"分配内存以读取文件时出错\n"
+"\n"
+"%s"
 
 #~ msgid "Initializing Radndom seed"
 #~ msgstr "正在初始化随机数种子"
