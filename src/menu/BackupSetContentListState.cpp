@@ -67,49 +67,55 @@ void BackupSetContentListState::render() {
             if (i + this->scroll < 0 || i + this->scroll >= backupset_content_size)
                 break;
 
+            const auto &item = backupset_content.at(i + this->scroll);
+            bool isFailed = (item.backup_health != BACKUP_OK);
+            const char *failTag = isFailed ? _(" [Backup Failed]") : "";
+
             DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
-            if (backupset_content.at(i + this->scroll).backup_health != BACKUP_OK)
+            if (isFailed)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_DANGER, COLOR_LIST_DANGER_AT_CURSOR, cursorPos, i);
 
-            if (backupset_content.at(i + this->scroll).installed) {
-                Console::consolePrintPos(M_OFF, i + 2, _("    %s [Installed]"), backupset_content.at(i + this->scroll).title->shortName);
-                if (backupset_content.at(i + this->scroll).title->iconBuf != nullptr) {
-                    if (backupset_content.at(i + this->scroll).title->is_Wii) {
+            if (item.installed) {
+                std::string item_str = StringUtils::stringFormat(_("    %s [Installed]"), item.title->shortName);
+                Console::consolePrintPos(M_OFF, i + 2, "%s%s", item_str.c_str(), failTag);
+                if (item.title->iconBuf != nullptr) {
+                    if (item.title->is_Wii) {
                         DrawUtils::drawRGB5A3((M_OFF + X_OFFSET - 2) * 12 + 3, (i + 3) * 24 + 3 + 6, 0.25,
-                                              backupset_content.at(i + this->scroll).title->iconBuf);
+                                              item.title->iconBuf);
                     } else {
-                        DrawUtils::drawTGA((M_OFF + X_OFFSET) * 12 + 4, (i + 3) * 24 + 4, 0.18, backupset_content.at(i + this->scroll).title->iconBuf);
+                        DrawUtils::drawTGA((M_OFF + X_OFFSET) * 12 + 4, (i + 3) * 24 + 4, 0.18, item.title->iconBuf);
                     }
                 }
             } else {
-                Console::consolePrintPos(M_OFF, i + 2, "    %s", backupset_content.at(i + this->scroll).uninstalled_title_name.c_str());
+                Console::consolePrintPos(M_OFF, i + 2, "    %s%s", item.uninstalled_title_name.c_str(), failTag);
             }
         }
 
+        auto &item_at_cursor = backupset_content.at(cursorPos + this->scroll);
 
-        if (backupset_content.at(cursorPos + this->scroll).installed) {
-            DrawUtils::setFontColor(backupset_content.at(cursorPos + this->scroll).backup_health != BACKUP_OK ? COLOR_LIST_DANGER_AT_CURSOR : COLOR_INFO);
-            Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, "[%d] %s", cursorPos + this->scroll + 1, backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
+        if (item_at_cursor.installed) {
+            DrawUtils::setFontColor(item_at_cursor.backup_health != BACKUP_OK ? COLOR_LIST_DANGER_AT_CURSOR : COLOR_INFO);
+            Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, "[%d] %s", cursorPos + this->scroll + 1, item_at_cursor.title_folder_name.c_str());
             Console::consolePrintPos(M_OFF + 2, MAX_TITLE_SHOW + 5, "%s  [%s]",
-                                     backupset_content.at(cursorPos + this->scroll).title->productCode,
-                                     backupset_content.at(cursorPos + this->scroll).title->is_Wii ? "vWii" : (backupset_content.at(cursorPos + this->scroll).title->is_WiiUSysTitle ? "Wii U System Title" : (backupset_content.at(cursorPos + this->scroll).title->is_GameCube ? "GC inject" : (backupset_content.at(cursorPos + this->scroll).title->is_Inject ? "Inject" : "Wii U"))));
+                                     item_at_cursor.title->productCode,
+                                     item_at_cursor.title->is_Wii ? "vWii" : (item_at_cursor.title->is_WiiUSysTitle ? "Wii U System Title" : (item_at_cursor.title->is_GameCube ? "GC inject" : (item_at_cursor.title->is_Inject ? "Inject" : "Wii U"))));
 
-            if (backupset_content.at(cursorPos + this->scroll).title->iconBuf != nullptr) {
-                if (backupset_content.at(cursorPos + this->scroll).title->is_Wii) {
-                    DrawUtils::drawRGB5A3(615, 348, 1, backupset_content.at(cursorPos + this->scroll).title->iconBuf);
+            if (item_at_cursor.title->iconBuf != nullptr) {
+                if (item_at_cursor.title->is_Wii) {
+                    DrawUtils::drawRGB5A3(615, 348, 1, item_at_cursor.title->iconBuf);
                 } else {
-                    DrawUtils::drawTGA(678, 284, 1, backupset_content.at(cursorPos + this->scroll).title->iconBuf);
+                    DrawUtils::drawTGA(678, 284, 1, item_at_cursor.title->iconBuf);
                 }
             }
         } else {
-            DrawUtils::setFontColor(backupset_content.at(cursorPos + this->scroll).backup_health != BACKUP_OK ? COLOR_LIST_DANGER_AT_CURSOR : COLOR_INFO);
+            DrawUtils::setFontColor(item_at_cursor.backup_health != BACKUP_OK ? COLOR_LIST_DANGER_AT_CURSOR : COLOR_INFO);
             Console::consolePrintPosAutoFormat(M_OFF, MAX_TITLE_SHOW + 3, 50 * 12, NARROW_LINE_SPACE, _("[%d] %s"),
-                                               cursorPos + this->scroll + 1, backupset_content.at(cursorPos + this->scroll).title_folder_name.c_str());
-            if (!backupset_content.at(cursorPos + this->scroll).uninstalled_iconBuf.empty()) {
-                if (backupset_content.at(cursorPos + this->scroll).uninstalled_isWii) {
-                    DrawUtils::drawRGB5A3(615, 348, 1, backupset_content.at(cursorPos + this->scroll).uninstalled_iconBuf.data());
+                                               cursorPos + this->scroll + 1, item_at_cursor.title_folder_name.c_str());
+            if (!item_at_cursor.uninstalled_iconBuf.empty()) {
+                if (item_at_cursor.uninstalled_isWii) {
+                    DrawUtils::drawRGB5A3(615, 348, 1, item_at_cursor.uninstalled_iconBuf.data());
                 } else {
-                    DrawUtils::drawTGA(678, 284, 1, backupset_content.at(cursorPos + this->scroll).uninstalled_iconBuf.data());
+                    DrawUtils::drawTGA(678, 284, 1, item_at_cursor.uninstalled_iconBuf.data());
                 }
             }
 

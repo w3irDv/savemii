@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 16:56+0200\n"
+"POT-Creation-Date: 2026-10-25 00:01+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -226,9 +226,9 @@ msgstr "Загружено %i игр Wii U Sys."
 
 #: src/utils/TitleUtils.cpp:1122 src/utils/DataBinPack.cpp:148
 #: src/BackupSetList.cpp:432 src/BackupSetList.cpp:438
-#: src/menu/BackupSetContentListState.cpp:209
-#: src/menu/BackupSetContentListState.cpp:426
-#: src/menu/BackupSetContentListState.cpp:433
+#: src/menu/BackupSetContentListState.cpp:214
+#: src/menu/BackupSetContentListState.cpp:431
+#: src/menu/BackupSetContentListState.cpp:438
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr "Ошибка открытия папки %s: %s"
@@ -3919,22 +3919,26 @@ msgstr "Резервный набор пуст"
 msgid "BackupSet Content"
 msgstr "Содержимое бэкап-сета"
 
-#: src/menu/BackupSetContentListState.cpp:75
+#: src/menu/BackupSetContentListState.cpp:72
+msgid " [Backup Failed]"
+msgstr " [Сбой резервного копирования]"
+
+#: src/menu/BackupSetContentListState.cpp:79
 #, c-format
 msgid "    %s [Installed]"
 msgstr "    %s [Установлено]"
 
-#: src/menu/BackupSetContentListState.cpp:106
+#: src/menu/BackupSetContentListState.cpp:111
 #, c-format
 msgid "[%d] %s"
 msgstr "[%d] %s"
 
-#: src/menu/BackupSetContentListState.cpp:120
+#: src/menu/BackupSetContentListState.cpp:125
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue085\\ue07e\\ue086: Страницы   \\ue001: Назад"
 
-#: src/menu/BackupSetContentListState.cpp:205
-#: src/menu/BackupSetContentListState.cpp:358
+#: src/menu/BackupSetContentListState.cpp:210
+#: src/menu/BackupSetContentListState.cpp:363
 msgid "< no savedata >"
 msgstr "< нет сохранений >"
 
