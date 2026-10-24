@@ -844,8 +844,8 @@ int backupAllSave(Title *titles, int count, const std::string &batchDatetime, in
                                             else
                                                 InProgress::abortTask = false;
                                         }
-                                        continue;
                                     }
+                                    continue;
                                 }
                             } else {
                                 FAT32EscapeFileManager::active_fat32_escape_file_manager.reset();
