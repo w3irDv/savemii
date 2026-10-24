@@ -30,6 +30,22 @@ namespace {
         DirGuard(const DirGuard &) = delete;
         DirGuard &operator=(const DirGuard &) = delete;
     };
+
+    struct TitleCandidate {
+        uint32_t highID;
+        uint32_t lowID;
+        std::string high_id;
+        std::string low_id;
+        bool isWii;
+        bool isWiiUSysTitle;
+        bool isWiiUTitle;
+        Title *titles;
+        int titles_count;
+        std::string srcPath;
+        std::string dstPath;
+        std::string metaSavePath;
+        std::string banner_path;
+    };
 } // namespace
 
 BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup_layout), backupSet_path_prefix(get_backupSet_path_prefix(backup_layout)) {
@@ -295,6 +311,9 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
     InProgress::copyErrorsCounter = 0;
     InProgress::abortCopy = false;
     InProgress::immediateAbort = false;
+    InProgress::abortTask = false;
+    InProgress::currentStep = 0;
+    InProgress::totalSteps = 0;
     titlesKO = 0;
     titlesOK = 0;
 
@@ -306,6 +325,8 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
 
     bool exportset_has_wiiu = false;
     bool exportset_has_vwii = false;
+
+    std::vector<TitleCandidate> candidates;
 
     DIR *dir = opendir(bs_path.c_str());
     if (dir != nullptr) {
@@ -382,62 +403,30 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                     std::string low_id{title_data->d_name};
 
                     std::string srcPath = StringUtils::stringFormat("%s/%08x/%08x/%s", bs_path.c_str(), highID, lowID, isWii ? "data" : "user");
+                    if (FSUtils::checkEntry(srcPath.c_str()) == 0) // silently continue if title has no savedata
+                        continue;
+
                     std::string dstBasePath = StringUtils::stringFormat("%s/%s", batchBackupPath, batchDatetime.c_str());
                     std::string dstPath = StringUtils::stringFormat("%s/%08x%08x/%u", dstBasePath.c_str(), highID, lowID, 0); // use old savemii hex folder
 
                     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", bs_path.c_str(), highID, lowID);
                     const std::string banner_path = StringUtils::stringFormat("%s/%08x/%08x/data/banner.bin", bs_path.c_str(), highID, lowID);
 
-                    std::string title_name = high_id + "-" + low_id;
-
-                    bool installed = false;
-
-                    for (int i = 0; i < titles_count; i++) {
-                        if (titles[i].lowID == lowID) {
-                            if (titles[i].highID == highID) { // installed title, we will use title from memory
-                                title_name = titles[i].shortName;
-                                installed = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (installed == false) {
-                        if (isWiiUTitle || isWiiUSysTitle)
-                            TitleUtils::get_wiiu_title_name(metaSavePath + "/meta.xml", title_name);
-                        else
-                            TitleUtils::get_vwii_title_name(banner_path, title_name);
-                    }
-
-                    InProgress::titleName = title_name;
-                    InProgress::currentStep++;
-                    InProgress::copyErrorsCounter = 0;
-                    InProgress::promptedErrorsCounter = 0;
-                    if (FSUtils::checkEntry(srcPath.c_str()) == 0) // silently continue if title has no savedata
-                        continue;
-                    if (FSUtils::createFolder(dstPath.c_str())) {
-                        if (FSUtils::copyDir(srcPath, dstPath, NOFAT32_TRANSLATION, stat_manager_flag)) {
-                            if (!isWii && FSUtils::checkEntry((metaSavePath + "/saveinfo.xml").c_str()))
-                                FSUtils::copyFile(metaSavePath + "/saveinfo.xml", dstPath + "/savemii_saveinfo.xml");
-                            titlesOK++;
-                            writeMetadata(highID, lowID, "", dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, "", BACKUP_OK, FILES);
-                            if (InProgress::abortTask) {
-                                if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to cancel batch backup?")))
-                                    return -2;
-                                else
-                                    InProgress::abortTask = false;
-                            }
-                            continue;
-                        }
-                    }
-                    // backup for this tile has failed
-                    titlesKO++;
-                    writeMetadata(highID, lowID, title_name, dstPath, isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), BACKUP_KO, FILES);
-                    std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), title_name.c_str(), titlesKO);
-                    if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
-                        InProgress::abortTask = true;
-                        return -3;
-                    }
+                    candidates.push_back({
+                        highID,
+                        lowID,
+                        high_id,
+                        low_id,
+                        isWii,
+                        isWiiUSysTitle,
+                        isWiiUTitle,
+                        titles,
+                        titles_count,
+                        srcPath,
+                        dstPath,
+                        metaSavePath,
+                        banner_path
+                    });
                 }
             } else {
                 Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), titles_folder.c_str(), strerror(errno));
@@ -448,6 +437,61 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
         // Cannot open container
         Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), bs_path.c_str(), strerror(errno));
         return -4;
+    }
+
+    InProgress::totalSteps = candidates.size();
+    InProgress::currentStep = 0;
+
+    for (const auto &cand : candidates) {
+        std::string title_name = cand.high_id + "-" + cand.low_id;
+
+        bool installed = false;
+
+        for (int j = 0; j < cand.titles_count; j++) {
+            if (cand.titles[j].lowID == cand.lowID) {
+                if (cand.titles[j].highID == cand.highID) { // installed title, we will use title from memory
+                    title_name = cand.titles[j].shortName;
+                    installed = true;
+                    break;
+                }
+            }
+        }
+
+        if (installed == false) {
+            if (cand.isWiiUTitle || cand.isWiiUSysTitle)
+                TitleUtils::get_wiiu_title_name(cand.metaSavePath + "/meta.xml", title_name);
+            else
+                TitleUtils::get_vwii_title_name(cand.banner_path, title_name);
+        }
+
+        InProgress::titleName = title_name;
+        InProgress::currentStep++;
+        InProgress::copyErrorsCounter = 0;
+        InProgress::promptedErrorsCounter = 0;
+
+        if (FSUtils::createFolder(cand.dstPath.c_str())) {
+            if (FSUtils::copyDir(cand.srcPath, cand.dstPath, NOFAT32_TRANSLATION, stat_manager_flag)) {
+                if (!cand.isWii && FSUtils::checkEntry((cand.metaSavePath + "/saveinfo.xml").c_str()))
+                    FSUtils::copyFile(cand.metaSavePath + "/saveinfo.xml", cand.dstPath + "/savemii_saveinfo.xml");
+                titlesOK++;
+                writeMetadata(cand.highID, cand.lowID, "", cand.dstPath, cand.isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, "", BACKUP_OK, FILES);
+                if (InProgress::abortTask) {
+                    if (Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), _("Do you want to cancel batch backup?")))
+                        return -2;
+                    else
+                        InProgress::abortTask = false;
+                }
+                continue;
+            }
+        }
+        // backup for this tile has failed
+        titlesKO++;
+        writeMetadata(cand.highID, cand.lowID, title_name, cand.dstPath, cand.isWii ? "DOLPHIN" : "CEMU", "L/W", batchDatetime, _("UNUSABLE SLOT - BACKUP FAILED"), BACKUP_KO, FILES);
+        std::string errorMessage = StringUtils::stringFormat(_("%s\n\nBackup failed.\nErrors so far: %d\nDo you want to continue?"), title_name.c_str(), titlesKO);
+        if (!Console::promptConfirm((Style) (ST_YES_NO | ST_ERROR), errorMessage.c_str())) {
+            InProgress::abortTask = true;
+            return -3;
+        }
     }
 
     std::string tag;
