@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-03 20:20+0200\n"
+"POT-Creation-Date: 2026-10-24 16:56+0200\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -225,7 +225,7 @@ msgid "Loaded %i Wii U Sys titles."
 msgstr "%i Wii U-Systemtitel geladen."
 
 #: src/utils/TitleUtils.cpp:1122 src/utils/DataBinPack.cpp:148
-#: src/BackupSetList.cpp:443 src/BackupSetList.cpp:449
+#: src/BackupSetList.cpp:432 src/BackupSetList.cpp:438
 #: src/menu/BackupSetContentListState.cpp:209
 #: src/menu/BackupSetContentListState.cpp:426
 #: src/menu/BackupSetContentListState.cpp:433
@@ -1526,21 +1526,21 @@ msgstr "Mii-Repositories werden initialisiert."
 msgid "\\ue044: Exit"
 msgstr "\\ue044: Ausg."
 
-#: src/BackupSetList.cpp:286
+#: src/BackupSetList.cpp:302
 #, c-format
 msgid "BackupSet %s has already SAVEMII format"
 msgstr "Backup-Set %s hat bereits das SAVEMII-Format"
 
-#: src/BackupSetList.cpp:425 src/savemng.cpp:842
+#: src/BackupSetList.cpp:479 src/savemng.cpp:842
 msgid "Do you want to cancel batch backup?"
 msgstr "Stapelsicherung abbrechen?"
 
-#: src/BackupSetList.cpp:435 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
+#: src/BackupSetList.cpp:489 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
 #: src/savemng.cpp:1060
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr "Unbrauchbarer Steckplatz"
 
-#: src/BackupSetList.cpp:436 src/savemng.cpp:878
+#: src/BackupSetList.cpp:490 src/savemng.cpp:878
 #, c-format
 msgid ""
 "%s\n"
@@ -1555,17 +1555,17 @@ msgstr ""
 "Bisherige Fehler: %d\n"
 "Möchten Sie fortfahren?"
 
-#: src/BackupSetList.cpp:467
+#: src/BackupSetList.cpp:511
 #, c-format
 msgid "FROM %s - %d title%s OK"
 msgstr "VON %s - %d Titel%s OK"
 
-#: src/BackupSetList.cpp:472
+#: src/BackupSetList.cpp:516
 #, c-format
 msgid "%s FAILED - No titles"
 msgstr "%s FEHLGESCHLAGEN - Keine Titel"
 
-#: src/BackupSetList.cpp:475
+#: src/BackupSetList.cpp:519
 #, c-format
 msgid "%s FAILED - OK/KO > %d/%d"
 msgstr "%s FEHLGESCHLAGEN - OK/KO > %d/%d"
@@ -3505,8 +3505,8 @@ msgstr ""
 "* Inhalt anzeigen, taggen oder CEMU- oder Dolphin-Exportordner löschen"
 
 #: src/menu/BackupSetManagementState.cpp:53
-msgid "\\ue002: Options \\ue000: Select BackupSet Task"
-msgstr "\\ue002: Optionen \\ue000: Backup-Set-Aufgabe auswählen"
+msgid "\\ue000: Select BackupSet Task"
+msgstr "\\ue000: Backup-Set-Aufgabe auswählen"
 
 #: src/menu/ExportAsState.cpp:28
 msgid "Export As"
@@ -4643,8 +4643,8 @@ msgid "Export savedata in a format ready to be copied to a CEMU or Dolphin folde
 msgstr "savedata in einem Format exportieren, das direkt in einen CEMU- oder Dolphin-Ordner kopiert werden kann."
 
 #: src/menu/BatchTasksState.cpp:88
-msgid "\\ue002: Options \\ue000: Select Batch Task"
-msgstr "\\ue002: Optionen \\ue000: Stapelverarbeitungsaufgabe auswählen"
+msgid "\\ue000: Select Batch Task"
+msgstr "\\ue000: Stapelverarbeitungsaufgabe auswählen"
 
 #: src/savemng.cpp:162
 msgid "Failed to open Loadiine game save directory."
@@ -5335,6 +5335,12 @@ msgstr ""
 "Fehler beim Zuweisen von Speicher zum Lesen der Datei\n"
 "\n"
 "%s"
+
+#~ msgid "\\ue002: Options \\ue000: Select BackupSet Task"
+#~ msgstr "\\ue002: Optionen \\ue000: Backup-Set-Aufgabe auswählen"
+
+#~ msgid "\\ue002: Options \\ue000: Select Batch Task"
+#~ msgstr "\\ue002: Optionen \\ue000: Stapelverarbeitungsaufgabe auswählen"
 
 #~ msgid "Initializing Radndom seed"
 #~ msgstr "Initialisiere Zufalls-Seed"

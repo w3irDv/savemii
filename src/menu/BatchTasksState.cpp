@@ -36,22 +36,22 @@ void BatchTasksState::render() {
         Console::consolePrintPosAligned(0, 4, 1, _("Batch Tasks Menu"));
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 3, _("   Batch Backup"));
+        Console::consolePrintPos(M_OFF, 2, _("   Batch Backup"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 4, _("   Batch Restore"));
+        Console::consolePrintPos(M_OFF, 3, _("   Batch Restore"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 2);
-        Console::consolePrintPos(M_OFF, 5, _("   Batch Wipe"));
+        Console::consolePrintPos(M_OFF, 4, _("   Batch Wipe"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 3);
-        Console::consolePrintPos(M_OFF, 6, _("   Batch Move to Other Profile"));
+        Console::consolePrintPos(M_OFF, 5, _("   Batch Move to Other Profile"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 4);
-        Console::consolePrintPos(M_OFF, 7, _("   Batch Copy to Other Profile"));
+        Console::consolePrintPos(M_OFF, 6, _("   Batch Copy to Other Profile"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 5);
-        Console::consolePrintPos(M_OFF, 8, _("   Batch Copy to Other Device"));
+        Console::consolePrintPos(M_OFF, 7, _("   Batch Copy to Other Device"));
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 6);
-        Console::consolePrintPos(M_OFF, 9, _("   Export in CEMU/Dolphin format"));
+        Console::consolePrintPos(M_OFF, 8, _("   Export in CEMU/Dolphin format"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPos(M_OFF, 3 + cursorPos, "\u2192");
+        Console::consolePrintPos(M_OFF, 2 + cursorPos, "\u2192");
 
         const char *info;
         switch (cursorPos) {
@@ -85,7 +85,7 @@ void BatchTasksState::render() {
         Console::consolePrintPosAutoFormat(M_OFF, 11, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);        
-        Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Options \\ue000: Select Batch Task"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select Batch Task"));
     }
 }
 

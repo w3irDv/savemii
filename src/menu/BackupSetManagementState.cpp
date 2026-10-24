@@ -50,7 +50,7 @@ void BackupSetManagementState::render() {
         Console::consolePrintPosAutoFormat(M_OFF, 10, MAX_PROMPT_WIDTH, NARROW_LINE_SPACE, info);
 
         DrawUtils::setFontColor(COLOR_TEXT);
-        Console::consolePrintPosAligned(17, 4, 2, _("\\ue002: Options \\ue000: Select BackupSet Task"));
+        Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Select BackupSet Task"));
     }
 }
 
