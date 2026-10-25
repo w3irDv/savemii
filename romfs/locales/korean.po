@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 00:01+0200\n"
+"POT-Creation-Date: 2026-10-25 13:33+0100\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -225,10 +225,10 @@ msgid "Loaded %i Wii U Sys titles."
 msgstr "로드된 Wii U 시스템 타이틀 %i개"
 
 #: src/utils/TitleUtils.cpp:1122 src/utils/DataBinPack.cpp:148
-#: src/BackupSetList.cpp:432 src/BackupSetList.cpp:438
-#: src/menu/BackupSetContentListState.cpp:214
-#: src/menu/BackupSetContentListState.cpp:431
-#: src/menu/BackupSetContentListState.cpp:438
+#: src/BackupSetList.cpp:449 src/BackupSetList.cpp:455
+#: src/menu/BackupSetContentListState.cpp:215
+#: src/menu/BackupSetContentListState.cpp:432
+#: src/menu/BackupSetContentListState.cpp:439
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr "디렉토리 %s 열기 오류: %s"
@@ -1508,21 +1508,21 @@ msgstr "Mii 저장소 초기화 중"
 msgid "\\ue044: Exit"
 msgstr "\\ue044: 출구"
 
-#: src/BackupSetList.cpp:302
+#: src/BackupSetList.cpp:321
 #, c-format
 msgid "BackupSet %s has already SAVEMII format"
 msgstr "백업 세트 %s은(는) 이미 SAVEMII 형식입니다"
 
-#: src/BackupSetList.cpp:479 src/savemng.cpp:842
+#: src/BackupSetList.cpp:496 src/savemng.cpp:842
 msgid "Do you want to cancel batch backup?"
 msgstr "일괄 백업을 취소하시겠습니까?"
 
-#: src/BackupSetList.cpp:489 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
+#: src/BackupSetList.cpp:506 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
 #: src/savemng.cpp:1060
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr "사용할 수 없는 슬롯 - 백업 실패"
 
-#: src/BackupSetList.cpp:490 src/savemng.cpp:878
+#: src/BackupSetList.cpp:507 src/savemng.cpp:878
 #, c-format
 msgid ""
 "%s\n"
@@ -1537,17 +1537,17 @@ msgstr ""
 "현재 오류: %d\n"
 "계속하시겠습니까?"
 
-#: src/BackupSetList.cpp:511
+#: src/BackupSetList.cpp:528
 #, c-format
 msgid "FROM %s - %d title%s OK"
 msgstr "%s에서 - %d개 타이틀%s OK"
 
-#: src/BackupSetList.cpp:516
+#: src/BackupSetList.cpp:533
 #, c-format
 msgid "%s FAILED - No titles"
 msgstr "%s 실패 - 타이틀 없음"
 
-#: src/BackupSetList.cpp:519
+#: src/BackupSetList.cpp:536
 #, c-format
 msgid "%s FAILED - OK/KO > %d/%d"
 msgstr "%s 실패 - OK/KO > %d/%d"
@@ -2605,36 +2605,44 @@ msgstr "변환 실패 - 전역 오류"
 msgid "Transform has failed for %d miis"
 msgstr "변환이 %d개의 mii에 대해 실패했습니다."
 
-#: src/menu/BackupSetListState.cpp:87
+#: src/menu/BackupSetListState.cpp:88
+msgid "ExportSets"
+msgstr "내보내기 세트"
+
+#: src/menu/BackupSetListState.cpp:88
 msgid "BackupSets"
 msgstr "백업 세트"
 
-#: src/menu/BackupSetListState.cpp:89
+#: src/menu/BackupSetListState.cpp:90
+msgid "ExportSets (filter applied)"
+msgstr "내보내기 세트(필터 적용됨)"
+
+#: src/menu/BackupSetListState.cpp:90
 msgid "BackupSets (filter applied)"
 msgstr "백업 세트(필터 적용됨)"
 
-#: src/menu/BackupSetListState.cpp:92
+#: src/menu/BackupSetListState.cpp:93
 #, c-format
 msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 정렬: %s \\ue084"
 
-#: src/menu/BackupSetListState.cpp:116
+#: src/menu/BackupSetListState.cpp:118
 msgid "\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 Filter  \\ue001 Back"
 msgstr "\\ue000 변환  \\ue002 내용 표시  \\ue045 태그  \\ue046 삭제  \\ue003 필터  \\ue001 뒤로"
 
-#: src/menu/BackupSetListState.cpp:120
+#: src/menu/BackupSetListState.cpp:122
 msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
 msgstr "\\ue000: 선택  \\ue002: 내용 보기  \\ue045: 태그  \\ue046: 삭제  \\ue003: 필터  \\ue001: 뒤로"
 
-#: src/menu/BackupSetListState.cpp:122
+#: src/menu/BackupSetListState.cpp:124
 msgid "\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
 msgstr "\\ue000: 백업 세트 선택  \\ue002: 내용 보기  \\ue003: 목록 필터  \\ue001: 뒤로"
 
-#: src/menu/BackupSetListState.cpp:135
+#: src/menu/BackupSetListState.cpp:137
 msgid "Root BackupSet cannot be selected for batch operations"
 msgstr "루트 백업 세트는 일괄 작업에 선택할 수 없습니다"
 
-#: src/menu/BackupSetListState.cpp:147
+#: src/menu/BackupSetListState.cpp:149
 #, c-format
 msgid ""
 "BackupSet selected:\n"
@@ -2651,7 +2659,7 @@ msgstr ""
 "\n"
 "이 콘솔: %s"
 
-#: src/menu/BackupSetListState.cpp:165
+#: src/menu/BackupSetListState.cpp:167
 #, c-format
 msgid ""
 "Creating a new backupSet from %s Cemu/Dolphin/plain exportSet\n"
@@ -2660,30 +2668,30 @@ msgstr ""
 "%s Cemu/Dolphin/일반 내보내기 세트에서 새 백업 세트를 생성합니다\n"
 "계속하시겠습니까?"
 
-#: src/menu/BackupSetListState.cpp:175
+#: src/menu/BackupSetListState.cpp:177
 msgid "BackupSet succesfully created from CEMU/Dolplhin data"
 msgstr "CEMU/Dolphin 데이터에서 백업 세트를 성공적으로 생성했습니다"
 
-#: src/menu/BackupSetListState.cpp:177
+#: src/menu/BackupSetListState.cpp:179
 msgid "Error creaing BackupSet from CEMU/Dolplhin data"
 msgstr "CEMU/Dolphin 데이터에서 백업 세트를 생성하는 중 오류가 발생했습니다"
 
-#: src/menu/BackupSetListState.cpp:179 src/menu/BackupSetListState.cpp:181
+#: src/menu/BackupSetListState.cpp:181 src/menu/BackupSetListState.cpp:183
 #, c-format
 msgid "BackupSet creation aborted. OK: %d  KO: %d"
 msgstr "백업 세트 생성이 중단되었습니다. OK: %d  KO: %d"
 
-#: src/menu/BackupSetListState.cpp:183
+#: src/menu/BackupSetListState.cpp:185
 #, c-format
 msgid "Error creating BackupSet from CEMU/Dolplhin data. Titles OK: %d  Titles KO: %d"
 msgstr "CEMU/Dolphin 데이터에서 백업 세트를 생성하는 중 오류가 발생했습니다. 타이틀 OK: %d  타이틀 KO: %d"
 
-#: src/menu/BackupSetListState.cpp:188
+#: src/menu/BackupSetListState.cpp:190
 #: src/menu/BatchJobTitleSelectState.cpp:913 src/menu/BatchBackupState.cpp:141
 msgid "Do you want to wipe this incomplete batch backup?"
 msgstr "이 불완전한 일괄 백업을 삭제하시겠습니까?"
 
-#: src/menu/BackupSetListState.cpp:193
+#: src/menu/BackupSetListState.cpp:195
 #: src/menu/BatchJobTitleSelectState.cpp:737
 #: src/menu/BatchJobTitleSelectState.cpp:917 src/menu/BatchBackupState.cpp:145
 msgid "ERROR WIPING BACKUPSET"
@@ -3460,12 +3468,12 @@ msgid "BackupSet Management"
 msgstr "백업 세트 관리"
 
 #: src/menu/BackupSetManagementState.cpp:28
-msgid "   Set as default / Show Content / Tag / Wipe a Backupset"
-msgstr "   기본값으로 설정 / 내용 표시 / 태그 / 백업 세트 삭제"
+msgid "   BackupSet: Set Default / Show Content / Tag / Wipe"
+msgstr "   백업 세트: 기본값 설정 / 내용 표시 / 태그 / 삭제"
 
 #: src/menu/BackupSetManagementState.cpp:31
-msgid "   Convert / Show Content / Tag / Wipe  CEMU/Dolphin compatible backups"
-msgstr "   CEMU/Dolphin 호환 백업 변환 / 내용 표시 / 태그 / 삭제"
+msgid "   ExportSet (CEMU/Dolphin-ready): Convert / Contents / Tag / Wipe"
+msgstr "   내보내기 세트 (CEMU/Dolphin 호환): 변환 / 내용 / 태그 / 삭제"
 
 #: src/menu/BackupSetManagementState.cpp:39
 msgid "Set the default BackupSet (tasks will used it as their backup repo), tag it with a name, or wipe any backupSet"
@@ -3675,7 +3683,7 @@ msgstr "옵션을 선택하세요"
 msgid "Show only BackupSets satisfying all these conditions:"
 msgstr "다음 조건을 모두 충족하는 백업 세트만 표시합니다."
 
-#: src/menu/BackupSetListFilter.cpp:25
+#: src/menu/BackupSetListFilter.cpp:26
 msgid "\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"
 msgstr "\\ue000: 필터 적용 \\ue002: 필터 재설정 \\ue001: 뒤로"
 
@@ -3897,17 +3905,17 @@ msgstr " [백업 실패]"
 msgid "    %s [Installed]"
 msgstr "    %s [설치됨]"
 
-#: src/menu/BackupSetContentListState.cpp:111
+#: src/menu/BackupSetContentListState.cpp:112
 #, c-format
 msgid "[%d] %s"
 msgstr "[%d] %s"
 
-#: src/menu/BackupSetContentListState.cpp:125
+#: src/menu/BackupSetContentListState.cpp:126
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue085\\ue07e\\ue086: 페이지 이동   \\ue001: 뒤로"
 
-#: src/menu/BackupSetContentListState.cpp:210
-#: src/menu/BackupSetContentListState.cpp:363
+#: src/menu/BackupSetContentListState.cpp:211
+#: src/menu/BackupSetContentListState.cpp:364
 msgid "< no savedata >"
 msgstr "< 저장 데이터 없음 >"
 
@@ -5313,29 +5321,3 @@ msgstr ""
 "파일을 읽기 위한 메모리 할당 중 오류가 발생했습니다\n"
 "\n"
 "%s"
-
-#~ msgid "\\ue002: Options \\ue000: Select BackupSet Task"
-#~ msgstr "\\ue002: 옵션 \\ue000: 백업 세트 작업 선택"
-
-#~ msgid "\\ue002: Options \\ue000: Select Batch Task"
-#~ msgstr "\\ue002: 옵션 \\ue000: 일괄 작업 선택"
-
-#~ msgid "Initializing Radndom seed"
-#~ msgstr "난수 시드 초기화 중"
-
-#~ msgid "Readng Encyption Keys"
-#~ msgstr "암호화 키 읽는 중"
-
-#~ msgid "Root BackupSet cannot be selected for batchRestore"
-#~ msgstr "배치 복원을 위해 루트 백업 세트를 선택할 수 없습니다"
-
-#, c-format
-#~ msgid "%s  [%d]"
-#~ msgstr "%s  [%d]"
-
-#~ msgid ""
-#~ "Folder $s\n"
-#~ "does not exist."
-#~ msgstr ""
-#~ "폴더 $s\n"
-#~ "이 존재하지 않습니다."

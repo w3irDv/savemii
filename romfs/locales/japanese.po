@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 00:01+0200\n"
+"POT-Creation-Date: 2026-10-25 13:33+0100\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -225,10 +225,10 @@ msgid "Loaded %i Wii U Sys titles."
 msgstr "%i個のWii U Sysタイトルをロードしました。"
 
 #: src/utils/TitleUtils.cpp:1122 src/utils/DataBinPack.cpp:148
-#: src/BackupSetList.cpp:432 src/BackupSetList.cpp:438
-#: src/menu/BackupSetContentListState.cpp:214
-#: src/menu/BackupSetContentListState.cpp:431
-#: src/menu/BackupSetContentListState.cpp:438
+#: src/BackupSetList.cpp:449 src/BackupSetList.cpp:455
+#: src/menu/BackupSetContentListState.cpp:215
+#: src/menu/BackupSetContentListState.cpp:432
+#: src/menu/BackupSetContentListState.cpp:439
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr "ディレクトリ %s のオープンエラー: %s"
@@ -1524,21 +1524,21 @@ msgstr "Miiリポジトリを初期化しています。"
 msgid "\\ue044: Exit"
 msgstr "\\ue044 出口"
 
-#: src/BackupSetList.cpp:302
+#: src/BackupSetList.cpp:321
 #, c-format
 msgid "BackupSet %s has already SAVEMII format"
 msgstr "バックアップセット %s はすでに SAVEMII 形式です"
 
-#: src/BackupSetList.cpp:479 src/savemng.cpp:842
+#: src/BackupSetList.cpp:496 src/savemng.cpp:842
 msgid "Do you want to cancel batch backup?"
 msgstr "バッチ バックアップをキャンセルしますか?"
 
-#: src/BackupSetList.cpp:489 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
+#: src/BackupSetList.cpp:506 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
 #: src/savemng.cpp:1060
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr "使用できないスロット - バックアップに失敗しました"
 
-#: src/BackupSetList.cpp:490 src/savemng.cpp:878
+#: src/BackupSetList.cpp:507 src/savemng.cpp:878
 #, c-format
 msgid ""
 "%s\n"
@@ -1553,17 +1553,17 @@ msgstr ""
 "これまでのエラー数: %d\n"
 "続行しますか?"
 
-#: src/BackupSetList.cpp:511
+#: src/BackupSetList.cpp:528
 #, c-format
 msgid "FROM %s - %d title%s OK"
 msgstr "%s から - %d 件のタイトル%s OK"
 
-#: src/BackupSetList.cpp:516
+#: src/BackupSetList.cpp:533
 #, c-format
 msgid "%s FAILED - No titles"
 msgstr "%s 失敗 - タイトルがありません"
 
-#: src/BackupSetList.cpp:519
+#: src/BackupSetList.cpp:536
 #, c-format
 msgid "%s FAILED - OK/KO > %d/%d"
 msgstr "%s 失敗 - OK/KO > %d/%d"
@@ -2628,36 +2628,44 @@ msgstr "変換に失敗しました - グローバルエラー"
 msgid "Transform has failed for %d miis"
 msgstr "%d個のMiiの変換に失敗しました"
 
-#: src/menu/BackupSetListState.cpp:87
+#: src/menu/BackupSetListState.cpp:88
+msgid "ExportSets"
+msgstr "エクスポートセット"
+
+#: src/menu/BackupSetListState.cpp:88
 msgid "BackupSets"
 msgstr "バックアップセット"
 
-#: src/menu/BackupSetListState.cpp:89
+#: src/menu/BackupSetListState.cpp:90
+msgid "ExportSets (filter applied)"
+msgstr "エクスポートセット (フィルター適用済み)"
+
+#: src/menu/BackupSetListState.cpp:90
 msgid "BackupSets (filter applied)"
 msgstr "バックアップセット (フィルター適用済み)"
 
-#: src/menu/BackupSetListState.cpp:92
+#: src/menu/BackupSetListState.cpp:93
 #, c-format
 msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 並べ替え: %s \\ue084"
 
-#: src/menu/BackupSetListState.cpp:116
+#: src/menu/BackupSetListState.cpp:118
 msgid "\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 Filter  \\ue001 Back"
 msgstr "\\ue000 変換  \\ue002 内容を表示  \\ue045 タグ  \\ue046 消去  \\ue003 フィルタ  \\ue001 戻る"
 
-#: src/menu/BackupSetListState.cpp:120
+#: src/menu/BackupSetListState.cpp:122
 msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
 msgstr "\\ue000: 選択  \\ue002: 内容を表示  \\ue045: タグ  \\ue046: 消去  \\ue003: フィルター  \\ue001: 戻る"
 
-#: src/menu/BackupSetListState.cpp:122
+#: src/menu/BackupSetListState.cpp:124
 msgid "\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
 msgstr "\\ue000: バックアップセット選択  \\ue002: 内容を表示  \\ue003: リストを絞り込み  \\ue001: 戻る"
 
-#: src/menu/BackupSetListState.cpp:135
+#: src/menu/BackupSetListState.cpp:137
 msgid "Root BackupSet cannot be selected for batch operations"
 msgstr "ルートのバックアップセットはバッチ操作で選択できません"
 
-#: src/menu/BackupSetListState.cpp:147
+#: src/menu/BackupSetListState.cpp:149
 #, c-format
 msgid ""
 "BackupSet selected:\n"
@@ -2674,7 +2682,7 @@ msgstr ""
 "\n"
 "このコンソール: %s"
 
-#: src/menu/BackupSetListState.cpp:165
+#: src/menu/BackupSetListState.cpp:167
 #, c-format
 msgid ""
 "Creating a new backupSet from %s Cemu/Dolphin/plain exportSet\n"
@@ -2683,30 +2691,30 @@ msgstr ""
 "%s の Cemu/Dolphin/通常のエクスポートセットから新しいバックアップセットを作成します\n"
 "続行しますか？"
 
-#: src/menu/BackupSetListState.cpp:175
+#: src/menu/BackupSetListState.cpp:177
 msgid "BackupSet succesfully created from CEMU/Dolplhin data"
 msgstr "CEMU/Dolphin データからバックアップセットを正常に作成しました"
 
-#: src/menu/BackupSetListState.cpp:177
+#: src/menu/BackupSetListState.cpp:179
 msgid "Error creaing BackupSet from CEMU/Dolplhin data"
 msgstr "CEMU/Dolphin データからのバックアップセットの作成中にエラーが発生しました"
 
-#: src/menu/BackupSetListState.cpp:179 src/menu/BackupSetListState.cpp:181
+#: src/menu/BackupSetListState.cpp:181 src/menu/BackupSetListState.cpp:183
 #, c-format
 msgid "BackupSet creation aborted. OK: %d  KO: %d"
 msgstr "バックアップセットの作成を中止しました。OK: %d  KO: %d"
 
-#: src/menu/BackupSetListState.cpp:183
+#: src/menu/BackupSetListState.cpp:185
 #, c-format
 msgid "Error creating BackupSet from CEMU/Dolplhin data. Titles OK: %d  Titles KO: %d"
 msgstr "CEMU/Dolphin データからのバックアップセットの作成中にエラーが発生しました。タイトル OK: %d  タイトル KO: %d"
 
-#: src/menu/BackupSetListState.cpp:188
+#: src/menu/BackupSetListState.cpp:190
 #: src/menu/BatchJobTitleSelectState.cpp:913 src/menu/BatchBackupState.cpp:141
 msgid "Do you want to wipe this incomplete batch backup?"
 msgstr "この不完全なバッチ バックアップを消去しますか?"
 
-#: src/menu/BackupSetListState.cpp:193
+#: src/menu/BackupSetListState.cpp:195
 #: src/menu/BatchJobTitleSelectState.cpp:737
 #: src/menu/BatchJobTitleSelectState.cpp:917 src/menu/BatchBackupState.cpp:145
 msgid "ERROR WIPING BACKUPSET"
@@ -3479,12 +3487,12 @@ msgid "BackupSet Management"
 msgstr "バックアップセット管理"
 
 #: src/menu/BackupSetManagementState.cpp:28
-msgid "   Set as default / Show Content / Tag / Wipe a Backupset"
-msgstr "   既定に設定 / 内容を表示 / タグ / バックアップセットを消去"
+msgid "   BackupSet: Set Default / Show Content / Tag / Wipe"
+msgstr "   バックアップセット: デフォルトに設定 / 内容を表示 / タグ / 消去"
 
 #: src/menu/BackupSetManagementState.cpp:31
-msgid "   Convert / Show Content / Tag / Wipe  CEMU/Dolphin compatible backups"
-msgstr "   CEMU/Dolphin 互換バックアップの変換 / 内容を表示 / タグ / 消去"
+msgid "   ExportSet (CEMU/Dolphin-ready): Convert / Contents / Tag / Wipe"
+msgstr "   エクスポートセット (CEMU/Dolphin互換): 変換 / 内容 / タグ / 消去"
 
 #: src/menu/BackupSetManagementState.cpp:39
 msgid "Set the default BackupSet (tasks will used it as their backup repo), tag it with a name, or wipe any backupSet"
@@ -3694,7 +3702,7 @@ msgstr "オプションを選択してください"
 msgid "Show only BackupSets satisfying all these conditions:"
 msgstr "これらの条件をすべて満たすバックアップセットのみを表示します"
 
-#: src/menu/BackupSetListFilter.cpp:25
+#: src/menu/BackupSetListFilter.cpp:26
 msgid "\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"
 msgstr "\\ue000: フィルタを適用 \\ue002: フィルタをリセット \\ue001: 戻る"
 
@@ -3918,17 +3926,17 @@ msgstr " [バックアップ失敗]"
 msgid "    %s [Installed]"
 msgstr "    %s [インストール済み]"
 
-#: src/menu/BackupSetContentListState.cpp:111
+#: src/menu/BackupSetContentListState.cpp:112
 #, c-format
 msgid "[%d] %s"
 msgstr "[%d] %s"
 
-#: src/menu/BackupSetContentListState.cpp:125
+#: src/menu/BackupSetContentListState.cpp:126
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr "\\ue085\\ue07e\\ue086: ページ切り替え   \\ue001: 戻る"
 
-#: src/menu/BackupSetContentListState.cpp:210
-#: src/menu/BackupSetContentListState.cpp:363
+#: src/menu/BackupSetContentListState.cpp:211
+#: src/menu/BackupSetContentListState.cpp:364
 msgid "< no savedata >"
 msgstr "< セーブデータなし >"
 
@@ -5340,29 +5348,3 @@ msgstr ""
 "ファイルを読み取るためのメモリ割り当て中にエラーが発生しました\n"
 "\n"
 "%s"
-
-#~ msgid "\\ue002: Options \\ue000: Select BackupSet Task"
-#~ msgstr "\\ue002: オプション \\ue000: バックアップセットタスクを選択"
-
-#~ msgid "\\ue002: Options \\ue000: Select Batch Task"
-#~ msgstr "\\ue002: オプション \\ue000: バッチタスクの選択"
-
-#~ msgid "Initializing Radndom seed"
-#~ msgstr "乱数シードを初期化中"
-
-#~ msgid "Readng Encyption Keys"
-#~ msgstr "暗号化キーを読み込み中"
-
-#~ msgid "Root BackupSet cannot be selected for batchRestore"
-#~ msgstr "ルートバックアップセットはバッチ復元に選択できません"
-
-#, c-format
-#~ msgid "%s  [%d]"
-#~ msgstr "%s  [%d]"
-
-#~ msgid ""
-#~ "Folder $s\n"
-#~ "does not exist."
-#~ msgstr ""
-#~ "フォルダ$s\n"
-#~ "が存在しません。"

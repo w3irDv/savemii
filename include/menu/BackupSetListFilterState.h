@@ -22,6 +22,6 @@ private:
     eState state = STATE_BACKUPSET_FILTER;
 
     std::unique_ptr<BackupSetList> &backupSetList;
-    int entrycount = 4;
+    int entrycount = 5;
     int cursorPos = 0;
 };

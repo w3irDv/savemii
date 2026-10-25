@@ -83,10 +83,11 @@ void BackupSetListState::render() {
     if (this->state == STATE_BACKUPSET_MENU) {
         std::string backupSetItem;
         DrawUtils::setFontColor(COLOR_INFO);
+        const bool isExportSet = (jobType == CEMU_DOLPHIN_EXPORT);
         if (working_backupset_list->entriesView == working_backupset_list->entries) {
-            Console::consolePrintPosAligned(0, 4, 1, _("BackupSets"));
+            Console::consolePrintPosAligned(0, 4, 1, isExportSet ? _("ExportSets") : _("BackupSets"));
         } else {
-            Console::consolePrintPosAligned(0, 4, 1, _("BackupSets (filter applied)"));
+            Console::consolePrintPosAligned(0, 4, 1, isExportSet ? _("ExportSets (filter applied)") : _("BackupSets (filter applied)"));
         }
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPosAligned(0, 4, 2, _("\\ue083 Sort: %s \\ue084"),
@@ -96,14 +97,15 @@ void BackupSetListState::render() {
                 break;
             backupSetItem = working_backupset_list->at(i + scroll);
 
-
-            DrawUtils::setFontColorByCursor(COLOR_LIST_INJECT, COLOR_LIST_INJECT_AT_CURSOR, cursorPos, i);
+            bool isFailed = (working_backupset_list->get_backupset_health_at(i + scroll) != BACKUP_OK);
 
             DrawUtils::setFontColorByCursor(COLOR_LIST, COLOR_LIST_AT_CURSOR, cursorPos, i);
             if (backupSetItem == BackupSetList::ROOT_BS)
                 DrawUtils::setFontColorByCursor(COLOR_LIST_HIGH, COLOR_LIST_HIGH_AT_CURSOR, cursorPos, i);
             if (backupSetItem == working_backupset_list->getBackupSetEntry())
                 DrawUtils::setFontColorByCursor(COLOR_CURRENT_BS, COLOR_CURRENT_BS_AT_CURSOR, cursorPos, i);
+            if (isFailed)
+                DrawUtils::setFontColorByCursor(COLOR_LIST_WARNING, COLOR_LIST_WARNING_AT_CURSOR, cursorPos, i);
 
             Console::consolePrintPos(M_OFF - 1, i + 2, "  %s", backupSetItem.substr(0, 15).c_str());
             Console::consolePrintPos(21, i + 2, "%s", working_backupset_list->getStretchedSerialIdAt(i + scroll).c_str());

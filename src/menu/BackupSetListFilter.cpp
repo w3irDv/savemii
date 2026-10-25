@@ -21,6 +21,7 @@ void BackupSetListFilterState::render() {
         Console::consolePrintPos(M_OFF, 7, "Tag: %s", (*backupSetList->bsMetadataValues.tag.iterator).c_str());
         Console::consolePrintPos(M_OFF, 8, "Month: %s", (*backupSetList->bsMetadataValues.month.iterator).c_str());
         Console::consolePrintPos(M_OFF, 9, "Year: %s", (*backupSetList->bsMetadataValues.year.iterator).c_str());
+        Console::consolePrintPos(M_OFF, 10, "Health: %s", (*backupSetList->bsMetadataValues.backupSetHealth.iterator).c_str());
         Console::consolePrintPos(-1, 6 + cursorPos, "\u2192");
         Console::consolePrintPosAligned(17, 4, 2, _("\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"));
     }
@@ -44,6 +45,9 @@ ApplicationState::eSubState BackupSetListFilterState::update(Input *input) {
             case 3:
                 BSMetadataValues::Left(backupSetList->bsMetadataValues.year);
                 break;
+            case 4:
+                BSMetadataValues::Left(backupSetList->bsMetadataValues.backupSetHealth);
+                break;
             default:
                 break;
         }
@@ -61,6 +65,9 @@ ApplicationState::eSubState BackupSetListFilterState::update(Input *input) {
                 break;
             case 3:
                 BSMetadataValues::Right(backupSetList->bsMetadataValues.year);
+                break;
+            case 4:
+                BSMetadataValues::Right(backupSetList->bsMetadataValues.backupSetHealth);
                 break;
             default:
                 break;

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 00:01+0200\n"
+"POT-Creation-Date: 2026-10-25 13:33+0100\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -220,10 +220,10 @@ msgid "Loaded %i Wii U Sys titles."
 msgstr ""
 
 #: src/utils/TitleUtils.cpp:1122 src/utils/DataBinPack.cpp:148
-#: src/BackupSetList.cpp:432 src/BackupSetList.cpp:438
-#: src/menu/BackupSetContentListState.cpp:214
-#: src/menu/BackupSetContentListState.cpp:431
-#: src/menu/BackupSetContentListState.cpp:438
+#: src/BackupSetList.cpp:449 src/BackupSetList.cpp:455
+#: src/menu/BackupSetContentListState.cpp:215
+#: src/menu/BackupSetContentListState.cpp:432
+#: src/menu/BackupSetContentListState.cpp:439
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr ""
@@ -1294,21 +1294,21 @@ msgstr ""
 msgid "\\ue044: Exit"
 msgstr ""
 
-#: src/BackupSetList.cpp:302
+#: src/BackupSetList.cpp:321
 #, c-format
 msgid "BackupSet %s has already SAVEMII format"
 msgstr ""
 
-#: src/BackupSetList.cpp:479 src/savemng.cpp:842
+#: src/BackupSetList.cpp:496 src/savemng.cpp:842
 msgid "Do you want to cancel batch backup?"
 msgstr ""
 
-#: src/BackupSetList.cpp:489 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
+#: src/BackupSetList.cpp:506 src/mii/MiiRepo.cpp:104 src/savemng.cpp:869
 #: src/savemng.cpp:1060
 msgid "UNUSABLE SLOT - BACKUP FAILED"
 msgstr ""
 
-#: src/BackupSetList.cpp:490 src/savemng.cpp:878
+#: src/BackupSetList.cpp:507 src/savemng.cpp:878
 #, c-format
 msgid ""
 "%s\n"
@@ -1318,17 +1318,17 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/BackupSetList.cpp:511
+#: src/BackupSetList.cpp:528
 #, c-format
 msgid "FROM %s - %d title%s OK"
 msgstr ""
 
-#: src/BackupSetList.cpp:516
+#: src/BackupSetList.cpp:533
 #, c-format
 msgid "%s FAILED - No titles"
 msgstr ""
 
-#: src/BackupSetList.cpp:519
+#: src/BackupSetList.cpp:536
 #, c-format
 msgid "%s FAILED - OK/KO > %d/%d"
 msgstr ""
@@ -2301,36 +2301,44 @@ msgstr ""
 msgid "Transform has failed for %d miis"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:87
+#: src/menu/BackupSetListState.cpp:88
+msgid "ExportSets"
+msgstr ""
+
+#: src/menu/BackupSetListState.cpp:88
 msgid "BackupSets"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:89
+#: src/menu/BackupSetListState.cpp:90
+msgid "ExportSets (filter applied)"
+msgstr ""
+
+#: src/menu/BackupSetListState.cpp:90
 msgid "BackupSets (filter applied)"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:92
+#: src/menu/BackupSetListState.cpp:93
 #, c-format
 msgid "\\ue083 Sort: %s \\ue084"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:116
+#: src/menu/BackupSetListState.cpp:118
 msgid "\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 Filter  \\ue001 Back"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:120
+#: src/menu/BackupSetListState.cpp:122
 msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:122
+#: src/menu/BackupSetListState.cpp:124
 msgid "\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:135
+#: src/menu/BackupSetListState.cpp:137
 msgid "Root BackupSet cannot be selected for batch operations"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:147
+#: src/menu/BackupSetListState.cpp:149
 #, c-format
 msgid ""
 "BackupSet selected:\n"
@@ -2341,37 +2349,37 @@ msgid ""
 "This console: %s"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:165
+#: src/menu/BackupSetListState.cpp:167
 #, c-format
 msgid ""
 "Creating a new backupSet from %s Cemu/Dolphin/plain exportSet\n"
 "Continue?"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:175
+#: src/menu/BackupSetListState.cpp:177
 msgid "BackupSet succesfully created from CEMU/Dolplhin data"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:177
+#: src/menu/BackupSetListState.cpp:179
 msgid "Error creaing BackupSet from CEMU/Dolplhin data"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:179 src/menu/BackupSetListState.cpp:181
+#: src/menu/BackupSetListState.cpp:181 src/menu/BackupSetListState.cpp:183
 #, c-format
 msgid "BackupSet creation aborted. OK: %d  KO: %d"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:183
+#: src/menu/BackupSetListState.cpp:185
 #, c-format
 msgid "Error creating BackupSet from CEMU/Dolplhin data. Titles OK: %d  Titles KO: %d"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:188
+#: src/menu/BackupSetListState.cpp:190
 #: src/menu/BatchJobTitleSelectState.cpp:913 src/menu/BatchBackupState.cpp:141
 msgid "Do you want to wipe this incomplete batch backup?"
 msgstr ""
 
-#: src/menu/BackupSetListState.cpp:193
+#: src/menu/BackupSetListState.cpp:195
 #: src/menu/BatchJobTitleSelectState.cpp:737
 #: src/menu/BatchJobTitleSelectState.cpp:917 src/menu/BatchBackupState.cpp:145
 msgid "ERROR WIPING BACKUPSET"
@@ -3054,11 +3062,11 @@ msgid "BackupSet Management"
 msgstr ""
 
 #: src/menu/BackupSetManagementState.cpp:28
-msgid "   Set as default / Show Content / Tag / Wipe a Backupset"
+msgid "   BackupSet: Set Default / Show Content / Tag / Wipe"
 msgstr ""
 
 #: src/menu/BackupSetManagementState.cpp:31
-msgid "   Convert / Show Content / Tag / Wipe  CEMU/Dolphin compatible backups"
+msgid "   ExportSet (CEMU/Dolphin-ready): Convert / Contents / Tag / Wipe"
 msgstr ""
 
 #: src/menu/BackupSetManagementState.cpp:39
@@ -3265,7 +3273,7 @@ msgstr ""
 msgid "Show only BackupSets satisfying all these conditions:"
 msgstr ""
 
-#: src/menu/BackupSetListFilter.cpp:25
+#: src/menu/BackupSetListFilter.cpp:26
 msgid "\\ue000: Apply Filter  \\ue002: Reset Filters  \\ue001: Back"
 msgstr ""
 
@@ -3484,17 +3492,17 @@ msgstr ""
 msgid "    %s [Installed]"
 msgstr ""
 
-#: src/menu/BackupSetContentListState.cpp:111
+#: src/menu/BackupSetContentListState.cpp:112
 #, c-format
 msgid "[%d] %s"
 msgstr ""
 
-#: src/menu/BackupSetContentListState.cpp:125
+#: src/menu/BackupSetContentListState.cpp:126
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr ""
 
-#: src/menu/BackupSetContentListState.cpp:210
-#: src/menu/BackupSetContentListState.cpp:363
+#: src/menu/BackupSetContentListState.cpp:211
+#: src/menu/BackupSetContentListState.cpp:364
 msgid "< no savedata >"
 msgstr ""
 

@@ -25,10 +25,10 @@ void BackupSetManagementState::render() {
         Console::consolePrintPosAligned(0, 4, 1, _("BackupSet Management"));
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 0);
-        Console::consolePrintPos(M_OFF, 3, _("   Set as default / Show Content / Tag / Wipe a Backupset"));
+        Console::consolePrintPos(M_OFF, 3, _("   BackupSet: Set Default / Show Content / Tag / Wipe"));
 
         DrawUtils::setFontColorByCursor(COLOR_TEXT, COLOR_TEXT_AT_CURSOR, cursorPos, 1);
-        Console::consolePrintPos(M_OFF, 5, _("   Convert / Show Content / Tag / Wipe  CEMU/Dolphin compatible backups"));
+        Console::consolePrintPos(M_OFF, 5, _("   ExportSet (CEMU/Dolphin-ready): Convert / Contents / Tag / Wipe"));
 
         DrawUtils::setFontColor(COLOR_TEXT);
         Console::consolePrintPos(M_OFF, 3 + (cursorPos > 0 ? 1 : 0) + cursorPos, "\u2192");

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ApplicationState.h"
+#include <climits>
 #include <memory>
 #include <set>
 #include <string>
@@ -22,6 +23,7 @@ public:
     attr<std::greater<std::string>> month;
     attr<std::less<std::string>> serialId;
     attr<std::less<std::string>> tag;
+    attr<std::less<std::string>> backupSetHealth;
 
     template<typename T>
     static void Right(T &metadataAttrValues);
@@ -36,16 +38,30 @@ class BSMetadata {
 public:
     friend class BackupSetItem;
     friend class BackupSetList;
+    // sentinel for a "*" (any) health filter, since health is stored as an int
+    static constexpr int BS_HEALTH_ANY = INT_MIN;
+    // parse a health filter string: "*" (or any non-numeric value) means "any"
+    static int parseHealth(const std::string &s) {
+        try {
+            std::size_t pos = 0;
+            int v = std::stoi(s, &pos);
+            if (pos == s.size())
+                return v;
+        } catch (...) {
+        }
+        return BS_HEALTH_ANY;
+    }
     BSMetadata(const std::string &year = "*", const std::string &month = "*",
-               const std::string &serialId = "*", const std::string &tag = "*") : year(year), month(month), serialId(serialId), tag(tag) {};
+               const std::string &serialId = "*", const std::string &tag = "*", int backupset_health = 0) : year(year), month(month), serialId(serialId), tag(tag), backupset_health(backupset_health) {};
     BSMetadata(const BSMetadataValues &bsMetadataValues) : year(*(bsMetadataValues.year.iterator)), month(*(bsMetadataValues.month.iterator)),
-                                                           serialId(*(bsMetadataValues.serialId.iterator)), tag(*(bsMetadataValues.tag.iterator)) {};
+                                                           serialId(*(bsMetadataValues.serialId.iterator)), tag(*(bsMetadataValues.tag.iterator)), backupset_health(parseHealth(*(bsMetadataValues.backupSetHealth.iterator))) {};
 
 private:
     std::string year;
     std::string month;
     std::string serialId;
     std::string tag;
+    int backupset_health;
 };
 
 class BackupSetItem {
@@ -62,6 +78,7 @@ struct BackupSetItemView {
     std::string entryPath;
     std::string serialId;
     std::string tag;
+    int backupset_health;
 };
 
 
@@ -80,9 +97,10 @@ public:
     std::string getSerialIdAt(int i);
     std::string getStretchedSerialIdAt(int i);
     std::string getTagAt(int i);
+    int get_backupset_health_at(int i);
     void setTagBSVAt(int i, const std::string &tag);
     void setTagBSAt(int i, const std::string &tag);
-    void add(const std::string &entryPath, const std::string &serialId, const std::string &tag);
+    void add(const std::string &entryPath, const std::string &serialId, const std::string &tag, const int backupset_health);
 
     int getSizeView() { return this->entriesView; };
     int getSize() { return this->entries; };

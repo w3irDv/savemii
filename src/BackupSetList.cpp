@@ -59,6 +59,8 @@ BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup
     bsMetadataValues.month.range.insert("*");
     bsMetadataValues.serialId.range.insert("*");
     bsMetadataValues.tag.range.insert("*");
+    bsMetadataValues.backupSetHealth.range.insert("*");
+
     v2b.push_back(0);
 
     DIR *dir = opendir(backupSetListRoot.c_str());
@@ -73,15 +75,17 @@ BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup
                 metadata.write();
             }
             bsm = BSMetadata(metadata.getDate().substr(0, 4), metadata.getDate().size() > 6 ? metadata.getDate().substr(5, 2) : "",
-                             metadata.getSerialId(), metadata.getTag());
+                             metadata.getSerialId(), metadata.getTag(), metadata.getBackupHealth());
             backupSets.push_back(BackupSetItem(data->d_name, bsm));
             if (bsm.year != "")
                 bsMetadataValues.year.range.insert(bsm.year);
             if (bsm.month != "")
                 bsMetadataValues.month.range.insert(bsm.month);
-            bsMetadataValues.serialId.range.insert(bsm.serialId);
+            if (bsm.serialId != "")
+                bsMetadataValues.serialId.range.insert(bsm.serialId);
             if (bsm.tag != "")
                 bsMetadataValues.tag.range.insert(bsm.tag);
+            bsMetadataValues.backupSetHealth.range.insert(std::to_string(bsm.backupset_health));
         }
     }
     closedir(dir);
@@ -93,6 +97,7 @@ BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup
         bsiv.entryPath = backupSets[i].entryPath;
         bsiv.serialId = backupSets[i].bsItemMetadata.serialId;
         bsiv.tag = backupSets[i].bsItemMetadata.tag;
+        bsiv.backupset_health = backupSets[i].bsItemMetadata.backupset_health;
         this->backupSetsView.push_back(bsiv);
         this->v2b.push_back(i);
     }
@@ -104,6 +109,7 @@ BackupSetList::BackupSetList(eBackupLayout backup_layout) : backup_layout(backup
     bsMetadataValues.month.iterator = --bsMetadataValues.month.range.end();
     bsMetadataValues.serialId.iterator = bsMetadataValues.serialId.range.begin();
     bsMetadataValues.tag.iterator = bsMetadataValues.tag.range.begin();
+    bsMetadataValues.backupSetHealth.iterator = bsMetadataValues.backupSetHealth.range.begin();
 }
 
 void BackupSetList::sort(bool sortAscending_) {
@@ -132,11 +138,16 @@ std::string BackupSetList::getTagAt(int i) {
     return backupSetsView.at(i).tag;
 }
 
-void BackupSetList::add(const std::string &entryPath, const std::string &serialId, const std::string &tag) {
+int BackupSetList::get_backupset_health_at(int i) {
+    return backupSetsView.at(i).backupset_health;
+}
+
+void BackupSetList::add(const std::string &entryPath, const std::string &serialId, const std::string &tag, const int backupset_health) {
     BackupSetItemView bsiv;
     bsiv.entryPath = entryPath;
     bsiv.serialId = serialId;
     bsiv.tag = tag;
+    bsiv.backupset_health = backupset_health;
     backupSetsView.push_back(bsiv);
     this->entriesView++;
     if (!sortAscending)
@@ -204,6 +215,11 @@ std::string BackupSetList::getBackupSetPath(int i) {
     return backupPath + getBackupSetSubPath(i);
 };
 
+/**
+ * @brief Filter by year, month, seriald. Do not filter by backupset_health or tag
+ * 
+ * @param filterDef 
+ */
 void BackupSetList::filter(BSMetadata filterDef) {
 
     backupSetsView.erase(backupSetsView.begin() + 1, backupSetsView.end());
@@ -212,14 +228,14 @@ void BackupSetList::filter(BSMetadata filterDef) {
     for (unsigned int i = 1; i < this->backupSets.size(); i++) {
         if (filterDef.year == "*" || filterDef.year == this->backupSets[i].bsItemMetadata.year)
             if (filterDef.month == "*" || filterDef.month == this->backupSets[i].bsItemMetadata.month)
-                if (filterDef.serialId == "*" || filterDef.serialId == this->backupSets[i].bsItemMetadata.serialId)
-                    if (filterDef.tag == "*" || filterDef.tag == this->backupSets[i].bsItemMetadata.tag) {
-                        bsiv.entryPath = backupSets[i].entryPath;
-                        bsiv.serialId = backupSets[i].bsItemMetadata.serialId;
-                        bsiv.tag = backupSets[i].bsItemMetadata.tag;
-                        this->backupSetsView.push_back(bsiv);
-                        this->v2b.push_back(i);
-                    }
+                if (filterDef.serialId == "*" || filterDef.serialId == this->backupSets[i].bsItemMetadata.serialId) {
+                    bsiv.entryPath = backupSets[i].entryPath;
+                    bsiv.serialId = backupSets[i].bsItemMetadata.serialId;
+                    bsiv.tag = backupSets[i].bsItemMetadata.tag;
+                    bsiv.backupset_health = backupSets[i].bsItemMetadata.backupset_health;
+                    this->backupSetsView.push_back(bsiv);
+                    this->v2b.push_back(i);
+                }
     }
     this->entriesView = this->backupSetsView.size();
 }
@@ -231,12 +247,14 @@ void BackupSetList::filter() {
         if (*bsMetadataValues.year.iterator == "*" || *bsMetadataValues.year.iterator == this->backupSets[i].bsItemMetadata.year)
             if (*bsMetadataValues.month.iterator == "*" || *bsMetadataValues.month.iterator == this->backupSets[i].bsItemMetadata.month)
                 if (*bsMetadataValues.serialId.iterator == "*" || *bsMetadataValues.serialId.iterator == this->backupSets[i].bsItemMetadata.serialId)
-                    if (*bsMetadataValues.tag.iterator == "*" || *bsMetadataValues.tag.iterator == this->backupSets[i].bsItemMetadata.tag) {
-                        bsiv.entryPath = backupSets[i].entryPath;
-                        bsiv.serialId = backupSets[i].bsItemMetadata.serialId;
-                        bsiv.tag = backupSets[i].bsItemMetadata.tag;
-                        this->backupSetsView.push_back(bsiv);
-                    }
+                    if (*bsMetadataValues.tag.iterator == "*" || *bsMetadataValues.tag.iterator == this->backupSets[i].bsItemMetadata.tag)
+                        if (*bsMetadataValues.backupSetHealth.iterator == "*" || *bsMetadataValues.backupSetHealth.iterator == std::to_string(this->backupSets[i].bsItemMetadata.backupset_health)) {
+                            bsiv.entryPath = backupSets[i].entryPath;
+                            bsiv.serialId = backupSets[i].bsItemMetadata.serialId;
+                            bsiv.tag = backupSets[i].bsItemMetadata.tag;
+                            bsiv.backupset_health = backupSets[i].bsItemMetadata.backupset_health;
+                            this->backupSetsView.push_back(bsiv);
+                        }
     }
     this->entriesView = this->backupSetsView.size();
 }
@@ -256,6 +274,7 @@ void BSMetadataValues::resetFilter() {
     this->month.iterator = --this->month.range.end();
     this->serialId.iterator = this->serialId.range.begin();
     this->tag.iterator = this->tag.range.begin();
+    this->backupSetHealth.iterator = this->backupSetHealth.range.begin();
 }
 
 void BackupSetList::setTagBSVAt(int i, const std::string &tag) {
@@ -412,21 +431,19 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
                     const std::string metaSavePath = StringUtils::stringFormat("%s/%08x/%08x/meta", bs_path.c_str(), highID, lowID);
                     const std::string banner_path = StringUtils::stringFormat("%s/%08x/%08x/data/banner.bin", bs_path.c_str(), highID, lowID);
 
-                    candidates.push_back({
-                        highID,
-                        lowID,
-                        high_id,
-                        low_id,
-                        isWii,
-                        isWiiUSysTitle,
-                        isWiiUTitle,
-                        titles,
-                        titles_count,
-                        srcPath,
-                        dstPath,
-                        metaSavePath,
-                        banner_path
-                    });
+                    candidates.push_back({highID,
+                                          lowID,
+                                          high_id,
+                                          low_id,
+                                          isWii,
+                                          isWiiUSysTitle,
+                                          isWiiUTitle,
+                                          titles,
+                                          titles_count,
+                                          srcPath,
+                                          dstPath,
+                                          metaSavePath,
+                                          banner_path});
                 }
             } else {
                 Console::showMessage(ERROR_SHOW, _("Error opening dir %s: %s"), titles_folder.c_str(), strerror(errno));
@@ -523,7 +540,7 @@ int BackupSetList::emulator_2_savemii(int i, int &titlesOK, int &titlesKO, std::
         RC = -5;
     }
 
-    writeBackupAllMetadata(batchDatetime.c_str(), tag.c_str(),RC);
+    writeBackupAllMetadata(batchDatetime.c_str(), tag.c_str(), RC);
 
     currentBackupSetList->setIsInitializationRequired(true);
 
