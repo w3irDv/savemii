@@ -67,7 +67,7 @@ void BackupSetContentListState::render() {
             if (i + this->scroll < 0 || i + this->scroll >= backupset_content_size)
                 break;
 
-            const auto &item = backupset_content.at(i + this->scroll);
+            auto &item = backupset_content.at(i + this->scroll);
             bool isFailed = (item.backup_health != BACKUP_OK);
             const char *failTag = isFailed ? _(" [Backup Failed]") : "";
 
@@ -87,7 +87,16 @@ void BackupSetContentListState::render() {
                     }
                 }
             } else {
+                if (!isFailed)
+                    DrawUtils::setFontColorByCursor(COLOR_LIST_SKIPPED, COLOR_LIST_SKIPPED_AT_CURSOR, cursorPos, i);
                 Console::consolePrintPos(M_OFF, i + 2, "    %s%s", item.uninstalled_title_name.c_str(), failTag);
+                if (!item.uninstalled_iconBuf.empty()) {
+                    if (item.uninstalled_isWii) {
+                        DrawUtils::drawRGB5A3((M_OFF + X_OFFSET - 2) * 12 + 3, (i + 3) * 24 + 3 + 6, 0.25, item.uninstalled_iconBuf.data());
+                    } else {
+                        DrawUtils::drawTGA((M_OFF + X_OFFSET) * 12 + 4, (i + 3) * 24 + 4, 0.18, item.uninstalled_iconBuf.data());
+                    }
+                }
             }
         }
 
@@ -118,7 +127,6 @@ void BackupSetContentListState::render() {
                     DrawUtils::drawTGA(678, 284, 1, item_at_cursor.uninstalled_iconBuf.data());
                 }
             }
-
         }
 
         DrawUtils::setFontColor(COLOR_TEXT);
