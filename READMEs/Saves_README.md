@@ -10,8 +10,8 @@
 Allows you to backup/restore/wipe individual titles.
 
 1. First select the title you want to manage.
-	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing to it beforehand) it will be marked as "Not init" and will appear in yellow. Starting from SaveMii v1.8.0 you can try to manage it (restore savedata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
-		1. An special case of this are vWii injects. They will appear in "Wii U Title Management" marked as "vWii injects". They have savedata in the vWii side, but for "real" vWii injects (GameCube injects are excluded), from saveMii 1.8.0 you can manage the its Savedata directly from the WiiU Title entry.    
+	1. Wii U titles: If the title has not been initialized (you have not created an initial save by playing it beforehand) it will be marked as "Not init" and will appear in yellow. Starting from SaveMii v1.8.0 you can try to manage it (restore savedata from a previous backup) and it should work. If not, just first play and create "real" savedata before trying to restore any backup.
+		1. A special case of this are vWii injects. They will appear in "Wii U Title Management" marked as "vWii injects". They have savedata on the vWii side, but for "real" vWii injects (GameCube injects are excluded), from SaveMii 1.8.0 you can manage its Savedata directly from the WiiU Title entry.    
 2. Select the task you want to do:
 	1. Backup: Copy savedata from USB/NAND to SD
 	2. Restore: Copy savedata from SD to USB/NAND
@@ -21,7 +21,7 @@ Allows you to backup/restore/wipe individual titles.
 	6. Export / Import to Loadiine: Legacy options to manage Loadiine savedata
 	7. Copy to other Device: If savedata for a title is present in USB and NAND, copy it from one storage to the other
 
-<img src="new.png" width="40" align="center">   You can now manage Wii U Sistem titles (MiiMaker, Browser, ... ). But take extra careful when you backup/wipe/restore them, because if you left them unconsistent you can in some extreme cases (semi) brick your Wii U. Nothing that probably cannot be fixed with UDPIH and the Recovery Menu (see [Tips](Tips_README.md#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore)).
+<img src="new.png" width="40" align="center">   You can now manage Wii U System titles (MiiMaker, Browser, ... ). But take extra care when you backup/wipe/restore them, because if you leave them inconsistent you can in some extreme cases (semi) brick your Wii U. Nothing that probably cannot be fixed with UDPIH and the Recovery Menu (see [Tips](Tips_README.md#recover-your-wii-u-in-case-of-a-brick-after-a-faulty-system-title-restore)).
 
 **Always** perform an `All Users` backup before trying any restore/copy/move/wipe operation !!!
 
@@ -32,7 +32,7 @@ Allows you to backup/restore/wipe individual titles.
 	2. `All users`: Recommended option. Will backup all game data.
 	3. `From user: xxxxxxxx`. Will only backup the data for the specified user/profile. In this case, you must also specify if you want to save the "common" data or not. "Common" savedata is data shared by all profiles. Titles can have common save data, profile savedata or both.
 
-	<img src="new.png" width="40" align="center"> For vWii titles, you can choose the savedata format: "plain files", where  all individual files are copied to the selected slot in the SD card, or "compressed", where all files will be archived in a `data.bin` file. This "compressed" format is the standard format used by a Wii when backing up saves from the Data Managament menu. For the compressed format to work you need to provide some Wii encryption keys. See the [Encyption keys](Keys_README.md) section.
+	<img src="new.png" width="40" align="center"> For vWii titles, you can choose the savedata format: "plain files", where  all individual files are copied to the selected slot in the SD card, or "compressed", where all files will be archived in a `data.bin` file. This "compressed" format is the standard format used by a Wii when backing up saves from the Data Management menu. For the compressed format to work you need to provide some Wii encryption keys. See the [Encryption keys](Keys_README.md) section.
 3. Press `A` to initiate the backup. After the backup is done, you can tag the slot with a meaningful name pressing `+` button while you are in the backup menu. If the slot is unneeded, you can delete it by pressing `-` button.
 
 *Wii U titles savedata layout:*
@@ -59,7 +59,7 @@ For vWii titles, savedata is directly under the slot folder.
 ### Restore
 1. Select a slot to get the data from.  If you haven't selected any backupSet, the data from the `Root backupSet`  (the one where the manual backups are always stored) is used. But you can also use data from any batch backupSet, by pressing the `X` button and selecting the backupSet you want to use. Notice that the last backupSet you previously selected in any task (Batch Restore or BackupSet Management) will be the one used here by default. BackupSets can be tagged by pressing `+` button in the BackupSet List Menu, or from the BackupSet Management in Main menu.
    To identify which data the slot contains: If the slot has been tagged, you will see its tag next to the slot number. On the top screen line, you will see which backupSet is being used. And at the last screen line, you can see when the savedata were taken, and from which console. Then, next to the slot number you will see a `[T]`if the title backup is using titleName format, or an `[H]` if it is using hexadecimal format. In case that hexadecimal and titleName folder exists for the same title, save data from the hexadecimal folder will always be used. Conversion will merge slots from both savedata, and then only the new titleName folder will be used. Finally, the format of the savedata will be shown: `[data.bin]` means  compressed format, in any other case a `[F]` will be shown.
-2. For Wii U titles, select witch data to restore:
+2. For Wii U titles, select which data to restore:
 	1. `Only common save`
        This will restore only common savedata.
 	2. `From: All users / To: Same user than Source`
@@ -67,26 +67,26 @@ For vWii titles, savedata is directly under the slot folder.
    3. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console. You can specify if copy common savedata or not.
 	   If you are just copying the savedata from one profile id to a different one in the same console, choose `copy common savedata: no`. If you  are restoring to a new console with different profile ids, just choose `copy common savedata: yes` once for any of the profile ids, and copy the rest of profiles with `copy common savedata: no`
 
-	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` archive. If so, the restore task will by default decrypt and explode the files contained in it. You will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encyption keys](Keys_README.md) section. Usually, this`data.bin` will be a "true" savedata if you have:
-	- backup previously the savedata in compressed format
-	- downloaded the a `.bin` savedata file from internet. Change its name to `data.bin` so SaveMii can detect it.
+	<img src="new.png" width="40" align="center"> For vWii titles, the restore task will check if the slot contains a `data.bin` archive. If so, the restore task will by default decrypt and explode the files contained in it. You will need to provide the Wii shared decryption keys -from any Wii will do- for this to work, see the [Encryption keys](Keys_README.md) section. Usually, this `data.bin` will be a "true" savedata if you have:
+	- previously backed up the savedata in compressed format
+	- downloaded a `.bin` savedata file from the internet. Change its name to `data.bin` so SaveMii can detect it.
 	- copied it from the SD folder `/private/wii/title/<Product Code>` (where savedata exported by the Wii Data Management menu is stored) to the SaveMii slot. 
 
-	 If you haven't done nothing of the above, then this `data.bin` file should be not a standard compressed savedata file but just part of the savedata files for the game, so just select "compress = no" and the file will be copied "as is" to the vWiii internal storage.    
+	 If you haven't done any of the above, then this `data.bin` file should not be a standard compressed savedata file but just part of the savedata files for the game, so just select "compress = no" and the file will be copied "as is" to the vWii internal storage.    
 
 3. Press `A` to initiate the restore. 
 
 **Note**: Starting with version 1.7.0, the `From: All Users` restore will detect and not allow restoring savedata to non-existent user profiles. In this case, perform specific `From: Select Source User / To: Select Destination User` restores, selecting the correct users.
 
-**Note**: If you have manually copied  to a nomal backup slot a Loadiine savedata in shared mode format (`/u` and `/c` folders), SaveMii will detect it and will rename the folders to the current user (`/8000000x` and `/common`), so you can afterwards restore it from this menu task.
+**Note**: If you have manually copied to a normal backup slot a Loadiine savedata in shared mode format (`/u` and `/c` folders), SaveMii will detect it and will rename the folders to the current user (`/8000000x` and `/common`), so you can afterwards restore it from this menu task.
 
 ### Wipe
-Sometimes you will need to wipe savedata in the console before restoring a previous backup: If a restore is unsuccesful, you can try to wipe previous data before attempting a new restore. Options are the same than in the *Backup* task, but now refer to savedata for the specified title in the NAND or in the USB. 
+Sometimes you will need to wipe savedata in the console before restoring a previous backup: If a restore is unsuccessful, you can try to wipe previous data before attempting a new restore. Options are the same as in the *Backup* task, but now refer to savedata for the specified title in the NAND or in the USB. 
 
 ### Move to other profile
 
-You can directly move copy the savedata from one profile to a different profile in the same title+storage type. Target profile will be wiped, and then source profile will be renamed to the new profile. Common savedata is left untouched.  
-Select witch data to move:
+You can directly move the savedata from one profile to a different profile in the same title+storage type. Target profile will be wiped, and then source profile will be renamed to the new profile. Common savedata is left untouched.  
+Select which data to move:
 
 1. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console.
 2. Press `A` to initiate the move. 
@@ -94,16 +94,16 @@ Select witch data to move:
 ### Copy to other profile
 
 You can directly copy the savedata from one profile to a different profile in the same title+storage type. You will end with two copies of the savedata in two different profiles.  Common savedata is left untouched.
-Select witch data to copy:
+Select which data to copy:
 
 1. `From: select source user / To: select target user`. This will copy savedata from the specified source profile id in the slot backup to the specified target profile id in the console.
 2. Press `A` to initiate the copy. 
 
 ### Copy to other device
-If a title has savedata in  NAND and in USB, you can transfer it between both storages. Options are the same than in the *Restore* task.
+If a title has savedata in NAND and in USB, you can transfer it between both storages. Options are the same as in the *Restore* task.
 
 ### Import from Loadiine
-You can enter into this task only if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to import this savedata in to the console game savedata folders in NAND or USB. `SaveMii` will search for folders containing the the four letters game's product code, its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
+You can enter into this task only if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to import this savedata into the console game savedata folders in NAND or USB. `SaveMii` will search for folders containing the four-letter game's product code, its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
 
 All these variants will be found:
 
@@ -116,17 +116,17 @@ SD:/wiiu/saves/Smash Bross [AXFE]/
 ```
 
 1. Select the `version` number to get data from. 
-2. Select the WiiU User to copy from. Depending on the user you choose, one of the Loadiine Savedata Modes will be used. If you select users `u` or `shared`, shared savedata mode will be used. In this mode profile savedata is located in the `u` folder, and common savedata is located in the `c`folder. If you select a nomal profile (any `8000000x`) or the user `unique`, unique mode will be used. In this case profile savedata is locaed in the Wii U default folders  (`8000000x` and `common`).
+2. Select the WiiU User to copy from. Depending on the user you choose, one of the Loadiine Savedata Modes will be used. If you select users `u` or `shared`, shared savedata mode will be used. In this mode profile savedata is located in the `u` folder, and common savedata is located in the `c` folder. If you select a normal profile (any `8000000x`) or the user `unique`, unique mode will be used. In this case profile savedata is located in the Wii U default folders  (`8000000x` and `common`).
 3. Select the WiiU user to copy to. This can only be one of the real profiles (`8000000x`).
 4. If there is `common` savedata in the loadiine folder, select whether to copy it (in most cases, you will). The selected source user will determine where to look for shared saved data. For `u` or `shared` users, the `c` folder will be used. For `unique` or normal profiles, the usual `common` folder will be used.
 5. Press `A` to initiate the import. 
 
 ### Export to Loadiine
-You can enter into this task only if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to export game savedata in NAND or USB to the SD loadiine save folder. `SaveMii` will search for folders containing the four letters game's product code (`AXFP`, for example), its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
+You can enter into this task only if the game has savedata in the Loadiine folder `SD:/wiiu/saves`. It allows you to export game savedata in NAND or USB to the SD loadiine save folder. `SaveMii` will search for folders containing the four-letter game's product code (`AXFP`, for example), its lowercase hexadecimal ID (`xxxxxxxxyyyyyyyy`) or the title name in the format already used by `SaveMii`.
 
 1. Select the `version` number where you want to save the game savedata. 
-2. Select the Wii U User to copy savedata from. User `u` will appear always as Empty. Select  the real non-empty profile with savetada  (`8000000x`) that you want to export (soem games have only savedata in the `common` folder, an all profiles will appear as empty).
-3. Select the Wii U User to copy to. Depending on the user you choose, one of the Loadine Savedata Modes will be used. If you select  users `u` or `shared`, shared savedata mode will be used. In this mode profile savedata is located in the `u` folder, and common savedata is located in the `c`folder. If you select a nomal profile (any `8000000x`) or the user `unique`, unique mode will be used. In this case profile savedata is locaed in the wii u default folders  (`8000000x` for profiles, and `common` for common).
+2. Select the Wii U User to copy savedata from. User `u` will always appear as Empty. Select the real non-empty profile with savedata  (`8000000x`) that you want to export (some games have only savedata in the `common` folder, and all profiles will appear as empty).
+3. Select the Wii U User to copy to. Depending on the user you choose, one of the Loadiine Savedata Modes will be used. If you select users `u` or `shared`, shared savedata mode will be used. In this mode profile savedata is located in the `u` folder, and common savedata is located in the `c` folder. If you select a normal profile (any `8000000x`) or the user `unique`, unique mode will be used. In this case profile savedata is located in the Wii U default folders  (`8000000x` for profiles, and `common` for common).
 4. If there is `common` savedata in the loadiine folder, select whether to copy it (in most cases, you will). The selected source user will determine where to look for shared saved data. For `u` or `shared` users, the `c` folder will be used. For `unique` or normal profiles, the usual `common` folder will be used.
 5. Press `A` to initiate the export.
 
@@ -136,7 +136,7 @@ You can enter into this task only if the game has savedata in the Loadiine folde
 
 1. Enter into the task and just press `A` to initiate the import or the export task. For import tasks, SaveMii will check if the savedata in the SD belongs to the title and region you are trying to import to.
 
-If neded, you can select which keys to use to encrypt by pressing `Y` in the Export task menu. This will open the KeyList menu. All files in the `SD:/wiiu/backups/keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private, shared keys or the mac address. For more details, please see the [Encyption keys](Keys_README.md) section.
+If needed, you can select which keys to use to encrypt by pressing `Y` in the Export task menu. This will open the KeyList menu. All files in the `SD:/wiiu/backups/keys` folder will be shown. Select with `A`, `X`, and `Y` which file has to be used to get the private, shared keys or the mac address. For more details, please see the [Encryption keys](Keys_README.md) section.
 
 ## Configuration Options
 

@@ -11,9 +11,9 @@
 
 ## Recover your Wii U in case of a brick after a faulty System title restore
 
-In extreme cases, a faulty restore of a system title can lead to a brick of your console. For example, you decide to wipe de Mii Make savedata expecting that the next time you open it the mii database will be initialized from scratch with the right permissions. But Mii Maker savedata contains also some FaceLib lib files that the Wii U Menu uses to render miis in the initial selection screen. It does not find them, and the startup process hangs on the Wii U logo forever ...
+In extreme cases, a faulty restore of a system title can lead to a brick of your console. For example, you decide to wipe the Mii Maker savedata expecting that the next time you open it the Mii database will be initialized from scratch with the right permissions. But Mii Maker savedata also contains some FaceLib files that the Wii U Menu uses to render Miis in the initial selection screen. It does not find them, and the startup process hangs on the Wii U logo forever ...
 
-We will cover the case that an error manipulating Mii Maker savedata leads to a brick. For orher cases, a straighforward adaption of functions `wipe_mii_maker/check_mii_maker_is_wiped/restore_mii_maker` in `wupclient.py` will be needed. 
+We will cover the case where an error manipulating Mii Maker savedata leads to a brick. For other cases, a straightforward adaptation of the functions `wipe_mii_maker/check_mii_maker_is_wiped/restore_mii_maker` in `wupclient.py` will be needed. 
 
 You will need a backup of the Mii Maker savedata. Always perform an `All Users` backup before trying any restore! At worst, you will have the initial checkpoint backup in `sd:/wiiu/backups/mii_db_checkpoint/(WiiU serial number)`.
 
@@ -47,8 +47,8 @@ key_type=WPA2_PSK_AES
     mm_bckp/db/FFL_ODB_OLD.dat
     ``` 
 - Put the SD card on your Wii U
-- Power On your Wii U, connect the device with the UDPIH exploit when the Wii U logo appear. 
-- Once you are in the `Recovery Menu`, enter in to `Load Network Configuration`.
+- Power On your Wii U, connect the device with the UDPIH exploit when the Wii U logo appears. 
+- Once you are in the `Recovery Menu`, enter into `Load Network Configuration`.
 - Once the network is configured, go to `Start wupserver`. The IP assigned to the Wii U will appear on the screen.
 - Update this line in `wupclient.py`with the IP assigned to the Wii U:
 ```python
@@ -61,7 +61,7 @@ def __init__(self, ip='YOUR.IP.HE.RE', port=1337)
 python3 -i wupclient.py
 ```
 
-- Run these lines inside the interactive prompt. Substitute `"your_region_here"` by "eur", "usa" or "jpn"
+- Run these lines inside the interactive prompt. Substitute `"your_region_here"` with "eur", "usa" or "jpn"
 
 
 ```python

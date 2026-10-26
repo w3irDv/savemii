@@ -44,6 +44,11 @@ Use it at your own risk and please report any issues that may occur.
 <p align="left">
 
 <p align="left">
+<a href="READMEs/Emu_README.md" title="Emu"><img src="READMEs/CEMU_Dolphin.png" width="40" align="center"></a>&nbsp
+<a href="READMEs/Emu_README.md" title="Emu">CEMU/Dolphin support</a>
+<p align="left">
+
+<p align="left">
 <a href="READMEs/Mii_README.md" title="Miis"><img src="READMEs/miis.png" width="40" align="center"></a>&nbsp
 <a href="READMEs/Mii_README.md" title="Miis">Mii Management</a>
 </p>
