@@ -11,24 +11,24 @@
 You can export savedata for several selected Wii U titles and Wii titles at once using this task. Savedata will be stored in an "Export Set" in the `batch\cemu_dolphin` directory in a layout that will allow you to copy it directly to your CEMU/Dolphin installation. ExportSets can be tagged by pressing the "+" button in the BackupSet List menu or by entering the Backupset Management menu from the Main menu.
 
 ```
-sd:/wiiu/backups/batch/cemu_dolphin/
+sd:/wiiu/backups/cemu_dolphin/
     ${timestamp}/          # ExportSet
         SaveMiiMeta.json
         xxxxxxxx/          # high id (category identifier): WiiU: 00050000 (games), 00050010 (system), ... Wii: 00010000 (games)
             yyyyyyyy/      # low id: hexadecimal game identifier
-                 ... savedata
+                 ...       # savedata for vWii, meta and user folders with savedata for Wii U
             yyyyyyyy/      # low id for next game
-                ... savedata
+                ...        # savedata
             ...
         xxxxxxxx/          # next highid
             yyyyyyyy/      # low id
-                 ... savedata
+                 ...       # savedata
             yyyyyyyy/
-                ... savedata
+                ...        # savedata
             ...
 ```
 
-You can take the full structure under `xxxxxxxx` and copy it to CEMU or Dolphin, or take the `yyyyyyyy` folder for one game and copy it. No folder rename is needed.
+You can take the full structure under `xxxxxxxx` and copy it to CEMU or Dolphin, or take the `yyyyyyyy` folder for one game and copy it. No title folder rename is needed, but in the case of Wii U, you might need to change the profile ID folder in `yyyyyyyy/user/${profileid}` so that it matches the one in your Cemu NAND. 
 
 To create an ExportSet:
 
@@ -40,19 +40,19 @@ To create an ExportSet:
 You can copy the saves from the CEMU/Dolphin folders directly onto an SD card, under a folder inside `sd:/wiiu/backups/batch/cemu_dolphin/`. Use any name for the folder (it is not necessary to use the timestamp format).
 
 ```
-sd:/wiiu/backups/batch/cemu_dolphin/
+sd:/wiiu/backups/cemu_dolphin/
     ${the_name_you_choose}/          # ExportSet
         xxxxxxxx/          # high id (category identifier): WiiU: 00050000 (games), 00050010 (system), ... Wii: 00010000 (games)
             yyyyyyyy/      # low id: hexadecimal game identifier
-                 ... savedata
+                 ...       # savedata for vWii, meta and user folders with savedata for Wii U
             yyyyyyyy/      # low id for next game
-                ... savedata
+                ...        # savedata
             ...
         xxxxxxxx/          # next highid
             yyyyyyyy/      # low id
-                 ... savedata
+                 ...       # savedata
             yyyyyyyy/
-                ... savedata
+                ...        # savedata
             ...
 ```
 
