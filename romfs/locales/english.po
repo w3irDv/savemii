@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 12:02+0100\n"
+"POT-Creation-Date: 2026-11-01 12:32+0100\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -3113,7 +3113,7 @@ msgid "Export Wii U or vWii savedata in a format ready to be copied to the corre
 msgstr ""
 
 #: src/menu/ExportAsState.cpp:53
-msgid "\\ue002: ExportFolder Management \\ue000: Export  \\ue001: Back"
+msgid "\\ue002: ExportSet Management   \\ue000: Export   \\ue001: Back"
 msgstr ""
 
 #: src/menu/MiiTransformTasksState.cpp:24

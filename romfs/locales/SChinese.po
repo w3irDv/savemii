@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json 2po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 12:02+0100\n"
+"POT-Creation-Date: 2026-11-01 12:32+0100\n"
 "PO-Revision-Date: 2026-02-12 16:46+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -385,19 +385,15 @@ msgstr "中止任务 - 无法打开和填充存储库 %s"
 
 #: src/utils/MiiUtils.cpp:359
 msgid ""
-"You are exporting duplicated Miis. They are marked with DUP or D in the "
-"listings.\n"
+"You are exporting duplicated Miis. They are marked with DUP or D in the listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
-"MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its miiid or normal/special/temp or device info for "
-"one of them"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
 msgstr ""
 "您正在导出重复的 Mii。它们在列表中标记为 DUP 或 D。\n"
 "\n"
-"请注意，MiiMaker 会删除除一个以外的所有重复 Mii，而 MiiChannel 似乎并不在意。"
-"请修复此问题，更新其中一个 Mii 的 miiid、普通/特殊/临时或设备信息。"
+"请注意，MiiMaker 会删除除一个以外的所有重复 Mii，而 MiiChannel 似乎并不在意。请修复此问题，更新其中一个 Mii 的 miiid、普通/特殊/临时或设备信息。"
 
 #: src/utils/MiiUtils.cpp:382 src/utils/MiiUtils.cpp:503
 #: src/utils/MiiUtils.cpp:783 src/menu/MiiSelectState.cpp:587
@@ -415,19 +411,15 @@ msgstr ""
 
 #: src/utils/MiiUtils.cpp:465
 msgid ""
-"You are importing duplicated Miis. They are marked with DUP or D in the "
-"listings.\n"
+"You are importing duplicated Miis. They are marked with DUP or D in the listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
-"MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its miiid or normal/special/temp or device info for "
-"one of them"
+"Please fix it updating its miiid or normal/special/temp or device info for one of them"
 msgstr ""
 "您正在导入重复的 Mii。它们在列表中标记为 DUP 或 D。\n"
 "\n"
-"请注意，MiiMaker 会删除除一个以外的所有重复 Mii，而 MiiChannel 似乎不会处"
-"理。\n"
+"请注意，MiiMaker 会删除除一个以外的所有重复 Mii，而 MiiChannel 似乎不会处理。\n"
 "\n"
 "请修复此问题，更新其中一个 Mii 的 miiid、普通/特殊/临时或设备信息。"
 
@@ -441,27 +433,21 @@ msgstr ""
 
 #: src/utils/MiiUtils.cpp:528 src/utils/MiiUtils.cpp:808
 msgid ""
-"Duplicated Miis found in the repo. They are marked with DUP or D in the "
-"listings.\n"
+"Duplicated Miis found in the repo. They are marked with DUP or D in the listings.\n"
 "\n"
-"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas "
-"MiiChannel doesn't seem to care.\n"
+"Notice that all but one duplicated miis will be deleted by MiiMaker, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"Please fix it updating its MiiId, or toggling normal/special/temp flag or "
-"updating device info for one of them"
+"Please fix it updating its MiiId, or toggling normal/special/temp flag or updating device info for one of them"
 msgstr ""
 "仓库中发现重复的Mii角色。它们在列表中标记为DUP或D。\n"
 "\n"
-"请注意，MiiMaker会删除除一个以外的所有重复Mii角色，而MiiChannel似乎并不在"
-"意。\n"
+"请注意，MiiMaker会删除除一个以外的所有重复Mii角色，而MiiChannel似乎并不在意。\n"
 "\n"
-"请通过更新其MiiID、切换普通/特殊/临时标志或更新其中一个角色的设备信息来修复"
-"它。"
+"请通过更新其MiiID、切换普通/特殊/临时标志或更新其中一个角色的设备信息来修复它。"
 
 #: src/utils/MiiUtils.cpp:584
 #, c-format
-msgid ""
-"Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
+msgid "Unable to remove %s (by %s) from favorites section. Error extracting MiiData"
 msgstr "无法从收藏夹部分删除 %s（由 %s 删除）。提取 MiiData 时出错"
 
 #: src/utils/MiiUtils.cpp:588
@@ -512,18 +498,12 @@ msgstr "中止:\\ue083+\\ue046"
 
 #: src/utils/MiiUtils.cpp:730
 #, c-format
-msgid ""
-"Mii %s is Special and will be deleted by the Mii editor if it has the the "
-"Share flag on. Please first convert it to a Normal one."
-msgstr ""
-"Mii %s 为特殊角色，如果启用了共享标志，将被Mii编辑器删除。请先将其转换为普通"
-"角色。"
+msgid "Mii %s is Special and will be deleted by the Mii editor if it has the the Share flag on. Please first convert it to a Normal one."
+msgstr "Mii %s 为特殊角色，如果启用了共享标志，将被Mii编辑器删除。请先将其转换为普通角色。"
 
 #: src/utils/MiiUtils.cpp:757
 #, c-format
-msgid ""
-"Share attribute will be disabled for Mii %s as it will be transformed to a "
-"Special one."
+msgid "Share attribute will be disabled for Mii %s as it will be transformed to a Special one."
 msgstr "Mii %s 的分享属性将被禁用，因为它将被转换为特殊 Mii。"
 
 #: src/utils/MiiUtils.cpp:800
@@ -1308,8 +1288,7 @@ msgstr ""
 #: src/utils/EscapeFAT32Utils.cpp:132
 #, c-format
 msgid ""
-"FAT32 rename entry points outside the save folder (corrupt or malicious "
-"backup):\n"
+"FAT32 rename entry points outside the save folder (corrupt or malicious backup):\n"
 "%s\n"
 "->\n"
 "%s"
@@ -1347,14 +1326,8 @@ msgstr ""
 
 #: src/utils/AccountUtils.cpp:169
 #, c-format
-msgid ""
-"The file %s contains save data in data.bin format. If you have copied it to "
-"this slot in order to restore it, it must be renamed to 'data.bin'. It's "
-"that the case? If so, confirm it and I will rename the file."
-msgstr ""
-"文件 %s 包含 data.bin 格式的存档数据。如果您是为了恢复存档而将其复制到此插"
-"槽，则必须将其重命名为 'data.bin'。是这种情况吗？如果是，请确认，我将为您重命"
-"名该文件。"
+msgid "The file %s contains save data in data.bin format. If you have copied it to this slot in order to restore it, it must be renamed to 'data.bin'. It's that the case? If so, confirm it and I will rename the file."
+msgstr "文件 %s 包含 data.bin 格式的存档数据。如果您是为了恢复存档而将其复制到此插槽，则必须将其重命名为 'data.bin'。是这种情况吗？如果是，请确认，我将为您重命名该文件。"
 
 #: src/utils/AccountUtils.cpp:176
 #, c-format
@@ -1416,8 +1389,7 @@ msgstr ""
 #: src/utils/StatManager.cpp:75
 #, c-format
 msgid ""
-"Stat file entry points outside the save folder and was skipped (corrupt or "
-"malicious backup):\n"
+"Stat file entry points outside the save folder and was skipped (corrupt or malicious backup):\n"
 "%s\n"
 "\n"
 "Errors so far: %d\n"
@@ -1477,8 +1449,7 @@ msgstr ""
 #: src/utils/StatManager.cpp:209
 #, c-format
 msgid ""
-"Invalid or corrupt permission file (bad header). Permissions will not be "
-"restored:\n"
+"Invalid or corrupt permission file (bad header). Permissions will not be restored:\n"
 "\n"
 "%s"
 msgstr ""
@@ -1598,11 +1569,8 @@ msgid "%s FAILED - OK/KO > %d/%d"
 msgstr "%s 失败 - OK/KO > %d/%d"
 
 #: src/mii/MiiStadioSav.cpp:169
-msgid ""
-"stadio.sav DB not found. Do you want to create one from existing associated "
-"FFL and ACCOUNT repos?"
-msgstr ""
-"未找到 stadio.sav 数据库。是否要从现有的关联 FFL 和 ACCOUNT 仓库中创建一个？"
+msgid "stadio.sav DB not found. Do you want to create one from existing associated FFL and ACCOUNT repos?"
+msgstr "未找到 stadio.sav 数据库。是否要从现有的关联 FFL 和 ACCOUNT 仓库中创建一个？"
 
 #: src/mii/MiiStadioSav.cpp:185 src/mii/MiiFileRepo.cpp:280
 #, c-format
@@ -1707,23 +1675,17 @@ msgid "Cannot find an EMPTY frame for the mii in the STADIO db"
 msgstr "在 STADIO 数据库中找不到 mii 的空帧"
 
 #: src/mii/MiiStadioSav.cpp:480
-msgid ""
-"Warning: unable to populate Account repo. Non-critical error, you can "
-"continue"
+msgid "Warning: unable to populate Account repo. Non-critical error, you can continue"
 msgstr "警告：无法填充帐户存储库。非严重错误，您可以继续"
 
 #: src/mii/MiiStadioSav.cpp:491 src/mii/MiiStadioSav.cpp:593
 #, c-format
-msgid ""
-"Warning: unable to import mii %s in STADIO. Non-critical error, you can "
-"continue"
+msgid "Warning: unable to import mii %s in STADIO. Non-critical error, you can continue"
 msgstr "警告：无法在 STADIO 中导入 mii %s。非严重错误，您可以继续"
 
 #: src/mii/MiiStadioSav.cpp:494 src/mii/MiiStadioSav.cpp:596
 #, c-format
-msgid ""
-"Warning: unable to extract MiiData for %s (by %s). Non-critical error, you "
-"can continue"
+msgid "Warning: unable to extract MiiData for %s (by %s). Non-critical error, you can continue"
 msgstr "警告：无法提取 %s 的 Mii 数据（由 %s 创建）。非严重错误，您可以继续"
 
 #: src/mii/MiiStadioSav.cpp:509 src/mii/MiiFileRepo.cpp:653
@@ -1738,8 +1700,7 @@ msgstr ""
 "无法创建用于读取 Mii 数据的内存缓冲区"
 
 #: src/mii/MiiStadioSav.cpp:582
-msgid ""
-"Warning: unable to populate FFL repo. Non-critical error, you can continue"
+msgid "Warning: unable to populate FFL repo. Non-critical error, you can continue"
 msgstr "警告：无法填充 FFL 仓库。非关键错误，您可以继续"
 
 #: src/mii/MiiAccountRepo.cpp:111 src/mii/MiiFolderRepo.cpp:67
@@ -1891,35 +1852,23 @@ msgid "Cannot find an EMPTY location for the mii in the db"
 msgstr "在数据库中找不到 mii 的空位置"
 
 #: src/mii/MiiFileRepo.cpp:466
-msgid ""
-"Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be "
-"deleted when you open the Mii Channel. Do you want me to change it to a "
-"safer slice (0x4/3)?"
-msgstr ""
-"注意：这是一个来自 MiiID 切片 0x1/3 的普通 Mii，打开 Mii 频道时可能会被删除。"
-"您想让我把它改成更安全的切片（0x4/3）吗？"
+msgid "Beware: This is a Normal Mii from MiiId slice 0x1/3 and it will probably be deleted when you open the Mii Channel. Do you want me to change it to a safer slice (0x4/3)?"
+msgstr "注意：这是一个来自 MiiID 切片 0x1/3 的普通 Mii，打开 Mii 频道时可能会被删除。您想让我把它改成更安全的切片（0x4/3）吗？"
 
 #: src/mii/MiiFileRepo.cpp:481
-msgid ""
-"Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want "
-"me to change it to a Permanent one?"
-msgstr ""
-"注意：这是一个临时 Mii，所以它不会出现在 MiiMkaker 中。您想让我把它改成永久 "
-"Mii 吗？"
+msgid "Beware: This is a Temporary Mii so it won't appear in MiiMkaker. Do you want me to change it to a Permanent one?"
+msgstr "注意：这是一个临时 Mii，所以它不会出现在 MiiMkaker 中。您想让我把它改成永久 Mii 吗？"
 
 #: src/mii/MiiFileRepo.cpp:490
 #, c-format
 msgid ""
-"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated "
-"mii, whereas MiiChannel doesn't seem to care.\n"
+"Duplicate Mii ID found (%s). Notice that MiiMaker will delete a duplicated mii, whereas MiiChannel doesn't seem to care.\n"
 "\n"
-"You can generate a new Mii ID for it, and it will become a completely new "
-"unique mii.\n"
+"You can generate a new Mii ID for it, and it will become a completely new unique mii.\n"
 "\n"
 "Do you want me to change Mii Id for this mii?"
 msgstr ""
-"发现重复的Mii ID (%s)。请注意，MiiMaker会删除重复的Mii角色，而MiiChannel似乎"
-"并不在意。\n"
+"发现重复的Mii ID (%s)。请注意，MiiMaker会删除重复的Mii角色，而MiiChannel似乎并不在意。\n"
 "\n"
 "您可以为其生成一个新的Mii ID，它将成为一个全新的唯一Mii角色。\n"
 "\n"
@@ -2093,9 +2042,7 @@ msgstr ""
 #: src/menu/TitleListState.cpp:125
 #, c-format
 msgid ""
-"SaveMii is now using a new name format for savedata folders. Instead of "
-"using hex values, folders will be named after the title name, so for this "
-"title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
+"SaveMii is now using a new name format for savedata folders. Instead of using hex values, folders will be named after the title name, so for this title, folder '%08x%08x' would become '%s', easier to locate in the SD.\n"
 "\n"
 "Do you want to rename already created backup folders?\n"
 "\n"
@@ -2106,9 +2053,7 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
-"SaveMii 现在使用新的保存数据文件夹命名格式。 不再使用十六进制值，文件夹将以游"
-"戏名称命名， 因此，对于此游戏，文件夹'%08x%08x'将变为 '%s'， 这样更容易在 SD "
-"卡中定位。\n"
+"SaveMii 现在使用新的保存数据文件夹命名格式。 不再使用十六进制值，文件夹将以游戏名称命名， 因此，对于此游戏，文件夹'%08x%08x'将变为 '%s'， 这样更容易在 SD 卡中定位。\n"
 "\n"
 "您是否要重命名已创建的备份文件夹？\n"
 "\n"
@@ -2339,35 +2284,20 @@ msgid "Select which Miis to Import"
 msgstr "选择要导入的 Mii"
 
 #: src/menu/MiiSelectState.cpp:162
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  "
-"\\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue002\\ue084：查看 \\ue000：导入 Mii "
-"\\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue002\\ue084: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue002\\ue084：查看 \\ue000：导入 Mii \\ue001：返回"
 
 #: src/menu/MiiSelectState.cpp:164
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：设置/取消设置全部 \\ue002: 查"
-"看 \\ue000: 导出 \\ue001: 返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue002: View  \\ue000: Import Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：设置/取消设置全部 \\ue002: 查看 \\ue000: 导出 \\ue001: 返回"
 
 #: src/menu/MiiSelectState.cpp:167
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
-"\\ue000: Import  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 "
-"\\ue000：擦除 \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Import  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 \\ue000：擦除 \\ue001：返回"
 
 #: src/menu/MiiSelectState.cpp:169
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
-"\\ue000: Import  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 设置/取消设置 \\ue045\\ue046: 设置/取消设置全部 \\ue002: 查"
-"看 \\ue000: 擦除 \\ue001: 返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Import  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 设置/取消设置 \\ue045\\ue046: 设置/取消设置全部 \\ue002: 查看 \\ue000: 擦除 \\ue001: 返回"
 
 #: src/menu/MiiSelectState.cpp:171
 msgid ">> Import"
@@ -2382,20 +2312,12 @@ msgid "Select which Miis to Export"
 msgstr "选择要导出的 Mii"
 
 #: src/menu/MiiSelectState.cpp:177
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
-"\\ue000: Export  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 "
-"\\ue000：导入 \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Export  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 \\ue000：导入 \\ue001：返回"
 
 #: src/menu/MiiSelectState.cpp:179
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
-"\\ue000: Export  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 设置/取消设置 \\ue045\\ue046: 设置/取消设置全部 \\ue002: 查"
-"看 \\ue000: 导入 \\ue001: 返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Export  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 设置/取消设置 \\ue045\\ue046: 设置/取消设置全部 \\ue002: 查看 \\ue000: 导入 \\ue001: 返回"
 
 #: src/menu/MiiSelectState.cpp:180 src/menu/BatchJobTitleSelectState.cpp:285
 msgid ">> Export"
@@ -2410,12 +2332,8 @@ msgid "Select which Mii to Restore"
 msgstr "选择要恢复的 Mii"
 
 #: src/menu/MiiSelectState.cpp:186
-msgid ""
-"\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  "
-"\\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue002\\ue083\\ue084：查看 \\ue000：恢复 Mii "
-"\\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset \\ue002\\ue083\\ue084: View  \\ue000: Restore Mii  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue002\\ue083\\ue084：查看 \\ue000：恢复 Mii \\ue001：返回"
 
 #: src/menu/MiiSelectState.cpp:187 src/menu/BatchJobTitleSelectState.cpp:243
 msgid ">> Restore"
@@ -2431,20 +2349,12 @@ msgid "Select which Miis to Wipe"
 msgstr "选择要擦除的 Mii"
 
 #: src/menu/MiiSelectState.cpp:193
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
-"\\ue000: Wipe  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 "
-"\\ue000：导入 \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 \\ue000：导入 \\ue001：返回"
 
 #: src/menu/MiiSelectState.cpp:195
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  "
-"\\ue000: Wipe  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 "
-"\\ue000：导出 \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue002: View  \\ue000: Wipe  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 \\ue000：导出 \\ue001：返回"
 
 #: src/menu/MiiSelectState.cpp:196 src/menu/BatchJobTitleSelectState.cpp:261
 msgid ">> Wipe"
@@ -2459,20 +2369,12 @@ msgid "Select which Miis to Transform"
 msgstr "选择要转换的 Mii"
 
 #: src/menu/MiiSelectState.cpp:202
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  "
-"\\ue000: Tasks  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002：查看 "
-"\\ue000：任务 \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002\\ue084: View  \\ue000: Tasks  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002：查看 \\ue000：任务 \\ue001：返回"
 
 #: src/menu/MiiSelectState.cpp:204
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  "
-"\\ue000: Tasks  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 "
-"\\ue000：任务 \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Toggle All  \\ue002: View  \\ue000: Tasks  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部切换 \\ue002\\ue084：查看 \\ue000：任务 \\ue001：返回"
 
 #: src/menu/MiiSelectState.cpp:205
 msgid ">> Transform"
@@ -2487,16 +2389,11 @@ msgid "Select Mii to copy attrs from"
 msgstr "选择要从中复制属性的 Mii"
 
 #: src/menu/MiiSelectState.cpp:211
-msgid ""
-"\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform "
-"Miis  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 选择模板 \\ue002\\ue084: 查看 \\ue000: 转换 Mii \\ue001: 返回"
+msgid "\\ue003\\ue07e: Select Template  \\ue002\\ue084: View  \\ue000: Transform Miis  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 选择模板 \\ue002\\ue084: 查看 \\ue000: 转换 Mii \\ue001: 返回"
 
 #: src/menu/MiiSelectState.cpp:213
-msgid ""
-"\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  "
-"\\ue001: Back"
+msgid "\\ue003\\ue07e: Select Template  \\ue002: View  \\ue000: Transform Miis  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 选择模板 \\ue002: 查看 \\ue000: 转换 Mii \\ue001: 返回"
 
 #: src/menu/MiiSelectState.cpp:214
@@ -2508,16 +2405,11 @@ msgid "Select Mii to be overwritten"
 msgstr "选择要覆盖的 Mii"
 
 #: src/menu/MiiSelectState.cpp:220 src/menu/MiiSelectState.cpp:229
-msgid ""
-"\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  "
-"\\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 选择目标 Mii \\ue002\\ue084: 查看 \\ue000: 继续 \\ue001: 返回"
+msgid "\\ue003\\ue07e: Select Target Mii  \\ue002\\ue084: View   \\ue000: Continue  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 选择目标 Mii \\ue002\\ue084: 查看 \\ue000: 继续 \\ue001: 返回"
 
 #: src/menu/MiiSelectState.cpp:222 src/menu/MiiSelectState.cpp:231
-msgid ""
-"\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  "
-"\\ue001: Back"
+msgid "\\ue003\\ue07e: Select Target Mii  \\ue002: View   \\ue000: Continue  \\ue001: Back"
 msgstr "\\ue003\\ue07e: 选择目标 Mii \\ue002: 查看 \\ue000: 继续 \\ue001: 返回"
 
 #: src/menu/MiiSelectState.cpp:223
@@ -2759,27 +2651,16 @@ msgid "\\ue083 Sort: %s \\ue084"
 msgstr "\\ue083 排序方式: %s \\ue084"
 
 #: src/menu/BackupSetListState.cpp:118
-msgid ""
-"\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 "
-"Filter  \\ue001 Back"
-msgstr ""
-"\\ue000 转换  \\ue002 显示内容  \\ue045 标签  \\ue046 删除  \\ue003 筛选  "
-"\\ue001 返回"
+msgid "\\ue000 Convert  \\ue002 Show Content  \\ue045 Tag  \\ue046 Wipe  \\ue003 Filter  \\ue001 Back"
+msgstr "\\ue000 转换  \\ue002 显示内容  \\ue045 标签  \\ue046 删除  \\ue003 筛选  \\ue001 返回"
 
 #: src/menu/BackupSetListState.cpp:122
-msgid ""
-"\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  "
-"\\ue003: Filter  \\ue001: Back"
-msgstr ""
-"\\ue000: 选择  \\ue002: 显示内容  \\ue045: 标签  \\ue046: 擦除  \\ue003: 过"
-"滤  \\ue001: 返回"
+msgid "\\ue000: Select  \\ue002: Show Content  \\ue045: Tag  \\ue046: Wipe  \\ue003: Filter  \\ue001: Back"
+msgstr "\\ue000: 选择  \\ue002: 显示内容  \\ue045: 标签  \\ue046: 擦除  \\ue003: 过滤  \\ue001: 返回"
 
 #: src/menu/BackupSetListState.cpp:124
-msgid ""
-"\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  "
-"\\ue001: Back"
-msgstr ""
-"\\ue000: 选择备份集  \\ue002: 显示内容  \\ue003: 过滤列表  \\ue001: 返回"
+msgid "\\ue000: Select BackupSet  \\ue002: Show Content  \\ue003: Filter List  \\ue001: Back"
+msgstr "\\ue000: 选择备份集  \\ue002: 显示内容  \\ue003: 过滤列表  \\ue001: 返回"
 
 #: src/menu/BackupSetListState.cpp:137
 msgid "Root BackupSet cannot be selected for batch operations"
@@ -2826,9 +2707,7 @@ msgstr "存档集创建已中止。OK：%d  KO：%d"
 
 #: src/menu/BackupSetListState.cpp:185
 #, c-format
-msgid ""
-"Error creating BackupSet from CEMU/Dolplhin data. Titles OK: %d  Titles KO: "
-"%d"
+msgid "Error creating BackupSet from CEMU/Dolplhin data. Titles OK: %d  Titles KO: %d"
 msgstr "从 CEMU/Dolphin 数据创建存档集时出错。软件 OK：%d  软件 KO：%d"
 
 #: src/menu/BackupSetListState.cpp:190
@@ -2847,24 +2726,16 @@ msgid "Batch Restore - Select"
 msgstr "批量恢复 - 选择"
 
 #: src/menu/BatchJobTitleSelectState.cpp:242
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore "
-"titles  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e: 设置/取消设置 \\ue045\\ue046: 设置/取消全部 \\ue000: 恢复标"
-"题 \\ue001: 返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: Restore titles  \\ue001: Back"
+msgstr "\\ue003\\ue07e: 设置/取消设置 \\ue045\\ue046: 设置/取消全部 \\ue000: 恢复标题 \\ue001: 返回"
 
 #: src/menu/BatchJobTitleSelectState.cpp:247
 msgid "Batch ProfileCopy - Select"
 msgstr "批量配置文件复制 - 选择"
 
 #: src/menu/BatchJobTitleSelectState.cpp:248
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"ProfileCopy  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e设置/取消设置 \\ue045\\ue046设置/取消全部设置 \\ue000配置文件复"
-"制 \\ue001返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileCopy  \\ue001: Back"
+msgstr "\\ue003\\ue07e设置/取消设置 \\ue045\\ue046设置/取消全部设置 \\ue000配置文件复制 \\ue001返回"
 
 #: src/menu/BatchJobTitleSelectState.cpp:249
 #: src/menu/BatchJobTitleSelectState.cpp:267
@@ -2883,12 +2754,8 @@ msgid "Batch ProfileMove - Select"
 msgstr "批量移动档案 - 选择"
 
 #: src/menu/BatchJobTitleSelectState.cpp:254
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"ProfileMove  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部设置/取消设置 \\ue000：个人"
-"资料移动 \\ue001：后退"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: ProfileMove  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部设置/取消设置 \\ue000：个人资料移动 \\ue001：后退"
 
 #: src/menu/BatchJobTitleSelectState.cpp:255
 msgid ">> Move"
@@ -2903,48 +2770,32 @@ msgid "Batch Wipe - Select"
 msgstr "批量擦除 - 选择"
 
 #: src/menu/BatchJobTitleSelectState.cpp:260
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"WipeProfile  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部设置/取消设置 \\ue000：擦除"
-"配置文件 \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: WipeProfile  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部设置/取消设置 \\ue000：擦除配置文件 \\ue001：返回"
 
 #: src/menu/BatchJobTitleSelectState.cpp:265
 msgid "Batch Copy To USB - Select"
 msgstr "批量复制到USB - 选择"
 
 #: src/menu/BatchJobTitleSelectState.cpp:266
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"CopyToUSB  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部设置/取消设置 \\ue000：复制"
-"到USB \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToUSB  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部设置/取消设置 \\ue000：复制到USB \\ue001：返回"
 
 #: src/menu/BatchJobTitleSelectState.cpp:271
 msgid "Batch Copy To NAND - Select"
 msgstr "批量复制到NAND - 选择"
 
 #: src/menu/BatchJobTitleSelectState.cpp:272
-msgid ""
-"\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: "
-"CopyToNAND  \\ue001: Back"
-msgstr ""
-"\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部设置/取消设置 \\ue000：复制"
-"到NAND \\ue001：返回"
+msgid "\\ue003\\ue07e: Set/Unset  \\ue045\\ue046: Set/Unset All  \\ue000: CopyToNAND  \\ue001: Back"
+msgstr "\\ue003\\ue07e：设置/取消设置 \\ue045\\ue046：全部设置/取消设置 \\ue000：复制到NAND \\ue001：返回"
 
 #: src/menu/BatchJobTitleSelectState.cpp:277
 msgid "Batch Backup - Select & Go"
 msgstr "批量备份 - 选择并执行"
 
 #: src/menu/BatchJobTitleSelectState.cpp:278
-msgid ""
-"\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  "
-"\\ue000Backup  \\ue001Back"
-msgstr ""
-"\\ue003\\ue07e设置/取消设置 \\ue045\\ue046设置/取消全部 \\ue002排除 \\ue000备"
-"份 \\ue001返回"
+msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Backup  \\ue001Back"
+msgstr "\\ue003\\ue07e设置/取消设置 \\ue045\\ue046设置/取消全部 \\ue002排除 \\ue000备份 \\ue001返回"
 
 #: src/menu/BatchJobTitleSelectState.cpp:279
 msgid ">> Backup"
@@ -2959,12 +2810,8 @@ msgid "Emul Export - Select & Go"
 msgstr "模拟器导出 - 选择并开始"
 
 #: src/menu/BatchJobTitleSelectState.cpp:284
-msgid ""
-"\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  "
-"\\ue000Export  \\ue001Back"
-msgstr ""
-"\\ue003\\ue07e设置/取消  \\ue045\\ue046全部设置/取消  \\ue002排除  \\ue000导"
-"出  \\ue001返回"
+msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Back"
+msgstr "\\ue003\\ue07e设置/取消  \\ue045\\ue046全部设置/取消  \\ue002排除  \\ue000导出  \\ue001返回"
 
 #: src/menu/BatchJobTitleSelectState.cpp:303
 msgid "There are no titles matching selected filters."
@@ -3404,20 +3251,12 @@ msgid "Source[P:%s|S:%s|M:%s]"
 msgstr "来源[P:%s|S:%s|M:%s]"
 
 #: src/menu/KeyListState.cpp:65
-msgid ""
-"Highlight a file, and using the buttons indicated below load a key from it. "
-"Default keys (belonging to this console) can be loaded at once with \\ue045."
-msgstr ""
-"高亮选中一个文件，并使用下方指示的按钮从中加载密钥。本主机的默认密钥可以使用 "
-"\\ue045 一次性加载。"
+msgid "Highlight a file, and using the buttons indicated below load a key from it. Default keys (belonging to this console) can be loaded at once with \\ue045."
+msgstr "高亮选中一个文件，并使用下方指示的按钮从中加载密钥。本主机的默认密钥可以使用 \\ue045 一次性加载。"
 
 #: src/menu/KeyListState.cpp:70
-msgid ""
-"Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: "
-"Default  \\ue001: Back"
-msgstr ""
-"设置密钥： \\ue003: 私有密钥  \\ue002: 共享密钥  \\ue000: MAC  \\ue045: 默"
-"认  \\ue001: 返回"
+msgid "Set Keys:  \\ue003: Private  \\ue002: Shared  \\ue000: MAC  \\ue045: Default  \\ue001: Back"
+msgstr "设置密钥： \\ue003: 私有密钥  \\ue002: 共享密钥  \\ue000: MAC  \\ue045: 默认  \\ue001: 返回"
 
 #: src/menu/KeyListState.cpp:92
 #, c-format
@@ -3459,14 +3298,12 @@ msgid ""
 "* to the same user profiles\n"
 "* to a different user in the same console \n"
 "* or to a different console where the games are already installed.\n"
-"In the later case, it is recommended to first run the game to initialize the "
-"savedata."
+"In the later case, it is recommended to first run the game to initialize the savedata."
 msgstr ""
 "批量恢复功能允许您将批量备份中的所有保存数据\n"
 "*恢复到相同的用户配置文件\n"
 "*、恢复到同一主机上的其他用户\n"
-"*，或恢复到已安装游戏的其他主机。 在后一种情况下，建议先运行游戏 以初始化保存"
-"数据。"
+"*，或恢复到已安装游戏的其他主机。 在后一种情况下，建议先运行游戏 以初始化保存数据。"
 
 #: src/menu/BatchJobState.cpp:32
 msgid "\\ue000: Continue to BackupSet selection  \\ue001: Back"
@@ -3488,17 +3325,14 @@ msgstr "   擦除 vWii 存档数据 (%u 标题 %s)"
 
 #: src/menu/BatchJobState.cpp:38
 msgid ""
-"Batch Wipe allows you to wipe savedata belonging to a given profile across "
-"all selected titles. It detects also savedata belonging to profiles not "
-"defined in the console.\n"
+"Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console.\n"
 "\n"
 "Just:\n"
 "- select which data to wipe\n"
 "- select titles to act on\n"
 "- and go!"
 msgstr ""
-"批量擦除功能允许您擦除所有选定游戏中属于指定配置文件的保存数据。 它还会检测属"
-"于未在主机中定义的配置文件的保存数据。\n"
+"批量擦除功能允许您擦除所有选定游戏中属于指定配置文件的保存数据。 它还会检测属于未在主机中定义的配置文件的保存数据。\n"
 "\n"
 "只需:\n"
 "- 选择要擦除的数据\n"
@@ -3523,16 +3357,14 @@ msgstr "   将 Wii U 存档数据从 USB 复制到 NAND"
 
 #: src/menu/BatchJobState.cpp:45
 msgid ""
-"Batch Copy To Other Device allows you to transfer savedata between NAND and "
-"USB for all selected titles that already have savedata on both media.\n"
+"Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media.\n"
 "\n"
 "Just:\n"
 "- select which data to copy\n"
 "- select titles to act on\n"
 "- and go!"
 msgstr ""
-"批量复制到其他设备'功能允许您在NAND和USB之间传输所有已在两个介质上保存存档数"
-"据的选定游戏的存档数据。\n"
+"批量复制到其他设备'功能允许您在NAND和USB之间传输所有已在两个介质上保存存档数据的选定游戏的存档数据。\n"
 "\n"
 "只需：\n"
 "- 选择要复制的数据\n"
@@ -3592,8 +3424,7 @@ msgstr "   从 SD 卡上的 'private' Wii 数据插槽导入"
 #: src/menu/TitleTaskState.cpp:88
 msgid ""
 "This title is a GameCube inject.\n"
-"Saves cannot be managed using SaveMii. Check Nintendont for more details on "
-"how to proceed."
+"Saves cannot be managed using SaveMii. Check Nintendont for more details on how to proceed."
 msgstr ""
 "该项目是 GameCube 注入游戏。\n"
 "无法使用 SaveMii 管理存档。请查看 Nintendont 了解后续操作详情。"
@@ -3612,12 +3443,8 @@ msgid "\\ue000: Select Task  \\ue001: Back"
 msgstr "\\ue000: 选择  \\ue001: 返回"
 
 #: src/menu/TitleTaskState.cpp:110
-msgid ""
-"This inject does not seem neither a disc based Wii/GC game nor a VC/WiiWare. "
-"Cannot be managed by SaveMii."
-msgstr ""
-"此注入项目似乎既不是基于光盘的 Wii/GC 游戏，也不是 VC/WiiWare。SaveMii 无法管"
-"理。"
+msgid "This inject does not seem neither a disc based Wii/GC game nor a VC/WiiWare. Cannot be managed by SaveMii."
+msgstr "此注入项目似乎既不是基于光盘的 Wii/GC 游戏，也不是 VC/WiiWare。SaveMii 无法管理。"
 
 #: src/menu/TitleTaskState.cpp:137
 msgid "No save to Backup."
@@ -3648,11 +3475,8 @@ msgid "No save to export to SD Wii Data slot."
 msgstr "没有存档可导出到 SD Wii 数据插槽。"
 
 #: src/menu/TitleTaskState.cpp:188
-msgid ""
-"GameCube injects savedata cannot be restored with SaveMii. Check Nintendont "
-"documentation to manually copy savedata"
-msgstr ""
-"SaveMii 无法还原 GameCube 注入存档。请查阅 Nintendont 文档以手动复制存档。"
+msgid "GameCube injects savedata cannot be restored with SaveMii. Check Nintendont documentation to manually copy savedata"
+msgstr "SaveMii 无法还原 GameCube 注入存档。请查阅 Nintendont 文档以手动复制存档。"
 
 #: src/menu/TitleTaskState.cpp:199
 msgid "Title has no profile savedata"
@@ -3675,17 +3499,12 @@ msgid "   ExportSet (CEMU/Dolphin-ready): Convert / Contents / Tag / Wipe"
 msgstr "   导出集 (兼容CEMU/Dolphin): 转换 / 内容 / 标签 / 删除"
 
 #: src/menu/BackupSetManagementState.cpp:39
-msgid ""
-"Set the default BackupSet (tasks will used it as their backup repo), tag it "
-"with a name, or wipe any backupSet"
-msgstr ""
-"设置默认存档集（任务将以其作为备份存储库）、用名称为其添加标签，或删除任意存"
-"档集"
+msgid "Set the default BackupSet (tasks will used it as their backup repo), tag it with a name, or wipe any backupSet"
+msgstr "设置默认存档集（任务将以其作为备份存储库）、用名称为其添加标签，或删除任意存档集"
 
 #: src/menu/BackupSetManagementState.cpp:42
 msgid ""
-"* Convert a CEMU/DOLPHIN/plain title or save folders to a bacth restorable "
-"backupSet\n"
+"* Convert a CEMU/DOLPHIN/plain title or save folders to a bacth restorable backupSet\n"
 "* Show content , tag or wipe  CEMU or Dolphin export folders"
 msgstr ""
 "* 将 CEMU/DOLPHIN/普通软件或存档文件夹转换为可批量还原的存档集\n"
@@ -3723,16 +3542,12 @@ msgstr ""
 "  “导出 Wii U”和“导出 vWii”任务"
 
 #: src/menu/ExportAsState.cpp:49
-msgid ""
-"Export Wii U or vWii savedata in a format ready to be copied to the "
-"corresponding foder in CEMU or Dolphin emulator installation."
-msgstr ""
-"将 Wii U 或 vWii 存档数据导出为可直接复制到 CEMU 或 Dolphin 模拟器安装目录对"
-"应文件夹的格式。"
+msgid "Export Wii U or vWii savedata in a format ready to be copied to the corresponding foder in CEMU or Dolphin emulator installation."
+msgstr "将 Wii U 或 vWii 存档数据导出为可直接复制到 CEMU 或 Dolphin 模拟器安装目录对应文件夹的格式。"
 
 #: src/menu/ExportAsState.cpp:53
-msgid "\\ue002: ExportFolder Management \\ue000: Export  \\ue001: Back"
-msgstr "\\ue002：导出文件夹管理 \\ue000：导出  \\ue001：返回"
+msgid "\\ue002: ExportSet Management   \\ue000: Export   \\ue001: Back"
+msgstr "：ExportSet管理 ：导出  ：返回"
 
 #: src/menu/MiiTransformTasksState.cpp:24
 msgid "Mii Transform Tasks"
@@ -3832,35 +3647,20 @@ msgid "   Togle Temporary Flag On/Off:"
 msgstr "   切换临时标志的开/关："
 
 #: src/menu/MiiTransformTasksState.cpp:83
-msgid ""
-"Selected miis will get the physical appearance of the mii you will select in "
-"the next menu."
+msgid "Selected miis will get the physical appearance of the mii you will select in the next menu."
 msgstr "选定的 Mii 将获得您在游戏中选择的 Mii 的外观下一个菜单。"
 
 #: src/menu/MiiTransformTasksState.cpp:86
-msgid ""
-"Selected miis will get the ownership attributes of the template mii, so "
-"after they will belong to template console. Current games association is "
-"lost."
-msgstr ""
-"选定的 Mii 将获得模板 Mii 的所有权属性，因此之后它们将属于模板主机。当前游戏"
-"关联将丢失。"
+msgid "Selected miis will get the ownership attributes of the template mii, so after they will belong to template console. Current games association is lost."
+msgstr "选定的 Mii 将获得模板 Mii 的所有权属性，因此之后它们将属于模板主机。当前游戏关联将丢失。"
 
 #: src/menu/MiiTransformTasksState.cpp:89
-msgid ""
-"Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as "
-"created on this console. Updates Mii Id, so games association is lost."
-msgstr ""
-"更新 Mii 的 MAC 地址和 AuthID（WiiU），使其显示为在此主机上创建。更新 Mii "
-"ID，因此游戏关联将丢失。"
+msgid "Updates MAC Address and AuthID (WiiU) of the Mii, so that it will apeear as created on this console. Updates Mii Id, so games association is lost."
+msgstr "更新 Mii 的 MAC 地址和 AuthID（WiiU），使其显示为在此主机上创建。更新 Mii ID，因此游戏关联将丢失。"
 
 #: src/menu/MiiTransformTasksState.cpp:92
-msgid ""
-"So the mii has a new unique Mii Id (Beware! It will no longer be tied to any "
-"game that expects the older Mii Id)."
-msgstr ""
-"这样，该 Mii 角色就拥有了一个新的唯一 Mii ID（注意！它将不再与任何需要旧 Mii "
-"ID 的游戏关联）。"
+msgid "So the mii has a new unique Mii Id (Beware! It will no longer be tied to any game that expects the older Mii Id)."
+msgstr "这样，该 Mii 角色就拥有了一个新的唯一 Mii ID（注意！它将不再与任何需要旧 Mii ID 的游戏关联）。"
 
 #: src/menu/MiiTransformTasksState.cpp:95
 msgid "Mark Miis as a favorite one so they appear in games that support them."
@@ -3871,40 +3671,23 @@ msgid "So the mii can travel to other consoles."
 msgstr "这样，该 Mii 角色就可以在其他主机上使用。"
 
 #: src/menu/MiiTransformTasksState.cpp:101
-msgid ""
-"You can transform a normal Mii into an special one, and viceversa. This "
-"updates the Mii Id, so games association is lost."
-msgstr ""
-"您可以将普通Mii形象转换为特殊形象，反之亦然。此操作会更新Mii ID，因此游戏关联"
-"将会丢失。"
+msgid "You can transform a normal Mii into an special one, and viceversa. This updates the Mii Id, so games association is lost."
+msgstr "您可以将普通Mii形象转换为特殊形象，反之亦然。此操作会更新Mii ID，因此游戏关联将会丢失。"
 
 #: src/menu/MiiTransformTasksState.cpp:104
-msgid ""
-"Wii Miis can be forced as foreign irrespective of where they were created. "
-"This updates the Mii Id (mii games association is lost)."
-msgstr ""
-"无论 Wii Mii 的创建地点如何，都可以强制将其设置为外国 Mii。这将更新 Mii ID"
-"（Mii 游戏关联将丢失）。"
+msgid "Wii Miis can be forced as foreign irrespective of where they were created. This updates the Mii Id (mii games association is lost)."
+msgstr "无论 Wii Mii 的创建地点如何，都可以强制将其设置为外国 Mii。这将更新 Mii ID（Mii 游戏关联将丢失）。"
 
 #: src/menu/MiiTransformTasksState.cpp:107
-msgid ""
-"CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd "
-"files) or for the entire DB (for miis in a FFL or RFL file repo)."
-msgstr ""
-"将重新计算 CRC选定的Mii角色（如果位于ffsd、bin、cfsd或rsd文件中）或整个数据库"
-"（对于位于FFL或RFL文件库中的Mii角色）。"
+msgid "CRC will be recalculated for the selected mii (if in ffsd,bin,cfsd or rsd files) or for the entire DB (for miis in a FFL or RFL file repo)."
+msgstr "将重新计算 CRC选定的Mii角色（如果位于ffsd、bin、cfsd或rsd文件中）或整个数据库（对于位于FFL或RFL文件库中的Mii角色）。"
 
 #: src/menu/MiiTransformTasksState.cpp:110
-msgid ""
-"So people that does not own the mii can modifiy it by creating a copy of the "
-"original."
-msgstr ""
-"这样，即使没有该 Mii 角色的人也可以通过创建原始 Mii 角色的副本来修改它。"
+msgid "So people that does not own the mii can modifiy it by creating a copy of the original."
+msgstr "这样，即使没有该 Mii 角色的人也可以通过创建原始 Mii 角色的副本来修改它。"
 
 #: src/menu/MiiTransformTasksState.cpp:113
-msgid ""
-"Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games "
-"association is lost)."
+msgid "Temporary Miis cannot be seen in FFL DB. This updates the Mii Id (mii games association is lost)."
 msgstr "FFL 数据库中无法看到临时 Mii。这将更新 Mii ID（Mii 游戏关联将丢失）。"
 
 #: src/menu/MiiTransformTasksState.cpp:127
@@ -3940,8 +3723,7 @@ msgid "   Backup DB"
 msgstr "   备份数据库"
 
 #: src/menu/MiiTasksState.cpp:37
-msgid ""
-"   Restore Full DB (Full restore - all account attributes - for one profile)"
+msgid "   Restore Full DB (Full restore - all account attributes - for one profile)"
 msgstr "   恢复完整数据库（完整恢复 - 所有账号属性 - 针对单个配置文件）"
 
 #: src/menu/MiiTasksState.cpp:39
@@ -4007,21 +3789,12 @@ msgid "Backup All Wii U Account folders and files"
 msgstr "备份所有 Wii U 帐户文件夹和文件"
 
 #: src/menu/MiiTasksState.cpp:95
-msgid ""
-"Restore One Wii U Account files (all info, including but not only MiiData). "
-"Needs a console restart to take effect."
-msgstr ""
-"恢复 Wii U One 账号文件（所有信息，包括但不限于 Mii 数据）。需要重启主机才能"
-"生效。"
+msgid "Restore One Wii U Account files (all info, including but not only MiiData). Needs a console restart to take effect."
+msgstr "恢复 Wii U One 账号文件（所有信息，包括但不限于 Mii 数据）。需要重启主机才能生效。"
 
 #: src/menu/MiiTasksState.cpp:98
-msgid ""
-"Restore MiiData + MiiImg from One Wii U Account to a different one (neither "
-"NNID nor PNID nor other attributes are modified). Needs a console restart to "
-"take effect."
-msgstr ""
-"将一个 Wii U 账号中的 Mii 数据和 Mii 镜像恢复到另一个账号（NNID、PNID 和其他"
-"属性均不会修改）。需要重启主机才能生效。"
+msgid "Restore MiiData + MiiImg from One Wii U Account to a different one (neither NNID nor PNID nor other attributes are modified). Needs a console restart to take effect."
+msgstr "将一个 Wii U 账号中的 Mii 数据和 Mii 镜像恢复到另一个账号（NNID、PNID 和其他属性均不会修改）。需要重启主机才能生效。"
 
 #: src/menu/MiiTasksState.cpp:101 src/menu/MiiTasksState.cpp:131
 msgid "List all Miis and some of its attributes"
@@ -4032,22 +3805,12 @@ msgid "Export Miis to other repos"
 msgstr "将 Mii 导出到其他存储库"
 
 #: src/menu/MiiTasksState.cpp:107
-msgid ""
-"Import MiiData from a mii in another repo. Needs console restart and re-"
-"register the user (User Settings > Change Mii > Edit Registered Mi > "
-"Register) to take full effect"
-msgstr ""
-"从另一个仓库中的Mii导入Mii数据。需要重启控制台并重新注册用户（用户设置 > 更改"
-"Mii > 编辑已注册的Mii > 注册）才能完全生效"
+msgid "Import MiiData from a mii in another repo. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+msgstr "从另一个仓库中的Mii导入Mii数据。需要重启控制台并重新注册用户（用户设置 > 更改Mii > 编辑已注册的Mii > 注册）才能完全生效"
 
 #: src/menu/MiiTasksState.cpp:110
-msgid ""
-"Change attributes (share/copy/miiid/owner) or appareance of miis. Needs "
-"console restart and re-register the user (User Settings > Change Mii > Edit "
-"Registered Mi > Register) to take full effect"
-msgstr ""
-"更改 mii 的属性（共享/复制/miiid/所有者）或外观。需要重启主机并重新注册用户"
-"（用户设置 > 更改 Mii > 编辑已注册的 Mii > 注册）才能完全生效"
+msgid "Change attributes (share/copy/miiid/owner) or appareance of miis. Needs console restart and re-register the user (User Settings > Change Mii > Edit Registered Mi > Register) to take full effect"
+msgstr "更改 mii 的属性（共享/复制/miiid/所有者）或外观。需要重启主机并重新注册用户（用户设置 > 更改 Mii > 编辑已注册的 Mii > 注册）才能完全生效"
 
 #: src/menu/MiiTasksState.cpp:119
 msgid "Backup Mii Database in their enterity"
@@ -4086,10 +3849,8 @@ msgid "Keyboard"
 msgstr "键盘"
 
 #: src/menu/KeyboardState.cpp:38
-msgid ""
-"\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
-msgstr ""
-"\\ue000: 输入  \\ue003: Shift  \\ue002: 退格  \\ue045: 结束  \\ue001: 返回"
+msgid "\\ue000: Press Key  \\ue003: Shift  \\ue002: Del  \\ue045: OK!  \\ue001: Back"
+msgstr "\\ue000: 输入  \\ue003: Shift  \\ue002: 退格  \\ue045: 结束  \\ue001: 返回"
 
 #: src/menu/BatchBackupState.cpp:27
 msgid "Batch Backup"
@@ -4210,21 +3971,17 @@ msgid ""
 "* Backup it with 'allusers' option or with Batch Backup\n"
 "* wipe or move it with 'Batch Wipe/Batch Copy to Other Profile' tasks."
 msgstr ""
-"警告某些游戏包含本主机中不存在的配置文件的保存数据此保存数据将被忽略。您可"
-"以：\n"
+"警告某些游戏包含本主机中不存在的配置文件的保存数据此保存数据将被忽略。您可以：\n"
 "* 使用'allusers'选项或批量备份进行备份\n"
 "* 使用'批量擦除/批量复制到其他配置文件'任务进行擦除或移动。"
 
 #: src/menu/BatchJobOptions.cpp:227
 msgid ""
-"The BackupSet contains savedata for profiles that don't exist in this "
-"console. You can continue, but 'allusers' restore process will fail for "
-"those titles.\n"
+"The BackupSet contains savedata for profiles that don't exist in this console. You can continue, but 'allusers' restore process will fail for those titles.\n"
 "\n"
 "Recommended action: restore from/to individual users."
 msgstr ""
-"备份集中包含此主机中不存在的配置文件的保存数据。 您可以继续，但这些游戏的'所"
-"有用户'恢复过程将失败。\n"
+"备份集中包含此主机中不存在的配置文件的保存数据。 您可以继续，但这些游戏的'所有用户'恢复过程将失败。\n"
 "\n"
 "建议的操作：从/向单个用户恢复。"
 
@@ -4361,9 +4118,7 @@ msgid "\\ue000: Ok! Go to Title selection  \\ue001: Back"
 msgstr "\\ue000: 完成！打开软件选择  \\ue001: 返回"
 
 #: src/menu/BatchJobOptions.cpp:365
-msgid ""
-"\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: "
-"Back"
+msgid "\\ue002: Undefined Profiles  \\ue000: Ok! Go to Title selection  \\ue001: Back"
 msgstr "\\ue002：未定义的配置文件 \\ue000：确定！前往游戏选择 \\ue001：返回"
 
 #: src/menu/BatchJobOptions.cpp:373
@@ -4447,20 +4202,16 @@ msgstr "\\ue002: 选项 \\ue000: 选择模式"
 
 #: src/menu/MainMenuState.cpp:80
 msgid ""
-"This task allows you to backup/restore savedata for MiiMaker, Internet "
-"Browser and other system titles.\n"
+"This task allows you to backup/restore savedata for MiiMaker, Internet Browser and other system titles.\n"
 "\n"
-"Proceed with caution and be aware of what you are modifying! Some saves can "
-"affect system behavior, and misuse on them can have unexpected "
-"consequences!\n"
+"Proceed with caution and be aware of what you are modifying! Some saves can affect system behavior, and misuse on them can have unexpected consequences!\n"
 "\n"
 "Do you want to continue?\n"
 "\n"
 msgstr ""
 "此任务允许您备份/恢复 MiiMaker、互联网浏览器和其他系统程序的存档数据。\n"
 "\n"
-"请谨慎操作，并清楚您正在修改的内容！某些存档可能会影响系统行为，误用可能会导"
-"致意想不到的后果！\n"
+"请谨慎操作，并清楚您正在修改的内容！某些存档可能会影响系统行为，误用可能会导致意想不到的后果！\n"
 "\n"
 "是否继续？\n"
 "\n"
@@ -4629,14 +4380,8 @@ msgid "no, just copy back the data.bin file as is"
 msgstr "否，按原样拷回 data.bin 文件"
 
 #: src/menu/TitleOptionsState.cpp:339
-msgid ""
-"WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv "
-"md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see "
-"github.com/w3irDv/savemii)."
-msgstr ""
-"警告：发现 data.bin 但没有用于解密的共享密钥。请在 sd:/keys.txt 中添加 "
-"sd_key sd_iv md5_blanker，或按 \\ue003 并选择密钥文件（参见 github.com/"
-"w3irDv/savemii）。"
+msgid "WARNING: data.bin found but no shared keys to decrypt it. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."
+msgstr "警告：发现 data.bin 但没有用于解密的共享密钥。请在 sd:/keys.txt 中添加 sd_key sd_iv md5_blanker，或按 \\ue003 并选择密钥文件（参见 github.com/w3irDv/savemii）。"
 
 #: src/menu/TitleOptionsState.cpp:342
 msgid "WARNING: Game TitleId does not match the one in savedata."
@@ -4659,19 +4404,12 @@ msgid "no, plain files are ok (classic savemii format)"
 msgstr "否，普通文件即可（传统 savemii 格式）"
 
 #: src/menu/TitleOptionsState.cpp:355
-msgid ""
-"Compress savedata to sd:/private/wii/title where it can be read by standard "
-"Wii Data Management"
+msgid "Compress savedata to sd:/private/wii/title where it can be read by standard Wii Data Management"
 msgstr "将存档压缩至 sd:/private/wii/title，以便标准 Wii 数据管理程序读取"
 
 #: src/menu/TitleOptionsState.cpp:360
-msgid ""
-"No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/"
-"keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/"
-"savemii)."
-msgstr ""
-"没有共享密钥来加密存档。请在 sd:/keys.txt 中添加 sd_key sd_iv md5_blanker，或"
-"按 \\ue003 并选择密钥文件（参见 github.com/w3irDv/savemii）。"
+msgid "No shared keys to encrypt savedata. Add sd_key sd_iv md5_blanker in sd:/keys.txt or press \\ue003 and select a keys file (see github.com/w3irDv/savemii)."
+msgstr "没有共享密钥来加密存档。请在 sd:/keys.txt 中添加 sd_key sd_iv md5_blanker，或按 \\ue003 并选择密钥文件（参见 github.com/w3irDv/savemii）。"
 
 #: src/menu/TitleOptionsState.cpp:365
 msgid "Restore backup from sd:/private/wii/title"
@@ -4682,34 +4420,24 @@ msgid "\\ue000: Backup  \\ue003: Keys  \\ue001: Back"
 msgstr "\\ue000: 备份  \\ue003: 密钥  \\ue001: 返回"
 
 #: src/menu/TitleOptionsState.cpp:431
-msgid ""
-"\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  "
-"\\ue001: Back"
-msgstr ""
-"\\ue000: 备份  \\ue003: 密钥  \\ue045 标记插槽  \\ue046 删除插槽  \\ue001: 返"
-"回"
+msgid "\\ue000: Backup  \\ue003: Keys  \\ue045 Tag Slot  \\ue046 Delete Slot  \\ue001: Back"
+msgstr "\\ue000: 备份  \\ue003: 密钥  \\ue045 标记插槽  \\ue046 删除插槽  \\ue001: 返回"
 
 #: src/menu/TitleOptionsState.cpp:439
 msgid "\\ue000: Restore  \\ue002: Change BackupSet  \\ue001: Back"
 msgstr "\\ue000: 还原  \\ue002: 更改备份集  \\ue001: 返回"
 
 #: src/menu/TitleOptionsState.cpp:441
-msgid ""
-"\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
+msgid "\\ue000: Restore  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
 msgstr "\\ue000: 还原  \\ue002: 更改备份集  \\ue045 标记插槽  \\ue001: 返回"
 
 #: src/menu/TitleOptionsState.cpp:444
-msgid ""
-"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"
+msgid "\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue001: Back"
 msgstr "\\ue000: 还原  \\ue003: 密钥  \\ue002: 更改备份集  \\ue001: 返回"
 
 #: src/menu/TitleOptionsState.cpp:446
-msgid ""
-"\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag "
-"Slot  \\ue001: Back"
-msgstr ""
-"\\ue000: 还原  \\ue003: 密钥  \\ue002: 更改备份集  \\ue045 标记插槽  "
-"\\ue001: 返回"
+msgid "\\ue000: Restore  \\ue003: Keys  \\ue002: Change BackupSet  \\ue045 Tag Slot  \\ue001: Back"
+msgstr "\\ue000: 还原  \\ue003: 密钥  \\ue002: 更改备份集  \\ue045 标记插槽  \\ue001: 返回"
 
 #: src/menu/TitleOptionsState.cpp:455
 msgid "Copy to Other Profile"
@@ -4783,17 +4511,13 @@ msgstr "未选择要复制的数据"
 #, c-format
 msgid ""
 "'data.bin' uncompress aborted: no shared keys found.\n"
-"Provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key "
-"and md5_blanker values (they are console independent). Check github.com/"
-"w3irDv/savemii for more info.\n"
+"Provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (they are console independent). Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
 "'data.bin' 解压中止：未找到共享密钥。\n"
-"请在 SD 卡根目录提供一个包含 Wii sd_iv、sd_key 和 md5_blanker 数值的 "
-"'keys.txt' 文件（这些数值与具体主机无关）。更多信息请查看 github.com/w3irDv/"
-"savemii。\n"
+"请在 SD 卡根目录提供一个包含 Wii sd_iv、sd_key 和 md5_blanker 数值的 'keys.txt' 文件（这些数值与具体主机无关）。更多信息请查看 github.com/w3irDv/savemii。\n"
 "\n"
 "密钥初始化错误：\n"
 "%s\n"
@@ -4802,17 +4526,13 @@ msgstr ""
 #, c-format
 msgid ""
 "'data.bin' compress aborted: no shared keys found.\n"
-" Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, "
-"sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/"
-"savemii for more info.\n"
+" Please provide a 'keys.txt' file in the root of the SD with the Wii sd_iv, sd_key and md5_blanker values (from any Wii). Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
 "'data.bin' 压缩中止：未找到共享密钥。\n"
-"请在 SD 卡根目录提供一个包含 Wii sd_iv、sd_key 和 md5_blanker 数值的 "
-"'keys.txt' 文件（可来自任何 Wii）。更多信息请查看 github.com/w3irDv/"
-"savemii。\n"
+"请在 SD 卡根目录提供一个包含 Wii sd_iv、sd_key 和 md5_blanker 数值的 'keys.txt' 文件（可来自任何 Wii）。更多信息请查看 github.com/w3irDv/savemii。\n"
 "\n"
 "密钥初始化错误：\n"
 "%s\n"
@@ -4821,15 +4541,13 @@ msgstr ""
 #, c-format
 msgid ""
 "'data.bin' compress aborted: no private keys found.\n"
-" Please check that the Wii U 'otp.bin' file is in SD:/wiiu/backups/"
-"<SerialId>. Check github.com/w3irDv/savemii for more info.\n"
+" Please check that the Wii U 'otp.bin' file is in SD:/wiiu/backups/<SerialId>. Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
 "'data.bin' 压缩中止：未找到私有密钥。\n"
-"请检查 Wii U 的 'otp.bin' 文件是否位于 SD:/wiiu/backups/<序列号ID>。更多信息"
-"请查看 github.com/w3irDv/savemii。\n"
+"请检查 Wii U 的 'otp.bin' 文件是否位于 SD:/wiiu/backups/<序列号ID>。更多信息请查看 github.com/w3irDv/savemii。\n"
 "\n"
 "密钥初始化错误：\n"
 "%s\n"
@@ -4838,15 +4556,13 @@ msgstr ""
 #, c-format
 msgid ""
 "'data.bin' compress aborted: mac_address not found.\n"
-" Please provide a 'keys.txt' file in the root of the SD with a mac_address "
-"(from any Wii). Check github.com/w3irDv/savemii for more info.\n"
+" Please provide a 'keys.txt' file in the root of the SD with a mac_address (from any Wii). Check github.com/w3irDv/savemii for more info.\n"
 "\n"
 "Keys initialization error:\n"
 "%s\n"
 msgstr ""
 "'data.bin' 压缩中止：未找到 MAC 地址。\n"
-"请在 SD 卡根目录提供一个包含 MAC 地址的 'keys.txt' 文件（可来自任何 Wii）。更"
-"多信息请查看 github.com/w3irDv/savemii。\n"
+"请在 SD 卡根目录提供一个包含 MAC 地址的 'keys.txt' 文件（可来自任何 Wii）。更多信息请查看 github.com/w3irDv/savemii。\n"
 "\n"
 "密钥初始化错误：\n"
 "%s\n"
@@ -4913,49 +4629,26 @@ msgid ""
 "* to a different user in the same console \n"
 "* or to a different console where the games are already installed.\n"
 "Now it is not needed to run the game first to initialize the savedata."
-msgstr ""
-"批量恢复允许您将批量备份中的所有存档数据恢复到以下位置：* 同一用户配置文件；"
-"* 同一主机中的不同用户；* 或已安装游戏的其他主机。现在无需先运行游戏即可初始"
-"化存档数据。"
+msgstr "批量恢复允许您将批量备份中的所有存档数据恢复到以下位置：* 同一用户配置文件；* 同一主机中的不同用户；* 或已安装游戏的其他主机。现在无需先运行游戏即可初始化存档数据。"
 
 #: src/menu/BatchTasksState.cpp:65
-msgid ""
-"Batch Wipe allows you to wipe savedata belonging to a given profile across "
-"all selected titles. It detects also savedata belonging to profiles not "
-"defined in the console."
-msgstr ""
-"批量清除功能允许您清除指定用户配置文件在所有选定游戏中的存档数据。它还能检测"
-"到控制台中未定义的用户配置文件的存档数据。"
+msgid "Batch Wipe allows you to wipe savedata belonging to a given profile across all selected titles. It detects also savedata belonging to profiles not defined in the console."
+msgstr "批量清除功能允许您清除指定用户配置文件在所有选定游戏中的存档数据。它还能检测到控制台中未定义的用户配置文件的存档数据。"
 
 #: src/menu/BatchTasksState.cpp:68
-msgid ""
-"Batch Move To Other Profile allows you to move savedata from one user "
-"profile to a different user profile. There is no data copy, just a renaming "
-"of folders, so it is very quick.."
-msgstr ""
-"批量移动到其他配置文件允许您将存档数据从一个用户配置文件移动到另一个用户配置"
-"文件。无需复制数据，只需重命名文件夹，因此速度非常快"
+msgid "Batch Move To Other Profile allows you to move savedata from one user profile to a different user profile. There is no data copy, just a renaming of folders, so it is very quick.."
+msgstr "批量移动到其他配置文件允许您将存档数据从一个用户配置文件移动到另一个用户配置文件。无需复制数据，只需重命名文件夹，因此速度非常快"
 
 #: src/menu/BatchTasksState.cpp:71
-msgid ""
-"Batch Copy To Other Profile allows you to transfer savedata from one user "
-"profile to a different user profile. Savedata from the source data remains "
-"untouched."
-msgstr ""
-"批量复制到其他配置文件允许您将存档数据从一个用户配置文件传输到另一个用户配置"
-"文件。源存档数据将保持不变。"
+msgid "Batch Copy To Other Profile allows you to transfer savedata from one user profile to a different user profile. Savedata from the source data remains untouched."
+msgstr "批量复制到其他配置文件允许您将存档数据从一个用户配置文件传输到另一个用户配置文件。源存档数据将保持不变。"
 
 #: src/menu/BatchTasksState.cpp:74
-msgid ""
-"Batch Copy To Other Device allows you to transfer savedata between NAND and "
-"USB for all selected titles that already have savedata on both media."
-msgstr ""
-"批量复制到其他设备允许您在 NAND 和 USB 之间传输所有已在两种介质上保存游戏存档"
-"的选定游戏的存档数据。"
+msgid "Batch Copy To Other Device allows you to transfer savedata between NAND and USB for all selected titles that already have savedata on both media."
+msgstr "批量复制到其他设备允许您在 NAND 和 USB 之间传输所有已在两种介质上保存游戏存档的选定游戏的存档数据。"
 
 #: src/menu/BatchTasksState.cpp:77
-msgid ""
-"Export savedata in a format ready to be copied to a CEMU or Dolphin folder."
+msgid "Export savedata in a format ready to be copied to a CEMU or Dolphin folder."
 msgstr "将存档数据导出为可直接复制到 CEMU 或 Dolphin 文件夹的格式。"
 
 #: src/menu/BatchTasksState.cpp:88
@@ -5083,15 +4776,11 @@ msgid "BACKUP IN PROGRESS"
 msgstr "备份正在进行中"
 
 #: src/savemng.cpp:964 src/savemng.cpp:1045
-msgid ""
-"Backup will not preserve permissions. This is a system title and backup will "
-"only proceed when you resolve the issue."
+msgid "Backup will not preserve permissions. This is a system title and backup will only proceed when you resolve the issue."
 msgstr "备份不会保留权限。这是一个系统游戏，只有在您解决问题后备份才会继续。"
 
 #: src/savemng.cpp:967 src/savemng.cpp:1048
-msgid ""
-"Backup will not preserve permissions. It can work (legacy mode) but it is "
-"advised to solve the issue and retry."
+msgid "Backup will not preserve permissions. It can work (legacy mode) but it is advised to solve the issue and retry."
 msgstr "备份不会保留权限。虽然在传统模式下可以运行，但建议您先解决问题再重试。"
 
 #: src/savemng.cpp:1028
@@ -5132,8 +4821,7 @@ msgid ""
 "\n"
 "Continue?"
 msgstr ""
-"此选项是恢复数据时出现问题的最后手段。它会清除元数据和存档数据，并且游戏标题"
-"将变为未初始化状态。它不会对已安装的游戏代码进行任何操作。\n"
+"此选项是恢复数据时出现问题的最后手段。它会清除元数据和存档数据，并且游戏标题将变为未初始化状态。它不会对已安装的游戏代码进行任何操作。\n"
 "这相当于从 Wii U 数据管理菜单中完全清除存档数据。\n"
 "\n"
 "继续吗？"
@@ -5310,15 +4998,13 @@ msgid ""
 "Unable to merge folder '%08x%08x' with existent folder\n"
 "'%s'\n"
 "\n"
-"Some backups may have been moved to this last folder. Please fix errors and "
-"try again, or manually move contents from one folder to the other.\n"
+"Some backups may have been moved to this last folder. Please fix errors and try again, or manually move contents from one folder to the other.\n"
 "\n"
 "Backup/restore operations will still use old '%08x%08x' folder"
 msgstr ""
 "无法将文件夹'%08x%08x'与现有文件夹'%s'合并\n"
 "\n"
-"某些备份可能已移动到此最后一个文件夹。请修复错误并重试，或手动将内容从一个文"
-"件夹移动到另一个文件夹。\n"
+"某些备份可能已移动到此最后一个文件夹。请修复错误并重试，或手动将内容从一个文件夹移动到另一个文件夹。\n"
 "\n"
 "备份/恢复操作仍将使用旧文件夹'%08x%08x'文件夹"
 
@@ -5353,8 +5039,7 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-"Please fix errors and try again, or manually move contents from one folder "
-"to the other.\n"
+"Please fix errors and try again, or manually move contents from one folder to the other.\n"
 "\n"
 "Backup/restore operations will still use old '%08x%08x' folder"
 msgstr ""
@@ -5663,3 +5348,4 @@ msgstr ""
 "分配内存以读取文件时出错\n"
 "\n"
 "%s"
+
