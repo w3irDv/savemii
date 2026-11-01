@@ -281,7 +281,7 @@ void BatchJobTitleSelectState::render() {
                 break;
             case CEMU_DOLPHIN_EXPORT:
                 menuTitle = _("Emul Export - Select & Go");
-                screenOptions = _("\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Export");
+                screenOptions = _("\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Back");
                 nextActionBrief = _(">> Export");
                 lastActionBriefOk = _("|Exported|");
                 break;

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 13:33+0100\n"
+"POT-Creation-Date: 2026-11-01 12:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -222,9 +222,9 @@ msgstr ""
 
 #: src/utils/TitleUtils.cpp:1122 src/utils/DataBinPack.cpp:148
 #: src/BackupSetList.cpp:449 src/BackupSetList.cpp:455
-#: src/menu/BackupSetContentListState.cpp:215
-#: src/menu/BackupSetContentListState.cpp:432
-#: src/menu/BackupSetContentListState.cpp:439
+#: src/menu/BackupSetContentListState.cpp:223
+#: src/menu/BackupSetContentListState.cpp:440
+#: src/menu/BackupSetContentListState.cpp:447
 #, c-format
 msgid "Error opening dir %s: %s"
 msgstr ""
@@ -2475,7 +2475,7 @@ msgid "Emul Export - Select & Go"
 msgstr ""
 
 #: src/menu/BatchJobTitleSelectState.cpp:284
-msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Export"
+msgid "\\ue003\\ue07eSet/Unset  \\ue045\\ue046Set/Unset All  \\ue002Excludes  \\ue000Export  \\ue001Back"
 msgstr ""
 
 #: src/menu/BatchJobTitleSelectState.cpp:303
@@ -3493,17 +3493,17 @@ msgstr ""
 msgid "    %s [Installed]"
 msgstr ""
 
-#: src/menu/BackupSetContentListState.cpp:112
+#: src/menu/BackupSetContentListState.cpp:121
 #, c-format
 msgid "[%d] %s"
 msgstr ""
 
-#: src/menu/BackupSetContentListState.cpp:126
+#: src/menu/BackupSetContentListState.cpp:134
 msgid "\\ue085\\ue07e\\ue086: Paging   \\ue001: Back"
 msgstr ""
 
-#: src/menu/BackupSetContentListState.cpp:211
-#: src/menu/BackupSetContentListState.cpp:364
+#: src/menu/BackupSetContentListState.cpp:219
+#: src/menu/BackupSetContentListState.cpp:372
 msgid "< no savedata >"
 msgstr ""
 
