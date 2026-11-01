@@ -1,6 +1,6 @@
 #pragma once
 
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 8
-#define VERSION_MICRO 2
-#define VERSION_FIX "p"
+#define VERSION_MINOR 9
+#define VERSION_MICRO 0
+#define VERSION_FIX ""
